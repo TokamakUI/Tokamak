@@ -1,0 +1,43 @@
+PODS:
+  - FBSnapshotTestCase (2.1.4):
+    - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
+  - FBSnapshotTestCase/Core (2.1.4)
+  - FBSnapshotTestCase/SwiftSupport (2.1.4):
+    - FBSnapshotTestCase/Core
+  - Gluon (0.1.0)
+  - Nimble (7.3.0)
+  - Nimble-Snapshots (6.3.0):
+    - Nimble-Snapshots/Core (= 6.3.0)
+  - Nimble-Snapshots/Core (6.3.0):
+    - FBSnapshotTestCase (~> 2.0)
+    - Nimble (~> 7.0)
+  - Quick (1.3.1)
+
+DEPENDENCIES:
+  - FBSnapshotTestCase (~> 2.1.4)
+  - Gluon (from `../`)
+  - Nimble (~> 7.3.0)
+  - Nimble-Snapshots (~> 6.3.0)
+  - Quick (~> 1.3.1)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - FBSnapshotTestCase
+    - Nimble
+    - Nimble-Snapshots
+    - Quick
+
+EXTERNAL SOURCES:
+  Gluon:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
+  Gluon: b4a176a80f5a488ff44832e7ebe4dd0d0f7bd858
+  Nimble: c8d6a1f463701921c46de965c673e13cafa09196
+  Nimble-Snapshots: f5459b5b091678dc942d03ec4741cacb58ba4a52
+  Quick: d17304d58d0d169dd0bd1c6e5c28e3318de32a1a
+
+PODFILE CHECKSUM: dcd466acbe5e9802b57d0afbc3ea31cff0123e3f
+
+COCOAPODS: 1.5.3
