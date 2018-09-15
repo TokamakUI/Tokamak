@@ -14,7 +14,6 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		B317BD2F1AD18A7F514CA335 /* Pods_Gluon_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1B4A8D80770145FDAFEAE64 /* Pods_Gluon_Tests.framework */; };
-		D15C8A93214D2A91002DBA91 /* Gluon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15C8A92214D2A91002DBA91 /* Gluon.swift */; };
 		E5226F2FEFBADF8F2E0F0846 /* Pods_Gluon_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F369EAC5434B4E52EB412B5 /* Pods_Gluon_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,7 +45,6 @@
 		B56CFE53515A8A8E073D5254 /* Pods-Gluon_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gluon_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Gluon_Tests/Pods-Gluon_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		C1B4A8D80770145FDAFEAE64 /* Pods_Gluon_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gluon_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6DA99382B6892EAB361742F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		D15C8A92214D2A91002DBA91 /* Gluon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gluon.swift; sourceTree = "<group>"; };
 		DB9D7B418828F169C47C3FBE /* Pods-Gluon_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gluon_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Gluon_Tests/Pods-Gluon_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		E7F808D1B3715FF294877289 /* Pods-Gluon_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gluon_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Gluon_Example/Pods-Gluon_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -101,7 +99,6 @@
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
-				D15C8A92214D2A91002DBA91 /* Gluon.swift */,
 			);
 			name = "Example for Gluon";
 			path = Gluon;
@@ -354,7 +351,6 @@
 			files = (
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
-				D15C8A93214D2A91002DBA91 /* Gluon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

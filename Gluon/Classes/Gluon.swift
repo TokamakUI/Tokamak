@@ -11,13 +11,8 @@ import UIKit
 protocol GluonProp: Hashable {
 }
 
-//class Component<P: GluonProp> {
-//    var props: Set<P> = []
-//}
-
-protocol Component {
-    associatedtype P: GluonProp
-    var props: Set<P> { get }
+class Component<P: GluonProp> {
+    var props: Set<P> = []
 }
 
 //  protocol Gluon: Component {
@@ -49,23 +44,24 @@ where P: GluonProp {
 extension String: AnyGluonNode {
 }
 
-final class Button: Component {
-    enum Prop: GluonProp {
-        case backgroundColor(UIColor)
-        case textColor(UIColor)
-        case disabled(Bool)
-    }
+enum ButtonProp: GluonProp {
+    case backgroundColor(UIColor)
+    case textColor(UIColor)
+    case disabled(Bool)
 }
 
-//  enum TestProps: GluonProp {
-//      case disabled(Bool)
-//  }
-//
-//  typealias Stateless<P> = (P) -> GluonNode<P> where P: GluonProp
-//
-//  let stateless = { (p: TestProps) in
-//      return Button.node()
-//  }
-//
-//  let f: Stateless<TestProps> = stateless
-//
+final class Button: Component<ButtonProp> {
+}
+
+  enum TestProps: GluonProp {
+      case disabled(Bool)
+  }
+
+typealias Stateless<P1> = (P) -> GluonNode<P> where P: GluonProp
+
+let stateless = { (p: TestProps) in
+  return Button.node()
+}
+
+let f: Stateless<TestProps> = stateless
+
