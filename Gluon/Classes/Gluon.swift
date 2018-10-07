@@ -12,29 +12,27 @@ protocol Default {
   init()
 }
 
-class BaseComponent<P: Equatable, S: Default> {
-  private(set) var props: P
-  private(set) var state: S
+protocol NodeType: Equatable {
+}
 
-  init(props: P, state: S) {
-    self.props = props
-    self.state = state
+struct AnyNode: NodeType {
+  let value: Any
+  private let equals: (Any) -> Bool
+
+  public init<E: NodeType>(_ value: E) {
+    self.value = value
+    self.equals = { ($0 as? E) == value }
   }
 
-  static func node(_ p: P,
-                   _ c: [NodeType] = []) -> NodeType {
-    return Node(component: self, props: p, children: c)
+  public static func == (lhs: AnyNode, rhs: AnyNode) -> Bool {
+    return lhs.equals(rhs.value) || rhs.equals(lhs.value)
   }
 }
 
-protocol NodeType {
-}
-
-struct Node<P, S>: NodeType
-where P: Equatable, S: Default {
-  let component: BaseComponent<P, S>.Type
-  let props: P
-  let children: [NodeType]
+extension NodeType {
+  var wrap: AnyNode {
+    return AnyNode(self)
+  }
 }
 
 extension UIControl.State: Hashable {
@@ -43,35 +41,91 @@ extension UIControl.State: Hashable {
   }
 }
 
-final class Button: BaseComponent<Button.Props, Button.State> {
-  struct Props: Equatable {
-    let backgroundColor: UIColor
-    let titles: [UIControl.State: String]
-  }
+class BaseComponent<Node: NodeType> {
+  var node: Node
 
-  struct State: Default {
+  init(node: Node) {
+    self.node = node
   }
 }
 
-//final class Button: BaseComponent<ButtonProp> {
-//}
-//
-//enum TestProp: GluonProp {
-//  case prop(Int)
-//}
-//
-//final class TestComponent: Component<TestProp> {
-//    func render() -> AnyGluonNode {
-////        if props
-//        return Button.node()
-//    }
-//}
+struct Unique<T>: Equatable {
+  private let uuid = UUID()
+  private let boxed: T
 
-//typealias Stateless<P1> = (P) -> GluonNode<P> where P: GluonProp
+  init(_ boxed: T) {
+    self.boxed = boxed
+  }
 
-//let stateless = { (p: TestProp) in
-//  return Button.node()
-//}
+  static func == (lhs: Unique<T>, rhs: Unique<T>) -> Bool {
+    return lhs.uuid == rhs.uuid
+  }
+}
 
-//let f: Stateless<TestProps> = stateless
+final class View: BaseComponent<View.Node> {
+  struct Node: NodeType {
+    let children: [AnyNode]
+    init(children: () -> [AnyNode]) {
+      self.children = children()
+    }
+  }
+}
+
+final class Label: BaseComponent<Label.Node> {
+  struct Node: NodeType {
+    let children: String
+  }
+}
+
+final class Button: BaseComponent<Button.Node> {
+  struct Node: NodeType {
+    let backgroundColor = UIColor.white
+    let onPress: Unique<() -> ()>
+    let children: String
+  }
+}
+
+class Component<Node: NodeType, State: Default>: BaseComponent<Node> {
+  private(set) var state: State
+
+  init(node: Node, state: State) {
+    self.state = state
+    super.init(node: node)
+  }
+
+  func setState(setter: (inout State) -> ()) {
+
+  }
+
+  func render() -> AnyNode {
+    fatalError("Component subclass should override render()")
+  }
+}
+
+struct NoProps: NodeType {
+}
+
+final class Test: Component<NoProps, Test.State> {
+  struct State: Default {
+    var counter = 0
+  }
+
+  func onPress() {
+    setState { $0.counter += 1 }
+  }
+
+  lazy var onPressHandler = { Unique { self.onPress() } }()
+
+  override func render() -> AnyNode {
+    return AnyNode(View.Node {
+      [
+        Button.Node(onPress: onPressHandler, children: "Tap Me").wrap,
+        Label.Node(children: "\(state)").wrap
+      ]
+    })
+  }
+}
+
+func render(node: AnyNode, container: UIView) {
+}
 
