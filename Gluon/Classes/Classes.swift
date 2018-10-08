@@ -7,125 +7,142 @@
 
 import Foundation
 
-protocol Default {
+public protocol Default {
   init()
 }
 
-struct Unique<T>: Equatable {
+public struct Unique<T>: Equatable {
   private let uuid = UUID()
   private let boxed: T
 
-  init(_ boxed: T) {
+  public init(_ boxed: T) {
     self.boxed = boxed
   }
 
-  static func == (lhs: Unique<T>, rhs: Unique<T>) -> Bool {
+  public static func == (lhs: Unique<T>, rhs: Unique<T>) -> Bool {
     return lhs.uuid == rhs.uuid
   }
 }
 
-struct NoProps: Equatable, Default {
+public struct NoProps: Equatable, Default {
+  public init() {}
 }
 
-private protocol ComponentType {
+protocol ComponentType {
 }
 
 extension String: ComponentType {
 }
 
-class BaseComponent<Props: Equatable>: ComponentType {
+open class BaseComponent<Props: Equatable>: ComponentType {
   private(set) var props: Props
   private(set) var children: [Node]
 
-  required init(props: Props, children: [Node]) {
+  public required init(props: Props, children: [Node]) {
     self.props = props
     self.children = children
   }
 
-  static func node(_ props: Props, childrenFactory: () -> [Node]) -> Node {
+  public static func node(_ props: Props, childrenFactory: () -> [Node]) -> Node {
     let children = childrenFactory()
     return Node {
       self.init(props: props, children: children)
     }
   }
 
-  static func node(_ props: Props, childFactory: () -> Node) -> Node {
+  public static func node(_ props: Props, childFactory: () -> Node) -> Node {
     // applying `childFactory` here to avoid `@escaping` attribute
     let child = childFactory()
     return Node { self.init(props: props, children: [child]) }
   }
 
-  static func node(_ props: Props) -> Node {
+  public static func node(_ props: Props) -> Node {
     return Node { self.init(props: props, children: []) }
   }
 }
 
 extension BaseComponent where Props: Default {
-  static func node(childrenFactory: () -> [Node]) -> Node {
+  public static func node(childrenFactory: () -> [Node]) -> Node {
     return self.node(Props(), childrenFactory: childrenFactory)
   }
 
-  static func node(childFactory: () -> Node) -> Node {
+  public static func node(childFactory: () -> Node) -> Node {
     return self.node(Props(), childFactory: childFactory)
   }
 
-  static func node() -> Node {
+  public static func node() -> Node {
     return Node { self.init(props: Props(), children: []) }
   }
 }
 
-struct Node {
+public struct Node {
   fileprivate let factory: () -> ComponentType
 }
 
 extension Node: ExpressibleByStringLiteral {
-  init(stringLiteral: String) {
+  public init(stringLiteral: String) {
     factory = { stringLiteral }
   }
 }
 
 extension Node {
-  init(_ string: String) {
+  public init(_ string: String) {
     factory = { string }
   }
 }
 
-class View: BaseComponent<NoProps> {
+public final class View: BaseComponent<NoProps> {
 }
 
-class Label: BaseComponent<Label.Props> {
-  struct Props: Equatable, Default {
-    let fontColor = UIColor.black
+public final class Label: BaseComponent<Label.Props> {
+  public struct Props: Equatable, Default {
+    let fontColor: UIColor
+
+    public init() {
+      fontColor = .black
+    }
+    
+    public init(fontColor: UIColor) {
+      self.fontColor = fontColor
+    }
   }
 }
 
-class Button: BaseComponent<Button.Props> {
-  struct Props: Equatable {
-    let backgroundColor = UIColor.white
-    let fontColor = UIColor.black
+public final class Button: BaseComponent<Button.Props> {
+  public struct Props: Equatable {
+    let backgroundColor: UIColor
+    let fontColor: UIColor
     let onPress: Unique<() -> ()>
+
+    public init(backgroundColor: UIColor = .white, fontColor: UIColor = .black,
+                onPress: Unique<() -> ()>) {
+      self.backgroundColor = backgroundColor
+      self.fontColor = fontColor
+      self.onPress = onPress
+    }
   }
 }
 
-protocol CompositeComponent {
+public protocol CompositeComponent {
   func render() -> Node
 }
 
-protocol StateType: Default & Equatable {
+public protocol StateType: Default & Equatable {
 }
 
-class StatefulComponent<Props: Equatable, State: StateType>: BaseComponent<Props> {
-  private(set) var state: State
+open class StatefulComponent<Props: Equatable, State: StateType>:
+BaseComponent<Props> {
+  public private(set) var state: State
 
-  required init(props: Props, children: [Node]) {
+  public required init(props: Props, children: [Node]) {
     state = State()
     super.init(props: props, children: children)
   }
 
-  func setState(setter: (inout State) -> ()) {
+  public func setState(setter: (inout State) -> ()) {
 
   }
 }
 
-typealias Component<P: Equatable, S: StateType> =
+public typealias Component<P: Equatable, S: StateType> =
   StatefulComponent<P, S> & CompositeComponent

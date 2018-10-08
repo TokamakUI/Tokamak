@@ -7,5 +7,5 @@
 
 import Foundation
 
-func render(node: Node, container: UIView) {
+public func render(node: Node, container: UIView) {
 }
