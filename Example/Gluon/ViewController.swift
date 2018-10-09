@@ -14,31 +14,26 @@ final class Counter: Component<NoProps, Counter.State> {
     var counter = 0
   }
 
-  func onPress() {
-    setState { $0.counter += 1 }
-  }
-
-  lazy var onPressHandler = { Unique { self.onPress() } }()
+  lazy var onPress = { Closure {
+    self.setState { $0.counter += 1 }
+  }}()
 
   func render() -> Node {
-    return View.node {
-      [Button.node(.init(onPress: onPressHandler)) { "Press me" },
+    return StackView.node {
+      [Button.node(.init(onPress: onPress)) { "Increment" },
        Label.node { Node("\(state.counter)") }]
     }
   }
 }
 
-
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
   override func viewDidLoad() {
       super.viewDidLoad()
-
-    render(node: Counter.node(), container: view)
   }
 
-  override func didReceiveMemoryWarning() {
-      super.didReceiveMemoryWarning()
-      // Dispose of any resources that can be recreated.
+  @IBAction func onTap(_ sender: Any) {
+    let counters = (0..<1_000_000).map { _ in Counter(props: NoProps(), children: []) }
+    print("\(counters.count) new components created")
   }
 }
 

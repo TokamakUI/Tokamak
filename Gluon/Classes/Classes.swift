@@ -11,6 +11,8 @@ public protocol Default {
   init()
 }
 
+public typealias Closure<T> = Unique<T>
+
 public struct Unique<T>: Equatable {
   private let uuid = UUID()
   private let boxed: T
@@ -91,7 +93,7 @@ extension Node {
   }
 }
 
-public final class View: BaseComponent<NoProps> {
+public final class StackView: BaseComponent<NoProps> {
 }
 
 public final class Label: BaseComponent<Label.Props> {
