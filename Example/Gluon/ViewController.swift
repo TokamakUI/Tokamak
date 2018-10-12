@@ -9,6 +9,25 @@
 import UIKit
 import Gluon
 
+struct TodoList: Store {
+  enum Action {
+    case add(String, Int)
+    case remove(Int)
+    case update(String, Int)
+  }
+
+  func apply(action: Action, to state: inout [String]) {
+    switch action {
+    case let .add(item, index):
+      state.insert(item, at: index)
+    case let .update(item, index):
+      state[index] = item
+    case let .remove(index):
+      state.remove(at: index)
+    }
+  }
+}
+
 final class Counter: Component<NoProps, Counter.State> {
   struct State: StateType {
     var counter = 0

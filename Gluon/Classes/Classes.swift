@@ -63,6 +63,9 @@ open class BaseComponent<Props: Equatable>: ComponentType {
   }
 }
 
+final class Fragment: BaseComponent<NoProps> {
+}
+
 extension BaseComponent where Props: Default {
   public static func node(childrenFactory: () -> [Node]) -> Node {
     return self.node(Props(), childrenFactory: childrenFactory)
@@ -90,6 +93,10 @@ extension Node: ExpressibleByStringLiteral {
 extension Node {
   public init(_ string: String) {
     factory = { string }
+  }
+
+  public init(_ nodes: [Node]) {
+    factory = { Fragment(props: NoProps(), children: nodes) }
   }
 }
 
