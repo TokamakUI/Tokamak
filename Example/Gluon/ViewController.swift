@@ -16,7 +16,9 @@ struct TodoList: Store {
     case update(String, Int)
   }
 
-  func apply(action: Action, to state: inout [String]) {
+  var state = [String]()
+
+  mutating func apply(action: Action) {
     switch action {
     case let .add(item, index):
       state.insert(item, at: index)

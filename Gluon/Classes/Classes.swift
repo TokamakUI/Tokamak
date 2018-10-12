@@ -15,7 +15,7 @@ public typealias Closure<T> = Unique<T>
 
 public struct Unique<T>: Equatable {
   private let uuid = UUID()
-  private let boxed: T
+  let boxed: T
 
   public init(_ boxed: T) {
     self.boxed = boxed
