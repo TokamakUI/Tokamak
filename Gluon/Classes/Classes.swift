@@ -105,13 +105,13 @@ public final class StackView: BaseComponent<NoProps> {
 
 public final class Label: BaseComponent<Label.Props> {
   public struct Props: Equatable, Default {
-    let fontColor: UIColor
+    let fontColor: Color
 
     public init() {
       fontColor = .black
     }
     
-    public init(fontColor: UIColor) {
+    public init(fontColor: Color) {
       self.fontColor = fontColor
     }
   }
@@ -119,11 +119,11 @@ public final class Label: BaseComponent<Label.Props> {
 
 public final class Button: BaseComponent<Button.Props> {
   public struct Props: Equatable {
-    let backgroundColor: UIColor
-    let fontColor: UIColor
+    let backgroundColor: Color
+    let fontColor: Color
     let onPress: Unique<() -> ()>
 
-    public init(backgroundColor: UIColor = .white, fontColor: UIColor = .black,
+    public init(backgroundColor: Color = .white, fontColor: Color = .black,
                 onPress: Unique<() -> ()>) {
       self.backgroundColor = backgroundColor
       self.fontColor = fontColor

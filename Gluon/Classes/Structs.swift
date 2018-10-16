@@ -82,8 +82,8 @@ private struct Button: ComponentType {
   var children: [Node]
 
   struct Props: Equatable {
-    let backgroundColor = UIColor.white
-    let fontColor = UIColor.black
+    let backgroundColor = Color.white
+    let fontColor = Color.black
     let onPress: Unique<() -> ()>
   }
 }
