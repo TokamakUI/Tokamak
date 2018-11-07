@@ -13,27 +13,11 @@ public protocol Default {
 
 public typealias Closure<T> = Unique<T>
 
-public struct Unique<T>: Equatable {
-  private let uuid = UUID()
-  let boxed: T
-
-  public init(_ boxed: T) {
-    self.boxed = boxed
-  }
-
-  public static func == (lhs: Unique<T>, rhs: Unique<T>) -> Bool {
-    return lhs.uuid == rhs.uuid
-  }
-}
-
 public struct NoProps: Equatable, Default {
   public init() {}
 }
 
 protocol ComponentType {
-}
-
-extension String: ComponentType {
 }
 
 open class BaseComponent<Props: Equatable>: ComponentType {
@@ -61,6 +45,9 @@ open class BaseComponent<Props: Equatable>: ComponentType {
   public static func node(_ props: Props) -> Node {
     return Node { self.init(props: props, children: []) }
   }
+}
+
+extension String: ComponentType {
 }
 
 final class Fragment: BaseComponent<NoProps> {

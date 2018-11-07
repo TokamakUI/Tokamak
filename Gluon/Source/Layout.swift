@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class Constraint: BaseComponent<Constraint.Props> {
+public struct Constraint: BaseComponent {
   enum Target {
     case next
     case container
@@ -88,38 +88,36 @@ public final class Constraint: BaseComponent<Constraint.Props> {
     }
   }
 
-  struct Props: Equatable {
-    let baseline: VerticalLocation?
-    let bottom: VerticalLocation?
-    let center: Center?
-    let centerX: HorizontalLocation?
-    let centerY: VerticalLocation?
-    let height: Size?
-    let left: HorizontalLocation?
-    let right: HorizontalLocation?
-    let top: VerticalLocation?
-    let width: Size?
+  let baseline: VerticalLocation?
+  let bottom: VerticalLocation?
+  let center: Center?
+  let centerX: HorizontalLocation?
+  let centerY: VerticalLocation?
+  let height: Size?
+  let left: HorizontalLocation?
+  let right: HorizontalLocation?
+  let top: VerticalLocation?
+  let width: Size?
 
-    init(baseline: VerticalLocation? = nil,
-         bottom: VerticalLocation? = nil,
-         center: Center? = nil,
-         centerX: HorizontalLocation? = nil,
-         centerY: VerticalLocation? = nil,
-         height: Size? = nil,
-         left: HorizontalLocation? = nil,
-         right: HorizontalLocation? = nil,
-         top: VerticalLocation? = nil,
-         width: Size? = nil) {
-      self.width = width
-      self.height = height
-      self.centerX = centerX
-      self.centerY = centerY
-      self.center = center
-      self.baseline = baseline
-      self.top = top
-      self.bottom = bottom
-      self.left = left
-      self.right = right
-    }
+  init(baseline: VerticalLocation? = nil,
+       bottom: VerticalLocation? = nil,
+       center: Center? = nil,
+       centerX: HorizontalLocation? = nil,
+       centerY: VerticalLocation? = nil,
+       height: Size? = nil,
+       left: HorizontalLocation? = nil,
+       right: HorizontalLocation? = nil,
+       top: VerticalLocation? = nil,
+       width: Size? = nil) {
+    self.width = width
+    self.height = height
+    self.centerX = centerX
+    self.centerY = centerY
+    self.center = center
+    self.baseline = baseline
+    self.top = top
+    self.bottom = bottom
+    self.left = left
+    self.right = right
   }
 }

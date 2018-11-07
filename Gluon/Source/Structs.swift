@@ -7,20 +7,6 @@
 
 import Foundation
 
-struct AnyEquatable: Equatable {
-  let value: Any
-  private let equals: (Any) -> Bool
-
-  public init<E: Equatable>(_ value: E) {
-    self.value = value
-    self.equals = { ($0 as? E) == value }
-  }
-
-  public static func == (lhs: AnyEquatable, rhs: AnyEquatable) -> Bool {
-    return lhs.equals(rhs.value) || rhs.equals(lhs.value)
-  }
-}
-
 private protocol BaseComponentType {
   var children: [Node] { get }
 
