@@ -7,15 +7,50 @@
 
 import Foundation
 
-private protocol BaseComponentType {
+protocol BaseComponent {
+}
+
+protocol Component {
+  associatedtype Props: Equatable
+  associatedtype Children: Equatable
+
+  static func render(_ props: Props, _ children: Children)
+}
+
+protocol LeafComponent: Component where Children == NoProps {
+  static func render(_ props: Props)
+}
+
+extension LeafComponent {
+  static func render(_ props: Props, _ children: NoProps) {
+    render(props)
+  }
+}
+
+struct Hooks {
+  func state<T>(_ initial: T,
+                id: String = "\(#file)\(#line)") -> (T, (T) -> ()) {
+    return (initial, { _ in })
+  }
+}
+
+private let _hooks = Hooks()
+
+extension Component {
+  var hooks: Hooks {
+    return _hooks
+  }
+}
+
+protocol BaseComponentType {
   var children: [Node] { get }
 
   init?(props: AnyEquatable, children: [Node])
 }
 
-private struct Node: Equatable {
-  // FIXME: is compiler not being able to derive `Equatable` for this a bug?
-  static func == (lhs: Node, rhs: Node) -> Bool {
+public struct Node: Equatable {
+  /// Equatable can't be automatically derived for recursive types
+  public static func == (lhs: Node, rhs: Node) -> Bool {
     return lhs.type == rhs.type &&
       lhs.children == rhs.children &&
       lhs.props == rhs.props

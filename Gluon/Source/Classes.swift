@@ -7,15 +7,7 @@
 
 import Foundation
 
-public protocol Default {
-  init()
-}
-
 public typealias Closure<T> = Unique<T>
-
-public struct NoProps: Equatable, Default {
-  public init() {}
-}
 
 protocol ComponentType {
 }
