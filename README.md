@@ -1,6 +1,6 @@
 # Gluon
 
-[![CI Status](https://img.shields.io/travis/MaxDesiatov/Gluon.svg?style=flat)](https://travis-ci.org/Max Desiatov/Gluon)
+[![CI Status](https://img.shields.io/travis/MaxDesiatov/Gluon.svg?style=flat)](https://travis-ci.org/MaxDesiatov/Gluon)
 [![Version](https://img.shields.io/cocoapods/v/Gluon.svg?style=flat)](https://cocoapods.org/pods/Gluon)
 [![License](https://img.shields.io/cocoapods/l/Gluon.svg?style=flat)](https://cocoapods.org/pods/Gluon)
 [![Platform](https://img.shields.io/cocoapods/p/Gluon.svg?style=flat)](https://cocoapods.org/pods/Gluon)
