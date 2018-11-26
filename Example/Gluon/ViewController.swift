@@ -29,23 +29,20 @@ import Gluon
 //    }
 //  }
 //}
-//
-//final class Counter: Component<NoProps, Counter.State> {
-//  struct State: StateType {
-//    var counter = 0
-//  }
-//
-//  lazy var onPress = { Closure {
-//    self.setState { $0.counter += 1 }
-//  }}()
-//
-//  func render() -> Node {
-//    return StackView.node {
-//      [Button.node(.init(onPress: onPress)) { "Increment" },
-//       Label.node { Node("\(state.counter)") }]
-//    }
-//  }
-//}
+
+struct Counter: LeafComponent {
+  static func render(props: NoProps) -> Node {
+    let (count, setCount) = hooks.state(0)
+
+    let onPress = Handler {
+      setCount(count + 1)
+    }
+
+    return StackView.node(NoProps(),
+      [Button.node(.init(onPress: onPress), "Increment"),
+       Label.node(NoProps(), "\(count)")])
+  }
+}
 
 final class ViewController: UIViewController {
   override func viewDidLoad() {

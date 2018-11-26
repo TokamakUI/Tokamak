@@ -7,6 +7,8 @@
 
 import Foundation
 
+public typealias Handler<T> = Unique<(T) -> ()>
+
 public struct Unique<T>: Equatable {
   private let uuid = UUID()
   let boxed: T

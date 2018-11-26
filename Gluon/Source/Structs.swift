@@ -7,28 +7,40 @@
 
 import Foundation
 
-protocol BaseComponent {
+/// Type-erased version of Component to work around
+/// the lack of generalized existentials in Swift
+public protocol _Component {
 }
 
-protocol Component {
+/// You should never directly conform to this protocol, use `HostComponent`
+/// for host components and `Component` for composite components.
+public protocol BaseComponent: _Component {
   associatedtype Props: Equatable
   associatedtype Children: Equatable
 
-  static func render(_ props: Props, _ children: Children)
+  var children: Children { get }
+  var props: Props { get }
 }
 
-protocol LeafComponent: Component where Children == NoProps {
-  static func render(_ props: Props)
+public protocol Component: _Component {
+  associatedtype Props: Equatable
+  associatedtype Children: Equatable
+
+  static func render(props: Props, children: Children)
+}
+
+public protocol LeafComponent: Component where Children == NoProps {
+  static func render(props: Props)
 }
 
 extension LeafComponent {
-  static func render(_ props: Props, _ children: NoProps) {
-    render(props)
+  static func render(props: Props, children: NoProps) {
+    render(props: props)
   }
 }
 
-struct Hooks {
-  func state<T>(_ initial: T,
+public struct Hooks {
+  public func state<T>(_ initial: T,
                 id: String = "\(#file)\(#line)") -> (T, (T) -> ()) {
     return (initial, { _ in })
   }
@@ -37,15 +49,9 @@ struct Hooks {
 private let _hooks = Hooks()
 
 extension Component {
-  var hooks: Hooks {
+  public static var hooks: Hooks {
     return _hooks
   }
-}
-
-protocol BaseComponentType {
-  var children: [Node] { get }
-
-  init?(props: AnyEquatable, children: [Node])
 }
 
 public struct Node: Equatable {
@@ -58,8 +64,68 @@ public struct Node: Equatable {
 
   let props: AnyEquatable
   let children: [Node]
-  let type: BaseComponentType.Type
+  let type: _Component.Type
 }
+
+public protocol Child {
+
+}
+
+extension BaseComponent {
+//  init?(props: AnyEquatable, children: [Node]) {
+//    guard let props = props.value as? Props else {
+//      return nil
+//    }
+//
+//    self.init(props: props, children: children)
+//  }
+
+  public static func node(_ props: Props, _ children: Children) -> Node {
+    return Node(props: AnyEquatable(props), children: children, type: self.self)
+  }
+}
+
+public struct View: BaseComponent {
+  public let props: Props
+  public let children: [Node]
+
+  public struct Props: Equatable {
+  }
+}
+
+public struct Label: BaseComponent {
+  public let props: Props
+  public let children: [Node]
+
+  public struct Props: Equatable {
+  }
+}
+
+public struct Button: BaseComponent {
+  public let props: Props
+  public let children: String
+
+  public struct Props: Equatable {
+    let backgroundColor: Color
+    let fontColor: Color
+    let onPress: Handler<()>
+
+    public init(backgroundColor: Color = .white,
+                fontColor: Color = .black,
+                onPress: Handler<()>) {
+      self.backgroundColor = backgroundColor
+      self.fontColor = fontColor
+      self.onPress = onPress
+    }
+  }
+}
+
+public struct StackView: BaseComponent {
+  public let props: NoProps
+  public let children: [Node]
+}
+
+// MARK: Legacy
 
 private protocol ComponentType: BaseComponentType {
   associatedtype Props: Equatable
@@ -68,45 +134,10 @@ private protocol ComponentType: BaseComponentType {
   init(props: Props, children: [Node])
 }
 
-extension ComponentType {
-  init?(props: AnyEquatable, children: [Node]) {
-    guard let props = props.value as? Props else {
-      return nil
-    }
+private protocol BaseComponentType {
+  var children: [Node] { get }
 
-    self.init(props: props, children: children)
-  }
-
-  static func node(props: Props, children: () -> [Node]) -> Node {
-    return Node(props: AnyEquatable(props), children: children(), type: self.self)
-  }
-}
-
-private struct View: ComponentType {
-  var props: Props
-  var children: [Node]
-
-  struct Props: Equatable {
-  }
-}
-
-private struct Label: ComponentType {
-  var props: Props
-  var children: [Node]
-
-  struct Props: Equatable {
-  }
-}
-
-private struct Button: ComponentType {
-  var props: Props
-  var children: [Node]
-
-  struct Props: Equatable {
-    let backgroundColor = Color.white
-    let fontColor = Color.black
-    let onPress: Unique<() -> ()>
-  }
+  init?(props: AnyEquatable, children: [Node])
 }
 
 private protocol StatefulComponent: ComponentType {
@@ -140,23 +171,23 @@ extension StatefulComponent {
 //    all components then?
 // 4. Could ability to have stored properties in extensions make this any
 //    better?
-private struct Test: StatefulComponent {
-  struct Props: Equatable {
-  }
-  var props: Props
-
-  struct State: Default {
-    var counter = 0
-  }
-  var state: State
-  var children: [Node]
-
-  func onPress() {
-    setState { $0.counter += 1 }
-  }
-
-  // getting an error "Closure cannot implicitly capture a mutating self parameter"
-  // if this is uncommented
+//private struct Test: StatefulComponent {
+//  struct Props: Equatable {
+//  }
+//  var props: Props
+//
+//  struct State: Default {
+//    var counter = 0
+//  }
+//  var state: State
+//  var children: [Node]
+//
+//  func onPress() {
+//    setState { $0.counter += 1 }
+//  }
+//
+// getting an error "Closure cannot implicitly capture a mutating self parameter"
+// if this is uncommented
 //  lazy var onPressHandler = { Unique { onPress() } }()
 //
 //  override func render() -> AnyNode {
@@ -167,4 +198,4 @@ private struct Test: StatefulComponent {
 //      ]
 //    })
 //  }
-}
+//}

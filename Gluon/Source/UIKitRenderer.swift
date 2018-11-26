@@ -7,5 +7,21 @@
 
 import Foundation
 
+protocol Renderer {
+
+}
+
+protocol Reconciler {
+
+}
+
+protocol UIKitBaseComponent {
+
+}
+
+class UIKitRenderer {
+
+}
+
 public func render(node: Node, container: UIView) {
 }
