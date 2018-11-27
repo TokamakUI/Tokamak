@@ -1,27 +1,16 @@
 PODS:
   - Gluon (0.1.0)
-  - Nimble (7.3.1)
-  - Quick (1.3.2)
 
 DEPENDENCIES:
   - Gluon (from `../`)
-  - Nimble (~> 7.3.0)
-  - Quick (~> 1.3.1)
-
-SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - Nimble
-    - Quick
 
 EXTERNAL SOURCES:
   Gluon:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Gluon: ca6375837dbef323da65f89cf658903f2fec7ac6
-  Nimble: 04f732da099ea4d153122aec8c2a88fd0c7219ae
-  Quick: 2623cb30d7a7f41ca62f684f679586558f483d46
+  Gluon: 64d89b9a383e0e5d570bd66cba1e5537ece85454
 
-PODFILE CHECKSUM: f62d67b72e773ef80ecf48f4a455fa18e5820389
+PODFILE CHECKSUM: cc59d174d17ab62ebcc753b893ddecc8b72783bd
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.0.beta.2

@@ -12,8 +12,7 @@
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
-		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
-		B317BD2F1AD18A7F514CA335 /* Pods_Gluon_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1B4A8D80770145FDAFEAE64 /* Pods_Gluon_Tests.framework */; };
+		D1E6BCD221AD4CD6002769E3 /* GluonTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6BCD121AD4CD6002769E3 /* GluonTest.swift */; };
 		E5226F2FEFBADF8F2E0F0846 /* Pods_Gluon_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F369EAC5434B4E52EB412B5 /* Pods_Gluon_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,12 +39,10 @@
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* Gluon_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Gluon_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		8CADEBB8BFF6F2621CA49E8F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		B56CFE53515A8A8E073D5254 /* Pods-Gluon_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gluon_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Gluon_Tests/Pods-Gluon_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		C1B4A8D80770145FDAFEAE64 /* Pods_Gluon_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gluon_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6DA99382B6892EAB361742F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		DB9D7B418828F169C47C3FBE /* Pods-Gluon_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gluon_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Gluon_Tests/Pods-Gluon_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		D1E6BCD121AD4CD6002769E3 /* GluonTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonTest.swift; sourceTree = "<group>"; };
 		E7F808D1B3715FF294877289 /* Pods-Gluon_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gluon_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Gluon_Example/Pods-Gluon_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,7 +59,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B317BD2F1AD18A7F514CA335 /* Pods_Gluon_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,7 +113,7 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				607FACEB1AFB9204008FA782 /* Tests.swift */,
+				D1E6BCD121AD4CD6002769E3 /* GluonTest.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -155,8 +151,6 @@
 			children = (
 				2EACD4D4A09D2A5A83D8CCFC /* Pods-Gluon_Example.debug.xcconfig */,
 				E7F808D1B3715FF294877289 /* Pods-Gluon_Example.release.xcconfig */,
-				B56CFE53515A8A8E073D5254 /* Pods-Gluon_Tests.debug.xcconfig */,
-				DB9D7B418828F169C47C3FBE /* Pods-Gluon_Tests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -187,11 +181,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Gluon_Tests" */;
 			buildPhases = (
-				44ABDF39F9E0937D840CB472 /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
-				0564A6482241840A1B781F41 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -221,7 +213,7 @@
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = H4Z9Z4RD2G;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1010;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
 				};
@@ -266,33 +258,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0564A6482241840A1B781F41 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Gluon_Tests/Pods-Gluon_Tests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
-				"${BUILT_PRODUCTS_DIR}/Quick/Quick.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nimble.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Quick.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Gluon_Tests/Pods-Gluon_Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		2132F5AA09233E3565154DB1 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Gluon_Example/Pods-Gluon_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Gluon_Example/Pods-Gluon_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Gluon/Gluon.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -301,25 +273,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Gluon_Example/Pods-Gluon_Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		44ABDF39F9E0937D840CB472 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Gluon_Tests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Gluon_Example/Pods-Gluon_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EC5FD3EFB14C0031402120B7 /* [CP] Check Pods Manifest.lock */ = {
@@ -356,7 +310,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
+				D1E6BCD221AD4CD6002769E3 /* GluonTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,8 +479,8 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B56CFE53515A8A8E073D5254 /* Pods-Gluon_Tests.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = H4Z9Z4RD2G;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -540,6 +494,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Gluon_Example.app/Gluon_Example";
 			};
@@ -547,8 +502,8 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB9D7B418828F169C47C3FBE /* Pods-Gluon_Tests.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = H4Z9Z4RD2G;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

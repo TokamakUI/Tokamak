@@ -14,7 +14,7 @@ protocol Renderer {
 }
 
 protocol Reconciler {
-
+  func reconcile(node: Node)
 }
 
 protocol RendererBaseComponent {
@@ -22,6 +22,13 @@ protocol RendererBaseComponent {
 }
 
 protocol UIKitBaseComponent: RendererBaseComponent {
+}
+
+struct StackReconciler: Reconciler {
+  
+
+  func reconcile(node: Node) {
+  }
 }
 
 class UIKitRenderer {
