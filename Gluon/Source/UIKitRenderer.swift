@@ -8,15 +8,20 @@
 import Foundation
 
 protocol Renderer {
-
+  func mountTarget(to parent: Any, with component: RendererBaseComponent) -> Any
+  func update(target: Any, with component: RendererBaseComponent)
+  func umount(target: Any, from parent: Any, with component: RendererBaseComponent)
 }
 
 protocol Reconciler {
 
 }
 
-protocol UIKitBaseComponent {
+protocol RendererBaseComponent {
 
+}
+
+protocol UIKitBaseComponent: RendererBaseComponent {
 }
 
 class UIKitRenderer {

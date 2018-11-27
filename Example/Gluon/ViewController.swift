@@ -31,6 +31,8 @@ import Gluon
 //}
 
 struct Counter: LeafComponent {
+  typealias Props = NoProps
+
   static func render(props: NoProps) -> Node {
     let (count, setCount) = hooks.state(0)
 
