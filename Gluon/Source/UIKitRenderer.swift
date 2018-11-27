@@ -31,7 +31,7 @@ struct StackReconciler: Reconciler {
   }
 }
 
-class UIKitRenderer {
+struct UIKitRenderer {
 
 }
 
