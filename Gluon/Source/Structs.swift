@@ -51,21 +51,6 @@ public extension LeafComponent {
   }
 }
 
-public struct Hooks {
-  public func state<T>(_ initial: T,
-                id: String = "\(#file)\(#line)") -> (T, (T) -> ()) {
-    return (initial, { _ in })
-  }
-}
-
-private let _hooks = Hooks()
-
-extension Component {
-  public static var hooks: Hooks {
-    return _hooks
-  }
-}
-
 public struct Node: Equatable {
   /// Equatable can't be automatically derived for `type` property?
   public static func == (lhs: Node, rhs: Node) -> Bool {

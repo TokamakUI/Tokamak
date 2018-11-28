@@ -13,22 +13,11 @@ protocol Renderer {
   func umount(target: Any, from parent: Any, with component: RendererBaseComponent)
 }
 
-protocol Reconciler {
-  func reconcile(node: Node)
-}
-
 protocol RendererBaseComponent {
 
 }
 
 protocol UIKitBaseComponent: RendererBaseComponent {
-}
-
-struct StackReconciler: Reconciler {
-  
-
-  func reconcile(node: Node) {
-  }
 }
 
 struct UIKitRenderer {
