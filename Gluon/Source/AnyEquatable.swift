@@ -6,7 +6,7 @@
 //
 
 
-struct AnyEquatable: Equatable {
+public struct AnyEquatable: Equatable {
   let value: Any
   private let equals: (Any) -> Bool
 

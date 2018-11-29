@@ -14,19 +14,15 @@ extension Never: Equatable {
   }
 }
 
-/// Type-erased version of Component to work around
-/// the lack of generalized existentials in Swift
-public protocol _Component {
-}
-
 /// Conforming to this protocol, but implementing support for these new types
 /// in a renderer would make that renderer skip unknown types of children.
 public protocol ChildrenType {
 }
 
-/// You should never directly conform to this protocol, use `HostComponent`
-/// for host components and `Component` for composite components.
-public protocol BaseComponent: _Component {
+public protocol AnyBaseComponent {
+}
+
+public protocol BaseComponent: AnyBaseComponent {
   associatedtype Props: Equatable
   associatedtype Children: ChildrenType & Equatable
 
@@ -34,20 +30,66 @@ public protocol BaseComponent: _Component {
   var props: Props { get }
 }
 
-public protocol Component: _Component {
+public protocol AnyCompositeComponent {
+  static func render(props: AnyEquatable, children: AnyEquatable) -> Node?
+}
+
+public protocol CompositeComponent: AnyCompositeComponent {
   associatedtype Props: Equatable
   associatedtype Children: Equatable
 
   static func render(props: Props, children: Children) -> Node
 }
 
-public protocol LeafComponent: Component where Children == Never {
+public extension CompositeComponent {
+  static func render(props: AnyEquatable, children: AnyEquatable) -> Node? {
+    guard let props = props as? Props,
+    let children = children as? Children else {
+      assertionFailure("""
+        incorrect types of `props` and `children` arguments passed to
+        `AnyComponent.render`
+      """)
+      return nil
+    }
+    return render(props: props, children: children)
+  }
+}
+
+public protocol LeafComponent: CompositeComponent where Children == Never {
   static func render(props: Props) -> Node
 }
 
 public extension LeafComponent {
   public static func render(props: Props, children: Children) -> Node {
     return render(props: props)
+  }
+}
+
+enum ComponentType: Equatable {
+  static func == (lhs: ComponentType, rhs: ComponentType) -> Bool {
+    switch (lhs, rhs) {
+    case let (.base(ltype), .base(rtype)):
+      return ltype == rtype
+    case let (.composite(ltype), .composite(rtype)):
+      return ltype == rtype
+    default:
+      return false
+    }
+  }
+
+  case base(AnyBaseComponent.Type)
+  case composite(AnyCompositeComponent.Type)
+
+  var composite: AnyCompositeComponent.Type? {
+    guard case let .composite(type) = self else { return nil }
+
+    return type
+  }
+
+  var base: AnyBaseComponent.Type? {
+    guard case let .base(type) = self else { return nil }
+
+    return type
   }
 }
 
@@ -63,7 +105,7 @@ public struct Node: Equatable {
   let key: String?
   let props: AnyEquatable
   let children: AnyEquatable
-  let type: _Component.Type
+  let type: ComponentType
 }
 
 extension BaseComponent {
@@ -73,7 +115,7 @@ extension BaseComponent {
     return Node(key: key,
                 props: AnyEquatable(props),
                 children: AnyEquatable(children),
-                type: self.self)
+                type: .base(self))
   }
 }
 
@@ -123,41 +165,6 @@ public struct Button: BaseComponent {
 public struct StackView: BaseComponent {
   public let props: NoProps
   public let children: [Node]
-}
-
-// MARK: Legacy
-
-private protocol ComponentType: BaseComponentType {
-  associatedtype Props: Equatable
-  var props: Props { get }
-
-  init(props: Props, children: [Node])
-}
-
-private protocol BaseComponentType {
-  var children: [Node] { get }
-
-  init?(props: AnyEquatable, children: [Node])
-}
-
-private protocol StatefulComponent: ComponentType {
-  associatedtype State: Default
-
-  var state: State { get }
-
-  init(props: Props, state: State, children: [Node])
-}
-
-extension StatefulComponent {
-  init(props: Props, children: [Node]) {
-    self.init(props: props, state: State(), children: children)
-  }
-}
-
-extension StatefulComponent {
-  func setState(setter: (inout State) -> ()) {
-
-  }
 }
 
 // well, this gets problematic:
