@@ -46,13 +46,12 @@ final class StackReconciler {
     }
   }
 
-  private func render(composite type: AnyCompositeComponent.Type,
-                      component: MountedCompositeComponent) -> Node? {
+  private func render(component: MountedCompositeComponent) -> Node? {
     _hooks.currentReconciler = self
     _hooks.currentComponent = component
 
-    let result = type.render(props: component.props,
-                             children: component.children)
+    let result = component.type.render(props: component.props,
+                                       children: component.children)
 
     _hooks.currentComponent = nil
     _hooks.currentReconciler = nil
@@ -62,19 +61,32 @@ final class StackReconciler {
 
   private func updateStateAndReconcile() {
     for (component, id, state) in queuedState {
-      guard let renderedNode = render(composite: component.type,
-                                      component: component) else {
+      component.state[id] = state
+
+      guard let node = render(component: component) else {
         assertionFailure("""
-          state update scheduled for a component that's not composite or
-          has props and children types that don't match
+          state update scheduled for a component with props and children types
+          that don't match
         """)
         continue
       }
-      component.state[id] = state
-      reconcile(node: component, with: renderedNode)
+
+      reconcile(component: component, with: node)
     }
   }
 
-  private func reconcile(node reference: MountedComponent, with node: Node) {
+  private func reconcile(component: MountedCompositeComponent,
+                         with node: Node) {
+    switch (component.mountedChild, node.type) {
+    case let (child, .composite(nodeType)) as (MountedCompositeComponent, ComponentType):
+      guard child.type == nodeType &&
+        child.props == node.props &&
+        child.children == node.children else {
+        // FIXME: continue?
+        return
+      }
+    default:
+      assertionFailure("unhandled case to reconcile")
+    }
   }
 }

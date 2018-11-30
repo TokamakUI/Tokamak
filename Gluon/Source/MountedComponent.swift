@@ -28,6 +28,7 @@ class MountedComponent {
 
 final class MountedCompositeComponent: MountedComponent {
   let type: AnyCompositeComponent.Type
+  var mountedChild: MountedComponent?
   var state = [Int: Any]()
 
   fileprivate init(_ node: Node, _ type: AnyCompositeComponent.Type) {
