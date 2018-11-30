@@ -31,7 +31,7 @@ final class MountedCompositeComponent: MountedComponent {
   var mountedChild: MountedComponent?
   var state = [Int: Any]()
 
-  fileprivate init(_ node: Node, _ type: AnyCompositeComponent.Type) {
+  init(_ node: Node, _ type: AnyCompositeComponent.Type) {
     self.type = type
 
     super.init(key: node.key, props: node.props, children: node.children)
@@ -42,7 +42,7 @@ final class MountedBaseComponent: MountedComponent {
   let type: AnyBaseComponent.Type
   var target: Any?
 
-  fileprivate init(_ node: Node, _ type: AnyBaseComponent.Type) {
+  init(_ node: Node, _ type: AnyBaseComponent.Type) {
     self.type = type
 
     super.init(key: node.key, props: node.props, children: node.children)

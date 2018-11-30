@@ -28,8 +28,11 @@ final class StackReconciler {
     rootTarget = target
 
     rootComponent = MountedComponent.make(node)
-    if let component = rootComponent as? MountedBaseComponent,
-    let type = component.type as? RendererBaseComponent.Type {
+    if let component = rootComponent as? MountedBaseComponent {
+      guard let type = component.type as? RendererBaseComponent.Type else {
+        assertionFailure("base component not supported by any renderer")
+        return
+      }
       component.target = renderer.mountTarget(to: target, with: type)
     }
   }
@@ -77,8 +80,19 @@ final class StackReconciler {
 
   private func reconcile(component: MountedCompositeComponent,
                          with node: Node) {
+    let parentTarget = rootTarget
+
     switch (component.mountedChild, node.type) {
-    case let (child, .composite(nodeType)) as (MountedCompositeComponent, ComponentType):
+    case let (nil, .base(type)):
+      guard let type = type as? RendererBaseComponent.Type else {
+        assertionFailure("base component not supported by any renderer")
+        return
+      }
+      let newChild = MountedBaseComponent(node, type)
+      renderer.mountTarget(to: parentTarget, with: component)
+
+    case let (child, .composite(nodeType))
+    as (MountedCompositeComponent, ComponentType):
       guard child.type == nodeType &&
         child.props == node.props &&
         child.children == node.children else {
