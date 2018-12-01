@@ -27,14 +27,22 @@ final class StackReconciler {
     self.renderer = renderer
     rootTarget = target
 
-    rootComponent = MountedComponent.make(node)
-    switch rootComponent {
-    case let component as MountedBaseComponent:
-      component.target = renderer.mountTarget(to: target, with: component.type)
-    case let component as MountedCompositeComponent:
-      ()
-    default:
-      assertionFailure("unknown subclass of MountedComponent")
+    switch node.type {
+    case let .base(type):
+      let target = renderer.mountTarget(to: rootTarget,
+                                        with: type,
+                                        props: node.props,
+                                        children: node.children)
+
+      rootComponent = MountedBaseComponent(node, type, target)
+    case let .composite(type):
+      let component = MountedCompositeComponent(node, type)
+
+      rootComponent = component
+
+      let renderedNode = render(component: component)
+      reconcile(component: component, with: renderedNode)
+
     }
   }
 
@@ -50,7 +58,7 @@ final class StackReconciler {
     }
   }
 
-  private func render(component: MountedCompositeComponent) -> Node? {
+  private func render(component: MountedCompositeComponent) -> Node {
     _hooks.currentReconciler = self
     _hooks.currentComponent = component
 
@@ -67,15 +75,7 @@ final class StackReconciler {
     for (component, id, state) in queuedState {
       component.state[id] = state
 
-      guard let node = render(component: component) else {
-        assertionFailure("""
-          state update scheduled for a component with props and children types
-          that don't match
-        """)
-        continue
-      }
-
-      reconcile(component: component, with: node)
+      reconcile(component: component, with: render(component: component))
     }
   }
 
@@ -83,21 +83,34 @@ final class StackReconciler {
                          with node: Node) {
     let parentTarget = rootTarget
 
-    switch (component.mountedChild, node.type) {
-    case let (nil, .base(type)):
-      let newChild = MountedBaseComponent(node, type)
-      renderer.mountTarget(to: parentTarget, with: type)
-
-    case let (child, .composite(nodeType))
-    as (MountedCompositeComponent, ComponentType):
-      guard child.type == nodeType &&
-        child.props == node.props &&
-        child.children == node.children else {
-        // FIXME: continue?
-        return
+    for child in component.mountedChildren {
+      switch (child, node.type) {
+      case let (nil, .base(type)):
+        ()
+      case let (child, .composite(nodeType))
+      as (MountedCompositeComponent, ComponentType):
+        guard child.type == nodeType &&
+          child.props == node.props &&
+          child.children == node.children else {
+          // FIXME: continue?
+          return
+        }
+      default:
+        assertionFailure("unhandled case to reconcile")
       }
-    default:
-      assertionFailure("unhandled case to reconcile")
+    }
+
+    if component.mountedChildren.isEmpty {
+      switch node.type {
+      case let .base(type):
+        let target = renderer.mountTarget(to: parentTarget,
+                                          with: type,
+                                          props: node.props,
+                                          children: node.children)
+        component.mountedChildren.append(MountedBaseComponent(node, type, target))
+      case let .composite(type):
+        ()
+      }
     }
   }
 }

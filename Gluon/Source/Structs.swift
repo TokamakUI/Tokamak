@@ -25,13 +25,11 @@ public protocol AnyBaseComponent {
 public protocol BaseComponent: AnyBaseComponent {
   associatedtype Props: Equatable
   associatedtype Children: ChildrenType & Equatable
-
-  var children: Children { get }
-  var props: Props { get }
 }
 
+// FIXME: this protocol shouldn't be public, but is there a good workaround?
 public protocol AnyCompositeComponent {
-  static func render(props: AnyEquatable, children: AnyEquatable) -> Node?
+  static func render(props: AnyEquatable, children: AnyEquatable) -> Node
 }
 
 public protocol CompositeComponent: AnyCompositeComponent {
@@ -41,15 +39,16 @@ public protocol CompositeComponent: AnyCompositeComponent {
   static func render(props: Props, children: Children) -> Node
 }
 
+// FIXME: this extension shouldn't be private too, but
+/// `public protocol AnyCompositeComponent` requires this to stay public
 public extension CompositeComponent {
-  static func render(props: AnyEquatable, children: AnyEquatable) -> Node? {
+  static func render(props: AnyEquatable, children: AnyEquatable) -> Node {
     guard let props = props as? Props,
     let children = children as? Children else {
-      assertionFailure("""
+      fatalError("""
         incorrect types of `props` and `children` arguments passed to
         `AnyComponent.render`
       """)
-      return nil
     }
     return render(props: props, children: children)
   }
@@ -104,32 +103,32 @@ public struct View: BaseComponent {
 }
 
 public struct Label: BaseComponent {
-  public let props: Null
-  public let children: String
+  public typealias Props = Null
+  public typealias Children = String
 }
 
-public struct Button: BaseComponent {
-  public let props: Props
-  public let children: String
+public struct ButtonProps: Equatable {
+  let backgroundColor: Color
+  let fontColor: Color
+  let onPress: Handler<()>
 
-  public struct Props: Equatable {
-    let backgroundColor: Color
-    let fontColor: Color
-    let onPress: Handler<()>
-
-    public init(backgroundColor: Color = .white,
-                fontColor: Color = .black,
-                onPress: Handler<()>) {
-      self.backgroundColor = backgroundColor
-      self.fontColor = fontColor
-      self.onPress = onPress
-    }
+  public init(backgroundColor: Color = .white,
+              fontColor: Color = .black,
+              onPress: Handler<()>) {
+    self.backgroundColor = backgroundColor
+    self.fontColor = fontColor
+    self.onPress = onPress
   }
 }
 
+public struct Button: BaseComponent {
+  public typealias Props = ButtonProps
+  public typealias Children = String
+}
+
 public struct StackView: BaseComponent {
-  public let props: Null
-  public let children: [Node]
+  public typealias Props = Null
+  public typealias Children = [Node]
 }
 
 // well, this gets problematic:

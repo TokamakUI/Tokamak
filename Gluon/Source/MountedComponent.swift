@@ -9,6 +9,7 @@ class MountedComponent {
   let key: String?
   let props: AnyEquatable
   let children: AnyEquatable
+  var mountedChildren = [MountedComponent]()
 
   fileprivate init(key: String?, props: AnyEquatable, children: AnyEquatable) {
     self.key = key
@@ -16,19 +17,18 @@ class MountedComponent {
     self.children = children
   }
 
-  static func make(_ node: Node) -> MountedComponent {
-    switch node.type {
-    case let .composite(type):
-      return MountedCompositeComponent(node, type)
-    case let .base(type):
-      return MountedBaseComponent(node, type)
-    }
-  }
+//  static func make(_ node: Node) -> MountedComponent {
+//    switch node.type {
+//    case let .composite(type):
+//      return MountedCompositeComponent(node, type)
+//    case let .base(type):
+//      return MountedBaseComponent(node, type)
+//    }
+//  }
 }
 
 final class MountedCompositeComponent: MountedComponent {
   let type: AnyCompositeComponent.Type
-  var mountedChild: MountedComponent?
   var state = [Int: Any]()
 
   init(_ node: Node, _ type: AnyCompositeComponent.Type) {
@@ -40,10 +40,11 @@ final class MountedCompositeComponent: MountedComponent {
 
 final class MountedBaseComponent: MountedComponent {
   let type: AnyBaseComponent.Type
-  var target: Any?
+  let target: Any
 
-  init(_ node: Node, _ type: AnyBaseComponent.Type) {
+  init(_ node: Node, _ type: AnyBaseComponent.Type, _ target: Any) {
     self.type = type
+    self.target = target
 
     super.init(key: node.key, props: node.props, children: node.children)
   }

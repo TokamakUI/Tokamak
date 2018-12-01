@@ -7,17 +7,14 @@
 
 import Foundation
 
-public struct Constraint: BaseComponent {
-  public let props: Props
-  public let children: [Node]
-
-  enum Target {
+public struct ConstraintProps: Equatable {
+  public enum Target {
     case next
     case container
     case own
   }
 
-  struct HorizontalLocation: Equatable {
+  public struct HorizontalLocation: Equatable {
     enum Attribute {
       case left
       case right
@@ -36,7 +33,7 @@ public struct Constraint: BaseComponent {
     }
   }
 
-  struct VerticalLocation: Equatable {
+  public struct VerticalLocation: Equatable {
     enum Attribute {
       case top
       case bottom
@@ -56,12 +53,12 @@ public struct Constraint: BaseComponent {
     }
   }
 
-  enum CenterTarget {
+  public enum CenterTarget {
     case next
     case container
   }
 
-  struct Center: Equatable {
+  public struct Center: Equatable {
     let target: CenterTarget
 
     static func equal(to target: CenterTarget) -> Center {
@@ -69,7 +66,7 @@ public struct Constraint: BaseComponent {
     }
   }
 
-  struct Size: Equatable {
+  public struct Size: Equatable {
     enum Attribute {
       case width
       case height
@@ -91,38 +88,43 @@ public struct Constraint: BaseComponent {
     }
   }
 
-  public struct Props: Equatable {
-    let baseline: VerticalLocation?
-    let bottom: VerticalLocation?
-    let center: Center?
-    let centerX: HorizontalLocation?
-    let centerY: VerticalLocation?
-    let height: Size?
-    let left: HorizontalLocation?
-    let right: HorizontalLocation?
-    let top: VerticalLocation?
-    let width: Size?
+  public let baseline: VerticalLocation?
+  public let bottom: VerticalLocation?
+  public let center: Center?
+  public let centerX: HorizontalLocation?
+  public let centerY: VerticalLocation?
+  public let height: Size?
+  public let left: HorizontalLocation?
+  public let right: HorizontalLocation?
+  public let top: VerticalLocation?
+  public let width: Size?
 
-    init(baseline: VerticalLocation? = nil,
-         bottom: VerticalLocation? = nil,
-         center: Center? = nil,
-         centerX: HorizontalLocation? = nil,
-         centerY: VerticalLocation? = nil,
-         height: Size? = nil,
-         left: HorizontalLocation? = nil,
-         right: HorizontalLocation? = nil,
-         top: VerticalLocation? = nil,
-         width: Size? = nil) {
-      self.width = width
-      self.height = height
-      self.centerX = centerX
-      self.centerY = centerY
-      self.center = center
-      self.baseline = baseline
-      self.top = top
-      self.bottom = bottom
-      self.left = left
-      self.right = right
-    }
+  public init(baseline: VerticalLocation? = nil,
+       bottom: VerticalLocation? = nil,
+       center: Center? = nil,
+       centerX: HorizontalLocation? = nil,
+       centerY: VerticalLocation? = nil,
+       height: Size? = nil,
+       left: HorizontalLocation? = nil,
+       right: HorizontalLocation? = nil,
+       top: VerticalLocation? = nil,
+       width: Size? = nil) {
+    self.width = width
+    self.height = height
+    self.centerX = centerX
+    self.centerY = centerY
+    self.center = center
+    self.baseline = baseline
+    self.top = top
+    self.bottom = bottom
+    self.left = left
+    self.right = right
   }
+}
+
+public struct Constraint: BaseComponent {
+  public typealias Props = ConstraintProps
+  public typealias Children = [Node]
+
+
 }
