@@ -14,11 +14,6 @@ extension Never: Equatable {
   }
 }
 
-/// Conforming to this protocol, but implementing support for these new types
-/// in a renderer would make that renderer skip unknown types of children.
-public protocol ChildrenType {
-}
-
 public protocol AnyBaseComponent {
 }
 
@@ -34,7 +29,7 @@ public protocol AnyCompositeComponent {
 
 public protocol CompositeComponent: AnyCompositeComponent {
   associatedtype Props: Equatable
-  associatedtype Children: Equatable
+  associatedtype Children: ChildrenType & Equatable
 
   static func render(props: Props, children: Children) -> Node
 }
@@ -130,43 +125,3 @@ public struct StackView: BaseComponent {
   public typealias Props = Null
   public typealias Children = [Node]
 }
-
-// well, this gets problematic:
-// 1. `props` needs to be `var` for renderer to update them from node updates,
-//    but this means `StatefulComponent` implementor is compelled to modify
-//    `props` directly
-// 2. Same for `state`, but how would you even implement `setState` if there's
-//    no dependency injection point for a renderer?
-// 3. Maybe `getState` and `setState` could be closures that are assigned by
-//    the renderer? How does a renderer set up a heterogenous state store for
-//    all components then?
-// 4. Could ability to have stored properties in extensions make this any
-//    better?
-//private struct Test: StatefulComponent {
-//  struct Props: Equatable {
-//  }
-//  var props: Props
-//
-//  struct State: Default {
-//    var counter = 0
-//  }
-//  var state: State
-//  var children: [Node]
-//
-//  func onPress() {
-//    setState { $0.counter += 1 }
-//  }
-//
-// getting an error "Closure cannot implicitly capture a mutating self parameter"
-// if this is uncommented
-//  lazy var onPressHandler = { Unique { onPress() } }()
-//
-//  override func render() -> AnyNode {
-//    return AnyNode(View.Node {
-//      [
-//        Button.Node(onPress: onPressHandler, children: "Tap Me").wrap,
-//        Label.Node(children: "\(state)").wrap
-//      ]
-//    })
-//  }
-//}

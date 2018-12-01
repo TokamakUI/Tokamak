@@ -49,6 +49,14 @@ extension LeafComponent {
   }
 }
 
+/// Conforming to this protocol, but implementing support for these new types
+/// in a renderer would make that renderer skip unknown types of children.
+public protocol ChildrenType {
+}
+
+extension Null: ChildrenType {
+}
+
 extension Node: ChildrenType {
 }
 

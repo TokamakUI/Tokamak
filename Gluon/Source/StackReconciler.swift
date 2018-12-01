@@ -41,8 +41,7 @@ final class StackReconciler {
       rootComponent = component
 
       let renderedNode = render(component: component)
-      reconcile(component: component, with: renderedNode)
-
+      reconcile(component: component, with: node)
     }
   }
 
@@ -80,36 +79,45 @@ final class StackReconciler {
   }
 
   private func reconcile(component: MountedCompositeComponent,
-                         with node: Node) {
+                         with renderedNode: Node) {
     let parentTarget = rootTarget
 
-    for child in component.mountedChildren {
-      switch (child, node.type) {
-      case let (nil, .base(type)):
-        ()
-      case let (child, .composite(nodeType))
-      as (MountedCompositeComponent, ComponentType):
-        guard child.type == nodeType &&
-          child.props == node.props &&
-          child.children == node.children else {
-          // FIXME: continue?
-          return
-        }
-      default:
-        assertionFailure("unhandled case to reconcile")
-      }
-    }
+    var stack = [(component, 0)]
 
-    if component.mountedChildren.isEmpty {
-      switch node.type {
-      case let .base(type):
-        let target = renderer.mountTarget(to: parentTarget,
-                                          with: type,
-                                          props: node.props,
-                                          children: node.children)
-        component.mountedChildren.append(MountedBaseComponent(node, type, target))
-      case let .composite(type):
-        ()
+    while !stack.isEmpty {
+      let (component, childIndex) = stack.removeLast()
+
+      for child in component.mountedChildren {
+        switch (child, renderedNode.type) {
+        case let (child, .composite(nodeType))
+        as (MountedCompositeComponent, ComponentType):
+          guard child.type == nodeType &&
+            child.props == renderedNode.props &&
+            child.children == renderedNode.children else {
+            // FIXME: continue?
+            return
+          }
+        default:
+          assertionFailure("unhandled case to reconcile")
+        }
+      }
+
+      if component.mountedChildren.isEmpty {
+        // FIXME: handle fragment nodes here when those are introduced
+        let mountedChild: MountedComponent
+
+        switch renderedNode.type {
+        case let .base(type):
+          let target = renderer.mountTarget(to: parentTarget,
+                                            with: type,
+                                            props: renderedNode.props,
+                                            children: renderedNode.children)
+
+          mountedChild = MountedBaseComponent(renderedNode, type, target)
+        case let .composite(type):
+          mountedChild = MountedCompositeComponent(renderedNode, type)
+        }
+        component.mountedChildren.append(mountedChild)
       }
     }
   }

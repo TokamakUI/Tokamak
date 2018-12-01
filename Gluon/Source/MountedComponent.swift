@@ -16,15 +16,6 @@ class MountedComponent {
     self.props = props
     self.children = children
   }
-
-//  static func make(_ node: Node) -> MountedComponent {
-//    switch node.type {
-//    case let .composite(type):
-//      return MountedCompositeComponent(node, type)
-//    case let .base(type):
-//      return MountedBaseComponent(node, type)
-//    }
-//  }
 }
 
 final class MountedCompositeComponent: MountedComponent {
