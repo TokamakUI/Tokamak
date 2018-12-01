@@ -31,18 +31,28 @@ import Gluon
 //}
 
 struct Counter: LeafComponent {
-  typealias Props = NoProps
+  struct Props: Equatable {
+    let initial: Int
+  }
 
-  static func render(props: NoProps) -> Node {
-    let (count, setCount) = hooks.state(0)
+  static func render(props: Props) -> Node {
+    let (count, setCount) = hooks.state(props.initial)
 
     let onPress = Handler {
       setCount(count + 1)
     }
 
-    return StackView.node(NoProps(),
+    return StackView.node(Null(),
       [Button.node(.init(onPress: onPress), "Increment"),
-       Label.node(NoProps(), "\(count)")])
+       Label.node(Null(), "\(count)")])
+  }
+}
+
+struct App: LeafComponent {
+  typealias Props = Null
+
+  static func render(props: Null) -> Node {
+    return Counter.node(.init(initial: 0))
   }
 }
 

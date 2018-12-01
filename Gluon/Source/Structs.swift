@@ -55,7 +55,7 @@ public extension CompositeComponent {
   }
 }
 
-public protocol LeafComponent: CompositeComponent where Children == Never {
+public protocol LeafComponent: CompositeComponent where Children == Null {
   static func render(props: Props) -> Node
 }
 
@@ -104,7 +104,7 @@ public struct View: BaseComponent {
 }
 
 public struct Label: BaseComponent {
-  public let props: NoProps
+  public let props: Null
   public let children: String
 }
 
@@ -128,7 +128,7 @@ public struct Button: BaseComponent {
 }
 
 public struct StackView: BaseComponent {
-  public let props: NoProps
+  public let props: Null
   public let children: [Node]
 }
 

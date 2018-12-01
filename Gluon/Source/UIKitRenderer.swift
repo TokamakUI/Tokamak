@@ -8,16 +8,12 @@
 import Foundation
 
 protocol Renderer: class {
-  func mountTarget(to parent: Any, with component: RendererBaseComponent) -> Any
-  func update(target: Any, with component: RendererBaseComponent)
-  func umount(target: Any, from parent: Any, with component: RendererBaseComponent)
+  func mountTarget(to parent: Any, with component: AnyBaseComponent.Type) -> Any
+  func update(target: Any, with component: AnyBaseComponent.Type)
+  func umount(target: Any, from parent: Any, with component: AnyBaseComponent.Type)
 }
 
-protocol RendererBaseComponent: AnyBaseComponent {
-
-}
-
-protocol UIKitBaseComponent: RendererBaseComponent {
+protocol UIKitBaseComponent: AnyBaseComponent {
 }
 
 struct UIKitRenderer {

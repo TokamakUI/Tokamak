@@ -31,6 +31,24 @@ extension BaseComponent {
   }
 }
 
+extension CompositeComponent {
+  public static func node(key: String? = nil,
+                          _ props: Props,
+                          _ children: Children) -> Node {
+    return Node(key: key,
+                props: AnyEquatable(props),
+                children: AnyEquatable(children),
+                type: .composite(self))
+  }
+}
+
+extension LeafComponent {
+  public static func node(key: String? = nil,
+                          _ props: Props) -> Node {
+    return node(key: key, props, Null())
+  }
+}
+
 extension Node: ChildrenType {
 }
 

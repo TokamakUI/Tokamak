@@ -28,12 +28,13 @@ final class StackReconciler {
     rootTarget = target
 
     rootComponent = MountedComponent.make(node)
-    if let component = rootComponent as? MountedBaseComponent {
-      guard let type = component.type as? RendererBaseComponent.Type else {
-        assertionFailure("base component not supported by any renderer")
-        return
-      }
-      component.target = renderer.mountTarget(to: target, with: type)
+    switch rootComponent {
+    case let component as MountedBaseComponent:
+      component.target = renderer.mountTarget(to: target, with: component.type)
+    case let component as MountedCompositeComponent:
+      ()
+    default:
+      assertionFailure("unknown subclass of MountedComponent")
     }
   }
 
@@ -84,12 +85,8 @@ final class StackReconciler {
 
     switch (component.mountedChild, node.type) {
     case let (nil, .base(type)):
-      guard let type = type as? RendererBaseComponent.Type else {
-        assertionFailure("base component not supported by any renderer")
-        return
-      }
       let newChild = MountedBaseComponent(node, type)
-      renderer.mountTarget(to: parentTarget, with: component)
+      renderer.mountTarget(to: parentTarget, with: type)
 
     case let (child, .composite(nodeType))
     as (MountedCompositeComponent, ComponentType):
