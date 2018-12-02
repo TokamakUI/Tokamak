@@ -7,7 +7,7 @@
 
 
 public struct Hooks {
-  var currentReconciler: Reconciler?
+  var currentReconciler: StackReconciler?
   var currentComponent: CompositeComponentWrapper?
 
   public func state<T>(_ initial: T,

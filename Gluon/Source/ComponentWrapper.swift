@@ -18,11 +18,11 @@ extension CompositeComponent {
 protocol ComponentWrapper: class {
   var node: Node { get set }
 
-  func mount(with reconciler: Reconciler)
+  func mount(with reconciler: StackReconciler)
 
-  func unmount(with reconciler: Reconciler)
+  func unmount(with reconciler: StackReconciler)
 
-  func update(with reconciler: Reconciler)
+  func update(with reconciler: StackReconciler)
 }
 
 final class CompositeComponentWrapper: ComponentWrapper {
@@ -38,7 +38,7 @@ final class CompositeComponentWrapper: ComponentWrapper {
     self.parentTarget = parentTarget
   }
 
-  func mount(with reconciler: Reconciler) {
+  func mount(with reconciler: StackReconciler) {
     let renderedNode = render(with: reconciler)
 
     let child = renderedNode.makeComponentWrapper(parentTarget)
@@ -46,13 +46,13 @@ final class CompositeComponentWrapper: ComponentWrapper {
     child.mount(with: reconciler)
   }
 
-  func unmount(with reconciler: Reconciler) {
+  func unmount(with reconciler: StackReconciler) {
     mountedChildren.forEach { $0.unmount(with: reconciler) }
     // FIXME: Should call `hooks.effect` finalizers here after `hooks.effect`
     // is implemented
   }
 
-  func update(with reconciler: Reconciler) {
+  func update(with reconciler: StackReconciler) {
     switch (mountedChildren.last, render(with: reconciler)) {
 
     // no mounted children, but children available now
@@ -82,7 +82,7 @@ final class CompositeComponentWrapper: ComponentWrapper {
     }
   }
 
-  func render(with reconciler: Reconciler) -> Node {
+  func render(with reconciler: StackReconciler) -> Node {
     _hooks.currentReconciler = reconciler
     _hooks.currentComponent = self
 
@@ -108,13 +108,13 @@ final class HostComponentWrapper: ComponentWrapper {
     self.parentTarget = parentTarget
   }
 
-  func mount(with reconciler: Reconciler) {
-    guard let renderer = reconciler.renderer else { return }
+  func mount(with reconciler: StackReconciler) {
+    guard let target = reconciler.renderer?.mountTarget(to: parentTarget,
+                                                        with: type,
+                                                        props: node.props,
+                                                        children: node.children)
+    else { return }
 
-    let target = renderer.mountTarget(to: parentTarget,
-                                      with: type,
-                                      props: node.props,
-                                      children: node.children)
     self.target = target
 
     switch node.children.value {
@@ -134,13 +134,13 @@ final class HostComponentWrapper: ComponentWrapper {
     }
   }
 
-  func unmount(with reconciler: Reconciler) {
+  func unmount(with reconciler: StackReconciler) {
     guard let target = target else { return }
 
     reconciler.renderer?.unmount(target: target, with: type)
   }
 
-  func update(with reconciler: Reconciler) {
+  func update(with reconciler: StackReconciler) {
     guard let target = target else { return }
 
     reconciler.renderer?.update(target: target,

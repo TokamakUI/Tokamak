@@ -34,12 +34,12 @@ public protocol CompositeComponent: AnyCompositeComponent {
   static func render(props: Props, children: Children) -> Node
 }
 
-// FIXME: this extension shouldn't be private too, but
-/// `public protocol AnyCompositeComponent` requires this to stay public
+// FIXME: this extension should be private too, but
+// `public protocol AnyCompositeComponent` requires this to stay public
 public extension CompositeComponent {
   static func render(props: AnyEquatable, children: AnyEquatable) -> Node {
-    guard let props = props as? Props,
-    let children = children as? Children else {
+    guard let props = props.value as? Props,
+    let children = children.value as? Children else {
       fatalError("""
         incorrect types of `props` and `children` arguments passed to
         `AnyComponent.render`
@@ -95,33 +95,4 @@ public struct View: HostComponent {
 
   public struct Props: Equatable {
   }
-}
-
-public struct Label: HostComponent {
-  public typealias Props = Null
-  public typealias Children = String
-}
-
-public struct ButtonProps: Equatable {
-  let backgroundColor: Color
-  let fontColor: Color
-  let onPress: Handler<()>
-
-  public init(backgroundColor: Color = .white,
-              fontColor: Color = .black,
-              onPress: Handler<()>) {
-    self.backgroundColor = backgroundColor
-    self.fontColor = fontColor
-    self.onPress = onPress
-  }
-}
-
-public struct Button: HostComponent {
-  public typealias Props = ButtonProps
-  public typealias Children = String
-}
-
-public struct StackView: HostComponent {
-  public typealias Props = Null
-  public typealias Children = [Node]
 }

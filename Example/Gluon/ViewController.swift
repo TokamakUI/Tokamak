@@ -32,6 +32,7 @@ import Gluon
 
 struct Counter: LeafComponent {
   struct Props: Equatable {
+    let frame: CGRect
     let initial: Int
   }
 
@@ -42,23 +43,30 @@ struct Counter: LeafComponent {
       setCount(count + 1)
     }
 
-    return StackView.node(Null(),
+    return StackView.node(.init(axis: .vertical,
+                                distribution: .fillEqually,
+                                frame: props.frame),
       [Button.node(.init(onPress: onPress), "Increment"),
        Label.node(Null(), "\(count)")])
   }
 }
 
 struct App: LeafComponent {
-  typealias Props = Null
+  typealias Props = StackViewProps
 
-  static func render(props: Null) -> Node {
-    return Counter.node(.init(initial: 0))
+  static func render(props: StackViewProps) -> Node {
+    return Counter.node(.init(frame: props.frame, initial: 5))
   }
 }
 
 final class GluonViewController: UIViewController {
+  private var renderer: UIKitRenderer?
+
   override func viewDidLoad() {
-      super.viewDidLoad()
+    super.viewDidLoad()
+
+    renderer = UIKitRenderer(node: App.node(.init(frame: view.frame)),
+                             target: view)
   }
 
   @IBAction func onTap(_ sender: Any) {

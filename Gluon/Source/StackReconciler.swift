@@ -7,13 +7,7 @@
 
 import Dispatch
 
-protocol Reconciler: class {
-  var renderer: Renderer? { get }
-
-  func queue(state: Any, for component: CompositeComponentWrapper, id: String)
-}
-
-final class StackReconciler: Reconciler {
+final class StackReconciler {
   private var queuedState = [(CompositeComponentWrapper, String, Any)]()
 
   private let rootComponent: ComponentWrapper
