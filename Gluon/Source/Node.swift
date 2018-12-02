@@ -20,7 +20,7 @@ public struct Node: Equatable {
   let type: ComponentType
 }
 
-extension BaseComponent {
+extension HostComponent {
   public static func node(key: String? = nil,
                           _ props: Props,
                           _ children: Children) -> Node {

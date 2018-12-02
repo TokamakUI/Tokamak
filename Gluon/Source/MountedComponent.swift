@@ -29,11 +29,11 @@ final class MountedCompositeComponent: MountedComponent {
   }
 }
 
-final class MountedBaseComponent: MountedComponent {
-  let type: AnyBaseComponent.Type
+final class MountedHostComponent: MountedComponent {
+  let type: AnyHostComponent.Type
   let target: Any
 
-  init(_ node: Node, _ type: AnyBaseComponent.Type, _ target: Any) {
+  init(_ node: Node, _ type: AnyHostComponent.Type, _ target: Any) {
     self.type = type
     self.target = target
 

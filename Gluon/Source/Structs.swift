@@ -14,10 +14,10 @@ extension Never: Equatable {
   }
 }
 
-public protocol AnyBaseComponent {
+public protocol AnyHostComponent {
 }
 
-public protocol BaseComponent: AnyBaseComponent {
+public protocol HostComponent: AnyHostComponent {
   associatedtype Props: Equatable
   associatedtype Children: ChildrenType & Equatable
 }
@@ -71,7 +71,7 @@ enum ComponentType: Equatable {
     }
   }
 
-  case base(AnyBaseComponent.Type)
+  case base(AnyHostComponent.Type)
   case composite(AnyCompositeComponent.Type)
 
   var composite: AnyCompositeComponent.Type? {
@@ -80,14 +80,14 @@ enum ComponentType: Equatable {
     return type
   }
 
-  var base: AnyBaseComponent.Type? {
+  var base: AnyHostComponent.Type? {
     guard case let .base(type) = self else { return nil }
 
     return type
   }
 }
 
-public struct View: BaseComponent {
+public struct View: HostComponent {
   public typealias Children = [Node]
 
   public let props: Props
@@ -97,7 +97,7 @@ public struct View: BaseComponent {
   }
 }
 
-public struct Label: BaseComponent {
+public struct Label: HostComponent {
   public typealias Props = Null
   public typealias Children = String
 }
@@ -116,12 +116,12 @@ public struct ButtonProps: Equatable {
   }
 }
 
-public struct Button: BaseComponent {
+public struct Button: HostComponent {
   public typealias Props = ButtonProps
   public typealias Children = String
 }
 
-public struct StackView: BaseComponent {
+public struct StackView: HostComponent {
   public typealias Props = Null
   public typealias Children = [Node]
 }

@@ -122,7 +122,7 @@ public struct ConstraintProps: Equatable {
   }
 }
 
-public struct Constraint: BaseComponent {
+public struct Constraint: HostComponent {
   public typealias Props = ConstraintProps
   public typealias Children = [Node]
 

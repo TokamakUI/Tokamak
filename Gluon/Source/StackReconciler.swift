@@ -34,7 +34,7 @@ final class StackReconciler {
                                         props: node.props,
                                         children: node.children)
 
-      rootComponent = MountedBaseComponent(node, type, target)
+      rootComponent = MountedHostComponent(node, type, target)
     case let .composite(type):
       let component = MountedCompositeComponent(node, type)
 
@@ -82,25 +82,16 @@ final class StackReconciler {
                          with renderedNode: Node) {
     let parentTarget = rootTarget
 
-    var stack = [(component, 0)]
+
+    var stack = [(component, renderedNode, 0)]
 
     while !stack.isEmpty {
-      let (component, childIndex) = stack.removeLast()
+      let (component, node, childIndex) = stack.removeLast()
 
-      for child in component.mountedChildren {
-        switch (child, renderedNode.type) {
-        case let (child, .composite(nodeType))
-        as (MountedCompositeComponent, ComponentType):
-          guard child.type == nodeType &&
-            child.props == renderedNode.props &&
-            child.children == renderedNode.children else {
-            // FIXME: continue?
-            return
-          }
-        default:
-          assertionFailure("unhandled case to reconcile")
-        }
-      }
+//      switch node.children.value {
+//      case let child as Node:
+//
+//      }
 
       if component.mountedChildren.isEmpty {
         // FIXME: handle fragment nodes here when those are introduced
@@ -113,7 +104,7 @@ final class StackReconciler {
                                             props: renderedNode.props,
                                             children: renderedNode.children)
 
-          mountedChild = MountedBaseComponent(renderedNode, type, target)
+          mountedChild = MountedHostComponent(renderedNode, type, target)
         case let .composite(type):
           mountedChild = MountedCompositeComponent(renderedNode, type)
         }
