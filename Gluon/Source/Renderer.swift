@@ -18,11 +18,8 @@ protocol Renderer: class {
               props: AnyEquatable,
               children: AnyEquatable)
 
-  func umount(target: Any,
-              from parent: Any,
-              with component: AnyHostComponent.Type,
-              props: AnyEquatable,
-              children: AnyEquatable)
+  func unmount(target: Any,
+               with component: AnyHostComponent.Type)
 
   func removeAllChildren(from target: Any)
 }

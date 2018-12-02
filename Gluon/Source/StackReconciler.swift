@@ -29,7 +29,7 @@ final class StackReconciler {
 
     rootComponent = node.makeComponentWrapper()
 
-    rootComponent.mount(with: renderer)
+    rootComponent.mount(with: renderer, to: rootTarget)
   }
 
   func queue(state: Any, for component: CompositeComponentWrapper, id: String) {
@@ -60,7 +60,7 @@ final class StackReconciler {
     for (component, id, state) in queuedState {
       component.state[id] = state
 
-      component.mount(with: renderer)
+      component.update(with: renderer)
     }
   }
 }

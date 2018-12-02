@@ -7,7 +7,7 @@
 
 public struct Node: Equatable {
   /// Equatable can't be automatically derived for `type` property?
-  public static func == (lhs: Node, rhs: Node) -> Bool {
+  public static func ==(lhs: Node, rhs: Node) -> Bool {
     return lhs.key == rhs.key &&
       lhs.type == rhs.type &&
       lhs.children == rhs.children &&
