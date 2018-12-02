@@ -17,9 +17,9 @@ extension CompositeComponent {
 }
 
 final class StackReconciler {
-  private var queuedState = [(MountedCompositeComponent, Int, Any)]()
+  private var queuedState = [(CompositeComponentWrapper, String, Any)]()
 
-  private let rootComponent: MountedComponent
+  private let rootComponent: ComponentWrapper
   private let rootTarget: Any
   private weak var renderer: Renderer!
 
@@ -27,28 +27,15 @@ final class StackReconciler {
     self.renderer = renderer
     rootTarget = target
 
-    switch node.type {
-    case let .base(type):
-      let target = renderer.mountTarget(to: rootTarget,
-                                        with: type,
-                                        props: node.props,
-                                        children: node.children)
+    rootComponent = node.makeComponentWrapper()
 
-      rootComponent = MountedHostComponent(node, type, target)
-    case let .composite(type):
-      let component = MountedCompositeComponent(node, type)
-
-      rootComponent = component
-
-      let renderedNode = render(component: component)
-      reconcile(component: component, with: node)
-    }
+    rootComponent.mount(with: renderer)
   }
 
-  func queue(state: Any, for node: MountedCompositeComponent, id: Int) {
+  func queue(state: Any, for component: CompositeComponentWrapper, id: String) {
     let scheduleReconcile = queuedState.isEmpty
 
-    queuedState.append((node, id, state))
+    queuedState.append((component, id, state))
 
     guard scheduleReconcile else { return }
 
@@ -57,12 +44,11 @@ final class StackReconciler {
     }
   }
 
-  private func render(component: MountedCompositeComponent) -> Node {
+  private func render(component: CompositeComponentWrapper) -> Node {
     _hooks.currentReconciler = self
     _hooks.currentComponent = component
 
-    let result = component.type.render(props: component.props,
-                                       children: component.children)
+    let result = component.render()
 
     _hooks.currentComponent = nil
     _hooks.currentReconciler = nil
@@ -74,42 +60,7 @@ final class StackReconciler {
     for (component, id, state) in queuedState {
       component.state[id] = state
 
-      reconcile(component: component, with: render(component: component))
-    }
-  }
-
-  private func reconcile(component: MountedCompositeComponent,
-                         with renderedNode: Node) {
-    let parentTarget = rootTarget
-
-
-    var stack = [(component, renderedNode, 0)]
-
-    while !stack.isEmpty {
-      let (component, node, childIndex) = stack.removeLast()
-
-//      switch node.children.value {
-//      case let child as Node:
-//
-//      }
-
-      if component.mountedChildren.isEmpty {
-        // FIXME: handle fragment nodes here when those are introduced
-        let mountedChild: MountedComponent
-
-        switch renderedNode.type {
-        case let .base(type):
-          let target = renderer.mountTarget(to: parentTarget,
-                                            with: type,
-                                            props: renderedNode.props,
-                                            children: renderedNode.children)
-
-          mountedChild = MountedHostComponent(renderedNode, type, target)
-        case let .composite(type):
-          mountedChild = MountedCompositeComponent(renderedNode, type)
-        }
-        component.mountedChildren.append(mountedChild)
-      }
+      component.mount(with: renderer)
     }
   }
 }

@@ -8,10 +8,10 @@
 
 public struct Hooks {
   var currentReconciler: StackReconciler?
-  var currentComponent: MountedCompositeComponent?
+  var currentComponent: CompositeComponentWrapper?
 
   public func state<T>(_ initial: T,
-                       id: Int = #line) -> (T, (T) -> ()) {
+                       id: String = "\(#file)\(#line)") -> (T, (T) -> ()) {
     guard let component = currentComponent,
     let reconciler = currentReconciler else {
       fatalError("""
