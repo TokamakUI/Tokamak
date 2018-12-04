@@ -9,15 +9,25 @@ import Foundation
 
 public typealias Handler<T> = Unique<(T) -> ()>
 
-public struct Unique<T>: Equatable {
-  private let uuid = UUID()
+class UniqueReference {}
+
+extension UniqueReference: Equatable {
+  public static func == (lhs: UniqueReference, rhs: UniqueReference) -> Bool {
+    return lhs === rhs
+  }
+}
+
+public struct Unique<T> {
+  private let id = UniqueReference()
   let boxed: T
 
   public init(_ boxed: T) {
     self.boxed = boxed
   }
+}
 
+extension Unique: Equatable {
   public static func == (lhs: Unique<T>, rhs: Unique<T>) -> Bool {
-    return lhs.uuid == rhs.uuid
+    return lhs.id == rhs.id
   }
 }
