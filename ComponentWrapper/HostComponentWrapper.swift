@@ -1,103 +1,13 @@
 //
-//  MountedComponent.swift
+//  HostComponentWrapper.swift
 //  Gluon
 //
-//  Created by Max Desiatov on 28/11/2018.
+//  Created by Max Desiatov on 03/12/2018.
 //
-
-
-// TODO: this won't work in multi-threaded scenarios
-private var _hooks = Hooks()
-
-extension CompositeComponent {
-  public static var hooks: Hooks {
-    return _hooks
-  }
-}
-
-protocol ComponentWrapper: class {
-  var node: Node { get set }
-
-  func mount(with reconciler: StackReconciler)
-
-  func unmount(with reconciler: StackReconciler)
-
-  func update(with reconciler: StackReconciler)
-}
-
-final class CompositeComponentWrapper: ComponentWrapper {
-  var node: Node
-  private var mountedChildren = [ComponentWrapper]()
-  private let type: AnyCompositeComponent.Type
-  private let parentTarget: Any
-  var state = [String: Any]()
-
-  init(_ node: Node, _ type: AnyCompositeComponent.Type, _ parentTarget: Any) {
-    self.node = node
-    self.type = type
-    self.parentTarget = parentTarget
-  }
-
-  func mount(with reconciler: StackReconciler) {
-    let renderedNode = render(with: reconciler)
-
-    let child = renderedNode.makeComponentWrapper(parentTarget)
-    mountedChildren = [child]
-    child.mount(with: reconciler)
-  }
-
-  func unmount(with reconciler: StackReconciler) {
-    mountedChildren.forEach { $0.unmount(with: reconciler) }
-    // FIXME: Should call `hooks.effect` finalizers here after `hooks.effect`
-    // is implemented
-  }
-
-  func update(with reconciler: StackReconciler) {
-    switch (mountedChildren.last, render(with: reconciler)) {
-
-    // no mounted children, but children available now
-    case let (nil, renderedNode):
-      let child = renderedNode.makeComponentWrapper(parentTarget)
-      mountedChildren = [child]
-      child.mount(with: reconciler)
-
-    // some mounted children
-    case let (wrapper?, renderedNode):
-      // new node is the same type as existing child, checking props/children
-      if wrapper.node.type == renderedNode.type &&
-        (wrapper.node.props != renderedNode.props ||
-          wrapper.node.children != renderedNode.children) {
-        wrapper.node = renderedNode
-        wrapper.update(with: reconciler)
-      } else
-      // new node is of different type, complete rerender, i.e. unmount old
-      // wrapper, then mount a new one with new node
-      if wrapper.node.type != renderedNode.type {
-        wrapper.unmount(with: reconciler)
-
-        let child = renderedNode.makeComponentWrapper(parentTarget)
-        mountedChildren = [child]
-        child.mount(with: reconciler)
-      }
-    }
-  }
-
-  func render(with reconciler: StackReconciler) -> Node {
-    _hooks.currentReconciler = reconciler
-    _hooks.currentComponent = self
-
-    let result = type.render(props: node.props, children: node.children)
-
-    _hooks.currentComponent = nil
-    _hooks.currentReconciler = nil
-
-    return result
-  }
-}
 
 final class HostComponentWrapper: ComponentWrapper {
   var node: Node
-  fileprivate var mountedChildren = [ComponentWrapper]()
+  private var mountedChildren = [ComponentWrapper]()
   private let type: AnyHostComponent.Type
   private let parentTarget: Any
   private var target: Any?
@@ -113,7 +23,7 @@ final class HostComponentWrapper: ComponentWrapper {
                                                         with: type,
                                                         props: node.props,
                                                         children: node.children)
-    else { return }
+      else { return }
 
     self.target = target
 
@@ -167,8 +77,8 @@ final class HostComponentWrapper: ComponentWrapper {
 
         while let child = mountedChildren.first, let node = nodes.first {
           if node.key != nil &&
-          node.type == mountedChildren[0].node.type &&
-          node.key == child.node.key {
+            node.type == mountedChildren[0].node.type &&
+            node.key == child.node.key {
             child.node = node
             child.update(with: reconciler)
             newChildren.append(child)
@@ -197,7 +107,7 @@ final class HostComponentWrapper: ComponentWrapper {
         child.mount(with: reconciler)
       }
 
-    // child type that can't be rendered, but still makes sense as a child
+      // child type that can't be rendered, but still makes sense as a child
     // (e.g. `String`)
     default:
       ()
