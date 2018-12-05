@@ -39,15 +39,16 @@ struct Counter: LeafComponent {
   static func render(props: Props) -> Node {
     let (count, setCount) = hooks.state(props.initial)
 
-    let onPress = Handler {
+    let handler = Handler {
       setCount(count + 1)
     }
 
     return StackView.node(.init(axis: .vertical,
                                 distribution: .fillEqually,
-                                frame: props.frame),
-      [Button.node(.init(onPress: onPress), "Increment"),
-       Label.node(Null(), "\(count)")])
+                                frame: props.frame), [
+      Button.node(.init(handlers: [.touchUpInside: handler]), "Increment"),
+      Label.node(Null(), "\(count)")
+    ])
   }
 }
 

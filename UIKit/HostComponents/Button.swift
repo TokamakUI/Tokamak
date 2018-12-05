@@ -7,16 +7,16 @@
 
 import UIKit
 
-public struct ButtonProps: Equatable {
-  let backgroundColor: Color
-  let titleColor: Color
-  let onPress: Handler<()>
+public struct ButtonProps: Equatable, EventHandlerProps {
+  public let backgroundColor: Color
+  public let titleColor: Color
+  public let handlers: [Event: Handler<()>]
 
   public init(backgroundColor: Color = .white,
-              onPress: Handler<()>,
+              handlers: [Event: Handler<()>] = [:],
               titleColor: Color = .black) {
     self.backgroundColor = backgroundColor
-    self.onPress = onPress
+    self.handlers = handlers
     self.titleColor = titleColor
   }
 }
@@ -29,7 +29,7 @@ public struct Button: HostComponent {
 extension UIButton: Default {
 }
 
-extension Button: UIKitViewComponent {
+extension Button: UIKitControlComponent {
   public static func update(_ view: UIButton,
                             _ props: ButtonProps,
                             _ children: String) {

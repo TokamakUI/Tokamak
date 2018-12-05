@@ -77,14 +77,15 @@ final class HostComponentWrapper: ComponentWrapper {
 
         while let child = mountedChildren.first, let node = nodes.first {
           if node.key != nil &&
-            node.type == mountedChildren[0].node.type &&
-            node.key == child.node.key {
+          node.type == mountedChildren[0].node.type &&
+          node.key == child.node.key {
             child.node = node
             child.update(with: reconciler)
             newChildren.append(child)
             mountedChildren.removeFirst()
           } else {
-            let newChild = node.makeComponentWrapper(reconciler)
+            child.unmount(with: reconciler)
+            let newChild = node.makeComponentWrapper(target)
             newChild.mount(with: reconciler)
             newChildren.append(newChild)
           }

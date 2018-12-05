@@ -64,3 +64,9 @@ struct VersionedArray<T> {
   mutating func flushAllVersions() {
   }
 }
+
+extension VersionedArray: ExpressibleByArrayLiteral {
+  public init(arrayLiteral elements: T...) {
+    self.init(elements)
+  }
+}

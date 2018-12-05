@@ -12,22 +12,22 @@ public typealias Handler<T> = Unique<(T) -> ()>
 class UniqueReference {}
 
 extension UniqueReference: Equatable {
-  public static func == (lhs: UniqueReference, rhs: UniqueReference) -> Bool {
+  public static func ==(lhs: UniqueReference, rhs: UniqueReference) -> Bool {
     return lhs === rhs
   }
 }
 
 public struct Unique<T> {
   private let id = UniqueReference()
-  let boxed: T
+  let value: T
 
-  public init(_ boxed: T) {
-    self.boxed = boxed
+  public init(_ value: T) {
+    self.value = value
   }
 }
 
 extension Unique: Equatable {
-  public static func == (lhs: Unique<T>, rhs: Unique<T>) -> Bool {
+  public static func ==(lhs: Unique<T>, rhs: Unique<T>) -> Bool {
     return lhs.id == rhs.id
   }
 }
