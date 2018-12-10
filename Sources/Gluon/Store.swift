@@ -10,9 +10,10 @@ import Foundation
 /// Generic undo-redo manager that doesn't require rollback implementation in
 /// `apply` of a wrapped store. It saves previous snapshots of state in a stack
 /// and undo/redo actions allow traversing the state history. This might be
-/// not very efficient in terms of memory, but we also could require an initial
-/// state and recreate subsequent snapshots by calling `apply` with a sequence
-/// of actions
+/// not very efficient in terms of memory, but only requires an initial
+/// state and can recreate subsequent snapshots by calling `apply` with
+/// a sequence of actions. This means you can add undo-redo history to
+/// any `Store`.
 public struct History<S: Store>: Store {
   public enum Action {
     case branch(S.Action)
@@ -57,28 +58,28 @@ public protocol Store {
 }
 
 // FIXME: need context working for its implementation
-public final class StoreProvider<S>: Component<StoreProvider.Props, S>
-where S: Store & StateType {
-  struct Props: Equatable {
-    /// FIXME: should store comparison be optimised this way?
-    let store: Unique<S>
-  }
-
-  func dispatch(action: S.Action) {
-    setState { $0.apply(action: action) }
-  }
-
-  public func render() -> Node {
-    // FIXME: create a context here
-    return Node(children)
-  }
-}
-
-typealias Dispatch<Action> = (Action) -> ()
-typealias Dispatcher<S: Store> = (state: S.State, dispatch: Dispatch<S.Action>)
+//public final class StoreProvider<S>: Component<StoreProvider.Props, S>
+//where S: Store & StateType {
+//  struct Props: Equatable {
+//    /// FIXME: should store comparison be optimised this way?
+//    let store: Unique<S>
+//  }
+//
+//  func dispatch(action: S.Action) {
+//    setState { $0.apply(action: action) }
+//  }
+//
+//  public func render() -> Node {
+//    // FIXME: create a context here
+//    return Node(children)
+//  }
+//}
+//
+//typealias Dispatch<Action> = (Action) -> ()
+//typealias Dispatcher<S: Store> = (state: S.State, dispatch: Dispatch<S.Action>)
 
 // FIXME: when contexts are available read state and dispatch
 // from the context and pass it to the mapper
-func storeAccess<S: Store>(_ mapper: (Dispatcher<S>) -> Node) {
-
-}
+//func storeAccess<S: Store>(_ mapper: (Dispatcher<S>) -> Node) {
+//
+//}

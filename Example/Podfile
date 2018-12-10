@@ -2,5 +2,5 @@ platform :ios, '9.0'
 use_frameworks!
 
 target 'Gluon_Example' do
-  pod 'Gluon', :path => '../'
+  pod 'Gluon/UIKit', :path => '../'
 end

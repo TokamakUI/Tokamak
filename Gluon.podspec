@@ -26,11 +26,18 @@ TODO: Add long description of the pod here.
   s.license          = { :type => 'Apache 2.0', :file => 'LICENSE' }
   s.author           = { 'Max Desiatov' => 'max@desiatov.com' }
   s.source           = { :git => 'https://github.com/maxdesiatov/Gluon.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.social_media_url = 'https://twitter.com/MaxDesiatov'
 
   s.ios.deployment_target = '9.0'
 
-  s.source_files = 'Gluon/Source/**/*'
+  s.subspec 'Core' do |ss|
+    ss.source_files = 'Sources/Gluon/**/*'
+  end
+
+  s.subspec 'UIKit' do |ss|
+    ss.source_files = 'Sources/GluonUIKit/**/*'
+    ss.dependency 'Gluon/Core'
+  end
   
   # s.resource_bundles = {
   #   'Gluon' => ['Gluon/Assets/*.png']
