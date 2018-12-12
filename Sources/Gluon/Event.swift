@@ -5,8 +5,6 @@
 //  Created by Max Desiatov on 04/12/2018.
 //
 
-import UIKit
-
 public enum Event: CaseIterable, Hashable {
   case touchDown
   case touchDownRepeat
