@@ -7,7 +7,7 @@
 
 
 public struct AnyEquatable: Equatable {
-  let value: Any
+  public let value: Any
   private let equals: (Any) -> Bool
 
   public init<E: Equatable>(_ value: E) {

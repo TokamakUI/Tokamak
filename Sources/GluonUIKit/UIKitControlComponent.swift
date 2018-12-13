@@ -5,6 +5,7 @@
 //  Created by Max Desiatov on 05/12/2018.
 //
 
+import Gluon
 import UIKit
 
 public protocol UIKitControlComponent: UIKitHostComponent, HostComponent

@@ -5,6 +5,7 @@
 //  Created by Max Desiatov on 02/12/2018.
 //
 
+import Gluon
 import UIKit
 
 public protocol UIKitHostComponent: AnyHostComponent {
@@ -55,7 +56,7 @@ public class UIKitRenderer: Renderer {
     """)
   }
 
-  func mountTarget(to parent: Any,
+  public func mountTarget(to parent: Any,
                    with component: AnyHostComponent.Type,
                    props: AnyEquatable,
                    children: AnyEquatable) -> Any? {
@@ -69,7 +70,7 @@ public class UIKitRenderer: Renderer {
                                          children: children)
   }
 
-  func update(target: Any,
+  public func update(target: Any,
               with component: AnyHostComponent.Type,
               props: AnyEquatable,
               children: AnyEquatable) {
@@ -83,8 +84,7 @@ public class UIKitRenderer: Renderer {
                              children: children)
   }
 
-  func unmount(target: Any, with component: AnyHostComponent.Type) {
-
+  public func unmount(target: Any, with component: AnyHostComponent.Type) {
     guard let rendererComponent = component as? UIKitHostComponent.Type else {
       typeAssertionFailure(for: component)
       return

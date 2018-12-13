@@ -5,7 +5,7 @@
 //  Created by Max Desiatov on 07/10/2018.
 //
 
-protocol Renderer: class {
+public protocol Renderer: class {
   func mountTarget(to parent: Any,
                    with component: AnyHostComponent.Type,
                    props: AnyEquatable,

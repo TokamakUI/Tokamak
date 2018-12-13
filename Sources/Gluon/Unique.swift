@@ -19,7 +19,7 @@ extension UniqueReference: Equatable {
 
 public struct Unique<T> {
   private let id = UniqueReference()
-  let value: T
+  public let value: T
 
   public init(_ value: T) {
     self.value = value

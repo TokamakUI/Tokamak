@@ -7,14 +7,14 @@
 
 import Dispatch
 
-final class StackReconciler {
+public final class StackReconciler {
   private var queuedState = [(CompositeComponentWrapper, String, Any)]()
 
   private let rootComponent: ComponentWrapper
   private let rootTarget: Any
   private(set) weak var renderer: Renderer?
 
-  init(node: Node, target: Any, renderer: Renderer) {
+  public init(node: Node, target: Any, renderer: Renderer) {
     self.renderer = renderer
     rootTarget = target
 
