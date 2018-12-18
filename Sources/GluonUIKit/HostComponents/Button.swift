@@ -34,6 +34,7 @@ extension Button: UIKitControlComponent {
   public static func update(_ view: UIButton,
                             _ props: ButtonProps,
                             _ children: String) {
+    view.setTitleColor(UIColor(props.titleColor), for: .normal)
     view.setTitle(children, for: .normal)
   }
 }

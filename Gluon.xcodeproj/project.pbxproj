@@ -5,10 +5,10 @@
    objects = {
       "Gluon::Gluon" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_47";
+         buildConfigurationList = "OBJ_51";
          buildPhases = (
-            "OBJ_50",
-            "OBJ_69"
+            "OBJ_54",
+            "OBJ_73"
          );
          dependencies = (
          );
@@ -24,24 +24,45 @@
       };
       "Gluon::GluonPackageTests::ProductTarget" = {
          isa = "PBXAggregateTarget";
-         buildConfigurationList = "OBJ_77";
+         buildConfigurationList = "OBJ_81";
          buildPhases = (
          );
          dependencies = (
-            "OBJ_80"
+            "OBJ_84"
          );
          name = "GluonPackageTests";
          productName = "GluonPackageTests";
       };
-      "Gluon::GluonTests" = {
+      "Gluon::GluonTestRenderer" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_82";
+         buildConfigurationList = "OBJ_87";
          buildPhases = (
-            "OBJ_85",
-            "OBJ_88"
+            "OBJ_90",
+            "OBJ_92"
          );
          dependencies = (
-            "OBJ_90"
+            "OBJ_94"
+         );
+         name = "GluonTestRenderer";
+         productName = "GluonTestRenderer";
+         productReference = "Gluon::GluonTestRenderer::Product";
+         productType = "com.apple.product-type.framework";
+      };
+      "Gluon::GluonTestRenderer::Product" = {
+         isa = "PBXFileReference";
+         path = "GluonTestRenderer.framework";
+         sourceTree = "BUILT_PRODUCTS_DIR";
+      };
+      "Gluon::GluonTests" = {
+         isa = "PBXNativeTarget";
+         buildConfigurationList = "OBJ_95";
+         buildPhases = (
+            "OBJ_98",
+            "OBJ_101"
+         );
+         dependencies = (
+            "OBJ_104",
+            "OBJ_105"
          );
          name = "GluonTests";
          productName = "GluonTests";
@@ -55,13 +76,13 @@
       };
       "Gluon::GluonUIKit" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_92";
+         buildConfigurationList = "OBJ_107";
          buildPhases = (
-            "OBJ_95",
-            "OBJ_103"
+            "OBJ_110",
+            "OBJ_119"
          );
          dependencies = (
-            "OBJ_105"
+            "OBJ_121"
          );
          name = "GluonUIKit";
          productName = "GluonUIKit";
@@ -75,9 +96,9 @@
       };
       "Gluon::SwiftPMPackageDescription" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_71";
+         buildConfigurationList = "OBJ_75";
          buildPhases = (
-            "OBJ_74"
+            "OBJ_78"
          );
          dependencies = (
          );
@@ -98,12 +119,13 @@
             "en"
          );
          mainGroup = "OBJ_5";
-         productRefGroup = "OBJ_42";
+         productRefGroup = "OBJ_45";
          projectDirPath = ".";
          targets = (
             "Gluon::Gluon",
             "Gluon::SwiftPMPackageDescription",
             "Gluon::GluonPackageTests::ProductTarget",
+            "Gluon::GluonTestRenderer",
             "Gluon::GluonTests",
             "Gluon::GluonUIKit"
          );
@@ -115,29 +137,113 @@
       };
       "OBJ_100" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_34";
+         fileRef = "OBJ_43";
       };
       "OBJ_101" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_35";
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+            "OBJ_102",
+            "OBJ_103"
+         );
       };
       "OBJ_102" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_36";
+         fileRef = "Gluon::GluonTestRenderer::Product";
       };
       "OBJ_103" = {
-         isa = "PBXFrameworksBuildPhase";
-         files = (
-            "OBJ_104"
-         );
-      };
-      "OBJ_104" = {
          isa = "PBXBuildFile";
          fileRef = "Gluon::Gluon::Product";
+      };
+      "OBJ_104" = {
+         isa = "PBXTargetDependency";
+         target = "Gluon::GluonTestRenderer";
       };
       "OBJ_105" = {
          isa = "PBXTargetDependency";
          target = "Gluon::Gluon";
+      };
+      "OBJ_107" = {
+         isa = "XCConfigurationList";
+         buildConfigurations = (
+            "OBJ_108",
+            "OBJ_109"
+         );
+         defaultConfigurationIsVisible = "0";
+         defaultConfigurationName = "Release";
+      };
+      "OBJ_108" = {
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+            ENABLE_TESTABILITY = "YES";
+            FRAMEWORK_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
+            );
+            HEADER_SEARCH_PATHS = (
+               "$(inherited)"
+            );
+            INFOPLIST_FILE = "Gluon.xcodeproj/GluonUIKit_Info.plist";
+            LD_RUNPATH_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
+            );
+            OTHER_CFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_LDFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_SWIFT_FLAGS = (
+               "$(inherited)"
+            );
+            PRODUCT_BUNDLE_IDENTIFIER = "GluonUIKit";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SKIP_INSTALL = "YES";
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+               "$(inherited)"
+            );
+            SWIFT_VERSION = "4.2";
+            TARGET_NAME = "GluonUIKit";
+         };
+         name = "Debug";
+      };
+      "OBJ_109" = {
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+            ENABLE_TESTABILITY = "YES";
+            FRAMEWORK_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
+            );
+            HEADER_SEARCH_PATHS = (
+               "$(inherited)"
+            );
+            INFOPLIST_FILE = "Gluon.xcodeproj/GluonUIKit_Info.plist";
+            LD_RUNPATH_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
+            );
+            OTHER_CFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_LDFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_SWIFT_FLAGS = (
+               "$(inherited)"
+            );
+            PRODUCT_BUNDLE_IDENTIFIER = "GluonUIKit";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SKIP_INSTALL = "YES";
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+               "$(inherited)"
+            );
+            SWIFT_VERSION = "4.2";
+            TARGET_NAME = "GluonUIKit";
+         };
+         name = "Release";
       };
       "OBJ_11" = {
          isa = "PBXGroup";
@@ -150,10 +256,69 @@
          path = "ComponentWrapper";
          sourceTree = "<group>";
       };
+      "OBJ_110" = {
+         isa = "PBXSourcesBuildPhase";
+         files = (
+            "OBJ_111",
+            "OBJ_112",
+            "OBJ_113",
+            "OBJ_114",
+            "OBJ_115",
+            "OBJ_116",
+            "OBJ_117",
+            "OBJ_118"
+         );
+      };
+      "OBJ_111" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_29";
+      };
+      "OBJ_112" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_31";
+      };
+      "OBJ_113" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_32";
+      };
+      "OBJ_114" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_33";
+      };
+      "OBJ_115" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_34";
+      };
+      "OBJ_116" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_35";
+      };
+      "OBJ_117" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_36";
+      };
+      "OBJ_118" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_37";
+      };
+      "OBJ_119" = {
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+            "OBJ_120"
+         );
+      };
       "OBJ_12" = {
          isa = "PBXFileReference";
          path = "ComponentWrapper.swift";
          sourceTree = "<group>";
+      };
+      "OBJ_120" = {
+         isa = "PBXBuildFile";
+         fileRef = "Gluon::Gluon::Product";
+      };
+      "OBJ_121" = {
+         isa = "PBXTargetDependency";
+         target = "Gluon::Gluon";
       };
       "OBJ_13" = {
          isa = "PBXFileReference";
@@ -246,7 +411,8 @@
             "OBJ_30",
             "OBJ_34",
             "OBJ_35",
-            "OBJ_36"
+            "OBJ_36",
+            "OBJ_37"
          );
          name = "GluonUIKit";
          path = "Sources/GluonUIKit";
@@ -324,41 +490,36 @@
       };
       "OBJ_34" = {
          isa = "PBXFileReference";
-         path = "UIKitControlComponent.swift";
+         path = "UIColor.swift";
          sourceTree = "<group>";
       };
       "OBJ_35" = {
          isa = "PBXFileReference";
-         path = "UIKitRenderer.swift";
+         path = "UIKitControlComponent.swift";
          sourceTree = "<group>";
       };
       "OBJ_36" = {
          isa = "PBXFileReference";
-         path = "UIKitViewComponent.swift";
+         path = "UIKitRenderer.swift";
          sourceTree = "<group>";
       };
       "OBJ_37" = {
-         isa = "PBXGroup";
-         children = (
-            "OBJ_38"
-         );
-         name = "Tests";
-         path = "";
-         sourceTree = "SOURCE_ROOT";
+         isa = "PBXFileReference";
+         path = "UIKitViewComponent.swift";
+         sourceTree = "<group>";
       };
       "OBJ_38" = {
          isa = "PBXGroup";
          children = (
-            "OBJ_39",
-            "OBJ_40"
+            "OBJ_39"
          );
-         name = "GluonTests";
-         path = "Tests/GluonTests";
+         name = "GluonTestRenderer";
+         path = "Sources/GluonTestRenderer";
          sourceTree = "SOURCE_ROOT";
       };
       "OBJ_39" = {
          isa = "PBXFileReference";
-         path = "GluonTests.swift";
+         path = "TestView.swift";
          sourceTree = "<group>";
       };
       "OBJ_4" = {
@@ -394,36 +555,73 @@
          name = "Release";
       };
       "OBJ_40" = {
+         isa = "PBXGroup";
+         children = (
+            "OBJ_41"
+         );
+         name = "Tests";
+         path = "";
+         sourceTree = "SOURCE_ROOT";
+      };
+      "OBJ_41" = {
+         isa = "PBXGroup";
+         children = (
+            "OBJ_42",
+            "OBJ_43"
+         );
+         name = "GluonTests";
+         path = "Tests/GluonTests";
+         sourceTree = "SOURCE_ROOT";
+      };
+      "OBJ_42" = {
+         isa = "PBXFileReference";
+         path = "GluonTests.swift";
+         sourceTree = "<group>";
+      };
+      "OBJ_43" = {
          isa = "PBXFileReference";
          path = "XCTestManifests.swift";
          sourceTree = "<group>";
       };
-      "OBJ_41" = {
+      "OBJ_44" = {
          isa = "PBXFileReference";
          path = "Example";
          sourceTree = "SOURCE_ROOT";
       };
-      "OBJ_42" = {
+      "OBJ_45" = {
          isa = "PBXGroup";
          children = (
             "Gluon::GluonTests::Product",
+            "Gluon::Gluon::Product",
             "Gluon::GluonUIKit::Product",
-            "Gluon::Gluon::Product"
+            "Gluon::GluonTestRenderer::Product"
          );
          name = "Products";
          path = "";
          sourceTree = "BUILT_PRODUCTS_DIR";
       };
-      "OBJ_47" = {
+      "OBJ_5" = {
+         isa = "PBXGroup";
+         children = (
+            "OBJ_6",
+            "OBJ_7",
+            "OBJ_40",
+            "OBJ_44",
+            "OBJ_45"
+         );
+         path = "";
+         sourceTree = "<group>";
+      };
+      "OBJ_51" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_48",
-            "OBJ_49"
+            "OBJ_52",
+            "OBJ_53"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
       };
-      "OBJ_48" = {
+      "OBJ_52" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
             ENABLE_TESTABILITY = "YES";
@@ -460,7 +658,7 @@
          };
          name = "Debug";
       };
-      "OBJ_49" = {
+      "OBJ_53" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
             ENABLE_TESTABILITY = "YES";
@@ -497,25 +695,9 @@
          };
          name = "Release";
       };
-      "OBJ_5" = {
-         isa = "PBXGroup";
-         children = (
-            "OBJ_6",
-            "OBJ_7",
-            "OBJ_37",
-            "OBJ_41",
-            "OBJ_42"
-         );
-         path = "";
-         sourceTree = "<group>";
-      };
-      "OBJ_50" = {
+      "OBJ_54" = {
          isa = "PBXSourcesBuildPhase";
          files = (
-            "OBJ_51",
-            "OBJ_52",
-            "OBJ_53",
-            "OBJ_54",
             "OBJ_55",
             "OBJ_56",
             "OBJ_57",
@@ -529,44 +711,32 @@
             "OBJ_65",
             "OBJ_66",
             "OBJ_67",
-            "OBJ_68"
+            "OBJ_68",
+            "OBJ_69",
+            "OBJ_70",
+            "OBJ_71",
+            "OBJ_72"
          );
-      };
-      "OBJ_51" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_9";
-      };
-      "OBJ_52" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_10";
-      };
-      "OBJ_53" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_12";
-      };
-      "OBJ_54" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_13";
       };
       "OBJ_55" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_14";
+         fileRef = "OBJ_9";
       };
       "OBJ_56" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_15";
+         fileRef = "OBJ_10";
       };
       "OBJ_57" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_16";
+         fileRef = "OBJ_12";
       };
       "OBJ_58" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_17";
+         fileRef = "OBJ_13";
       };
       "OBJ_59" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_18";
+         fileRef = "OBJ_14";
       };
       "OBJ_6" = {
          isa = "PBXFileReference";
@@ -576,130 +746,126 @@
       };
       "OBJ_60" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_19";
+         fileRef = "OBJ_15";
       };
       "OBJ_61" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_20";
+         fileRef = "OBJ_16";
       };
       "OBJ_62" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_21";
+         fileRef = "OBJ_17";
       };
       "OBJ_63" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_22";
+         fileRef = "OBJ_18";
       };
       "OBJ_64" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_23";
+         fileRef = "OBJ_19";
       };
       "OBJ_65" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_24";
+         fileRef = "OBJ_20";
       };
       "OBJ_66" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_25";
+         fileRef = "OBJ_21";
       };
       "OBJ_67" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_26";
+         fileRef = "OBJ_22";
       };
       "OBJ_68" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_27";
+         fileRef = "OBJ_23";
       };
       "OBJ_69" = {
-         isa = "PBXFrameworksBuildPhase";
-         files = (
-         );
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_24";
       };
       "OBJ_7" = {
          isa = "PBXGroup";
          children = (
             "OBJ_8",
-            "OBJ_28"
+            "OBJ_28",
+            "OBJ_38"
          );
          name = "Sources";
          path = "";
          sourceTree = "SOURCE_ROOT";
       };
+      "OBJ_70" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_25";
+      };
       "OBJ_71" = {
-         isa = "XCConfigurationList";
-         buildConfigurations = (
-            "OBJ_72",
-            "OBJ_73"
-         );
-         defaultConfigurationIsVisible = "0";
-         defaultConfigurationName = "Release";
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_26";
       };
       "OBJ_72" = {
-         isa = "XCBuildConfiguration";
-         buildSettings = {
-            LD = "/usr/bin/true";
-            OTHER_SWIFT_FLAGS = (
-               "-swift-version",
-               "4.2",
-               "-I",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2",
-               "-target",
-               "x86_64-apple-macosx10.10",
-               "-sdk",
-               "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
-            );
-            SWIFT_VERSION = "4.2";
-         };
-         name = "Debug";
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_27";
       };
       "OBJ_73" = {
-         isa = "XCBuildConfiguration";
-         buildSettings = {
-            LD = "/usr/bin/true";
-            OTHER_SWIFT_FLAGS = (
-               "-swift-version",
-               "4.2",
-               "-I",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2",
-               "-target",
-               "x86_64-apple-macosx10.10",
-               "-sdk",
-               "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
-            );
-            SWIFT_VERSION = "4.2";
-         };
-         name = "Release";
-      };
-      "OBJ_74" = {
-         isa = "PBXSourcesBuildPhase";
+         isa = "PBXFrameworksBuildPhase";
          files = (
-            "OBJ_75"
          );
       };
       "OBJ_75" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_6";
-      };
-      "OBJ_77" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_78",
-            "OBJ_79"
+            "OBJ_76",
+            "OBJ_77"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
       };
-      "OBJ_78" = {
+      "OBJ_76" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
+            LD = "/usr/bin/true";
+            OTHER_SWIFT_FLAGS = (
+               "-swift-version",
+               "4.2",
+               "-I",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2",
+               "-target",
+               "x86_64-apple-macosx10.10",
+               "-sdk",
+               "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
+            );
+            SWIFT_VERSION = "4.2";
          };
          name = "Debug";
       };
-      "OBJ_79" = {
+      "OBJ_77" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
+            LD = "/usr/bin/true";
+            OTHER_SWIFT_FLAGS = (
+               "-swift-version",
+               "4.2",
+               "-I",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2",
+               "-target",
+               "x86_64-apple-macosx10.10",
+               "-sdk",
+               "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
+            );
+            SWIFT_VERSION = "4.2";
          };
          name = "Release";
+      };
+      "OBJ_78" = {
+         isa = "PBXSourcesBuildPhase";
+         files = (
+            "OBJ_79"
+         );
+      };
+      "OBJ_79" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_6";
       };
       "OBJ_8" = {
          isa = "PBXGroup";
@@ -725,59 +891,44 @@
          path = "Sources/Gluon";
          sourceTree = "SOURCE_ROOT";
       };
-      "OBJ_80" = {
-         isa = "PBXTargetDependency";
-         target = "Gluon::GluonTests";
-      };
-      "OBJ_82" = {
+      "OBJ_81" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_83",
-            "OBJ_84"
+            "OBJ_82",
+            "OBJ_83"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
       };
-      "OBJ_83" = {
+      "OBJ_82" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
-            CLANG_ENABLE_MODULES = "YES";
-            EMBEDDED_CONTENT_CONTAINS_SWIFT = "YES";
-            FRAMEWORK_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
-            );
-            HEADER_SEARCH_PATHS = (
-               "$(inherited)"
-            );
-            INFOPLIST_FILE = "Gluon.xcodeproj/GluonTests_Info.plist";
-            LD_RUNPATH_SEARCH_PATHS = (
-               "$(inherited)",
-               "@loader_path/../Frameworks",
-               "@loader_path/Frameworks"
-            );
-            OTHER_CFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_LDFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_SWIFT_FLAGS = (
-               "$(inherited)"
-            );
-            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-               "$(inherited)"
-            );
-            SWIFT_VERSION = "4.2";
-            TARGET_NAME = "GluonTests";
          };
          name = "Debug";
       };
-      "OBJ_84" = {
+      "OBJ_83" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
-            CLANG_ENABLE_MODULES = "YES";
-            EMBEDDED_CONTENT_CONTAINS_SWIFT = "YES";
+         };
+         name = "Release";
+      };
+      "OBJ_84" = {
+         isa = "PBXTargetDependency";
+         target = "Gluon::GluonTests";
+      };
+      "OBJ_87" = {
+         isa = "XCConfigurationList";
+         buildConfigurations = (
+            "OBJ_88",
+            "OBJ_89"
+         );
+         defaultConfigurationIsVisible = "0";
+         defaultConfigurationName = "Release";
+      };
+      "OBJ_88" = {
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+            ENABLE_TESTABILITY = "YES";
             FRAMEWORK_SEARCH_PATHS = (
                "$(inherited)",
                "$(PLATFORM_DIR)/Developer/Library/Frameworks"
@@ -785,11 +936,10 @@
             HEADER_SEARCH_PATHS = (
                "$(inherited)"
             );
-            INFOPLIST_FILE = "Gluon.xcodeproj/GluonTests_Info.plist";
+            INFOPLIST_FILE = "Gluon.xcodeproj/GluonTestRenderer_Info.plist";
             LD_RUNPATH_SEARCH_PATHS = (
                "$(inherited)",
-               "@loader_path/../Frameworks",
-               "@loader_path/Frameworks"
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
             );
             OTHER_CFLAGS = (
                "$(inherited)"
@@ -800,38 +950,54 @@
             OTHER_SWIFT_FLAGS = (
                "$(inherited)"
             );
+            PRODUCT_BUNDLE_IDENTIFIER = "GluonTestRenderer";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SKIP_INSTALL = "YES";
             SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
                "$(inherited)"
             );
             SWIFT_VERSION = "4.2";
-            TARGET_NAME = "GluonTests";
+            TARGET_NAME = "GluonTestRenderer";
          };
-         name = "Release";
-      };
-      "OBJ_85" = {
-         isa = "PBXSourcesBuildPhase";
-         files = (
-            "OBJ_86",
-            "OBJ_87"
-         );
-      };
-      "OBJ_86" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_39";
-      };
-      "OBJ_87" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_40";
-      };
-      "OBJ_88" = {
-         isa = "PBXFrameworksBuildPhase";
-         files = (
-            "OBJ_89"
-         );
+         name = "Debug";
       };
       "OBJ_89" = {
-         isa = "PBXBuildFile";
-         fileRef = "Gluon::Gluon::Product";
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+            ENABLE_TESTABILITY = "YES";
+            FRAMEWORK_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
+            );
+            HEADER_SEARCH_PATHS = (
+               "$(inherited)"
+            );
+            INFOPLIST_FILE = "Gluon.xcodeproj/GluonTestRenderer_Info.plist";
+            LD_RUNPATH_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
+            );
+            OTHER_CFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_LDFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_SWIFT_FLAGS = (
+               "$(inherited)"
+            );
+            PRODUCT_BUNDLE_IDENTIFIER = "GluonTestRenderer";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SKIP_INSTALL = "YES";
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+               "$(inherited)"
+            );
+            SWIFT_VERSION = "4.2";
+            TARGET_NAME = "GluonTestRenderer";
+         };
+         name = "Release";
       };
       "OBJ_9" = {
          isa = "PBXFileReference";
@@ -839,22 +1005,43 @@
          sourceTree = "<group>";
       };
       "OBJ_90" = {
+         isa = "PBXSourcesBuildPhase";
+         files = (
+            "OBJ_91"
+         );
+      };
+      "OBJ_91" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_39";
+      };
+      "OBJ_92" = {
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+            "OBJ_93"
+         );
+      };
+      "OBJ_93" = {
+         isa = "PBXBuildFile";
+         fileRef = "Gluon::Gluon::Product";
+      };
+      "OBJ_94" = {
          isa = "PBXTargetDependency";
          target = "Gluon::Gluon";
       };
-      "OBJ_92" = {
+      "OBJ_95" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_93",
-            "OBJ_94"
+            "OBJ_96",
+            "OBJ_97"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
       };
-      "OBJ_93" = {
+      "OBJ_96" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
-            ENABLE_TESTABILITY = "YES";
+            CLANG_ENABLE_MODULES = "YES";
+            EMBEDDED_CONTENT_CONTAINS_SWIFT = "YES";
             FRAMEWORK_SEARCH_PATHS = (
                "$(inherited)",
                "$(PLATFORM_DIR)/Developer/Library/Frameworks"
@@ -862,10 +1049,11 @@
             HEADER_SEARCH_PATHS = (
                "$(inherited)"
             );
-            INFOPLIST_FILE = "Gluon.xcodeproj/GluonUIKit_Info.plist";
+            INFOPLIST_FILE = "Gluon.xcodeproj/GluonTests_Info.plist";
             LD_RUNPATH_SEARCH_PATHS = (
                "$(inherited)",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
+               "@loader_path/../Frameworks",
+               "@loader_path/Frameworks"
             );
             OTHER_CFLAGS = (
                "$(inherited)"
@@ -876,22 +1064,19 @@
             OTHER_SWIFT_FLAGS = (
                "$(inherited)"
             );
-            PRODUCT_BUNDLE_IDENTIFIER = "GluonUIKit";
-            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-            SKIP_INSTALL = "YES";
             SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
                "$(inherited)"
             );
             SWIFT_VERSION = "4.2";
-            TARGET_NAME = "GluonUIKit";
+            TARGET_NAME = "GluonTests";
          };
          name = "Debug";
       };
-      "OBJ_94" = {
+      "OBJ_97" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
-            ENABLE_TESTABILITY = "YES";
+            CLANG_ENABLE_MODULES = "YES";
+            EMBEDDED_CONTENT_CONTAINS_SWIFT = "YES";
             FRAMEWORK_SEARCH_PATHS = (
                "$(inherited)",
                "$(PLATFORM_DIR)/Developer/Library/Frameworks"
@@ -899,10 +1084,11 @@
             HEADER_SEARCH_PATHS = (
                "$(inherited)"
             );
-            INFOPLIST_FILE = "Gluon.xcodeproj/GluonUIKit_Info.plist";
+            INFOPLIST_FILE = "Gluon.xcodeproj/GluonTests_Info.plist";
             LD_RUNPATH_SEARCH_PATHS = (
                "$(inherited)",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
+               "@loader_path/../Frameworks",
+               "@loader_path/Frameworks"
             );
             OTHER_CFLAGS = (
                "$(inherited)"
@@ -913,45 +1099,24 @@
             OTHER_SWIFT_FLAGS = (
                "$(inherited)"
             );
-            PRODUCT_BUNDLE_IDENTIFIER = "GluonUIKit";
-            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-            SKIP_INSTALL = "YES";
             SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
                "$(inherited)"
             );
             SWIFT_VERSION = "4.2";
-            TARGET_NAME = "GluonUIKit";
+            TARGET_NAME = "GluonTests";
          };
          name = "Release";
       };
-      "OBJ_95" = {
+      "OBJ_98" = {
          isa = "PBXSourcesBuildPhase";
          files = (
-            "OBJ_96",
-            "OBJ_97",
-            "OBJ_98",
             "OBJ_99",
-            "OBJ_100",
-            "OBJ_101",
-            "OBJ_102"
+            "OBJ_100"
          );
-      };
-      "OBJ_96" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_29";
-      };
-      "OBJ_97" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_31";
-      };
-      "OBJ_98" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_32";
       };
       "OBJ_99" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_33";
+         fileRef = "OBJ_42";
       };
    };
    rootObject = "OBJ_1";

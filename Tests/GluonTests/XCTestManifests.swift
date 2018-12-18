@@ -1,6 +1,6 @@
 import XCTest
 
-#if !os(macOS)
+#if os(Linux)
 public func allTests() -> [XCTestCaseEntry] {
     return [
         testCase(GluonTests.allTests),

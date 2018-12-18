@@ -1,4 +1,6 @@
 import XCTest
+import GluonTestRenderer
+
 @testable import Gluon
 
 final class GluonTests: XCTestCase {

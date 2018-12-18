@@ -13,6 +13,9 @@ let package = Package(
         .library(
             name: "GluonUIKit",
             targets: ["GluonUIKit"]),
+        .library(
+            name: "GluonTestRenderer",
+            targets: ["GluonTestRenderer"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -27,8 +30,11 @@ let package = Package(
         .target(
             name: "GluonUIKit",
             dependencies: ["Gluon"]),
+        .target(
+            name: "GluonTestRenderer",
+            dependencies: ["Gluon"]),
         .testTarget(
             name: "GluonTests",
-            dependencies: ["Gluon"]),
+            dependencies: ["GluonTestRenderer"]),
     ]
 )
