@@ -6,3 +6,7 @@
 //
 
 import Gluon
+
+public class TestView {
+
+}
