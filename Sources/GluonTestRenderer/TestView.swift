@@ -17,11 +17,16 @@ public final class TestView {
   /// Props assigned to this test view.
   public internal(set) var props: AnyEquatable
   
-  /// Initialize a new test view.
+  /** Initialize a new test view.
+    - parameter props: base component props to initialize the test view
+  */
   init(props: AnyEquatable) {
     self.props = props
   }
   
+  /** Add a subview to this test view.
+    - parameter subview: the subview to be added to this view.
+  */
   func add(subview: TestView) {
     subviews.append(subview)
   }
