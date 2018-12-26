@@ -30,4 +30,11 @@ public final class TestView {
   func add(subview: TestView) {
     subviews.append(subview)
   }
+  
+  /** Remove a subview from this test view.
+    - parameter subview: the subview to be removed from this view.
+  */
+  func remove(subview: TestView) {
+    subviews.remove(subview)
+  }
 }
