@@ -11,7 +11,7 @@ public class TestRenderer: Renderer {
   private var reconciler: StackReconciler?
 
   public init(node: Node) {
-    reconciler = StackReconciler(node: node, target: TestView(props: AnyEquatable(Null()), renderer: self)
+    reconciler = StackReconciler(node: node, target: TestView(props: AnyEquatable(Null())), renderer: self)
   }
 
   public func mountTarget(to parent: Any,

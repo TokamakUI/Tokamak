@@ -35,6 +35,6 @@ public final class TestView {
     - parameter subview: the subview to be removed from this view.
   */
   func remove(subview: TestView) {
-    subviews.remove { $0 === subview }
+    subviews.removeAll { $0 === subview }
   }
 }
