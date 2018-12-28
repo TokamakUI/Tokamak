@@ -17,6 +17,8 @@ public final class TestView {
   /// Props assigned to this test view.
   public internal(set) var props: AnyEquatable
 
+  private weak var parent: TestView?
+
   /** Initialize a new test view.
    - parameter props: base component props to initialize the test view
    */
@@ -29,6 +31,7 @@ public final class TestView {
    */
   func add(subview: TestView) {
     subviews.append(subview)
+    subview.parent = self
   }
 
   /** Remove a subview from this test view.
@@ -36,5 +39,10 @@ public final class TestView {
    */
   func remove(subview: TestView) {
     subviews.removeAll { $0 === subview }
+  }
+
+  /// Remove this test view from a superview if there is any
+  func removeFromSuperview() {
+    parent?.remove(subview: self)
   }
 }

@@ -4,14 +4,13 @@ import XCTest
 @testable import Gluon
 
 final class GluonTests: XCTestCase {
-  func testExample() {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct
-    // results.
-//        XCTAssertEqual(Gluon().text, "Hello, World!")
-  }
+  func testMount() {}
+
+  func testUpdate() {}
+
+  func testUnmount() {}
 
   static var allTests = [
-    ("testExample", testExample),
+    ("testMount", testMount),
   ]
 }
