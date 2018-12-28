@@ -4,13 +4,21 @@
 
 osx_image: xcode10.1
 language: swift
+before_install:
+# - gem install cocoapods --pre # Since Travis is not always on latest version
+- brew update
+- brew install swiftformat
+# - brew outdated carthage || brew upgrade carthage
 # cache: cocoapods
 # podfile: Example/Podfile
 # before_install:
 # - gem install cocoapods # Since Travis is not always on latest version
 # - pod install --project-directory=Example
 script:
+- swiftformat --lint --verbose .
 - xcodebuild test -enableCodeCoverage YES -scheme Gluon-Package
+after_success:
+- bash <(curl -s https://codecov.io/bash)
 # - swift build
 # - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/Gluon.xcworkspace -scheme Gluon-Example -sdk iphonesimulator9.3 ONLY_ACTIVE_ARCH=NO | xcpretty
 # - pod lib lint

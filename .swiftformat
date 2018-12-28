@@ -5,3 +5,4 @@
 --empty tuple
 --operatorfunc nospace
 --ifdef noindent
+--stripunusedargs closure-only
