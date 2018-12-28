@@ -9,7 +9,7 @@ import Gluon
 import UIKit
 
 public protocol UIKitControlComponent: UIKitHostComponent, HostComponent
-where Props: EventHandlerProps {
+  where Props: EventHandlerProps {
   associatedtype Target: UIControl & Default
 
   static func update(_ view: Target, _ props: Props, _ children: Children)
@@ -18,7 +18,7 @@ where Props: EventHandlerProps {
 extension UIKitControlComponent {
   public static func bind(handlers: [Event: Handler<()>],
                           for target: ControlWrapper<Target>)
-  -> ControlWrapper<Target> {
+    -> ControlWrapper<Target> {
     var target = target
 
     for (e, h) in handlers {

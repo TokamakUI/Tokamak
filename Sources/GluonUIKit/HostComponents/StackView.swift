@@ -39,8 +39,7 @@ public struct StackView: HostComponent {
   public typealias Children = [Node]
 }
 
-extension UIStackView: Default {
-}
+extension UIStackView: Default {}
 
 extension StackViewProps.Axis {
   var value: NSLayoutConstraint.Axis {
@@ -71,7 +70,7 @@ extension StackViewProps.Distribution {
 extension StackView: UIKitViewComponent {
   public static func update(_ view: UIStackView,
                             _ props: StackViewProps,
-                            _ children: [Node]) {
+                            _: [Node]) {
     view.axis = props.axis.value
     view.distribution = props.distribution.value
     view.frame = props.frame

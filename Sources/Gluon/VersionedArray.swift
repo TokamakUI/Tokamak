@@ -22,9 +22,7 @@ enum ArrayChange<T> {
   case batchRemove(Range<Int>)
 }
 
-struct ArrayChanges {
-
-}
+struct ArrayChanges {}
 
 struct VersionedArray<T> {
   let startIndex = 0
@@ -49,20 +47,15 @@ struct VersionedArray<T> {
     currentVersion = ArrayVersion()
   }
 
-  func changes(since: ArrayVersion) -> ArrayChanges? {
+  func changes(since _: ArrayVersion) -> ArrayChanges? {
     return nil
   }
 
-  mutating func apply(_ changes: ArrayChanges) {
+  mutating func apply(_: ArrayChanges) {}
 
-  }
+  mutating func flush(_: ArrayVersion) {}
 
-  mutating func flush(_ version: ArrayVersion) {
-
-  }
-
-  mutating func flushAllVersions() {
-  }
+  mutating func flushAllVersions() {}
 }
 
 extension VersionedArray: ExpressibleByArrayLiteral {

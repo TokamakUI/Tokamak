@@ -27,8 +27,7 @@ public struct Button: HostComponent {
   public typealias Children = String
 }
 
-extension UIButton: Default {
-}
+extension UIButton: Default {}
 
 extension Button: UIKitControlComponent {
   public static func update(_ view: UIButton,

@@ -20,19 +20,19 @@
  have problems with targets cast to a wrong type. It's an invalid behaviour for
  a user to create children nodes of a wrong type and renderer code is supposed
  to trigger an assertion failure in this case to avoid wrong type casts later.
-*/
+ */
 public protocol Renderer: class {
   /** Function called by a reconciler when a new target instance should be
    created.
    - parameter parent: Parent target that will own a newly created target
-                       instance.
+   instance.
    - parameter component: Type of the base component that renders to the
-                          newly created target.
+   newly created target.
    - parameter props: Props used to configure the new target.
    - parameter children: Children of the rendered base component for the new
-                         target.
+   target.
    - returns: The newly created target.
-  */
+   */
   func mountTarget(to parent: Any,
                    with component: AnyHostComponent.Type,
                    props: AnyEquatable,
@@ -42,14 +42,14 @@ public protocol Renderer: class {
    updated.
    - parameter target: Existing target instance to be updated.
    - parameter component: Type of the base component that renders to the
-                          updated target.
+   updated target.
    - parameter props: Props used to configure the existing target. This props
-                      value can be different from props passed on previous
-                      updates or on target creation. The props value is wrapped
-                      with `AnyEquatable` for type-erasure purposes.
+   value can be different from props passed on previous
+   updates or on target creation. The props value is wrapped
+   with `AnyEquatable` for type-erasure purposes.
    - parameter children: Children used to configure the existing target. These
-                         children can be different from children passed on
-                         previous updates or on target creation.
+   children can be different from children passed on
+   previous updates or on target creation.
    */
   func update(target: Any,
               with component: AnyHostComponent.Type,

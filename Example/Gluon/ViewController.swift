@@ -6,10 +6,10 @@
 //  Copyright (c) 2018 Max Desiatov. All rights reserved.
 //
 
-import UIKit
 import Gluon
+import UIKit
 
-//struct TodoList: Store {
+// struct TodoList: Store {
 //  enum Action {
 //    case add(String, Int)
 //    case remove(Int)
@@ -28,7 +28,7 @@ import Gluon
 //      state.remove(at: index)
 //    }
 //  }
-//}
+// }
 
 struct Counter: LeafComponent {
   struct Props: Equatable {
@@ -46,8 +46,8 @@ struct Counter: LeafComponent {
     return StackView.node(.init(axis: .vertical,
                                 distribution: .fillEqually,
                                 frame: props.frame), [
-      Button.node(.init(handlers: [.touchUpInside: handler]), "Increment"),
-      Label.node(Null(), "\(count)")
+        Button.node(.init(handlers: [.touchUpInside: handler]), "Increment"),
+                                  Label.node(Null(), "\(count)"),
     ])
   }
 }
@@ -70,7 +70,7 @@ final class GluonViewController: UIViewController {
                              target: view)
   }
 
-  @IBAction func onTap(_ sender: Any) {
+  @IBAction func onTap(_: Any) {
 //    let counters = (0..<1_000_000).map { _ in Counter(props: NoProps(), children: []) }
     print(#file)
   }
@@ -98,4 +98,3 @@ final class ClassicViewController: UIViewController {
     view.addSubview(label)
   }
 }
-

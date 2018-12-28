@@ -24,6 +24,7 @@ extension UIKitHostComponent {
   static func targetAssertionFailure(_ function: String = #function) {
     typeAssertionFailure("target", function)
   }
+
   static func childrenAssertionFailure(_ function: String = #function) {
     typeAssertionFailure("children", function)
   }
@@ -57,9 +58,9 @@ public class UIKitRenderer: Renderer {
   }
 
   public func mountTarget(to parent: Any,
-                   with component: AnyHostComponent.Type,
-                   props: AnyEquatable,
-                   children: AnyEquatable) -> Any? {
+                          with component: AnyHostComponent.Type,
+                          props: AnyEquatable,
+                          children: AnyEquatable) -> Any? {
     guard let rendererComponent = component as? UIKitHostComponent.Type else {
       typeAssertionFailure(for: component)
       return nil
@@ -71,9 +72,9 @@ public class UIKitRenderer: Renderer {
   }
 
   public func update(target: Any,
-              with component: AnyHostComponent.Type,
-              props: AnyEquatable,
-              children: AnyEquatable) {
+                     with component: AnyHostComponent.Type,
+                     props: AnyEquatable,
+                     children: AnyEquatable) {
     guard let rendererComponent = component as? UIKitHostComponent.Type else {
       typeAssertionFailure(for: component)
       return
@@ -93,4 +94,3 @@ public class UIKitRenderer: Renderer {
     rendererComponent.unmount(target: target)
   }
 }
-

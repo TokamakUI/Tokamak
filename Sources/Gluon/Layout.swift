@@ -100,15 +100,15 @@ public struct ConstraintProps: Equatable {
   public let width: Size?
 
   public init(baseline: VerticalLocation? = nil,
-       bottom: VerticalLocation? = nil,
-       center: Center? = nil,
-       centerX: HorizontalLocation? = nil,
-       centerY: VerticalLocation? = nil,
-       height: Size? = nil,
-       left: HorizontalLocation? = nil,
-       right: HorizontalLocation? = nil,
-       top: VerticalLocation? = nil,
-       width: Size? = nil) {
+              bottom: VerticalLocation? = nil,
+              center: Center? = nil,
+              centerX: HorizontalLocation? = nil,
+              centerY: VerticalLocation? = nil,
+              height: Size? = nil,
+              left: HorizontalLocation? = nil,
+              right: HorizontalLocation? = nil,
+              top: VerticalLocation? = nil,
+              width: Size? = nil) {
     self.width = width
     self.height = height
     self.centerX = centerX
@@ -125,6 +125,4 @@ public struct ConstraintProps: Equatable {
 public struct Constraint: HostComponent {
   public typealias Props = ConstraintProps
   public typealias Children = [Node]
-
-
 }

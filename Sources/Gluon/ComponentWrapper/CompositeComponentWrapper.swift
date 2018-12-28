@@ -43,7 +43,6 @@ final class CompositeComponentWrapper: ComponentWrapper {
 
   func update(with reconciler: StackReconciler) {
     switch (mountedChildren.last, render(with: reconciler)) {
-
     // no mounted children, but children available now
     case let (nil, renderedNode):
       let child = renderedNode.makeComponentWrapper(parentTarget)
@@ -53,20 +52,20 @@ final class CompositeComponentWrapper: ComponentWrapper {
     // some mounted children
     case let (wrapper?, renderedNode):
       // new node is the same type as existing child, checking props/children
-      if wrapper.node.type == renderedNode.type &&
+      if wrapper.node.type == renderedNode.type,
         (wrapper.node.props != renderedNode.props ||
           wrapper.node.children != renderedNode.children) {
         wrapper.node = renderedNode
         wrapper.update(with: reconciler)
       } else
-        // new node is of different type, complete rerender, i.e. unmount old
-        // wrapper, then mount a new one with new node
-        if wrapper.node.type != renderedNode.type {
-          wrapper.unmount(with: reconciler)
+      // new node is of different type, complete rerender, i.e. unmount old
+      // wrapper, then mount a new one with new node
+      if wrapper.node.type != renderedNode.type {
+        wrapper.unmount(with: reconciler)
 
-          let child = renderedNode.makeComponentWrapper(parentTarget)
-          mountedChildren = [child]
-          child.mount(with: reconciler)
+        let child = renderedNode.makeComponentWrapper(parentTarget)
+        mountedChildren = [child]
+        child.mount(with: reconciler)
       }
     }
   }

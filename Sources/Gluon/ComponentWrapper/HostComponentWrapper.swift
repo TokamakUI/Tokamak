@@ -23,7 +23,7 @@ final class HostComponentWrapper: ComponentWrapper {
                                                         with: type,
                                                         props: node.props,
                                                         children: node.children)
-      else { return }
+    else { return }
 
     self.target = target
 
@@ -76,9 +76,9 @@ final class HostComponentWrapper: ComponentWrapper {
         var newChildren = [ComponentWrapper]()
 
         while let child = mountedChildren.first, let node = nodes.first {
-          if node.key != nil &&
-          node.type == mountedChildren[0].node.type &&
-          node.key == child.node.key {
+          if node.key != nil,
+            node.type == mountedChildren[0].node.type,
+            node.key == child.node.key {
             child.node = node
             child.update(with: reconciler)
             newChildren.append(child)
@@ -108,7 +108,7 @@ final class HostComponentWrapper: ComponentWrapper {
         child.mount(with: reconciler)
       }
 
-      // child type that can't be rendered, but still makes sense as a child
+    // child type that can't be rendered, but still makes sense as a child
     // (e.g. `String`)
     default:
       ()

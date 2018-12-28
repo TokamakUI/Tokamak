@@ -14,20 +14,16 @@ public class TestRenderer: Renderer {
     reconciler = StackReconciler(node: node, target: TestView(props: AnyEquatable(Null())), renderer: self)
   }
 
-  public func mountTarget(to parent: Any,
-                          with component: AnyHostComponent.Type,
-                          props: AnyEquatable, children: AnyEquatable) -> Any? {
+  public func mountTarget(to _: Any,
+                          with _: AnyHostComponent.Type,
+                          props _: AnyEquatable, children _: AnyEquatable) -> Any? {
     return nil
   }
 
-  public func update(target: Any,
-                     with component: AnyHostComponent.Type,
-                     props: AnyEquatable,
-                     children: AnyEquatable) {
+  public func update(target _: Any,
+                     with _: AnyHostComponent.Type,
+                     props _: AnyEquatable,
+                     children _: AnyEquatable) {}
 
-  }
-
-  public func unmount(target: Any, with component: AnyHostComponent.Type) {
-
-  }
+  public func unmount(target _: Any, with _: AnyHostComponent.Type) {}
 }

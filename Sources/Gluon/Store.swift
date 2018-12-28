@@ -58,8 +58,8 @@ public protocol Store {
 }
 
 // FIXME: need context working for its implementation
-//public final class StoreProvider<S>: Component<StoreProvider.Props, S>
-//where S: Store & StateType {
+// public final class StoreProvider<S>: Component<StoreProvider.Props, S>
+// where S: Store & StateType {
 //  struct Props: Equatable {
 //    /// FIXME: should store comparison be optimised this way?
 //    let store: Unique<S>
@@ -73,13 +73,13 @@ public protocol Store {
 //    // FIXME: create a context here
 //    return Node(children)
 //  }
-//}
+// }
 //
 //typealias Dispatch<Action> = (Action) -> ()
 //typealias Dispatcher<S: Store> = (state: S.State, dispatch: Dispatch<S.Action>)
 
 // FIXME: when contexts are available read state and dispatch
 // from the context and pass it to the mapper
-//func storeAccess<S: Store>(_ mapper: (Dispatcher<S>) -> Node) {
+// func storeAccess<S: Store>(_ mapper: (Dispatcher<S>) -> Node) {
 //
-//}
+// }

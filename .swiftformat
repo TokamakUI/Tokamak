@@ -1,0 +1,6 @@
+--indent 2
+--indentcase false
+--trimwhitespace always
+--ranges nospace
+--empty tuple
+--operatorfunc nospace

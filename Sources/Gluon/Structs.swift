@@ -8,14 +8,12 @@
 import Foundation
 
 extension Never: Equatable {
-  public static func == (lhs: Never, rhs: Never) -> Bool {
-    switch (lhs, rhs) {
-    }
+  public static func ==(lhs: Never, rhs: Never) -> Bool {
+    switch (lhs, rhs) {}
   }
 }
 
-public protocol AnyHostComponent {
-}
+public protocol AnyHostComponent {}
 
 public protocol HostComponent: AnyHostComponent {
   associatedtype Props: Equatable
@@ -39,7 +37,7 @@ public protocol CompositeComponent: AnyCompositeComponent {
 public extension CompositeComponent {
   static func render(props: AnyEquatable, children: AnyEquatable) -> Node {
     guard let props = props.value as? Props,
-    let children = children.value as? Children else {
+      let children = children.value as? Children else {
       fatalError("""
         incorrect types of `props` and `children` arguments passed to
         `AnyComponent.render`
@@ -54,13 +52,13 @@ public protocol LeafComponent: CompositeComponent where Children == Null {
 }
 
 public extension LeafComponent {
-  public static func render(props: Props, children: Children) -> Node {
+  public static func render(props: Props, children _: Children) -> Node {
     return render(props: props)
   }
 }
 
 enum ComponentType: Equatable {
-  static func == (lhs: ComponentType, rhs: ComponentType) -> Bool {
+  static func ==(lhs: ComponentType, rhs: ComponentType) -> Bool {
     switch (lhs, rhs) {
     case let (.base(ltype), .base(rtype)):
       return ltype == rtype
@@ -93,6 +91,5 @@ public struct View: HostComponent {
   public let props: Props
   public let children: [Node]
 
-  public struct Props: Equatable {
-  }
+  public struct Props: Equatable {}
 }

@@ -1,9 +1,9 @@
 import XCTest
 
 #if os(Linux)
-public func allTests() -> [XCTestCaseEntry] {
+  public func allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(GluonTests.allTests),
+      testCase(GluonTests.allTests),
     ]
-}
+  }
 #endif
