@@ -27,7 +27,9 @@ pod 'Gluon'
 
 ## License
 
-Gluon is available under the MIT license. See the LICENSE file for more info.
+Gluon is available under the Apache 2.0 license. See the
+[LICENSE](https://github.com/MaxDesiatov/Gluon/blob/master/LICENSE) file for
+more info.
 
 ## Contributing
 
