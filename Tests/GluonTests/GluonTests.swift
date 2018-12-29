@@ -24,7 +24,7 @@ struct Counter: LeafComponent {
                                 distribution: .fillEqually,
                                 frame: .zero), [
         Button.node(.init(handlers: [.touchUpInside: handler]), "Increment"),
-        Label.node(Null(), "\(count)"),
+                                  Label.node(Null(), "\(count)"),
     ])
   }
 }

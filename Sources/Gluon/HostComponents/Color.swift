@@ -18,10 +18,10 @@ public struct Color: Equatable {
   public let space: Space
 
   public init(red: Double,
-       green: Double,
-       blue: Double,
-       alpha: Double,
-       space: Space = .sRGB) {
+              green: Double,
+              blue: Double,
+              alpha: Double,
+              space: Space = .sRGB) {
     self.red = red
     self.green = green
     self.blue = blue
