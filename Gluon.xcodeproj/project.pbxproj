@@ -24,8 +24,8 @@
 		D1E0C83121D77F660042A261 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83021D77F660042A261 /* Button.swift */; };
 		D1E0C83321D77F9D0042A261 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83221D77F9D0042A261 /* Label.swift */; };
 		D1E0C83521D77FF60042A261 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83421D77FF60042A261 /* StackView.swift */; };
-		D1E0C83721D780690042A261 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83621D780690042A261 /* Frame.swift */; };
-		D1E0C83921D782200042A261 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83821D782200042A261 /* Frame.swift */; };
+		D1E0C83721D780690042A261 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83621D780690042A261 /* Rectangle.swift */; };
+		D1E0C83921D782200042A261 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83821D782200042A261 /* Rectangle.swift */; };
 		D1E0C83E21D7AC570042A261 /* ControlWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83D21D7AC570042A261 /* ControlWrapper.swift */; };
 		D1E0C84021D7AD480042A261 /* UIKitHostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83F21D7AD480042A261 /* UIKitHostComponent.swift */; };
 		D1E0C84321D7BE9B0042A261 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C84221D7BE9B0042A261 /* View.swift */; };
@@ -108,8 +108,8 @@
 		D1E0C83021D77F660042A261 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		D1E0C83221D77F9D0042A261 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		D1E0C83421D77FF60042A261 /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
-		D1E0C83621D780690042A261 /* Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Frame.swift; sourceTree = "<group>"; };
-		D1E0C83821D782200042A261 /* Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Frame.swift; sourceTree = "<group>"; };
+		D1E0C83621D780690042A261 /* Rectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rectangle.swift; sourceTree = "<group>"; };
+		D1E0C83821D782200042A261 /* Rectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rectangle.swift; sourceTree = "<group>"; };
 		D1E0C83D21D7AC570042A261 /* ControlWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlWrapper.swift; sourceTree = "<group>"; };
 		D1E0C83F21D7AD480042A261 /* UIKitHostComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitHostComponent.swift; sourceTree = "<group>"; };
 		D1E0C84221D7BE9B0042A261 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
@@ -193,7 +193,7 @@
 				D1E0C83021D77F660042A261 /* Button.swift */,
 				D1E0C83221D77F9D0042A261 /* Label.swift */,
 				D1E0C83421D77FF60042A261 /* StackView.swift */,
-				D1E0C83821D782200042A261 /* Frame.swift */,
+				D1E0C83821D782200042A261 /* Rectangle.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -239,7 +239,7 @@
 				OBJ_26 /* Button.swift */,
 				OBJ_27 /* Label.swift */,
 				OBJ_28 /* StackView.swift */,
-				D1E0C83621D780690042A261 /* Frame.swift */,
+				D1E0C83621D780690042A261 /* Rectangle.swift */,
 				D1E0C84221D7BE9B0042A261 /* View.swift */,
 			);
 			path = HostComponents;
@@ -474,7 +474,7 @@
 			buildActionMask = 0;
 			files = (
 				D1E0C84021D7AD480042A261 /* UIKitHostComponent.swift in Sources */,
-				D1E0C83921D782200042A261 /* Frame.swift in Sources */,
+				D1E0C83921D782200042A261 /* Rectangle.swift in Sources */,
 				D1E0C83E21D7AC570042A261 /* ControlWrapper.swift in Sources */,
 				OBJ_116 /* ActionTarget.swift in Sources */,
 				D1E0C83121D77F660042A261 /* Button.swift in Sources */,
@@ -491,7 +491,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				D1E0C83721D780690042A261 /* Frame.swift in Sources */,
+				D1E0C83721D780690042A261 /* Rectangle.swift in Sources */,
 				OBJ_56 /* AnyEquatable.swift in Sources */,
 				OBJ_57 /* Color.swift in Sources */,
 				OBJ_58 /* ComponentWrapper.swift in Sources */,

@@ -1,18 +1,22 @@
 PODS:
-  - Gluon/Core (0.1.0)
-  - Gluon/UIKit (0.1.0):
-    - Gluon/Core
+  - Gluon (0.1.0)
+  - GluonUIKit (0.1.0):
+    - Gluon (~> 0.1)
 
 DEPENDENCIES:
-  - Gluon/UIKit (from `../`)
+  - Gluon (from `..`)
+  - GluonUIKit (from `..`)
 
 EXTERNAL SOURCES:
   Gluon:
-    :path: "../"
+    :path: ".."
+  GluonUIKit:
+    :path: ".."
 
 SPEC CHECKSUMS:
-  Gluon: 72739e8e7543b0e586a01e153f724f4cde917151
+  Gluon: eadaa75b42ec8d25a0ecbbda4facf014e3152ead
+  GluonUIKit: 584115b877c27d2b953e465c8bedc81f2eff8195
 
-PODFILE CHECKSUM: 04f303581f66676a6c3d5ee819cb24a969fee974
+PODFILE CHECKSUM: 7ae7a1e41c0d1d189f90a2ae8f9614de0c3fcec2
 
 COCOAPODS: 1.6.0.beta.2
