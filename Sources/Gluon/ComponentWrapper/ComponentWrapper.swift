@@ -5,12 +5,22 @@
 //  Created by Max Desiatov on 28/11/2018.
 //
 
-protocol ComponentWrapper: class {
-  var node: Node { get set }
+class ComponentWrapper<R: Renderer> {
+  var node: Node
 
-  func mount(with reconciler: StackReconciler)
+  init(_ node: Node) {
+    self.node = node
+  }
 
-  func unmount(with reconciler: StackReconciler)
+  func mount(with reconciler: StackReconciler<R>) {
+    fatalError("implement \(#function) in subclass")
+  }
 
-  func update(with reconciler: StackReconciler)
+  func unmount(with reconciler: StackReconciler<R>) {
+    fatalError("implement \(#function) in subclass")
+  }
+
+  func update(with reconciler: StackReconciler<R>) {
+    fatalError("implement \(#function) in subclass")
+  }
 }

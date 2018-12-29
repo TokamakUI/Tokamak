@@ -10,18 +10,17 @@
  signature that works well for that platform. Methods required by this
  protocol are used by a reconciler (`StackReconciler` instance) to notify
  the renderer about updates in the component tree.
-
- A `Renderer` operates on targets of type `Any` due to lack of generalized
- existentials in Swift. If a target type was an associated type of this
- protocol, a `StackReconciler` instance wouldn't have a concrete renderer type
- to delegate rendering to.
-
- Despite that fact, a valid bug-free and consistent renderer shouldn't
- have problems with targets cast to a wrong type. It's an invalid behaviour for
- a user to create children nodes of a wrong type and renderer code is supposed
- to trigger an assertion failure in this case to avoid wrong type casts later.
  */
 public protocol Renderer: class {
+  /** Component nodes are rendered to platform-specific targets with a renderer.
+   Usually a target is a simple view (`UIView` and `NSView` for `UIKit`
+   and `AppKit` respectively), but can also include other helper types like
+   layout constraints (e.g. `NSLayoutConstraint`). A renderer would most
+   probably create its own type hierarchy to be able to reason about
+   all possible target types available on a specific platform.
+  */
+  associatedtype Target
+
   /** Function called by a reconciler when a new target instance should be
    created.
    - parameter parent: Parent target that will own a newly created target
@@ -33,10 +32,10 @@ public protocol Renderer: class {
    target.
    - returns: The newly created target.
    */
-  func mountTarget(to parent: Any,
+  func mountTarget(to parent: Target,
                    with component: AnyHostComponent.Type,
                    props: AnyEquatable,
-                   children: AnyEquatable) -> Any?
+                   children: AnyEquatable) -> Target?
 
   /** Function called by a reconciler when an existing target instance should be
    updated.
@@ -51,7 +50,7 @@ public protocol Renderer: class {
    children can be different from children passed on
    previous updates or on target creation.
    */
-  func update(target: Any,
+  func update(target: Target,
               with component: AnyHostComponent.Type,
               props: AnyEquatable,
               children: AnyEquatable)
@@ -62,6 +61,6 @@ public protocol Renderer: class {
    - parameter component: Type of the base component that renders to the
    updated target.
    */
-  func unmount(target: Any,
+  func unmount(target: Target,
                with component: AnyHostComponent.Type)
 }

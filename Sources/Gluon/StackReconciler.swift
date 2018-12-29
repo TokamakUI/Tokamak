@@ -7,14 +7,14 @@
 
 import Dispatch
 
-public final class StackReconciler {
-  private var queuedState = [(CompositeComponentWrapper, String, Any)]()
+public final class StackReconciler<R: Renderer> {
+  private var queuedState = [(CompositeComponentWrapper<R>, String, Any)]()
 
-  public let rootTarget: Any
-  private let rootComponent: ComponentWrapper
-  private(set) weak var renderer: Renderer?
+  public let rootTarget: R.Target
+  private let rootComponent: ComponentWrapper<R>
+  private(set) weak var renderer: R?
 
-  public init(node: Node, target: Any, renderer: Renderer) {
+  public init(node: Node, target: R.Target, renderer: R) {
     self.renderer = renderer
     rootTarget = target
 
@@ -23,7 +23,9 @@ public final class StackReconciler {
     rootComponent.mount(with: self)
   }
 
-  func queue(state: Any, for component: CompositeComponentWrapper, id: String) {
+  func queue(state: Any,
+             for component: CompositeComponentWrapper<R>,
+             id: String) {
     let scheduleReconcile = queuedState.isEmpty
 
     queuedState.append((component, id, state))

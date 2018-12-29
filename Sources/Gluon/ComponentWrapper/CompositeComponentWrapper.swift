@@ -14,38 +14,40 @@ extension CompositeComponent {
   }
 }
 
-final class CompositeComponentWrapper: ComponentWrapper {
-  var node: Node
-  private var mountedChildren = [ComponentWrapper]()
+final class CompositeComponentWrapper<R: Renderer>: ComponentWrapper<R> {
+  private var mountedChildren = [ComponentWrapper<R>]()
   private let type: AnyCompositeComponent.Type
-  private let parentTarget: Any
+  private let parentTarget: R.Target
   var state = [String: Any]()
 
-  init(_ node: Node, _ type: AnyCompositeComponent.Type, _ parentTarget: Any) {
-    self.node = node
+  init(_ node: Node, _ type: AnyCompositeComponent.Type, _ parentTarget: R.Target) {
     self.type = type
     self.parentTarget = parentTarget
+
+    super.init(node)
   }
 
-  func mount(with reconciler: StackReconciler) {
+  override func mount(with reconciler: StackReconciler<R>) {
     let renderedNode = render(with: reconciler)
 
-    let child = renderedNode.makeComponentWrapper(parentTarget)
+    let child: ComponentWrapper<R> =
+      renderedNode.makeComponentWrapper(parentTarget)
     mountedChildren = [child]
     child.mount(with: reconciler)
   }
 
-  func unmount(with reconciler: StackReconciler) {
+  override func unmount(with reconciler: StackReconciler<R>) {
     mountedChildren.forEach { $0.unmount(with: reconciler) }
     // FIXME: Should call `hooks.effect` finalizers here after `hooks.effect`
     // is implemented
   }
 
-  func update(with reconciler: StackReconciler) {
+  override func update(with reconciler: StackReconciler<R>) {
     switch (mountedChildren.last, render(with: reconciler)) {
     // no mounted children, but children available now
     case let (nil, renderedNode):
-      let child = renderedNode.makeComponentWrapper(parentTarget)
+      let child: ComponentWrapper<R> =
+        renderedNode.makeComponentWrapper(parentTarget)
       mountedChildren = [child]
       child.mount(with: reconciler)
 
@@ -63,21 +65,31 @@ final class CompositeComponentWrapper: ComponentWrapper {
       if wrapper.node.type != renderedNode.type {
         wrapper.unmount(with: reconciler)
 
-        let child = renderedNode.makeComponentWrapper(parentTarget)
+        let child: ComponentWrapper<R> =
+          renderedNode.makeComponentWrapper(parentTarget)
         mountedChildren = [child]
         child.mount(with: reconciler)
       }
     }
   }
 
-  func render(with reconciler: StackReconciler) -> Node {
-    _hooks.currentReconciler = reconciler
-    _hooks.currentComponent = self
+  func render(with reconciler: StackReconciler<R>) -> Node {
+    _hooks.currentState = { [weak self] in
+      self?.state[$0]
+    }
+
+    // Avoiding an indirect reference cycle here: this closure can be
+    // owned by callbacks owned by node's target, which is strongly referenced
+    // by the reconciler.
+    _hooks.queueState = { [weak reconciler, weak self] in
+      guard let self = self else { return }
+      reconciler?.queue(state: $0, for: self, id: $1)
+    }
 
     let result = type.render(props: node.props, children: node.children)
 
-    _hooks.currentComponent = nil
-    _hooks.currentReconciler = nil
+    _hooks.currentState = nil
+    _hooks.queueState = nil
 
     return result
   }

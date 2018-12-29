@@ -5,20 +5,20 @@
 //  Created by Max Desiatov on 03/12/2018.
 //
 
-final class HostComponentWrapper: ComponentWrapper {
-  var node: Node
-  private var mountedChildren = [ComponentWrapper]()
+final class HostComponentWrapper<R: Renderer>: ComponentWrapper<R> {
+  private var mountedChildren = [ComponentWrapper<R>]()
   private let type: AnyHostComponent.Type
-  private let parentTarget: Any
-  private var target: Any?
+  private let parentTarget: R.Target
+  private var target: R.Target?
 
-  init(_ node: Node, _ type: AnyHostComponent.Type, _ parentTarget: Any) {
+  init(_ node: Node, _ type: AnyHostComponent.Type, _ parentTarget: R.Target) {
     self.type = type
-    self.node = node
     self.parentTarget = parentTarget
+
+    super.init(node)
   }
 
-  func mount(with reconciler: StackReconciler) {
+  override func mount(with reconciler: StackReconciler<R>) {
     guard let target = reconciler.renderer?.mountTarget(to: parentTarget,
                                                         with: type,
                                                         props: node.props,
@@ -33,7 +33,7 @@ final class HostComponentWrapper: ComponentWrapper {
       mountedChildren.forEach { $0.mount(with: reconciler) }
 
     case let node as Node:
-      let child = node.makeComponentWrapper(target)
+      let child: ComponentWrapper<R> = node.makeComponentWrapper(target)
       mountedChildren = [child]
       child.mount(with: reconciler)
 
@@ -44,13 +44,13 @@ final class HostComponentWrapper: ComponentWrapper {
     }
   }
 
-  func unmount(with reconciler: StackReconciler) {
+  override func unmount(with reconciler: StackReconciler<R>) {
     guard let target = target else { return }
 
     reconciler.renderer?.unmount(target: target, with: type)
   }
 
-  func update(with reconciler: StackReconciler) {
+  override func update(with reconciler: StackReconciler<R>) {
     guard let target = target else { return }
 
     reconciler.renderer?.update(target: target,
@@ -73,7 +73,7 @@ final class HostComponentWrapper: ComponentWrapper {
 
       // both arrays have items, reconcile by types and keys
       case (false, false):
-        var newChildren = [ComponentWrapper]()
+        var newChildren = [ComponentWrapper<R>]()
 
         while let child = mountedChildren.first, let node = nodes.first {
           if node.key != nil,
@@ -85,7 +85,8 @@ final class HostComponentWrapper: ComponentWrapper {
             mountedChildren.removeFirst()
           } else {
             child.unmount(with: reconciler)
-            let newChild = node.makeComponentWrapper(target)
+            let newChild: ComponentWrapper<R> =
+              node.makeComponentWrapper(target)
             newChild.mount(with: reconciler)
             newChildren.append(newChild)
           }
@@ -104,7 +105,7 @@ final class HostComponentWrapper: ComponentWrapper {
         child.node = node
         child.update(with: reconciler)
       } else {
-        let child = node.makeComponentWrapper(target)
+        let child: ComponentWrapper<R> = node.makeComponentWrapper(target)
         child.mount(with: reconciler)
       }
 
