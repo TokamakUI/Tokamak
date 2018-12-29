@@ -57,10 +57,10 @@ struct Counter: LeafComponent {
 }
 
 struct App: LeafComponent {
-  typealias Props = StackViewProps
+  typealias Props = Rectangle
 
-  static func render(props: StackViewProps) -> Node {
-    return Counter.node(.init(frame: props.frame, initial: 5))
+  static func render(props: Rectangle) -> Node {
+    return Counter.node(.init(frame: props, initial: 5))
   }
 }
 
@@ -70,7 +70,7 @@ final class GluonViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    renderer = UIKitRenderer(node: App.node(.init(frame: Rectangle(view.frame))),
+    renderer = UIKitRenderer(node: App.node(Rectangle(view.frame)),
                              target: view)
   }
 

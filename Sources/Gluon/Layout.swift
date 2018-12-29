@@ -5,8 +5,6 @@
 //  Created by Max Desiatov on 16/10/2018.
 //
 
-import Foundation
-
 public struct ConstraintProps: Equatable {
   public enum Target {
     case next

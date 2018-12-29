@@ -5,10 +5,11 @@
 //  Created by Max Desiatov on 06/11/2018.
 //
 
-import Foundation
-
+/// Typealias for closures returning no value and wrapped with `Unique`.
 public typealias Handler<T> = Unique<(T) -> ()>
 
+/// Classes have identity even when they have no content. `UniqueReference`
+/// defines `Equatable` as an identity comparison.
 class UniqueReference {}
 
 extension UniqueReference: Equatable {
@@ -17,10 +18,17 @@ extension UniqueReference: Equatable {
   }
 }
 
+/// `Unique` works around the fact that `ObjectIdentifier` can't take
+/// closures as arguments despite closures being reference types and having
+/// identity. `Unique` implements `Equatable`, but will return `false` on
+/// equality comparison of different identities (including closures).
 public struct Unique<T> {
   private let id = UniqueReference()
+
+  /// Unpacked value stored within `Unique` container.
   public let value: T
 
+  /// Create a new `Unique` container.
   public init(_ value: T) {
     self.value = value
   }

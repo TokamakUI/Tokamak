@@ -5,8 +5,6 @@
 //  Created by Max Desiatov on 07/10/2018.
 //
 
-import Foundation
-
 extension Never: Equatable {
   public static func ==(lhs: Never, rhs: Never) -> Bool {
     switch (lhs, rhs) {}
