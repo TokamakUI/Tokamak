@@ -10,6 +10,10 @@ import Gluon
 public class TestRenderer: Renderer {
   private var reconciler: StackReconciler<TestRenderer>?
 
+  public var rootTarget: TestView? {
+    return reconciler?.rootTarget
+  }
+
   public init(_ node: Node) {
     reconciler = StackReconciler(node: node,
                                  target: TestView(props: AnyEquatable(Null())),

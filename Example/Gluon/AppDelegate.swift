@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   private typealias Options = [UIApplication.LaunchOptionsKey: Any]
 
   func application(_: UIApplication, didFinishLaunchingWithOptions _: Options?)
-  -> Bool {
+    -> Bool {
     // Override point for customization after application launch.
     return true
   }

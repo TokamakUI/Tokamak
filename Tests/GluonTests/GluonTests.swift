@@ -32,6 +32,14 @@ struct Counter: LeafComponent {
 final class GluonTests: XCTestCase {
   func testMount() {
     let renderer = TestRenderer(Counter.node(42))
+
+    guard let root = renderer.rootTarget else {
+      XCTAssert(false, "TestRenderer got no root target")
+      return
+    }
+
+    XCTAssertEqual(root.subviews.count, 1)
+    XCTAssert(type(of: root.subviews[0].props.value) == StackViewProps.self)
   }
 
   func testUpdate() {}
