@@ -7,6 +7,7 @@
 //
 
 import Gluon
+import GluonUIKit
 import UIKit
 
 // struct TodoList: Store {
@@ -32,7 +33,7 @@ import UIKit
 
 struct Counter: LeafComponent {
   struct Props: Equatable {
-    let frame: CGRect
+    let frame: Rectangle
     let initial: Int
   }
 
@@ -43,12 +44,15 @@ struct Counter: LeafComponent {
       setCount(count + 1)
     }
 
+    let children = count < 15 ? [
+      Button.node(.init(handlers: [.touchUpInside: handler]), "Increment"),
+      Label.node(Null(), "\(count)"),
+    ] : []
+
     return StackView.node(.init(axis: .vertical,
                                 distribution: .fillEqually,
-                                frame: props.frame), [
-        Button.node(.init(handlers: [.touchUpInside: handler]), "Increment"),
-                                  Label.node(Null(), "\(count)"),
-    ])
+                                frame: props.frame),
+                          children)
   }
 }
 
@@ -66,7 +70,7 @@ final class GluonViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    renderer = UIKitRenderer(node: App.node(.init(frame: view.frame)),
+    renderer = UIKitRenderer(node: App.node(.init(frame: Rectangle(view.frame))),
                              target: view)
   }
 

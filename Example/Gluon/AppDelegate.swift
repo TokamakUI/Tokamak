@@ -12,7 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
 
-  private typealias Options = [UIApplication.LaunchOptionsKey: Any]
+  typealias Options = [UIApplication.LaunchOptionsKey: Any]
 
   func application(_: UIApplication, didFinishLaunchingWithOptions _: Options?)
     -> Bool {

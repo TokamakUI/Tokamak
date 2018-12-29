@@ -20,11 +20,11 @@ public struct StackViewProps: Equatable {
 
   public let axis: Axis
   public let distribution: Distribution
-  public let frame: Frame
+  public let frame: Rectangle
 
   public init(axis: Axis = .horizontal,
               distribution: Distribution = .fill,
-              frame: Frame) {
+              frame: Rectangle) {
     self.axis = axis
     self.distribution = distribution
     self.frame = frame
