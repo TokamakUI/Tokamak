@@ -1,6 +1,6 @@
 //
 //  UIKitViewComponent.swift
-//  Gluon
+//  GluonUIKit
 //
 //  Created by Max Desiatov on 02/12/2018.
 //

@@ -9,11 +9,11 @@
 /* Begin PBXAggregateTarget section */
 		"Gluon::GluonPackageTests::ProductTarget" /* GluonPackageTests */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = OBJ_81 /* Build configuration list for PBXAggregateTarget "GluonPackageTests" */;
+			buildConfigurationList = OBJ_85 /* Build configuration list for PBXAggregateTarget "GluonPackageTests" */;
 			buildPhases = (
 			);
 			dependencies = (
-				OBJ_84 /* PBXTargetDependency */,
+				OBJ_88 /* PBXTargetDependency */,
 			);
 			name = GluonPackageTests;
 			productName = GluonPackageTests;
@@ -21,73 +21,78 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		D1543A8821CD749C0039D8EC /* TestRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1543A8721CD749C0039D8EC /* TestRenderer.swift */; };
-		OBJ_100 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* XCTestManifests.swift */; };
-		OBJ_102 /* GluonTestRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */; };
-		OBJ_103 /* Gluon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::Gluon::Product" /* Gluon.framework */; };
-		OBJ_111 /* ActionTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* ActionTarget.swift */; };
-		OBJ_112 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* Button.swift */; };
-		OBJ_113 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* Label.swift */; };
-		OBJ_114 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* StackView.swift */; };
-		OBJ_115 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* UIColor.swift */; };
-		OBJ_116 /* UIKitControlComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* UIKitControlComponent.swift */; };
-		OBJ_117 /* UIKitRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* UIKitRenderer.swift */; };
-		OBJ_118 /* UIKitViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* UIKitViewComponent.swift */; };
-		OBJ_120 /* Gluon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::Gluon::Product" /* Gluon.framework */; };
-		OBJ_55 /* AnyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* AnyEquatable.swift */; };
-		OBJ_56 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Color.swift */; };
-		OBJ_57 /* ComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* ComponentWrapper.swift */; };
-		OBJ_58 /* CompositeComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* CompositeComponentWrapper.swift */; };
-		OBJ_59 /* HostComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* HostComponentWrapper.swift */; };
-		OBJ_60 /* Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* Default.swift */; };
-		OBJ_61 /* Diffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* Diffable.swift */; };
-		OBJ_62 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Event.swift */; };
-		OBJ_63 /* Hooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* Hooks.swift */; };
-		OBJ_64 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* Layout.swift */; };
-		OBJ_65 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* Node.swift */; };
-		OBJ_66 /* Null.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* Null.swift */; };
-		OBJ_67 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Renderer.swift */; };
-		OBJ_68 /* StackReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* StackReconciler.swift */; };
-		OBJ_69 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* Store.swift */; };
-		OBJ_70 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* Structs.swift */; };
-		OBJ_71 /* Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* Unique.swift */; };
-		OBJ_72 /* VersionedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* VersionedArray.swift */; };
-		OBJ_79 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
-		OBJ_91 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* TestView.swift */; };
-		OBJ_93 /* Gluon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::Gluon::Product" /* Gluon.framework */; };
-		OBJ_99 /* GluonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* GluonTests.swift */; };
+		D1E0C83121D77F660042A261 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83021D77F660042A261 /* Button.swift */; };
+		D1E0C83321D77F9D0042A261 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83221D77F9D0042A261 /* Label.swift */; };
+		D1E0C83521D77FF60042A261 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83421D77FF60042A261 /* StackView.swift */; };
+		D1E0C83721D780690042A261 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83621D780690042A261 /* Frame.swift */; };
+		D1E0C83921D782200042A261 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83821D782200042A261 /* Frame.swift */; };
+		OBJ_104 /* GluonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* GluonTests.swift */; };
+		OBJ_105 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_44 /* XCTestManifests.swift */; };
+		OBJ_107 /* GluonTestRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */; };
+		OBJ_108 /* Gluon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::Gluon::Product" /* Gluon.framework */; };
+		OBJ_116 /* ActionTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* ActionTarget.swift */; };
+		OBJ_117 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* UIColor.swift */; };
+		OBJ_118 /* UIKitControlComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* UIKitControlComponent.swift */; };
+		OBJ_119 /* UIKitRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* UIKitRenderer.swift */; };
+		OBJ_120 /* UIKitViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* UIKitViewComponent.swift */; };
+		OBJ_122 /* Gluon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::Gluon::Product" /* Gluon.framework */; };
+		OBJ_56 /* AnyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* AnyEquatable.swift */; };
+		OBJ_57 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* Color.swift */; };
+		OBJ_58 /* ComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* ComponentWrapper.swift */; };
+		OBJ_59 /* CompositeComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* CompositeComponentWrapper.swift */; };
+		OBJ_60 /* HostComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* HostComponentWrapper.swift */; };
+		OBJ_61 /* Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* Default.swift */; };
+		OBJ_62 /* Diffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Diffable.swift */; };
+		OBJ_63 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* Event.swift */; };
+		OBJ_64 /* Hooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* Hooks.swift */; };
+		OBJ_65 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* Button.swift */; };
+		OBJ_66 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* Label.swift */; };
+		OBJ_67 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* StackView.swift */; };
+		OBJ_68 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* Layout.swift */; };
+		OBJ_69 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* Node.swift */; };
+		OBJ_70 /* Null.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* Null.swift */; };
+		OBJ_71 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* Renderer.swift */; };
+		OBJ_72 /* StackReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* StackReconciler.swift */; };
+		OBJ_73 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* Store.swift */; };
+		OBJ_74 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* Structs.swift */; };
+		OBJ_75 /* Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* Unique.swift */; };
+		OBJ_76 /* VersionedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* VersionedArray.swift */; };
+		OBJ_83 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
+		OBJ_95 /* TestRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* TestRenderer.swift */; };
+		OBJ_96 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_40 /* TestView.swift */; };
+		OBJ_98 /* Gluon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::Gluon::Product" /* Gluon.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D1543A8221CD72FB0039D8EC /* PBXContainerItemProxy */ = {
+		D1E0C82A21D77F030042A261 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Gluon::Gluon";
 			remoteInfo = Gluon;
 		};
-		D1543A8321CD72FB0039D8EC /* PBXContainerItemProxy */ = {
+		D1E0C82B21D77F030042A261 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Gluon::Gluon";
 			remoteInfo = Gluon;
 		};
-		D1543A8421CD72FB0039D8EC /* PBXContainerItemProxy */ = {
+		D1E0C82C21D77F030042A261 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Gluon::GluonTestRenderer";
 			remoteInfo = GluonTestRenderer;
 		};
-		D1543A8521CD72FB0039D8EC /* PBXContainerItemProxy */ = {
+		D1E0C82D21D77F030042A261 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Gluon::Gluon";
 			remoteInfo = Gluon;
 		};
-		D1543A8621CD72FD0039D8EC /* PBXContainerItemProxy */ = {
+		D1E0C82E21D77F050042A261 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
@@ -97,110 +102,138 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D1543A8721CD749C0039D8EC /* TestRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRenderer.swift; sourceTree = "<group>"; };
+		D1E0C83021D77F660042A261 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		D1E0C83221D77F9D0042A261 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		D1E0C83421D77FF60042A261 /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
+		D1E0C83621D780690042A261 /* Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Frame.swift; sourceTree = "<group>"; };
+		D1E0C83821D782200042A261 /* Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Frame.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonUIKit::Product" /* GluonUIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJ_10 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
-		OBJ_12 /* ComponentWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentWrapper.swift; sourceTree = "<group>"; };
-		OBJ_13 /* CompositeComponentWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeComponentWrapper.swift; sourceTree = "<group>"; };
-		OBJ_14 /* HostComponentWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostComponentWrapper.swift; sourceTree = "<group>"; };
-		OBJ_15 /* Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
-		OBJ_16 /* Diffable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diffable.swift; sourceTree = "<group>"; };
-		OBJ_17 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
-		OBJ_18 /* Hooks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hooks.swift; sourceTree = "<group>"; };
-		OBJ_19 /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
-		OBJ_20 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
-		OBJ_21 /* Null.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Null.swift; sourceTree = "<group>"; };
-		OBJ_22 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
-		OBJ_23 /* StackReconciler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackReconciler.swift; sourceTree = "<group>"; };
-		OBJ_24 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
-		OBJ_25 /* Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
-		OBJ_26 /* Unique.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unique.swift; sourceTree = "<group>"; };
-		OBJ_27 /* VersionedArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionedArray.swift; sourceTree = "<group>"; };
-		OBJ_29 /* ActionTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionTarget.swift; sourceTree = "<group>"; };
-		OBJ_31 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
-		OBJ_32 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
-		OBJ_33 /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
-		OBJ_34 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
-		OBJ_35 /* UIKitControlComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitControlComponent.swift; sourceTree = "<group>"; };
-		OBJ_36 /* UIKitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitRenderer.swift; sourceTree = "<group>"; };
-		OBJ_37 /* UIKitViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitViewComponent.swift; sourceTree = "<group>"; };
-		OBJ_39 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
-		OBJ_42 /* GluonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonTests.swift; sourceTree = "<group>"; };
-		OBJ_43 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
-		OBJ_44 /* Example */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Example; sourceTree = SOURCE_ROOT; };
+		OBJ_10 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		OBJ_11 /* UIKitControlComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitControlComponent.swift; sourceTree = "<group>"; };
+		OBJ_12 /* UIKitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitRenderer.swift; sourceTree = "<group>"; };
+		OBJ_13 /* UIKitViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitViewComponent.swift; sourceTree = "<group>"; };
+		OBJ_15 /* AnyEquatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyEquatable.swift; sourceTree = "<group>"; };
+		OBJ_16 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		OBJ_18 /* ComponentWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentWrapper.swift; sourceTree = "<group>"; };
+		OBJ_19 /* CompositeComponentWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeComponentWrapper.swift; sourceTree = "<group>"; };
+		OBJ_20 /* HostComponentWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostComponentWrapper.swift; sourceTree = "<group>"; };
+		OBJ_21 /* Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
+		OBJ_22 /* Diffable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diffable.swift; sourceTree = "<group>"; };
+		OBJ_23 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		OBJ_24 /* Hooks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hooks.swift; sourceTree = "<group>"; };
+		OBJ_26 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		OBJ_27 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		OBJ_28 /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
+		OBJ_29 /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
+		OBJ_30 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		OBJ_31 /* Null.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Null.swift; sourceTree = "<group>"; };
+		OBJ_32 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
+		OBJ_33 /* StackReconciler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackReconciler.swift; sourceTree = "<group>"; };
+		OBJ_34 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		OBJ_35 /* Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
+		OBJ_36 /* Unique.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unique.swift; sourceTree = "<group>"; };
+		OBJ_37 /* VersionedArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionedArray.swift; sourceTree = "<group>"; };
+		OBJ_39 /* TestRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRenderer.swift; sourceTree = "<group>"; };
+		OBJ_40 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		OBJ_43 /* GluonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonTests.swift; sourceTree = "<group>"; };
+		OBJ_44 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
+		OBJ_45 /* Example */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Example; sourceTree = SOURCE_ROOT; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		OBJ_9 /* AnyEquatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyEquatable.swift; sourceTree = "<group>"; };
+		OBJ_9 /* ActionTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionTarget.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		OBJ_101 /* Frameworks */ = {
+		OBJ_106 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_102 /* GluonTestRenderer.framework in Frameworks */,
-				OBJ_103 /* Gluon.framework in Frameworks */,
+				OBJ_107 /* GluonTestRenderer.framework in Frameworks */,
+				OBJ_108 /* Gluon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_119 /* Frameworks */ = {
+		OBJ_121 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_120 /* Gluon.framework in Frameworks */,
+				OBJ_122 /* Gluon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_73 /* Frameworks */ = {
+		OBJ_77 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_92 /* Frameworks */ = {
+		OBJ_97 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_93 /* Gluon.framework in Frameworks */,
+				OBJ_98 /* Gluon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		OBJ_11 /* ComponentWrapper */ = {
+		D1E0C82F21D77F4A0042A261 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_12 /* ComponentWrapper.swift */,
-				OBJ_13 /* CompositeComponentWrapper.swift */,
-				OBJ_14 /* HostComponentWrapper.swift */,
+				D1E0C83021D77F660042A261 /* Button.swift */,
+				D1E0C83221D77F9D0042A261 /* Label.swift */,
+				D1E0C83421D77FF60042A261 /* StackView.swift */,
+				D1E0C83821D782200042A261 /* Frame.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		OBJ_14 /* Gluon */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_15 /* AnyEquatable.swift */,
+				OBJ_17 /* ComponentWrapper */,
+				OBJ_21 /* Default.swift */,
+				OBJ_22 /* Diffable.swift */,
+				OBJ_23 /* Event.swift */,
+				OBJ_24 /* Hooks.swift */,
+				OBJ_25 /* HostComponents */,
+				OBJ_29 /* Layout.swift */,
+				OBJ_30 /* Node.swift */,
+				OBJ_31 /* Null.swift */,
+				OBJ_32 /* Renderer.swift */,
+				OBJ_33 /* StackReconciler.swift */,
+				OBJ_34 /* Store.swift */,
+				OBJ_35 /* Structs.swift */,
+				OBJ_36 /* Unique.swift */,
+				OBJ_37 /* VersionedArray.swift */,
+			);
+			name = Gluon;
+			path = Sources/Gluon;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_17 /* ComponentWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_18 /* ComponentWrapper.swift */,
+				OBJ_19 /* CompositeComponentWrapper.swift */,
+				OBJ_20 /* HostComponentWrapper.swift */,
 			);
 			path = ComponentWrapper;
 			sourceTree = "<group>";
 		};
-		OBJ_28 /* GluonUIKit */ = {
+		OBJ_25 /* HostComponents */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_29 /* ActionTarget.swift */,
-				OBJ_30 /* HostComponents */,
-				OBJ_34 /* UIColor.swift */,
-				OBJ_35 /* UIKitControlComponent.swift */,
-				OBJ_36 /* UIKitRenderer.swift */,
-				OBJ_37 /* UIKitViewComponent.swift */,
-			);
-			name = GluonUIKit;
-			path = Sources/GluonUIKit;
-			sourceTree = SOURCE_ROOT;
-		};
-		OBJ_30 /* HostComponents */ = {
-			isa = PBXGroup;
-			children = (
-				OBJ_31 /* Button.swift */,
-				OBJ_32 /* Label.swift */,
-				OBJ_33 /* StackView.swift */,
+				OBJ_16 /* Color.swift */,
+				OBJ_26 /* Button.swift */,
+				OBJ_27 /* Label.swift */,
+				OBJ_28 /* StackView.swift */,
+				D1E0C83621D780690042A261 /* Frame.swift */,
 			);
 			path = HostComponents;
 			sourceTree = "<group>";
@@ -208,87 +241,78 @@
 		OBJ_38 /* GluonTestRenderer */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_39 /* TestView.swift */,
-				D1543A8721CD749C0039D8EC /* TestRenderer.swift */,
+				OBJ_39 /* TestRenderer.swift */,
+				OBJ_40 /* TestView.swift */,
 			);
 			name = GluonTestRenderer;
 			path = Sources/GluonTestRenderer;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_40 /* Tests */ = {
+		OBJ_41 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_41 /* GluonTests */,
+				OBJ_42 /* GluonTests */,
 			);
 			name = Tests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_41 /* GluonTests */ = {
+		OBJ_42 /* GluonTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_42 /* GluonTests.swift */,
-				OBJ_43 /* XCTestManifests.swift */,
+				OBJ_43 /* GluonTests.swift */,
+				OBJ_44 /* XCTestManifests.swift */,
 			);
 			name = GluonTests;
 			path = Tests/GluonTests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_45 /* Products */ = {
+		OBJ_46 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				"Gluon::GluonUIKit::Product" /* GluonUIKit.framework */,
 				"Gluon::GluonTests::Product" /* GluonTests.xctest */,
 				"Gluon::Gluon::Product" /* Gluon.framework */,
-				"Gluon::GluonUIKit::Product" /* GluonUIKit.framework */,
 				"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */,
 			);
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 = {
+		OBJ_5 /*  */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
-				OBJ_40 /* Tests */,
-				OBJ_44 /* Example */,
-				OBJ_45 /* Products */,
+				OBJ_41 /* Tests */,
+				OBJ_45 /* Example */,
+				OBJ_46 /* Products */,
 			);
 			indentWidth = 2;
+			name = "";
 			sourceTree = "<group>";
 			tabWidth = 2;
 		};
 		OBJ_7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_8 /* Gluon */,
-				OBJ_28 /* GluonUIKit */,
+				OBJ_8 /* GluonUIKit */,
+				OBJ_14 /* Gluon */,
 				OBJ_38 /* GluonTestRenderer */,
 			);
 			name = Sources;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_8 /* Gluon */ = {
+		OBJ_8 /* GluonUIKit */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_9 /* AnyEquatable.swift */,
-				OBJ_10 /* Color.swift */,
-				OBJ_11 /* ComponentWrapper */,
-				OBJ_15 /* Default.swift */,
-				OBJ_16 /* Diffable.swift */,
-				OBJ_17 /* Event.swift */,
-				OBJ_18 /* Hooks.swift */,
-				OBJ_19 /* Layout.swift */,
-				OBJ_20 /* Node.swift */,
-				OBJ_21 /* Null.swift */,
-				OBJ_22 /* Renderer.swift */,
-				OBJ_23 /* StackReconciler.swift */,
-				OBJ_24 /* Store.swift */,
-				OBJ_25 /* Structs.swift */,
-				OBJ_26 /* Unique.swift */,
-				OBJ_27 /* VersionedArray.swift */,
+				D1E0C82F21D77F4A0042A261 /* Components */,
+				OBJ_9 /* ActionTarget.swift */,
+				OBJ_10 /* UIColor.swift */,
+				OBJ_11 /* UIKitControlComponent.swift */,
+				OBJ_12 /* UIKitRenderer.swift */,
+				OBJ_13 /* UIKitViewComponent.swift */,
 			);
-			name = Gluon;
-			path = Sources/Gluon;
+			name = GluonUIKit;
+			path = Sources/GluonUIKit;
 			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
@@ -296,10 +320,10 @@
 /* Begin PBXNativeTarget section */
 		"Gluon::Gluon" /* Gluon */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_51 /* Build configuration list for PBXNativeTarget "Gluon" */;
+			buildConfigurationList = OBJ_52 /* Build configuration list for PBXNativeTarget "Gluon" */;
 			buildPhases = (
-				OBJ_54 /* Sources */,
-				OBJ_73 /* Frameworks */,
+				OBJ_55 /* Sources */,
+				OBJ_77 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -312,15 +336,15 @@
 		};
 		"Gluon::GluonTestRenderer" /* GluonTestRenderer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_87 /* Build configuration list for PBXNativeTarget "GluonTestRenderer" */;
+			buildConfigurationList = OBJ_91 /* Build configuration list for PBXNativeTarget "GluonTestRenderer" */;
 			buildPhases = (
-				OBJ_90 /* Sources */,
-				OBJ_92 /* Frameworks */,
+				OBJ_94 /* Sources */,
+				OBJ_97 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_94 /* PBXTargetDependency */,
+				OBJ_99 /* PBXTargetDependency */,
 			);
 			name = GluonTestRenderer;
 			productName = GluonTestRenderer;
@@ -329,16 +353,16 @@
 		};
 		"Gluon::GluonTests" /* GluonTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_95 /* Build configuration list for PBXNativeTarget "GluonTests" */;
+			buildConfigurationList = OBJ_100 /* Build configuration list for PBXNativeTarget "GluonTests" */;
 			buildPhases = (
-				OBJ_98 /* Sources */,
-				OBJ_101 /* Frameworks */,
+				OBJ_103 /* Sources */,
+				OBJ_106 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_104 /* PBXTargetDependency */,
-				OBJ_105 /* PBXTargetDependency */,
+				OBJ_109 /* PBXTargetDependency */,
+				OBJ_110 /* PBXTargetDependency */,
 			);
 			name = GluonTests;
 			productName = GluonTests;
@@ -347,15 +371,15 @@
 		};
 		"Gluon::GluonUIKit" /* GluonUIKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_107 /* Build configuration list for PBXNativeTarget "GluonUIKit" */;
+			buildConfigurationList = OBJ_112 /* Build configuration list for PBXNativeTarget "GluonUIKit" */;
 			buildPhases = (
-				OBJ_110 /* Sources */,
-				OBJ_119 /* Frameworks */,
+				OBJ_115 /* Sources */,
+				OBJ_121 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_121 /* PBXTargetDependency */,
+				OBJ_123 /* PBXTargetDependency */,
 			);
 			name = GluonUIKit;
 			productName = GluonUIKit;
@@ -364,9 +388,9 @@
 		};
 		"Gluon::SwiftPMPackageDescription" /* GluonPackageDescription */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_75 /* Build configuration list for PBXNativeTarget "GluonPackageDescription" */;
+			buildConfigurationList = OBJ_79 /* Build configuration list for PBXNativeTarget "GluonPackageDescription" */;
 			buildPhases = (
-				OBJ_78 /* Sources */,
+				OBJ_82 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -391,8 +415,8 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5;
-			productRefGroup = OBJ_45 /* Products */;
+			mainGroup = OBJ_5 /*  */;
+			productRefGroup = OBJ_46 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -407,104 +431,151 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		OBJ_110 /* Sources */ = {
+		OBJ_103 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_111 /* ActionTarget.swift in Sources */,
-				OBJ_112 /* Button.swift in Sources */,
-				OBJ_113 /* Label.swift in Sources */,
-				OBJ_114 /* StackView.swift in Sources */,
-				OBJ_115 /* UIColor.swift in Sources */,
-				OBJ_116 /* UIKitControlComponent.swift in Sources */,
-				OBJ_117 /* UIKitRenderer.swift in Sources */,
-				OBJ_118 /* UIKitViewComponent.swift in Sources */,
+				OBJ_104 /* GluonTests.swift in Sources */,
+				OBJ_105 /* XCTestManifests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_54 /* Sources */ = {
+		OBJ_115 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_55 /* AnyEquatable.swift in Sources */,
-				OBJ_56 /* Color.swift in Sources */,
-				OBJ_57 /* ComponentWrapper.swift in Sources */,
-				OBJ_58 /* CompositeComponentWrapper.swift in Sources */,
-				OBJ_59 /* HostComponentWrapper.swift in Sources */,
-				OBJ_60 /* Default.swift in Sources */,
-				OBJ_61 /* Diffable.swift in Sources */,
-				OBJ_62 /* Event.swift in Sources */,
-				OBJ_63 /* Hooks.swift in Sources */,
-				OBJ_64 /* Layout.swift in Sources */,
-				OBJ_65 /* Node.swift in Sources */,
-				OBJ_66 /* Null.swift in Sources */,
-				OBJ_67 /* Renderer.swift in Sources */,
-				OBJ_68 /* StackReconciler.swift in Sources */,
-				OBJ_69 /* Store.swift in Sources */,
-				OBJ_70 /* Structs.swift in Sources */,
-				OBJ_71 /* Unique.swift in Sources */,
-				OBJ_72 /* VersionedArray.swift in Sources */,
+				D1E0C83921D782200042A261 /* Frame.swift in Sources */,
+				OBJ_116 /* ActionTarget.swift in Sources */,
+				D1E0C83121D77F660042A261 /* Button.swift in Sources */,
+				OBJ_117 /* UIColor.swift in Sources */,
+				D1E0C83521D77FF60042A261 /* StackView.swift in Sources */,
+				OBJ_118 /* UIKitControlComponent.swift in Sources */,
+				OBJ_119 /* UIKitRenderer.swift in Sources */,
+				D1E0C83321D77F9D0042A261 /* Label.swift in Sources */,
+				OBJ_120 /* UIKitViewComponent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_78 /* Sources */ = {
+		OBJ_55 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_79 /* Package.swift in Sources */,
+				D1E0C83721D780690042A261 /* Frame.swift in Sources */,
+				OBJ_56 /* AnyEquatable.swift in Sources */,
+				OBJ_57 /* Color.swift in Sources */,
+				OBJ_58 /* ComponentWrapper.swift in Sources */,
+				OBJ_59 /* CompositeComponentWrapper.swift in Sources */,
+				OBJ_60 /* HostComponentWrapper.swift in Sources */,
+				OBJ_61 /* Default.swift in Sources */,
+				OBJ_62 /* Diffable.swift in Sources */,
+				OBJ_63 /* Event.swift in Sources */,
+				OBJ_64 /* Hooks.swift in Sources */,
+				OBJ_65 /* Button.swift in Sources */,
+				OBJ_66 /* Label.swift in Sources */,
+				OBJ_67 /* StackView.swift in Sources */,
+				OBJ_68 /* Layout.swift in Sources */,
+				OBJ_69 /* Node.swift in Sources */,
+				OBJ_70 /* Null.swift in Sources */,
+				OBJ_71 /* Renderer.swift in Sources */,
+				OBJ_72 /* StackReconciler.swift in Sources */,
+				OBJ_73 /* Store.swift in Sources */,
+				OBJ_74 /* Structs.swift in Sources */,
+				OBJ_75 /* Unique.swift in Sources */,
+				OBJ_76 /* VersionedArray.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_90 /* Sources */ = {
+		OBJ_82 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				D1543A8821CD749C0039D8EC /* TestRenderer.swift in Sources */,
-				OBJ_91 /* TestView.swift in Sources */,
+				OBJ_83 /* Package.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_98 /* Sources */ = {
+		OBJ_94 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_99 /* GluonTests.swift in Sources */,
-				OBJ_100 /* XCTestManifests.swift in Sources */,
+				OBJ_95 /* TestRenderer.swift in Sources */,
+				OBJ_96 /* TestView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		OBJ_104 /* PBXTargetDependency */ = {
+		OBJ_109 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Gluon::GluonTestRenderer" /* GluonTestRenderer */;
-			targetProxy = D1543A8421CD72FB0039D8EC /* PBXContainerItemProxy */;
+			targetProxy = D1E0C82C21D77F030042A261 /* PBXContainerItemProxy */;
 		};
-		OBJ_105 /* PBXTargetDependency */ = {
+		OBJ_110 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Gluon::Gluon" /* Gluon */;
-			targetProxy = D1543A8521CD72FB0039D8EC /* PBXContainerItemProxy */;
+			targetProxy = D1E0C82D21D77F030042A261 /* PBXContainerItemProxy */;
 		};
-		OBJ_121 /* PBXTargetDependency */ = {
+		OBJ_123 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Gluon::Gluon" /* Gluon */;
-			targetProxy = D1543A8221CD72FB0039D8EC /* PBXContainerItemProxy */;
+			targetProxy = D1E0C82B21D77F030042A261 /* PBXContainerItemProxy */;
 		};
-		OBJ_84 /* PBXTargetDependency */ = {
+		OBJ_88 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Gluon::GluonTests" /* GluonTests */;
-			targetProxy = D1543A8621CD72FD0039D8EC /* PBXContainerItemProxy */;
+			targetProxy = D1E0C82E21D77F050042A261 /* PBXContainerItemProxy */;
 		};
-		OBJ_94 /* PBXTargetDependency */ = {
+		OBJ_99 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Gluon::Gluon" /* Gluon */;
-			targetProxy = D1543A8321CD72FB0039D8EC /* PBXContainerItemProxy */;
+			targetProxy = D1E0C82A21D77F030042A261 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		OBJ_108 /* Debug */ = {
+		OBJ_101 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = Gluon.xcodeproj/GluonTests_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = GluonTests;
+			};
+			name = Debug;
+		};
+		OBJ_102 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = Gluon.xcodeproj/GluonTests_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = GluonTests;
+			};
+			name = Release;
+		};
+		OBJ_113 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -528,7 +599,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_109 /* Release */ = {
+		OBJ_114 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -598,7 +669,7 @@
 			};
 			name = Release;
 		};
-		OBJ_52 /* Debug */ = {
+		OBJ_53 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -622,7 +693,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_53 /* Release */ = {
+		OBJ_54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -646,7 +717,7 @@
 			};
 			name = Release;
 		};
-		OBJ_76 /* Debug */ = {
+		OBJ_80 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				LD = /usr/bin/true;
@@ -655,7 +726,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_77 /* Release */ = {
+		OBJ_81 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				LD = /usr/bin/true;
@@ -664,19 +735,19 @@
 			};
 			name = Release;
 		};
-		OBJ_82 /* Debug */ = {
+		OBJ_86 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
 			name = Debug;
 		};
-		OBJ_83 /* Release */ = {
+		OBJ_87 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
 			name = Release;
 		};
-		OBJ_88 /* Debug */ = {
+		OBJ_92 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -700,7 +771,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_89 /* Release */ = {
+		OBJ_93 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -721,59 +792,26 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 4.2;
 				TARGET_NAME = GluonTestRenderer;
-			};
-			name = Release;
-		};
-		OBJ_96 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = Gluon.xcodeproj/GluonTests_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = GluonTests;
-			};
-			name = Debug;
-		};
-		OBJ_97 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = Gluon.xcodeproj/GluonTests_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = GluonTests;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		OBJ_107 /* Build configuration list for PBXNativeTarget "GluonUIKit" */ = {
+		OBJ_100 /* Build configuration list for PBXNativeTarget "GluonTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_108 /* Debug */,
-				OBJ_109 /* Release */,
+				OBJ_101 /* Debug */,
+				OBJ_102 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_112 /* Build configuration list for PBXNativeTarget "GluonUIKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_113 /* Debug */,
+				OBJ_114 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -787,47 +825,38 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_51 /* Build configuration list for PBXNativeTarget "Gluon" */ = {
+		OBJ_52 /* Build configuration list for PBXNativeTarget "Gluon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_52 /* Debug */,
-				OBJ_53 /* Release */,
+				OBJ_53 /* Debug */,
+				OBJ_54 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_75 /* Build configuration list for PBXNativeTarget "GluonPackageDescription" */ = {
+		OBJ_79 /* Build configuration list for PBXNativeTarget "GluonPackageDescription" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_76 /* Debug */,
-				OBJ_77 /* Release */,
+				OBJ_80 /* Debug */,
+				OBJ_81 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_81 /* Build configuration list for PBXAggregateTarget "GluonPackageTests" */ = {
+		OBJ_85 /* Build configuration list for PBXAggregateTarget "GluonPackageTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_82 /* Debug */,
-				OBJ_83 /* Release */,
+				OBJ_86 /* Debug */,
+				OBJ_87 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_87 /* Build configuration list for PBXNativeTarget "GluonTestRenderer" */ = {
+		OBJ_91 /* Build configuration list for PBXNativeTarget "GluonTestRenderer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_88 /* Debug */,
-				OBJ_89 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		OBJ_95 /* Build configuration list for PBXNativeTarget "GluonTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				OBJ_96 /* Debug */,
-				OBJ_97 /* Release */,
+				OBJ_92 /* Debug */,
+				OBJ_93 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

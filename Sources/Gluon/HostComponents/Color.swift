@@ -6,18 +6,18 @@
 //
 
 public struct Color: Equatable {
-  enum Space {
+  public enum Space {
     case sRGB
     case displayP3
   }
 
-  let red: Double
-  let green: Double
-  let blue: Double
-  let alpha: Double
-  let space: Space
+  public let red: Double
+  public let green: Double
+  public let blue: Double
+  public let alpha: Double
+  public let space: Space
 
-  init(red: Double,
+  public init(red: Double,
        green: Double,
        blue: Double,
        alpha: Double,

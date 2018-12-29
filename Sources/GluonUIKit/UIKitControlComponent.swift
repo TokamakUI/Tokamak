@@ -1,6 +1,6 @@
 //
 //  UIKitControlComponent.swift
-//  Gluon
+//  GluonUIKit
 //
 //  Created by Max Desiatov on 05/12/2018.
 //

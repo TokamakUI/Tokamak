@@ -1,10 +1,11 @@
 //
 //  UIColor.swift
-//  Gluon
+//  GluonUIKit
 //
 //  Created by Max Desiatov on 14/12/2018.
 //
 
+import Gluon
 import UIKit
 
 extension UIColor {

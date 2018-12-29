@@ -10,8 +10,8 @@ import Dispatch
 public final class StackReconciler {
   private var queuedState = [(CompositeComponentWrapper, String, Any)]()
 
+  public let rootTarget: Any
   private let rootComponent: ComponentWrapper
-  private let rootTarget: Any
   private(set) weak var renderer: Renderer?
 
   public init(node: Node, target: Any, renderer: Renderer) {

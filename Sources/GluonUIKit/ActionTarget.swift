@@ -1,6 +1,6 @@
 //
 //  ActionTarget.swift
-//  Gluon
+//  GluonUIKit
 //
 //  Created by Max Desiatov on 04/12/2018.
 //

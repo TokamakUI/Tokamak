@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Gluon::Gluon"
-               BuildableName = "Gluon.framework"
-               BlueprintName = "Gluon"
+               BlueprintIdentifier = "Gluon::GluonTestRenderer"
+               BuildableName = "GluonTestRenderer.framework"
+               BlueprintName = "GluonTestRenderer"
                ReferencedContainer = "container:Gluon.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,9 +28,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Gluon::GluonTestRenderer"
-               BuildableName = "GluonTestRenderer.framework"
-               BlueprintName = "GluonTestRenderer"
+               BlueprintIdentifier = "Gluon::GluonUIKit"
+               BuildableName = "GluonUIKit.framework"
+               BlueprintName = "GluonUIKit"
+               ReferencedContainer = "container:Gluon.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Gluon::Gluon"
+               BuildableName = "Gluon.framework"
+               BlueprintName = "Gluon"
                ReferencedContainer = "container:Gluon.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -53,15 +67,6 @@
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Gluon::Gluon"
-            BuildableName = "Gluon.framework"
-            BlueprintName = "Gluon"
-            ReferencedContainer = "container:Gluon.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -78,9 +83,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Gluon::Gluon"
-            BuildableName = "Gluon.framework"
-            BlueprintName = "Gluon"
+            BlueprintIdentifier = "Gluon::GluonTestRenderer"
+            BuildableName = "GluonTestRenderer.framework"
+            BlueprintName = "GluonTestRenderer"
             ReferencedContainer = "container:Gluon.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -93,15 +98,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Gluon::Gluon"
-            BuildableName = "Gluon.framework"
-            BlueprintName = "Gluon"
-            ReferencedContainer = "container:Gluon.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
