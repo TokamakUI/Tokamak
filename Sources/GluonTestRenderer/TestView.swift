@@ -17,13 +17,24 @@ public final class TestView {
   /// Props assigned to this test view.
   public internal(set) var props: AnyEquatable
 
+  /// Children assigned to this test view.
+  public internal(set) var children: AnyEquatable
+
+  /// Component that renders to this test view as a target
+  public let component: AnyHostComponent.Type
+
+  /// Parent `TestView` instance that owns this instance as a child
   private weak var parent: TestView?
 
   /** Initialize a new test view.
    - parameter props: base component props to initialize the test view
    */
-  init(props: AnyEquatable) {
+  init(component: AnyHostComponent.Type,
+       props: AnyEquatable,
+       children: AnyEquatable) {
+    self.component = component
     self.props = props
+    self.children = children
   }
 
   /** Add a subview to this test view.

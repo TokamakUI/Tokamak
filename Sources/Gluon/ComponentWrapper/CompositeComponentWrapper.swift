@@ -14,7 +14,17 @@ extension CompositeComponent {
   }
 }
 
-final class CompositeComponentWrapper<R: Renderer>: ComponentWrapper<R> {
+final class CompositeComponentWrapper<R: Renderer>: ComponentWrapper<R>,
+Hashable {
+  static func ==(lhs: CompositeComponentWrapper<R>,
+                 rhs: CompositeComponentWrapper<R>) -> Bool {
+    return lhs === rhs
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(ObjectIdentifier(self))
+  }
+
   private var mountedChildren = [ComponentWrapper<R>]()
   private let type: AnyCompositeComponent.Type
   private let parentTarget: R.Target

@@ -8,7 +8,7 @@
 import Dispatch
 
 public final class StackReconciler<R: Renderer> {
-  private var queuedState = [(CompositeComponentWrapper<R>, String, Any)]()
+  private var queuedRerenders = Set<CompositeComponentWrapper<R>>()
 
   public let rootTarget: R.Target
   private let rootComponent: ComponentWrapper<R>
@@ -26,9 +26,10 @@ public final class StackReconciler<R: Renderer> {
   func queue(state: Any,
              for component: CompositeComponentWrapper<R>,
              id: String) {
-    let scheduleReconcile = queuedState.isEmpty
+    let scheduleReconcile = queuedRerenders.isEmpty
 
-    queuedState.append((component, id, state))
+    component.state[id] = state
+    queuedRerenders.insert(component)
 
     guard scheduleReconcile else { return }
 
@@ -38,10 +39,10 @@ public final class StackReconciler<R: Renderer> {
   }
 
   private func updateStateAndReconcile() {
-    for (component, id, state) in queuedState {
-      component.state[id] = state
-
+    for component in queuedRerenders {
       component.update(with: self)
     }
+
+    queuedRerenders.removeAll()
   }
 }

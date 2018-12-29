@@ -15,8 +15,11 @@ public class TestRenderer: Renderer {
   }
 
   public init(_ node: Node) {
+    let root = TestView(component: View.self,
+                        props: AnyEquatable(Null()),
+                        children: AnyEquatable(Null()))
     reconciler = StackReconciler(node: node,
-                                 target: TestView(props: AnyEquatable(Null())),
+                                 target: root,
                                  renderer: self)
   }
 
@@ -24,7 +27,9 @@ public class TestRenderer: Renderer {
                           with component: AnyHostComponent.Type,
                           props: AnyEquatable,
                           children: AnyEquatable) -> TestView? {
-    let result = TestView(props: props)
+    let result = TestView(component: component,
+                          props: props,
+                          children: children)
     parent.add(subview: result)
 
     return result
@@ -35,6 +40,7 @@ public class TestRenderer: Renderer {
                      props: AnyEquatable,
                      children: AnyEquatable) {
     target.props = props
+    target.children = children
   }
 
   public func unmount(target: TestView, with component: AnyHostComponent.Type) {
