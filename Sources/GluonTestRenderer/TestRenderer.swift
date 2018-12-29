@@ -16,39 +16,24 @@ public class TestRenderer: Renderer {
                                  renderer: self)
   }
 
-  public func mountTarget(to parent: Any,
+  public func mountTarget(to parent: TestView,
                           with component: AnyHostComponent.Type,
                           props: AnyEquatable,
-                          children: AnyEquatable) -> Any? {
-    guard let parent = parent as? TestView else {
-      assertionFailure("parent of wrong type passed to \(#function)")
-      return nil
-    }
-
+                          children: AnyEquatable) -> TestView? {
     let result = TestView(props: props)
     parent.add(subview: result)
 
     return result
   }
 
-  public func update(target: Any,
+  public func update(target: TestView,
                      with component: AnyHostComponent.Type,
                      props: AnyEquatable,
                      children: AnyEquatable) {
-    guard let target = target as? TestView else {
-      assertionFailure("parent of wrong type passed to \(#function)")
-      return
-    }
-
     target.props = props
   }
 
-  public func unmount(target: Any, with component: AnyHostComponent.Type) {
-    guard let target = target as? TestView else {
-      assertionFailure("parent of wrong type passed to \(#function)")
-      return
-    }
-
+  public func unmount(target: TestView, with component: AnyHostComponent.Type) {
     target.removeFromSuperview()
   }
 }

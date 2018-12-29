@@ -53,7 +53,8 @@ public class UIKitRenderer: Renderer {
                              children: children)
   }
 
-  public func unmount(target: UIKitTarget, with component: AnyHostComponent.Type) {
+  public func unmount(target: UIKitTarget,
+                      with component: AnyHostComponent.Type) {
     guard let rendererComponent = component as? UIKitHostComponent.Type else {
       typeAssertionFailure(for: component)
       return
