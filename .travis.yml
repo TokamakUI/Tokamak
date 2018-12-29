@@ -16,7 +16,7 @@ before_install:
 # - pod install --project-directory=Example
 script:
 - swiftformat --lint --verbose .
-- xcodebuild test -enableCodeCoverage YES -scheme Gluon-Package
+- xcodebuild test -enableCodeCoverage YES -scheme GluonCore
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 # - swift build
