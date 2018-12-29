@@ -8,7 +8,7 @@
 import Gluon
 
 public class TestRenderer: Renderer {
-  private var reconciler: StackReconciler?
+  private var reconciler: StackReconciler<TestRenderer>?
 
   public init(_ node: Node) {
     reconciler = StackReconciler(node: node,
