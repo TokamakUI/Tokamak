@@ -15,7 +15,7 @@ extension CompositeComponent {
 }
 
 final class CompositeComponentWrapper<R: Renderer>: ComponentWrapper<R>,
-Hashable {
+  Hashable {
   static func ==(lhs: CompositeComponentWrapper<R>,
                  rhs: CompositeComponentWrapper<R>) -> Bool {
     return lhs === rhs

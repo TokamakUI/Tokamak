@@ -112,9 +112,9 @@ final class GluonTests: XCTestCase {
 
       guard let root = renderer.rootTarget,
         let props = root.subviews[0].subviews[0]
-          .props.value as? Button.Props else {
-            XCTAssert(false, "button component got wrong props types")
-            return
+        .props.value as? Button.Props else {
+        XCTAssert(false, "button component got wrong props types")
+        return
       }
 
       guard let handler = props.handlers[.touchUpInside]?.value else {
