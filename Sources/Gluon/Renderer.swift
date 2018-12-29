@@ -18,7 +18,7 @@ public protocol Renderer: class {
    layout constraints (e.g. `NSLayoutConstraint`). A renderer would most
    probably create its own type hierarchy to be able to reason about
    all possible target types available on a specific platform.
-  */
+   */
   associatedtype Target
 
   /** Function called by a reconciler when a new target instance should be
