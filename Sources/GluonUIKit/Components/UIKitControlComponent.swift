@@ -12,24 +12,18 @@ public protocol UIKitControlComponent: UIKitHostComponent, HostComponent
   where Props: EventHandlerProps {
   associatedtype Target: UIControl & Default
 
-  static func update(_ view: Target, _ props: Props, _ children: Children)
+  static func update(wrapper: ControlWrapper<Target>,
+                     _ props: Props,
+                     _ children: Children)
+
+  static func wrapper(for: Target) -> ControlWrapper<Target>
 }
 
 extension UIKitControlComponent {
-  public static func bind(handlers: [Event: Handler<()>],
-                          for target: ControlWrapper<Target>)
-    -> ControlWrapper<Target> {
-    var target = target
-
-    for (e, h) in handlers {
-      target.bind(to: e, handler: h.value)
-    }
-
-    return target
+  public static func wrapper(for control: Target) -> ControlWrapper<Target> {
+    return ControlWrapper(control)
   }
-}
 
-extension UIKitControlComponent {
   public static func mountTarget(to parent: UIKitTarget,
                                  props: AnyEquatable,
                                  children: AnyEquatable) -> UIKitTarget? {
@@ -44,7 +38,6 @@ extension UIKitControlComponent {
     }
 
     let target = Target()
-    update(target, props, children)
 
     switch parent {
     case let stackView as UIStackView:
@@ -55,7 +48,11 @@ extension UIKitControlComponent {
       parentAssertionFailure()
     }
 
-    return bind(handlers: props.handlers, for: ControlWrapper(target))
+    let result = wrapper(for: target)
+    result.bind(handlers: props.handlers)
+    update(wrapper: result, props, children)
+
+    return result
   }
 
   public static func update(target: UIKitTarget,
@@ -74,7 +71,7 @@ extension UIKitControlComponent {
       return
     }
 
-    update(target.value, props, children)
+    update(wrapper: target, props, children)
   }
 
   public static func unmount(target: UIKitTarget) {
@@ -83,6 +80,6 @@ extension UIKitControlComponent {
       return
     }
 
-    target.value.removeFromSuperview()
+    target.control.removeFromSuperview()
   }
 }

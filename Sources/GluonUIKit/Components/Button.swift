@@ -11,10 +11,14 @@ import UIKit
 extension UIButton: Default {}
 
 extension Button: UIKitControlComponent {
-  public static func update(_ view: UIButton,
+  public typealias Target = UIButton
+
+  public static func update(wrapper: ControlWrapper<UIButton>,
                             _ props: ButtonProps,
                             _ children: String) {
-    view.setTitleColor(UIColor(props.titleColor), for: .normal)
-    view.setTitle(children, for: .normal)
+    let control = wrapper.control
+
+    control.setTitleColor(UIColor(props.titleColor), for: .normal)
+    control.setTitle(children, for: .normal)
   }
 }

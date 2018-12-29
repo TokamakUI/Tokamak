@@ -8,18 +8,6 @@
 import Gluon
 import UIKit
 
-final class ActionTarget {
-  private let handler: () -> ()
-
-  init(_ handler: @escaping () -> ()) {
-    self.handler = handler
-  }
-
-  @objc func perform() {
-    handler()
-  }
-}
-
 extension UIControl.Event {
   init(_ value: Event) {
     switch value {

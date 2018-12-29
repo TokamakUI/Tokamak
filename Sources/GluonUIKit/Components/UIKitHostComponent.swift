@@ -8,6 +8,12 @@
 import Gluon
 import UIKit
 
+/// Any base component that is supposed to be rendered by `UIKitRenderer`
+/// should implement this protocol or any of concrete subprotocols:
+/// `UIKitViewComponent` for `UIView` targets, `UIKitControlComponent` for
+/// `UIControl` targets and `UIKitValueComponent` for `UIControl` components
+/// providing a configurable single value: `UISwitch`, `UISlider`,
+/// `UIStepper`, `UIDatePicker`, or `UISegmentedControl`.
 public protocol UIKitHostComponent: AnyHostComponent {
   static func mountTarget(to parent: UIKitTarget,
                           props: AnyEquatable,

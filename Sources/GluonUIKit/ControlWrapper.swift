@@ -8,28 +8,76 @@
 import Gluon
 import UIKit
 
-private let action = #selector(ActionTarget.perform)
+private final class Action {
+  private let handler: () -> ()
 
-/// Wraps Objective-C target/action pattern used by `UIControl` with swifty API
-public struct ControlWrapper<T: UIControl> {
-  let value: T
-  private var targets = [Event: ActionTarget]()
-
-  init(_ value: T) {
-    self.value = value
+  init(_ handler: @escaping () -> ()) {
+    self.handler = handler
   }
 
-  mutating func bind(to event: Event, handler: @escaping () -> ()) {
-    if let target = targets[event] {
-      value.removeTarget(target,
-                         action: action,
-                         for: UIControl.Event(event))
+  @objc func perform() {
+    handler()
+  }
+}
+
+private let actionSelector = #selector(Action.perform)
+
+/// Wraps Objective-C target/action pattern used by `UIControl` with a swifty
+/// closure-based API.
+public class ControlWrapper<T: UIControl> {
+  fileprivate(set) var control: T
+  private var handlers = [Event: Action]()
+
+  init(_ control: T) {
+    self.control = control
+  }
+
+  func bind(handlers: [Event: Handler<()>]) {
+    for (e, h) in self.handlers {
+      control.removeTarget(h, action: actionSelector, for: UIControl.Event(e))
+    }
+    self.handlers.removeAll()
+
+    for (e, h) in handlers {
+      let action = Action(h.value)
+      control.addTarget(action, action: actionSelector, for: UIControl.Event(e))
+
+      self.handlers[e] = action
+    }
+  }
+}
+
+public protocol ValueStorage {
+  associatedtype Value
+
+  var value: Value { get set }
+}
+
+public final class ValueControlWrapper<T: UIControl & ValueStorage>:
+  ControlWrapper<T> {
+  private var valueChangedAction: Action?
+
+  var value: T.Value {
+    get {
+      return control.value
+    }
+    set {
+      control.value = newValue
+    }
+  }
+
+  func bind(valueChangedHandler: Handler<T.Value>?) {
+    if let existing = self.valueChangedAction {
+      control.removeTarget(existing, action: actionSelector, for: .valueChanged)
     }
 
-    let target = ActionTarget(handler)
-    value.addTarget(target, action: action, for: UIControl.Event(event))
-
-    targets[event] = target
+    if let handler = valueChangedHandler {
+      let action = Action { [weak self] in
+        guard let self = self else { return }
+        handler.value(self.control.value)
+      }
+      control.addTarget(action, action: actionSelector, for: .valueChanged)
+    }
   }
 }
 

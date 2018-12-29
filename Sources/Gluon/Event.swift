@@ -28,3 +28,10 @@ public enum Event: CaseIterable, Hashable {
 public protocol EventHandlerProps {
   var handlers: [Event: Handler<()>] { get }
 }
+
+public protocol ValueControlProps {
+  associatedtype Value
+
+  var value: Value { get }
+  var valueHandler: Handler<Value>? { get }
+}
