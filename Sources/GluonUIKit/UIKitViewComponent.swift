@@ -15,9 +15,9 @@ public protocol UIKitViewComponent: UIKitHostComponent, HostComponent {
 }
 
 extension UIKitViewComponent {
-  public static func mountTarget(to parent: Any,
+  public static func mountTarget(to parent: UIKitTarget,
                                  props: AnyEquatable,
-                                 children: AnyEquatable) -> Any? {
+                                 children: AnyEquatable) -> UIKitTarget? {
     guard let children = children.value as? Children else {
       childrenAssertionFailure()
       return nil
@@ -44,7 +44,7 @@ extension UIKitViewComponent {
     return target
   }
 
-  public static func update(target: Any,
+  public static func update(target: UIKitTarget,
                             props: AnyEquatable,
                             children: AnyEquatable) {
     guard let target = target as? Target else {
@@ -63,7 +63,7 @@ extension UIKitViewComponent {
     update(target, props, children)
   }
 
-  public static func unmount(target: Any) {
+  public static func unmount(target: UIKitTarget) {
     guard let target = target as? Target else {
       targetAssertionFailure()
       return

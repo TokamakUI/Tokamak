@@ -8,46 +8,14 @@
 import Gluon
 import UIKit
 
-public protocol UIKitHostComponent: AnyHostComponent {
-  static func mountTarget(to parent: Any,
-                          props: AnyEquatable,
-                          children: AnyEquatable) -> Any?
+public protocol UIKitTarget {}
 
-  static func update(target: Any,
-                     props: AnyEquatable,
-                     children: AnyEquatable)
-
-  static func unmount(target: Any)
-}
-
-extension UIKitHostComponent {
-  static func targetAssertionFailure(_ function: String = #function) {
-    typeAssertionFailure("target", function)
-  }
-
-  static func childrenAssertionFailure(_ function: String = #function) {
-    typeAssertionFailure("children", function)
-  }
-
-  static func propsAssertionFailure(_ function: String = #function) {
-    typeAssertionFailure("props", function)
-  }
-
-  static func parentAssertionFailure(_ function: String = #function) {
-    typeAssertionFailure("parent target", function)
-  }
-
-  private static func typeAssertionFailure(_ type: String, _ function: String) {
-    assertionFailure("""
-      UIKitHostComponent passed unsupported \(type) type in \(function)
-    """)
-  }
-}
+extension UIView: UIKitTarget {}
 
 public class UIKitRenderer: Renderer {
-  private var reconciler: StackReconciler?
+  private var reconciler: StackReconciler<UIKitRenderer>?
 
-  public init(node: Node, target: UIView) {
+  public init(node: Node, target: UIKitTarget) {
     reconciler = StackReconciler(node: node, target: target, renderer: self)
   }
 
@@ -57,10 +25,10 @@ public class UIKitRenderer: Renderer {
     """)
   }
 
-  public func mountTarget(to parent: Any,
+  public func mountTarget(to parent: UIKitTarget,
                           with component: AnyHostComponent.Type,
                           props: AnyEquatable,
-                          children: AnyEquatable) -> Any? {
+                          children: AnyEquatable) -> UIKitTarget? {
     guard let rendererComponent = component as? UIKitHostComponent.Type else {
       typeAssertionFailure(for: component)
       return nil
@@ -71,7 +39,7 @@ public class UIKitRenderer: Renderer {
                                          children: children)
   }
 
-  public func update(target: Any,
+  public func update(target: UIKitTarget,
                      with component: AnyHostComponent.Type,
                      props: AnyEquatable,
                      children: AnyEquatable) {
@@ -85,7 +53,7 @@ public class UIKitRenderer: Renderer {
                              children: children)
   }
 
-  public func unmount(target: Any, with component: AnyHostComponent.Type) {
+  public func unmount(target: UIKitTarget, with component: AnyHostComponent.Type) {
     guard let rendererComponent = component as? UIKitHostComponent.Type else {
       typeAssertionFailure(for: component)
       return

@@ -26,6 +26,8 @@
 		D1E0C83521D77FF60042A261 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83421D77FF60042A261 /* StackView.swift */; };
 		D1E0C83721D780690042A261 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83621D780690042A261 /* Frame.swift */; };
 		D1E0C83921D782200042A261 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83821D782200042A261 /* Frame.swift */; };
+		D1E0C83E21D7AC570042A261 /* ControlWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83D21D7AC570042A261 /* ControlWrapper.swift */; };
+		D1E0C84021D7AD480042A261 /* UIKitHostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83F21D7AD480042A261 /* UIKitHostComponent.swift */; };
 		OBJ_104 /* GluonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* GluonTests.swift */; };
 		OBJ_105 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_44 /* XCTestManifests.swift */; };
 		OBJ_107 /* GluonTestRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */; };
@@ -107,6 +109,8 @@
 		D1E0C83421D77FF60042A261 /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 		D1E0C83621D780690042A261 /* Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Frame.swift; sourceTree = "<group>"; };
 		D1E0C83821D782200042A261 /* Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Frame.swift; sourceTree = "<group>"; };
+		D1E0C83D21D7AC570042A261 /* ControlWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlWrapper.swift; sourceTree = "<group>"; };
+		D1E0C83F21D7AD480042A261 /* UIKitHostComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitHostComponent.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -306,10 +310,12 @@
 			children = (
 				D1E0C82F21D77F4A0042A261 /* Components */,
 				OBJ_9 /* ActionTarget.swift */,
+				D1E0C83D21D7AC570042A261 /* ControlWrapper.swift */,
 				OBJ_10 /* UIColor.swift */,
 				OBJ_11 /* UIKitControlComponent.swift */,
 				OBJ_12 /* UIKitRenderer.swift */,
 				OBJ_13 /* UIKitViewComponent.swift */,
+				D1E0C83F21D7AD480042A261 /* UIKitHostComponent.swift */,
 			);
 			name = GluonUIKit;
 			path = Sources/GluonUIKit;
@@ -444,7 +450,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				D1E0C84021D7AD480042A261 /* UIKitHostComponent.swift in Sources */,
 				D1E0C83921D782200042A261 /* Frame.swift in Sources */,
+				D1E0C83E21D7AC570042A261 /* ControlWrapper.swift in Sources */,
 				OBJ_116 /* ActionTarget.swift in Sources */,
 				D1E0C83121D77F660042A261 /* Button.swift in Sources */,
 				OBJ_117 /* UIColor.swift in Sources */,

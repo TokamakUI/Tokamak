@@ -30,9 +30,9 @@ extension UIKitControlComponent {
 }
 
 extension UIKitControlComponent {
-  public static func mountTarget(to parent: Any,
+  public static func mountTarget(to parent: UIKitTarget,
                                  props: AnyEquatable,
-                                 children: AnyEquatable) -> Any? {
+                                 children: AnyEquatable) -> UIKitTarget? {
     guard let children = children.value as? Children else {
       childrenAssertionFailure()
       return nil
@@ -58,7 +58,7 @@ extension UIKitControlComponent {
     return bind(handlers: props.handlers, for: ControlWrapper(target))
   }
 
-  public static func update(target: Any,
+  public static func update(target: UIKitTarget,
                             props: AnyEquatable,
                             children: AnyEquatable) {
     guard let target = target as? ControlWrapper<Target> else {
@@ -77,7 +77,7 @@ extension UIKitControlComponent {
     update(target.value, props, children)
   }
 
-  public static func unmount(target: Any) {
+  public static func unmount(target: UIKitTarget) {
     guard let target = target as? ControlWrapper<Target> else {
       targetAssertionFailure()
       return
