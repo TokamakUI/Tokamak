@@ -28,6 +28,7 @@
 		D1E0C83921D782200042A261 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83821D782200042A261 /* Frame.swift */; };
 		D1E0C83E21D7AC570042A261 /* ControlWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83D21D7AC570042A261 /* ControlWrapper.swift */; };
 		D1E0C84021D7AD480042A261 /* UIKitHostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C83F21D7AD480042A261 /* UIKitHostComponent.swift */; };
+		D1E0C84321D7BE9B0042A261 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C84221D7BE9B0042A261 /* View.swift */; };
 		OBJ_104 /* GluonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* GluonTests.swift */; };
 		OBJ_105 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_44 /* XCTestManifests.swift */; };
 		OBJ_107 /* GluonTestRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */; };
@@ -111,6 +112,7 @@
 		D1E0C83821D782200042A261 /* Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Frame.swift; sourceTree = "<group>"; };
 		D1E0C83D21D7AC570042A261 /* ControlWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlWrapper.swift; sourceTree = "<group>"; };
 		D1E0C83F21D7AD480042A261 /* UIKitHostComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitHostComponent.swift; sourceTree = "<group>"; };
+		D1E0C84221D7BE9B0042A261 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -238,6 +240,7 @@
 				OBJ_27 /* Label.swift */,
 				OBJ_28 /* StackView.swift */,
 				D1E0C83621D780690042A261 /* Frame.swift */,
+				D1E0C84221D7BE9B0042A261 /* View.swift */,
 			);
 			path = HostComponents;
 			sourceTree = "<group>";
@@ -281,7 +284,7 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -291,7 +294,6 @@
 				OBJ_46 /* Products */,
 			);
 			indentWidth = 2;
-			name = "";
 			sourceTree = "<group>";
 			tabWidth = 2;
 		};
@@ -330,6 +332,7 @@
 			buildPhases = (
 				OBJ_55 /* Sources */,
 				OBJ_77 /* Frameworks */,
+				D1E0C84121D7BD360042A261 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -421,7 +424,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_46 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -435,6 +438,26 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D1E0C84121D7BD360042A261 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		OBJ_103 /* Sources */ = {
@@ -477,6 +500,7 @@
 				OBJ_61 /* Default.swift in Sources */,
 				OBJ_62 /* Diffable.swift in Sources */,
 				OBJ_63 /* Event.swift in Sources */,
+				D1E0C84321D7BE9B0042A261 /* View.swift in Sources */,
 				OBJ_64 /* Hooks.swift in Sources */,
 				OBJ_65 /* Button.swift in Sources */,
 				OBJ_66 /* Label.swift in Sources */,

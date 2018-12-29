@@ -71,7 +71,9 @@ final class GluonViewController: UIViewController {
   }
 
   @IBAction func onTap(_: Any) {
-//    let counters = (0..<1_000_000).map { _ in Counter(props: NoProps(), children: []) }
+//    let counters = (0..<1_000_000).map { _ in
+//        Counter(props: NoProps(), children: [])
+//    }
     print(#file)
   }
 }

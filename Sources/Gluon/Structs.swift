@@ -84,12 +84,3 @@ enum ComponentType: Equatable {
     return type
   }
 }
-
-public struct View: HostComponent {
-  public typealias Children = [Node]
-
-  public let props: Props
-  public let children: [Node]
-
-  public struct Props: Equatable {}
-}

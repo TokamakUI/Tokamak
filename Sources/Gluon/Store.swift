@@ -5,8 +5,6 @@
 //  Created by Max Desiatov on 12/10/2018.
 //
 
-import Foundation
-
 /// Generic undo-redo manager that doesn't require rollback implementation in
 /// `apply` of a wrapped store. It saves previous snapshots of state in a stack
 /// and undo/redo actions allow traversing the state history. This might be
@@ -76,7 +74,8 @@ public protocol Store {
 // }
 //
 //typealias Dispatch<Action> = (Action) -> ()
-//typealias Dispatcher<S: Store> = (state: S.State, dispatch: Dispatch<S.Action>)
+//typealias Dispatcher<S: Store> =
+// (state: S.State, dispatch: Dispatch<S.Action>)
 
 // FIXME: when contexts are available read state and dispatch
 // from the context and pass it to the mapper

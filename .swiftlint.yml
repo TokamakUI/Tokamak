@@ -1,0 +1,15 @@
+disabled_rules:
+- trailing_comma
+- identifier_name
+- private_over_fileprivate
+- void_return
+- operator_whitespace
+- nesting
+- cyclomatic_complexity
+
+line_length:
+- 80
+- 100
+
+function_body_length:
+- 50

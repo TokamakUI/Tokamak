@@ -20,7 +20,9 @@ final class CompositeComponentWrapper<R: Renderer>: ComponentWrapper<R> {
   private let parentTarget: R.Target
   var state = [String: Any]()
 
-  init(_ node: Node, _ type: AnyCompositeComponent.Type, _ parentTarget: R.Target) {
+  init(_ node: Node,
+       _ type: AnyCompositeComponent.Type,
+       _ parentTarget: R.Target) {
     self.type = type
     self.parentTarget = parentTarget
 
