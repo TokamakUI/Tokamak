@@ -22,13 +22,13 @@ struct Counter: LeafComponent {
         .touchUpInside: Handler { setCount(count + 1) },
       ]), "Increment"),
 
-      Label.node(Null(), "\(count)"),
+      Label.node(.init(), "\(count)"),
 
       Slider.node(Slider.Props(
         value: sliding, valueHandler: Handler { setSliding($0) }
       )),
 
-      Label.node(Null(), "\(sliding)"),
+      Label.node(.init(), "\(sliding)"),
     ] : []
 
     return StackView.node(.init(axis: .vertical,
