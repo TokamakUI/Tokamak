@@ -6,5 +6,6 @@
 //
 
 public protocol Default {
-  init()
+  associatedtype DefaultValue
+  static var defaultValue: DefaultValue { get }
 }

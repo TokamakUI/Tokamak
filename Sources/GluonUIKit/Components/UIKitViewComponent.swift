@@ -14,7 +14,7 @@ public protocol UIKitViewComponent: UIKitHostComponent, HostComponent {
   static func update(_ view: Target, _ props: Props, _ children: Children)
 }
 
-extension UIKitViewComponent {
+extension UIKitViewComponent where Target == Target.DefaultValue {
   public static func mountTarget(to parent: UIKitTarget,
                                  props: AnyEquatable,
                                  children: AnyEquatable) -> UIKitTarget? {
@@ -28,7 +28,7 @@ extension UIKitViewComponent {
       return nil
     }
 
-    let target = Target()
+    let target = Target.defaultValue
     update(target, props, children)
 
     switch parent {

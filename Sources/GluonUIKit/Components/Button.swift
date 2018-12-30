@@ -8,7 +8,11 @@
 import Gluon
 import UIKit
 
-extension UIButton: Default {}
+extension UIButton: Default {
+  public static var defaultValue: UIButton {
+    return UIButton(type: .system)
+  }
+}
 
 extension Button: UIKitControlComponent {
   public typealias Target = UIButton
@@ -18,7 +22,14 @@ extension Button: UIKitControlComponent {
                             _ children: String) {
     let control = wrapper.control
 
-    control.setTitleColor(UIColor(props.titleColor), for: .normal)
+    if let titleColor = props.titleColor {
+      control.setTitleColor(UIColor(titleColor), for: .normal)
+    }
+
+    if let backgroundColor = props.backgroundColor {
+      control.backgroundColor = UIColor(backgroundColor)
+    }
+
     control.setTitle(children, for: .normal)
   }
 }

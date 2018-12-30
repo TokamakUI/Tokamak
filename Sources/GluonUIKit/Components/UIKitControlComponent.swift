@@ -19,7 +19,7 @@ public protocol UIKitControlComponent: UIKitHostComponent, HostComponent
   static func wrapper(for: Target) -> ControlWrapper<Target>
 }
 
-extension UIKitControlComponent {
+extension UIKitControlComponent where Target == Target.DefaultValue {
   public static func wrapper(for control: Target) -> ControlWrapper<Target> {
     return ControlWrapper(control)
   }
@@ -37,7 +37,7 @@ extension UIKitControlComponent {
       return nil
     }
 
-    let target = Target()
+    let target = Target.defaultValue
 
     switch parent {
     case let stackView as UIStackView:

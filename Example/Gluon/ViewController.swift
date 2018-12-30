@@ -48,13 +48,14 @@ struct Counter: LeafComponent {
         },
       ]), "Increment"),
 
-      Label.node(Null(), "\(count)"),
+      Label.node(.init(alignment: .center), "\(count)"),
 
-      Slider.node(Slider.Props(
-        value: sliding, valueHandler: Handler { setSliding($0) }
+      Slider.node(.init(
+        value: sliding,
+        valueHandler: Handler { setSliding($0) }
       )),
 
-      Label.node(Null(), "\(sliding)"),
+      Label.node(.init(alignment: .center), "\(sliding)"),
     ] : []
 
     return StackView.node(.init(axis: .vertical,

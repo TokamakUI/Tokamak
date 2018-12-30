@@ -8,30 +8,53 @@
 import Gluon
 import UIKit
 
-extension UIStackView: Default {}
+extension UIStackView: Default {
+  public static var defaultValue: UIStackView {
+    return UIStackView()
+  }
+}
 
-extension StackViewProps.Axis {
-  var value: NSLayoutConstraint.Axis {
-    switch self {
-    case .horizontal:
-      return .horizontal
-    case .vertical:
-      return .vertical
+extension UIStackView.Alignment {
+  public init(_ alignment: StackViewProps.Alignment) {
+    switch alignment {
+    case .top:
+      self = .top
+    case .bottom:
+      self = .bottom
+    case .leading:
+      self = .leading
+    case .trailing:
+      self = .trailing
+    case .center:
+      self = .center
+    case .fill:
+      self = .fill
     }
   }
 }
 
-extension StackViewProps.Distribution {
-  var value: UIStackView.Distribution {
-    switch self {
+extension NSLayoutConstraint.Axis {
+  public init(_ axis: StackViewProps.Axis) {
+    switch axis {
+    case .horizontal:
+      self = .horizontal
+    case .vertical:
+      self = .vertical
+    }
+  }
+}
+
+extension UIStackView.Distribution {
+  public init(_ distribution: StackViewProps.Distribution) {
+    switch distribution {
     case .fill:
-      return .fill
+      self = .fill
     case .fillEqually:
-      return .fillEqually
+      self = .fillEqually
     case .fillProportionally:
-      return .fillProportionally
+      self = .fillProportionally
     case .equalSpacing:
-      return .equalSpacing
+      self = .equalSpacing
     }
   }
 }
@@ -40,8 +63,9 @@ extension StackView: UIKitViewComponent {
   public static func update(_ view: UIStackView,
                             _ props: StackViewProps,
                             _: [Node]) {
-    view.axis = props.axis.value
-    view.distribution = props.distribution.value
+    view.alignment = UIStackView.Alignment(props.alignment)
+    view.axis = NSLayoutConstraint.Axis(props.axis)
+    view.distribution = UIStackView.Distribution(props.distribution)
     view.frame = CGRect(props.frame)
   }
 }

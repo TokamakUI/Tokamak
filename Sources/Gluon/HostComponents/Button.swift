@@ -6,13 +6,13 @@
 //
 
 public struct ButtonProps: Equatable, EventHandlerProps {
-  public let backgroundColor: Color
-  public let titleColor: Color
+  public let backgroundColor: Color?
+  public let titleColor: Color?
   public let handlers: [Event: Handler<()>]
 
-  public init(backgroundColor: Color = .white,
+  public init(backgroundColor: Color? = nil,
               handlers: [Event: Handler<()>] = [:],
-              titleColor: Color = .black) {
+              titleColor: Color? = nil) {
     self.backgroundColor = backgroundColor
     self.handlers = handlers
     self.titleColor = titleColor

@@ -8,7 +8,11 @@
 import Gluon
 import UIKit
 
-extension UISlider: Default {}
+extension UISlider: Default {
+  public static var defaultValue: UISlider {
+    return UISlider()
+  }
+}
 
 extension UISlider: ValueStorage {}
 

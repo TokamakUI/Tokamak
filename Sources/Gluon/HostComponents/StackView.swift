@@ -6,25 +6,37 @@
 //
 
 public struct StackViewProps: Equatable {
-  public enum Axis: Equatable {
+  public enum Alignment {
+    case fill
+    case center
+    case leading
+    case trailing
+    case top
+    case bottom
+  }
+
+  public enum Axis {
     case horizontal
     case vertical
   }
 
-  public enum Distribution: Equatable {
+  public enum Distribution {
     case fill
     case fillEqually
     case fillProportionally
     case equalSpacing
   }
 
+  public let alignment: Alignment
   public let axis: Axis
   public let distribution: Distribution
   public let frame: Rectangle
 
-  public init(axis: Axis = .horizontal,
+  public init(alignment: Alignment = .fill,
+              axis: Axis = .horizontal,
               distribution: Distribution = .fill,
               frame: Rectangle) {
+    self.alignment = alignment
     self.axis = axis
     self.distribution = distribution
     self.frame = frame
