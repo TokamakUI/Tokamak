@@ -17,7 +17,7 @@ struct Counter: LeafComponent {
     let (count, setCount) = hooks.state(props)
     let (sliding, setSliding) = hooks.state(0.5 as Float)
 
-    let children = count < 44 ? [
+    let children = count < 45 ? [
       Button.node(.init(handlers: [
         .touchUpInside: Handler { setCount(count + 1) },
       ]), "Increment"),
@@ -119,7 +119,37 @@ final class GluonTests: XCTestCase {
         XCTAssertEqual(sliderProps.value, 0.25)
         XCTAssertEqual(newStack.subviews[1].children, AnyEquatable("43"))
 
-        e.fulfill()
+        guard let root = renderer.rootTarget,
+          let buttonProps = root.subviews[0].subviews[0]
+          .props.value as? Button.Props else {
+          XCTAssert(false, "components have wrong props types")
+          return
+        }
+
+        guard let buttonHandler = buttonProps
+          .handlers[.touchUpInside]?.value else {
+          XCTAssert(false, "components have no handlers")
+          return
+        }
+
+        buttonHandler(())
+
+        DispatchQueue.main.async {
+          XCTAssert(root.component == View.self)
+          XCTAssertEqual(root.subviews.count, 1)
+          let newStack = root.subviews[0]
+          XCTAssert(originalStack === newStack)
+          XCTAssert(newStack.component == StackView.self)
+          XCTAssert(type(of: newStack.props.value) == StackView.Props.self)
+          XCTAssertEqual(newStack.subviews.count, 4)
+          XCTAssert(newStack.subviews[0].component == Button.self)
+          XCTAssert(newStack.subviews[1].component == Label.self)
+          XCTAssert(originalLabel === newStack.subviews[1])
+
+          XCTAssertEqual(sliderProps.value, 0.25)
+          XCTAssertEqual(newStack.subviews[1].children, AnyEquatable("44"))
+          e.fulfill()
+        }
       }
     }
 
@@ -163,14 +193,30 @@ final class GluonTests: XCTestCase {
       handler(())
 
       DispatchQueue.main.async {
-        XCTAssert(root.component == View.self)
-        XCTAssertEqual(root.subviews.count, 1)
-        let stack = root.subviews[0]
-        XCTAssert(stack.component == StackView.self)
-        XCTAssert(type(of: stack.props.value) == StackView.Props.self)
-        XCTAssertEqual(stack.subviews.count, 0)
+        guard let root = renderer.rootTarget,
+          let props = root.subviews[0].subviews[0]
+          .props.value as? Button.Props else {
+          XCTAssert(false, "button component got wrong props types")
+          return
+        }
 
-        e.fulfill()
+        guard let handler = props.handlers[.touchUpInside]?.value else {
+          XCTAssert(false, "button component got no handler")
+          return
+        }
+
+        handler(())
+
+        DispatchQueue.main.async {
+          XCTAssert(root.component == View.self)
+          XCTAssertEqual(root.subviews.count, 1)
+          let stack = root.subviews[0]
+          XCTAssert(stack.component == StackView.self)
+          XCTAssert(type(of: stack.props.value) == StackView.Props.self)
+          XCTAssertEqual(stack.subviews.count, 0)
+
+          e.fulfill()
+        }
       }
     }
 

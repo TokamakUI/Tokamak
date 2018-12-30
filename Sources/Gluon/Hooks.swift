@@ -11,7 +11,7 @@ public struct Hooks {
 
   /// This overload works around unexpected behaviour, where
   /// `"\(#file)\(#line)"` as a default arguments is evaluated to local values,
-  /// not values of the caller.
+  /// not values at the call site.
   public func state<T>(_ initial: T,
                        file: String = #file,
                        line: Int = #line) -> (T, (T) -> ()) {

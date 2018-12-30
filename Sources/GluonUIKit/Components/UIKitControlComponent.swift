@@ -71,6 +71,7 @@ extension UIKitControlComponent {
       return
     }
 
+    target.bind(handlers: props.handlers)
     update(wrapper: target, props, children)
   }
 
