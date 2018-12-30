@@ -69,6 +69,7 @@ public final class ValueControlWrapper<T: UIControl & ValueStorage>:
   func bind(valueChangedHandler: Handler<T.Value>?) {
     if let existing = self.valueChangedAction {
       control.removeTarget(existing, action: actionSelector, for: .valueChanged)
+      valueChangedAction = nil
     }
 
     if let handler = valueChangedHandler {
@@ -76,7 +77,9 @@ public final class ValueControlWrapper<T: UIControl & ValueStorage>:
         guard let self = self else { return }
         handler.value(self.control.value)
       }
+
       control.addTarget(action, action: actionSelector, for: .valueChanged)
+      valueChangedAction = action
     }
   }
 }

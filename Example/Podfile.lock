@@ -14,7 +14,7 @@ EXTERNAL SOURCES:
     :path: ".."
 
 SPEC CHECKSUMS:
-  Gluon: eadaa75b42ec8d25a0ecbbda4facf014e3152ead
+  Gluon: 8ef129fb2e2e327cbe9a369b828d9389249a57a0
   GluonUIKit: 584115b877c27d2b953e465c8bedc81f2eff8195
 
 PODFILE CHECKSUM: 7ae7a1e41c0d1d189f90a2ae8f9614de0c3fcec2

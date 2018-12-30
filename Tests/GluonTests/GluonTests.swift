@@ -15,14 +15,20 @@ struct Counter: LeafComponent {
 
   static func render(props: Int) -> Node {
     let (count, setCount) = hooks.state(props)
-
-    let handler = Handler {
-      setCount(count + 1)
-    }
+    let (sliding, setSliding) = hooks.state(0.5 as Float)
 
     let children = count < 44 ? [
-      Button.node(.init(handlers: [.touchUpInside: handler]), "Increment"),
+      Button.node(.init(handlers: [
+        .touchUpInside: Handler { setCount(count + 1) },
+        ]), "Increment"),
+
       Label.node(Null(), "\(count)"),
+
+      Slider.node(Slider.Props(
+        value: sliding, valueHandler: Handler { setSliding($0) }
+      )),
+
+      Label.node(Null(), "\(sliding)"),
     ] : []
 
     return StackView.node(.init(axis: .vertical,
@@ -46,7 +52,7 @@ final class GluonTests: XCTestCase {
     let stack = root.subviews[0]
     XCTAssert(stack.component == StackView.self)
     XCTAssert(type(of: stack.props.value) == StackView.Props.self)
-    XCTAssertEqual(stack.subviews.count, 2)
+    XCTAssertEqual(stack.subviews.count, 4)
     XCTAssert(stack.subviews[0].component == Button.self)
     XCTAssert(stack.subviews[1].component == Label.self)
     XCTAssertEqual(stack.subviews[1].children, AnyEquatable("42"))
@@ -67,6 +73,9 @@ final class GluonTests: XCTestCase {
       return
     }
 
+    let originalStack = root.subviews[0]
+    let originalLabel = originalStack.subviews[1]
+
     handler(())
 
     let e = expectation(description: "rerender")
@@ -74,13 +83,15 @@ final class GluonTests: XCTestCase {
     DispatchQueue.main.async {
       XCTAssert(root.component == View.self)
       XCTAssertEqual(root.subviews.count, 1)
-      let stack = root.subviews[0]
-      XCTAssert(stack.component == StackView.self)
-      XCTAssert(type(of: stack.props.value) == StackView.Props.self)
-      XCTAssertEqual(stack.subviews.count, 2)
-      XCTAssert(stack.subviews[0].component == Button.self)
-      XCTAssert(stack.subviews[1].component == Label.self)
-      XCTAssertEqual(stack.subviews[1].children, AnyEquatable("43"))
+      let newStack = root.subviews[0]
+      XCTAssert(originalStack === newStack)
+      XCTAssert(newStack.component == StackView.self)
+      XCTAssert(type(of: newStack.props.value) == StackView.Props.self)
+      XCTAssertEqual(newStack.subviews.count, 4)
+      XCTAssert(newStack.subviews[0].component == Button.self)
+      XCTAssert(newStack.subviews[1].component == Label.self)
+      XCTAssert(originalLabel === newStack.subviews[1])
+      XCTAssertEqual(newStack.subviews[1].children, AnyEquatable("43"))
 
       e.fulfill()
     }

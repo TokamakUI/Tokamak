@@ -41,6 +41,13 @@ extension HostComponent {
   }
 }
 
+extension HostComponent where Children == Null {
+  public static func node(key: String? = nil,
+                          _ props: Props) -> Node {
+    return node(key: key, props, Null())
+  }
+}
+
 extension CompositeComponent {
   public static func node(key: String? = nil,
                           _ props: Props,

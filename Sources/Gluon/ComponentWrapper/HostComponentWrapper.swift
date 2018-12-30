@@ -77,9 +77,7 @@ final class HostComponentWrapper<R: Renderer>: ComponentWrapper<R> {
 
         while let child = mountedChildren.first, let node = nodes.first {
           let newChild: ComponentWrapper<R>
-          if node.key != nil,
-            node.type == mountedChildren[0].node.type,
-            node.key == child.node.key {
+          if node.type == mountedChildren[0].node.type {
             child.node = node
             child.update(with: reconciler)
             newChild = child

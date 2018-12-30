@@ -39,14 +39,20 @@ struct Counter: LeafComponent {
 
   static func render(props: Props) -> Node {
     let (count, setCount) = hooks.state(props.initial)
-
-    let handler = Handler {
-      setCount(count + 1)
-    }
+    let (sliding, setSliding) = hooks.state(0.5 as Float)
 
     let children = count < 15 ? [
-      Button.node(.init(handlers: [.touchUpInside: handler]), "Increment"),
+      Button.node(.init(handlers: [
+        .touchUpInside: Handler { setCount(count + 1) },
+      ]), "Increment"),
+
       Label.node(Null(), "\(count)"),
+
+      Slider.node(Slider.Props(
+        value: sliding, valueHandler: Handler { setSliding($0) }
+      )),
+
+      Label.node(Null(), "\(sliding)"),
     ] : []
 
     return StackView.node(.init(axis: .vertical,
