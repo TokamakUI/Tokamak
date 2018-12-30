@@ -43,7 +43,9 @@ struct Counter: LeafComponent {
 
     let children = count < 15 ? [
       Button.node(.init(handlers: [
-        .touchUpInside: Handler { setCount(count + 1) },
+        .touchUpInside: Handler {
+          setCount(count + 1)
+        },
       ]), "Increment"),
 
       Label.node(Null(), "\(count)"),
