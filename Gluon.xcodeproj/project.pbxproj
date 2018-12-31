@@ -21,6 +21,11 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		D1BEC31E21DA7F42009B498E /* StackNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BEC31D21DA7F42009B498E /* StackNavigator.swift */; };
+		D1BEC32021DA7F51009B498E /* TabNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BEC31F21DA7F51009B498E /* TabNavigator.swift */; };
+		D1BEC32221DA7F5D009B498E /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BEC32121DA7F5D009B498E /* Presenter.swift */; };
+		D1BEC32421DA83DC009B498E /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BEC32321DA83DC009B498E /* Alert.swift */; };
+		D1BEC32921DA8C1F009B498E /* StackNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BEC32721DA8B97009B498E /* StackNavigator.swift */; };
 		OBJ_100 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_112 /* TestRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* TestRenderer.swift */; };
 		OBJ_113 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* TestView.swift */; };
@@ -109,6 +114,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D1BEC31D21DA7F42009B498E /* StackNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackNavigator.swift; sourceTree = "<group>"; };
+		D1BEC31F21DA7F51009B498E /* TabNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabNavigator.swift; sourceTree = "<group>"; };
+		D1BEC32121DA7F5D009B498E /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
+		D1BEC32321DA83DC009B498E /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		D1BEC32721DA8B97009B498E /* StackNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackNavigator.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -241,11 +251,12 @@
 		OBJ_12 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				D1E0C85E21D970AA0042A261 /* Props */,
 				OBJ_13 /* Button.swift */,
 				OBJ_16 /* Label.swift */,
 				OBJ_18 /* Slider.swift */,
+				D1BEC32721DA8B97009B498E /* StackNavigator.swift */,
 				OBJ_19 /* StackView.swift */,
+				D1E0C85E21D970AA0042A261 /* Props */,
 				D1E0C85F21D970C70042A261 /* Protocols */,
 			);
 			path = Components;
@@ -287,11 +298,15 @@
 			isa = PBXGroup;
 			children = (
 				D1E0C85D21D96FF60042A261 /* Props */,
+				D1BEC32321DA83DC009B498E /* Alert.swift */,
 				OBJ_37 /* Button.swift */,
 				OBJ_39 /* Label.swift */,
 				OBJ_40 /* Layout.swift */,
+				D1BEC32121DA7F5D009B498E /* Presenter.swift */,
 				OBJ_42 /* Slider.swift */,
 				OBJ_43 /* StackView.swift */,
+				D1BEC31D21DA7F42009B498E /* StackNavigator.swift */,
+				D1BEC31F21DA7F51009B498E /* TabNavigator.swift */,
 				OBJ_45 /* View.swift */,
 			);
 			path = HostComponents;
@@ -504,6 +519,7 @@
 				OBJ_137 /* Rectangle.swift in Sources */,
 				OBJ_138 /* Slider.swift in Sources */,
 				OBJ_139 /* StackView.swift in Sources */,
+				D1BEC32921DA8C1F009B498E /* StackNavigator.swift in Sources */,
 				OBJ_140 /* UIKitControlComponent.swift in Sources */,
 				OBJ_141 /* UIKitHostComponent.swift in Sources */,
 				OBJ_142 /* UIKitValueComponent.swift in Sources */,
@@ -539,8 +555,12 @@
 				OBJ_88 /* Renderer.swift in Sources */,
 				OBJ_89 /* StackReconciler.swift in Sources */,
 				OBJ_90 /* Store.swift in Sources */,
+				D1BEC32221DA7F5D009B498E /* Presenter.swift in Sources */,
+				D1BEC32421DA83DC009B498E /* Alert.swift in Sources */,
 				OBJ_91 /* Component.swift in Sources */,
 				OBJ_92 /* Unique.swift in Sources */,
+				D1BEC31E21DA7F42009B498E /* StackNavigator.swift in Sources */,
+				D1BEC32021DA7F51009B498E /* TabNavigator.swift in Sources */,
 				OBJ_93 /* VersionedArray.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

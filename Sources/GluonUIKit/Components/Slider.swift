@@ -20,6 +20,6 @@ extension Slider: UIKitValueComponent {
   public typealias Target = UISlider
 
   public static func update(valueControl: UISlider,
-                            _ props: SliderProps,
+                            _ props: Slider.Props,
                             _ children: Null) {}
 }

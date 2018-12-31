@@ -15,7 +15,7 @@ extension UIStackView: Default {
 }
 
 extension UIStackView.Alignment {
-  public init(_ alignment: StackViewProps.Alignment) {
+  public init(_ alignment: StackView.Props.Alignment) {
     switch alignment {
     case .top:
       self = .top
@@ -34,7 +34,7 @@ extension UIStackView.Alignment {
 }
 
 extension NSLayoutConstraint.Axis {
-  public init(_ axis: StackViewProps.Axis) {
+  public init(_ axis: StackView.Props.Axis) {
     switch axis {
     case .horizontal:
       self = .horizontal
@@ -45,7 +45,7 @@ extension NSLayoutConstraint.Axis {
 }
 
 extension UIStackView.Distribution {
-  public init(_ distribution: StackViewProps.Distribution) {
+  public init(_ distribution: StackView.Props.Distribution) {
     switch distribution {
     case .fill:
       self = .fill
@@ -61,7 +61,7 @@ extension UIStackView.Distribution {
 
 extension StackView: UIKitViewComponent {
   public static func update(_ view: UIStackView,
-                            _ props: StackViewProps,
+                            _ props: StackView.Props,
                             _: [Node]) {
     view.alignment = UIStackView.Alignment(props.alignment)
     view.axis = NSLayoutConstraint.Axis(props.axis)

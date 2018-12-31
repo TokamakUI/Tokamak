@@ -18,7 +18,7 @@ extension Button: UIKitControlComponent {
   public typealias Target = UIButton
 
   public static func update(wrapper: ControlWrapper<UIButton>,
-                            _ props: ButtonProps,
+                            _ props: Button.Props,
                             _ children: String) {
     let control = wrapper.control
 
