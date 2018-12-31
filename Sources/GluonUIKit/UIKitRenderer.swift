@@ -14,9 +14,13 @@ extension UIView: UIKitTarget {}
 
 public class UIKitRenderer: Renderer {
   private var reconciler: StackReconciler<UIKitRenderer>?
+  private let rootViewController: UIViewController
 
-  public init(node: Node, target: UIKitTarget) {
-    reconciler = StackReconciler(node: node, target: target, renderer: self)
+  public init(node: Node, rootViewController: UIViewController) {
+    self.rootViewController = rootViewController
+    reconciler = StackReconciler(node: node,
+                                 target: rootViewController.view,
+                                 renderer: self)
   }
 
   private func typeAssertionFailure(for type: AnyHostComponent.Type) {

@@ -306,7 +306,9 @@
 				OBJ_58 /* Example */,
 				OBJ_59 /* Products */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		OBJ_54 /* Tests */ = {
 			isa = PBXGroup;
