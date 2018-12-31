@@ -26,6 +26,8 @@
 		D1BEC32221DA7F5D009B498E /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BEC32121DA7F5D009B498E /* Presenter.swift */; };
 		D1BEC32421DA83DC009B498E /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BEC32321DA83DC009B498E /* Alert.swift */; };
 		D1BEC32921DA8C1F009B498E /* StackNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BEC32721DA8B97009B498E /* StackNavigator.swift */; };
+		D1BEC32C21DAB3E7009B498E /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BEC32B21DAB3E7009B498E /* View.swift */; };
+		D1BEC32E21DAB46F009B498E /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BEC32D21DAB46F009B498E /* Style.swift */; };
 		OBJ_100 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_112 /* TestRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* TestRenderer.swift */; };
 		OBJ_113 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* TestView.swift */; };
@@ -119,6 +121,8 @@
 		D1BEC32121DA7F5D009B498E /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
 		D1BEC32321DA83DC009B498E /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		D1BEC32721DA8B97009B498E /* StackNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackNavigator.swift; sourceTree = "<group>"; };
+		D1BEC32B21DAB3E7009B498E /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		D1BEC32D21DAB46F009B498E /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,10 +212,11 @@
 		D1E0C85D21D96FF60042A261 /* Props */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_44 /* TextAlignment.swift */,
-				OBJ_41 /* Rectangle.swift */,
 				OBJ_38 /* Color.swift */,
 				OBJ_34 /* Event.swift */,
+				OBJ_41 /* Rectangle.swift */,
+				D1BEC32D21DAB46F009B498E /* Style.swift */,
+				OBJ_44 /* TextAlignment.swift */,
 			);
 			path = Props;
 			sourceTree = "<group>";
@@ -256,6 +261,7 @@
 				OBJ_18 /* Slider.swift */,
 				D1BEC32721DA8B97009B498E /* StackNavigator.swift */,
 				OBJ_19 /* StackView.swift */,
+				D1BEC32B21DAB3E7009B498E /* View.swift */,
 				D1E0C85E21D970AA0042A261 /* Props */,
 				D1E0C85F21D970C70042A261 /* Protocols */,
 			);
@@ -383,6 +389,7 @@
 			buildPhases = (
 				OBJ_68 /* Sources */,
 				OBJ_94 /* Frameworks */,
+				D1BEC32A21DAB2D3009B498E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -489,6 +496,26 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		D1BEC32A21DAB2D3009B498E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		OBJ_111 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -514,6 +541,7 @@
 			files = (
 				OBJ_133 /* Button.swift in Sources */,
 				OBJ_134 /* Color.swift in Sources */,
+				D1BEC32C21DAB3E7009B498E /* View.swift in Sources */,
 				OBJ_135 /* Event.swift in Sources */,
 				OBJ_136 /* Label.swift in Sources */,
 				OBJ_137 /* Rectangle.swift in Sources */,
@@ -552,6 +580,7 @@
 				OBJ_85 /* View.swift in Sources */,
 				OBJ_86 /* Node.swift in Sources */,
 				OBJ_87 /* Null.swift in Sources */,
+				D1BEC32E21DAB46F009B498E /* Style.swift in Sources */,
 				OBJ_88 /* Renderer.swift in Sources */,
 				OBJ_89 /* StackReconciler.swift in Sources */,
 				OBJ_90 /* Store.swift in Sources */,

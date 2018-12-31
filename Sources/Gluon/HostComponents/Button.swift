@@ -6,16 +6,16 @@
 //
 
 public struct Button: HostComponent {
-  public struct Props: Equatable, EventHandlerProps {
-    public let backgroundColor: Color?
-    public let titleColor: Color?
+  public struct Props: Equatable, EventHandlerProps, StyleProps {
     public let handlers: [Event: Handler<()>]
+    public let style: Style?
+    public let titleColor: Color?
 
-    public init(backgroundColor: Color? = nil,
-                handlers: [Event: Handler<()>] = [:],
+    public init(handlers: [Event: Handler<()>] = [:],
+                style: Style? = nil,
                 titleColor: Color? = nil) {
-      self.backgroundColor = backgroundColor
       self.handlers = handlers
+      self.style = style
       self.titleColor = titleColor
     }
   }

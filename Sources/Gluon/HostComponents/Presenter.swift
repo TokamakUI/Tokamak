@@ -22,15 +22,15 @@ public struct Presenter: HostComponent {
 
       /** Renderer targets up in the tree of nodes owning the presenter node are
        not removed from the target hierarchy when the presentation finishes.
-       So if the presented component does not fill the screen with opaque content,
-       the underlying content shows through.
+       So if the presented component does not fill the screen with opaque
+       content, the underlying content shows through.
        */
       case overCurrentContext
 
       /** Renderer targets up in the tree of nodes owning the presenter node are
        not removed from the target hierarchy when the presentation finishes.
-       So if the presented component does not fill the screen with opaque content,
-       the underlying content shows through.
+       So if the presented component does not fill the screen with opaque
+       content, the underlying content shows through.
        */
       case overFullScreen
 

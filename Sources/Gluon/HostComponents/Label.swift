@@ -6,11 +6,13 @@
 //
 
 public struct Label: HostComponent {
-  public struct Props: Equatable {
+  public struct Props: Equatable, StyleProps {
     public let alignment: TextAlignment
+    public let style: Style?
 
-    public init(alignment: TextAlignment = .natural) {
+    public init(alignment: TextAlignment = .natural, style: Style? = nil) {
       self.alignment = alignment
+      self.style = style
     }
   }
 

@@ -26,10 +26,6 @@ extension Button: UIKitControlComponent {
       control.setTitleColor(UIColor(titleColor), for: .normal)
     }
 
-    if let backgroundColor = props.backgroundColor {
-      control.backgroundColor = UIColor(backgroundColor)
-    }
-
     control.setTitle(children, for: .normal)
   }
 }
