@@ -5,7 +5,7 @@
 //  Created by Max Desiatov on 28/11/2018.
 //
 
-class ComponentWrapper<R: Renderer> {
+class MountedComponent<R: Renderer> {
   var node: Node
 
   init(_ node: Node) {
@@ -26,13 +26,13 @@ class ComponentWrapper<R: Renderer> {
 }
 
 extension Node {
-  func makeComponentWrapper<R: Renderer>(_ parentTarget: R.Target)
-    -> ComponentWrapper<R> {
+  func makeMountedComponent<R: Renderer>(_ parentTarget: R.Target)
+    -> MountedComponent<R> {
     switch type {
     case let .base(type):
-      return HostComponentWrapper(self, type, parentTarget)
+      return MountedHostComponent(self, type, parentTarget)
     case let .composite(type):
-      return CompositeComponentWrapper(self, type, parentTarget)
+      return MountedCompositeComponent(self, type, parentTarget)
     }
   }
 }

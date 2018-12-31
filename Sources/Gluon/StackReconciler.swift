@@ -8,23 +8,23 @@
 import Dispatch
 
 public final class StackReconciler<R: Renderer> {
-  private var queuedRerenders = Set<CompositeComponentWrapper<R>>()
+  private var queuedRerenders = Set<MountedCompositeComponent<R>>()
 
   public let rootTarget: R.Target
-  private let rootComponent: ComponentWrapper<R>
+  private let rootComponent: MountedComponent<R>
   private(set) weak var renderer: R?
 
   public init(node: Node, target: R.Target, renderer: R) {
     self.renderer = renderer
     rootTarget = target
 
-    rootComponent = node.makeComponentWrapper(target)
+    rootComponent = node.makeMountedComponent(target)
 
     rootComponent.mount(with: self)
   }
 
   func queue(state: Any,
-             for component: CompositeComponentWrapper<R>,
+             for component: MountedCompositeComponent<R>,
              id: String) {
     let scheduleReconcile = queuedRerenders.isEmpty
 

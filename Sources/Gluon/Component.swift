@@ -1,5 +1,5 @@
 //
-//  ValueTypes.swift
+//  Component.swift
 //  Gluon
 //
 //  Created by Max Desiatov on 07/10/2018.

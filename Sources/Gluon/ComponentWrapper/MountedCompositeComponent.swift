@@ -1,5 +1,5 @@
 //
-//  CompositeComponentWrapper.swift
+//  MountedCompositeComponent.swift
 //  Gluon
 //
 //  Created by Max Desiatov on 03/12/2018.
@@ -14,10 +14,10 @@ extension CompositeComponent {
   }
 }
 
-final class CompositeComponentWrapper<R: Renderer>: ComponentWrapper<R>,
+final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   Hashable {
-  static func ==(lhs: CompositeComponentWrapper<R>,
-                 rhs: CompositeComponentWrapper<R>) -> Bool {
+  static func ==(lhs: MountedCompositeComponent<R>,
+                 rhs: MountedCompositeComponent<R>) -> Bool {
     return lhs === rhs
   }
 
@@ -25,7 +25,7 @@ final class CompositeComponentWrapper<R: Renderer>: ComponentWrapper<R>,
     hasher.combine(ObjectIdentifier(self))
   }
 
-  private var mountedChildren = [ComponentWrapper<R>]()
+  private var mountedChildren = [MountedComponent<R>]()
   private let type: AnyCompositeComponent.Type
   private let parentTarget: R.Target
   var state = [String: Any]()
@@ -42,8 +42,8 @@ final class CompositeComponentWrapper<R: Renderer>: ComponentWrapper<R>,
   override func mount(with reconciler: StackReconciler<R>) {
     let renderedNode = render(with: reconciler)
 
-    let child: ComponentWrapper<R> =
-      renderedNode.makeComponentWrapper(parentTarget)
+    let child: MountedComponent<R> =
+      renderedNode.makeMountedComponent(parentTarget)
     mountedChildren = [child]
     child.mount(with: reconciler)
   }
@@ -58,8 +58,8 @@ final class CompositeComponentWrapper<R: Renderer>: ComponentWrapper<R>,
     switch (mountedChildren.last, render(with: reconciler)) {
     // no mounted children, but children available now
     case let (nil, renderedNode):
-      let child: ComponentWrapper<R> =
-        renderedNode.makeComponentWrapper(parentTarget)
+      let child: MountedComponent<R> =
+        renderedNode.makeMountedComponent(parentTarget)
       mountedChildren = [child]
       child.mount(with: reconciler)
 
@@ -77,8 +77,8 @@ final class CompositeComponentWrapper<R: Renderer>: ComponentWrapper<R>,
       if wrapper.node.type != renderedNode.type {
         wrapper.unmount(with: reconciler)
 
-        let child: ComponentWrapper<R> =
-          renderedNode.makeComponentWrapper(parentTarget)
+        let child: MountedComponent<R> =
+          renderedNode.makeMountedComponent(parentTarget)
         mountedChildren = [child]
         child.mount(with: reconciler)
       }

@@ -44,9 +44,9 @@
 		OBJ_145 /* UIKitRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* UIKitRenderer.swift */; };
 		OBJ_147 /* Gluon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::Gluon::Product" /* Gluon.framework */; };
 		OBJ_69 /* AnyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* AnyEquatable.swift */; };
-		OBJ_70 /* ComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* ComponentWrapper.swift */; };
-		OBJ_71 /* CompositeComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* CompositeComponentWrapper.swift */; };
-		OBJ_72 /* HostComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* HostComponentWrapper.swift */; };
+		OBJ_70 /* MountedComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* MountedComponent.swift */; };
+		OBJ_71 /* MountedCompositeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* MountedCompositeComponent.swift */; };
+		OBJ_72 /* MountedHostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* MountedHostComponent.swift */; };
 		OBJ_73 /* Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* Default.swift */; };
 		OBJ_74 /* Diffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* Diffable.swift */; };
 		OBJ_75 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* Event.swift */; };
@@ -128,9 +128,9 @@
 		OBJ_24 /* ControlWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlWrapper.swift; sourceTree = "<group>"; };
 		OBJ_25 /* UIKitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitRenderer.swift; sourceTree = "<group>"; };
 		OBJ_27 /* AnyEquatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyEquatable.swift; sourceTree = "<group>"; };
-		OBJ_29 /* ComponentWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentWrapper.swift; sourceTree = "<group>"; };
-		OBJ_30 /* CompositeComponentWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeComponentWrapper.swift; sourceTree = "<group>"; };
-		OBJ_31 /* HostComponentWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostComponentWrapper.swift; sourceTree = "<group>"; };
+		OBJ_29 /* MountedComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountedComponent.swift; sourceTree = "<group>"; };
+		OBJ_30 /* MountedCompositeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountedCompositeComponent.swift; sourceTree = "<group>"; };
+		OBJ_31 /* MountedHostComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountedHostComponent.swift; sourceTree = "<group>"; };
 		OBJ_32 /* Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
 		OBJ_33 /* Diffable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diffable.swift; sourceTree = "<group>"; };
 		OBJ_34 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -276,9 +276,9 @@
 		OBJ_28 /* ComponentWrapper */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_29 /* ComponentWrapper.swift */,
-				OBJ_30 /* CompositeComponentWrapper.swift */,
-				OBJ_31 /* HostComponentWrapper.swift */,
+				OBJ_29 /* MountedComponent.swift */,
+				OBJ_30 /* MountedCompositeComponent.swift */,
+				OBJ_31 /* MountedHostComponent.swift */,
 			);
 			path = ComponentWrapper;
 			sourceTree = "<group>";
@@ -297,7 +297,7 @@
 			path = HostComponents;
 			sourceTree = "<group>";
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -306,7 +306,6 @@
 				OBJ_58 /* Example */,
 				OBJ_59 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_54 /* Tests */ = {
@@ -458,7 +457,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_59 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -517,9 +516,9 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_69 /* AnyEquatable.swift in Sources */,
-				OBJ_70 /* ComponentWrapper.swift in Sources */,
-				OBJ_71 /* CompositeComponentWrapper.swift in Sources */,
-				OBJ_72 /* HostComponentWrapper.swift in Sources */,
+				OBJ_70 /* MountedComponent.swift in Sources */,
+				OBJ_71 /* MountedCompositeComponent.swift in Sources */,
+				OBJ_72 /* MountedHostComponent.swift in Sources */,
 				OBJ_73 /* Default.swift in Sources */,
 				OBJ_74 /* Diffable.swift in Sources */,
 				OBJ_75 /* Event.swift in Sources */,

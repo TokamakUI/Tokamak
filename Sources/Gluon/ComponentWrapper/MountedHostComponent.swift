@@ -1,12 +1,12 @@
 //
-//  HostComponentWrapper.swift
+//  MountedHostComponent.swift
 //  Gluon
 //
 //  Created by Max Desiatov on 03/12/2018.
 //
 
-final class HostComponentWrapper<R: Renderer>: ComponentWrapper<R> {
-  private var mountedChildren = [ComponentWrapper<R>]()
+final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
+  private var mountedChildren = [MountedComponent<R>]()
   private let type: AnyHostComponent.Type
   private let parentTarget: R.Target
   private var target: R.Target?
@@ -29,11 +29,11 @@ final class HostComponentWrapper<R: Renderer>: ComponentWrapper<R> {
 
     switch node.children.value {
     case let nodes as [Node]:
-      mountedChildren = nodes.map { $0.makeComponentWrapper(target) }
+      mountedChildren = nodes.map { $0.makeMountedComponent(target) }
       mountedChildren.forEach { $0.mount(with: reconciler) }
 
     case let node as Node:
-      let child: ComponentWrapper<R> = node.makeComponentWrapper(target)
+      let child: MountedComponent<R> = node.makeMountedComponent(target)
       mountedChildren = [child]
       child.mount(with: reconciler)
 
@@ -68,22 +68,22 @@ final class HostComponentWrapper<R: Renderer>: ComponentWrapper<R> {
 
       // no existing children, mount all new
       case (true, false):
-        mountedChildren = nodes.map { $0.makeComponentWrapper(target) }
+        mountedChildren = nodes.map { $0.makeMountedComponent(target) }
         mountedChildren.forEach { $0.mount(with: reconciler) }
 
       // both arrays have items, reconcile by types and keys
       case (false, false):
-        var newChildren = [ComponentWrapper<R>]()
+        var newChildren = [MountedComponent<R>]()
 
         while let child = mountedChildren.first, let node = nodes.first {
-          let newChild: ComponentWrapper<R>
+          let newChild: MountedComponent<R>
           if node.type == mountedChildren[0].node.type {
             child.node = node
             child.update(with: reconciler)
             newChild = child
           } else {
             child.unmount(with: reconciler)
-            newChild = node.makeComponentWrapper(target)
+            newChild = node.makeMountedComponent(target)
             newChild.mount(with: reconciler)
           }
           newChildren.append(newChild)
@@ -103,7 +103,7 @@ final class HostComponentWrapper<R: Renderer>: ComponentWrapper<R> {
         child.node = node
         child.update(with: reconciler)
       } else {
-        let child: ComponentWrapper<R> = node.makeComponentWrapper(target)
+        let child: MountedComponent<R> = node.makeMountedComponent(target)
         child.mount(with: reconciler)
       }
 
