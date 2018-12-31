@@ -24,3 +24,15 @@ class ComponentWrapper<R: Renderer> {
     fatalError("implement \(#function) in subclass")
   }
 }
+
+extension Node {
+  func makeComponentWrapper<R: Renderer>(_ parentTarget: R.Target)
+    -> ComponentWrapper<R> {
+    switch type {
+    case let .base(type):
+      return HostComponentWrapper(self, type, parentTarget)
+    case let .composite(type):
+      return CompositeComponentWrapper(self, type, parentTarget)
+    }
+  }
+}

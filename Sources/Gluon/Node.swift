@@ -18,16 +18,6 @@ public struct Node: Equatable {
   let props: AnyEquatable
   let children: AnyEquatable
   let type: ComponentType
-
-  func makeComponentWrapper<R: Renderer>(_ parentTarget: R.Target)
-    -> ComponentWrapper<R> {
-    switch type {
-    case let .base(type):
-      return HostComponentWrapper(self, type, parentTarget)
-    case let .composite(type):
-      return CompositeComponentWrapper(self, type, parentTarget)
-    }
-  }
 }
 
 extension HostComponent {
