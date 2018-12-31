@@ -14,6 +14,19 @@ public protocol UIKitViewComponent: UIKitHostComponent, HostComponent {
   static func update(_ view: Target, _ props: Props, _ children: Children)
 }
 
+private func applyStyle<T: UIView, P: StyleProps>(_ target: T, _ props: P) {
+  guard let style = props.style else {
+    return
+  }
+
+  style.alpha.flatMap { target.alpha = CGFloat($0) }
+  style.backgroundColor.flatMap { target.backgroundColor = UIColor($0) }
+  style.clipsToBounds.flatMap { target.clipsToBounds = $0 }
+  style.center.flatMap { target.center = CGPoint($0) }
+  style.frame.flatMap { target.frame = CGRect($0) }
+  style.isHidden.flatMap { target.isHidden = $0 }
+}
+
 extension UIKitViewComponent where Target == Target.DefaultValue,
   Props: StyleProps {
   public static func mountTarget(to parent: UIKitTarget,
@@ -30,6 +43,7 @@ extension UIKitViewComponent where Target == Target.DefaultValue,
     }
 
     let target = Target.defaultValue
+    applyStyle(target, props)
     update(target, props, children)
 
     switch parent {
@@ -61,14 +75,7 @@ extension UIKitViewComponent where Target == Target.DefaultValue,
       return
     }
 
-    if let style = props.style {
-      style.alpha.flatMap { target.alpha = CGFloat($0) }
-      style.backgroundColor.flatMap { target.backgroundColor = UIColor($0) }
-      style.clipsToBounds.flatMap { target.clipsToBounds = $0 }
-      style.center.flatMap { target.center = CGPoint($0) }
-      style.frame.flatMap { target.frame = CGRect($0) }
-      style.isHidden.flatMap { target.isHidden = $0 }
-    }
+    applyStyle(target, props)
 
     update(target, props, children)
   }
