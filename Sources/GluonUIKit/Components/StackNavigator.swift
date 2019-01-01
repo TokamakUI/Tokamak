@@ -10,6 +10,7 @@ import UIKit
 
 extension StackNavigator: UIHostComponent {
   static func mountTarget(to parent: UITarget,
+                          parentNode: Node?,
                           props: AnyEquatable,
                           children: AnyEquatable) -> UITarget? {
     return nil

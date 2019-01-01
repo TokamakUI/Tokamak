@@ -25,14 +25,15 @@ public protocol Renderer: class {
    created.
    - parameter parent: Parent target that will own a newly created target
    instance.
-   - parameter component: Type of the base component that renders to the
+   - parameter component: Type of the host component that renders to the
    newly created target.
    - parameter props: Props used to configure the new target.
-   - parameter children: Children of the rendered base component for the new
+   - parameter children: Children of the rendered host component for the new
    target.
    - returns: The newly created target.
    */
   func mountTarget(to parent: Target,
+                   parentNode: Node?,
                    with component: AnyHostComponent.Type,
                    props: AnyEquatable,
                    children: AnyEquatable) -> Target?
@@ -40,7 +41,7 @@ public protocol Renderer: class {
   /** Function called by a reconciler when an existing target instance should be
    updated.
    - parameter target: Existing target instance to be updated.
-   - parameter component: Type of the base component that renders to the
+   - parameter component: Type of the host component that renders to the
    updated target.
    - parameter props: Props used to configure the existing target. This props
    value can be different from props passed on previous
@@ -58,7 +59,7 @@ public protocol Renderer: class {
   /** Function called by a reconciler when an existing target instance should be
    unmounted: removed the parent and most likely destroyed.
    - parameter target: Existing target instance to be unmounted.
-   - parameter component: Type of the base component that renders to the
+   - parameter component: Type of the host component that renders to the
    updated target.
    */
   func unmount(target: Target,

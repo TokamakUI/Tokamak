@@ -24,6 +24,7 @@ public class TestRenderer: Renderer {
   }
 
   public func mountTarget(to parent: TestView,
+                          parentNode: Node?,
                           with component: AnyHostComponent.Type,
                           props: AnyEquatable,
                           children: AnyEquatable) -> TestView? {

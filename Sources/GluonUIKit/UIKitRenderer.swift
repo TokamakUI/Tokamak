@@ -32,6 +32,7 @@ public class UIKitRenderer: Renderer {
   }
 
   public func mountTarget(to parent: UITarget,
+                          parentNode: Node?,
                           with component: AnyHostComponent.Type,
                           props: AnyEquatable,
                           children: AnyEquatable) -> UITarget? {
@@ -41,6 +42,7 @@ public class UIKitRenderer: Renderer {
     }
 
     return rendererComponent.mountTarget(to: parent,
+                                         parentNode: parentNode,
                                          props: props,
                                          children: children)
   }

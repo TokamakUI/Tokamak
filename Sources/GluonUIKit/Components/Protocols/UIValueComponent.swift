@@ -18,7 +18,7 @@ protocol UIValueComponent: UIControlComponent
 
 extension UIValueComponent {
   static func box(for control: Target,
-                  viewController: UIViewController) -> ViewBox<Target> {
+                  _ viewController: UIViewController) -> ViewBox<Target> {
     return ValueControlBox(control, viewController)
   }
 

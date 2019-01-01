@@ -27,7 +27,7 @@ public final class TestView {
   private weak var parent: TestView?
 
   /** Initialize a new test view.
-   - parameter props: base component props to initialize the test view
+   - parameter props: host component props to initialize the test view
    */
   init(component: AnyHostComponent.Type,
        props: AnyEquatable,

@@ -52,7 +52,7 @@ public extension LeafComponent {
 enum ComponentType: Equatable {
   static func ==(lhs: ComponentType, rhs: ComponentType) -> Bool {
     switch (lhs, rhs) {
-    case let (.base(ltype), .base(rtype)):
+    case let (.host(ltype), .host(rtype)):
       return ltype == rtype
     case let (.composite(ltype), .composite(rtype)):
       return ltype == rtype
@@ -61,7 +61,7 @@ enum ComponentType: Equatable {
     }
   }
 
-  case base(AnyHostComponent.Type)
+  case host(AnyHostComponent.Type)
   case composite(AnyCompositeComponent.Type)
 
   var composite: AnyCompositeComponent.Type? {
@@ -70,8 +70,8 @@ enum ComponentType: Equatable {
     return type
   }
 
-  var base: AnyHostComponent.Type? {
-    guard case let .base(type) = self else { return nil }
+  var host: AnyHostComponent.Type? {
+    guard case let .host(type) = self else { return nil }
 
     return type
   }

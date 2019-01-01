@@ -15,9 +15,13 @@ public struct Node: Equatable {
   }
 
   let key: String?
-  let props: AnyEquatable
-  let children: AnyEquatable
+  public let props: AnyEquatable
+  public let children: AnyEquatable
   let type: ComponentType
+
+  public func isOf(type: Any.Type) -> Bool {
+    return self.type.host == type || self.type.composite == type
+  }
 }
 
 extension HostComponent {
@@ -27,7 +31,7 @@ extension HostComponent {
     return Node(key: key,
                 props: AnyEquatable(props),
                 children: AnyEquatable(children),
-                type: .base(self))
+                type: .host(self))
   }
 }
 

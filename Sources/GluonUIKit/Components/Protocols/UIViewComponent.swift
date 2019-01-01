@@ -16,7 +16,7 @@ protocol UIViewComponent: UIHostComponent, HostComponent {
                      _ children: Children)
 
   static func box(for view: Target,
-                  viewController: UIViewController) -> ViewBox<Target>
+                  _ viewController: UIViewController) -> ViewBox<Target>
 }
 
 private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
@@ -38,11 +38,12 @@ private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
 extension UIViewComponent where Target == Target.DefaultValue,
   Props: StyleProps {
   static func box(for view: Target,
-                  viewController: UIViewController) -> ViewBox<Target> {
+                  _ viewController: UIViewController) -> ViewBox<Target> {
     return ViewBox(view, viewController)
   }
 
   static func mountTarget(to parent: UITarget,
+                          parentNode: Node?,
                           props: AnyEquatable,
                           children: AnyEquatable) -> UITarget? {
     guard let children = children.value as? Children else {
@@ -56,7 +57,16 @@ extension UIViewComponent where Target == Target.DefaultValue,
     }
 
     let target = Target.defaultValue
-    let result = box(for: target, viewController: parent.viewController)
+    let result: ViewBox<Target>
+    let parentIsPresenter = parentNode?.isOf(type: Presenter.self) ?? false
+
+    // UIViewController parent target can't present a bare `ViewBox` target,
+    // it needs to be wrapped with `ContainerViewController` first.
+    if parentIsPresenter {
+      result = box(for: target, ContainerViewController(contained: target))
+    } else {
+      result = box(for: target, parent.viewController)
+    }
     applyStyle(result, props)
     update(view: result, props, children)
 
@@ -65,6 +75,15 @@ extension UIViewComponent where Target == Target.DefaultValue,
       box.view.addArrangedSubview(target)
     case let box as ViewBox<UIView>:
       box.view.addSubview(target)
+    case let box as ViewControllerBox where parentIsPresenter:
+      guard let props = parentNode?.props.value as? Presenter.Props else {
+        propsAssertionFailure()
+        return nil
+      }
+
+      box.viewController.present(box.viewController,
+                                 animated: props.presentAnimated,
+                                 completion: nil)
     default:
       parentAssertionFailure()
       ()
@@ -95,11 +114,11 @@ extension UIViewComponent where Target == Target.DefaultValue,
   }
 
   static func unmount(target: UITarget) {
-    guard let target = target as? ViewBox<Target> else {
+    switch target {
+    case let target as ViewBox<Target>:
+      target.view.removeFromSuperview()
+    default:
       targetAssertionFailure()
-      return
     }
-
-    target.view.removeFromSuperview()
   }
 }

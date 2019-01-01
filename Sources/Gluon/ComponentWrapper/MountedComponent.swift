@@ -7,9 +7,11 @@
 
 class MountedComponent<R: Renderer> {
   var node: Node
+  private(set) weak var parent: MountedComponent<R>?
 
-  init(_ node: Node) {
+  init(_ node: Node, _ parent: MountedComponent<R>?) {
     self.node = node
+    self.parent = parent
   }
 
   func mount(with reconciler: StackReconciler<R>) {
@@ -26,13 +28,16 @@ class MountedComponent<R: Renderer> {
 }
 
 extension Node {
-  func makeMountedComponent<R: Renderer>(_ parentTarget: R.Target)
+  func makeMountedComponent<R: Renderer>(
+    _ parent: MountedComponent<R>?,
+    _ parentTarget: R.Target
+  )
     -> MountedComponent<R> {
     switch type {
-    case let .base(type):
-      return MountedHostComponent(self, type, parentTarget)
+    case let .host(type):
+      return MountedHostComponent(self, type, parent, parentTarget)
     case let .composite(type):
-      return MountedCompositeComponent(self, type, parentTarget)
+      return MountedCompositeComponent(self, type, parent, parentTarget)
     }
   }
 }

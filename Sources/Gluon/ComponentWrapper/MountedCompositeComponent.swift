@@ -32,18 +32,19 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
 
   init(_ node: Node,
        _ type: AnyCompositeComponent.Type,
+       _ parent: MountedComponent<R>?,
        _ parentTarget: R.Target) {
     self.type = type
     self.parentTarget = parentTarget
 
-    super.init(node)
+    super.init(node, parent)
   }
 
   override func mount(with reconciler: StackReconciler<R>) {
     let renderedNode = render(with: reconciler)
 
     let child: MountedComponent<R> =
-      renderedNode.makeMountedComponent(parentTarget)
+      renderedNode.makeMountedComponent(self, parentTarget)
     mountedChildren = [child]
     child.mount(with: reconciler)
   }
@@ -59,7 +60,7 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
     // no mounted children, but children available now
     case let (nil, renderedNode):
       let child: MountedComponent<R> =
-        renderedNode.makeMountedComponent(parentTarget)
+        renderedNode.makeMountedComponent(self, parentTarget)
       mountedChildren = [child]
       child.mount(with: reconciler)
 
@@ -78,7 +79,7 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
         wrapper.unmount(with: reconciler)
 
         let child: MountedComponent<R> =
-          renderedNode.makeMountedComponent(parentTarget)
+          renderedNode.makeMountedComponent(self, parentTarget)
         mountedChildren = [child]
         child.mount(with: reconciler)
       }

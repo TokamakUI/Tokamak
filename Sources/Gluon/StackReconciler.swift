@@ -18,7 +18,7 @@ public final class StackReconciler<R: Renderer> {
     self.renderer = renderer
     rootTarget = target
 
-    rootComponent = node.makeMountedComponent(target)
+    rootComponent = node.makeMountedComponent(nil, target)
 
     rootComponent.mount(with: self)
   }

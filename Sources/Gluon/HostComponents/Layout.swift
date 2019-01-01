@@ -5,7 +5,7 @@
 //  Created by Max Desiatov on 16/10/2018.
 //
 
-public struct Constraint: HostComponent {
+public struct LayoutConstraint: HostComponent {
   public struct Props: Equatable {
     public enum Target {
       case next

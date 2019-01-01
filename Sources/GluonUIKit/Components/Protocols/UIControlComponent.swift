@@ -17,7 +17,7 @@ protocol UIControlComponent: UIViewComponent
 
 extension UIControlComponent where Target == Target.DefaultValue {
   static func box(for control: Target,
-                  viewController: UIViewController) -> ViewBox<Target> {
+                  _ viewController: UIViewController) -> ViewBox<Target> {
     return ControlBox(control, viewController)
   }
 

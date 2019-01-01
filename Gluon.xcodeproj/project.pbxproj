@@ -23,6 +23,8 @@
 /* Begin PBXBuildFile section */
 		D1CB074321DBDCA800743826 /* ControlBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB074221DBDCA800743826 /* ControlBox.swift */; };
 		D1CB074521DBDCF200743826 /* ValueControlBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB074421DBDCF200743826 /* ValueControlBox.swift */; };
+		D1CB074721DBE79B00743826 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB074621DBE79B00743826 /* Presenter.swift */; };
+		D1CB074921DBF83500743826 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB074821DBF83500743826 /* ContainerViewController.swift */; };
 		OBJ_100 /* TextAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_54 /* TextAlignment.swift */; };
 		OBJ_101 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* Slider.swift */; };
 		OBJ_102 /* StackNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_56 /* StackNavigator.swift */; };
@@ -121,6 +123,8 @@
 /* Begin PBXFileReference section */
 		D1CB074221DBDCA800743826 /* ControlBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBox.swift; sourceTree = "<group>"; };
 		D1CB074421DBDCF200743826 /* ValueControlBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueControlBox.swift; sourceTree = "<group>"; };
+		D1CB074621DBE79B00743826 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
+		D1CB074821DBF83500743826 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -223,6 +227,7 @@
 				OBJ_27 /* ViewBox.swift */,
 				D1CB074221DBDCA800743826 /* ControlBox.swift */,
 				D1CB074421DBDCF200743826 /* ValueControlBox.swift */,
+				D1CB074821DBF83500743826 /* ContainerViewController.swift */,
 			);
 			path = Targets;
 			sourceTree = "<group>";
@@ -244,6 +249,7 @@
 			children = (
 				OBJ_12 /* Button.swift */,
 				OBJ_13 /* Label.swift */,
+				D1CB074621DBE79B00743826 /* Presenter.swift */,
 				OBJ_14 /* Props */,
 				OBJ_18 /* Protocols */,
 				OBJ_23 /* Slider.swift */,
@@ -556,6 +562,8 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_152 /* Button.swift in Sources */,
+				D1CB074721DBE79B00743826 /* Presenter.swift in Sources */,
+				D1CB074921DBF83500743826 /* ContainerViewController.swift in Sources */,
 				OBJ_153 /* Label.swift in Sources */,
 				OBJ_154 /* Color.swift in Sources */,
 				OBJ_155 /* Event.swift in Sources */,
