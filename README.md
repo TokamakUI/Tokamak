@@ -1,5 +1,7 @@
 # Gluon
 
+## Declarative UI framework written in pure Swift inspired by React
+
 [![CI Status](https://img.shields.io/travis/MaxDesiatov/Gluon.svg?style=flat)](https://travis-ci.org/MaxDesiatov/Gluon)
 [![Version](https://img.shields.io/cocoapods/v/Gluon.svg?style=flat)](https://cocoapods.org/pods/Gluon)
 [![License](https://img.shields.io/cocoapods/l/Gluon.svg?style=flat)](https://cocoapods.org/pods/Gluon)

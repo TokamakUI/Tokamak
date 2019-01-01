@@ -56,8 +56,9 @@ extension LeafComponent {
   }
 }
 
-/// Conforming to this protocol, but implementing support for these new types
-/// in a renderer would make that renderer skip unknown types of children.
+/// A user of Gluon might want to add conformance for this protocol to
+/// enable different types of children for their composite components, e.g.
+/// Set<Int> or some other useful "model" type.
 public protocol ChildrenType {}
 
 extension Null: ChildrenType {}
