@@ -59,7 +59,7 @@ extension UIStackView.Distribution {
   }
 }
 
-extension StackView: UIKitViewComponent {
+extension StackView: UIViewComponent {
   public static func update(_ view: UIStackView,
                             _ props: StackView.Props,
                             _: [Node]) {

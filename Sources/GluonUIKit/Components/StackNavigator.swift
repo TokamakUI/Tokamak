@@ -8,7 +8,7 @@
 import Gluon
 import UIKit
 
-extension StackNavigator: UIKitHostComponent {
+extension StackNavigator: UIHostComponent {
   public static func mountTarget(to parent: UIKitTarget,
                                  props: AnyEquatable,
                                  children: AnyEquatable) -> UIKitTarget? {

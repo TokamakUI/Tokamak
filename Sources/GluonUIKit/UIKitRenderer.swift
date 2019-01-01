@@ -37,7 +37,7 @@ public class UIKitRenderer: Renderer {
                           with component: AnyHostComponent.Type,
                           props: AnyEquatable,
                           children: AnyEquatable) -> UIKitTarget? {
-    guard let rendererComponent = component as? UIKitHostComponent.Type else {
+    guard let rendererComponent = component as? UIHostComponent.Type else {
       typeAssertionFailure(for: component)
       return nil
     }
@@ -51,7 +51,7 @@ public class UIKitRenderer: Renderer {
                      with component: AnyHostComponent.Type,
                      props: AnyEquatable,
                      children: AnyEquatable) {
-    guard let rendererComponent = component as? UIKitHostComponent.Type else {
+    guard let rendererComponent = component as? UIHostComponent.Type else {
       typeAssertionFailure(for: component)
       return
     }
@@ -63,7 +63,7 @@ public class UIKitRenderer: Renderer {
 
   public func unmount(target: UIKitTarget,
                       with component: AnyHostComponent.Type) {
-    guard let rendererComponent = component as? UIKitHostComponent.Type else {
+    guard let rendererComponent = component as? UIHostComponent.Type else {
       typeAssertionFailure(for: component)
       return
     }

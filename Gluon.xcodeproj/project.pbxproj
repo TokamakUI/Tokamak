@@ -47,15 +47,15 @@
 		OBJ_154 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* Color.swift */; };
 		OBJ_155 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* Event.swift */; };
 		OBJ_156 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Rectangle.swift */; };
-		OBJ_157 /* UIKitControlComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* UIKitControlComponent.swift */; };
-		OBJ_158 /* UIKitHostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* UIKitHostComponent.swift */; };
-		OBJ_159 /* UIKitValueComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* UIKitValueComponent.swift */; };
-		OBJ_160 /* UIKitViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* UIKitViewComponent.swift */; };
+		OBJ_157 /* UIControlComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* UIControlComponent.swift */; };
+		OBJ_158 /* UIHostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* UIHostComponent.swift */; };
+		OBJ_159 /* UIValueComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* UIValueComponent.swift */; };
+		OBJ_160 /* UIViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* UIViewComponent.swift */; };
 		OBJ_161 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* Slider.swift */; };
 		OBJ_162 /* StackNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* StackNavigator.swift */; };
 		OBJ_163 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* StackView.swift */; };
 		OBJ_164 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* View.swift */; };
-		OBJ_165 /* ControlWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* ControlWrapper.swift */; };
+		OBJ_165 /* ControlBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* ControlBox.swift */; };
 		OBJ_166 /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* Navigator.swift */; };
 		OBJ_167 /* UIKitRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* UIKitRenderer.swift */; };
 		OBJ_169 /* Gluon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::Gluon::Product" /* Gluon.framework */; };
@@ -126,15 +126,15 @@
 		OBJ_15 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		OBJ_16 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		OBJ_17 /* Rectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rectangle.swift; sourceTree = "<group>"; };
-		OBJ_19 /* UIKitControlComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitControlComponent.swift; sourceTree = "<group>"; };
-		OBJ_20 /* UIKitHostComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitHostComponent.swift; sourceTree = "<group>"; };
-		OBJ_21 /* UIKitValueComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitValueComponent.swift; sourceTree = "<group>"; };
-		OBJ_22 /* UIKitViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitViewComponent.swift; sourceTree = "<group>"; };
+		OBJ_19 /* UIControlComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControlComponent.swift; sourceTree = "<group>"; };
+		OBJ_20 /* UIHostComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHostComponent.swift; sourceTree = "<group>"; };
+		OBJ_21 /* UIValueComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIValueComponent.swift; sourceTree = "<group>"; };
+		OBJ_22 /* UIViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewComponent.swift; sourceTree = "<group>"; };
 		OBJ_23 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		OBJ_24 /* StackNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackNavigator.swift; sourceTree = "<group>"; };
 		OBJ_25 /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 		OBJ_26 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
-		OBJ_27 /* ControlWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlWrapper.swift; sourceTree = "<group>"; };
+		OBJ_27 /* ControlBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBox.swift; sourceTree = "<group>"; };
 		OBJ_28 /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 		OBJ_29 /* UIKitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitRenderer.swift; sourceTree = "<group>"; };
 		OBJ_31 /* TestRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRenderer.swift; sourceTree = "<group>"; };
@@ -217,7 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_11 /* Components */,
-				OBJ_27 /* ControlWrapper.swift */,
+				OBJ_27 /* ControlBox.swift */,
 				OBJ_28 /* Navigator.swift */,
 				OBJ_29 /* UIKitRenderer.swift */,
 			);
@@ -253,10 +253,10 @@
 		OBJ_18 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_19 /* UIKitControlComponent.swift */,
-				OBJ_20 /* UIKitHostComponent.swift */,
-				OBJ_21 /* UIKitValueComponent.swift */,
-				OBJ_22 /* UIKitViewComponent.swift */,
+				OBJ_19 /* UIControlComponent.swift */,
+				OBJ_20 /* UIHostComponent.swift */,
+				OBJ_21 /* UIValueComponent.swift */,
+				OBJ_22 /* UIViewComponent.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -546,15 +546,15 @@
 				OBJ_154 /* Color.swift in Sources */,
 				OBJ_155 /* Event.swift in Sources */,
 				OBJ_156 /* Rectangle.swift in Sources */,
-				OBJ_157 /* UIKitControlComponent.swift in Sources */,
-				OBJ_158 /* UIKitHostComponent.swift in Sources */,
-				OBJ_159 /* UIKitValueComponent.swift in Sources */,
-				OBJ_160 /* UIKitViewComponent.swift in Sources */,
+				OBJ_157 /* UIControlComponent.swift in Sources */,
+				OBJ_158 /* UIHostComponent.swift in Sources */,
+				OBJ_159 /* UIValueComponent.swift in Sources */,
+				OBJ_160 /* UIViewComponent.swift in Sources */,
 				OBJ_161 /* Slider.swift in Sources */,
 				OBJ_162 /* StackNavigator.swift in Sources */,
 				OBJ_163 /* StackView.swift in Sources */,
 				OBJ_164 /* View.swift in Sources */,
-				OBJ_165 /* ControlWrapper.swift in Sources */,
+				OBJ_165 /* ControlBox.swift in Sources */,
 				OBJ_166 /* Navigator.swift in Sources */,
 				OBJ_167 /* UIKitRenderer.swift in Sources */,
 			);

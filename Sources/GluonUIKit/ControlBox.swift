@@ -1,5 +1,5 @@
 //
-//  ControlWrapper.swift
+//  ControlBox.swift
 //  GluonUIKit
 //
 //  Created by Max Desiatov on 29/12/2018.
@@ -24,7 +24,7 @@ private let actionSelector = #selector(Action.perform)
 
 /// Wraps Objective-C target/action pattern used by `UIControl` with a swifty
 /// closure-based API.
-public class ControlWrapper<T: UIControl> {
+public class ControlBox<T: UIControl> {
   fileprivate(set) var control: T
   private var handlers = [Event: Action]()
 
@@ -53,8 +53,8 @@ public protocol ValueStorage {
   var value: Value { get set }
 }
 
-public final class ValueControlWrapper<T: UIControl & ValueStorage>:
-  ControlWrapper<T> {
+public final class ValueControlBox<T: UIControl & ValueStorage>:
+  ControlBox<T> {
   private var valueChangedAction: Action?
 
   var value: T.Value {
@@ -84,4 +84,4 @@ public final class ValueControlWrapper<T: UIControl & ValueStorage>:
   }
 }
 
-extension ControlWrapper: UIKitTarget {}
+extension ControlBox: UIKitTarget {}

@@ -1,34 +1,29 @@
 //
-//  UIKitViewComponent.swift
+//  UIControlComponent.swift
 //  GluonUIKit
 //
-//  Created by Max Desiatov on 02/12/2018.
+//  Created by Max Desiatov on 05/12/2018.
 //
 
 import Gluon
 import UIKit
 
-public protocol UIKitViewComponent: UIKitHostComponent, HostComponent {
-  associatedtype Target: UIView & Default
+public protocol UIControlComponent: UIHostComponent, HostComponent
+  where Props: EventHandlerProps {
+  associatedtype Target: UIControl & Default
 
-  static func update(_ view: Target, _ props: Props, _ children: Children)
+  static func update(wrapper: ControlBox<Target>,
+                     _ props: Props,
+                     _ children: Children)
+
+  static func wrapper(for: Target) -> ControlBox<Target>
 }
 
-private func applyStyle<T: UIView, P: StyleProps>(_ target: T, _ props: P) {
-  guard let style = props.style else {
-    return
+extension UIControlComponent where Target == Target.DefaultValue {
+  public static func wrapper(for control: Target) -> ControlBox<Target> {
+    return ControlBox(control)
   }
 
-  style.alpha.flatMap { target.alpha = CGFloat($0) }
-  style.backgroundColor.flatMap { target.backgroundColor = UIColor($0) }
-  style.clipsToBounds.flatMap { target.clipsToBounds = $0 }
-  style.center.flatMap { target.center = CGPoint($0) }
-  style.frame.flatMap { target.frame = CGRect($0) }
-  style.isHidden.flatMap { target.isHidden = $0 }
-}
-
-extension UIKitViewComponent where Target == Target.DefaultValue,
-  Props: StyleProps {
   public static func mountTarget(to parent: UIKitTarget,
                                  props: AnyEquatable,
                                  children: AnyEquatable) -> UIKitTarget? {
@@ -43,8 +38,6 @@ extension UIKitViewComponent where Target == Target.DefaultValue,
     }
 
     let target = Target.defaultValue
-    applyStyle(target, props)
-    update(target, props, children)
 
     switch parent {
     case let stackView as UIStackView:
@@ -53,16 +46,19 @@ extension UIKitViewComponent where Target == Target.DefaultValue,
       view.addSubview(target)
     default:
       parentAssertionFailure()
-      ()
     }
 
-    return target
+    let result = wrapper(for: target)
+    result.bind(handlers: props.handlers)
+    update(wrapper: result, props, children)
+
+    return result
   }
 
   public static func update(target: UIKitTarget,
                             props: AnyEquatable,
                             children: AnyEquatable) {
-    guard let target = target as? Target else {
+    guard let target = target as? ControlBox<Target> else {
       targetAssertionFailure()
       return
     }
@@ -75,17 +71,16 @@ extension UIKitViewComponent where Target == Target.DefaultValue,
       return
     }
 
-    applyStyle(target, props)
-
-    update(target, props, children)
+    target.bind(handlers: props.handlers)
+    update(wrapper: target, props, children)
   }
 
   public static func unmount(target: UIKitTarget) {
-    guard let target = target as? Target else {
+    guard let target = target as? ControlBox<Target> else {
       targetAssertionFailure()
       return
     }
 
-    target.removeFromSuperview()
+    target.control.removeFromSuperview()
   }
 }

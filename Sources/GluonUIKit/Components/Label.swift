@@ -31,7 +31,7 @@ extension NSTextAlignment {
   }
 }
 
-extension Label: UIKitViewComponent {
+extension Label: UIViewComponent {
   public static func update(_ view: UILabel,
                             _ props: Label.Props,
                             _ children: String) {

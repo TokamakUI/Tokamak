@@ -8,7 +8,7 @@
 import Gluon
 import UIKit
 
-extension View: UIKitViewComponent {
+extension View: UIViewComponent {
   public static func update(_ view: UIStackView,
                             _ props: View.Props,
                             _: [Node]) {}

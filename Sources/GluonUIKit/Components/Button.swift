@@ -14,10 +14,10 @@ extension UIButton: Default {
   }
 }
 
-extension Button: UIKitControlComponent {
+extension Button: UIControlComponent {
   public typealias Target = UIButton
 
-  public static func update(wrapper: ControlWrapper<UIButton>,
+  public static func update(wrapper: ControlBox<UIButton>,
                             _ props: Button.Props,
                             _ children: String) {
     let control = wrapper.control

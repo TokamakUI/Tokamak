@@ -1,5 +1,5 @@
 //
-//  UIKitHostComponent.swift
+//  UIHostComponent.swift
 //  GluonUIKit
 //
 //  Created by Max Desiatov on 29/12/2018.
@@ -10,11 +10,11 @@ import UIKit
 
 /// Any base component that is supposed to be rendered by `UIKitRenderer`
 /// should implement this protocol or any of concrete subprotocols:
-/// `UIKitViewComponent` for `UIView` targets, `UIKitControlComponent` for
-/// `UIControl` targets and `UIKitValueComponent` for `UIControl` components
+/// `UIViewComponent` for `UIView` targets, `UIControlComponent` for
+/// `UIControl` targets and `UIValueComponent` for `UIControl` components
 /// providing a configurable single value: `UISwitch`, `UISlider`,
 /// `UIStepper`, `UIDatePicker`, or `UISegmentedControl`.
-public protocol UIKitHostComponent: AnyHostComponent {
+public protocol UIHostComponent: AnyHostComponent {
   static func mountTarget(to parent: UIKitTarget,
                           props: AnyEquatable,
                           children: AnyEquatable) -> UIKitTarget?
@@ -26,7 +26,7 @@ public protocol UIKitHostComponent: AnyHostComponent {
   static func unmount(target: UIKitTarget)
 }
 
-extension UIKitHostComponent {
+extension UIHostComponent {
   static func targetAssertionFailure(_ function: String = #function) {
     typeAssertionFailure("target", function)
   }

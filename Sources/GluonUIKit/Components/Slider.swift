@@ -16,7 +16,7 @@ extension UISlider: Default {
 
 extension UISlider: ValueStorage {}
 
-extension Slider: UIKitValueComponent {
+extension Slider: UIValueComponent {
   public typealias Target = UISlider
 
   public static func update(valueControl: UISlider,
