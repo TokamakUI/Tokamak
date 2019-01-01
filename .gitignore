@@ -38,3 +38,6 @@ Pods/
 
 # SwiftPM
 .build
+
+# Jazzy
+docs
