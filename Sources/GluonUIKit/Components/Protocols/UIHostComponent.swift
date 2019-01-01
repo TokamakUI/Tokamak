@@ -14,16 +14,16 @@ import UIKit
 /// `UIControl` targets and `UIValueComponent` for `UIControl` components
 /// providing a configurable single value: `UISwitch`, `UISlider`,
 /// `UIStepper`, `UIDatePicker`, or `UISegmentedControl`.
-public protocol UIHostComponent: AnyHostComponent {
-  static func mountTarget(to parent: UIKitTarget,
+protocol UIHostComponent: AnyHostComponent {
+  static func mountTarget(to parent: UITarget,
                           props: AnyEquatable,
-                          children: AnyEquatable) -> UIKitTarget?
+                          children: AnyEquatable) -> UITarget?
 
-  static func update(target: UIKitTarget,
+  static func update(target: UITarget,
                      props: AnyEquatable,
                      children: AnyEquatable)
 
-  static func unmount(target: UIKitTarget)
+  static func unmount(target: UITarget)
 }
 
 extension UIHostComponent {

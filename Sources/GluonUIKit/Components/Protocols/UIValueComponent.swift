@@ -8,25 +8,26 @@
 import Gluon
 import UIKit
 
-public protocol UIValueComponent: UIControlComponent
+protocol UIValueComponent: UIControlComponent
   where Props: ValueControlProps, Target: ValueStorage,
   Props.Value == Target.Value {
-  static func update(valueControl: Target, _ props: Props, _ children: Children)
+  static func update(valueBox: ValueControlBox<Target>,
+                     _ props: Props,
+                     _ children: Children)
 }
 
 extension UIValueComponent {
-  public static func wrapper(for control: Target) -> ControlBox<Target> {
+  static func controlBox(for control: Target) -> ControlBox<Target> {
     return ValueControlBox(control)
   }
 
-  public static func update(wrapper: ControlBox<Target>,
-                            _ props: Props,
-                            _ children: Children) {
-    update(valueControl: wrapper.control, props, children)
+  static func update(controlBox: ControlBox<Target>,
+                     _ props: Props,
+                     _ children: Children) {
+    guard let box = controlBox as? ValueControlBox<Target> else { return }
 
-    guard let wrapper = wrapper as? ValueControlBox<Target> else { return }
-
-    wrapper.value = props.value
-    wrapper.bind(valueChangedHandler: props.valueHandler)
+    update(valueBox: box, props, children)
+    box.value = props.value
+    box.bind(valueChangedHandler: props.valueHandler)
   }
 }

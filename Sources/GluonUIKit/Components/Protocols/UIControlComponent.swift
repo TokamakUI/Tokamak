@@ -8,25 +8,25 @@
 import Gluon
 import UIKit
 
-public protocol UIControlComponent: UIHostComponent, HostComponent
+protocol UIControlComponent: UIHostComponent, HostComponent
   where Props: EventHandlerProps {
   associatedtype Target: UIControl & Default
 
-  static func update(wrapper: ControlBox<Target>,
+  static func update(controlBox: ControlBox<Target>,
                      _ props: Props,
                      _ children: Children)
 
-  static func wrapper(for: Target) -> ControlBox<Target>
+  static func controlBox(for: Target) -> ControlBox<Target>
 }
 
 extension UIControlComponent where Target == Target.DefaultValue {
-  public static func wrapper(for control: Target) -> ControlBox<Target> {
+  static func controlBox(for control: Target) -> ControlBox<Target> {
     return ControlBox(control)
   }
 
-  public static func mountTarget(to parent: UIKitTarget,
-                                 props: AnyEquatable,
-                                 children: AnyEquatable) -> UIKitTarget? {
+  static func mountTarget(to parent: UITarget,
+                          props: AnyEquatable,
+                          children: AnyEquatable) -> UITarget? {
     guard let children = children.value as? Children else {
       childrenAssertionFailure()
       return nil
@@ -48,16 +48,16 @@ extension UIControlComponent where Target == Target.DefaultValue {
       parentAssertionFailure()
     }
 
-    let result = wrapper(for: target)
+    let result = controlBox(for: target)
     result.bind(handlers: props.handlers)
-    update(wrapper: result, props, children)
+    update(controlBox: result, props, children)
 
     return result
   }
 
-  public static func update(target: UIKitTarget,
-                            props: AnyEquatable,
-                            children: AnyEquatable) {
+  static func update(target: UITarget,
+                     props: AnyEquatable,
+                     children: AnyEquatable) {
     guard let target = target as? ControlBox<Target> else {
       targetAssertionFailure()
       return
@@ -72,15 +72,15 @@ extension UIControlComponent where Target == Target.DefaultValue {
     }
 
     target.bind(handlers: props.handlers)
-    update(wrapper: target, props, children)
+    update(controlBox: target, props, children)
   }
 
-  public static func unmount(target: UIKitTarget) {
+  static func unmount(target: UITarget) {
     guard let target = target as? ControlBox<Target> else {
       targetAssertionFailure()
       return
     }
 
-    target.control.removeFromSuperview()
+    target.view.removeFromSuperview()
   }
 }

@@ -9,22 +9,23 @@ import Gluon
 import UIKit
 
 extension StackNavigator: UIHostComponent {
-  public static func mountTarget(to parent: UIKitTarget,
-                                 props: AnyEquatable,
-                                 children: AnyEquatable) -> UIKitTarget? {
-    guard let props = props.value as? StackNavigator.Props else {
-      propsAssertionFailure()
-      return nil
-    }
-
-    let result = UINavigationController()
-    result.hidesBarsWhenKeyboardAppears = props.hidesBarsWhenKeyboardAppears
-    return result
+  static func mountTarget(to parent: UITarget,
+                          props: AnyEquatable,
+                          children: AnyEquatable) -> UITarget? {
+    return nil
+//    guard let props = props.value as? StackNavigator.Props else {
+//      propsAssertionFailure()
+//      return nil
+//    }
+//
+//    let result = UINavigationController()
+//    result.hidesBarsWhenKeyboardAppears = props.hidesBarsWhenKeyboardAppears
+//    return result
   }
 
-  public static func update(target: UIKitTarget,
-                            props: AnyEquatable,
-                            children: AnyEquatable) {}
+  static func update(target: UITarget,
+                     props: AnyEquatable,
+                     children: AnyEquatable) {}
 
-  public static func unmount(target: UIKitTarget) {}
+  static func unmount(target: UITarget) {}
 }

@@ -8,11 +8,7 @@
 import Gluon
 import UIKit
 
-public protocol UIKitTarget {}
-
-extension UIView: UIKitTarget {}
-
-extension UIViewController: UIKitTarget {}
+public protocol UITarget {}
 
 public class UIKitRenderer: Renderer {
   private var reconciler: StackReconciler<UIKitRenderer>?
@@ -22,7 +18,7 @@ public class UIKitRenderer: Renderer {
     self.rootViewController = rootViewController
     reconciler = StackReconciler(
       node: node,
-      target: rootViewController.view,
+      target: ViewBox(rootViewController.view),
       renderer: self
     )
   }
@@ -33,10 +29,10 @@ public class UIKitRenderer: Renderer {
     """)
   }
 
-  public func mountTarget(to parent: UIKitTarget,
+  public func mountTarget(to parent: UITarget,
                           with component: AnyHostComponent.Type,
                           props: AnyEquatable,
-                          children: AnyEquatable) -> UIKitTarget? {
+                          children: AnyEquatable) -> UITarget? {
     guard let rendererComponent = component as? UIHostComponent.Type else {
       typeAssertionFailure(for: component)
       return nil
@@ -47,7 +43,7 @@ public class UIKitRenderer: Renderer {
                                          children: children)
   }
 
-  public func update(target: UIKitTarget,
+  public func update(target: UITarget,
                      with component: AnyHostComponent.Type,
                      props: AnyEquatable,
                      children: AnyEquatable) {
@@ -61,7 +57,7 @@ public class UIKitRenderer: Renderer {
                              children: children)
   }
 
-  public func unmount(target: UIKitTarget,
+  public func unmount(target: UITarget,
                       with component: AnyHostComponent.Type) {
     guard let rendererComponent = component as? UIHostComponent.Type else {
       typeAssertionFailure(for: component)

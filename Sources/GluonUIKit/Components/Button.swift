@@ -17,10 +17,10 @@ extension UIButton: Default {
 extension Button: UIControlComponent {
   public typealias Target = UIButton
 
-  public static func update(wrapper: ControlBox<UIButton>,
-                            _ props: Button.Props,
-                            _ children: String) {
-    let control = wrapper.control
+  static func update(controlBox: ControlBox<UIButton>,
+                     _ props: Button.Props,
+                     _ children: String) {
+    let control = controlBox.view
 
     if let titleColor = props.titleColor {
       control.setTitleColor(UIColor(titleColor), for: .normal)

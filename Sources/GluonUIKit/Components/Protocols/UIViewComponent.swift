@@ -8,30 +8,35 @@
 import Gluon
 import UIKit
 
-public protocol UIViewComponent: UIHostComponent, HostComponent {
+protocol UIViewComponent: UIHostComponent, HostComponent {
   associatedtype Target: UIView & Default
 
-  static func update(_ view: Target, _ props: Props, _ children: Children)
+  static func update(_ box: ViewBox<Target>,
+                     _ props: Props,
+                     _ children: Children)
 }
 
-private func applyStyle<T: UIView, P: StyleProps>(_ target: T, _ props: P) {
+private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
+                                                  _ props: P) {
   guard let style = props.style else {
     return
   }
 
-  style.alpha.flatMap { target.alpha = CGFloat($0) }
-  style.backgroundColor.flatMap { target.backgroundColor = UIColor($0) }
-  style.clipsToBounds.flatMap { target.clipsToBounds = $0 }
-  style.center.flatMap { target.center = CGPoint($0) }
-  style.frame.flatMap { target.frame = CGRect($0) }
-  style.isHidden.flatMap { target.isHidden = $0 }
+  let view = target.view
+
+  style.alpha.flatMap { view.alpha = CGFloat($0) }
+  style.backgroundColor.flatMap { view.backgroundColor = UIColor($0) }
+  style.clipsToBounds.flatMap { view.clipsToBounds = $0 }
+  style.center.flatMap { view.center = CGPoint($0) }
+  style.frame.flatMap { view.frame = CGRect($0) }
+  style.isHidden.flatMap { view.isHidden = $0 }
 }
 
 extension UIViewComponent where Target == Target.DefaultValue,
   Props: StyleProps {
-  public static func mountTarget(to parent: UIKitTarget,
-                                 props: AnyEquatable,
-                                 children: AnyEquatable) -> UIKitTarget? {
+  static func mountTarget(to parent: UITarget,
+                          props: AnyEquatable,
+                          children: AnyEquatable) -> UITarget? {
     guard let children = children.value as? Children else {
       childrenAssertionFailure()
       return nil
@@ -42,15 +47,16 @@ extension UIViewComponent where Target == Target.DefaultValue,
       return nil
     }
 
-    let target = Target.defaultValue
+    let target = ViewBox<Target>.defaultValue
     applyStyle(target, props)
     update(target, props, children)
 
+    print(parent)
     switch parent {
-    case let stackView as UIStackView:
-      stackView.addArrangedSubview(target)
-    case let view as UIView:
-      view.addSubview(target)
+    case let box as ViewBox<GluonUIStackView>:
+      box.view.addArrangedSubview(target.view)
+    case let box as ViewBox<UIView>:
+      box.view.addSubview(target.view)
     default:
       parentAssertionFailure()
       ()
@@ -59,10 +65,10 @@ extension UIViewComponent where Target == Target.DefaultValue,
     return target
   }
 
-  public static func update(target: UIKitTarget,
-                            props: AnyEquatable,
-                            children: AnyEquatable) {
-    guard let target = target as? Target else {
+  static func update(target: UITarget,
+                     props: AnyEquatable,
+                     children: AnyEquatable) {
+    guard let target = target as? ViewBox<Target> else {
       targetAssertionFailure()
       return
     }
@@ -80,7 +86,7 @@ extension UIViewComponent where Target == Target.DefaultValue,
     update(target, props, children)
   }
 
-  public static func unmount(target: UIKitTarget) {
+  static func unmount(target: UITarget) {
     guard let target = target as? Target else {
       targetAssertionFailure()
       return

@@ -1,5 +1,5 @@
 //
-//  ControlBox.swift
+//  ViewBox.swift
 //  GluonUIKit
 //
 //  Created by Max Desiatov on 29/12/2018.
@@ -22,66 +22,78 @@ private final class Action {
 
 private let actionSelector = #selector(Action.perform)
 
+class ViewBox<T: UIView> {
+  let view: T
+
+  init(_ view: T) {
+    self.view = view
+  }
+}
+
+extension ViewBox: UITarget {}
+
+extension ViewBox: Default where T: Default, T.DefaultValue == T {
+  typealias DefaultValue = ViewBox<T>
+
+  static var defaultValue: ViewBox<T> {
+    return ViewBox(T.defaultValue)
+  }
+}
+
 /// Wraps Objective-C target/action pattern used by `UIControl` with a swifty
 /// closure-based API.
-public class ControlBox<T: UIControl> {
-  fileprivate(set) var control: T
+class ControlBox<T: UIControl & Default>: ViewBox<T> {
   private var handlers = [Event: Action]()
-
-  init(_ control: T) {
-    self.control = control
-  }
 
   func bind(handlers: [Event: Handler<()>]) {
     for (e, h) in self.handlers {
-      control.removeTarget(h, action: actionSelector, for: UIControl.Event(e))
+      view.removeTarget(h, action: actionSelector, for: UIControl.Event(e))
     }
     self.handlers.removeAll()
 
     for (e, h) in handlers {
       let action = Action(h.value)
-      control.addTarget(action, action: actionSelector, for: UIControl.Event(e))
+      view.addTarget(action, action: actionSelector, for: UIControl.Event(e))
 
       self.handlers[e] = action
     }
   }
 }
 
-public protocol ValueStorage {
+protocol ValueStorage: class {
   associatedtype Value
 
   var value: Value { get set }
 }
 
-public final class ValueControlBox<T: UIControl & ValueStorage>:
+final class ValueControlBox<T: UIControl & Default & ValueStorage>:
   ControlBox<T> {
   private var valueChangedAction: Action?
 
   var value: T.Value {
     get {
-      return control.value
+      return view.value
     }
     set {
-      control.value = newValue
+      view.value = newValue
     }
   }
 
   func bind(valueChangedHandler: Handler<T.Value>?) {
     if let existing = self.valueChangedAction {
-      control.removeTarget(existing, action: actionSelector, for: .valueChanged)
+      view.removeTarget(existing, action: actionSelector, for: .valueChanged)
       valueChangedAction = nil
     }
 
     if let handler = valueChangedHandler {
+      // The closure is owned by the `view`, which is owned by `self`.
       let action = Action { [weak self] in
         guard let self = self else { return }
-        handler.value(self.control.value)
+        handler.value(self.view.value)
       }
 
-      control.addTarget(action, action: actionSelector, for: .valueChanged)
+      view.addTarget(action, action: actionSelector, for: .valueChanged)
       valueChangedAction = action
     }
   }
 }
-
-extension ControlBox: UIKitTarget {}

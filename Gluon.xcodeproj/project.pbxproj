@@ -55,7 +55,7 @@
 		OBJ_162 /* StackNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* StackNavigator.swift */; };
 		OBJ_163 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* StackView.swift */; };
 		OBJ_164 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* View.swift */; };
-		OBJ_165 /* ControlBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* ControlBox.swift */; };
+		OBJ_165 /* ViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* ViewBox.swift */; };
 		OBJ_166 /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* Navigator.swift */; };
 		OBJ_167 /* UIKitRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* UIKitRenderer.swift */; };
 		OBJ_169 /* Gluon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::Gluon::Product" /* Gluon.framework */; };
@@ -134,7 +134,7 @@
 		OBJ_24 /* StackNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackNavigator.swift; sourceTree = "<group>"; };
 		OBJ_25 /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 		OBJ_26 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
-		OBJ_27 /* ControlBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBox.swift; sourceTree = "<group>"; };
+		OBJ_27 /* ViewBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewBox.swift; sourceTree = "<group>"; };
 		OBJ_28 /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 		OBJ_29 /* UIKitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitRenderer.swift; sourceTree = "<group>"; };
 		OBJ_31 /* TestRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRenderer.swift; sourceTree = "<group>"; };
@@ -217,7 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_11 /* Components */,
-				OBJ_27 /* ControlBox.swift */,
+				OBJ_27 /* ViewBox.swift */,
 				OBJ_28 /* Navigator.swift */,
 				OBJ_29 /* UIKitRenderer.swift */,
 			);
@@ -554,7 +554,7 @@
 				OBJ_162 /* StackNavigator.swift in Sources */,
 				OBJ_163 /* StackView.swift in Sources */,
 				OBJ_164 /* View.swift in Sources */,
-				OBJ_165 /* ControlBox.swift in Sources */,
+				OBJ_165 /* ViewBox.swift in Sources */,
 				OBJ_166 /* Navigator.swift in Sources */,
 				OBJ_167 /* UIKitRenderer.swift in Sources */,
 			);
