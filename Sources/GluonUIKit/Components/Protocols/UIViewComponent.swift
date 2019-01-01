@@ -15,7 +15,8 @@ protocol UIViewComponent: UIHostComponent, HostComponent {
                      _ props: Props,
                      _ children: Children)
 
-  static func box(for: Target) -> ViewBox<Target>
+  static func box(for view: Target,
+                  viewController: UIViewController) -> ViewBox<Target>
 }
 
 private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
@@ -36,8 +37,9 @@ private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
 
 extension UIViewComponent where Target == Target.DefaultValue,
   Props: StyleProps {
-  static func box(for target: Target) -> ViewBox<Target> {
-    return ViewBox(target)
+  static func box(for view: Target,
+                  viewController: UIViewController) -> ViewBox<Target> {
+    return ViewBox(view, viewController)
   }
 
   static func mountTarget(to parent: UITarget,
@@ -54,7 +56,7 @@ extension UIViewComponent where Target == Target.DefaultValue,
     }
 
     let target = Target.defaultValue
-    let result = box(for: target)
+    let result = box(for: target, viewController: parent.viewController)
     applyStyle(result, props)
     update(view: result, props, children)
 

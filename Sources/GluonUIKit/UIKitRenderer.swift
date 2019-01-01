@@ -8,7 +8,9 @@
 import Gluon
 import UIKit
 
-public protocol UITarget {}
+public protocol UITarget {
+  var viewController: UIViewController { get }
+}
 
 public class UIKitRenderer: Renderer {
   private var reconciler: StackReconciler<UIKitRenderer>?
@@ -18,7 +20,7 @@ public class UIKitRenderer: Renderer {
     self.rootViewController = rootViewController
     reconciler = StackReconciler(
       node: node,
-      target: ViewBox(rootViewController.view),
+      target: ViewBox(rootViewController.view, rootViewController),
       renderer: self
     )
   }
