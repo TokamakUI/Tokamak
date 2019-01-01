@@ -60,7 +60,7 @@ extension UIStackView.Distribution {
 }
 
 extension StackView: UIViewComponent {
-  static func update(_ box: ViewBox<GluonUIStackView>,
+  static func update(view box: ViewBox<GluonUIStackView>,
                      _ props: StackView.Props,
                      _: [Node]) {
     let view = box.view

@@ -17,14 +17,14 @@ protocol UIValueComponent: UIControlComponent
 }
 
 extension UIValueComponent {
-  static func controlBox(for control: Target) -> ControlBox<Target> {
+  static func box(for control: Target) -> ViewBox<Target> {
     return ValueControlBox(control)
   }
 
-  static func update(controlBox: ControlBox<Target>,
+  static func update(control box: ControlBox<Target>,
                      _ props: Props,
                      _ children: Children) {
-    guard let box = controlBox as? ValueControlBox<Target> else { return }
+    guard let box = box as? ValueControlBox<Target> else { return }
 
     update(valueBox: box, props, children)
     box.value = props.value

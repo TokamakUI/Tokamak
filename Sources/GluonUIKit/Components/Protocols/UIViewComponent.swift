@@ -11,9 +11,11 @@ import UIKit
 protocol UIViewComponent: UIHostComponent, HostComponent {
   associatedtype Target: UIView & Default
 
-  static func update(_ box: ViewBox<Target>,
+  static func update(view box: ViewBox<Target>,
                      _ props: Props,
                      _ children: Children)
+
+  static func box(for: Target) -> ViewBox<Target>
 }
 
 private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
@@ -34,6 +36,10 @@ private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
 
 extension UIViewComponent where Target == Target.DefaultValue,
   Props: StyleProps {
+  static func box(for target: Target) -> ViewBox<Target> {
+    return ViewBox(target)
+  }
+
   static func mountTarget(to parent: UITarget,
                           props: AnyEquatable,
                           children: AnyEquatable) -> UITarget? {
@@ -47,22 +53,22 @@ extension UIViewComponent where Target == Target.DefaultValue,
       return nil
     }
 
-    let target = ViewBox<Target>.defaultValue
-    applyStyle(target, props)
-    update(target, props, children)
+    let target = Target.defaultValue
+    let result = box(for: target)
+    applyStyle(result, props)
+    update(view: result, props, children)
 
-    print(parent)
     switch parent {
     case let box as ViewBox<GluonUIStackView>:
-      box.view.addArrangedSubview(target.view)
+      box.view.addArrangedSubview(target)
     case let box as ViewBox<UIView>:
-      box.view.addSubview(target.view)
+      box.view.addSubview(target)
     default:
       parentAssertionFailure()
       ()
     }
 
-    return target
+    return result
   }
 
   static func update(target: UITarget,
@@ -83,15 +89,15 @@ extension UIViewComponent where Target == Target.DefaultValue,
 
     applyStyle(target, props)
 
-    update(target, props, children)
+    update(view: target, props, children)
   }
 
   static func unmount(target: UITarget) {
-    guard let target = target as? Target else {
+    guard let target = target as? ViewBox<Target> else {
       targetAssertionFailure()
       return
     }
 
-    target.removeFromSuperview()
+    target.view.removeFromSuperview()
   }
 }

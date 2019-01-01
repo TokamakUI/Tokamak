@@ -8,19 +8,22 @@
 import Gluon
 import UIKit
 
-extension UIButton: Default {
-  public static var defaultValue: UIButton {
-    return UIButton(type: .system)
+final class GluonUIButton: UIButton, Default {
+  /// This property can't be defined in a `UIButton` extension
+  /// as a plain `UIView` needs a different implementation of `defaultValue`
+  /// and subclass extensions can't override extensions of a parent class.
+  static var defaultValue: GluonUIButton {
+    return GluonUIButton(type: .system)
   }
 }
 
 extension Button: UIControlComponent {
-  public typealias Target = UIButton
+  typealias Target = GluonUIButton
 
-  static func update(controlBox: ControlBox<UIButton>,
+  static func update(control box: ControlBox<GluonUIButton>,
                      _ props: Button.Props,
                      _ children: String) {
-    let control = controlBox.view
+    let control = box.view
 
     if let titleColor = props.titleColor {
       control.setTitleColor(UIColor(titleColor), for: .normal)

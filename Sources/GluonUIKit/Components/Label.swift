@@ -32,7 +32,7 @@ extension NSTextAlignment {
 }
 
 extension Label: UIViewComponent {
-  static func update(_ box: ViewBox<GluonUILabel>,
+  static func update(view box: ViewBox<GluonUILabel>,
                      _ props: Label.Props,
                      _ children: String) {
     let view = box.view

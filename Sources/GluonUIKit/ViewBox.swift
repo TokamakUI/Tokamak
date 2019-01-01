@@ -32,14 +32,6 @@ class ViewBox<T: UIView> {
 
 extension ViewBox: UITarget {}
 
-extension ViewBox: Default where T: Default, T.DefaultValue == T {
-  typealias DefaultValue = ViewBox<T>
-
-  static var defaultValue: ViewBox<T> {
-    return ViewBox(T.defaultValue)
-  }
-}
-
 /// Wraps Objective-C target/action pattern used by `UIControl` with a swifty
 /// closure-based API.
 class ControlBox<T: UIControl & Default>: ViewBox<T> {

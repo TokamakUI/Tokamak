@@ -19,13 +19,6 @@ final class GluonViewController: UIViewController {
     renderer = UIKitRenderer(node: App.node(Rectangle(view.frame)),
                              rootViewController: self)
   }
-
-  @IBAction func onTap(_: Any) {
-//    let counters = (0..<1_000_000).map { _ in
-//        Counter(props: NoProps(), children: [])
-//    }
-    print(#file)
-  }
 }
 
 final class ClassicViewController: UIViewController {
