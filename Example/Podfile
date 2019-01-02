@@ -1,5 +1,4 @@
 platform :ios, '10.0'
-use_frameworks!
 
 target 'Gluon_Example' do
   pod 'Gluon', :path => '..'
