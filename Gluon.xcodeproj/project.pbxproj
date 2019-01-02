@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		D109CE6F21DD66F300A7A019 /* UIControllerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D109CE6E21DD66F300A7A019 /* UIControllerComponent.swift */; };
 		OBJ_100 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* Button.swift */; };
 		OBJ_101 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* Label.swift */; };
 		OBJ_102 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* Layout.swift */; };
@@ -122,6 +123,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D109CE6E21DD66F300A7A019 /* UIControllerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControllerComponent.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -324,7 +326,7 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -336,8 +338,9 @@
 				OBJ_79 /* build */,
 				OBJ_80 /* Products */,
 			);
-			name = "";
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		OBJ_53 /* Props */ = {
 			isa = PBXGroup;
@@ -356,6 +359,7 @@
 				OBJ_59 /* UIHostComponent.swift */,
 				OBJ_60 /* UIValueComponent.swift */,
 				OBJ_61 /* UIViewComponent.swift */,
+				D109CE6E21DD66F300A7A019 /* UIControllerComponent.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -519,7 +523,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_80 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -567,6 +571,7 @@
 			files = (
 				OBJ_160 /* Button.swift in Sources */,
 				OBJ_161 /* Label.swift in Sources */,
+				D109CE6F21DD66F300A7A019 /* UIControllerComponent.swift in Sources */,
 				OBJ_162 /* Presenter.swift in Sources */,
 				OBJ_163 /* Color.swift in Sources */,
 				OBJ_164 /* Event.swift in Sources */,

@@ -78,6 +78,8 @@ extension UIViewComponent where Target == Target.DefaultValue,
       box.view.addArrangedSubview(target)
     case let box as ViewBox<UIView>:
       box.view.addSubview(target)
+    case let box as ViewBox<GluonUIView>:
+      box.view.addSubview(target)
     case let box as ViewControllerBox<UINavigationController>
       where parentNode?.isOf(type: StackNavigator.self) ?? false:
       guard let props = parentNode?.props.value as? StackNavigator.Props else {
@@ -101,7 +103,6 @@ extension UIViewComponent where Target == Target.DefaultValue,
                                  completion: nil)
     default:
       parentAssertionFailure()
-      ()
     }
 
     return result

@@ -39,7 +39,16 @@ struct Counter: LeafComponent {
         .init(),
         StackNavigator.node(
           .init(),
-          Label.node(.init(), "modal StackNavigator")
+          View.node(
+            .init(style: Style(backgroundColor: .white)),
+            Label.node(
+              .init(
+                style: Style(frame: (Rectangle(.zero, Size(width: 200,
+                                                           height: 100))))
+              ),
+              "modal StackNavigator"
+            )
+          )
         )
       )
     ] : [])
