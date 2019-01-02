@@ -58,11 +58,14 @@ extension UIViewComponent where Target == Target.DefaultValue,
 
     let target = Target.defaultValue
     let result: ViewBox<Target>
-    let parentIsPresenter = parentNode?.isOf(type: Presenter.self) ?? false
+
+    let parentRequiresViewController = parentNode?.isOf(types: [
+      Presenter.self, StackNavigator.self, TabNavigator.self,
+    ]) ?? false
 
     // UIViewController parent target can't present a bare `ViewBox` target,
     // it needs to be wrapped with `ContainerViewController` first.
-    if parentIsPresenter {
+    if parentRequiresViewController {
       result = box(for: target, ContainerViewController(contained: target))
     } else {
       result = box(for: target, parent.viewController)
@@ -75,13 +78,25 @@ extension UIViewComponent where Target == Target.DefaultValue,
       box.view.addArrangedSubview(target)
     case let box as ViewBox<UIView>:
       box.view.addSubview(target)
-    case let box as ViewControllerBox where parentIsPresenter:
+    case let box as ViewControllerBox<UINavigationController>
+      where parentNode?.isOf(type: StackNavigator.self) ?? false:
+      guard let props = parentNode?.props.value as? StackNavigator.Props else {
+        propsAssertionFailure()
+        return nil
+      }
+
+      box.containerViewController.pushViewController(
+        result.viewController,
+        animated: props.pushAnimated
+      )
+    case let box as ViewControllerBox<UIViewController>
+      where parentNode?.isOf(type: Presenter.self) ?? false:
       guard let props = parentNode?.props.value as? Presenter.Props else {
         propsAssertionFailure()
         return nil
       }
 
-      box.viewController.present(box.viewController,
+      box.viewController.present(result.viewController,
                                  animated: props.presentAnimated,
                                  completion: nil)
     default:

@@ -80,9 +80,18 @@ final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
       case (false, false):
         var newChildren = [MountedComponent<R>]()
 
+        // iterate through every `mountedChildren` element and compare with
+        // a corresponding `nodes` element, remount if type differs, otherwise
+        // run simple update
         while let child = mountedChildren.first, let node = nodes.first {
           let newChild: MountedComponent<R>
           if node.type == mountedChildren[0].node.type {
+            // not sure if comparison of `props` between `child.node` and
+            // `node` are more computationally expensive than plainly
+            // updating props on a target. `children` comparison between
+            // `child.node` and `node` runs implicitly within this loop.
+            // From functionality perspective this should work and we need
+            // benchmarks before this can be optimised.
             child.node = node
             child.update(with: reconciler)
             newChild = child
@@ -94,6 +103,13 @@ final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
           newChildren.append(newChild)
           mountedChildren.removeFirst()
           nodes.removeFirst()
+        }
+
+        // mount remaining nodes
+        for node in nodes {
+          let newChild = node.makeMountedComponent(self, target)
+          newChild.mount(with: reconciler)
+          newChildren.append(newChild)
         }
 
         mountedChildren = newChildren

@@ -56,6 +56,10 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   }
 
   override func update(with reconciler: StackReconciler<R>) {
+    // FIXME: for now without fragments composite mounted components have only
+    // a single element in `mountedChildren`, but this will change when
+    // fragments are implemented and this switch should be rewritten to compare
+    // all elements in `mountedChildren`
     switch (mountedChildren.last, render(with: reconciler)) {
     // no mounted children, but children available now
     case let (nil, renderedNode):

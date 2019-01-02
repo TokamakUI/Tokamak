@@ -15,8 +15,8 @@
 public struct History<S: Store>: Store {
   public enum Action {
     case branch(S.Action)
-    case undo()
-    case redo()
+    case undo
+    case redo
   }
 
   private var wrapped: S

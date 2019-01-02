@@ -8,15 +8,15 @@
 import Gluon
 import UIKit
 
-class ViewControllerBox {
-  let viewController: UIViewController
+class ViewControllerBox<T: UIViewController> {
+  let containerViewController: T
 
-  init(_ viewController: UIViewController) {
-    self.viewController = viewController
+  init(_ viewController: T) {
+    containerViewController = viewController
   }
 }
 
-class ViewBox<T: UIView>: ViewControllerBox {
+class ViewBox<T: UIView>: ViewControllerBox<UIViewController> {
   let view: T
 
   init(_ view: T, _ viewController: UIViewController) {
@@ -26,4 +26,8 @@ class ViewBox<T: UIView>: ViewControllerBox {
   }
 }
 
-extension ViewControllerBox: UITarget {}
+extension ViewControllerBox: UITarget {
+  var viewController: UIViewController {
+    return containerViewController
+  }
+}

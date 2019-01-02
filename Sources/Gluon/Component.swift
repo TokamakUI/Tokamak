@@ -9,7 +9,7 @@ public protocol AnyHostComponent {}
 
 public protocol HostComponent: AnyHostComponent {
   associatedtype Props: Equatable
-  associatedtype Children: ChildrenType & Equatable
+  associatedtype Children: Equatable
 }
 
 // FIXME: this protocol shouldn't be public, but is there a good workaround?
@@ -19,7 +19,7 @@ public protocol AnyCompositeComponent {
 
 public protocol CompositeComponent: AnyCompositeComponent {
   associatedtype Props: Equatable
-  associatedtype Children: ChildrenType & Equatable
+  associatedtype Children: Equatable
 
   static func render(props: Props, children: Children) -> Node
 }
@@ -44,7 +44,7 @@ public protocol LeafComponent: CompositeComponent where Children == Null {
 }
 
 public extension LeafComponent {
-  public static func render(props: Props, children _: Children) -> Node {
+  static func render(props: Props, children _: Children) -> Node {
     return render(props: props)
   }
 }

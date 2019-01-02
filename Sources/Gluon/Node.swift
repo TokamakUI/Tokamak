@@ -22,6 +22,10 @@ public struct Node: Equatable {
   public func isOf(type: Any.Type) -> Bool {
     return self.type.host == type || self.type.composite == type
   }
+
+  public func isOf(types: [Any.Type]) -> Bool {
+    return types.contains { isOf(type: $0) }
+  }
 }
 
 extension HostComponent {
@@ -42,6 +46,14 @@ extension HostComponent where Children == Null {
   }
 }
 
+extension HostComponent where Children == [Node] {
+  public static func node(key: String? = nil,
+                          _ props: Props,
+                          _ child: Node) -> Node {
+    return node(key: key, props, [child])
+  }
+}
+
 extension CompositeComponent {
   public static func node(key: String? = nil,
                           _ props: Props,
@@ -59,16 +71,3 @@ extension LeafComponent {
     return node(key: key, props, Null())
   }
 }
-
-/// A user of Gluon might want to add conformance for this protocol to
-/// enable different types of children for their composite components, e.g.
-/// Set<Int> or some other useful "model" type.
-public protocol ChildrenType {}
-
-extension Null: ChildrenType {}
-
-extension Node: ChildrenType {}
-
-extension Array: ChildrenType where Element == Node {}
-
-extension String: ChildrenType {}

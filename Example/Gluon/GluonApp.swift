@@ -17,8 +17,11 @@ struct Counter: LeafComponent {
   static func render(props: Props) -> Node {
     let (count, setCount) = hooks.state(props.initial)
     let (sliding, setSliding) = hooks.state(0.5 as Float)
+    let (isModalPresented, setIsModalPresented) = hooks.state(false)
 
-    let children = count < 15 ? [
+    let children = [Button.node(.init(handlers: [.touchUpInside: Handler {
+      setIsModalPresented(true)
+    }]), "Modal")] + (count < 15 ? [
       Button.node(.init(
         handlers: [.touchUpInside: Handler { setCount(count + 1) }]
       ), "Increment"),
@@ -31,7 +34,15 @@ struct Counter: LeafComponent {
       )),
 
       Label.node(.init(alignment: .center), "\(sliding)"),
-    ] : []
+    ] : []) + (isModalPresented ? [
+      Presenter.node(
+        .init(),
+        StackNavigator.node(
+          .init(),
+          Label.node(.init(), "modal StackNavigator")
+        )
+      )
+    ] : [])
 
     return StackView.node(.init(axis: .vertical,
                                 distribution: .fillEqually,

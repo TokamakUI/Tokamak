@@ -8,6 +8,11 @@
 import Gluon
 import UIKit
 
+// FIXME: working around "Couldn't lookup symbols: protocol witness table"
+// compiler bug
+let _PresenterWitnessTableHack: UIHostComponent.Type = Presenter.self
+let _StackNavigatorWitnessTableHack: UIHostComponent.Type = StackNavigator.self
+
 public protocol UITarget {
   var viewController: UIViewController { get }
 }
@@ -37,6 +42,7 @@ public class UIKitRenderer: Renderer {
                           props: AnyEquatable,
                           children: AnyEquatable) -> UITarget? {
     guard let rendererComponent = component as? UIHostComponent.Type else {
+      print(component)
       typeAssertionFailure(for: component)
       return nil
     }

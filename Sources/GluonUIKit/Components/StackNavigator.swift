@@ -13,20 +13,24 @@ extension StackNavigator: UIHostComponent {
                           parentNode: Node?,
                           props: AnyEquatable,
                           children: AnyEquatable) -> UITarget? {
-    return nil
-//    guard let props = props.value as? StackNavigator.Props else {
-//      propsAssertionFailure()
-//      return nil
-//    }
-//
-//    let result = UINavigationController()
-//    result.hidesBarsWhenKeyboardAppears = props.hidesBarsWhenKeyboardAppears
-//    return result
+    guard let props = props.value as? StackNavigator.Props else {
+      propsAssertionFailure()
+      return nil
+    }
+
+    let result = UINavigationController()
+    props.hidesBarsWhenKeyboardAppears.flatMap {
+      result.hidesBarsWhenKeyboardAppears = $0
+    }
+
+    return ViewControllerBox(result)
   }
 
   static func update(target: UITarget,
                      props: AnyEquatable,
                      children: AnyEquatable) {}
 
-  static func unmount(target: UITarget) {}
+  static func unmount(target: UITarget) {
+    print("blah")
+  }
 }

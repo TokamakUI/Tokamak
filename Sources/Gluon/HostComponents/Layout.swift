@@ -5,7 +5,9 @@
 //  Created by Max Desiatov on 16/10/2018.
 //
 
-public struct LayoutConstraint: HostComponent {
+public struct LayoutConstraints: HostComponent {
+  public typealias Children = [Node]
+
   public struct Props: Equatable {
     public enum Target {
       case next
@@ -120,6 +122,4 @@ public struct LayoutConstraint: HostComponent {
       self.right = right
     }
   }
-
-  public typealias Children = [Node]
 }
