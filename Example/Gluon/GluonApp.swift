@@ -35,9 +35,9 @@ struct Counter: LeafComponent {
 
       Label.node(.init(alignment: .center), "\(sliding)"),
     ] : []) + (isModalPresented ? [
-      Presenter.node(
+      ModalPresenter.node(
         .init(),
-        StackNavigator.node(
+        StackPresenter.node(
           .init(),
           View.node(
             .init(style: Style(backgroundColor: .white)),
@@ -46,7 +46,7 @@ struct Counter: LeafComponent {
                 style: Style(frame: (Rectangle(.zero, Size(width: 200,
                                                            height: 100))))
               ),
-              "modal StackNavigator"
+              "modal StackPresenter"
             )
           )
         )

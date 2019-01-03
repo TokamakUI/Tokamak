@@ -10,8 +10,8 @@ import UIKit
 
 // FIXME: working around "Couldn't lookup symbols: protocol witness table"
 // compiler bug
-let _PresenterWitnessTableHack: UIHostComponent.Type = Presenter.self
-let _StackNavigatorWitnessTableHack: UIHostComponent.Type = StackNavigator.self
+let _ModalPresenterWitnessTableHack: UIHostComponent.Type = ModalPresenter.self
+let _StackPresenterrWitnessTableHack: UIHostComponent.Type = StackPresenter.self
 
 public protocol UITarget {
   var viewController: UIViewController { get }

@@ -1,11 +1,11 @@
 //
-//  StackNavigator.swift
+//  StackPresenter.swift
 //  Gluon
 //
 //  Created by Max Desiatov on 31/12/2018.
 //
 
-public struct StackNavigator: HostComponent {
+public struct StackPresenter: HostComponent {
   public struct Props: Equatable {
     public let hidesBarsWhenKeyboardAppears: Bool?
     public let popAnimated: Bool

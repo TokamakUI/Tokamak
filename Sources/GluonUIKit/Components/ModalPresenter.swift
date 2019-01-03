@@ -1,5 +1,5 @@
 //
-//  Presenter.swift
+//  ModalPresenter.swift
 //  GluonUIKit
 //
 //  Created by Max Desiatov on 01/01/2019.
@@ -8,7 +8,7 @@
 import Gluon
 import UIKit
 
-extension Presenter: UIHostComponent {
+extension ModalPresenter: UIHostComponent {
   static func mountTarget(to parent: UITarget,
                           parentNode: Node?,
                           props: AnyEquatable,

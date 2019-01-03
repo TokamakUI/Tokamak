@@ -1,11 +1,11 @@
 //
-//  Presenter.swift
+//  ModalPresenter.swift
 //  Gluon
 //
 //  Created by Max Desiatov on 31/12/2018.
 //
 
-public struct Presenter: HostComponent {
+public struct ModalPresenter: HostComponent {
   public struct Props: Equatable {
     public enum PresentationStyle {
       /** Renderer targets up in the tree of nodes owning the presenter node are

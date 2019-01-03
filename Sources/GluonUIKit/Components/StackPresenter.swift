@@ -1,5 +1,5 @@
 //
-//  StackNavigator.swift
+//  StackPresenter.swift
 //  Gluon
 //
 //  Created by Max Desiatov on 31/12/2018.
@@ -8,12 +8,12 @@
 import Gluon
 import UIKit
 
-extension StackNavigator: UIHostComponent {
+extension StackPresenter: UIHostComponent {
   static func mountTarget(to parent: UITarget,
                           parentNode: Node?,
                           props: AnyEquatable,
                           children: AnyEquatable) -> UITarget? {
-    guard let props = props.value as? StackNavigator.Props else {
+    guard let props = props.value as? Props else {
       propsAssertionFailure()
       return nil
     }
