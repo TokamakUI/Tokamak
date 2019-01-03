@@ -19,17 +19,50 @@ public struct Node: Equatable {
   public let children: AnyEquatable
   let type: ComponentType
 
-  public func isOf(type: Any.Type) -> Bool {
-    return self.type.host == type || self.type.composite == type
+  public func isSubtypeOf<T>(_: T.Type) -> Bool {
+    return type.host is T.Type || type.composite is T.Type
   }
 
-  public func isOf(types: [Any.Type]) -> Bool {
-    return types.contains { isOf(type: $0) }
+  public func isSubtypeOf<T, U>(_: T.Type, or: U.Type) -> Bool {
+    return isSubtypeOf(T.self) || isSubtypeOf(U.self)
+  }
+
+  public func isSubtypeOf<T, U, V>(
+    _: T.Type,
+    or _: U.Type,
+    or _: V.Type
+  ) -> Bool {
+    return isSubtypeOf(T.self) || isSubtypeOf(U.self) || isSubtypeOf(V.self)
+  }
+}
+
+extension Component {
+  public static func node(_ props: Props, _ children: Children) -> Node {
+    return node(key: nil, props, children)
+  }
+}
+
+extension Component where Props: Default, Props.DefaultValue == Props {
+  public static func node(_ children: Children) -> Node {
+    return node(Props.defaultValue, children)
+  }
+}
+
+extension Component where Children == Null {
+  public static func node(_ props: Props) -> Node {
+    return node(props, Null())
+  }
+}
+
+extension Component where Children == [Node] {
+  public static func node(_ props: Props,
+                          _ child: Node) -> Node {
+    return node(props, [child])
   }
 }
 
 extension HostComponent {
-  public static func node(key: String? = nil,
+  public static func node(key: String?,
                           _ props: Props,
                           _ children: Children) -> Node {
     return Node(key: key,
@@ -39,35 +72,13 @@ extension HostComponent {
   }
 }
 
-extension HostComponent where Children == Null {
-  public static func node(key: String? = nil,
-                          _ props: Props) -> Node {
-    return node(key: key, props, Null())
-  }
-}
-
-extension HostComponent where Children == [Node] {
-  public static func node(key: String? = nil,
-                          _ props: Props,
-                          _ child: Node) -> Node {
-    return node(key: key, props, [child])
-  }
-}
-
 extension CompositeComponent {
-  public static func node(key: String? = nil,
+  public static func node(key: String?,
                           _ props: Props,
                           _ children: Children) -> Node {
     return Node(key: key,
                 props: AnyEquatable(props),
                 children: AnyEquatable(children),
                 type: .composite(self))
-  }
-}
-
-extension LeafComponent {
-  public static func node(key: String? = nil,
-                          _ props: Props) -> Node {
-    return node(key: key, props, Null())
   }
 }

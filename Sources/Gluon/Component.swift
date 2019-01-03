@@ -5,22 +5,26 @@
 //  Created by Max Desiatov on 07/10/2018.
 //
 
+// FIXME: this protocol shouldn't be public, but is there a good workaround?
 public protocol AnyHostComponent {}
 
-public protocol HostComponent: AnyHostComponent {
-  associatedtype Props: Equatable
-  associatedtype Children: Equatable
-}
+public protocol HostComponent: AnyHostComponent, Component {}
 
 // FIXME: this protocol shouldn't be public, but is there a good workaround?
 public protocol AnyCompositeComponent {
   static func render(props: AnyEquatable, children: AnyEquatable) -> Node
 }
 
-public protocol CompositeComponent: AnyCompositeComponent {
+public protocol Component {
   associatedtype Props: Equatable
   associatedtype Children: Equatable
 
+  static func node(key: String?,
+                   _ props: Props,
+                   _ children: Children) -> Node
+}
+
+public protocol CompositeComponent: AnyCompositeComponent, Component {
   static func render(props: Props, children: Children) -> Node
 }
 

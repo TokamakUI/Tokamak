@@ -6,7 +6,11 @@
 //
 
 public struct ModalPresenter: HostComponent {
-  public struct Props: Equatable {
+  public struct Props: Equatable, Default {
+    public static var defaultValue: Props {
+      return Props()
+    }
+
     public enum PresentationStyle {
       /** Renderer targets up in the tree of nodes owning the presenter node are
        removed after the presentation completes.
