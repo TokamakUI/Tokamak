@@ -8,29 +8,25 @@
 
 import Gluon
 
-enum AppRoute {
-  case first
-}
-
 struct NavRouter: StackRouter {
-  typealias Route = AppRoute
-  typealias Props = Null
+  typealias Route = Null
+
+  struct Props: Equatable {
+    let handler: Handler<()>
+  }
 
   static func route(
-    props: Null,
-    route: AppRoute,
-    push: (AppRoute) -> (),
+    props: Props,
+    route: Null,
+    push: (Null) -> (),
     pop: () -> ()
   ) -> Node {
     return View.node(
       .init(style: Style(backgroundColor: .white)),
-      Label.node(
-        .init(
-          style: Style(frame: (Rectangle(.zero, Size(width: 200,
-                                                     height: 100))))
-        ),
-        "modal StackPresenter"
-      )
+      Button.node(.init(
+        handlers: [.touchUpInside: props.handler],
+        style: Style(frame: Rectangle(.zero, Size(width: 200, height: 200)))
+      ), "Close Modal")
     )
   }
 }
@@ -63,12 +59,11 @@ struct Counter: LeafComponent {
       Label.node(.init(alignment: .center), "\(sliding)"),
     ] : []) + (isModalPresented ? [
       ModalPresenter.node(
-        View.node(
-          .init(style: Style(backgroundColor: .white)),
-          Button.node(.init(
-            handlers: [.touchUpInside: Handler { setIsModalPresented(false) }],
-            style: Style(frame: Rectangle(.zero, Size(width: 200, height: 200)))
-          ), "Close Modal")
+        StackPresenter<NavRouter>.node(
+          .init(
+            initial: Null(),
+            routerProps: .init(handler: Handler { setIsModalPresented(false) })
+          )
         )
       )
     ] : [])
