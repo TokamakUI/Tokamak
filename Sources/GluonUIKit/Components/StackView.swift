@@ -8,9 +8,9 @@
 import Gluon
 import UIKit
 
-final class GluonUIStackView: UIStackView, Default {
-  static var defaultValue: GluonUIStackView {
-    return GluonUIStackView()
+final class GluonStackView: UIStackView, Default {
+  static var defaultValue: GluonStackView {
+    return GluonStackView()
   }
 }
 
@@ -60,7 +60,7 @@ extension UIStackView.Distribution {
 }
 
 extension StackView: UIViewComponent {
-  static func update(view box: ViewBox<GluonUIStackView>,
+  static func update(view box: ViewBox<GluonStackView>,
                      _ props: StackView.Props,
                      _: [Node]) {
     let view = box.view

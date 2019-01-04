@@ -74,17 +74,18 @@ extension UIViewComponent where Target == Target.DefaultValue,
     update(view: result, props, children)
 
     switch parent {
-    case let box as ViewBox<GluonUIStackView>:
+    case let box as ViewBox<GluonStackView>:
       box.view.addArrangedSubview(target)
     // no covariance/contravariance in Swift generics require next
     // two cases to be duplicated :(
     case let box as ViewBox<UIView>:
       box.view.addSubview(target)
-    case let box as ViewBox<GluonUIView>:
+    case let box as ViewBox<GluonView>:
       box.view.addSubview(target)
-    case let box as ViewControllerBox<UINavigationController>
+    case let box as ViewControllerBox<GluonNavigationController>
       where parentNode?.isSubtypeOf(AnyStackPresenter.self) ?? false:
-      guard let props = parentNode?.props.value as? AnyStackPresenterProps else {
+      guard let props = parentNode?.props.value
+        as? AnyStackPresenterProps else {
         propsAssertionFailure()
         return nil
       }

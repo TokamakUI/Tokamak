@@ -8,16 +8,16 @@
 import Gluon
 import UIKit
 
-final class GluonUISlider: UISlider, Default, ValueStorage {
-  static var defaultValue: GluonUISlider {
-    return GluonUISlider()
+final class GluonSlider: UISlider, Default, ValueStorage {
+  static var defaultValue: GluonSlider {
+    return GluonSlider()
   }
 }
 
 extension Slider: UIValueComponent {
-  typealias Target = GluonUISlider
+  typealias Target = GluonSlider
 
-  static func update(valueBox: ValueControlBox<GluonUISlider>,
+  static func update(valueBox: ValueControlBox<GluonSlider>,
                      _ props: Slider.Props,
                      _ children: Null) {}
 }

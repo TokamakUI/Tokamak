@@ -8,9 +8,9 @@
 import Gluon
 import UIKit
 
-final class GluonUILabel: UILabel, Default {
-  static var defaultValue: GluonUILabel {
-    return GluonUILabel()
+final class GluonLabel: UILabel, Default {
+  static var defaultValue: GluonLabel {
+    return GluonLabel()
   }
 }
 
@@ -32,7 +32,7 @@ extension NSTextAlignment {
 }
 
 extension Label: UIViewComponent {
-  static func update(view box: ViewBox<GluonUILabel>,
+  static func update(view box: ViewBox<GluonLabel>,
                      _ props: Label.Props,
                      _ children: String) {
     let view = box.view

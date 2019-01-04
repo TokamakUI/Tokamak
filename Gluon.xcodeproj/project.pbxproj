@@ -244,7 +244,7 @@
 			children = (
 				OBJ_11 /* AnyEquatable.swift */,
 				OBJ_12 /* Component.swift */,
-				OBJ_13 /* ComponentWrapper */,
+				OBJ_13 /* MountedComponent */,
 				OBJ_17 /* Default.swift */,
 				OBJ_18 /* Diffable.swift */,
 				OBJ_19 /* Hooks.swift */,
@@ -261,14 +261,14 @@
 			path = Sources/Gluon;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_13 /* ComponentWrapper */ = {
+		OBJ_13 /* MountedComponent */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_14 /* MountedComponent.swift */,
 				OBJ_15 /* MountedCompositeComponent.swift */,
 				OBJ_16 /* MountedHostComponent.swift */,
 			);
-			path = ComponentWrapper;
+			path = MountedComponent;
 			sourceTree = "<group>";
 		};
 		OBJ_20 /* HostComponents */ = {

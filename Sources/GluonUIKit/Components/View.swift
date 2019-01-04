@@ -8,14 +8,14 @@
 import Gluon
 import UIKit
 
-final class GluonUIView: UIView, Default {
-  public static var defaultValue: GluonUIView {
-    return GluonUIView()
+final class GluonView: UIView, Default {
+  public static var defaultValue: GluonView {
+    return GluonView()
   }
 }
 
 extension View: UIViewComponent {
-  static func update(view: ViewBox<GluonUIView>,
+  static func update(view: ViewBox<GluonView>,
                      _ props: View.Props,
                      _: [Node]) {}
 }

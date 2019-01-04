@@ -8,6 +8,26 @@
 import Gluon
 import UIKit
 
+final class GluonNavigationController: UINavigationController {
+  private let onPop: () -> ()
+
+  init(onPop: @escaping () -> ()) {
+    self.onPop = onPop
+
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func didMove(toParent parent: UIViewController?) {
+    super.didMove(toParent: parent)
+
+    onPop()
+  }
+}
+
 extension StackPresenter: UIHostComponent {
   static func mountTarget(to parent: UITarget,
                           parentNode: Node?,
@@ -18,7 +38,7 @@ extension StackPresenter: UIHostComponent {
       return nil
     }
 
-    let result = UINavigationController()
+    let result = GluonNavigationController {}
     props.hidesBarsWhenKeyboardAppears.flatMap {
       result.hidesBarsWhenKeyboardAppears = $0
     }
