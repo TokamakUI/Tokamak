@@ -105,11 +105,20 @@ final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
           nodes.removeFirst()
         }
 
-        // mount remaining nodes
-        for node in nodes {
-          let newChild = node.makeMountedComponent(self, target)
-          newChild.mount(with: reconciler)
-          newChildren.append(newChild)
+        // more mounted components left than nodes were to be rendered:
+        // unmount remaining `mountedChildren`
+        if !mountedChildren.isEmpty {
+          for child in mountedChildren {
+            child.unmount(with: reconciler)
+          }
+        } else {
+          // more nodes left than children were mounted,
+          // mount remaining nodes
+          for node in nodes {
+            let newChild = node.makeMountedComponent(self, target)
+            newChild.mount(with: reconciler)
+            newChildren.append(newChild)
+          }
         }
 
         mountedChildren = newChildren

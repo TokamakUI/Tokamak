@@ -42,15 +42,15 @@ extension Component {
   }
 }
 
-extension Component where Props: Default, Props.DefaultValue == Props {
-  public static func node(_ children: Children) -> Node {
-    return node(Props.defaultValue, children)
-  }
-}
-
 extension Component where Children == Null {
   public static func node(_ props: Props) -> Node {
     return node(props, Null())
+  }
+}
+
+extension Component where Props: Default, Props.DefaultValue == Props {
+  public static func node(_ children: Children) -> Node {
+    return node(Props.defaultValue, children)
   }
 }
 
@@ -58,6 +58,13 @@ extension Component where Children == [Node] {
   public static func node(_ props: Props,
                           _ child: Node) -> Node {
     return node(props, [child])
+  }
+}
+
+extension Component where Props: Default, Props.DefaultValue == Props,
+  Children == [Node] {
+  public static func node(_ child: Node) -> Node {
+    return node(Props.defaultValue, [child])
   }
 }
 

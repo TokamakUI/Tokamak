@@ -8,7 +8,11 @@
 public struct View: HostComponent {
   public typealias Children = [Node]
 
-  public struct Props: Equatable, StyleProps {
+  public struct Props: Equatable, StyleProps, Default {
+    public static var defaultValue: Props {
+      return Props()
+    }
+
     public let style: Style?
 
     public init(style: Style? = nil) {

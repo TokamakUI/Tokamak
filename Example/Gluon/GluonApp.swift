@@ -48,7 +48,7 @@ struct Counter: LeafComponent {
 
     let children = [Button.node(.init(handlers: [.touchUpInside: Handler {
       setIsModalPresented(true)
-    }]), "Modal")] + (count < 15 ? [
+    }]), "Present Modal")] + (count < 15 ? [
       Button.node(.init(
         handlers: [.touchUpInside: Handler { setCount(count + 1) }]
       ), "Increment"),
@@ -63,7 +63,13 @@ struct Counter: LeafComponent {
       Label.node(.init(alignment: .center), "\(sliding)"),
     ] : []) + (isModalPresented ? [
       ModalPresenter.node(
-        StackPresenter<NavRouter>.node(.init(initial: .first))
+        View.node(
+          .init(style: Style(backgroundColor: .white)),
+          Button.node(.init(
+            handlers: [.touchUpInside: Handler { setIsModalPresented(false) }],
+            style: Style(frame: Rectangle(.zero, Size(width: 200, height: 200)))
+          ), "Close Modal")
+        )
       )
     ] : [])
 
