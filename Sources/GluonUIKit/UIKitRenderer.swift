@@ -18,7 +18,10 @@ struct TestRouter: StackRouter {
   typealias Props = Null
   typealias Route = Null
 
-  static func route(props: Null, route: Null, push: (TestRouter.Route) -> (), pop: () -> ()) -> Node {
+  static func route(props: Null,
+                    route: Null,
+                    push: (TestRouter.Route) -> (),
+                    pop: () -> ()) -> Node {
     return Label.node(.init(), "blah")
   }
 }
