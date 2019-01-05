@@ -6,7 +6,11 @@
 //
 
 public struct StackView: HostComponent {
-  public struct Props: Equatable, StyleProps {
+  public struct Props: Equatable, StyleProps, Default {
+    public static var defaultValue: Props {
+      return Props()
+    }
+
     public enum Alignment {
       case fill
       case center
@@ -31,18 +35,15 @@ public struct StackView: HostComponent {
     public let alignment: Alignment
     public let axis: Axis
     public let distribution: Distribution
-    public let frame: Rectangle
     public let style: Style?
 
     public init(alignment: Alignment = .fill,
                 axis: Axis = .horizontal,
                 distribution: Distribution = .fill,
-                frame: Rectangle,
                 style: Style? = nil) {
       self.alignment = alignment
       self.axis = axis
       self.distribution = distribution
-      self.frame = frame
       self.style = style
     }
   }

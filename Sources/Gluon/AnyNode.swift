@@ -70,12 +70,20 @@ extension Component where Children == [AnyNode] {
                           _ child: AnyNode) -> AnyNode {
     return node(props, [child])
   }
+
+  public static func node(_ props: Props) -> AnyNode {
+    return node(props, [])
+  }
 }
 
 extension Component where Props: Default, Props.DefaultValue == Props,
   Children == [AnyNode] {
   public static func node(_ child: AnyNode) -> AnyNode {
     return node(Props.defaultValue, [child])
+  }
+
+  public static func node() -> AnyNode {
+    return node(Props.defaultValue, [])
   }
 }
 

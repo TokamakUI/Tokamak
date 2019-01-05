@@ -33,17 +33,46 @@ struct NavRouter: StackRouter {
 
 struct StackModal: LeafComponent {
   struct Props: Equatable {
-    let isPresented: Bool
-    let onClose: Handler<()>
+    let isPresented: State<Bool>
   }
 
   static func render(props: Props) -> AnyNode {
-    return props.isPresented ?
+    return props.isPresented.value ?
       ModalPresenter.node(
         StackPresenter<NavRouter>.node(
           .init(
             initial: Null(),
-            routerProps: .init(handler: props.onClose)
+            routerProps: .init(
+              handler: Handler { props.isPresented.set(false) }
+            )
+          )
+        )
+      ) : Null.node()
+  }
+}
+
+struct AnimationModal: LeafComponent {
+  struct Props: Equatable {
+    let frame: Rectangle
+    let isPresented: State<Bool>
+  }
+
+  static func render(props: Props) -> AnyNode {
+    return props.isPresented.value ?
+      ModalPresenter.node(
+        View.node(
+          .init(style: Style(backgroundColor: .white)),
+          StackView.node(
+            .init(style: Style(frame: props.frame)), [
+              Button.node(.init(
+                handlers: [
+                  .touchUpInside: Handler { props.isPresented.set(false) },
+                ],
+                style: Style(
+                  frame: Rectangle(.zero, Size(width: 200, height: 200))
+                )
+              ), "Close Modal"),
+            ]
           )
         )
       ) : Null.node()
@@ -59,11 +88,18 @@ struct Counter: LeafComponent {
   static func render(props: Props) -> AnyNode {
     let count = hooks.state(props.initial)
     let sliding = hooks.state(0.5 as Float)
-    let isModalPresented = hooks.state(false)
+    let isStackModalPresented = hooks.state(false)
+    let isAnimationModalPresented = hooks.state(false)
 
-    let children = [Button.node(.init(handlers: [.touchUpInside: Handler {
-      isModalPresented.set(true)
-    }]), "Present Modal")] + (count.value < 15 ? [
+    let children = [
+      Button.node(.init(handlers: [.touchUpInside: Handler {
+        isStackModalPresented.set(true)
+      }]), "Present Stack Modal"),
+
+      Button.node(.init(handlers: [.touchUpInside: Handler {
+        isAnimationModalPresented.set(true)
+      }]), "Present Animation Modal"),
+    ] + (count.value < 15 ? [
       Button.node(.init(
         handlers: [.touchUpInside: Handler { count.set { $0 + 1 } }]
       ), "Increment"),
@@ -77,13 +113,19 @@ struct Counter: LeafComponent {
 
       Label.node(.init(alignment: .center), "\(sliding.value)"),
 
-      StackModal.node(.init(isPresented: isModalPresented.value,
-                            onClose: Handler { isModalPresented.set(false) }))
+      StackModal.node(.init(
+        isPresented: isStackModalPresented
+      )),
+
+      AnimationModal.node(.init(
+        frame: props.frame,
+        isPresented: isAnimationModalPresented
+      ))
     ] : [])
 
     return StackView.node(.init(axis: .vertical,
                                 distribution: .fillEqually,
-                                frame: props.frame),
+                                style: Style(frame: props.frame)),
                           children)
   }
 }

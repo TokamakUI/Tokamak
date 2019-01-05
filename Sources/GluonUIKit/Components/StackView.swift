@@ -67,6 +67,5 @@ extension StackView: UIViewComponent {
     view.alignment = UIStackView.Alignment(props.alignment)
     view.axis = NSLayoutConstraint.Axis(props.axis)
     view.distribution = UIStackView.Distribution(props.distribution)
-    view.frame = CGRect(props.frame)
   }
 }

@@ -7,21 +7,23 @@
 
 public struct State<T> {
   public let value: T
-  let setter: (T) -> ()
+  let setter: Handler<T>
 
   init(_ value: T, _ setter: @escaping (T) -> ()) {
     self.value = value
-    self.setter = setter
+    self.setter = Handler(setter)
   }
 
   public func set(_ value: T) {
-    setter(value)
+    setter.value(value)
   }
 
   public func set(_ updater: (T) -> T) {
-    setter(updater(value))
+    setter.value(updater(value))
   }
 }
+
+extension State: Equatable where T: Equatable {}
 
 public struct Hooks {
   var currentState: ((_ id: String) -> Any?)?
