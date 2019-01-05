@@ -21,7 +21,7 @@ struct TestRouter: StackRouter {
   static func route(props: Null,
                     route: Null,
                     push: (TestRouter.Route) -> (),
-                    pop: () -> ()) -> Node {
+                    pop: () -> ()) -> AnyNode {
     return Label.node(.init(), "blah")
   }
 }
@@ -34,7 +34,7 @@ public class UIKitRenderer: Renderer {
   private var reconciler: StackReconciler<UIKitRenderer>?
   private let rootViewController: UIViewController
 
-  public init(node: Node, rootViewController: UIViewController) {
+  public init(node: AnyNode, rootViewController: UIViewController) {
     self.rootViewController = rootViewController
     reconciler = StackReconciler(
       node: node,
@@ -50,7 +50,7 @@ public class UIKitRenderer: Renderer {
   }
 
   public func mountTarget(to parent: UITarget,
-                          parentNode: Node?,
+                          parentNode: AnyNode?,
                           with component: AnyHostComponent.Type,
                           props: AnyEquatable,
                           children: AnyEquatable) -> UITarget? {

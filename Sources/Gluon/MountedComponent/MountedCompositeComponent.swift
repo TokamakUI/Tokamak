@@ -30,7 +30,7 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   private let parentTarget: R.Target
   var state = [String: Any]()
 
-  init(_ node: Node,
+  init(_ node: AnyNode,
        _ type: AnyCompositeComponent.Type,
        _ parent: MountedComponent<R>?,
        _ parentTarget: R.Target) {
@@ -90,7 +90,7 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
     }
   }
 
-  func render(with reconciler: StackReconciler<R>) -> Node {
+  func render(with reconciler: StackReconciler<R>) -> AnyNode {
     _hooks.currentState = { [weak self] in
       self?.state[$0]
     }

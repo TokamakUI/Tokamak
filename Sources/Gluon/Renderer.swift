@@ -33,7 +33,7 @@ public protocol Renderer: class {
    - returns: The newly created target.
    */
   func mountTarget(to parent: Target,
-                   parentNode: Node?,
+                   parentNode: AnyNode?,
                    with component: AnyHostComponent.Type,
                    props: AnyEquatable,
                    children: AnyEquatable) -> Target?

@@ -12,7 +12,7 @@ public protocol HostComponent: AnyHostComponent, Component {}
 
 // FIXME: this protocol shouldn't be public, but is there a good workaround?
 public protocol AnyCompositeComponent {
-  static func render(props: AnyEquatable, children: AnyEquatable) -> Node
+  static func render(props: AnyEquatable, children: AnyEquatable) -> AnyNode
 }
 
 public protocol Component {
@@ -21,17 +21,17 @@ public protocol Component {
 
   static func node(key: String?,
                    _ props: Props,
-                   _ children: Children) -> Node
+                   _ children: Children) -> AnyNode
 }
 
 public protocol CompositeComponent: AnyCompositeComponent, Component {
-  static func render(props: Props, children: Children) -> Node
+  static func render(props: Props, children: Children) -> AnyNode
 }
 
 // FIXME: this extension should be private too, but
 // `public protocol AnyCompositeComponent` requires this to stay public
 public extension CompositeComponent {
-  static func render(props: AnyEquatable, children: AnyEquatable) -> Node {
+  static func render(props: AnyEquatable, children: AnyEquatable) -> AnyNode {
     guard let props = props.value as? Props,
       let children = children.value as? Children else {
       fatalError("""
@@ -44,11 +44,11 @@ public extension CompositeComponent {
 }
 
 public protocol LeafComponent: CompositeComponent where Children == Null {
-  static func render(props: Props) -> Node
+  static func render(props: Props) -> AnyNode
 }
 
 public extension LeafComponent {
-  static func render(props: Props, children _: Children) -> Node {
+  static func render(props: Props, children _: Children) -> AnyNode {
     return render(props: props)
   }
 }
@@ -67,6 +67,7 @@ enum ComponentType: Equatable {
 
   case host(AnyHostComponent.Type)
   case composite(AnyCompositeComponent.Type)
+  case null
 
   var composite: AnyCompositeComponent.Type? {
     guard case let .composite(type) = self else { return nil }

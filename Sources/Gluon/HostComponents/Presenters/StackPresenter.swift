@@ -11,7 +11,7 @@ public protocol StackRouter: Router {
     route: Route,
     push: (Route) -> (),
     pop: () -> ()
-  ) -> Node
+  ) -> AnyNode
 }
 
 /// Type-erased version of `StackPresenterProps`

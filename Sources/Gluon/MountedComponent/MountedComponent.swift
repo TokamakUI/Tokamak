@@ -6,10 +6,10 @@
 //
 
 class MountedComponent<R: Renderer> {
-  var node: Node
+  var node: AnyNode
   private(set) weak var parent: MountedComponent<R>?
 
-  init(_ node: Node, _ parent: MountedComponent<R>?) {
+  init(_ node: AnyNode, _ parent: MountedComponent<R>?) {
     self.node = node
     self.parent = parent
   }
@@ -27,7 +27,7 @@ class MountedComponent<R: Renderer> {
   }
 }
 
-extension Node {
+extension AnyNode {
   func makeMountedComponent<R: Renderer>(
     _ parent: MountedComponent<R>?,
     _ parentTarget: R.Target
@@ -38,6 +38,8 @@ extension Node {
       return MountedHostComponent(self, type, parent, parentTarget)
     case let .composite(type):
       return MountedCompositeComponent(self, type, parent, parentTarget)
+    case .null:
+      return MountedNull(self, parent)
     }
   }
 }

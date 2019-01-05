@@ -17,5 +17,5 @@ public struct TabPresenter<T: TabRouter>: HostComponent, AnyTabPresenter {
     public let routerProps: T.Props
   }
 
-  public typealias Children = [Node]
+  public typealias Children = [AnyNode]
 }

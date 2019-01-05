@@ -14,7 +14,7 @@ public final class StackReconciler<R: Renderer> {
   private let rootComponent: MountedComponent<R>
   private(set) weak var renderer: R?
 
-  public init(node: Node, target: R.Target, renderer: R) {
+  public init(node: AnyNode, target: R.Target, renderer: R) {
     self.renderer = renderer
     rootTarget = target
 

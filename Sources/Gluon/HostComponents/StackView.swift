@@ -47,5 +47,5 @@ public struct StackView: HostComponent {
     }
   }
 
-  public typealias Children = [Node]
+  public typealias Children = [AnyNode]
 }

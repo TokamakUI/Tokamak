@@ -20,7 +20,7 @@ struct NavRouter: StackRouter {
     route: Null,
     push: (Null) -> (),
     pop: () -> ()
-  ) -> Node {
+  ) -> AnyNode {
     return View.node(
       .init(style: Style(backgroundColor: .white)),
       Button.node(.init(
@@ -31,41 +31,54 @@ struct NavRouter: StackRouter {
   }
 }
 
+struct StackModal: LeafComponent {
+  struct Props: Equatable {
+    let isPresented: Bool
+    let onClose: Handler<()>
+  }
+
+  static func render(props: Props) -> AnyNode {
+    return props.isPresented ?
+      ModalPresenter.node(
+        StackPresenter<NavRouter>.node(
+          .init(
+            initial: Null(),
+            routerProps: .init(handler: props.onClose)
+          )
+        )
+      ) : Null.node()
+  }
+}
+
 struct Counter: LeafComponent {
   struct Props: Equatable {
     let frame: Rectangle
     let initial: Int
   }
 
-  static func render(props: Props) -> Node {
-    let (count, setCount) = hooks.state(props.initial)
-    let (sliding, setSliding) = hooks.state(0.5 as Float)
-    let (isModalPresented, setIsModalPresented) = hooks.state(false)
+  static func render(props: Props) -> AnyNode {
+    let count = hooks.state(props.initial)
+    let sliding = hooks.state(0.5 as Float)
+    let isModalPresented = hooks.state(false)
 
     let children = [Button.node(.init(handlers: [.touchUpInside: Handler {
-      setIsModalPresented(true)
-    }]), "Present Modal")] + (count < 15 ? [
+      isModalPresented.set(true)
+    }]), "Present Modal")] + (count.value < 15 ? [
       Button.node(.init(
-        handlers: [.touchUpInside: Handler { setCount(count + 1) }]
+        handlers: [.touchUpInside: Handler { count.set { $0 + 1 } }]
       ), "Increment"),
 
-      Label.node(.init(alignment: .center), "\(count)"),
+      Label.node(.init(alignment: .center), "\(count.value)"),
 
       Slider.node(.init(
-        value: sliding,
-        valueHandler: Handler(setSliding)
+        value: sliding.value,
+        valueHandler: Handler(sliding.set)
       )),
 
-      Label.node(.init(alignment: .center), "\(sliding)"),
-    ] : []) + (isModalPresented ? [
-      ModalPresenter.node(
-        StackPresenter<NavRouter>.node(
-          .init(
-            initial: Null(),
-            routerProps: .init(handler: Handler { setIsModalPresented(false) })
-          )
-        )
-      )
+      Label.node(.init(alignment: .center), "\(sliding.value)"),
+
+      StackModal.node(.init(isPresented: isModalPresented.value,
+                            onClose: Handler { isModalPresented.set(false) }))
     ] : [])
 
     return StackView.node(.init(axis: .vertical,
@@ -78,7 +91,7 @@ struct Counter: LeafComponent {
 struct App: LeafComponent {
   typealias Props = Rectangle
 
-  static func render(props: Rectangle) -> Node {
+  static func render(props: Rectangle) -> AnyNode {
     return Counter.node(.init(frame: props, initial: 5))
   }
 }

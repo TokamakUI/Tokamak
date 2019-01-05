@@ -62,7 +62,7 @@ extension UIStackView.Distribution {
 extension StackView: UIViewComponent {
   static func update(view box: ViewBox<GluonStackView>,
                      _ props: StackView.Props,
-                     _: [Node]) {
+                     _: [AnyNode]) {
     let view = box.view
     view.alignment = UIStackView.Alignment(props.alignment)
     view.axis = NSLayoutConstraint.Axis(props.axis)

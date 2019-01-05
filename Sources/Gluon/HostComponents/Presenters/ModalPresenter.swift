@@ -68,5 +68,5 @@ public struct ModalPresenter: HostComponent {
     }
   }
 
-  public typealias Children = Node
+  public typealias Children = AnyNode
 }

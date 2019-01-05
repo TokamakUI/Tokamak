@@ -16,7 +16,7 @@ import UIKit
 /// `UIStepper`, `UIDatePicker`, or `UISegmentedControl`.
 protocol UIHostComponent: AnyHostComponent {
   static func mountTarget(to parent: UITarget,
-                          parentNode: Node?,
+                          parentNode: AnyNode?,
                           props: AnyEquatable,
                           children: AnyEquatable) -> UITarget?
 

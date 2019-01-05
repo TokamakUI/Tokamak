@@ -11,5 +11,5 @@ public struct Alert: HostComponent {
     let message: String?
   }
 
-  public typealias Children = [Node]
+  public typealias Children = [AnyNode]
 }

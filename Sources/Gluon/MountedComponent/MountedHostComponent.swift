@@ -11,7 +11,7 @@ final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
   private let parentTarget: R.Target
   private var target: R.Target?
 
-  init(_ node: Node,
+  init(_ node: AnyNode,
        _ type: AnyHostComponent.Type,
        _ parent: MountedComponent<R>?,
        _ parentTarget: R.Target) {
@@ -33,11 +33,11 @@ final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
     self.target = target
 
     switch node.children.value {
-    case let nodes as [Node]:
+    case let nodes as [AnyNode]:
       mountedChildren = nodes.map { $0.makeMountedComponent(self, target) }
       mountedChildren.forEach { $0.mount(with: reconciler) }
 
-    case let node as Node:
+    case let node as AnyNode:
       let child: MountedComponent<R> = node.makeMountedComponent(self, target)
       mountedChildren = [child]
       child.mount(with: reconciler)
@@ -64,7 +64,7 @@ final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
                                 children: node.children)
 
     switch node.children.value {
-    case var nodes as [Node]:
+    case var nodes as [AnyNode]:
       switch (mountedChildren.isEmpty, nodes.isEmpty) {
       // existing children, new children array is empty, unmount all existing
       case (false, true):
@@ -128,7 +128,7 @@ final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
         ()
       }
 
-    case let node as Node:
+    case let node as AnyNode:
       if let child = mountedChildren.first {
         child.node = node
         child.update(with: reconciler)

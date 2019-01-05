@@ -43,7 +43,7 @@ extension UIViewComponent where Target == Target.DefaultValue,
   }
 
   static func mountTarget(to parent: UITarget,
-                          parentNode: Node?,
+                          parentNode: AnyNode?,
                           props: AnyEquatable,
                           children: AnyEquatable) -> UITarget? {
     guard let children = children.value as? Children else {

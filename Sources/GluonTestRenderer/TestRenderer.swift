@@ -14,7 +14,7 @@ public class TestRenderer: Renderer {
     return reconciler?.rootTarget
   }
 
-  public init(_ node: Node) {
+  public init(_ node: AnyNode) {
     let root = TestView(component: View.self,
                         props: AnyEquatable(Null()),
                         children: AnyEquatable(Null()))
@@ -24,7 +24,7 @@ public class TestRenderer: Renderer {
   }
 
   public func mountTarget(to parent: TestView,
-                          parentNode: Node?,
+                          parentNode: AnyNode?,
                           with component: AnyHostComponent.Type,
                           props: AnyEquatable,
                           children: AnyEquatable) -> TestView? {

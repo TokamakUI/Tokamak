@@ -17,5 +17,5 @@ final class GluonView: UIView, Default {
 extension View: UIViewComponent {
   static func update(view: ViewBox<GluonView>,
                      _ props: View.Props,
-                     _: [Node]) {}
+                     _: [AnyNode]) {}
 }

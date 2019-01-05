@@ -6,7 +6,7 @@
 //
 
 public struct LayoutConstraints: HostComponent {
-  public typealias Children = [Node]
+  public typealias Children = [AnyNode]
 
   public struct Props: Equatable {
     public enum Target {

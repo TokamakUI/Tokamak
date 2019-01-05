@@ -5,9 +5,9 @@
 //  Created by Max Desiatov on 30/11/2018.
 //
 
-public struct Node: Equatable {
+public struct AnyNode: Equatable {
   /// Equatable can't be automatically derived for `type` property?
-  public static func ==(lhs: Node, rhs: Node) -> Bool {
+  public static func ==(lhs: AnyNode, rhs: AnyNode) -> Bool {
     return lhs.key == rhs.key &&
       lhs.type == rhs.type &&
       lhs.children == rhs.children &&
@@ -36,34 +36,45 @@ public struct Node: Equatable {
   }
 }
 
+extension Null {
+  public static func node() -> AnyNode {
+    return AnyNode(
+      key: nil,
+      props: AnyEquatable(Null()),
+      children: AnyEquatable(Null()),
+      type: .null
+    )
+  }
+}
+
 extension Component {
-  public static func node(_ props: Props, _ children: Children) -> Node {
+  public static func node(_ props: Props, _ children: Children) -> AnyNode {
     return node(key: nil, props, children)
   }
 }
 
 extension Component where Children == Null {
-  public static func node(_ props: Props) -> Node {
+  public static func node(_ props: Props) -> AnyNode {
     return node(props, Null())
   }
 }
 
 extension Component where Props: Default, Props.DefaultValue == Props {
-  public static func node(_ children: Children) -> Node {
+  public static func node(_ children: Children) -> AnyNode {
     return node(Props.defaultValue, children)
   }
 }
 
-extension Component where Children == [Node] {
+extension Component where Children == [AnyNode] {
   public static func node(_ props: Props,
-                          _ child: Node) -> Node {
+                          _ child: AnyNode) -> AnyNode {
     return node(props, [child])
   }
 }
 
 extension Component where Props: Default, Props.DefaultValue == Props,
-  Children == [Node] {
-  public static func node(_ child: Node) -> Node {
+  Children == [AnyNode] {
+  public static func node(_ child: AnyNode) -> AnyNode {
     return node(Props.defaultValue, [child])
   }
 }
@@ -71,21 +82,21 @@ extension Component where Props: Default, Props.DefaultValue == Props,
 extension HostComponent {
   public static func node(key: String?,
                           _ props: Props,
-                          _ children: Children) -> Node {
-    return Node(key: key,
-                props: AnyEquatable(props),
-                children: AnyEquatable(children),
-                type: .host(self))
+                          _ children: Children) -> AnyNode {
+    return AnyNode(key: key,
+                   props: AnyEquatable(props),
+                   children: AnyEquatable(children),
+                   type: .host(self))
   }
 }
 
 extension CompositeComponent {
   public static func node(key: String?,
                           _ props: Props,
-                          _ children: Children) -> Node {
-    return Node(key: key,
-                props: AnyEquatable(props),
-                children: AnyEquatable(children),
-                type: .composite(self))
+                          _ children: Children) -> AnyNode {
+    return AnyNode(key: key,
+                   props: AnyEquatable(props),
+                   children: AnyEquatable(children),
+                   type: .composite(self))
   }
 }

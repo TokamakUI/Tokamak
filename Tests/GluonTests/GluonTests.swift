@@ -13,22 +13,22 @@ import XCTest
 struct Counter: LeafComponent {
   typealias Props = Int
 
-  static func render(props: Int) -> Node {
-    let (count, setCount) = hooks.state(props)
-    let (sliding, setSliding) = hooks.state(0.5 as Float)
+  static func render(props: Int) -> AnyNode {
+    let count = hooks.state(props)
+    let sliding = hooks.state(0.5 as Float)
 
-    let children = count < 45 ? [
+    let children = count.value < 45 ? [
       Button.node(.init(handlers: [
-        .touchUpInside: Handler { setCount(count + 1) },
+        .touchUpInside: Handler { count.set { $0 + 1 } },
       ]), "Increment"),
 
-      Label.node(.init(), "\(count)"),
+      Label.node(.init(), "\(count.value)"),
 
       Slider.node(Slider.Props(
-        value: sliding, valueHandler: Handler { setSliding($0) }
+        value: sliding.value, valueHandler: Handler(sliding.set)
       )),
 
-      Label.node(.init(), "\(sliding)"),
+      Label.node(.init(), "\(sliding.value)"),
     ] : []
 
     return StackView.node(.init(axis: .vertical,
