@@ -56,7 +56,7 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   }
 
   override func update(with reconciler: StackReconciler<R>) {
-    // FIXME: for now without fragments composite mounted components have only
+    // FIXME: for now without fragments mounted composite components have only
     // a single element in `mountedChildren`, but this will change when
     // fragments are implemented and this switch should be rewritten to compare
     // all elements in `mountedChildren`

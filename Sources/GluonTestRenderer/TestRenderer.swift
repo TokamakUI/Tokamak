@@ -15,7 +15,7 @@ public class TestRenderer: Renderer {
   }
 
   public init(_ node: AnyNode) {
-    let root = TestView(component: View.self,
+    let root = TestView(View.self,
                         props: AnyEquatable(Null()),
                         children: AnyEquatable(Null()))
     reconciler = StackReconciler(node: node,
@@ -28,7 +28,7 @@ public class TestRenderer: Renderer {
                           with component: AnyHostComponent.Type,
                           props: AnyEquatable,
                           children: AnyEquatable) -> TestView? {
-    let result = TestView(component: component,
+    let result = TestView(component,
                           props: props,
                           children: children)
     parent.add(subview: result)
