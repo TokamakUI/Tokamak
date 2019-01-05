@@ -22,6 +22,8 @@
 
 /* Begin PBXBuildFile section */
 		D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */; };
+		D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */; };
+		D1CB7D2B21E136520075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */; };
 		OBJ_100 /* Animated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* Animated.swift */; };
 		OBJ_101 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* Button.swift */; };
 		OBJ_102 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* Label.swift */; };
@@ -127,6 +129,8 @@
 
 /* Begin PBXFileReference section */
 		D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountedNull.swift; sourceTree = "<group>"; };
+		D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
+		D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -260,6 +264,7 @@
 				OBJ_17 /* ModalPresenter.swift */,
 				OBJ_18 /* Props */,
 				OBJ_22 /* Protocols */,
+				D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */,
 				OBJ_28 /* Slider.swift */,
 				OBJ_29 /* StackPresenter.swift */,
 				OBJ_30 /* StackView.swift */,
@@ -334,6 +339,7 @@
 				OBJ_51 /* Layout.swift */,
 				OBJ_52 /* Presenters */,
 				OBJ_57 /* Props */,
+				D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */,
 				OBJ_64 /* Slider.swift */,
 				OBJ_65 /* StackView.swift */,
 				OBJ_66 /* View.swift */,
@@ -607,6 +613,7 @@
 			files = (
 				OBJ_165 /* Button.swift in Sources */,
 				OBJ_166 /* Label.swift in Sources */,
+				D1CB7D2B21E136520075C0C3 /* SegmentedControl.swift in Sources */,
 				OBJ_167 /* ModalPresenter.swift in Sources */,
 				OBJ_168 /* Color.swift in Sources */,
 				OBJ_169 /* Event.swift in Sources */,
@@ -656,6 +663,7 @@
 				OBJ_112 /* Style.swift in Sources */,
 				OBJ_113 /* TextAlignment.swift in Sources */,
 				OBJ_114 /* Slider.swift in Sources */,
+				D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */,
 				OBJ_115 /* StackView.swift in Sources */,
 				OBJ_116 /* View.swift in Sources */,
 				OBJ_117 /* MountedComponent.swift in Sources */,

@@ -57,13 +57,26 @@ struct AnimationModal: LeafComponent {
     let isPresented: State<Bool>
   }
 
+  private static let colors: [(Color, String)] = [
+    (.white, "white"),
+    (.red, "red"),
+    (.green, "green"),
+    (.blue, "blue"),
+  ]
+
   static func render(props: Props) -> AnyNode {
+    let backgroundColor = hooks.state(0)
+
     return props.isPresented.value ?
       ModalPresenter.node(
         View.node(
-          .init(style: Style(backgroundColor: .white)),
+          .init(style: Style(backgroundColor: colors[backgroundColor.value].0)),
           StackView.node(
-            .init(style: Style(frame: props.frame)), [
+            .init(
+              axis: .vertical,
+              distribution: .fillEqually,
+              style: Style(frame: props.frame)
+            ), [
               Button.node(.init(
                 handlers: [
                   .touchUpInside: Handler { props.isPresented.set(false) },
@@ -72,6 +85,12 @@ struct AnimationModal: LeafComponent {
                   frame: Rectangle(.zero, Size(width: 200, height: 200))
                 )
               ), "Close Modal"),
+              SegmentedControl.node(
+                .init(
+                  value: backgroundColor.value,
+                  valueHandler: Handler(backgroundColor.set)
+                ), colors.map { $0.1 }
+              ),
             ]
           )
         )
