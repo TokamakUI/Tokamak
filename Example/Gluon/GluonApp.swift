@@ -53,7 +53,7 @@ struct Counter: LeafComponent {
 
       Slider.node(.init(
         value: sliding,
-        valueHandler: Handler { setSliding($0) }
+        valueHandler: Handler(setSliding)
       )),
 
       Label.node(.init(alignment: .center), "\(sliding)"),
