@@ -33,7 +33,7 @@ struct Counter: LeafComponent {
 
     return StackView.node(.init(axis: .vertical,
                                 distribution: .fillEqually,
-                                frame: .zero),
+                                Style(frame: .zero)),
                           children)
   }
 }

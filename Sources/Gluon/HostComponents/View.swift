@@ -15,7 +15,7 @@ public struct View: HostComponent {
 
     public let style: Style?
 
-    public init(style: Style? = nil) {
+    public init(_ style: Style? = nil) {
       self.style = style
     }
   }

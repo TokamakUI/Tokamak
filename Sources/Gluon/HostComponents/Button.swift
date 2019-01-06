@@ -12,7 +12,7 @@ public struct Button: HostComponent {
     public let titleColor: Color?
 
     public init(handlers: [Event: Handler<()>] = [:],
-                style: Style? = nil,
+                _ style: Style? = nil,
                 titleColor: Color? = nil) {
       self.handlers = handlers
       self.style = style

@@ -22,10 +22,10 @@ struct NavRouter: StackRouter {
     pop: () -> ()
   ) -> AnyNode {
     return View.node(
-      .init(style: Style(backgroundColor: .white)),
+      .init(Style(backgroundColor: .white)),
       Button.node(.init(
         handlers: [.touchUpInside: props.handler],
-        style: Style(frame: Rectangle(.zero, Size(width: 200, height: 200)))
+        Style(frame: Rectangle(.zero, Size(width: 200, height: 200)))
       ), "Close Modal")
     )
   }
@@ -70,18 +70,18 @@ struct AnimationModal: LeafComponent {
     return props.isPresented.value ?
       ModalPresenter.node(
         View.node(
-          .init(style: Style(backgroundColor: colors[backgroundColor.value].0)),
+          .init(Style(backgroundColor: colors[backgroundColor.value].0)),
           StackView.node(
             .init(
               axis: .vertical,
               distribution: .fillEqually,
-              style: Style(frame: props.frame)
+              Style(frame: props.frame)
             ), [
               Button.node(.init(
                 handlers: [
                   .touchUpInside: Handler { props.isPresented.set(false) },
                 ],
-                style: Style(
+                Style(
                   frame: Rectangle(.zero, Size(width: 200, height: 200))
                 )
               ), "Close Modal"),
@@ -144,7 +144,7 @@ struct Counter: LeafComponent {
 
     return StackView.node(.init(axis: .vertical,
                                 distribution: .fillEqually,
-                                style: Style(frame: props.frame)),
+                                Style(frame: props.frame)),
                           children)
   }
 }

@@ -14,7 +14,7 @@ public struct Slider: HostComponent {
     public let valueHandler: Handler<Float>?
 
     public init(handlers: EventHandlers = [:],
-                style: Style? = nil,
+                _ style: Style? = nil,
                 value: Float,
                 valueHandler: Handler<Float>? = nil) {
       self.handlers = handlers

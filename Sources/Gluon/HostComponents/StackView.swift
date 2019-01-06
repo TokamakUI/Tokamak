@@ -40,7 +40,7 @@ public struct StackView: HostComponent {
     public init(alignment: Alignment = .fill,
                 axis: Axis = .horizontal,
                 distribution: Distribution = .fill,
-                style: Style? = nil) {
+                _ style: Style? = nil) {
       self.alignment = alignment
       self.axis = axis
       self.distribution = distribution

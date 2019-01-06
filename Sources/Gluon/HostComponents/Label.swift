@@ -10,7 +10,7 @@ public struct Label: HostComponent {
     public let alignment: TextAlignment
     public let style: Style?
 
-    public init(alignment: TextAlignment = .natural, style: Style? = nil) {
+    public init(alignment: TextAlignment = .natural, _ style: Style? = nil) {
       self.alignment = alignment
       self.style = style
     }

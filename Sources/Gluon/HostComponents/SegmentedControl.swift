@@ -14,7 +14,7 @@ public struct SegmentedControl: HostComponent {
     public let valueHandler: Handler<Int>?
 
     public init(handlers: EventHandlers = [:],
-                style: Style? = nil,
+                _ style: Style? = nil,
                 value: Int,
                 valueHandler: Handler<Int>? = nil) {
       self.handlers = handlers
