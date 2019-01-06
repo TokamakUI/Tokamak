@@ -24,6 +24,7 @@
 		D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */; };
 		D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */; };
 		D1CB7D2B21E136520075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */; };
+		D1CB7D2E21E29CC80075C0C3 /* StackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2D21E29CC80075C0C3 /* StackController.swift */; };
 		OBJ_100 /* Animated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* Animated.swift */; };
 		OBJ_101 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* Button.swift */; };
 		OBJ_102 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* Label.swift */; };
@@ -131,6 +132,7 @@
 		D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountedNull.swift; sourceTree = "<group>"; };
 		D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
+		D1CB7D2D21E29CC80075C0C3 /* StackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackController.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -235,6 +237,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D1CB7D2C21E29C9F0075C0C3 /* Host */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_47 /* Alert.swift */,
+				OBJ_48 /* Animated.swift */,
+				OBJ_49 /* Button.swift */,
+				OBJ_50 /* Label.swift */,
+				OBJ_51 /* Layout.swift */,
+				D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */,
+				OBJ_64 /* Slider.swift */,
+				D1CB7D2D21E29CC80075C0C3 /* StackController.swift */,
+				OBJ_65 /* StackView.swift */,
+				OBJ_66 /* View.swift */,
+			);
+			path = Host;
+			sourceTree = "<group>";
+		};
 		OBJ_10 /* GluonTestRenderer */ = {
 			isa = PBXGroup;
 			children = (
@@ -316,7 +335,7 @@
 				OBJ_43 /* Default.swift */,
 				OBJ_44 /* Diffable.swift */,
 				OBJ_45 /* Hooks.swift */,
-				OBJ_46 /* HostComponents */,
+				OBJ_46 /* Components */,
 				OBJ_67 /* MountedComponent */,
 				OBJ_71 /* Null.swift */,
 				OBJ_72 /* Renderer.swift */,
@@ -329,22 +348,14 @@
 			path = Sources/Gluon;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_46 /* HostComponents */ = {
+		OBJ_46 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_47 /* Alert.swift */,
-				OBJ_48 /* Animated.swift */,
-				OBJ_49 /* Button.swift */,
-				OBJ_50 /* Label.swift */,
-				OBJ_51 /* Layout.swift */,
+				D1CB7D2C21E29C9F0075C0C3 /* Host */,
 				OBJ_52 /* Presenters */,
 				OBJ_57 /* Props */,
-				D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */,
-				OBJ_64 /* Slider.swift */,
-				OBJ_65 /* StackView.swift */,
-				OBJ_66 /* View.swift */,
 			);
-			path = HostComponents;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		OBJ_5 = {
@@ -658,6 +669,7 @@
 				D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */,
 				OBJ_108 /* Color.swift in Sources */,
 				OBJ_109 /* Event.swift in Sources */,
+				D1CB7D2E21E29CC80075C0C3 /* StackController.swift in Sources */,
 				OBJ_110 /* Rectangle.swift in Sources */,
 				OBJ_111 /* Second.swift in Sources */,
 				OBJ_112 /* Style.swift in Sources */,

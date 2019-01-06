@@ -14,18 +14,8 @@ public protocol StackRouter: Router {
   ) -> AnyNode
 }
 
-/// Type-erased version of `StackPresenterProps`
-public protocol AnyStackPresenterProps {
-  var hidesBarsWhenKeyboardAppears: Bool? { get }
-  var popAnimated: Bool { get }
-  var pushAnimated: Bool { get }
-}
-
-/// Type-erased version of `StackPresenter`
-public protocol AnyStackPresenter {}
-
-public struct StackPresenter<T: StackRouter>: HostComponent, AnyStackPresenter {
-  public struct Props: Equatable, AnyStackPresenterProps {
+public struct StackPresenter<T: StackRouter>: HostComponent {
+  public struct Props: Equatable {
     public let hidesBarsWhenKeyboardAppears: Bool?
     public let initial: T.Route
     public let popAnimated: Bool

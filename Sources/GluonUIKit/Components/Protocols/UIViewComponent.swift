@@ -60,7 +60,7 @@ extension UIViewComponent where Target == Target.DefaultValue,
     let result: ViewBox<Target>
 
     let parentRequiresViewController = parentNode?.isSubtypeOf(
-      ModalPresenter.self, or: AnyStackPresenter.self, or: AnyTabPresenter.self
+      ModalPresenter.self, or: StackController.self, or: AnyTabPresenter.self
     ) ?? false
 
     // UIViewController parent target can't present a bare `ViewBox` target,
@@ -83,9 +83,9 @@ extension UIViewComponent where Target == Target.DefaultValue,
     case let box as ViewBox<GluonView>:
       box.view.addSubview(target)
     case let box as ViewControllerBox<GluonNavigationController>
-      where parentNode?.isSubtypeOf(AnyStackPresenter.self) ?? false:
+      where parentNode?.isSubtypeOf(StackController.self) ?? false:
       guard let props = parentNode?.props.value
-        as? AnyStackPresenterProps else {
+        as? StackController.Props else {
         propsAssertionFailure()
         return nil
       }
