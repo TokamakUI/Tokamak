@@ -177,7 +177,6 @@ final class GluonTests: XCTestCase {
 
     DispatchQueue.main.async {
       // rerender completed here, schedule another one
-
       guard let root = renderer.rootTarget,
         let props = root.subviews[0].subviews[0]
         .props.value as? Button.Props else {

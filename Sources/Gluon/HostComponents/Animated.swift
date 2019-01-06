@@ -5,9 +5,9 @@
 //  Created by Max Desiatov on 02/01/2019.
 //
 
-public protocol Animatable: Component {}
+protocol Animatable: Component {}
 
-public struct Animated<T: Animatable>: HostComponent {
+struct Animated<T: Component, U: Equatable>: HostComponent {
   public struct Props: Equatable {
     public struct AnimationCurve {}
 
@@ -15,7 +15,8 @@ public struct Animated<T: Animatable>: HostComponent {
     public let initial: T.Props
     public let isRunning: Bool
     public let isReversed: Bool
-    public let target: T.Props
+    public let keyPath: KeyPath<T.Props, U>
+    public let target: U
   }
 
   public typealias Children = T.Children
