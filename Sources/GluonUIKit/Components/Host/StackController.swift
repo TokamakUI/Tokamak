@@ -1,5 +1,5 @@
 //
-//  StackPresenter.swift
+//  StackController.swift
 //  Gluon
 //
 //  Created by Max Desiatov on 31/12/2018.
@@ -28,7 +28,7 @@ final class GluonNavigationController: UINavigationController {
   }
 }
 
-extension StackPresenter: UIHostComponent {
+extension StackController: UIHostComponent {
   static func mountTarget(to parent: UITarget,
                           parentNode: AnyNode?,
                           props: AnyEquatable,
@@ -50,7 +50,5 @@ extension StackPresenter: UIHostComponent {
                      props: AnyEquatable,
                      children: AnyEquatable) {}
 
-  static func unmount(target: UITarget) {
-    print("blah")
-  }
+  static func unmount(target: UITarget) {}
 }

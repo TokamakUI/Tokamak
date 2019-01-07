@@ -71,7 +71,7 @@
 		OBJ_174 /* UIValueComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* UIValueComponent.swift */; };
 		OBJ_175 /* UIViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* UIViewComponent.swift */; };
 		OBJ_176 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* Slider.swift */; };
-		OBJ_177 /* StackPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* StackPresenter.swift */; };
+		OBJ_177 /* StackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* StackController.swift */; };
 		OBJ_178 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* StackView.swift */; };
 		OBJ_179 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* View.swift */; };
 		OBJ_180 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* ContainerViewController.swift */; };
@@ -151,7 +151,7 @@
 		OBJ_26 /* UIValueComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIValueComponent.swift; sourceTree = "<group>"; };
 		OBJ_27 /* UIViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewComponent.swift; sourceTree = "<group>"; };
 		OBJ_28 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
-		OBJ_29 /* StackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackPresenter.swift; sourceTree = "<group>"; };
+		OBJ_29 /* StackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackController.swift; sourceTree = "<group>"; };
 		OBJ_30 /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 		OBJ_31 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		OBJ_33 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
@@ -254,6 +254,21 @@
 			path = Host;
 			sourceTree = "<group>";
 		};
+		D1CB7D2F21E378090075C0C3 /* Host */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_15 /* Button.swift */,
+				OBJ_16 /* Label.swift */,
+				OBJ_17 /* ModalPresenter.swift */,
+				D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */,
+				OBJ_28 /* Slider.swift */,
+				OBJ_29 /* StackController.swift */,
+				OBJ_30 /* StackView.swift */,
+				OBJ_31 /* View.swift */,
+			);
+			path = Host;
+			sourceTree = "<group>";
+		};
 		OBJ_10 /* GluonTestRenderer */ = {
 			isa = PBXGroup;
 			children = (
@@ -278,16 +293,9 @@
 		OBJ_14 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_15 /* Button.swift */,
-				OBJ_16 /* Label.swift */,
-				OBJ_17 /* ModalPresenter.swift */,
+				D1CB7D2F21E378090075C0C3 /* Host */,
 				OBJ_18 /* Props */,
 				OBJ_22 /* Protocols */,
-				D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */,
-				OBJ_28 /* Slider.swift */,
-				OBJ_29 /* StackPresenter.swift */,
-				OBJ_30 /* StackView.swift */,
-				OBJ_31 /* View.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -635,7 +643,7 @@
 				OBJ_174 /* UIValueComponent.swift in Sources */,
 				OBJ_175 /* UIViewComponent.swift in Sources */,
 				OBJ_176 /* Slider.swift in Sources */,
-				OBJ_177 /* StackPresenter.swift in Sources */,
+				OBJ_177 /* StackController.swift in Sources */,
 				OBJ_178 /* StackView.swift in Sources */,
 				OBJ_179 /* View.swift in Sources */,
 				OBJ_180 /* ContainerViewController.swift in Sources */,
