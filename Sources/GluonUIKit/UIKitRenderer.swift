@@ -11,8 +11,8 @@ import UIKit
 // FIXME: working around "Couldn't lookup symbols: protocol witness table"
 // compiler bug
 let _ModalPresenterWitnessTableHack: UIHostComponent.Type = ModalPresenter.self
-let _StackPresenterWitnessTableHack: UIHostComponent.Type =
-  StackPresenter<TestRouter>.self
+let _StackControllerWitnessTableHack: UIHostComponent.Type =
+  StackController.self
 
 struct TestRouter: StackRouter {
   typealias Props = Null
