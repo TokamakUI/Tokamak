@@ -38,12 +38,29 @@ extension StackController: UIHostComponent {
       return nil
     }
 
-    let result = GluonNavigationController {}
+    let result = ViewControllerBox(GluonNavigationController { props.onPop.value(()) })
     props.hidesBarsWhenKeyboardAppears.flatMap {
-      result.hidesBarsWhenKeyboardAppears = $0
+      result.containerViewController.hidesBarsWhenKeyboardAppears = $0
     }
 
-    return ViewControllerBox(result)
+    switch parent {
+    // FIXME: this `case` handler is duplicated with `UIViewComponent`,
+    // should this be generalised as a protocol?
+    case let box as ViewControllerBox<UIViewController>
+      where parentNode?.isSubtypeOf(ModalPresenter.self) ?? false:
+      guard let props = parentNode?.props.value as? ModalPresenter.Props else {
+        propsAssertionFailure()
+        return nil
+      }
+
+      box.viewController.present(result.viewController,
+                                 animated: props.presentAnimated,
+                                 completion: nil)
+    default:
+      parentAssertionFailure()
+    }
+
+    return result
   }
 
   static func update(target: UITarget,

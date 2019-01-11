@@ -51,7 +51,7 @@ struct StackModal: LeafComponent {
   }
 }
 
-struct AnimationModal: LeafComponent {
+struct SimpleModal: LeafComponent {
   struct Props: Equatable {
     let frame: Rectangle
     let isPresented: State<Bool>
@@ -117,7 +117,7 @@ struct Counter: LeafComponent {
 
       Button.node(.init(handlers: [.touchUpInside: Handler {
         isAnimationModalPresented.set(true)
-      }]), "Present Animation Modal"),
+      }]), "Present Simple Modal"),
     ] + (count.value < 15 ? [
       Button.node(.init(
         handlers: [.touchUpInside: Handler { count.set { $0 + 1 } }]
@@ -136,7 +136,7 @@ struct Counter: LeafComponent {
         isPresented: isStackModalPresented
       )),
 
-      AnimationModal.node(.init(
+      SimpleModal.node(.init(
         frame: props.frame,
         isPresented: isAnimationModalPresented
       ))

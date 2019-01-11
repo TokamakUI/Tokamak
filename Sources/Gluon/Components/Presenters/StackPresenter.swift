@@ -14,7 +14,7 @@ public protocol StackRouter: Router {
   ) -> AnyNode
 }
 
-public struct StackPresenter<T: StackRouter>: HostComponent {
+public struct StackPresenter<T: StackRouter>: LeafComponent {
   public struct Props: Equatable {
     public let hidesBarsWhenKeyboardAppears: Bool?
     public let initial: T.Route
@@ -37,7 +37,28 @@ public struct StackPresenter<T: StackRouter>: HostComponent {
     }
   }
 
-  public typealias Children = Null
+  public static func render(props: Props) -> AnyNode {
+    let stack = hooks.state([props.initial])
+
+    let pop = { stack.set(Array(stack.value.dropLast())) }
+
+    return StackController.node(
+      .init(
+        hidesBarsWhenKeyboardAppears: props.hidesBarsWhenKeyboardAppears,
+        popAnimated: props.popAnimated,
+        pushAnimated: props.pushAnimated,
+        onPop: Handler(pop)
+      ),
+      stack.value.map {
+        T.route(
+          props: props.routerProps,
+          route: $0,
+          push: { stack.set(stack.value + [$0]) },
+          pop: pop
+        )
+      }
+    )
+  }
 }
 
 extension StackPresenter.Props where T.Props == Null {

@@ -5,16 +5,7 @@
 //  Created by Max Desiatov on 29/12/2018.
 //
 
-import Gluon
 import UIKit
-
-class ViewControllerBox<T: UIViewController> {
-  let containerViewController: T
-
-  init(_ viewController: T) {
-    containerViewController = viewController
-  }
-}
 
 class ViewBox<T: UIView>: ViewControllerBox<UIViewController> {
   let view: T

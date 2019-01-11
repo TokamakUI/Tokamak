@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		D144FB9921E8A56D001020F3 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */; };
 		D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */; };
 		D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */; };
 		D1CB7D2B21E136520075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */; };
@@ -66,7 +67,6 @@
 		OBJ_169 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* Event.swift */; };
 		OBJ_170 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* Rectangle.swift */; };
 		OBJ_171 /* UIControlComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* UIControlComponent.swift */; };
-		OBJ_172 /* UIControllerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* UIControllerComponent.swift */; };
 		OBJ_173 /* UIHostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* UIHostComponent.swift */; };
 		OBJ_174 /* UIValueComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* UIValueComponent.swift */; };
 		OBJ_175 /* UIViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* UIViewComponent.swift */; };
@@ -129,6 +129,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
 		D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountedNull.swift; sourceTree = "<group>"; };
 		D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
@@ -146,7 +147,6 @@
 		OBJ_20 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		OBJ_21 /* Rectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rectangle.swift; sourceTree = "<group>"; };
 		OBJ_23 /* UIControlComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControlComponent.swift; sourceTree = "<group>"; };
-		OBJ_24 /* UIControllerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControllerComponent.swift; sourceTree = "<group>"; };
 		OBJ_25 /* UIHostComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHostComponent.swift; sourceTree = "<group>"; };
 		OBJ_26 /* UIValueComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIValueComponent.swift; sourceTree = "<group>"; };
 		OBJ_27 /* UIViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewComponent.swift; sourceTree = "<group>"; };
@@ -314,7 +314,6 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_23 /* UIControlComponent.swift */,
-				OBJ_24 /* UIControllerComponent.swift */,
 				OBJ_25 /* UIHostComponent.swift */,
 				OBJ_26 /* UIValueComponent.swift */,
 				OBJ_27 /* UIViewComponent.swift */,
@@ -330,6 +329,7 @@
 				OBJ_35 /* LayoutBox.swift */,
 				OBJ_36 /* ValueControlBox.swift */,
 				OBJ_37 /* ViewBox.swift */,
+				D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */,
 			);
 			path = Targets;
 			sourceTree = "<group>";
@@ -630,6 +630,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				D144FB9921E8A56D001020F3 /* ViewControllerBox.swift in Sources */,
 				OBJ_165 /* Button.swift in Sources */,
 				OBJ_166 /* Label.swift in Sources */,
 				D1CB7D2B21E136520075C0C3 /* SegmentedControl.swift in Sources */,
@@ -638,7 +639,6 @@
 				OBJ_169 /* Event.swift in Sources */,
 				OBJ_170 /* Rectangle.swift in Sources */,
 				OBJ_171 /* UIControlComponent.swift in Sources */,
-				OBJ_172 /* UIControllerComponent.swift in Sources */,
 				OBJ_173 /* UIHostComponent.swift in Sources */,
 				OBJ_174 /* UIValueComponent.swift in Sources */,
 				OBJ_175 /* UIViewComponent.swift in Sources */,

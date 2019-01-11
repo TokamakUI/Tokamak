@@ -12,5 +12,6 @@ public struct StackController: HostComponent {
     public let hidesBarsWhenKeyboardAppears: Bool?
     public let popAnimated: Bool
     public let pushAnimated: Bool
+    public let onPop: Handler<()>
   }
 }
