@@ -9,7 +9,10 @@
 import Gluon
 
 struct NavRouter: StackRouter {
-  typealias Route = Null
+  enum Route {
+    case first
+    case second
+  }
 
   struct Props: Equatable {
     let handler: Handler<()>
@@ -17,17 +20,44 @@ struct NavRouter: StackRouter {
 
   static func route(
     props: Props,
-    route: Null,
-    push: (Null) -> (),
-    pop: () -> ()
+    route: Route,
+    push: @escaping (Route) -> (),
+    pop: @escaping () -> ()
   ) -> AnyNode {
-    return View.node(
-      .init(Style(backgroundColor: .white)),
+    let close =
       Button.node(.init(
         handlers: [.touchUpInside: props.handler],
         Style(frame: Rectangle(.zero, Size(width: 200, height: 200)))
       ), "Close Modal")
-    )
+    switch route {
+    case .first:
+      return View.node(
+        .init(Style(backgroundColor: .white)), [
+          close,
+          Label.node(.init(
+            alignment: .center,
+            Style(frame: Rectangle(Point(x: 0, y: 200),
+                                   Size(width: 200, height: 200)))
+          ), "first"),
+          Button.node(.init(
+            handlers: [.touchUpInside: Handler { push(.second) }],
+            Style(frame: Rectangle(Point(x: 0, y: 400),
+                                   Size(width: 200, height: 200)))
+          ), "second"),
+        ]
+      )
+    case .second:
+      return View.node(
+        .init(Style(backgroundColor: .white)), [
+          close,
+          Label.node(.init(
+            alignment: .center,
+            Style(frame: Rectangle(Point(x: 0, y: 200),
+                                   Size(width: 200, height: 200)))
+          ), "second"),
+        ]
+      )
+    }
   }
 }
 
@@ -41,9 +71,11 @@ struct StackModal: LeafComponent {
       ModalPresenter.node(
         StackPresenter<NavRouter>.node(
           .init(
-            initial: Null(),
+            initial: .first,
             routerProps: .init(
-              handler: Handler { props.isPresented.set(false) }
+              handler: Handler {
+                props.isPresented.set(false)
+              }
             )
           )
         )
@@ -79,7 +111,9 @@ struct SimpleModal: LeafComponent {
             ), [
               Button.node(.init(
                 handlers: [
-                  .touchUpInside: Handler { props.isPresented.set(false) },
+                  .touchUpInside: Handler {
+                    props.isPresented.set(false)
+                  },
                 ],
                 Style(
                   frame: Rectangle(.zero, Size(width: 200, height: 200))

@@ -35,8 +35,7 @@ public protocol Renderer: class {
   func mountTarget(to parent: Target,
                    parentNode: AnyNode?,
                    with component: AnyHostComponent.Type,
-                   props: AnyEquatable,
-                   children: AnyEquatable) -> Target?
+                   node: AnyNode) -> Target?
 
   /** Function called by a reconciler when an existing target instance should be
    updated.
@@ -53,8 +52,7 @@ public protocol Renderer: class {
    */
   func update(target: Target,
               with component: AnyHostComponent.Type,
-              props: AnyEquatable,
-              children: AnyEquatable)
+              node: AnyNode)
 
   /** Function called by a reconciler when an existing target instance should be
    unmounted: removed the parent and most likely destroyed.

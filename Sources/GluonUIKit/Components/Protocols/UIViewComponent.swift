@@ -15,8 +15,11 @@ protocol UIViewComponent: UIHostComponent, HostComponent {
                      _ props: Props,
                      _ children: Children)
 
-  static func box(for view: Target,
-                  _ viewController: UIViewController) -> ViewBox<Target>
+  static func box(
+    for view: Target,
+    _ viewController: UIViewController,
+    _ node: AnyNode
+  ) -> ViewBox<Target>
 }
 
 private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
@@ -30,28 +33,30 @@ private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
   style.alpha.flatMap { view.alpha = CGFloat($0) }
   style.backgroundColor.flatMap { view.backgroundColor = UIColor($0) }
   style.clipsToBounds.flatMap { view.clipsToBounds = $0 }
-  style.center.flatMap { view.center = CGPoint($0) }
   style.frame.flatMap { view.frame = CGRect($0) }
+  // center has to be updated after `frame`, otherwise `frame` overrides it
+  style.center.flatMap { view.center = CGPoint($0) }
   style.isHidden.flatMap { view.isHidden = $0 }
 }
 
 extension UIViewComponent where Target == Target.DefaultValue,
   Props: StyleProps {
-  static func box(for view: Target,
-                  _ viewController: UIViewController) -> ViewBox<Target> {
-    return ViewBox(view, viewController)
+  static func box(
+    for view: Target,
+    _ viewController: UIViewController,
+    _ node: AnyNode
+  ) -> ViewBox<Target> {
+    return ViewBox(view, viewController, node)
   }
 
   static func mountTarget(to parent: UITarget,
-                          parentNode: AnyNode?,
-                          props: AnyEquatable,
-                          children: AnyEquatable) -> UITarget? {
-    guard let children = children.value as? Children else {
+                          node: AnyNode) -> UITarget? {
+    guard let children = node.children.value as? Children else {
       childrenAssertionFailure()
       return nil
     }
 
-    guard let props = props.value as? Props else {
+    guard let props = node.props.value as? Props else {
       propsAssertionFailure()
       return nil
     }
@@ -59,16 +64,20 @@ extension UIViewComponent where Target == Target.DefaultValue,
     let target = Target.defaultValue
     let result: ViewBox<Target>
 
-    let parentRequiresViewController = parentNode?.isSubtypeOf(
+    let parentRequiresViewController = parent.node?.isSubtypeOf(
       ModalPresenter.self, or: StackController.self, or: AnyTabPresenter.self
     ) ?? false
 
     // UIViewController parent target can't present a bare `ViewBox` target,
     // it needs to be wrapped with `ContainerViewController` first.
     if parentRequiresViewController {
-      result = box(for: target, ContainerViewController(contained: target))
+      result = box(
+        for: target,
+        ContainerViewController(contained: target),
+        node
+      )
     } else {
-      result = box(for: target, parent.viewController)
+      result = box(for: target, parent.viewController, node)
     }
     applyStyle(result, props)
     update(view: result, props, children)
@@ -83,8 +92,8 @@ extension UIViewComponent where Target == Target.DefaultValue,
     case let box as ViewBox<GluonView>:
       box.view.addSubview(target)
     case let box as ViewControllerBox<GluonNavigationController>
-      where parentNode?.isSubtypeOf(StackController.self) ?? false:
-      guard let props = parentNode?.props.value
+      where parent.node?.isSubtypeOf(StackController.self) ?? false:
+      guard let props = parent.node?.props.value
         as? StackController.Props else {
         propsAssertionFailure()
         return nil
@@ -95,8 +104,8 @@ extension UIViewComponent where Target == Target.DefaultValue,
         animated: props.pushAnimated
       )
     case let box as ViewControllerBox<UIViewController>
-      where parentNode?.isSubtypeOf(ModalPresenter.self) ?? false:
-      guard let props = parentNode?.props.value as? ModalPresenter.Props else {
+      where parent.node?.isSubtypeOf(ModalPresenter.self) ?? false:
+      guard let props = parent.node?.props.value as? ModalPresenter.Props else {
         propsAssertionFailure()
         return nil
       }
@@ -112,17 +121,16 @@ extension UIViewComponent where Target == Target.DefaultValue,
   }
 
   static func update(target: UITarget,
-                     props: AnyEquatable,
-                     children: AnyEquatable) {
+                     node: AnyNode) {
     guard let target = target as? ViewBox<Target> else {
       targetAssertionFailure()
       return
     }
-    guard let children = children.value as? Children else {
+    guard let children = node.children.value as? Children else {
       childrenAssertionFailure()
       return
     }
-    guard let props = props.value as? Props else {
+    guard let props = node.props.value as? Props else {
       propsAssertionFailure()
       return
     }

@@ -30,15 +30,15 @@ final class GluonNavigationController: UINavigationController {
 
 extension StackController: UIHostComponent {
   static func mountTarget(to parent: UITarget,
-                          parentNode: AnyNode?,
-                          props: AnyEquatable,
-                          children: AnyEquatable) -> UITarget? {
-    guard let props = props.value as? Props else {
+                          node: AnyNode) -> UITarget? {
+    guard let props = node.props.value as? Props else {
       propsAssertionFailure()
       return nil
     }
 
-    let result = ViewControllerBox(GluonNavigationController { props.onPop.value(()) })
+    let result = ViewControllerBox(GluonNavigationController {
+      props.onPop.value(())
+    }, node)
     props.hidesBarsWhenKeyboardAppears.flatMap {
       result.containerViewController.hidesBarsWhenKeyboardAppears = $0
     }
@@ -47,15 +47,18 @@ extension StackController: UIHostComponent {
     // FIXME: this `case` handler is duplicated with `UIViewComponent`,
     // should this be generalised as a protocol?
     case let box as ViewControllerBox<UIViewController>
-      where parentNode?.isSubtypeOf(ModalPresenter.self) ?? false:
-      guard let props = parentNode?.props.value as? ModalPresenter.Props else {
+      where parent.node?.isSubtypeOf(ModalPresenter.self) ?? false:
+      guard let props = parent.node?.props.value as? ModalPresenter.Props else {
         propsAssertionFailure()
         return nil
       }
 
-      box.viewController.present(result.viewController,
-                                 animated: props.presentAnimated,
-                                 completion: nil)
+      // allow children nodes to be mounted first before presenting
+      DispatchQueue.main.async {
+        box.viewController.present(result.viewController,
+                                   animated: props.presentAnimated,
+                                   completion: nil)
+      }
     default:
       parentAssertionFailure()
     }
@@ -63,9 +66,7 @@ extension StackController: UIHostComponent {
     return result
   }
 
-  static func update(target: UITarget,
-                     props: AnyEquatable,
-                     children: AnyEquatable) {}
+  static func update(target: UITarget, node: AnyNode) {}
 
   static func unmount(target: UITarget) {}
 }

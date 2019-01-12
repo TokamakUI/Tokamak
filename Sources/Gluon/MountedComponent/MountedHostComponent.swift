@@ -26,8 +26,7 @@ final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
       let target = reconciler.renderer?.mountTarget(to: parentTarget,
                                                     parentNode: parent?.node,
                                                     with: type,
-                                                    props: node.props,
-                                                    children: node.children)
+                                                    node: node)
     else { return }
 
     self.target = target
@@ -60,8 +59,7 @@ final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
 
     reconciler.renderer?.update(target: target,
                                 with: type,
-                                props: node.props,
-                                children: node.children)
+                                node: node)
 
     switch node.children.value {
     case var nodes as [AnyNode]:

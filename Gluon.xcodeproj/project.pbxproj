@@ -76,7 +76,6 @@
 		OBJ_179 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* View.swift */; };
 		OBJ_180 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* ContainerViewController.swift */; };
 		OBJ_181 /* ControlBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* ControlBox.swift */; };
-		OBJ_182 /* LayoutBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* LayoutBox.swift */; };
 		OBJ_183 /* ValueControlBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* ValueControlBox.swift */; };
 		OBJ_184 /* ViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* ViewBox.swift */; };
 		OBJ_185 /* UIKitRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_38 /* UIKitRenderer.swift */; };
@@ -156,7 +155,6 @@
 		OBJ_31 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		OBJ_33 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		OBJ_34 /* ControlBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBox.swift; sourceTree = "<group>"; };
-		OBJ_35 /* LayoutBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutBox.swift; sourceTree = "<group>"; };
 		OBJ_36 /* ValueControlBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueControlBox.swift; sourceTree = "<group>"; };
 		OBJ_37 /* ViewBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewBox.swift; sourceTree = "<group>"; };
 		OBJ_38 /* UIKitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitRenderer.swift; sourceTree = "<group>"; };
@@ -326,7 +324,6 @@
 			children = (
 				OBJ_33 /* ContainerViewController.swift */,
 				OBJ_34 /* ControlBox.swift */,
-				OBJ_35 /* LayoutBox.swift */,
 				OBJ_36 /* ValueControlBox.swift */,
 				OBJ_37 /* ViewBox.swift */,
 				D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */,
@@ -648,7 +645,6 @@
 				OBJ_179 /* View.swift in Sources */,
 				OBJ_180 /* ContainerViewController.swift in Sources */,
 				OBJ_181 /* ControlBox.swift in Sources */,
-				OBJ_182 /* LayoutBox.swift in Sources */,
 				OBJ_183 /* ValueControlBox.swift in Sources */,
 				OBJ_184 /* ViewBox.swift in Sources */,
 				OBJ_185 /* UIKitRenderer.swift in Sources */,

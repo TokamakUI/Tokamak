@@ -9,8 +9,8 @@ public protocol StackRouter: Router {
   static func route(
     props: Props,
     route: Route,
-    push: (Route) -> (),
-    pop: () -> ()
+    push: @escaping (Route) -> (),
+    pop: @escaping () -> ()
   ) -> AnyNode
 }
 

@@ -10,8 +10,10 @@ import UIKit
 
 class ViewControllerBox<T: UIViewController> {
   let containerViewController: T
+  let node: AnyNode?
 
-  init(_ viewController: T) {
+  init(_ viewController: T, _ node: AnyNode?) {
     containerViewController = viewController
+    self.node = node
   }
 }

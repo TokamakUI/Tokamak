@@ -10,15 +10,12 @@ import UIKit
 
 extension ModalPresenter: UIHostComponent {
   static func mountTarget(to parent: UITarget,
-                          parentNode: AnyNode?,
-                          props: AnyEquatable,
-                          children: AnyEquatable) -> UITarget? {
-    return ViewControllerBox(parent.viewController)
+                          node: AnyNode) -> UITarget? {
+    return ViewControllerBox(parent.viewController, node)
   }
 
   static func update(target: UITarget,
-                     props: AnyEquatable,
-                     children: AnyEquatable) {}
+                     node: AnyNode) {}
 
   static func unmount(target: UITarget) {
     target.viewController.dismiss(animated: true)
