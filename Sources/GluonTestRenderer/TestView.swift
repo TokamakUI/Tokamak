@@ -10,25 +10,12 @@ import Gluon
 /// A class that `TestRenderer` uses as a target.
 /// When rendering to a `TestView` instance it is possible
 /// to examine its `subviews` and `props` for testing.
-public final class TestView: Equatable {
-  public static func ==(lhs: TestView, rhs: TestView) -> Bool {
-    return lhs.subviews == rhs.subviews &&
-      lhs.props == rhs.props &&
-      lhs.children == rhs.children &&
-      lhs.component == rhs.component
-  }
-
+public final class TestView {
   /// Subviews of this test view.
   public private(set) var subviews: [TestView]
 
   /// Props assigned to this test view.
-  public internal(set) var props: AnyEquatable
-
-  /// Children assigned to this test view.
-  public internal(set) var children: AnyEquatable
-
-  /// Component that renders to this test view as a target
-  public let component: AnyHostComponent.Type
+  public internal(set) var node: AnyNode
 
   /// Parent `TestView` instance that owns this instance as a child
   private weak var parent: TestView?
@@ -36,13 +23,9 @@ public final class TestView: Equatable {
   /** Initialize a new test view.
    - parameter props: host component props to initialize the test view
    */
-  init(_ component: AnyHostComponent.Type,
-       props: AnyEquatable,
-       children: AnyEquatable,
+  init(_ node: AnyNode,
        _ subviews: [TestView] = []) {
-    self.component = component
-    self.props = props
-    self.children = children
+    self.node = node
     self.subviews = subviews
   }
 

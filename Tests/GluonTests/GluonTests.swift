@@ -47,24 +47,24 @@ final class GluonTests: XCTestCase {
       return
     }
 
-    XCTAssert(root.component == View.self)
+    XCTAssertTrue(root.node.isSubtypeOf(View.self))
     XCTAssertEqual(root.subviews.count, 1)
     let stack = root.subviews[0]
-    XCTAssert(stack.component == StackView.self)
-    XCTAssert(type(of: stack.props.value) == StackView.Props.self)
+    XCTAssertTrue(stack.node.isSubtypeOf(StackView.self))
+    XCTAssertTrue(type(of: stack.node.props.value) == StackView.Props.self)
     XCTAssertEqual(stack.subviews.count, 4)
-    XCTAssert(stack.subviews[0].component == Button.self)
-    XCTAssert(stack.subviews[1].component == Label.self)
-    XCTAssertEqual(stack.subviews[1].children, AnyEquatable("42"))
+    XCTAssertTrue(stack.subviews[0].node.isSubtypeOf(Button.self))
+    XCTAssertTrue(stack.subviews[1].node.isSubtypeOf(Label.self))
+    XCTAssertEqual(stack.subviews[1].node.children, AnyEquatable("42"))
   }
 
   func testUpdate() {
     let renderer = TestRenderer(Counter.node(42))
 
     guard let root = renderer.rootTarget,
-      let buttonProps = root.subviews[0].subviews[0]
+      let buttonProps = root.subviews[0].subviews[0].node
       .props.value as? Button.Props,
-      let sliderProps = root.subviews[0].subviews[2]
+      let sliderProps = root.subviews[0].subviews[2].node
       .props.value as? Slider.Props else {
       XCTAssert(false, "components have wrong props types")
       return
@@ -84,43 +84,44 @@ final class GluonTests: XCTestCase {
     let e = expectation(description: "rerender")
 
     DispatchQueue.main.async {
-      XCTAssert(root.component == View.self)
+      XCTAssertTrue(root.node.isSubtypeOf(View.self))
       XCTAssertEqual(root.subviews.count, 1)
       let newStack = root.subviews[0]
       XCTAssert(originalStack === newStack)
-      XCTAssert(newStack.component == StackView.self)
-      XCTAssert(type(of: newStack.props.value) == StackView.Props.self)
+      XCTAssertTrue(newStack.node.isSubtypeOf(StackView.self))
+      XCTAssertTrue(type(of: newStack.node.props.value) == StackView.Props.self)
       XCTAssertEqual(newStack.subviews.count, 4)
-      XCTAssert(newStack.subviews[0].component == Button.self)
-      XCTAssert(newStack.subviews[1].component == Label.self)
-      XCTAssert(originalLabel === newStack.subviews[1])
-      XCTAssertEqual(newStack.subviews[1].children, AnyEquatable("43"))
+      XCTAssertTrue(newStack.subviews[0].node.isSubtypeOf(Button.self))
+      XCTAssertTrue(newStack.subviews[1].node.isSubtypeOf(Label.self))
+      XCTAssertTrue(originalLabel === newStack.subviews[1])
+      XCTAssertEqual(newStack.subviews[1].node.children, AnyEquatable("43"))
 
       sliderHandler(0.25)
 
       DispatchQueue.main.async {
-        XCTAssert(root.component == View.self)
+        XCTAssert(root.node.isSubtypeOf(View.self))
         XCTAssertEqual(root.subviews.count, 1)
         let newStack = root.subviews[0]
-        XCTAssert(originalStack === newStack)
-        XCTAssert(newStack.component == StackView.self)
-        XCTAssert(type(of: newStack.props.value) == StackView.Props.self)
+        XCTAssertTrue(originalStack === newStack)
+        XCTAssertTrue(newStack.node.isSubtypeOf(StackView.self))
+        XCTAssertTrue(type(of: newStack.node.props.value) ==
+          StackView.Props.self)
         XCTAssertEqual(newStack.subviews.count, 4)
-        XCTAssert(newStack.subviews[0].component == Button.self)
-        XCTAssert(newStack.subviews[1].component == Label.self)
-        XCTAssert(originalLabel === newStack.subviews[1])
+        XCTAssertTrue(newStack.subviews[0].node.isSubtypeOf(Button.self))
+        XCTAssertTrue(newStack.subviews[1].node.isSubtypeOf(Label.self))
+        XCTAssertTrue(originalLabel === newStack.subviews[1])
 
-        guard let sliderProps = root.subviews[0].subviews[2]
+        guard let sliderProps = root.subviews[0].subviews[2].node
           .props.value as? Slider.Props else {
           XCTAssert(false, "components have wrong props types")
           return
         }
 
         XCTAssertEqual(sliderProps.value, 0.25)
-        XCTAssertEqual(newStack.subviews[1].children, AnyEquatable("43"))
+        XCTAssertEqual(newStack.subviews[1].node.children, AnyEquatable("43"))
 
         guard let root = renderer.rootTarget,
-          let buttonProps = root.subviews[0].subviews[0]
+          let buttonProps = root.subviews[0].subviews[0].node
           .props.value as? Button.Props else {
           XCTAssert(false, "components have wrong props types")
           return
@@ -135,19 +136,20 @@ final class GluonTests: XCTestCase {
         buttonHandler(())
 
         DispatchQueue.main.async {
-          XCTAssert(root.component == View.self)
+          XCTAssertTrue(root.node.isSubtypeOf(View.self))
           XCTAssertEqual(root.subviews.count, 1)
           let newStack = root.subviews[0]
-          XCTAssert(originalStack === newStack)
-          XCTAssert(newStack.component == StackView.self)
-          XCTAssert(type(of: newStack.props.value) == StackView.Props.self)
+          XCTAssertTrue(originalStack === newStack)
+          XCTAssertTrue(newStack.node.isSubtypeOf(StackView.self))
+          XCTAssertTrue(type(of: newStack.node.props.value) ==
+            StackView.Props.self)
           XCTAssertEqual(newStack.subviews.count, 4)
-          XCTAssert(newStack.subviews[0].component == Button.self)
-          XCTAssert(newStack.subviews[1].component == Label.self)
-          XCTAssert(originalLabel === newStack.subviews[1])
+          XCTAssertTrue(newStack.subviews[0].node.isSubtypeOf(Button.self))
+          XCTAssertTrue(newStack.subviews[1].node.isSubtypeOf(Label.self))
+          XCTAssertTrue(originalLabel === newStack.subviews[1])
 
           XCTAssertEqual(sliderProps.value, 0.25)
-          XCTAssertEqual(newStack.subviews[1].children, AnyEquatable("44"))
+          XCTAssertEqual(newStack.subviews[1].node.children, AnyEquatable("44"))
           e.fulfill()
         }
       }
@@ -160,7 +162,7 @@ final class GluonTests: XCTestCase {
     let renderer = TestRenderer(Counter.node(42))
 
     guard let root = renderer.rootTarget,
-      let props = root.subviews[0].subviews[0]
+      let props = root.subviews[0].subviews[0].node
       .props.value as? Button.Props else {
       XCTAssert(false, "button component got wrong props types")
       return
@@ -178,7 +180,7 @@ final class GluonTests: XCTestCase {
     DispatchQueue.main.async {
       // rerender completed here, schedule another one
       guard let root = renderer.rootTarget,
-        let props = root.subviews[0].subviews[0]
+        let props = root.subviews[0].subviews[0].node
         .props.value as? Button.Props else {
         XCTAssert(false, "button component got wrong props types")
         return
@@ -193,7 +195,7 @@ final class GluonTests: XCTestCase {
 
       DispatchQueue.main.async {
         guard let root = renderer.rootTarget,
-          let props = root.subviews[0].subviews[0]
+          let props = root.subviews[0].subviews[0].node
           .props.value as? Button.Props else {
           XCTAssert(false, "button component got wrong props types")
           return
@@ -207,11 +209,12 @@ final class GluonTests: XCTestCase {
         handler(())
 
         DispatchQueue.main.async {
-          XCTAssert(root.component == View.self)
+          XCTAssertTrue(root.node.isSubtypeOf(View.self))
           XCTAssertEqual(root.subviews.count, 1)
           let stack = root.subviews[0]
-          XCTAssert(stack.component == StackView.self)
-          XCTAssert(type(of: stack.props.value) == StackView.Props.self)
+          XCTAssertTrue(stack.node.isSubtypeOf(StackView.self))
+          XCTAssertTrue(type(of: stack.node.props.value) ==
+            StackView.Props.self)
           XCTAssertEqual(stack.subviews.count, 0)
 
           e.fulfill()
