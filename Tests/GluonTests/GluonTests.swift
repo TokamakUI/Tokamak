@@ -60,9 +60,7 @@ final class GluonTests: XCTestCase {
     let stack = root.subviews[0]
 
     guard let buttonProps = stack.subviews[0].props(Button.Props.self),
-      let sliderProps = stack.subviews[2].props(Slider.Props.self),
-      let buttonHandler = buttonProps.handlers[.touchUpInside]?.value,
-      let sliderHandler = sliderProps.valueHandler?.value else {
+      let buttonHandler = buttonProps.handlers[.touchUpInside]?.value else {
       XCTAssert(false, "components have no handlers")
       return
     }
@@ -86,6 +84,32 @@ final class GluonTests: XCTestCase {
       XCTAssertTrue(originalLabel === newStack.subviews[1])
       XCTAssertEqual(newStack.subviews[1].node.children, AnyEquatable("43"))
 
+      e.fulfill()
+    }
+
+    wait(for: [e], timeout: 30)
+  }
+
+  func testDoubleUpdate() {
+    let renderer = TestRenderer(Counter.node(42))
+    let root = renderer.rootTarget
+    let stack = root.subviews[0]
+
+    guard let buttonProps = stack.subviews[0].props(Button.Props.self),
+      let sliderProps = stack.subviews[2].props(Slider.Props.self),
+      let buttonHandler = buttonProps.handlers[.touchUpInside]?.value,
+      let sliderHandler = sliderProps.valueHandler?.value else {
+      XCTAssert(false, "components have no handlers")
+      return
+    }
+
+    let originalLabel = stack.subviews[1]
+
+    buttonHandler(())
+
+    let e = expectation(description: "rerender")
+
+    DispatchQueue.main.async {
       sliderHandler(0.25)
 
       DispatchQueue.main.async {
@@ -131,7 +155,7 @@ final class GluonTests: XCTestCase {
       }
     }
 
-    wait(for: [e], timeout: 30)
+    wait(for: [e], timeout: 1)
   }
 
   func testUnmount() {
