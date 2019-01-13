@@ -8,10 +8,10 @@
 import Gluon
 
 public class TestRenderer: Renderer {
-  private var reconciler: StackReconciler<TestRenderer>?
+  private var reconciler: StackReconciler<TestRenderer>!
 
-  public var rootTarget: TestView? {
-    return reconciler?.rootTarget
+  public var rootTarget: TestView {
+    return reconciler.rootTarget
   }
 
   public init(_ node: AnyNode) {

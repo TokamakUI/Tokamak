@@ -41,11 +41,7 @@ struct Counter: LeafComponent {
 final class GluonTests: XCTestCase {
   func testMount() {
     let renderer = TestRenderer(Counter.node(42))
-
-    guard let root = renderer.rootTarget else {
-      XCTAssert(false, "TestRenderer got no root target")
-      return
-    }
+    let root = renderer.rootTarget
 
     XCTAssertTrue(root.node.isSubtypeOf(View.self))
     XCTAssertEqual(root.subviews.count, 1)
@@ -60,24 +56,18 @@ final class GluonTests: XCTestCase {
 
   func testUpdate() {
     let renderer = TestRenderer(Counter.node(42))
+    let root = renderer.rootTarget
+    let stack = root.subviews[0]
 
-    guard let root = renderer.rootTarget,
-      let buttonProps = root.subviews[0].subviews[0].node
-      .props.value as? Button.Props,
-      let sliderProps = root.subviews[0].subviews[2].node
-      .props.value as? Slider.Props else {
-      XCTAssert(false, "components have wrong props types")
-      return
-    }
-
-    guard let buttonHandler = buttonProps.handlers[.touchUpInside]?.value,
+    guard let buttonProps = stack.subviews[0].props(Button.Props.self),
+      let sliderProps = stack.subviews[2].props(Slider.Props.self),
+      let buttonHandler = buttonProps.handlers[.touchUpInside]?.value,
       let sliderHandler = sliderProps.valueHandler?.value else {
       XCTAssert(false, "components have no handlers")
       return
     }
 
-    let originalStack = root.subviews[0]
-    let originalLabel = originalStack.subviews[1]
+    let originalLabel = stack.subviews[1]
 
     buttonHandler(())
 
@@ -87,9 +77,9 @@ final class GluonTests: XCTestCase {
       XCTAssertTrue(root.node.isSubtypeOf(View.self))
       XCTAssertEqual(root.subviews.count, 1)
       let newStack = root.subviews[0]
-      XCTAssert(originalStack === newStack)
+      XCTAssert(stack === newStack)
       XCTAssertTrue(newStack.node.isSubtypeOf(StackView.self))
-      XCTAssertTrue(type(of: newStack.node.props.value) == StackView.Props.self)
+      XCTAssertNotNil(newStack.props(StackView.Props.self))
       XCTAssertEqual(newStack.subviews.count, 4)
       XCTAssertTrue(newStack.subviews[0].node.isSubtypeOf(Button.self))
       XCTAssertTrue(newStack.subviews[1].node.isSubtypeOf(Label.self))
@@ -102,36 +92,23 @@ final class GluonTests: XCTestCase {
         XCTAssert(root.node.isSubtypeOf(View.self))
         XCTAssertEqual(root.subviews.count, 1)
         let newStack = root.subviews[0]
-        XCTAssertTrue(originalStack === newStack)
+        XCTAssertTrue(stack === newStack)
         XCTAssertTrue(newStack.node.isSubtypeOf(StackView.self))
-        XCTAssertTrue(type(of: newStack.node.props.value) ==
-          StackView.Props.self)
+        XCTAssertNotNil(newStack.props(StackView.Props.self))
         XCTAssertEqual(newStack.subviews.count, 4)
         XCTAssertTrue(newStack.subviews[0].node.isSubtypeOf(Button.self))
         XCTAssertTrue(newStack.subviews[1].node.isSubtypeOf(Label.self))
         XCTAssertTrue(originalLabel === newStack.subviews[1])
 
-        guard let sliderProps = root.subviews[0].subviews[2].node
-          .props.value as? Slider.Props else {
-          XCTAssert(false, "components have wrong props types")
+        guard let sliderProps = newStack.subviews[2].props(Slider.Props.self),
+          let buttonProps = newStack.subviews[0].props(Button.Props.self),
+          let buttonHandler = buttonProps.handlers[.touchUpInside]?.value else {
+          XCTAssert(false, "components have wrong props")
           return
         }
 
         XCTAssertEqual(sliderProps.value, 0.25)
         XCTAssertEqual(newStack.subviews[1].node.children, AnyEquatable("43"))
-
-        guard let root = renderer.rootTarget,
-          let buttonProps = root.subviews[0].subviews[0].node
-          .props.value as? Button.Props else {
-          XCTAssert(false, "components have wrong props types")
-          return
-        }
-
-        guard let buttonHandler = buttonProps
-          .handlers[.touchUpInside]?.value else {
-          XCTAssert(false, "components have no handlers")
-          return
-        }
 
         buttonHandler(())
 
@@ -139,10 +116,9 @@ final class GluonTests: XCTestCase {
           XCTAssertTrue(root.node.isSubtypeOf(View.self))
           XCTAssertEqual(root.subviews.count, 1)
           let newStack = root.subviews[0]
-          XCTAssertTrue(originalStack === newStack)
+          XCTAssertTrue(stack === newStack)
           XCTAssertTrue(newStack.node.isSubtypeOf(StackView.self))
-          XCTAssertTrue(type(of: newStack.node.props.value) ==
-            StackView.Props.self)
+          XCTAssertNotNil(newStack.props(StackView.Props.self))
           XCTAssertEqual(newStack.subviews.count, 4)
           XCTAssertTrue(newStack.subviews[0].node.isSubtypeOf(Button.self))
           XCTAssertTrue(newStack.subviews[1].node.isSubtypeOf(Label.self))
@@ -160,10 +136,10 @@ final class GluonTests: XCTestCase {
 
   func testUnmount() {
     let renderer = TestRenderer(Counter.node(42))
+    let root = renderer.rootTarget
 
-    guard let root = renderer.rootTarget,
-      let props = root.subviews[0].subviews[0].node
-      .props.value as? Button.Props else {
+    let stack = root.subviews[0]
+    guard let props = stack.subviews[0].props(Button.Props.self) else {
       XCTAssert(false, "button component got wrong props types")
       return
     }
@@ -179,8 +155,7 @@ final class GluonTests: XCTestCase {
 
     DispatchQueue.main.async {
       // rerender completed here, schedule another one
-      guard let root = renderer.rootTarget,
-        let props = root.subviews[0].subviews[0].node
+      guard let props = root.subviews[0].subviews[0].node
         .props.value as? Button.Props else {
         XCTAssert(false, "button component got wrong props types")
         return
@@ -194,9 +169,7 @@ final class GluonTests: XCTestCase {
       handler(())
 
       DispatchQueue.main.async {
-        guard let root = renderer.rootTarget,
-          let props = root.subviews[0].subviews[0].node
-          .props.value as? Button.Props else {
+        guard let props = stack.subviews[0].props(Button.Props.self) else {
           XCTAssert(false, "button component got wrong props types")
           return
         }

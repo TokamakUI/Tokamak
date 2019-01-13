@@ -20,6 +20,11 @@ public final class TestView {
   /// Parent `TestView` instance that owns this instance as a child
   private weak var parent: TestView?
 
+  /// Return props of view's node downcast to a given type
+  public func props<T>(_: T.Type) -> T? {
+    return node.props.value as? T
+  }
+
   /** Initialize a new test view.
    - parameter props: host component props to initialize the test view
    */
