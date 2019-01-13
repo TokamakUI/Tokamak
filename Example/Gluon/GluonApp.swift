@@ -152,6 +152,15 @@ struct Counter: LeafComponent {
       Button.node(.init(handlers: [.touchUpInside: Handler {
         isAnimationModalPresented.set(true)
       }]), "Present Simple Modal"),
+
+      StackModal.node(.init(
+        isPresented: isStackModalPresented
+      )),
+
+      SimpleModal.node(.init(
+        frame: props.frame,
+        isPresented: isAnimationModalPresented
+      )),
     ] + (count.value < 15 ? [
       Button.node(.init(
         handlers: [.touchUpInside: Handler { count.set { $0 + 1 } }]
@@ -165,15 +174,6 @@ struct Counter: LeafComponent {
       )),
 
       Label.node(.init(alignment: .center), "\(sliding.value)"),
-
-      StackModal.node(.init(
-        isPresented: isStackModalPresented
-      )),
-
-      SimpleModal.node(.init(
-        frame: props.frame,
-        isPresented: isAnimationModalPresented
-      ))
     ] : [])
 
     return StackView.node(.init(axis: .vertical,

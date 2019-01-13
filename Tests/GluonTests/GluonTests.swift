@@ -164,12 +164,12 @@ final class GluonTests: XCTestCase {
 
     let stack = root.subviews[0]
     guard let props = stack.subviews[0].props(Button.Props.self) else {
-      XCTAssert(false, "button component got wrong props types")
+      XCTAssert(false, "button component has wrong props types")
       return
     }
 
     guard let handler = props.handlers[.touchUpInside]?.value else {
-      XCTAssert(false, "button component got no handler")
+      XCTAssert(false, "button component has no handler")
       return
     }
 
@@ -180,26 +180,18 @@ final class GluonTests: XCTestCase {
     DispatchQueue.main.async {
       // rerender completed here, schedule another one
       guard let props = root.subviews[0].subviews[0].node
-        .props.value as? Button.Props else {
-        XCTAssert(false, "button component got wrong props types")
-        return
-      }
-
-      guard let handler = props.handlers[.touchUpInside]?.value else {
-        XCTAssert(false, "button component got no handler")
+        .props.value as? Button.Props,
+        let handler = props.handlers[.touchUpInside]?.value else {
+        XCTAssert(false, "button component has no handler")
         return
       }
 
       handler(())
 
       DispatchQueue.main.async {
-        guard let props = stack.subviews[0].props(Button.Props.self) else {
-          XCTAssert(false, "button component got wrong props types")
-          return
-        }
-
-        guard let handler = props.handlers[.touchUpInside]?.value else {
-          XCTAssert(false, "button component got no handler")
+        guard let props = stack.subviews[0].props(Button.Props.self),
+          let handler = props.handlers[.touchUpInside]?.value else {
+          XCTAssert(false, "button component has no handler")
           return
         }
 
