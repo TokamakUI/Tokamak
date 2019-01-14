@@ -5,14 +5,24 @@
 //  Created by Max Desiatov on 07/10/2018.
 //
 
-// FIXME: this protocol shouldn't be public, but is there a good workaround?
+/// Type-erased version of `HostComponent` to work around [PAT restrictions](
+/// http://www.russbishop.net/swift-associated-types). Users
+/// of Gluon shouldn't ever need to conform to this protocol directly, use
+/// `HostComponent` instead.
 public protocol AnyHostComponent {}
 
 public protocol HostComponent: AnyHostComponent, Component {}
 
-// FIXME: this protocol shouldn't be public, but is there a good workaround?
+/// Type-erased version of `CompositeComponent` to work around
+/// [PAT restrictions](http://www.russbishop.net/swift-associated-types). Users
+/// of Gluon shouldn't ever need to conform to this protocol directly, use
+/// `CompositeComponent` instead.
 public protocol AnyCompositeComponent {
-  static func render(props: AnyEquatable, children: AnyEquatable) -> AnyNode
+  static func render(
+    props: AnyEquatable,
+    children: AnyEquatable,
+    hooks: Hooks
+  ) -> AnyNode
 }
 
 public protocol Component {
@@ -25,13 +35,21 @@ public protocol Component {
 }
 
 public protocol CompositeComponent: AnyCompositeComponent, Component {
-  static func render(props: Props, children: Children) -> AnyNode
+  static func render(
+    props: Props,
+    children: Children,
+    hooks: Hooks
+  ) -> AnyNode
 }
 
-// FIXME: this extension should be private too, but
-// `public protocol AnyCompositeComponent` requires this to stay public
 public extension CompositeComponent {
-  static func render(props: AnyEquatable, children: AnyEquatable) -> AnyNode {
+  /// Default implementation of `AnyCompositeComponent` that delegates to
+  /// `render` requirement in `CompositeComponent` PAT.
+  static func render(
+    props: AnyEquatable,
+    children: AnyEquatable,
+    hooks: Hooks
+  ) -> AnyNode {
     guard let props = props.value as? Props,
       let children = children.value as? Children else {
       fatalError("""
@@ -39,17 +57,35 @@ public extension CompositeComponent {
         `AnyComponent.render`
       """)
     }
+    return render(props: props, children: children, hooks: hooks)
+  }
+}
+
+public protocol PureComponent: CompositeComponent {
+  static func render(props: Props, children: Children) -> AnyNode
+}
+
+extension PureComponent {
+  static func render(
+    props: Props,
+    children: Children,
+    hooks: Hooks
+  ) -> AnyNode {
     return render(props: props, children: children)
   }
 }
 
 public protocol LeafComponent: CompositeComponent where Children == Null {
-  static func render(props: Props) -> AnyNode
+  static func render(props: Props, hooks: Hooks) -> AnyNode
 }
 
 public extension LeafComponent {
-  static func render(props: Props, children _: Children) -> AnyNode {
-    return render(props: props)
+  static func render(
+    props: Props,
+    children _: Children,
+    hooks: Hooks
+  ) -> AnyNode {
+    return render(props: props, hooks: hooks)
   }
 }
 

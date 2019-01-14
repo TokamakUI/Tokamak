@@ -13,6 +13,7 @@ public final class StackReconciler<R: Renderer> {
   public let rootTarget: R.Target
   private let rootComponent: MountedComponent<R>
   private(set) weak var renderer: R?
+  private var hooks = Hooks()
 
   public init(node: AnyNode, target: R.Target, renderer: R) {
     self.renderer = renderer
@@ -44,5 +45,30 @@ public final class StackReconciler<R: Renderer> {
     }
 
     queuedRerenders.removeAll()
+  }
+
+  func render(component: MountedCompositeComponent<R>) -> AnyNode {
+    hooks.currentState = { [weak component] in
+      component?.state[$0]
+    }
+
+    // Avoiding an indirect reference cycle here: this closure can be
+    // owned by callbacks owned by node's target, which is strongly referenced
+    // by the reconciler.
+    hooks.queueState = { [weak self, weak component] in
+      guard let component = component else { return }
+      self?.queue(state: $0, for: component, id: $1)
+    }
+
+    let result = component.type.render(
+      props: component.node.props,
+      children: component.node.children,
+      hooks: hooks
+    )
+
+    hooks.currentState = nil
+    hooks.queueState = nil
+
+    return result
   }
 }

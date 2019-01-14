@@ -37,7 +37,7 @@ public struct StackPresenter<T: StackRouter>: LeafComponent {
     }
   }
 
-  public static func render(props: Props) -> AnyNode {
+  public static func render(props: Props, hooks: Hooks) -> AnyNode {
     let stack = hooks.state([props.initial])
 
     let pop = { stack.set(Array(stack.value.dropLast())) }

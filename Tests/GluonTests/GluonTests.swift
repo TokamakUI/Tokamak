@@ -13,7 +13,7 @@ import XCTest
 struct Counter: LeafComponent {
   typealias Props = Int
 
-  static func render(props: Int) -> AnyNode {
+  static func render(props: Int, hooks: Hooks) -> AnyNode {
     let count = hooks.state(props)
     let sliding = hooks.state(0.5 as Float)
 

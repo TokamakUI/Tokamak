@@ -5,15 +5,6 @@
 //  Created by Max Desiatov on 03/12/2018.
 //
 
-// TODO: this won't work with multi-threaded reconcilers/renderers
-private var _hooks = Hooks()
-
-extension CompositeComponent {
-  public static var hooks: Hooks {
-    return _hooks
-  }
-}
-
 final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   Hashable {
   static func ==(lhs: MountedCompositeComponent<R>,
@@ -26,8 +17,8 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   }
 
   private var mountedChildren = [MountedComponent<R>]()
-  private let type: AnyCompositeComponent.Type
   private let parentTarget: R.Target
+  let type: AnyCompositeComponent.Type
   var state = [String: Any]()
 
   init(_ node: AnyNode,
@@ -41,7 +32,7 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   }
 
   override func mount(with reconciler: StackReconciler<R>) {
-    let renderedNode = render(with: reconciler)
+    let renderedNode = reconciler.render(component: self)
 
     let child: MountedComponent<R> =
       renderedNode.makeMountedComponent(self, parentTarget)
@@ -60,7 +51,7 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
     // a single element in `mountedChildren`, but this will change when
     // fragments are implemented and this switch should be rewritten to compare
     // all elements in `mountedChildren`
-    switch (mountedChildren.last, render(with: reconciler)) {
+    switch (mountedChildren.last, reconciler.render(component: self)) {
     // no mounted children, but children available now
     case let (nil, renderedNode):
       let child: MountedComponent<R> =
@@ -88,26 +79,5 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
         child.mount(with: reconciler)
       }
     }
-  }
-
-  func render(with reconciler: StackReconciler<R>) -> AnyNode {
-    _hooks.currentState = { [weak self] in
-      self?.state[$0]
-    }
-
-    // Avoiding an indirect reference cycle here: this closure can be
-    // owned by callbacks owned by node's target, which is strongly referenced
-    // by the reconciler.
-    _hooks.queueState = { [weak reconciler, weak self] in
-      guard let self = self else { return }
-      reconciler?.queue(state: $0, for: self, id: $1)
-    }
-
-    let result = type.render(props: node.props, children: node.children)
-
-    _hooks.currentState = nil
-    _hooks.queueState = nil
-
-    return result
   }
 }

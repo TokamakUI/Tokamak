@@ -82,7 +82,7 @@
 		OBJ_187 /* Gluon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::Gluon::Product" /* Gluon.framework */; };
 		OBJ_93 /* AnyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_40 /* AnyEquatable.swift */; };
 		OBJ_94 /* AnyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_41 /* AnyNode.swift */; };
-		OBJ_95 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* Component.swift */; };
+		OBJ_95 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* Components.swift */; };
 		OBJ_96 /* Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* Default.swift */; };
 		OBJ_97 /* Diffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_44 /* Diffable.swift */; };
 		OBJ_98 /* Hooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_45 /* Hooks.swift */; };
@@ -160,7 +160,7 @@
 		OBJ_38 /* UIKitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitRenderer.swift; sourceTree = "<group>"; };
 		OBJ_40 /* AnyEquatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyEquatable.swift; sourceTree = "<group>"; };
 		OBJ_41 /* AnyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNode.swift; sourceTree = "<group>"; };
-		OBJ_42 /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
+		OBJ_42 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		OBJ_43 /* Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
 		OBJ_44 /* Diffable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diffable.swift; sourceTree = "<group>"; };
 		OBJ_45 /* Hooks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hooks.swift; sourceTree = "<group>"; };
@@ -336,7 +336,7 @@
 			children = (
 				OBJ_40 /* AnyEquatable.swift */,
 				OBJ_41 /* AnyNode.swift */,
-				OBJ_42 /* Component.swift */,
+				OBJ_42 /* Components.swift */,
 				OBJ_43 /* Default.swift */,
 				OBJ_44 /* Diffable.swift */,
 				OBJ_45 /* Hooks.swift */,
@@ -657,7 +657,7 @@
 			files = (
 				OBJ_93 /* AnyEquatable.swift in Sources */,
 				OBJ_94 /* AnyNode.swift in Sources */,
-				OBJ_95 /* Component.swift in Sources */,
+				OBJ_95 /* Components.swift in Sources */,
 				OBJ_96 /* Default.swift in Sources */,
 				OBJ_97 /* Diffable.swift in Sources */,
 				OBJ_98 /* Hooks.swift in Sources */,
