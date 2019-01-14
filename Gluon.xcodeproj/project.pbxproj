@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		D126CB7121ECAF850097300E /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126CB7021ECAF850097300E /* Constraint.swift */; };
 		D144FB9921E8A56D001020F3 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */; };
 		D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */; };
 		D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */; };
@@ -29,7 +30,7 @@
 		OBJ_100 /* Animated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* Animated.swift */; };
 		OBJ_101 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* Button.swift */; };
 		OBJ_102 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* Label.swift */; };
-		OBJ_103 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_51 /* Layout.swift */; };
+		OBJ_103 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_51 /* Constraint.swift */; };
 		OBJ_104 /* ModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_53 /* ModalPresenter.swift */; };
 		OBJ_105 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_54 /* Router.swift */; };
 		OBJ_106 /* StackPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* StackPresenter.swift */; };
@@ -128,6 +129,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D126CB7021ECAF850097300E /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
 		D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountedNull.swift; sourceTree = "<group>"; };
 		D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
@@ -168,7 +170,7 @@
 		OBJ_48 /* Animated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animated.swift; sourceTree = "<group>"; };
 		OBJ_49 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		OBJ_50 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
-		OBJ_51 /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
+		OBJ_51 /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		OBJ_53 /* ModalPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPresenter.swift; sourceTree = "<group>"; };
 		OBJ_54 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		OBJ_55 /* StackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackPresenter.swift; sourceTree = "<group>"; };
@@ -242,7 +244,6 @@
 				OBJ_48 /* Animated.swift */,
 				OBJ_49 /* Button.swift */,
 				OBJ_50 /* Label.swift */,
-				OBJ_51 /* Layout.swift */,
 				D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */,
 				OBJ_64 /* Slider.swift */,
 				D1CB7D2D21E29CC80075C0C3 /* StackController.swift */,
@@ -304,6 +305,7 @@
 				OBJ_19 /* Color.swift */,
 				OBJ_20 /* Event.swift */,
 				OBJ_21 /* Rectangle.swift */,
+				D126CB7021ECAF850097300E /* Constraint.swift */,
 			);
 			path = Props;
 			sourceTree = "<group>";
@@ -394,6 +396,7 @@
 			children = (
 				OBJ_58 /* Color.swift */,
 				OBJ_59 /* Event.swift */,
+				OBJ_51 /* Constraint.swift */,
 				OBJ_60 /* Rectangle.swift */,
 				OBJ_61 /* Second.swift */,
 				OBJ_62 /* Style.swift */,
@@ -645,6 +648,7 @@
 				OBJ_179 /* View.swift in Sources */,
 				OBJ_180 /* ContainerViewController.swift in Sources */,
 				OBJ_181 /* ControlBox.swift in Sources */,
+				D126CB7121ECAF850097300E /* Constraint.swift in Sources */,
 				OBJ_183 /* ValueControlBox.swift in Sources */,
 				OBJ_184 /* ViewBox.swift in Sources */,
 				OBJ_185 /* UIKitRenderer.swift in Sources */,
@@ -665,7 +669,7 @@
 				OBJ_100 /* Animated.swift in Sources */,
 				OBJ_101 /* Button.swift in Sources */,
 				OBJ_102 /* Label.swift in Sources */,
-				OBJ_103 /* Layout.swift in Sources */,
+				OBJ_103 /* Constraint.swift in Sources */,
 				OBJ_104 /* ModalPresenter.swift in Sources */,
 				OBJ_105 /* Router.swift in Sources */,
 				OBJ_106 /* StackPresenter.swift in Sources */,

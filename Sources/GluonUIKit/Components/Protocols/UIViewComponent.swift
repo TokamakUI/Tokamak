@@ -33,7 +33,19 @@ private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
   style.alpha.flatMap { view.alpha = CGFloat($0) }
   style.backgroundColor.flatMap { view.backgroundColor = UIColor($0) }
   style.clipsToBounds.flatMap { view.clipsToBounds = $0 }
-  style.frame.flatMap { view.frame = CGRect($0) }
+
+  switch style.layout {
+  case let .frame(frame)?:
+    view.frame = CGRect(frame)
+  case let .constraints(constraints)?:
+    view.removeConstraints(view.constraints)
+    for c in constraints {
+//      view.addConstraint(<#T##constraint: NSLayoutConstraint##NSLayoutConstraint#>)
+    }
+  case nil:
+    ()
+  }
+
   // center has to be updated after `frame`, otherwise `frame` overrides it
   style.center.flatMap { view.center = CGPoint($0) }
   style.isHidden.flatMap { view.isHidden = $0 }
