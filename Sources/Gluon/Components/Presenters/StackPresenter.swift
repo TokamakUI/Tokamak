@@ -10,7 +10,8 @@ public protocol StackRouter: Router {
     props: Props,
     route: Route,
     push: @escaping (Route) -> (),
-    pop: @escaping () -> ()
+    pop: @escaping () -> (),
+    hooks: Hooks
   ) -> AnyNode
 }
 
@@ -54,7 +55,8 @@ public struct StackPresenter<T: StackRouter>: LeafComponent {
           props: props.routerProps,
           route: $0,
           push: { stack.set(stack.value + [$0]) },
-          pop: pop
+          pop: pop,
+          hooks: hooks
         )
       }
     )

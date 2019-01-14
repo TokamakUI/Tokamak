@@ -14,18 +14,6 @@ let _ModalPresenterWitnessTableHack: UIHostComponent.Type = ModalPresenter.self
 let _StackControllerWitnessTableHack: UIHostComponent.Type =
   StackController.self
 
-struct TestRouter: StackRouter {
-  typealias Props = Null
-  typealias Route = Null
-
-  static func route(props: Null,
-                    route: Null,
-                    push: (TestRouter.Route) -> (),
-                    pop: () -> ()) -> AnyNode {
-    return Label.node(.init(), "blah")
-  }
-}
-
 public protocol UITarget {
   var node: AnyNode? { get }
   var viewController: UIViewController { get }

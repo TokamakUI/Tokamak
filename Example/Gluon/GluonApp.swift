@@ -22,7 +22,8 @@ struct NavRouter: StackRouter {
     props: Props,
     route: Route,
     push: @escaping (Route) -> (),
-    pop: @escaping () -> ()
+    pop: @escaping () -> (),
+    hooks _: Hooks
   ) -> AnyNode {
     let close =
       Button.node(.init(
@@ -61,7 +62,7 @@ struct NavRouter: StackRouter {
   }
 }
 
-struct StackModal: LeafComponent {
+struct StackModal: PureLeafComponent {
   struct Props: Equatable {
     let isPresented: State<Bool>
   }
@@ -96,7 +97,7 @@ struct SimpleModal: LeafComponent {
     (.blue, "blue"),
   ]
 
-  static func render(props: Props) -> AnyNode {
+  static func render(props: Props, hooks: Hooks) -> AnyNode {
     let backgroundColor = hooks.state(0)
 
     return props.isPresented.value ?
@@ -138,7 +139,7 @@ struct Counter: LeafComponent {
     let initial: Int
   }
 
-  static func render(props: Props) -> AnyNode {
+  static func render(props: Props, hooks: Hooks) -> AnyNode {
     let count = hooks.state(props.initial)
     let sliding = hooks.state(0.5 as Float)
     let isStackModalPresented = hooks.state(false)
@@ -183,7 +184,7 @@ struct Counter: LeafComponent {
   }
 }
 
-struct App: LeafComponent {
+struct App: PureLeafComponent {
   typealias Props = Rectangle
 
   static func render(props: Rectangle) -> AnyNode {

@@ -89,6 +89,16 @@ public extension LeafComponent {
   }
 }
 
+public protocol PureLeafComponent: LeafComponent {
+  static func render(props: Props) -> AnyNode
+}
+
+public extension PureLeafComponent {
+  static func render(props: Props, hooks: Hooks) -> AnyNode {
+    return render(props: props)
+  }
+}
+
 enum ComponentType: Equatable {
   static func ==(lhs: ComponentType, rhs: ComponentType) -> Bool {
     switch (lhs, rhs) {
