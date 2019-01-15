@@ -27,8 +27,6 @@ compiled to a native binary.
 An example of a Gluon component that binds a button to a label, embedded
 within an existing UIKit app, looks like this:
 
-![Counter component](GluonCounter.gif)
-
 ```swift
 struct Counter: LeafComponent {
   struct Props: Equatable {
@@ -50,7 +48,6 @@ struct Counter: LeafComponent {
   }
 }
 
-
 final class GluonViewController: UIViewController {
   private var renderer: UIKitRenderer?
 
@@ -65,6 +62,8 @@ final class GluonViewController: UIViewController {
   }
 }
 ```
+
+![Counter component](GluonCounter.gif)
 
 ## Fundamental concepts
 

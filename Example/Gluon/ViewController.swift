@@ -22,7 +22,8 @@ final class GluonViewController: UIViewController {
 }
 
 final class ClassicViewController: UIViewController {
-  private let button = UIButton()
+  private let stack = UIStackView()
+  private let button = UIButton(type: .system)
   private let label = UILabel()
 
   private var counter = 0
@@ -35,11 +36,17 @@ final class ClassicViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    label.text = "\(counter)"
+    stack.axis = .vertical
+    stack.distribution = .fillEqually
+    view.addSubview(stack)
+    stack.frame = view.frame
 
+    label.text = "\(counter)"
+    label.textAlignment = .center
+    button.setTitle("Increment", for: .normal)
     button.addTarget(self, action: #selector(onPress), for: .touchUpInside)
 
-    view.addSubview(button)
-    view.addSubview(label)
+    stack.addArrangedSubview(button)
+    stack.addArrangedSubview(label)
   }
 }
