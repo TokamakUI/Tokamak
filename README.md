@@ -1,6 +1,6 @@
 # Gluon
 
-## Declarative UI framework written in pure Swift inspired by React
+## Truly native React-like UI framework for Swift 🛠⚛️📲
 
 [![CI Status](https://img.shields.io/travis/MaxDesiatov/Gluon.svg?style=flat)](https://travis-ci.org/MaxDesiatov/Gluon)
 [![Coverage](https://img.shields.io/codecov/c/github/MaxDesiatov/Gluon/master.svg?style=flat)](https://codecov.io/gh/maxdesiatov/Gluon)
@@ -9,8 +9,6 @@
 [![License](https://img.shields.io/cocoapods/l/Gluon.svg?style=flat)](https://cocoapods.org/pods/Gluon)
 [![Platform](https://img.shields.io/cocoapods/p/Gluon.svg?style=flat)](https://cocoapods.org/pods/Gluon)
 -->
-
-### Easily build React-like UI components in Swift for new or existing iOS apps 🛠⚛️📲
 
 Gluon provides a declarative, testable and scalable API for building UI
 components backed by fully native views. You can use it for your new iOS apps or
