@@ -130,6 +130,7 @@
 
 /* Begin PBXFileReference section */
 		D126CB7021ECAF850097300E /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
+		D126CB7221ECE1400097300E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
 		D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountedNull.swift; sourceTree = "<group>"; };
 		D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
@@ -368,6 +369,7 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
+				D126CB7221ECE1400097300E /* README.md */,
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Configs */,
 				OBJ_9 /* Sources */,

@@ -23,7 +23,7 @@ public class UIKitRenderer: Renderer {
   private var reconciler: StackReconciler<UIKitRenderer>?
   private let rootViewController: UIViewController
 
-  public init(node: AnyNode, rootViewController: UIViewController) {
+  public init(_ node: AnyNode, rootViewController: UIViewController) {
     self.rootViewController = rootViewController
     reconciler = StackReconciler(
       node: node,

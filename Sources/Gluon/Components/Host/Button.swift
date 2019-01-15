@@ -12,8 +12,13 @@ public struct Button: HostComponent {
     public let titleColor: Color?
 
     public init(handlers: [Event: Handler<()>] = [:],
+                onPress: Handler<()>? = nil,
                 _ style: Style? = nil,
                 titleColor: Color? = nil) {
+      var handlers = handlers
+      if let onPress = onPress {
+        handlers[.touchUpInside] = onPress
+      }
       self.handlers = handlers
       self.style = style
       self.titleColor = titleColor

@@ -15,7 +15,7 @@ struct NavRouter: StackRouter {
   }
 
   struct Props: Equatable {
-    let handler: Handler<()>
+    let onPress: Handler<()>
   }
 
   static func route(
@@ -27,8 +27,8 @@ struct NavRouter: StackRouter {
   ) -> AnyNode {
     let close =
       Button.node(.init(
-        handlers: [.touchUpInside: props.handler],
-        Style(frame: Rectangle(.zero, Size(width: 200, height: 200)))
+        onPress: props.onPress,
+        Style(.frame(Rectangle(.zero, Size(width: 200, height: 200))))
       ), "Close Modal")
     switch route {
     case .first:
@@ -37,13 +37,13 @@ struct NavRouter: StackRouter {
           close,
           Label.node(.init(
             alignment: .center,
-            Style(frame: Rectangle(Point(x: 0, y: 200),
-                                   Size(width: 200, height: 200)))
+            Style(.frame(Rectangle(Point(x: 0, y: 200),
+                                   Size(width: 200, height: 200))))
           ), "first"),
           Button.node(.init(
-            handlers: [.touchUpInside: Handler { push(.second) }],
-            Style(frame: Rectangle(Point(x: 0, y: 400),
-                                   Size(width: 200, height: 200)))
+            onPress: Handler { push(.second) },
+            Style(.frame(Rectangle(Point(x: 0, y: 400),
+                                   Size(width: 200, height: 200))))
           ), "second"),
         ]
       )
@@ -53,8 +53,8 @@ struct NavRouter: StackRouter {
           close,
           Label.node(.init(
             alignment: .center,
-            Style(frame: Rectangle(Point(x: 0, y: 200),
-                                   Size(width: 200, height: 200)))
+            Style(.frame(Rectangle(Point(x: 0, y: 200),
+                                   Size(width: 200, height: 200))))
           ), "second"),
         ]
       )
@@ -74,9 +74,7 @@ struct StackModal: PureLeafComponent {
           .init(
             initial: .first,
             routerProps: .init(
-              handler: Handler {
-                props.isPresented.set(false)
-              }
+              onPress: Handler { props.isPresented.set(false) }
             )
           )
         )
@@ -108,17 +106,11 @@ struct SimpleModal: LeafComponent {
             .init(
               axis: .vertical,
               distribution: .fillEqually,
-              Style(frame: props.frame)
+              Style(.frame(props.frame))
             ), [
               Button.node(.init(
-                handlers: [
-                  .touchUpInside: Handler {
-                    props.isPresented.set(false)
-                  },
-                ],
-                Style(
-                  frame: Rectangle(.zero, Size(width: 200, height: 200))
-                )
+                onPress: Handler { props.isPresented.set(false) },
+                Style(.frame(Rectangle(.zero, Size(width: 200, height: 200))))
               ), "Close Modal"),
               SegmentedControl.node(
                 .init(
@@ -146,13 +138,11 @@ struct Counter: LeafComponent {
     let isAnimationModalPresented = hooks.state(false)
 
     let children = [
-      Button.node(.init(handlers: [.touchUpInside: Handler {
-        isStackModalPresented.set(true)
-      }]), "Present Stack Modal"),
+      Button.node(.init(onPress: Handler { isStackModalPresented.set(true) }),
+                  "Present Stack Modal"),
 
-      Button.node(.init(handlers: [.touchUpInside: Handler {
-        isAnimationModalPresented.set(true)
-      }]), "Present Simple Modal"),
+      Button.node(.init(onPress: Handler { isAnimationModalPresented.set(true) }),
+                  "Present Simple Modal"),
 
       StackModal.node(.init(
         isPresented: isStackModalPresented
@@ -163,9 +153,8 @@ struct Counter: LeafComponent {
         isPresented: isAnimationModalPresented
       )),
     ] + (count.value < 15 ? [
-      Button.node(.init(
-        handlers: [.touchUpInside: Handler { count.set { $0 + 1 } }]
-      ), "Increment"),
+      Button.node(.init(onPress: Handler { count.set { $0 + 1 } }),
+                  "Increment"),
 
       Label.node(.init(alignment: .center), "\(count.value)"),
 
@@ -179,7 +168,7 @@ struct Counter: LeafComponent {
 
     return StackView.node(.init(axis: .vertical,
                                 distribution: .fillEqually,
-                                Style(frame: props.frame)),
+                                Style(.frame(props.frame))),
                           children)
   }
 }

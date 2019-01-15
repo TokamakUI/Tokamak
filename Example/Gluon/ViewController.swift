@@ -16,7 +16,7 @@ final class GluonViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    renderer = UIKitRenderer(node: App.node(Rectangle(view.frame)),
+    renderer = UIKitRenderer(App.node(Rectangle(view.frame)),
                              rootViewController: self)
   }
 }
