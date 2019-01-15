@@ -435,7 +435,7 @@ to this:
 ```
 
 We do agree that there's an overhead of `.init` for props and a requirement of
-props initializer arguments to be ordered. For the latter we have a helpful
+props initializer arguments to be ordered. For the latter, we have a helpful
 convention in Gluon that all arguments to props initializers should be ordered
 alphabetically.
 
