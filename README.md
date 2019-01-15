@@ -90,7 +90,7 @@ themselves can contain other subviews. In Gluon this is called `Children`, which
 behave similar to `Props`, but are important enough to be treated separately.
 `Children` are also immutable and `Equatable`, which allows us to observe those
 for changes too. For example, standard `Label` component provided by Gluon has
-this typealias defined:
+this `typealias` defined:
 
 ```swift
 struct Label: Component {
