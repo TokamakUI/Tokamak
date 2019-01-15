@@ -8,6 +8,8 @@
 [![Platform](https://img.shields.io/cocoapods/p/Gluon.svg?style=flat)](https://cocoapods.org/pods/Gluon)
 [![Coverage](https://img.shields.io/codecov/c/github/MaxDesiatov/Gluon/master.svg?style=flat)](https://codecov.io/gh/maxdesiatov/Gluon)
 
+### Easily build React-like UI components in Swift for new or existing iOS apps! 🛠⚛️📲
+
 Gluon provides a declarative, testable and scalable API for building UI
 components backed by fully native views. It can be easily added to existing iOS
 apps and you can start using Gluon for new app features without rewriting the
@@ -22,6 +24,8 @@ compiled to a native binary.
 
 An example of a Gluon component that binds a button to a label, embedded
 within an existing UIKit app, looks like this:
+
+![Counter component](GluonCounter.gif)
 
 ```swift
 struct Counter: LeafComponent {
