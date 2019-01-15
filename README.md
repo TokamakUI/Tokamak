@@ -98,7 +98,7 @@ struct Label: Component {
   struct Props: Equatable {
     // ...
   }
-  typalias Children = String
+  typealias Children = String
 }
 ```
 
