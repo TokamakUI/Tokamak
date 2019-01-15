@@ -207,11 +207,11 @@ Quite frequently you need components that are stateful or cause some other
 `Hooks` provide a clear separation between declarative components and other 
 imperative code, such as state management, file I/O, networking etc.
 
-The most general type `CompositeComponent` gets `Hooks` injected into `render`
-function as an argument.
+The standard protocol `CompositeComponent` in Gluon gets `Hooks` injected into
+`render` function as an argument.
 
 ```swift
-public protocol CompositeComponent: Component {
+protocol CompositeComponent: Component {
   static func render(
     props: Props,
     children: Children,
@@ -220,11 +220,11 @@ public protocol CompositeComponent: Component {
 }
 ```
 
-In fact, `PureComponent` is a special case of a `CompositeComponent` that 
-doesn't use `Hooks` during rendering:
+In fact, standard `PureComponent` is a special case of a `CompositeComponent`
+that doesn't use `Hooks` during rendering:
 
 ```swift
-public protocol PureComponent: CompositeComponent {
+protocol PureComponent: CompositeComponent {
   static func render(props: Props, children: Children) -> AnyNode
 }
 
@@ -240,8 +240,8 @@ extension PureComponent {
 ```
 
 One of the simplest hooks is `state`. It allows a component to have its own
-state and to be updated when the state changes.
-We've seen it used in the `Counter` example:
+state and to be updated when the state changes. We've seen it used in the
+`Counter` example:
 
 ```swift
 struct Counter: LeafComponent {
