@@ -13,9 +13,9 @@
 ### Easily build React-like UI components in Swift for new or existing iOS apps 🛠⚛️📲
 
 Gluon provides a declarative, testable and scalable API for building UI
-components backed by fully native views. It can be easily added to existing iOS
-apps and you can start using Gluon for new app features without rewriting the
-rest of the code or changing the app's overall architecture.
+components backed by fully native views. You can use it for your new iOS apps or
+add to existing apps with little effort and without rewriting the rest of the
+code or changing the app's overall architecture.
 
 ## Example code
 
