@@ -438,7 +438,7 @@ a macro system available that would allow something like JSX to be used for
 Gluon. As soon is it becomes easy to implement, we'd definitely consider it as
 an option.
 
-## Author
+## Maintainers
 
 [Max Desiatov](https://desiatov.com)
 
