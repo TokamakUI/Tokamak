@@ -19,7 +19,7 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   private var mountedChildren = [MountedComponent<R>]()
   private let parentTarget: R.Target
   let type: AnyCompositeComponent.Type
-  var state = [String: Any]()
+  var state = [Any]()
 
   init(_ node: AnyNode,
        _ type: AnyCompositeComponent.Type,

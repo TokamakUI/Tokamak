@@ -26,20 +26,10 @@ public struct State<T> {
 extension State: Equatable where T: Equatable {}
 
 public struct Hooks {
-  var currentState: ((_ id: String) -> Any?)?
-  var queueState: ((_ state: Any, _ id: String) -> ())?
+  var currentState: ((Any) -> (Any, Int))?
+  var queueState: ((_ state: Any, _ index: Int) -> ())?
 
-  /// This overload works around unexpected behaviour, where
-  /// `"\(#file)\(#line)"` as a default arguments is evaluated to local values,
-  /// not values at the call site.
-  public func state<T>(_ initial: T,
-                       file: String = #file,
-                       line: Int = #line) -> State<T> {
-    return state(initial, id: "\(file)\(line)")
-  }
-
-  public func state<T>(_ initial: T,
-                       id: String) -> State<T> {
+  public func state<T>(_ initial: T) -> State<T> {
     guard let currentState = currentState,
       let queueState = queueState else {
       fatalError("""
@@ -48,8 +38,8 @@ public struct Hooks {
       """)
     }
 
-    let current = currentState(id) as? T ?? initial
+    let (value, index) = currentState(initial)
 
-    return State(current) { queueState($0, id) }
+    return State(value as? T ?? initial) { queueState($0, index) }
   }
 }

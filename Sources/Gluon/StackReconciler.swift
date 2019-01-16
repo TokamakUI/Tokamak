@@ -26,7 +26,7 @@ public final class StackReconciler<R: Renderer> {
 
   func queue(state: Any,
              for component: MountedCompositeComponent<R>,
-             id: String) {
+             id: Int) {
     let scheduleReconcile = queuedRerenders.isEmpty
 
     component.state[id] = state
@@ -48,8 +48,18 @@ public final class StackReconciler<R: Renderer> {
   }
 
   func render(component: MountedCompositeComponent<R>) -> AnyNode {
+    var stateIndex = 0
     hooks.currentState = { [weak component] in
-      component?.state[$0]
+      defer { stateIndex += 1 }
+
+      guard let component = component else { return ($0, stateIndex) }
+
+      if component.state.count > stateIndex {
+        return (component.state[stateIndex], stateIndex)
+      } else {
+        component.state.append($0)
+        return ($0, stateIndex)
+      }
     }
 
     // Avoiding an indirect reference cycle here: this closure can be
