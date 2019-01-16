@@ -463,8 +463,9 @@ x === y
 
 // this works though
 struct Counter {
-  static func render() -> AnyNode { 
-    return Button.node("Increment")
+  static func render(hooks: Hooks) -> AnyNode { 
+    let count = hooks.state(0)
+    return Label.node("\(count.value)")
   }
 }
 
@@ -474,13 +475,35 @@ xComponent == yComponent
 let rendered = xComponent.render()
 ```
 
-Protocols and structs with `static` functions allow us to work around this
-and to formalise an hierarchy of different kinds of components with `Equatable`
-constraints. We could remove `static` from `render` on `Component` 
-protocol, but this makes possible adding and referencing instance properties
-from a non-`static` version of `render`. Components could become 
-inadvertently stateful that way, while hiding the fact that from API perspective
-components are actually functions, not instances.
+Protocols and structs with `static` functions allow us to work around this and
+to formalise an hierarchy of different kinds of components with protocols and
+`Equatable` constraints. 
+
+We could remove `static` from `render` on `Component` protocol, but this makes
+possible adding and referencing instance properties from a non-`static` version
+of `render`. Components could become inadvertently stateful that way hiding the
+fact that components are actually functions, not instances. Consider this
+hypothetical API:
+
+```swift
+struct Counter {
+  // this makes `Counter` component stateful,
+  // but prevents observing state changes
+  var count = 0
+
+  // no `static` here:
+  func render() -> AnyNode {
+    return Label.node("\(count)")
+  }
+}
+```
+
+Now you have direct access to component's state, but we aren't able to easily
+schedule updates of the component tree when this state changes. We could require
+authors of components to implement
+[`didSet`](https://www.hackingwithswift.com/read/8/5/property-observers-didset)
+on every instance property, but this is cumbersome and hard to enforce.
+Isolating component's state with `Hooks` allows us to solve this problem.
 
 ## Maintainers
 
