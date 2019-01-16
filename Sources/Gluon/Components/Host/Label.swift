@@ -6,7 +6,11 @@
 //
 
 public struct Label: HostComponent {
-  public struct Props: Equatable, StyleProps {
+  public struct Props: Equatable, StyleProps, Default {
+    public static var defaultValue: Props {
+      return Props()
+    }
+
     public let alignment: TextAlignment
     public let style: Style?
 

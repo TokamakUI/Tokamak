@@ -27,6 +27,7 @@
 		D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */; };
 		D1CB7D2B21E136520075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */; };
 		D1CB7D2E21E29CC80075C0C3 /* StackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2D21E29CC80075C0C3 /* StackController.swift */; };
+		D1E8755521EF2ED200D4A7BA /* HooksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8755421EF2ED200D4A7BA /* HooksTests.swift */; };
 		OBJ_100 /* Animated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* Animated.swift */; };
 		OBJ_101 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* Button.swift */; };
 		OBJ_102 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* Label.swift */; };
@@ -57,7 +58,7 @@
 		OBJ_144 /* TestRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* TestRenderer.swift */; };
 		OBJ_145 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* TestView.swift */; };
 		OBJ_147 /* Gluon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::Gluon::Product" /* Gluon.framework */; };
-		OBJ_153 /* GluonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_79 /* GluonTests.swift */; };
+		OBJ_153 /* ReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_79 /* ReconcilerTests.swift */; };
 		OBJ_154 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_80 /* XCTestManifests.swift */; };
 		OBJ_156 /* GluonTestRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */; };
 		OBJ_157 /* Gluon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Gluon::Gluon::Product" /* Gluon.framework */; };
@@ -136,6 +137,7 @@
 		D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		D1CB7D2D21E29CC80075C0C3 /* StackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackController.swift; sourceTree = "<group>"; };
+		D1E8755421EF2ED200D4A7BA /* HooksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HooksTests.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -195,7 +197,7 @@
 		OBJ_74 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		OBJ_75 /* Unique.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unique.swift; sourceTree = "<group>"; };
 		OBJ_76 /* VersionedArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionedArray.swift; sourceTree = "<group>"; };
-		OBJ_79 /* GluonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonTests.swift; sourceTree = "<group>"; };
+		OBJ_79 /* ReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReconcilerTests.swift; sourceTree = "<group>"; };
 		OBJ_8 /* Package.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Package.xcconfig; sourceTree = "<group>"; };
 		OBJ_80 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		OBJ_81 /* Example */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Example; sourceTree = SOURCE_ROOT; };
@@ -437,8 +439,9 @@
 		OBJ_78 /* GluonTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_79 /* GluonTests.swift */,
+				OBJ_79 /* ReconcilerTests.swift */,
 				OBJ_80 /* XCTestManifests.swift */,
+				D1E8755421EF2ED200D4A7BA /* HooksTests.swift */,
 			);
 			name = GluonTests;
 			path = Tests/GluonTests;
@@ -623,7 +626,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_153 /* GluonTests.swift in Sources */,
+				D1E8755521EF2ED200D4A7BA /* HooksTests.swift in Sources */,
+				OBJ_153 /* ReconcilerTests.swift in Sources */,
 				OBJ_154 /* XCTestManifests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

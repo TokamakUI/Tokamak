@@ -6,7 +6,11 @@
 //
 
 public struct Button: HostComponent {
-  public struct Props: Equatable, EventHandlerProps, StyleProps {
+  public struct Props: Equatable, EventHandlerProps, StyleProps, Default {
+    public static var defaultValue: Props {
+      return Props()
+    }
+
     public let handlers: [Event: Handler<()>]
     public let style: Style?
     public let titleColor: Color?

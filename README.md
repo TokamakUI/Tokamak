@@ -110,7 +110,7 @@ struct AnyNode: Equatable {
 }
 ```
  
-Here's an example of an array of nodes used as `Children` in a standard
+Here's an example of an array of nodes used as `Children` in the standard
 `StackView` component provided by Gluon, which describe subviews of the stack
 view.
 
@@ -125,7 +125,7 @@ struct StackView: Component {
 
 ### Components
 
-A component is a type, which describes how to render given `Props` and 
+`Component` is a type, which describes how to render given `Props` and 
 `Children` on screen:
 
 ```swift
@@ -435,6 +435,51 @@ The main problem is that currently there's no easily extensible Swift parser or
 a macro system available that would allow something like JSX to be used for
 Gluon. As soon is it becomes easy to implement, we'd definitely consider it as
 an option.
+
+### Why is `render` function `static` on `Component` protocol?
+
+With an alternative approach to API design of the framework we could define
+components as plain functions, which wouldn't need to be `static`:
+
+```swift
+func button(props: ButtonProps) -> AnyNode {
+  // ...
+}
+```
+
+The problem here is that we need equality comparison on components to be able
+to define `Equatable` on nodes. This isn't available for plain functions:
+
+```swift
+let x = button
+let y = button
+
+// won't compile
+x == y
+
+// won't compile: reference equality is also not defined on functions
+x === y
+
+// this works though
+struct Counter {
+  static func render() -> AnyNode { 
+    return Button.node("Increment")
+  }
+}
+
+let xComponent = Component.self
+let yComponent = Component.self
+xComponent == yComponent
+let rendered = xComponent.render()
+```
+
+Protocols and structs with `static` functions allow us to work around this
+and to formalise an hierarchy of different kinds of components with `Equatable`
+constraints. We could remove `static` from `render` on `Component` 
+protocol, but this makes possible adding and referencing instance properties
+from a non-`static` version of `render`. Components could become 
+inadvertently stateful that way, while hiding the fact that from API perspective
+components are actually functions, not instances.
 
 ## Maintainers
 

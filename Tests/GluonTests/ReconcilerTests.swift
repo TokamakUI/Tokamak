@@ -38,7 +38,7 @@ struct Counter: LeafComponent {
   }
 }
 
-final class GluonTests: XCTestCase {
+final class ReconcilerTests: XCTestCase {
   func testMount() {
     let renderer = TestRenderer(Counter.node(42))
     let root = renderer.rootTarget
