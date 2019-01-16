@@ -100,7 +100,7 @@ A node is a container for `Props`, `Children` and a type of a component
 rendering this "configuration". If you're familiar with React, nodes in Gluon
 correspond to [elements in
 React](https://reactjs.org/docs/glossary.html#elements). When `Children` is an
-array of nodes, we can indirectly form a tree of nodes, describing the app's UI.
+array of nodes, we can indirectly form a tree describing the app's UI.
 Corollary, nodes are immutable and `Equatable`. You'd only need to use the
 standard `AnyNode` type provided by Gluon:
 
@@ -307,11 +307,12 @@ managed by Gluon. Not only this greatly simplifies your code of your components
 and allows you to make it declarative, it also completely decouples
 platform-specific code. 
 
-Note that `Counter` component above didn't contain a single `UIKit` type,
-although it's then passed to a specific `UIKitRenderer`. Providing renderers for
-other platforms in the future is one of our top priorities. Imagine an
-`AppKitRenderer` that allows you to render the same component on macOS without
-any changes applied to the component code and without requiring Marzipan!
+Note that `Counter` component above doesn't contain a single type from `UIKit`
+module, although it's then passed to a specific `UIKitRenderer`. Providing
+renderers for other platforms in the future is one of our top priorities.
+Imagine an `AppKitRenderer` that allows you to render the same component on
+macOS without any changes applied to the component code and without requiring
+Marzipan!
 
 ## Example project
 
