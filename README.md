@@ -34,9 +34,9 @@ state changes.
 
 * **Clean composable architecture**: components can be passed to other
 components as children with an established API focused on code reuse. You can
-easily embed Gluon components within your existing UIKit code. No need to
-decide whether you should subclass `UIView` or `UIViewController` to make your 
-UI composable.
+easily embed Gluon components within your existing UIKit code or vice versa:
+expose that code as Gluon components. No need to decide whether you should
+subclass `UIView` or `UIViewController` to make your UI composable.
 
 * **Off-screen rendering for unit-tests**: no need to maintain slow and flaky
 UI tests that render everything on a simulator screen and simulate actual
