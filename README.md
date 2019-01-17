@@ -92,10 +92,9 @@ struct Counter: LeafComponent {
     return StackView.node(.init(axis: .vertical,
                                 distribution: .fillEqually,
                                 Style(.frame(props.frame))), [
-        Button.node(.init(onPress: Handler { count.set { $0 + 1 } }),
-                    "Increment"),
-
-        Label.node(.init(alignment: .center), "\(count.value)"),
+      Button.node(.init(onPress: Handler { count.set { $0 + 1 } }),
+                  "Increment"),
+      Label.node(.init(alignment: .center), "\(count.value)")
     ])
   }
 }
@@ -305,6 +304,7 @@ struct Counter: LeafComponent {
     let count = hooks.state(0)
     // ...
   }
+}
 ```
 
 It returns a very simple state container, which on initial call of `render`
@@ -334,18 +334,14 @@ In `Counter` component the label's content is "bound" to `count` this way:
 
 ```swift
 struct Counter: LeafComponent {
-  // ...
-  static func render(props: Props, hooks: Hooks) -> AnyNode {
-    let count = hooks.state(props.initial)
+  static func render(props: Null, hooks: Hooks) -> AnyNode {
+    let count = hooks.state(1)
 
-    return StackView.node(
-      // ...
-      [
+    return StackView.node([
         Button.node(.init(onPress: Handler { count.set { $0 + 1 } }), 
-          "Increment"),
-        Label.node(.init(alignment: .center), "\(count.value)"),
-      ]
-    )
+                    "Increment"),
+        Label.node("\(count.value)"),
+    ])
   }
 }
 ```
