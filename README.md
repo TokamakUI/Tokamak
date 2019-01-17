@@ -15,12 +15,65 @@ components backed by fully native views. You can use it for your new iOS apps or
 add to existing apps with little effort and without rewriting the rest of the
 code or changing the app's overall architecture.
 
-## Example code
-
 Gluon recreates [React's Hooks
 API](https://reactjs.org/docs/hooks-intro.html) improving it with Swift's strong
 type system, high performance and efficient memory management thanks to being
 compiled to a native binary.
+
+When compared to standard UIKit or other 
+frameworks and patterns based on plain UIKit, Gluon provides:
+
+* **Declarative [DSL](https://en.wikipedia.org/wiki/Domain-specific_language)
+for UI**: no more conflicts caused by Storyboards, no template languages or XML.
+Describe UI of your app concisely in Swift.
+
+* **Easy to use one-way data binding**: tired of `didSet`, delegates,
+notifications or KVO? Component's UI is automatically updated based on
+state changes.
+
+* **Clean composable architecture**: components can be passed to other
+components as children with an established API focused on code reuse. You can
+easily embed Gluon components within your existing UIKit code. No need to
+decide whether you should subclass `UIView` or `UIViewController` to make your 
+UI composable.
+
+* **Off-screen rendering for unit-tests**: no need to maintain slow and flaky
+UI tests that render everything on a simulator screen and simulate actual
+touch events. All of UI logic written with Gluon can be tested off-screen
+with tests completing in a fraction of a second.
+
+* **Platform-independent core**: our main goal is to eventually support as many
+platforms as possible. Starting with iOS and UIKit, we aim to add renderers
+for macOS/AppKit, WebAssembly/DOM and Android in future versions. As the core
+API is cross-platform, UI components written with Gluon won't need to change
+to become available on newly added platforms unless you need UI logic specific
+to a device or OS.
+
+* **Architecture proven to work**: React have been available for years and
+gained a lot of traction and is still growing. We've seen so many apps
+successfully rebuilt with it and heard positive feedback on React itself, but
+a lot of complaints about JavaScript. Gluon makes architecture of React with
+its established patterns available to you in Swift.
+
+## Table of contents
+
+  * [Example code](#example-code)
+  * [Fundamental concepts](#fundamental-concepts)
+      * [Props](#props)
+      * [Children](#children)
+      * [Nodes](#nodes)
+      * [Components](#components)
+      * [Hooks](#hooks)
+      * [Renderers](#renderers)
+  * [Example project](#example-project)
+  * [Requirements](#requirements)
+  * [FAQ](#faq)
+  * [Acknowledgments](#acknowledgments)
+  * [Contributing](#contributing)
+  * [Maintainers](#maintainers)
+  * [License](#license)
+
+## Example code
 
 An example of a Gluon component that binds a button to a label, embedded
 within an existing UIKit app, looks like this:
@@ -54,7 +107,7 @@ final class GluonViewController: UIViewController {
 
     // easy integration with any existing UIKit app!
     renderer = UIKitRenderer(
-      Counter.node(.init(frame: Rectangle(view.frame), initial: 0)),
+      Counter.node(.init(frame: Rectangle(view.frame), initial: 1)),
       rootViewController: self
     )
   }
@@ -219,10 +272,12 @@ protocol CompositeComponent: Component {
 }
 ```
 
-In fact, standard `PureComponent` is a special case of a `CompositeComponent`
+In fact, the standard `PureComponent` is a special case of a `CompositeComponent`
 that doesn't use `Hooks` during rendering:
 
 ```swift
+// Helpers provided by Gluon:
+
 protocol PureComponent: CompositeComponent {
   static func render(props: Props, children: Children) -> AnyNode
 }
@@ -302,23 +357,24 @@ ones: just add it to your `extension Hooks` wherever works best for you.
 
 When mapping Gluon's architecture to what's previosly been established in iOS,
 components correspond to a "view-model" layer, while hooks provide a reusable
-"controller" layer. A `Renderer` is "view" layer in these terms, but it's fully
-managed by Gluon. Not only this greatly simplifies your code of your components
-and allows you to make it declarative, it also completely decouples
-platform-specific code. 
+"controller" layer. A `Renderer` is a "view" layer in these terms, but it's
+fully managed by Gluon. Not only this greatly simplifies the code of your
+components and allows you to make it declarative, it also completely decouples
+platform-specific code.  Note that `Counter` component above doesn't contain a
+single type from `UIKit` module, although it's then passed to a specific
+`UIKitRenderer`. 
 
-Note that `Counter` component above doesn't contain a single type from `UIKit`
-module, although it's then passed to a specific `UIKitRenderer`. Providing
-renderers for other platforms in the future is one of our top priorities.
-Imagine an `AppKitRenderer` that allows you to render the same component on
-macOS without any changes applied to the component code and without requiring
-Marzipan!
+Providing renderers for other platforms in the future is one of our top
+priorities. Imagine an `AppKitRenderer` that allows you to render the same
+component on macOS without any changes applied to the component code and without
+requiring Marzipan!
 
 ## Example project
 
 To run the example project, clone the repo, and run `pod install` from the
 [`Example`](https://github.com/MaxDesiatov/Gluon/tree/master/Example) directory
-first.
+first. Then you can open `Example/Gluon.xcworkspace` and run the main 
+executable target `Gluon-Example`.
 
 ## Requirements
 
@@ -373,6 +429,99 @@ file.
 -->
 
 ## FAQ
+
+### What are "Rules of Hooks"?
+
+Hooks are a great way to inject state and other side effects into pure
+functions. In some sense, you could consider Hooks an emulation of [indexed
+monads](https://kseo.github.io/posts/2017-01-12-indexed-monads.html) or
+[algebraic effects](http://www.eff-lang.org), which served as [inspiration for
+Hooks in
+React](https://reactjs.org/docs/hooks-faq.html#what-is-the-prior-art-for-hooks).
+Unfortunately, due to Swift's current limitations, we can't express monads or
+algebraic effects natively, so Hooks need a few restrictions applied to make it
+work. Similar restrictions are also applied to [Hooks in
+React](https://reactjs.org/docs/hooks-rules.html):
+
+1. You can call Hooks from your custom Hooks (defined in an `extension` of
+   `Hooks`).
+2. You can call Hooks from `render` function of any component.
+3. Don't call Hooks from a loop, condition or nested function.
+4. Don't call Hooks from any other function.
+
+In the future version Gluon will provide a linter able to catch violations of
+Rules of Hooks in compile time.
+
+### Why do Rules of Hooks exist?
+
+[Same as
+React](https://reactjs.org/docs/hooks-faq.html#how-does-react-associate-hook-calls-with-components),
+Gluon maintains an array of "memory cells" for every stateful component to hold
+the actual state. It needs to distinguish one Hooks call from another to map
+those to corresponding cells during execution of a `render` function of your
+component. Consider this:
+
+```swift
+struct ConditionalCounter: LeafComponent {
+  static func render(props: Null, hooks: Hooks) -> AnyNode {
+    // this code won't work as expected as it violates Rule 3:
+    // > Don't call Hooks from a condition
+    
+    // state stored in "memory cell" 1
+    let condition = hooks.state(false) 
+    if condition {
+      // state stored in "memory cell" 2
+      count = hooks.state(0) 
+    } else {
+      // state, which should be stored in "memory cell" 3, 
+      // but will be actually queried from "memory cell" 2
+      count = hooks.state(42) 
+    }
+    
+    return StackView.node([
+      Switch.node(.init(value: condition.value,
+                        valueHandler: Handler(condition.set)))
+      Button.node(.init(onPress: Handler { count.set { $0 + 1 } }),
+                  "Increment"),
+      Label.node("\(count.value)"),
+    ])
+  }
+}
+```
+
+How does Gluon renderer know on subsequent calls to `DoubleCounter.render` which
+state you're actually addressing? It relies on the order of those calls, so if
+the order dynamically changes from one rendering to another, you could
+unexpectedly get a value of the one state cell, when you expected a value of
+a different state cell. 
+
+We encourage you to keep any hooks logic at the top level of a `render`
+definition, which makes all side effects of a component clear upfront and is a
+good practice anyway. If you do need conditions or loops applied, you can always
+create a separate component and return a node conditionally or an array of nodes
+for this new child component from `render` of a parent component. The fixed 
+version of `ConditionalCounter` would look like this:
+
+```swift
+struct ConditionalCounter: LeafComponent {
+  static func render(props: Null, hooks: Hooks) -> AnyNode {
+    // this works as expected
+    let condition = hooks.state(false)
+    let count1 = hooks.state(0)
+    let count2 = hooks.state(42)
+
+    let value = (condition ? count1 : count2).value
+
+    return StackView.node([
+      Switch.node(.init(value: condition.value,
+                        valueHandler: Handler(condition.set)))
+      Button.node(.init(onPress: Handler { count.set { $0 + 1 } }),
+                  "Increment"),
+      Label.node("\(count.value)"),
+    ])
+  }
+}
+```
 
 ### Why does Gluon use value types and protocols instead of classes?
 
@@ -439,49 +588,57 @@ an option.
 
 ### Why is `render` function `static` on `Component` protocol?
 
-With an alternative approach to API design of the framework we could define
-components as plain functions, which wouldn't need to be `static`:
+With an alternative approach to API design of a framework like this we could
+define components as plain functions, which wouldn't need to be `static`:
 
 ```swift
-func button(props: ButtonProps) -> AnyNode {
+func counter(hooks: Hooks) -> AnyNode {
   // ...
 }
 ```
 
 The problem here is that we need equality comparison on components to be able
-to define `Equatable` on nodes. This isn't available for plain functions:
+to define `Equatable` on `AnyNode`. This isn't available for plain functions:
 
 ```swift
-let x = button
-let y = button
+let x = counter
+let y = counter
 
 // won't compile
 x == y
 
-// won't compile: reference equality is also not defined on functions
+// won't compile: reference equality is also not defined on functions,
+// even though functions are reference types ¯\_(ツ)_/¯ 
 x === y
-
-// this works though
-struct Counter {
-  static func render(hooks: Hooks) -> AnyNode { 
-    let count = hooks.state(0)
-    return Label.node("\(count.value)")
-  }
-}
-
-let xComponent = Component.self
-let yComponent = Component.self
-xComponent == yComponent
-let rendered = xComponent.render()
 ```
 
 Protocols and structs with `static` functions allow us to work around this and
 to formalise an hierarchy of different kinds of components with protocols and
-`Equatable` constraints. 
+`Equatable` constraints:
+
+```swift
+// equality comparison is available for types
+struct Counter {
+  static func render(hooks: Hooks) -> AnyNode { 
+    // ...
+  }
+}
+
+
+// Gluon does something like this internally for your components,
+// consider following a pseudocode:
+let xComponent = Counter.self
+let yComponent = OtherComponent.self
+
+var rendered: AnyNode?
+if xComponent != yComponent {
+  rendered = xComponent.render()
+}
+```
 
 We could remove `static` from `render` on `Component` protocol, but this makes
 possible adding and referencing instance properties from a non-`static` version
-of `render`. Components could become inadvertently stateful that way hiding the
+of `render`. Components could become inadvertently stateful that way, hiding the
 fact that components are actually functions, not instances. Consider this
 hypothetical API:
 
@@ -491,19 +648,41 @@ struct Counter {
   // but prevents observing state changes
   var count = 0
 
-  // no `static` here:
+  // no `static` here, which makes `var` above accessible
   func render() -> AnyNode {
     return Label.node("\(count)")
   }
 }
 ```
 
-Now you have direct access to component's state, but we aren't able to easily
+Now there's direct access to component's state, but we aren't able to easily
 schedule updates of the component tree when this state changes. We could require
 authors of components to implement
 [`didSet`](https://www.hackingwithswift.com/read/8/5/property-observers-didset)
 on every instance property, but this is cumbersome and hard to enforce.
-Isolating component's state with `Hooks` allows us to solve this problem.
+Marking `render` as `static` makes it harder to introduce unobservable local
+state, while intended local state is managed with `Hooks`.
+
+
+## Acknowledgments
+
+* Thanks to the [Swift Core Team](https://swift.org/community/) for
+  building one of the best programming languages available!
+* Thanks to [React
+  people](https://reactjs.org/docs/hooks-faq.html#what-is-the-prior-art-for-hooks)
+  for building a UI framework that is practical and elegant, while keeping it
+  usable with JavaScript at the same time. 😄
+* Thanks to [Render](https://github.com/alexdrone/Render),
+  [ReSwift](https://github.com/ReSwift/ReSwift), [Katana
+  UI](https://github.com/BendingSpoons/katana-ui-swift) and
+  [Komponents](https://github.com/freshOS/Komponents) for inspiration!
+
+## Contributing
+
+This project adheres to the [Contributor Covenant Code of
+Conduct](https://github.com/MaxDesiatov/Gluon/blob/master/CODE_OF_CONDUCT.md).
+By participating, you are expected to uphold this code. Please report
+unacceptable behavior to conduct@gluon.sh.
 
 ## Maintainers
 
@@ -514,10 +693,3 @@ Isolating component's state with `Hooks` allows us to solve this problem.
 Gluon is available under the Apache 2.0 license. See the
 [LICENSE](https://github.com/MaxDesiatov/Gluon/blob/master/LICENSE) file for
 more info.
-
-## Contributing
-
-This project adheres to the [Contributor Covenant Code of
-Conduct](https://github.com/MaxDesiatov/Gluon/blob/master/CODE_OF_CONDUCT.md).
-By participating, you are expected to uphold this code. Please report
-unacceptable behavior to conduct@gluon.sh.
