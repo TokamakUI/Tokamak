@@ -12,10 +12,6 @@ public protocol StyleProps {
 public enum Layout: Equatable {
   case frame(Rectangle)
   case constraints([Constraint])
-
-  public static func constraint(_ constraint: Constraint) -> Layout {
-    return .constraints([constraint])
-  }
 }
 
 public struct Style: Equatable {
@@ -31,14 +27,64 @@ public struct Style: Equatable {
     backgroundColor: Color? = nil,
     center: Point? = nil,
     clipsToBounds: Bool? = nil,
-    isHidden: Bool? = nil,
-    _ layout: Layout? = nil
+    isHidden: Bool? = nil
   ) {
     self.alpha = alpha
     self.backgroundColor = backgroundColor
     self.center = center
     self.clipsToBounds = clipsToBounds
     self.isHidden = isHidden
-    self.layout = layout
+    layout = nil
+  }
+
+  public init(
+    alpha: Double? = nil,
+    backgroundColor: Color? = nil,
+    center: Point? = nil,
+    clipsToBounds: Bool? = nil,
+    isHidden: Bool? = nil,
+    _ frame: Rectangle
+  ) {
+    self.alpha = alpha
+    self.backgroundColor = backgroundColor
+    self.center = center
+    self.clipsToBounds = clipsToBounds
+    self.isHidden = isHidden
+
+    layout = .frame(frame)
+  }
+
+  public init(
+    alpha: Double? = nil,
+    backgroundColor: Color? = nil,
+    center: Point? = nil,
+    clipsToBounds: Bool? = nil,
+    isHidden: Bool? = nil,
+    _ constraint: Constraint
+  ) {
+    self.alpha = alpha
+    self.backgroundColor = backgroundColor
+    self.center = center
+    self.clipsToBounds = clipsToBounds
+    self.isHidden = isHidden
+
+    layout = .constraints([constraint])
+  }
+
+  public init(
+    alpha: Double? = nil,
+    backgroundColor: Color? = nil,
+    center: Point? = nil,
+    clipsToBounds: Bool? = nil,
+    isHidden: Bool? = nil,
+    _ constraints: [Constraint]
+  ) {
+    self.alpha = alpha
+    self.backgroundColor = backgroundColor
+    self.center = center
+    self.clipsToBounds = clipsToBounds
+    self.isHidden = isHidden
+
+    layout = .constraints(constraints)
   }
 }

@@ -24,6 +24,9 @@
 		D126CB7121ECAF850097300E /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126CB7021ECAF850097300E /* Constraint.swift */; };
 		D144FB9921E8A56D001020F3 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */; };
 		D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */; };
+		D1C3A71E21F0C30900C6B884 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C3A71C21F0C2F900C6B884 /* Constraint.swift */; };
+		D1C3A72121F0C47200C6B884 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C3A72021F0C47200C6B884 /* Size.swift */; };
+		D1C3A72421F0DE5300C6B884 /* Insets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C3A72221F0DC6300C6B884 /* Insets.swift */; };
 		D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */; };
 		D1CB7D2B21E136520075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */; };
 		D1CB7D2E21E29CC80075C0C3 /* StackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2D21E29CC80075C0C3 /* StackController.swift */; };
@@ -31,7 +34,6 @@
 		OBJ_100 /* Animated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* Animated.swift */; };
 		OBJ_101 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* Button.swift */; };
 		OBJ_102 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* Label.swift */; };
-		OBJ_103 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_51 /* Constraint.swift */; };
 		OBJ_104 /* ModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_53 /* ModalPresenter.swift */; };
 		OBJ_105 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_54 /* Router.swift */; };
 		OBJ_106 /* StackPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* StackPresenter.swift */; };
@@ -86,7 +88,6 @@
 		OBJ_94 /* AnyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_41 /* AnyNode.swift */; };
 		OBJ_95 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* Components.swift */; };
 		OBJ_96 /* Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* Default.swift */; };
-		OBJ_97 /* Diffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_44 /* Diffable.swift */; };
 		OBJ_98 /* Hooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_45 /* Hooks.swift */; };
 		OBJ_99 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_47 /* Alert.swift */; };
 /* End PBXBuildFile section */
@@ -134,6 +135,9 @@
 		D126CB7221ECE1400097300E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
 		D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountedNull.swift; sourceTree = "<group>"; };
+		D1C3A71C21F0C2F900C6B884 /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
+		D1C3A72021F0C47200C6B884 /* Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
+		D1C3A72221F0DC6300C6B884 /* Insets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Insets.swift; sourceTree = "<group>"; };
 		D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		D1CB7D2D21E29CC80075C0C3 /* StackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackController.swift; sourceTree = "<group>"; };
@@ -167,13 +171,11 @@
 		OBJ_41 /* AnyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNode.swift; sourceTree = "<group>"; };
 		OBJ_42 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		OBJ_43 /* Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
-		OBJ_44 /* Diffable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diffable.swift; sourceTree = "<group>"; };
 		OBJ_45 /* Hooks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hooks.swift; sourceTree = "<group>"; };
 		OBJ_47 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		OBJ_48 /* Animated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animated.swift; sourceTree = "<group>"; };
 		OBJ_49 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		OBJ_50 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
-		OBJ_51 /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		OBJ_53 /* ModalPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPresenter.swift; sourceTree = "<group>"; };
 		OBJ_54 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		OBJ_55 /* StackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackPresenter.swift; sourceTree = "<group>"; };
@@ -240,6 +242,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D1C3A71F21F0C31600C6B884 /* Constraint */ = {
+			isa = PBXGroup;
+			children = (
+				D126CB7021ECAF850097300E /* Constraint.swift */,
+				D1C3A72021F0C47200C6B884 /* Size.swift */,
+			);
+			path = Constraint;
+			sourceTree = "<group>";
+		};
 		D1CB7D2C21E29C9F0075C0C3 /* Host */ = {
 			isa = PBXGroup;
 			children = (
@@ -308,7 +319,7 @@
 				OBJ_19 /* Color.swift */,
 				OBJ_20 /* Event.swift */,
 				OBJ_21 /* Rectangle.swift */,
-				D126CB7021ECAF850097300E /* Constraint.swift */,
+				D1C3A71F21F0C31600C6B884 /* Constraint */,
 			);
 			path = Props;
 			sourceTree = "<group>";
@@ -343,7 +354,6 @@
 				OBJ_41 /* AnyNode.swift */,
 				OBJ_42 /* Components.swift */,
 				OBJ_43 /* Default.swift */,
-				OBJ_44 /* Diffable.swift */,
 				OBJ_45 /* Hooks.swift */,
 				OBJ_46 /* Components */,
 				OBJ_67 /* MountedComponent */,
@@ -399,12 +409,13 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_58 /* Color.swift */,
+				D1C3A71C21F0C2F900C6B884 /* Constraint.swift */,
 				OBJ_59 /* Event.swift */,
-				OBJ_51 /* Constraint.swift */,
 				OBJ_60 /* Rectangle.swift */,
 				OBJ_61 /* Second.swift */,
 				OBJ_62 /* Style.swift */,
 				OBJ_63 /* TextAlignment.swift */,
+				D1C3A72221F0DC6300C6B884 /* Insets.swift */,
 			);
 			path = Props;
 			sourceTree = "<group>";
@@ -643,6 +654,7 @@
 				OBJ_167 /* ModalPresenter.swift in Sources */,
 				OBJ_168 /* Color.swift in Sources */,
 				OBJ_169 /* Event.swift in Sources */,
+				D1C3A72121F0C47200C6B884 /* Size.swift in Sources */,
 				OBJ_170 /* Rectangle.swift in Sources */,
 				OBJ_171 /* UIControlComponent.swift in Sources */,
 				OBJ_173 /* UIHostComponent.swift in Sources */,
@@ -665,17 +677,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				D1C3A71E21F0C30900C6B884 /* Constraint.swift in Sources */,
 				OBJ_93 /* AnyEquatable.swift in Sources */,
 				OBJ_94 /* AnyNode.swift in Sources */,
 				OBJ_95 /* Components.swift in Sources */,
 				OBJ_96 /* Default.swift in Sources */,
-				OBJ_97 /* Diffable.swift in Sources */,
 				OBJ_98 /* Hooks.swift in Sources */,
 				OBJ_99 /* Alert.swift in Sources */,
 				OBJ_100 /* Animated.swift in Sources */,
 				OBJ_101 /* Button.swift in Sources */,
 				OBJ_102 /* Label.swift in Sources */,
-				OBJ_103 /* Constraint.swift in Sources */,
 				OBJ_104 /* ModalPresenter.swift in Sources */,
 				OBJ_105 /* Router.swift in Sources */,
 				OBJ_106 /* StackPresenter.swift in Sources */,
@@ -687,6 +698,7 @@
 				OBJ_110 /* Rectangle.swift in Sources */,
 				OBJ_111 /* Second.swift in Sources */,
 				OBJ_112 /* Style.swift in Sources */,
+				D1C3A72421F0DE5300C6B884 /* Insets.swift in Sources */,
 				OBJ_113 /* TextAlignment.swift in Sources */,
 				OBJ_114 /* Slider.swift in Sources */,
 				D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */,

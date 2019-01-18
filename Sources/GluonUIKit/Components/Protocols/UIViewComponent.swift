@@ -38,10 +38,12 @@ private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
   case let .frame(frame)?:
     view.frame = CGRect(frame)
   case let .constraints(constraints)?:
-    view.removeConstraints(view.constraints)
-    for c in constraints {
-//      view.addConstraint(<#T##constraint: NSLayoutConstraint##NSLayoutConstraint#>)
-    }
+    view.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.deactivate(target.constraints)
+    target.constraints = Array(constraints.compactMap {
+      view.constraint($0, next: nil)
+    }.joined())
+    NSLayoutConstraint.activate(target.constraints)
   case nil:
     ()
   }
@@ -91,8 +93,6 @@ extension UIViewComponent where Target == Target.DefaultValue,
     } else {
       result = box(for: target, parent.viewController, node)
     }
-    applyStyle(result, props)
-    update(view: result, props, children)
 
     switch parent {
     case let box as ViewBox<GluonStackView>:
@@ -128,6 +128,9 @@ extension UIViewComponent where Target == Target.DefaultValue,
     default:
       parentAssertionFailure()
     }
+
+    applyStyle(result, props)
+    update(view: result, props, children)
 
     return result
   }

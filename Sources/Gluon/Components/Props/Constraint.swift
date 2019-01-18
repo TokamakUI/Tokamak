@@ -1,9 +1,21 @@
 //
-//  Layout.swift
+//  Constraint.swift
 //  Gluon
 //
 //  Created by Max Desiatov on 16/10/2018.
 //
+
+public struct Edges: Equatable {
+  public let target: Constraint.Target
+  public let insets: Insets
+
+  public static func equal(
+    to target: Constraint.Target,
+    insets: Insets = .zero
+  ) -> Constraint {
+    return .edges(Edges(target: target, insets: insets))
+  }
+}
 
 public enum Constraint: Equatable {
   public enum Target {
@@ -111,13 +123,19 @@ public enum Constraint: Equatable {
   }
 
   case baseline(VerticalLocation)
-  case bottom(VerticalLocation)
+
   case center(Center)
   case centerX(HorizontalLocation)
   case centerY(VerticalLocation)
+
   case height(Size)
+  case width(Size)
+
+  case edges(Edges)
+  case leading(HorizontalLocation)
+  case trailing(VerticalLocation)
   case left(HorizontalLocation)
   case right(HorizontalLocation)
   case top(VerticalLocation)
-  case width(Size)
+  case bottom(VerticalLocation)
 }

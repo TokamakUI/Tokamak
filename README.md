@@ -1,6 +1,6 @@
 # Gluon
 
-## Truly native React-like UI framework for Swift 🛠⚛️📲
+## React-like framework for native UI written in pure Swift 🛠⚛️📲
 
 [![CI Status](https://img.shields.io/travis/MaxDesiatov/Gluon.svg?style=flat)](https://travis-ci.org/MaxDesiatov/Gluon)
 [![Coverage](https://img.shields.io/codecov/c/github/MaxDesiatov/Gluon/master.svg?style=flat)](https://codecov.io/gh/maxdesiatov/Gluon)
@@ -15,13 +15,12 @@ components backed by fully native views. You can use it for your new iOS apps or
 add to existing apps with little effort and without rewriting the rest of the
 code or changing the app's overall architecture.
 
-Gluon recreates [React's Hooks
-API](https://reactjs.org/docs/hooks-intro.html) improving it with Swift's strong
-type system, high performance and efficient memory management thanks to being
-compiled to a native binary.
+Gluon recreates [React's Hooks API](https://reactjs.org/docs/hooks-intro.html)
+improving it with Swift's strong type system, high performance and efficient
+memory management thanks to being compiled to a native binary.
 
-When compared to standard UIKit or other 
-frameworks and patterns based on plain UIKit, Gluon provides:
+When compared to standard UIKit MVC or other patterns built on top of
+it (MVVM, MVP, VIPER etc), Gluon provides:
 
 * **Declarative [DSL](https://en.wikipedia.org/wiki/Domain-specific_language)
 for native UI**: no more conflicts caused by Storyboards, no template languages 
@@ -44,17 +43,17 @@ touch events. All of UI logic written with Gluon can be tested off-screen
 with tests completing in a fraction of a second.
 
 * **Platform-independent core**: our main goal is to eventually support as many
-platforms as possible. Starting with iOS and UIKit, we aim to add renderers
-for macOS/AppKit, WebAssembly/DOM and Android in future versions. As the core
-API is cross-platform, UI components written with Gluon won't need to change
-to become available on newly added platforms unless you need UI logic specific
-to a device or OS.
+platforms as possible. Starting with iOS and UIKit, we plan to add renderers
+for macOS/AppKit, WebAssembly/DOM and native Android in future versions. As
+the core API is cross-platform, UI components written with Gluon won't need to
+change to become available on newly added platforms unless you need UI logic
+specific to a device or OS.
 
 * **Architecture proven to work**: React have been available for years and
 gained a lot of traction and is still growing. We've seen so many apps
 successfully rebuilt with it and heard positive feedback on React itself, but
-a lot of complaints about JavaScript. Gluon makes architecture of React with
-its established patterns available to you in Swift.
+a lot of complaints about overreliance on JavaScript. Gluon makes architecture
+of React with its established patterns available to you in Swift.
 
 ## Table of contents
 
@@ -82,7 +81,6 @@ within an existing UIKit app, looks like this:
 ```swift
 struct Counter: LeafComponent {
   struct Props: Equatable {
-    let frame: Rectangle
     let initial: Int
   }
 
@@ -91,7 +89,7 @@ struct Counter: LeafComponent {
 
     return StackView.node(.init(axis: .vertical,
                                 distribution: .fillEqually,
-                                Style(.frame(props.frame))), [
+                                Style(Edges.equal(to: .parent))), [
       Button.node(.init(onPress: Handler { count.set { $0 + 1 } }),
                   "Increment"),
       Label.node(.init(alignment: .center), "\(count.value)")
@@ -106,10 +104,8 @@ final class GluonViewController: UIViewController {
     super.viewDidLoad()
 
     // easy integration with any existing UIKit app!
-    renderer = UIKitRenderer(
-      Counter.node(.init(frame: Rectangle(view.frame), initial: 1)),
-      rootViewController: self
-    )
+    renderer = UIKitRenderer(Counter.node(.init(initial: 1)),
+                             rootViewController: self)
   }
 }
 ```
@@ -460,7 +456,9 @@ component. Consider this:
 
 ```swift
 struct ConditionalCounter: LeafComponent {
-  static func render(props: Null, hooks: Hooks) -> AnyNode {
+  typealias Props = Null
+
+  static func render(props: Props, hooks: Hooks) -> AnyNode {
     // this code won't work as expected as it violates Rule 3:
     // > Don't call Hooks from a condition
     
@@ -501,7 +499,9 @@ version of `ConditionalCounter` would look like this:
 
 ```swift
 struct ConditionalCounter: LeafComponent {
-  static func render(props: Null, hooks: Hooks) -> AnyNode {
+  typealias Props = Null
+
+  static func render(props: Props, hooks: Hooks) -> AnyNode {
     // this works as expected
     let condition = hooks.state(false)
     let count1 = hooks.state(0)

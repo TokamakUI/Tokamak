@@ -28,7 +28,7 @@ struct NavRouter: StackRouter {
     let close =
       Button.node(.init(
         onPress: props.onPress,
-        Style(.frame(Rectangle(.zero, Size(width: 200, height: 200))))
+        Style(Rectangle(.zero, Size(width: 200, height: 200)))
       ), "Close Modal")
     switch route {
     case .first:
@@ -37,13 +37,13 @@ struct NavRouter: StackRouter {
           close,
           Label.node(.init(
             alignment: .center,
-            Style(.frame(Rectangle(Point(x: 0, y: 200),
-                                   Size(width: 200, height: 200))))
+            Style(Rectangle(Point(x: 0, y: 200),
+                            Size(width: 200, height: 200)))
           ), "first"),
           Button.node(.init(
             onPress: Handler { push(.second) },
-            Style(.frame(Rectangle(Point(x: 0, y: 400),
-                                   Size(width: 200, height: 200))))
+            Style(Rectangle(Point(x: 0, y: 400),
+                            Size(width: 200, height: 200)))
           ), "second"),
         ]
       )
@@ -53,8 +53,8 @@ struct NavRouter: StackRouter {
           close,
           Label.node(.init(
             alignment: .center,
-            Style(.frame(Rectangle(Point(x: 0, y: 200),
-                                   Size(width: 200, height: 200))))
+            Style(Rectangle(Point(x: 0, y: 200),
+                            Size(width: 200, height: 200)))
           ), "second"),
         ]
       )
@@ -84,7 +84,6 @@ struct StackModal: PureLeafComponent {
 
 struct SimpleModal: LeafComponent {
   struct Props: Equatable {
-    let frame: Rectangle
     let isPresented: State<Bool>
   }
 
@@ -98,36 +97,33 @@ struct SimpleModal: LeafComponent {
   static func render(props: Props, hooks: Hooks) -> AnyNode {
     let backgroundColor = hooks.state(0)
 
-    return props.isPresented.value ?
-      ModalPresenter.node(
-        View.node(
-          .init(Style(backgroundColor: colors[backgroundColor.value].0)),
-          StackView.node(
-            .init(
-              axis: .vertical,
-              distribution: .fillEqually,
-              Style(.frame(props.frame))
-            ), [
-              Button.node(.init(
-                onPress: Handler { props.isPresented.set(false) },
-                Style(.frame(Rectangle(.zero, Size(width: 200, height: 200))))
-              ), "Close Modal"),
-              SegmentedControl.node(
-                .init(
-                  value: backgroundColor.value,
-                  valueHandler: Handler(backgroundColor.set)
-                ), colors.map { $0.1 }
-              ),
-            ]
-          )
+    return props.isPresented.value ? ModalPresenter.node(
+      View.node(
+        .init(Style(backgroundColor: colors[backgroundColor.value].0)),
+        StackView.node(
+          .init(
+            axis: .vertical,
+            distribution: .fillEqually,
+            Style(Edges.equal(to: .parent))
+          ), [
+            Button.node(.init(
+              onPress: Handler { props.isPresented.set(false) }
+            ), "Close Modal"),
+            SegmentedControl.node(
+              .init(
+                value: backgroundColor.value,
+                valueHandler: Handler(backgroundColor.set)
+              ), colors.map { $0.1 }
+            ),
+          ]
         )
-      ) : Null.node()
+      )
+    ) : Null.node()
   }
 }
 
 struct Counter: LeafComponent {
   struct Props: Equatable {
-    let frame: Rectangle
     let initial: Int
   }
 
@@ -149,7 +145,6 @@ struct Counter: LeafComponent {
       )),
 
       SimpleModal.node(.init(
-        frame: props.frame,
         isPresented: isAnimationModalPresented
       )),
     ] + (count.value < 15 ? [
@@ -166,17 +161,19 @@ struct Counter: LeafComponent {
       Label.node(.init(alignment: .center), "\(sliding.value)"),
     ] : [])
 
-    return StackView.node(.init(axis: .vertical,
-                                distribution: .fillEqually,
-                                Style(.frame(props.frame))),
-                          children)
+    return StackView.node(
+      .init(axis: .vertical,
+            distribution: .fillEqually,
+            Style(Edges.equal(to: .parent))),
+      children
+    )
   }
 }
 
 struct App: PureLeafComponent {
-  typealias Props = Rectangle
+  typealias Props = Null
 
-  static func render(props: Rectangle) -> AnyNode {
-    return Counter.node(.init(frame: props, initial: 5))
+  static func render(props: Props) -> AnyNode {
+    return Counter.node(.init(initial: 1))
   }
 }

@@ -59,6 +59,12 @@ extension Component where Children == Null {
   }
 }
 
+extension Component where Props == Null, Children == Null {
+  public static func node() -> AnyNode {
+    return node(Null(), Null())
+  }
+}
+
 extension Component where Props: Default, Props.DefaultValue == Props {
   public static func node(_ children: Children) -> AnyNode {
     return node(Props.defaultValue, children)
