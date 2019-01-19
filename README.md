@@ -81,11 +81,11 @@ within an existing UIKit app, looks like this:
 ```swift
 struct Counter: LeafComponent {
   struct Props: Equatable {
-    let initial: Int
+    let countFrom: Int
   }
 
   static func render(props: Props, hooks: Hooks) -> AnyNode {
-    let count = hooks.state(props.initial)
+    let count = hooks.state(props.countFrom)
 
     return StackView.node(.init(axis: .vertical,
                                 distribution: .fillEqually,
@@ -97,15 +97,9 @@ struct Counter: LeafComponent {
   }
 }
 
-final class GluonViewController: UIViewController {
-  private var renderer: UIKitRenderer?
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-    // easy integration with any existing UIKit app!
-    renderer = UIKitRenderer(Counter.node(.init(initial: 1)),
-                             rootViewController: self)
+final class ViewController: GluonViewController {
+  override var node: AnyNode {
+    return Counter.node(.init(countFrom: 1))
   }
 }
 ```
@@ -130,7 +124,7 @@ Here's a simple `Props` struct you could use for your own component like
 
 ```swift
 struct Props: Equatable {
-  let initial: Int
+  let countFrom: Int
 }
 ```
 

@@ -19,11 +19,11 @@ public protocol UITarget {
   var viewController: UIViewController { get }
 }
 
-public class UIKitRenderer: Renderer {
+class UIKitRenderer: Renderer {
   private var reconciler: StackReconciler<UIKitRenderer>?
-  private let rootViewController: UIViewController
+  private weak var rootViewController: UIViewController!
 
-  public init(_ node: AnyNode, rootViewController: UIViewController) {
+  init(_ node: AnyNode, rootViewController: UIViewController) {
     self.rootViewController = rootViewController
     reconciler = StackReconciler(
       node: node,
@@ -38,10 +38,10 @@ public class UIKitRenderer: Renderer {
     """)
   }
 
-  public func mountTarget(to parent: UITarget,
-                          parentNode: AnyNode?,
-                          with component: AnyHostComponent.Type,
-                          node: AnyNode) -> UITarget? {
+  func mountTarget(to parent: UITarget,
+                   parentNode: AnyNode?,
+                   with component: AnyHostComponent.Type,
+                   node: AnyNode) -> UITarget? {
     guard let rendererComponent = component as? UIHostComponent.Type else {
       typeAssertionFailure(for: component)
       return nil
@@ -51,9 +51,9 @@ public class UIKitRenderer: Renderer {
                                          node: node)
   }
 
-  public func update(target: UITarget,
-                     with component: AnyHostComponent.Type,
-                     node: AnyNode) {
+  func update(target: UITarget,
+              with component: AnyHostComponent.Type,
+              node: AnyNode) {
     guard let rendererComponent = component as? UIHostComponent.Type else {
       typeAssertionFailure(for: component)
       return
@@ -63,8 +63,8 @@ public class UIKitRenderer: Renderer {
                              node: node)
   }
 
-  public func unmount(target: UITarget,
-                      with component: AnyHostComponent.Type) {
+  func unmount(target: UITarget,
+               with component: AnyHostComponent.Type) {
     guard let rendererComponent = component as? UIHostComponent.Type else {
       typeAssertionFailure(for: component)
       return

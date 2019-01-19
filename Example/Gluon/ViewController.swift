@@ -10,13 +10,9 @@ import Gluon
 import GluonUIKit
 import UIKit
 
-final class GluonViewController: UIViewController {
-  private var renderer: UIKitRenderer?
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-    renderer = UIKitRenderer(App.node(), rootViewController: self)
+final class ViewController: GluonViewController {
+  override var node: AnyNode {
+    return App.node()
   }
 }
 
