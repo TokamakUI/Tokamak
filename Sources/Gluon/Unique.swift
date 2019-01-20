@@ -18,10 +18,29 @@ extension UniqueReference: Equatable {
   }
 }
 
-/// `Unique` works around the fact that `ObjectIdentifier` can't take
-/// closures as arguments despite closures being reference types and having
-/// identity. `Unique` implements `Equatable`, but will return `false` on
-/// equality comparison of different identities (including closures).
+/** `Unique` works around the fact that `ObjectIdentifier` can't take
+ closures as arguments despite closures being reference types and having
+ identity. You can pass any value or reference to `Unique.init`, which will
+ create a new identity. `Unique` implements `Equatable`, but will return
+ `false` on equality comparison of different identities (including closures)
+ Example:
+
+ ```swift
+ let x = Unique(5)
+ let y = Unique(5)
+ let z = x
+
+ x == y // is `false`
+ x == z // is `true`
+
+ let closure1 = Unique { 5 }
+ let closure2 = Unique { 5 }
+ let closure3 = closure1
+
+ closure1 == closure2 // is `false`
+ closure3 == closure1 // is `true`
+ ```
+ */
 public struct Unique<T> {
   private let id = UniqueReference()
 

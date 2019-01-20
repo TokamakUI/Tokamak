@@ -1,7 +1,6 @@
 disabled_rules:
 - trailing_comma
 - identifier_name
-- private_over_fileprivate
 - void_return
 - operator_whitespace
 - nesting

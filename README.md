@@ -79,6 +79,9 @@ An example of a Gluon component that binds a button to a label, embedded
 within an existing UIKit app, looks like this:
 
 ```swift
+import Gluon
+import GluonUIKit
+
 struct Counter: LeafComponent {
   struct Props: Equatable {
     let countFrom: Int
