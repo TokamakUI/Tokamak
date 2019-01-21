@@ -161,13 +161,13 @@ struct Counter: LeafComponent {
       )),
 
       Label.node(.init(alignment: .center), "\(sliding.value)"),
-      
+
       Switch.node(.init(value: switchState.value, valueHandler: Handler(switchState.set))),
-      
+
       Label.node(.init(alignment: .center), "\(switchState.value)"),
-      
+
       Stepper.node(.init(value: stepperState.value, valueHandler: Handler(stepperState.set))),
-      
+
       Label.node(.init(alignment: .center), "\(stepperState.value)"),
     ] : [])
 

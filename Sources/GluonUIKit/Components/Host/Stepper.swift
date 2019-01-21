@@ -16,7 +16,7 @@ final class GluonStepper: UIStepper, Default, ValueStorage {
 
 extension Stepper: UIValueComponent {
   typealias Target = GluonStepper
-  
+
   static func update(valueBox: ValueControlBox<GluonStepper>,
                      _ props: Stepper.Props,
                      _ children: Null) {}

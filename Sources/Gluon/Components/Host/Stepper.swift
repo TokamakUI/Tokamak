@@ -7,12 +7,12 @@
 
 public struct Stepper: HostComponent {
   public struct Props: Equatable, EventHandlerProps, StyleProps,
-  ValueControlProps {
+    ValueControlProps {
     public let handlers: EventHandlers
     public let style: Style?
     public let value: Double
     public let valueHandler: Handler<Double>?
-    
+
     public init(handlers: EventHandlers = [:],
                 _ style: Style? = nil,
                 value: Double,
@@ -23,6 +23,6 @@ public struct Stepper: HostComponent {
       self.valueHandler = valueHandler
     }
   }
-  
+
   public typealias Children = Null
 }
