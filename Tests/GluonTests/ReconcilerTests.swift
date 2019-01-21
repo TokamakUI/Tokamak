@@ -216,5 +216,8 @@ final class ReconcilerTests: XCTestCase {
 
   static var allTests = [
     ("testMount", testMount),
+    ("testUpdate", testUpdate),
+    ("testDoubleUpdate", testDoubleUpdate),
+    ("testUnmount", testUnmount),
   ]
 }
