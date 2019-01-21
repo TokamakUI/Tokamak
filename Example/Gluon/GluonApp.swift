@@ -132,6 +132,8 @@ struct Counter: LeafComponent {
     let sliding = hooks.state(0.5 as Float)
     let isStackModalPresented = hooks.state(false)
     let isAnimationModalPresented = hooks.state(false)
+    let switchState = hooks.state(true)
+    let stepperState = hooks.state(0.0)
 
     let children = [
       Button.node(.init(onPress: Handler { isStackModalPresented.set(true) }),
@@ -154,17 +156,29 @@ struct Counter: LeafComponent {
       Label.node(.init(alignment: .center), "\(count.value)"),
 
       Slider.node(.init(
+        Style(.width(Constraint.Size.Attribute.width.equal(to: .parent))),
         value: sliding.value,
         valueHandler: Handler(sliding.set)
       )),
 
       Label.node(.init(alignment: .center), "\(sliding.value)"),
+
+      Switch.node(.init(value: switchState.value, valueHandler: Handler(switchState.set))),
+
+      Label.node(.init(alignment: .center), "\(switchState.value)"),
+
+      Stepper.node(.init(value: stepperState.value, valueHandler: Handler(stepperState.set))),
+
+      Label.node(.init(alignment: .center), "\(stepperState.value)"),
     ] : [])
 
     return StackView.node(
-      .init(axis: .vertical,
-            distribution: .fillEqually,
-            Style(Edges.equal(to: .parent))),
+      .init(
+        alignment: .center,
+        axis: .vertical,
+        distribution: .fillEqually,
+        Style(Edges.equal(to: .parent))
+      ),
       children
     )
   }
@@ -173,7 +187,7 @@ struct Counter: LeafComponent {
 struct App: PureLeafComponent {
   typealias Props = Null
 
-  static func render(props: Props) -> AnyNode {
+  static func render(props _: Props) -> AnyNode {
     return Counter.node(.init(initial: 1))
   }
 }
