@@ -133,6 +133,7 @@ struct Counter: LeafComponent {
     let isStackModalPresented = hooks.state(false)
     let isAnimationModalPresented = hooks.state(false)
     let switchState = hooks.state(true)
+    let stepperState = hooks.state(0.0)
 
     let children = [
       Button.node(.init(onPress: Handler { isStackModalPresented.set(true) }),
@@ -160,8 +161,14 @@ struct Counter: LeafComponent {
       )),
 
       Label.node(.init(alignment: .center), "\(sliding.value)"),
+      
       Switch.node(.init(value: switchState.value, valueHandler: Handler(switchState.set))),
+      
       Label.node(.init(alignment: .center), "\(switchState.value)"),
+      
+      Stepper.node(.init(value: stepperState.value, valueHandler: Handler(stepperState.set))),
+      
+      Label.node(.init(alignment: .center), "\(stepperState.value)"),
     ] : [])
 
     return StackView.node(

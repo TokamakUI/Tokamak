@@ -23,6 +23,8 @@
 /* Begin PBXBuildFile section */
 		A62891FA21F5DB02001BE090 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891F921F5DB02001BE090 /* Switch.swift */; };
 		A62891FB21F5DB83001BE090 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891F721F5DAEE001BE090 /* Switch.swift */; };
+		A62891FF21F5F07F001BE090 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891FE21F5F07F001BE090 /* Stepper.swift */; };
+		A628920021F5F0B2001BE090 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891FC21F5F075001BE090 /* Stepper.swift */; };
 		D126CB7121ECAF850097300E /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126CB7021ECAF850097300E /* Constraint.swift */; };
 		D144FB9921E8A56D001020F3 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */; };
 		D163F9D621F27F8C00BA464B /* GluonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163F9D521F27F8C00BA464B /* GluonViewController.swift */; };
@@ -136,6 +138,8 @@
 /* Begin PBXFileReference section */
 		A62891F721F5DAEE001BE090 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
 		A62891F921F5DB02001BE090 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
+		A62891FC21F5F075001BE090 /* Stepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
+		A62891FE21F5F07F001BE090 /* Stepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
 		D126CB7021ECAF850097300E /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D126CB7221ECE1400097300E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
@@ -270,6 +274,7 @@
 				OBJ_65 /* StackView.swift */,
 				OBJ_66 /* View.swift */,
 				A62891F921F5DB02001BE090 /* Switch.swift */,
+				A62891FE21F5F07F001BE090 /* Stepper.swift */,
 			);
 			path = Host;
 			sourceTree = "<group>";
@@ -286,6 +291,7 @@
 				OBJ_30 /* StackView.swift */,
 				OBJ_31 /* View.swift */,
 				A62891F721F5DAEE001BE090 /* Switch.swift */,
+				A62891FC21F5F075001BE090 /* Stepper.swift */,
 			);
 			path = Host;
 			sourceTree = "<group>";
@@ -679,6 +685,7 @@
 				OBJ_181 /* ControlBox.swift in Sources */,
 				D126CB7121ECAF850097300E /* Constraint.swift in Sources */,
 				OBJ_183 /* ValueControlBox.swift in Sources */,
+				A628920021F5F0B2001BE090 /* Stepper.swift in Sources */,
 				OBJ_184 /* ViewBox.swift in Sources */,
 				OBJ_185 /* UIKitRenderer.swift in Sources */,
 			);
@@ -698,6 +705,7 @@
 				OBJ_100 /* Animated.swift in Sources */,
 				OBJ_101 /* Button.swift in Sources */,
 				OBJ_102 /* Label.swift in Sources */,
+				A62891FF21F5F07F001BE090 /* Stepper.swift in Sources */,
 				OBJ_104 /* ModalPresenter.swift in Sources */,
 				OBJ_105 /* Router.swift in Sources */,
 				OBJ_106 /* StackPresenter.swift in Sources */,
