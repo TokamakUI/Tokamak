@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		A62891FA21F5DB02001BE090 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891F921F5DB02001BE090 /* Switch.swift */; };
+		A62891FB21F5DB83001BE090 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891F721F5DAEE001BE090 /* Switch.swift */; };
 		D126CB7121ECAF850097300E /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126CB7021ECAF850097300E /* Constraint.swift */; };
 		D144FB9921E8A56D001020F3 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */; };
 		D163F9D621F27F8C00BA464B /* GluonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163F9D521F27F8C00BA464B /* GluonViewController.swift */; };
@@ -132,6 +134,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A62891F721F5DAEE001BE090 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
+		A62891F921F5DB02001BE090 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
 		D126CB7021ECAF850097300E /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D126CB7221ECE1400097300E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
@@ -265,6 +269,7 @@
 				D1CB7D2D21E29CC80075C0C3 /* StackController.swift */,
 				OBJ_65 /* StackView.swift */,
 				OBJ_66 /* View.swift */,
+				A62891F921F5DB02001BE090 /* Switch.swift */,
 			);
 			path = Host;
 			sourceTree = "<group>";
@@ -280,6 +285,7 @@
 				OBJ_29 /* StackController.swift */,
 				OBJ_30 /* StackView.swift */,
 				OBJ_31 /* View.swift */,
+				A62891F721F5DAEE001BE090 /* Switch.swift */,
 			);
 			path = Host;
 			sourceTree = "<group>";
@@ -659,6 +665,7 @@
 				OBJ_169 /* Event.swift in Sources */,
 				D1C3A72121F0C47200C6B884 /* Size.swift in Sources */,
 				OBJ_170 /* Rectangle.swift in Sources */,
+				A62891FB21F5DB83001BE090 /* Switch.swift in Sources */,
 				OBJ_171 /* UIControlComponent.swift in Sources */,
 				OBJ_173 /* UIHostComponent.swift in Sources */,
 				OBJ_174 /* UIValueComponent.swift in Sources */,
@@ -717,6 +724,7 @@
 				OBJ_123 /* Store.swift in Sources */,
 				OBJ_124 /* Unique.swift in Sources */,
 				OBJ_125 /* VersionedArray.swift in Sources */,
+				A62891FA21F5DB02001BE090 /* Switch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

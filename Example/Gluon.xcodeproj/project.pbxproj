@@ -43,7 +43,7 @@
 		8CADEBB8BFF6F2621CA49E8F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		C1B4A8D80770145FDAFEAE64 /* Pods_Gluon_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gluon_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6DA99382B6892EAB361742F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		D1E0C86021DA54780042A261 /* GluonApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonApp.swift; sourceTree = "<group>"; };
+		D1E0C86021DA54780042A261 /* GluonApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonApp.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
 		D1E6BCD121AD4CD6002769E3 /* GluonTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonTest.swift; sourceTree = "<group>"; };
 		E7F808D1B3715FF294877289 /* Pods-Gluon_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gluon_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Gluon_Example/Pods-Gluon_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
