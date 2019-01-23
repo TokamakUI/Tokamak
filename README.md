@@ -112,8 +112,8 @@ final class ViewController: GluonViewController {
 ## Fundamental concepts
 
 We try to keep Gluon's API as simple as possible and the core algorithm with
-supporting protocols/structures currently fit in only ~600 lines of code. It
-builds upon only a few basic concepts:
+supporting protocols/structures currently fit in only ~600 lines of code. It's
+all built upon a few basic concepts:
 
 ### Props
 
