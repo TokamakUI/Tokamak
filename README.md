@@ -446,7 +446,7 @@ React](https://reactjs.org/docs/hooks-rules.html):
 or not a custom Hook. ⚠️
 
 In the future version Gluon will provide a linter able to catch violations of
-Rules of Hooks in compile time.
+Rules of Hooks at compile time.
 
 ### Why do Rules of Hooks exist?
 
