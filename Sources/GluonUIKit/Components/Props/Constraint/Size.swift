@@ -53,3 +53,71 @@ extension Constraint.Size {
     }
   }
 }
+
+extension Height {
+  func constraint(
+    current: UIView,
+    parent: UIView?,
+    next: UIView?
+  ) -> [NSLayoutConstraint] {
+    let firstAnchor = \UIView.heightAnchor
+    let secondAnchor = \UIView.heightAnchor
+
+    switch target {
+    case .own:
+      return [current[keyPath: firstAnchor].constraint(
+        equalToConstant: CGFloat(constant)
+      )]
+    case let .external(target):
+      let secondView: UIView?
+      switch target {
+      case .next:
+        secondView = next
+      case .parent:
+        secondView = parent
+      }
+
+      guard let second = secondView?[keyPath: secondAnchor] else { return [] }
+
+      return [current[keyPath: firstAnchor].constraint(
+        equalTo: second,
+        multiplier: CGFloat(multiplier),
+        constant: CGFloat(constant)
+      )]
+    }
+  }
+}
+
+extension Width {
+  func constraint(
+    current: UIView,
+    parent: UIView?,
+    next: UIView?
+  ) -> [NSLayoutConstraint] {
+    let firstAnchor = \UIView.widthAnchor
+    let secondAnchor = \UIView.widthAnchor
+
+    switch target {
+    case .own:
+      return [current[keyPath: firstAnchor].constraint(
+        equalToConstant: CGFloat(constant)
+      )]
+    case let .external(target):
+      let secondView: UIView?
+      switch target {
+      case .next:
+        secondView = next
+      case .parent:
+        secondView = parent
+      }
+
+      guard let second = secondView?[keyPath: secondAnchor] else { return [] }
+
+      return [current[keyPath: firstAnchor].constraint(
+        equalTo: second,
+        multiplier: CGFloat(multiplier),
+        constant: CGFloat(constant)
+      )]
+    }
+  }
+}

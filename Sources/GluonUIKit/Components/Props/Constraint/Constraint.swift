@@ -14,16 +14,14 @@ extension UIView {
     next: UIView?
   ) -> [NSLayoutConstraint] {
     switch prop {
-    case let .height(size):
-      return size.constraint(
-        source: .height,
+    case let .height(height):
+      return height.constraint(
         current: self,
         parent: superview,
         next: next
       )
-    case let .width(size):
-      return size.constraint(
-        source: .width,
+    case let .width(width):
+      return width.constraint(
         current: self,
         parent: superview,
         next: next
