@@ -18,7 +18,12 @@ public struct Edges: Equatable {
 }
 
 public struct Width: Equatable {
-  public let target: Constraint.Target
+  public enum Target: Equatable {
+    case external(Constraint.Target)
+    case own
+  }
+
+  public let target: Target
   public let constant: Double
   public let multiplier: Double
 
@@ -28,13 +33,18 @@ public struct Width: Equatable {
     multiplier: Double = 1
   ) -> Constraint {
     return .width(Width(
-      target: target, constant: constant, multiplier: multiplier
+      target: .external(target), constant: constant, multiplier: multiplier
     ))
   }
 }
 
 public struct Height: Equatable {
-  public let target: Constraint.Target
+  public enum Target: Equatable {
+    case external(Constraint.Target)
+    case own
+  }
+
+  public let target: Target
   public let constant: Double
   public let multiplier: Double
 
@@ -43,8 +53,8 @@ public struct Height: Equatable {
     constant: Double = 0,
     multiplier: Double = 1
   ) -> Constraint {
-    return .height(Height(
-      target: target, constant: constant, multiplier: multiplier
+    return .width(Width(
+      target: .external(target), constant: constant, multiplier: multiplier
     ))
   }
 }
