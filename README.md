@@ -373,7 +373,7 @@ executable target `Gluon-Example`.
 
 ## Requirements
 
-* iOS 10.0
+* iOS 10.0 or later
 * Xcode 10.1
 * Swift 4.2
 
