@@ -49,7 +49,7 @@ the core API is cross-platform, UI components written with Gluon won't need to
 change to become available on newly added platforms unless you need UI logic
 specific to a device or OS.
 
-* **Architecture proven to work**: React have been available for years and
+* **Architecture proven to work**: React has been available for years and
 gained a lot of traction and is still growing. We've seen so many apps
 successfully rebuilt with it and heard positive feedback on React itself, but
 a lot of complaints about overreliance on JavaScript. Gluon makes architecture
