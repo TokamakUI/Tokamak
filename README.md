@@ -136,11 +136,10 @@ struct Props: Equatable {
 ### Children
 
 Sometimes "configuration" is described in a tree-like fashion. For example, a
-list of views needs to contain an array of subviews, which themselves can
-contain other subviews. In Gluon this is called `Children`, which behave similar
-to `Props`, but are important enough to be treated separately. `Children` are
-also immutable and `Equatable`, which allows us to observe those for changes
-too.
+list of views contains an array of subviews, which themselves can contain other
+subviews. In Gluon this is called `Children`, which behave similar to `Props`,
+but are important enough to be treated separately. `Children` are also immutable
+and `Equatable`, which allows us to observe those for changes too.
 
 ### Nodes
 
@@ -296,14 +295,14 @@ state and to be updated when the state changes. We've seen it used in the
 struct Counter: LeafComponent {
   // ...
   static func render(props: Props, hooks: Hooks) -> AnyNode {
-    let count = hooks.state(0)
+    let count = hooks.state(1)
     // ...
   }
 }
 ```
 
 It returns a very simple state container, which on initial call of `render`
-contains `0` as a value and values passed to `count.set(_: Int)` on subsequent
+contains `1` as a value and values passed to `count.set(_: Int)` on subsequent
 updates:
 
 ```swift
@@ -353,8 +352,12 @@ components correspond to a "view-model" layer, while hooks provide a reusable
 fully managed by Gluon. Not only this greatly simplifies the code of your
 components and allows you to make it declarative, it also completely decouples
 platform-specific code.  Note that `Counter` component above doesn't contain a
-single type from `UIKit` module, although it's then passed to a specific
-`UIKitRenderer`. 
+single type from `UIKit` module, although the component itself is passed to a
+specific `UIKitRenderer` to make it available in an app using `UIKit`. On other
+platforms you could use a different renderer, while the component code could
+stay the same if its behavior doesn't need to change for that environment.
+Otherwise you can adjust component's behaviour via `Props` and pass different
+"initializing" props depending on the renderer's platform.
 
 Providing renderers for other platforms in the future is one of our top
 priorities. Imagine an `AppKitRenderer` that allows you to render the same
