@@ -685,7 +685,8 @@ unacceptable behavior to conduct@gluon.sh.
 
 ## Maintainers
 
-[Max Desiatov](https://desiatov.com)
+[Max Desiatov](https://desiatov.com), [Matvii
+Hodovaniuk](https://matvii.hodovani.uk)
 
 ## License
 
