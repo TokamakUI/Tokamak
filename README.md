@@ -549,7 +549,7 @@ Swift. Gluon's API brings these benefits when compared to class-based APIs:
   dance](https://stackoverflow.com/questions/21113963/is-the-weakself-strongself-dance-really-necessary-when-referencing-self-inside-a)
   when using callbacks;
 - you don't need to worry about modifying an object in a different scope
-  captured with a reference by accident: immutable values are implicitly copied
+  accidentaly captured by reference: immutable values are implicitly copied
   and most of the copies are removed by the compiler during optimization;
 - focus on composition over inheritance: no need to subclass `UIViewController`
   or `UIView` and to worry about all of the above when you only need simple 
@@ -562,7 +562,7 @@ Swift. Gluon's API brings these benefits when compared to class-based APIs:
 
 At the moment the answer is no, but we find that Gluon's API allows you to
 create nodes much more concisely when compared to `React.createElement` syntax.
-In fact, with Gluon's `node` API you don't need closing element tags you'd have 
+In fact, with Gluon's `.node` API you don't need closing element tags you'd have 
 to write with JSX. E.g. compare this:
 
 ```swift
@@ -577,8 +577,8 @@ to this:
 
 We do agree that there's an overhead of `.init` for props and a requirement of
 props initializer arguments to be ordered. For the latter, we have a helpful
-convention in Gluon that all arguments to props initializers should be ordered
-alphabetically.
+convention in Gluon that all named arguments to props initializers should be
+ordered alphabetically.
 
 The main problem is that currently there's no easily extensible Swift parser or
 a macro system available that would allow something like JSX to be used for
