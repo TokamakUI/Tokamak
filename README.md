@@ -362,7 +362,7 @@ Otherwise you can adjust component's behavior via `Props` and pass different
 Providing renderers for other platforms in the future is one of our top
 priorities. Imagine an `AppKitRenderer` that allows you to render the same
 component on macOS without any changes applied to the component code and without
-requiring Marzipan!
+requiring [Marzipan](https://www.imore.com/marzipan)!
 
 ## Example project
 
