@@ -356,7 +356,7 @@ single type from `UIKit` module, although the component itself is passed to a
 specific `UIKitRenderer` to make it available in an app using `UIKit`. On other
 platforms you could use a different renderer, while the component code could
 stay the same if its behavior doesn't need to change for that environment.
-Otherwise you can adjust component's behaviour via `Props` and pass different
+Otherwise you can adjust component's behavior via `Props` and pass different
 "initializing" props depending on the renderer's platform.
 
 Providing renderers for other platforms in the future is one of our top
