@@ -442,7 +442,7 @@ React](https://reactjs.org/docs/hooks-rules.html):
 2. You can call Hooks from your custom Hooks (defined in an `extension` of
    `Hooks`). 🙌
 3. Don't call Hooks from a loop, condition or nested function. 🚨
-4. Don't call Hooks from any function that's not `render` in a `Component`
+4. Don't call Hooks from any function that's not `render` of a component
 or not a custom Hook. ⚠️
 
 In the future version Gluon will provide a linter able to catch violations of
