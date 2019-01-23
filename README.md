@@ -438,11 +438,12 @@ algebraic effects natively, so Hooks need a few restrictions applied to make it
 work. Similar restrictions are also applied to [Hooks in
 React](https://reactjs.org/docs/hooks-rules.html):
 
-1. You can call Hooks from your custom Hooks (defined in an `extension` of
-   `Hooks`).
-2. You can call Hooks from `render` function of any component.
-3. Don't call Hooks from a loop, condition or nested function.
-4. Don't call Hooks from any other function.
+1. You can call Hooks from `render` function of any component. 👍
+2. You can call Hooks from your custom Hooks (defined in an `extension` of
+   `Hooks`). 🙌
+3. Don't call Hooks from a loop, condition or nested function. 🚨
+4. Don't call Hooks from any function that's not `render` in a `Component`
+or not a custom Hook. ⚠️
 
 In the future version Gluon will provide a linter able to catch violations of
 Rules of Hooks in compile time.
