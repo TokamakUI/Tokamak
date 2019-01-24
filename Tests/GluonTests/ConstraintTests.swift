@@ -5,7 +5,6 @@
 //  Created by Matvii Hodovaniuk on 1/24/19.
 //
 
-import GluonTestRenderer
 import XCTest
 
 @testable import Gluon
