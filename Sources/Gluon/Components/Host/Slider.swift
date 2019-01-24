@@ -6,8 +6,10 @@
 //
 
 public struct Slider: HostComponent {
-  public struct Props: Equatable, EventHandlerProps, StyleProps,
+  public struct Props: Equatable, ControlProps, StyleProps,
     ValueControlProps {
+    public var isEnabled: Bool
+
     public let handlers: EventHandlers
     public let style: Style?
     public let value: Float
@@ -16,11 +18,13 @@ public struct Slider: HostComponent {
     public init(handlers: EventHandlers = [:],
                 _ style: Style? = nil,
                 value: Float,
-                valueHandler: Handler<Float>? = nil) {
+                valueHandler: Handler<Float>? = nil,
+                isEnabled: Bool = true) {
       self.handlers = handlers
       self.style = style
       self.value = value
       self.valueHandler = valueHandler
+      self.isEnabled = isEnabled
     }
   }
 

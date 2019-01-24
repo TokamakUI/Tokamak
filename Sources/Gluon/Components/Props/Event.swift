@@ -27,8 +27,9 @@ public enum Event: CaseIterable, Hashable {
 
 public typealias EventHandlers = [Event: Handler<()>]
 
-public protocol EventHandlerProps {
+public protocol ControlProps {
   var handlers: EventHandlers { get }
+  var isEnabled: Bool { get set }
 }
 
 public protocol ValueControlProps {

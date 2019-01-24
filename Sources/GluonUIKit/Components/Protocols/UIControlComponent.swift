@@ -9,7 +9,7 @@ import Gluon
 import UIKit
 
 protocol UIControlComponent: UIViewComponent
-  where Props: EventHandlerProps, Target: UIControl {
+  where Props: ControlProps, Target: UIControl {
   static func update(control box: ControlBox<Target>,
                      _ props: Props,
                      _ children: Children)
@@ -30,6 +30,7 @@ extension UIControlComponent where Target == Target.DefaultValue {
       return
     }
 
+    box.view.isEnabled = props.isEnabled
     box.bind(handlers: props.handlers)
     update(control: box, props, children)
   }
