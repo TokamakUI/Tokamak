@@ -18,12 +18,7 @@ public struct Edges: Equatable {
 }
 
 public struct Width: Equatable {
-  public enum Target: Equatable {
-    case external(Constraint.Target)
-    case own
-  }
-
-  public let target: Target
+  public let target: Constraint.OwnTarget
   public let constant: Double
   public let multiplier: Double
 
@@ -36,15 +31,20 @@ public struct Width: Equatable {
       target: .external(target), constant: constant, multiplier: multiplier
     ))
   }
+
+  public static func equal(
+    to target: Constraint.OwnTarget,
+    constant: Double = 0,
+    multiplier: Double = 1
+  ) -> Constraint {
+    return .width(Width(
+      target: target, constant: constant, multiplier: multiplier
+    ))
+  }
 }
 
 public struct Height: Equatable {
-  public enum Target: Equatable {
-    case external(Constraint.Target)
-    case own
-  }
-
-  public let target: Target
+  public let target: Constraint.OwnTarget
   public let constant: Double
   public let multiplier: Double
 
@@ -55,6 +55,16 @@ public struct Height: Equatable {
   ) -> Constraint {
     return .width(Width(
       target: .external(target), constant: constant, multiplier: multiplier
+    ))
+  }
+
+  public static func equal(
+    to target: Constraint.OwnTarget,
+    constant: Double = 0,
+    multiplier: Double = 1
+  ) -> Constraint {
+    return .height(Height(
+      target: target, constant: constant, multiplier: multiplier
     ))
   }
 }
@@ -63,6 +73,11 @@ public enum Constraint: Equatable {
   public enum Target {
     case next
     case parent
+  }
+
+  public enum OwnTarget: Equatable {
+    case external(Target)
+    case own
   }
 
   public struct HorizontalLocation: Equatable {

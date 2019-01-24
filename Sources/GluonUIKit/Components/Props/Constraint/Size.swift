@@ -55,10 +55,11 @@ extension Constraint.Size {
 }
 
 protocol OwnConstraint {
-    var firstAnchor: KeyPath<UIView, NSLayoutDimension> { get }
-    var secondAnchor: KeyPath<UIView, NSLayoutDimension> { get }
-    var target: Target { get }
-    var constant: Double { get }
+  var firstAnchor: KeyPath<UIView, NSLayoutDimension> { get }
+  var secondAnchor: KeyPath<UIView, NSLayoutDimension> { get }
+  var target: Constraint.OwnTarget { get }
+  var constant: Double { get }
+  var multiplier: Double { get }
 }
 
 extension OwnConstraint {

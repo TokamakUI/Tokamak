@@ -21,11 +21,11 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		A624C3F721F9A3CF007CAEEC /* ConstraintsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A624C3F621F9A3CF007CAEEC /* ConstraintsTests.swift */; };
 		A62891FA21F5DB02001BE090 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891F921F5DB02001BE090 /* Switch.swift */; };
 		A62891FB21F5DB83001BE090 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891F721F5DAEE001BE090 /* Switch.swift */; };
 		A62891FF21F5F07F001BE090 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891FE21F5F07F001BE090 /* Stepper.swift */; };
 		A628920021F5F0B2001BE090 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891FC21F5F075001BE090 /* Stepper.swift */; };
+		A633560521F9CBBC00BCC525 /* TestConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633560321F9CBAC00BCC525 /* TestConstraints.swift */; };
 		D126CB7121ECAF850097300E /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126CB7021ECAF850097300E /* Constraint.swift */; };
 		D144FB9921E8A56D001020F3 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */; };
 		D163F9D621F27F8C00BA464B /* GluonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163F9D521F27F8C00BA464B /* GluonViewController.swift */; };
@@ -137,11 +137,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A624C3F621F9A3CF007CAEEC /* ConstraintsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintsTests.swift; sourceTree = "<group>"; };
 		A62891F721F5DAEE001BE090 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
 		A62891F921F5DB02001BE090 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
 		A62891FC21F5F075001BE090 /* Stepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
 		A62891FE21F5F07F001BE090 /* Stepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
+		A633560321F9CBAC00BCC525 /* TestConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestConstraints.swift; sourceTree = "<group>"; };
 		D126CB7021ECAF850097300E /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D126CB7221ECE1400097300E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
@@ -304,7 +304,7 @@
 			children = (
 				OBJ_11 /* TestRenderer.swift */,
 				OBJ_12 /* TestView.swift */,
-				A624C3F621F9A3CF007CAEEC /* ConstraintsTests.swift */,
+				A633560321F9CBAC00BCC525 /* TestConstraints.swift */,
 			);
 			name = GluonTestRenderer;
 			path = Sources/GluonTestRenderer;
@@ -655,6 +655,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				A633560521F9CBBC00BCC525 /* TestConstraints.swift in Sources */,
 				D1E8755521EF2ED200D4A7BA /* HooksTests.swift in Sources */,
 				OBJ_153 /* ReconcilerTests.swift in Sources */,
 				OBJ_154 /* XCTestManifests.swift in Sources */,
@@ -717,7 +718,6 @@
 				D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */,
 				OBJ_108 /* Color.swift in Sources */,
 				OBJ_109 /* Event.swift in Sources */,
-				A624C3F721F9A3CF007CAEEC /* ConstraintsTests.swift in Sources */,
 				D1CB7D2E21E29CC80075C0C3 /* StackController.swift in Sources */,
 				OBJ_110 /* Rectangle.swift in Sources */,
 				OBJ_111 /* Second.swift in Sources */,
