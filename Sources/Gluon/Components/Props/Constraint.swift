@@ -53,7 +53,7 @@ public struct Height: Equatable {
     constant: Double = 0,
     multiplier: Double = 1
   ) -> Constraint {
-    return .width(Width(
+    return .height(Height(
       target: .external(target), constant: constant, multiplier: multiplier
     ))
   }

@@ -5,10 +5,12 @@
 //  Created by Matvii Hodovaniuk on 1/24/19.
 //
 
-@testable import Gluon
+import GluonTestRenderer
 import XCTest
 
-public final class ConstraintTests {
+@testable import Gluon
+
+final class ConstraintTests: XCTestCase {
   func testWidth() {
     let style = Style(Width.equal(to: .parent))
     XCTAssertEqual(
