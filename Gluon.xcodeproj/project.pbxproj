@@ -37,6 +37,7 @@
 		D1CB7D2B21E136520075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */; };
 		D1CB7D2E21E29CC80075C0C3 /* StackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2D21E29CC80075C0C3 /* StackController.swift */; };
 		D1E8755521EF2ED200D4A7BA /* HooksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8755421EF2ED200D4A7BA /* HooksTests.swift */; };
+		D1EC92F021F5B8000026C207 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC92EF21F5B8000026C207 /* ListView.swift */; };
 		OBJ_100 /* Animated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* Animated.swift */; };
 		OBJ_101 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* Button.swift */; };
 		OBJ_102 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* Label.swift */; };
@@ -61,7 +62,6 @@
 		OBJ_122 /* StackReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_73 /* StackReconciler.swift */; };
 		OBJ_123 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_74 /* Store.swift */; };
 		OBJ_124 /* Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_75 /* Unique.swift */; };
-		OBJ_125 /* VersionedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_76 /* VersionedArray.swift */; };
 		OBJ_132 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_144 /* TestRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* TestRenderer.swift */; };
 		OBJ_145 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* TestView.swift */; };
@@ -154,6 +154,7 @@
 		D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		D1CB7D2D21E29CC80075C0C3 /* StackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackController.swift; sourceTree = "<group>"; };
 		D1E8755421EF2ED200D4A7BA /* HooksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HooksTests.swift; sourceTree = "<group>"; };
+		D1EC92EF21F5B8000026C207 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -210,7 +211,6 @@
 		OBJ_73 /* StackReconciler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackReconciler.swift; sourceTree = "<group>"; };
 		OBJ_74 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		OBJ_75 /* Unique.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unique.swift; sourceTree = "<group>"; };
-		OBJ_76 /* VersionedArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionedArray.swift; sourceTree = "<group>"; };
 		OBJ_79 /* ReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReconcilerTests.swift; sourceTree = "<group>"; };
 		OBJ_8 /* Package.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Package.xcconfig; sourceTree = "<group>"; };
 		OBJ_80 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
@@ -270,6 +270,7 @@
 				OBJ_48 /* Animated.swift */,
 				OBJ_49 /* Button.swift */,
 				OBJ_50 /* Label.swift */,
+				D1EC92EF21F5B8000026C207 /* ListView.swift */,
 				D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */,
 				OBJ_64 /* Slider.swift */,
 				D1CB7D2D21E29CC80075C0C3 /* StackController.swift */,
@@ -380,7 +381,6 @@
 				OBJ_73 /* StackReconciler.swift */,
 				OBJ_74 /* Store.swift */,
 				OBJ_75 /* Unique.swift */,
-				OBJ_76 /* VersionedArray.swift */,
 			);
 			name = Gluon;
 			path = Sources/Gluon;
@@ -710,6 +710,7 @@
 				OBJ_102 /* Label.swift in Sources */,
 				A62891FF21F5F07F001BE090 /* Stepper.swift in Sources */,
 				OBJ_104 /* ModalPresenter.swift in Sources */,
+				D1EC92F021F5B8000026C207 /* ListView.swift in Sources */,
 				OBJ_105 /* Router.swift in Sources */,
 				OBJ_106 /* StackPresenter.swift in Sources */,
 				OBJ_107 /* TabPresenter.swift in Sources */,
@@ -735,7 +736,6 @@
 				OBJ_122 /* StackReconciler.swift in Sources */,
 				OBJ_123 /* Store.swift in Sources */,
 				OBJ_124 /* Unique.swift in Sources */,
-				OBJ_125 /* VersionedArray.swift in Sources */,
 				A62891FA21F5DB02001BE090 /* Switch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

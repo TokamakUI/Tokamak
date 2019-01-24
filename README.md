@@ -49,7 +49,7 @@ the core API is cross-platform, UI components written with Gluon won't need to
 change to become available on newly added platforms unless you need UI logic
 specific to a device or OS.
 
-* **Architecture proven to work**: React have been available for years and
+* **Architecture proven to work**: React has been available for years and
 gained a lot of traction and is still growing. We've seen so many apps
 successfully rebuilt with it and heard positive feedback on React itself, but
 a lot of complaints about overreliance on JavaScript. Gluon makes architecture
@@ -111,7 +111,9 @@ final class ViewController: GluonViewController {
 
 ## Fundamental concepts
 
-Gluon's API builds upon only a few core concepts:
+We try to keep Gluon's API as simple as possible and the core algorithm with
+supporting protocols/structures currently fit in only ~600 lines of code. It's
+all built upon a few basic concepts:
 
 ### Props
 
@@ -134,11 +136,10 @@ struct Props: Equatable {
 ### Children
 
 Sometimes "configuration" is described in a tree-like fashion. For example, a
-list of views needs to be initialized with an array of subviews, which
-themselves can contain other subviews. In Gluon this is called `Children`, which
-behave similar to `Props`, but are important enough to be treated separately.
-`Children` are also immutable and `Equatable`, which allows us to observe those
-for changes too.
+list of views contains an array of subviews, which themselves can contain other
+subviews. In Gluon this is called `Children`, which behave similar to `Props`,
+but are important enough to be treated separately. `Children` are also immutable
+and `Equatable`, which allows us to observe those for changes too.
 
 ### Nodes
 
@@ -294,14 +295,14 @@ state and to be updated when the state changes. We've seen it used in the
 struct Counter: LeafComponent {
   // ...
   static func render(props: Props, hooks: Hooks) -> AnyNode {
-    let count = hooks.state(0)
+    let count = hooks.state(1)
     // ...
   }
 }
 ```
 
 It returns a very simple state container, which on initial call of `render`
-contains `0` as a value and values passed to `count.set(_: Int)` on subsequent
+contains `1` as a value and values passed to `count.set(_: Int)` on subsequent
 updates:
 
 ```swift
@@ -351,13 +352,17 @@ components correspond to a "view-model" layer, while hooks provide a reusable
 fully managed by Gluon. Not only this greatly simplifies the code of your
 components and allows you to make it declarative, it also completely decouples
 platform-specific code.  Note that `Counter` component above doesn't contain a
-single type from `UIKit` module, although it's then passed to a specific
-`UIKitRenderer`. 
+single type from `UIKit` module, although the component itself is passed to a
+specific `UIKitRenderer` to make it available in an app using `UIKit`. On other
+platforms you could use a different renderer, while the component code could
+stay the same if its behavior doesn't need to change for that environment.
+Otherwise you can adjust component's behavior via `Props` and pass different
+"initializing" props depending on the renderer's platform.
 
 Providing renderers for other platforms in the future is one of our top
 priorities. Imagine an `AppKitRenderer` that allows you to render the same
 component on macOS without any changes applied to the component code and without
-requiring Marzipan!
+requiring [Marzipan](https://www.imore.com/marzipan)!
 
 ## Example project
 
@@ -368,7 +373,7 @@ executable target `Gluon-Example`.
 
 ## Requirements
 
-* iOS 10.0
+* iOS 10.0 or later
 * Xcode 10.1
 * Swift 4.2
 
@@ -433,14 +438,15 @@ algebraic effects natively, so Hooks need a few restrictions applied to make it
 work. Similar restrictions are also applied to [Hooks in
 React](https://reactjs.org/docs/hooks-rules.html):
 
-1. You can call Hooks from your custom Hooks (defined in an `extension` of
-   `Hooks`).
-2. You can call Hooks from `render` function of any component.
-3. Don't call Hooks from a loop, condition or nested function.
-4. Don't call Hooks from any other function.
+1. You can call Hooks from `render` function of any component. 👍
+2. You can call Hooks from your custom Hooks (defined in an `extension` of
+   `Hooks`). 🙌
+3. Don't call Hooks from a loop, condition or nested function. 🚨
+4. Don't call Hooks from any function that's not `render` of a component
+or not a custom Hook. ⚠️
 
 In the future version Gluon will provide a linter able to catch violations of
-Rules of Hooks in compile time.
+Rules of Hooks at compile time.
 
 ### Why do Rules of Hooks exist?
 
@@ -544,7 +550,7 @@ Swift. Gluon's API brings these benefits when compared to class-based APIs:
   dance](https://stackoverflow.com/questions/21113963/is-the-weakself-strongself-dance-really-necessary-when-referencing-self-inside-a)
   when using callbacks;
 - you don't need to worry about modifying an object in a different scope
-  captured with a reference by accident: immutable values are implicitly copied
+  accidentaly captured by reference: immutable values are implicitly copied
   and most of the copies are removed by the compiler during optimization;
 - focus on composition over inheritance: no need to subclass `UIViewController`
   or `UIView` and to worry about all of the above when you only need simple 
@@ -557,7 +563,7 @@ Swift. Gluon's API brings these benefits when compared to class-based APIs:
 
 At the moment the answer is no, but we find that Gluon's API allows you to
 create nodes much more concisely when compared to `React.createElement` syntax.
-In fact, with Gluon's `node` API you don't need closing element tags you'd have 
+In fact, with Gluon's `.node` API you don't need closing element tags you'd have 
 to write with JSX. E.g. compare this:
 
 ```swift
@@ -572,8 +578,8 @@ to this:
 
 We do agree that there's an overhead of `.init` for props and a requirement of
 props initializer arguments to be ordered. For the latter, we have a helpful
-convention in Gluon that all arguments to props initializers should be ordered
-alphabetically.
+convention in Gluon that all named arguments to props initializers should be
+ordered alphabetically.
 
 The main problem is that currently there's no easily extensible Swift parser or
 a macro system available that would allow something like JSX to be used for
@@ -680,7 +686,8 @@ unacceptable behavior to conduct@gluon.sh.
 
 ## Maintainers
 
-[Max Desiatov](https://desiatov.com)
+[Max Desiatov](https://desiatov.com), [Matvii
+Hodovaniuk](https://matvii.hodovani.uk)
 
 ## License
 
