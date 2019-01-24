@@ -143,16 +143,30 @@ struct Counter: LeafComponent {
           axis: .horizontal,
           spacing: 10.0
         ), [
-          Switch.node(.init(value: isEnabled.value, valueHandler: Handler(isEnabled.set))),
+          Switch.node(
+            .init(
+              value: isEnabled.value,
+              valueHandler: Handler(isEnabled.set)
+            )
+          ),
 
-          Label.node(.init(alignment: .center), "isEnabled \(isEnabled.value)"),
+          Label.node(.init(
+            alignment: .center
+          ),
+                     "isEnabled \(isEnabled.value)"),
         ]
       ),
 
-      Button.node(.init(isEnabled: isEnabled.value, onPress: Handler { isStackModalPresented.set(true) }),
+      Button.node(.init(
+        isEnabled: isEnabled.value,
+        onPress: Handler { isStackModalPresented.set(true) }
+      ),
                   "Present Stack Modal"),
 
-      Button.node(.init(isEnabled: isEnabled.value, onPress: Handler { isAnimationModalPresented.set(true) }),
+      Button.node(.init(
+        isEnabled: isEnabled.value,
+        onPress: Handler { isAnimationModalPresented.set(true) }
+      ),
                   "Present Simple Modal"),
 
       StackModal.node(.init(
