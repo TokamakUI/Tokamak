@@ -36,15 +36,18 @@ public struct StackView: HostComponent {
     public let axis: Axis
     public let distribution: Distribution
     public let style: Style?
+    public let spacing: Double
 
     public init(alignment: Alignment = .fill,
                 axis: Axis = .horizontal,
                 distribution: Distribution = .fill,
+                spacing: Double = 0,
                 _ style: Style? = nil) {
       self.alignment = alignment
       self.axis = axis
       self.distribution = distribution
       self.style = style
+      self.spacing = spacing
     }
   }
 

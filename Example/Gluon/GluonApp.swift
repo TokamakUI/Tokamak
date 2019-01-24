@@ -140,7 +140,8 @@ struct Counter: LeafComponent {
       StackView.node(
         .init(
           alignment: .center,
-          axis: .horizontal
+          axis: .horizontal,
+          spacing: 10.0
         ), [
           Switch.node(.init(value: isEnabled.value, valueHandler: Handler(isEnabled.set))),
 
@@ -166,7 +167,8 @@ struct Counter: LeafComponent {
       StackView.node(
         .init(
           alignment: .center,
-          axis: .horizontal
+          axis: .horizontal,
+          spacing: 10.0
         ), [
           Button.node(
             .init(
@@ -191,7 +193,8 @@ struct Counter: LeafComponent {
       StackView.node(
         .init(
           alignment: .center,
-          axis: .horizontal
+          axis: .horizontal,
+          spacing: 10.0
         ), [
           Switch.node(
             .init(
@@ -208,7 +211,8 @@ struct Counter: LeafComponent {
       StackView.node(
         .init(
           alignment: .center,
-          axis: .horizontal
+          axis: .horizontal,
+          spacing: 10.0
         ), [
           Stepper.node(
             .init(
