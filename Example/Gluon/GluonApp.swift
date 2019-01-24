@@ -163,7 +163,6 @@ struct Counter: LeafComponent {
         isPresented: isAnimationModalPresented
       )),
     ] + (count.value < 15 ? [
-      
       StackView.node(
         .init(
           alignment: .center,
@@ -176,16 +175,16 @@ struct Counter: LeafComponent {
             ),
             "Increment"
           ),
-          
+
           Label.node(.init(alignment: .center), "\(count.value)"),
-          ]
+        ]
       ),
-      
+
       Slider.node(.init(
-        Style(Width.equal(to: .parent)),
+        isEnabled: isEnabled.value,
         value: sliding.value,
         valueHandler: Handler(sliding.set),
-        isEnabled: isEnabled.value
+        Style(Width.equal(to: .parent))
       )),
 
       Label.node(.init(alignment: .center), "\(sliding.value)"),
@@ -198,14 +197,14 @@ struct Counter: LeafComponent {
         ), [
           Switch.node(
             .init(
+              isEnabled: isEnabled.value,
               value: switchState.value,
-              valueHandler: Handler(switchState.set),
-              isEnabled: isEnabled.value
+              valueHandler: Handler(switchState.set)
             )
           ),
-          
+
           Label.node(.init(alignment: .center), "\(switchState.value)"),
-          ]
+        ]
       ),
 
       StackView.node(
@@ -216,14 +215,14 @@ struct Counter: LeafComponent {
         ), [
           Stepper.node(
             .init(
+              isEnabled: isEnabled.value,
               value: stepperState.value,
-              valueHandler: Handler(stepperState.set),
-              isEnabled: isEnabled.value
+              valueHandler: Handler(stepperState.set)
             )
           ),
-          
-          Label.node(.init(alignment: .center), "\(stepperState.value)")
-          ]
+
+          Label.node(.init(alignment: .center), "\(stepperState.value)"),
+        ]
       ),
     ] : [])
 

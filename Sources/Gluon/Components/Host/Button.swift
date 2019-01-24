@@ -11,17 +11,18 @@ public struct Button: HostComponent {
       return Props()
     }
 
-    public var isEnabled: Bool
-
     public let handlers: [Event: Handler<()>]
     public let style: Style?
     public let titleColor: Color?
+    public let isEnabled: Bool
 
-    public init(handlers: [Event: Handler<()>] = [:],
-                onPress: Handler<()>? = nil,
-                _ style: Style? = nil,
-                titleColor: Color? = nil,
-                isEnabled: Bool = true) {
+    public init(
+      handlers: [Event: Handler<()>] = [:],
+      isEnabled: Bool = true,
+      onPress: Handler<()>? = nil,
+      titleColor: Color? = nil,
+      _ style: Style? = nil
+    ) {
       var handlers = handlers
       if let onPress = onPress {
         handlers[.touchUpInside] = onPress

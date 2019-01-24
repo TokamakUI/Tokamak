@@ -8,18 +8,19 @@
 public struct Slider: HostComponent {
   public struct Props: Equatable, ControlProps, StyleProps,
     ValueControlProps {
-    public var isEnabled: Bool
-
     public let handlers: EventHandlers
     public let style: Style?
     public let value: Float
     public let valueHandler: Handler<Float>?
+    public let isEnabled: Bool
 
-    public init(handlers: EventHandlers = [:],
-                _ style: Style? = nil,
-                value: Float,
-                valueHandler: Handler<Float>? = nil,
-                isEnabled: Bool = true) {
+    public init(
+      handlers: EventHandlers = [:],
+      isEnabled: Bool = true,
+      value: Float,
+      valueHandler: Handler<Float>? = nil,
+      _ style: Style? = nil
+    ) {
       self.handlers = handlers
       self.style = style
       self.value = value
