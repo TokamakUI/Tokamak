@@ -8,7 +8,7 @@
 @testable import Gluon
 import XCTest
 
-public final class TestConstraints {
+public final class ConstraintTests {
   func testWidth() {
     let style = Style(Width.equal(to: .parent))
     XCTAssertEqual(

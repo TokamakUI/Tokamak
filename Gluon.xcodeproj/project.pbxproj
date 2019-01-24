@@ -25,7 +25,7 @@
 		A62891FB21F5DB83001BE090 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891F721F5DAEE001BE090 /* Switch.swift */; };
 		A62891FF21F5F07F001BE090 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891FE21F5F07F001BE090 /* Stepper.swift */; };
 		A628920021F5F0B2001BE090 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891FC21F5F075001BE090 /* Stepper.swift */; };
-		A633560521F9CBBC00BCC525 /* TestConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633560321F9CBAC00BCC525 /* TestConstraints.swift */; };
+		A633560521F9CBBC00BCC525 /* ConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633560321F9CBAC00BCC525 /* ConstraintTests.swift */; };
 		D126CB7121ECAF850097300E /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126CB7021ECAF850097300E /* Constraint.swift */; };
 		D144FB9921E8A56D001020F3 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */; };
 		D163F9D621F27F8C00BA464B /* GluonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163F9D521F27F8C00BA464B /* GluonViewController.swift */; };
@@ -141,7 +141,7 @@
 		A62891F921F5DB02001BE090 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
 		A62891FC21F5F075001BE090 /* Stepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
 		A62891FE21F5F07F001BE090 /* Stepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
-		A633560321F9CBAC00BCC525 /* TestConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestConstraints.swift; sourceTree = "<group>"; };
+		A633560321F9CBAC00BCC525 /* ConstraintTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintTests.swift; sourceTree = "<group>"; };
 		D126CB7021ECAF850097300E /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D126CB7221ECE1400097300E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
@@ -304,7 +304,6 @@
 			children = (
 				OBJ_11 /* TestRenderer.swift */,
 				OBJ_12 /* TestView.swift */,
-				A633560321F9CBAC00BCC525 /* TestConstraints.swift */,
 			);
 			name = GluonTestRenderer;
 			path = Sources/GluonTestRenderer;
@@ -468,6 +467,7 @@
 		OBJ_78 /* GluonTests */ = {
 			isa = PBXGroup;
 			children = (
+				A633560321F9CBAC00BCC525 /* ConstraintTests.swift */,
 				OBJ_79 /* ReconcilerTests.swift */,
 				OBJ_80 /* XCTestManifests.swift */,
 				D1E8755421EF2ED200D4A7BA /* HooksTests.swift */,
@@ -655,7 +655,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				A633560521F9CBBC00BCC525 /* TestConstraints.swift in Sources */,
+				A633560521F9CBBC00BCC525 /* ConstraintTests.swift in Sources */,
 				D1E8755521EF2ED200D4A7BA /* HooksTests.swift in Sources */,
 				OBJ_153 /* ReconcilerTests.swift in Sources */,
 				OBJ_154 /* XCTestManifests.swift in Sources */,
