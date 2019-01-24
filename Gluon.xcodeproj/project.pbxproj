@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		A624C3F721F9A3CF007CAEEC /* ConstraintsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A624C3F621F9A3CF007CAEEC /* ConstraintsTests.swift */; };
 		A62891FA21F5DB02001BE090 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891F921F5DB02001BE090 /* Switch.swift */; };
 		A62891FB21F5DB83001BE090 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891F721F5DAEE001BE090 /* Switch.swift */; };
 		A62891FF21F5F07F001BE090 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891FE21F5F07F001BE090 /* Stepper.swift */; };
@@ -136,6 +137,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A624C3F621F9A3CF007CAEEC /* ConstraintsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintsTests.swift; sourceTree = "<group>"; };
 		A62891F721F5DAEE001BE090 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
 		A62891F921F5DB02001BE090 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
 		A62891FC21F5F075001BE090 /* Stepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
@@ -301,6 +303,7 @@
 			children = (
 				OBJ_11 /* TestRenderer.swift */,
 				OBJ_12 /* TestView.swift */,
+				A624C3F621F9A3CF007CAEEC /* ConstraintsTests.swift */,
 			);
 			name = GluonTestRenderer;
 			path = Sources/GluonTestRenderer;
@@ -713,6 +716,7 @@
 				D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */,
 				OBJ_108 /* Color.swift in Sources */,
 				OBJ_109 /* Event.swift in Sources */,
+				A624C3F721F9A3CF007CAEEC /* ConstraintsTests.swift in Sources */,
 				D1CB7D2E21E29CC80075C0C3 /* StackController.swift in Sources */,
 				OBJ_110 /* Rectangle.swift in Sources */,
 				OBJ_111 /* Second.swift in Sources */,

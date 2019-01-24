@@ -54,15 +54,19 @@ extension Constraint.Size {
   }
 }
 
-extension Height {
+protocol OwnConstraint {
+    var firstAnchor: KeyPath<UIView, NSLayoutDimension> { get }
+    var secondAnchor: KeyPath<UIView, NSLayoutDimension> { get }
+    var target: Target { get }
+    var constant: Double { get }
+}
+
+extension OwnConstraint {
   func constraint(
     current: UIView,
     parent: UIView?,
     next: UIView?
   ) -> [NSLayoutConstraint] {
-    let firstAnchor = \UIView.heightAnchor
-    let secondAnchor = \UIView.heightAnchor
-
     switch target {
     case .own:
       return [current[keyPath: firstAnchor].constraint(
@@ -88,36 +92,22 @@ extension Height {
   }
 }
 
-extension Width {
-  func constraint(
-    current: UIView,
-    parent: UIView?,
-    next: UIView?
-  ) -> [NSLayoutConstraint] {
-    let firstAnchor = \UIView.widthAnchor
-    let secondAnchor = \UIView.widthAnchor
+extension Height: OwnConstraint {
+  var firstAnchor: KeyPath<UIView, NSLayoutDimension> {
+    return \.heightAnchor
+  }
 
-    switch target {
-    case .own:
-      return [current[keyPath: firstAnchor].constraint(
-        equalToConstant: CGFloat(constant)
-      )]
-    case let .external(target):
-      let secondView: UIView?
-      switch target {
-      case .next:
-        secondView = next
-      case .parent:
-        secondView = parent
-      }
+  var secondAnchor: KeyPath<UIView, NSLayoutDimension> {
+    return \.heightAnchor
+  }
+}
 
-      guard let second = secondView?[keyPath: secondAnchor] else { return [] }
+extension Width: OwnConstraint {
+  var firstAnchor: KeyPath<UIView, NSLayoutDimension> {
+    return \.widthAnchor
+  }
 
-      return [current[keyPath: firstAnchor].constraint(
-        equalTo: second,
-        multiplier: CGFloat(multiplier),
-        constant: CGFloat(constant)
-      )]
-    }
+  var secondAnchor: KeyPath<UIView, NSLayoutDimension> {
+    return \.widthAnchor
   }
 }
