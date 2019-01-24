@@ -156,7 +156,7 @@ struct Counter: LeafComponent {
       Label.node(.init(alignment: .center), "\(count.value)"),
 
       Slider.node(.init(
-        Style(.width(Constraint.Size.Attribute.width.equal(to: .parent))),
+        Style(Width.equal(to: .parent)),
         value: sliding.value,
         valueHandler: Handler(sliding.set)
       )),
