@@ -149,10 +149,10 @@ struct Counter: LeafComponent {
         ]
       ),
 
-      Button.node(.init(onPress: Handler { isStackModalPresented.set(true) }),
+      Button.node(.init(isEnabled: isEnabled.value, onPress: Handler { isStackModalPresented.set(true) }),
                   "Present Stack Modal"),
 
-      Button.node(.init(onPress: Handler { isAnimationModalPresented.set(true) }),
+      Button.node(.init(isEnabled: isEnabled.value, onPress: Handler { isAnimationModalPresented.set(true) }),
                   "Present Simple Modal"),
 
       StackModal.node(.init(
@@ -171,6 +171,7 @@ struct Counter: LeafComponent {
         ), [
           Button.node(
             .init(
+              isEnabled: isEnabled.value,
               onPress: Handler { count.set { $0 + 1 } }
             ),
             "Increment"
