@@ -134,12 +134,39 @@ struct Counter: LeafComponent {
     let isAnimationModalPresented = hooks.state(false)
     let switchState = hooks.state(true)
     let stepperState = hooks.state(0.0)
+    let isEnabled = hooks.state(true)
 
     let children = [
-      Button.node(.init(onPress: Handler { isStackModalPresented.set(true) }),
+      StackView.node(
+        .init(
+          alignment: .center,
+          axis: .horizontal,
+          spacing: 10.0
+        ), [
+          Switch.node(
+            .init(
+              value: isEnabled.value,
+              valueHandler: Handler(isEnabled.set)
+            )
+          ),
+
+          Label.node(.init(
+            alignment: .center
+          ),
+                     "isEnabled \(isEnabled.value)"),
+        ]
+      ),
+
+      Button.node(.init(
+        isEnabled: isEnabled.value,
+        onPress: Handler { isStackModalPresented.set(true) }
+      ),
                   "Present Stack Modal"),
 
-      Button.node(.init(onPress: Handler { isAnimationModalPresented.set(true) }),
+      Button.node(.init(
+        isEnabled: isEnabled.value,
+        onPress: Handler { isAnimationModalPresented.set(true) }
+      ),
                   "Present Simple Modal"),
 
       StackModal.node(.init(
@@ -150,26 +177,68 @@ struct Counter: LeafComponent {
         isPresented: isAnimationModalPresented
       )),
     ] + (count.value < 15 ? [
-      Button.node(.init(onPress: Handler { count.set { $0 + 1 } }),
-                  "Increment"),
+      StackView.node(
+        .init(
+          alignment: .center,
+          axis: .horizontal,
+          spacing: 10.0
+        ), [
+          Button.node(
+            .init(
+              isEnabled: isEnabled.value,
+              onPress: Handler { count.set { $0 + 1 } }
+            ),
+            "Increment"
+          ),
 
-      Label.node(.init(alignment: .center), "\(count.value)"),
+          Label.node(.init(alignment: .center), "\(count.value)"),
+        ]
+      ),
 
       Slider.node(.init(
-        Style(Width.equal(to: .parent)),
+        isEnabled: isEnabled.value,
         value: sliding.value,
-        valueHandler: Handler(sliding.set)
+        valueHandler: Handler(sliding.set),
+        Style(Width.equal(to: .parent))
       )),
 
       Label.node(.init(alignment: .center), "\(sliding.value)"),
 
-      Switch.node(.init(value: switchState.value, valueHandler: Handler(switchState.set))),
+      StackView.node(
+        .init(
+          alignment: .center,
+          axis: .horizontal,
+          spacing: 10.0
+        ), [
+          Switch.node(
+            .init(
+              isEnabled: isEnabled.value,
+              value: switchState.value,
+              valueHandler: Handler(switchState.set)
+            )
+          ),
 
-      Label.node(.init(alignment: .center), "\(switchState.value)"),
+          Label.node(.init(alignment: .center), "\(switchState.value)"),
+        ]
+      ),
 
-      Stepper.node(.init(value: stepperState.value, valueHandler: Handler(stepperState.set))),
+      StackView.node(
+        .init(
+          alignment: .center,
+          axis: .horizontal,
+          spacing: 10.0
+        ), [
+          Stepper.node(
+            .init(
+              isEnabled: isEnabled.value,
+              value: stepperState.value,
+              valueHandler: Handler(stepperState.set)
+            )
+          ),
 
-      Label.node(.init(alignment: .center), "\(stepperState.value)"),
+          Label.node(.init(alignment: .center), "\(stepperState.value)"),
+        ]
+      ),
     ] : [])
 
     return StackView.node(
