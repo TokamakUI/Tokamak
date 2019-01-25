@@ -26,6 +26,14 @@
 		A62891FF21F5F07F001BE090 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891FE21F5F07F001BE090 /* Stepper.swift */; };
 		A628920021F5F0B2001BE090 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62891FC21F5F075001BE090 /* Stepper.swift */; };
 		A633560521F9CBBC00BCC525 /* ConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633560321F9CBAC00BCC525 /* ConstraintTests.swift */; };
+		A633561021FB583900BCC525 /* Top.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633560D21FB580D00BCC525 /* Top.swift */; };
+		A633561521FB5BEA00BCC525 /* Width.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633561121FB58A100BCC525 /* Width.swift */; };
+		A633561621FB5C0800BCC525 /* Bottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633561321FB58B600BCC525 /* Bottom.swift */; };
+		A633561921FB5C2B00BCC525 /* Left.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633561721FB5C2000BCC525 /* Left.swift */; };
+		A633561D21FB5C5400BCC525 /* Right.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633561B21FB5C4800BCC525 /* Right.swift */; };
+		A633561F21FB5C6D00BCC525 /* Height.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633561E21FB5C6D00BCC525 /* Height.swift */; };
+		A633562121FB5C8800BCC525 /* Leading.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633562021FB5C8800BCC525 /* Leading.swift */; };
+		A633562321FB5CA200BCC525 /* Trailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633562221FB5CA200BCC525 /* Trailing.swift */; };
 		D126CB7121ECAF850097300E /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126CB7021ECAF850097300E /* Constraint.swift */; };
 		D144FB9921E8A56D001020F3 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */; };
 		D163F9D621F27F8C00BA464B /* GluonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163F9D521F27F8C00BA464B /* GluonViewController.swift */; };
@@ -142,6 +150,14 @@
 		A62891FC21F5F075001BE090 /* Stepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
 		A62891FE21F5F07F001BE090 /* Stepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
 		A633560321F9CBAC00BCC525 /* ConstraintTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintTests.swift; sourceTree = "<group>"; };
+		A633560D21FB580D00BCC525 /* Top.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Top.swift; sourceTree = "<group>"; };
+		A633561121FB58A100BCC525 /* Width.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Width.swift; sourceTree = "<group>"; };
+		A633561321FB58B600BCC525 /* Bottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bottom.swift; sourceTree = "<group>"; };
+		A633561721FB5C2000BCC525 /* Left.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Left.swift; sourceTree = "<group>"; };
+		A633561B21FB5C4800BCC525 /* Right.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Right.swift; sourceTree = "<group>"; };
+		A633561E21FB5C6D00BCC525 /* Height.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Height.swift; sourceTree = "<group>"; };
+		A633562021FB5C8800BCC525 /* Leading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leading.swift; sourceTree = "<group>"; };
+		A633562221FB5CA200BCC525 /* Trailing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trailing.swift; sourceTree = "<group>"; };
 		D126CB7021ECAF850097300E /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D126CB7221ECE1400097300E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
@@ -259,6 +275,14 @@
 			children = (
 				D126CB7021ECAF850097300E /* Constraint.swift */,
 				D1C3A72021F0C47200C6B884 /* Size.swift */,
+				A633560D21FB580D00BCC525 /* Top.swift */,
+				A633561121FB58A100BCC525 /* Width.swift */,
+				A633561321FB58B600BCC525 /* Bottom.swift */,
+				A633561721FB5C2000BCC525 /* Left.swift */,
+				A633561B21FB5C4800BCC525 /* Right.swift */,
+				A633561E21FB5C6D00BCC525 /* Height.swift */,
+				A633562021FB5C8800BCC525 /* Leading.swift */,
+				A633562221FB5CA200BCC525 /* Trailing.swift */,
 			);
 			path = Constraint;
 			sourceTree = "<group>";
@@ -666,6 +690,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				A633561F21FB5C6D00BCC525 /* Height.swift in Sources */,
+				A633561921FB5C2B00BCC525 /* Left.swift in Sources */,
 				D144FB9921E8A56D001020F3 /* ViewControllerBox.swift in Sources */,
 				OBJ_165 /* Button.swift in Sources */,
 				OBJ_166 /* Label.swift in Sources */,
@@ -675,23 +701,29 @@
 				OBJ_169 /* Event.swift in Sources */,
 				D1C3A72121F0C47200C6B884 /* Size.swift in Sources */,
 				OBJ_170 /* Rectangle.swift in Sources */,
+				A633561621FB5C0800BCC525 /* Bottom.swift in Sources */,
 				A62891FB21F5DB83001BE090 /* Switch.swift in Sources */,
 				OBJ_171 /* UIControlComponent.swift in Sources */,
 				OBJ_173 /* UIHostComponent.swift in Sources */,
 				OBJ_174 /* UIValueComponent.swift in Sources */,
 				OBJ_175 /* UIViewComponent.swift in Sources */,
+				A633561D21FB5C5400BCC525 /* Right.swift in Sources */,
 				OBJ_176 /* Slider.swift in Sources */,
 				OBJ_177 /* StackController.swift in Sources */,
+				A633562121FB5C8800BCC525 /* Leading.swift in Sources */,
 				OBJ_178 /* StackView.swift in Sources */,
 				D163F9D621F27F8C00BA464B /* GluonViewController.swift in Sources */,
 				OBJ_179 /* View.swift in Sources */,
 				OBJ_180 /* ContainerViewController.swift in Sources */,
 				OBJ_181 /* ControlBox.swift in Sources */,
 				D126CB7121ECAF850097300E /* Constraint.swift in Sources */,
+				A633561521FB5BEA00BCC525 /* Width.swift in Sources */,
 				OBJ_183 /* ValueControlBox.swift in Sources */,
 				A628920021F5F0B2001BE090 /* Stepper.swift in Sources */,
+				A633561021FB583900BCC525 /* Top.swift in Sources */,
 				OBJ_184 /* ViewBox.swift in Sources */,
 				OBJ_185 /* UIKitRenderer.swift in Sources */,
+				A633562321FB5CA200BCC525 /* Trailing.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

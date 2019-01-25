@@ -92,23 +92,3 @@ extension OwnConstraint {
     }
   }
 }
-
-extension Height: OwnConstraint {
-  var firstAnchor: KeyPath<UIView, NSLayoutDimension> {
-    return \.heightAnchor
-  }
-
-  var secondAnchor: KeyPath<UIView, NSLayoutDimension> {
-    return \.heightAnchor
-  }
-}
-
-extension Width: OwnConstraint {
-  var firstAnchor: KeyPath<UIView, NSLayoutDimension> {
-    return \.widthAnchor
-  }
-
-  var secondAnchor: KeyPath<UIView, NSLayoutDimension> {
-    return \.widthAnchor
-  }
-}

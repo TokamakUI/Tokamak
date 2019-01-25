@@ -69,6 +69,162 @@ public struct Height: Equatable {
   }
 }
 
+public struct Top: Equatable {
+  public let target: Constraint.OwnTarget
+  public let constant: Double
+  public let multiplier: Double
+
+  public static func equal(
+    to target: Constraint.Target,
+    constant: Double = 0,
+    multiplier: Double = 1
+  ) -> Constraint {
+    return .top(Top(
+      target: .external(target), constant: constant, multiplier: multiplier
+    ))
+  }
+
+  public static func equal(
+    to target: Constraint.OwnTarget,
+    constant: Double = 0,
+    multiplier: Double = 1
+  ) -> Constraint {
+    return .top(Top(
+      target: target, constant: constant, multiplier: multiplier
+    ))
+  }
+}
+
+public struct Bottom: Equatable {
+  public let target: Constraint.OwnTarget
+  public let constant: Double
+  public let multiplier: Double
+
+  public static func equal(
+    to target: Constraint.Target,
+    constant: Double = 0,
+    multiplier: Double = 1
+  ) -> Constraint {
+    return .bottom(Bottom(
+      target: .external(target), constant: constant, multiplier: multiplier
+    ))
+  }
+
+  public static func equal(
+    to target: Constraint.OwnTarget,
+    constant: Double = 0,
+    multiplier: Double = 1
+  ) -> Constraint {
+    return .bottom(Bottom(
+      target: target, constant: constant, multiplier: multiplier
+    ))
+  }
+}
+
+public struct Left: Equatable {
+  public let target: Constraint.OwnTarget
+  public let constant: Double
+  public let multiplier: Double
+
+  public static func equal(
+    to target: Constraint.Target,
+    constant: Double = 0,
+    multiplier: Double = 1
+  ) -> Constraint {
+    return .left(Left(
+      target: .external(target), constant: constant, multiplier: multiplier
+    ))
+  }
+
+  public static func equal(
+    to target: Constraint.OwnTarget,
+    constant: Double = 0,
+    multiplier: Double = 1
+  ) -> Constraint {
+    return .left(Left(
+      target: target, constant: constant, multiplier: multiplier
+    ))
+  }
+}
+
+public struct Right: Equatable {
+  public let target: Constraint.OwnTarget
+  public let constant: Double
+  public let multiplier: Double
+
+  public static func equal(
+    to target: Constraint.Target,
+    constant: Double = 0,
+    multiplier: Double = 1
+  ) -> Constraint {
+    return .right(Right(
+      target: .external(target), constant: constant, multiplier: multiplier
+    ))
+  }
+
+  public static func equal(
+    to target: Constraint.OwnTarget,
+    constant: Double = 0,
+    multiplier: Double = 1
+  ) -> Constraint {
+    return .right(Right(
+      target: target, constant: constant, multiplier: multiplier
+    ))
+  }
+}
+
+public struct Leading: Equatable {
+  public let target: Constraint.OwnTarget
+  public let constant: Double
+  public let multiplier: Double
+
+  public static func equal(
+    to target: Constraint.Target,
+    constant: Double = 0,
+    multiplier: Double = 1
+  ) -> Constraint {
+    return .leading(Leading(
+      target: .external(target), constant: constant, multiplier: multiplier
+    ))
+  }
+
+  public static func equal(
+    to target: Constraint.OwnTarget,
+    constant: Double = 0,
+    multiplier: Double = 1
+  ) -> Constraint {
+    return .leading(Leading(
+      target: target, constant: constant, multiplier: multiplier
+    ))
+  }
+}
+
+public struct Trailing: Equatable {
+  public let target: Constraint.OwnTarget
+  public let constant: Double
+  public let multiplier: Double
+
+  public static func equal(
+    to target: Constraint.Target,
+    constant: Double = 0,
+    multiplier: Double = 1
+  ) -> Constraint {
+    return .trailing(Trailing(
+      target: .external(target), constant: constant, multiplier: multiplier
+    ))
+  }
+
+  public static func equal(
+    to target: Constraint.OwnTarget,
+    constant: Double = 0,
+    multiplier: Double = 1
+  ) -> Constraint {
+    return .trailing(Trailing(
+      target: target, constant: constant, multiplier: multiplier
+    ))
+  }
+}
+
 public enum Constraint: Equatable {
   public enum Target {
     case next
@@ -189,10 +345,10 @@ public enum Constraint: Equatable {
   case height(Height)
 
   case edges(Edges)
-  case leading(HorizontalLocation)
-  case trailing(VerticalLocation)
-  case left(HorizontalLocation)
-  case right(HorizontalLocation)
-  case top(VerticalLocation)
-  case bottom(VerticalLocation)
+  case leading(Leading)
+  case trailing(Trailing)
+  case left(Left)
+  case right(Right)
+  case top(Top)
+  case bottom(Bottom)
 }
