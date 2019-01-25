@@ -70,22 +70,12 @@ public struct Height: Equatable {
 }
 
 public struct Top: Equatable {
-  public let target: Constraint.OwnTarget
+  public let target: Constraint.Target
   public let constant: Double
   public let multiplier: Double
 
   public static func equal(
     to target: Constraint.Target,
-    constant: Double = 0,
-    multiplier: Double = 1
-  ) -> Constraint {
-    return .top(Top(
-      target: .external(target), constant: constant, multiplier: multiplier
-    ))
-  }
-
-  public static func equal(
-    to target: Constraint.OwnTarget,
     constant: Double = 0,
     multiplier: Double = 1
   ) -> Constraint {
@@ -96,22 +86,12 @@ public struct Top: Equatable {
 }
 
 public struct Bottom: Equatable {
-  public let target: Constraint.OwnTarget
+  public let target: Constraint.Target
   public let constant: Double
   public let multiplier: Double
 
   public static func equal(
     to target: Constraint.Target,
-    constant: Double = 0,
-    multiplier: Double = 1
-  ) -> Constraint {
-    return .bottom(Bottom(
-      target: .external(target), constant: constant, multiplier: multiplier
-    ))
-  }
-
-  public static func equal(
-    to target: Constraint.OwnTarget,
     constant: Double = 0,
     multiplier: Double = 1
   ) -> Constraint {
@@ -122,22 +102,12 @@ public struct Bottom: Equatable {
 }
 
 public struct Left: Equatable {
-  public let target: Constraint.OwnTarget
+  public let target: Constraint.Target
   public let constant: Double
   public let multiplier: Double
 
   public static func equal(
     to target: Constraint.Target,
-    constant: Double = 0,
-    multiplier: Double = 1
-  ) -> Constraint {
-    return .left(Left(
-      target: .external(target), constant: constant, multiplier: multiplier
-    ))
-  }
-
-  public static func equal(
-    to target: Constraint.OwnTarget,
     constant: Double = 0,
     multiplier: Double = 1
   ) -> Constraint {
@@ -148,22 +118,12 @@ public struct Left: Equatable {
 }
 
 public struct Right: Equatable {
-  public let target: Constraint.OwnTarget
+  public let target: Constraint.Target
   public let constant: Double
   public let multiplier: Double
 
   public static func equal(
     to target: Constraint.Target,
-    constant: Double = 0,
-    multiplier: Double = 1
-  ) -> Constraint {
-    return .right(Right(
-      target: .external(target), constant: constant, multiplier: multiplier
-    ))
-  }
-
-  public static func equal(
-    to target: Constraint.OwnTarget,
     constant: Double = 0,
     multiplier: Double = 1
   ) -> Constraint {
@@ -174,22 +134,12 @@ public struct Right: Equatable {
 }
 
 public struct Leading: Equatable {
-  public let target: Constraint.OwnTarget
+  public let target: Constraint.Target
   public let constant: Double
   public let multiplier: Double
 
   public static func equal(
     to target: Constraint.Target,
-    constant: Double = 0,
-    multiplier: Double = 1
-  ) -> Constraint {
-    return .leading(Leading(
-      target: .external(target), constant: constant, multiplier: multiplier
-    ))
-  }
-
-  public static func equal(
-    to target: Constraint.OwnTarget,
     constant: Double = 0,
     multiplier: Double = 1
   ) -> Constraint {
@@ -200,22 +150,12 @@ public struct Leading: Equatable {
 }
 
 public struct Trailing: Equatable {
-  public let target: Constraint.OwnTarget
+  public let target: Constraint.Target
   public let constant: Double
   public let multiplier: Double
 
   public static func equal(
     to target: Constraint.Target,
-    constant: Double = 0,
-    multiplier: Double = 1
-  ) -> Constraint {
-    return .trailing(Trailing(
-      target: .external(target), constant: constant, multiplier: multiplier
-    ))
-  }
-
-  public static func equal(
-    to target: Constraint.OwnTarget,
     constant: Double = 0,
     multiplier: Double = 1
   ) -> Constraint {
