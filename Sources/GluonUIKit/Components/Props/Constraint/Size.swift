@@ -92,3 +92,36 @@ extension OwnConstraint {
     }
   }
 }
+
+protocol OffsetConstraint {
+  var firstAnchor: KeyPath<UIView, NSLayoutDimension> { get }
+  var secondAnchor: KeyPath<UIView, NSLayoutDimension> { get }
+  var target: Constraint.Target { get }
+  var constant: Double { get }
+  var multiplier: Double { get }
+}
+
+extension OffsetConstraint {
+  func constraint(
+    current: UIView,
+    parent: UIView?,
+    next: UIView?
+    ) -> [NSLayoutConstraint] {
+    
+    let secondView: UIView?
+    switch target {
+    case .next:
+      secondView = next
+    case .parent:
+      secondView = parent
+    }
+    
+    guard let second = secondView?[keyPath: secondAnchor] else { return [] }
+    
+    return [current[keyPath: firstAnchor].constraint(
+      equalTo: second,
+      multiplier: CGFloat(multiplier),
+      constant: CGFloat(constant)
+      )]
+  }
+}
