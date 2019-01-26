@@ -13,13 +13,64 @@ public struct CellPath {
 public protocol CellProvider {
   associatedtype Item: Equatable
   associatedtype Props: Equatable
-  static func cell(props: Props, item: Item, path: CellPath) -> AnyNode
+  associatedtype Identifier: RawRepresentable
+    where Identifier.RawValue == String
+
+  static func cell(
+    props: Props,
+    item: Item,
+    path: CellPath
+  ) -> (Identifier, AnyNode)
+}
+
+enum SingleIdentifier: String {
+  case single
+}
+
+public protocol SingleCellProvider: CellProvider
+  where Identifier == SingleIdentifier {
+  static func cell(
+    props: Props,
+    item: Item,
+    path: CellPath
+  ) -> AnyNode
+}
+
+extension SingleCellProvider {
+  static func cell(
+    props: Props,
+    item: Item,
+    path: CellPath
+  ) -> (Identifier, AnyNode) {
+    return (.single, cell(props: props, item: item, path: path))
+  }
 }
 
 public struct ListView<T: CellProvider>: HostComponent {
-  public struct Props: Equatable {
-    let model: [[T.Item]]
-    let cellProps: T.Props
+  public struct Props: Equatable, StyleProps {
+    public let cellProps: T.Props
+    public let model: [[T.Item]]
+    public let style: Style?
+
+    public init(
+      cellProps: T.Props,
+      model: [T.Item],
+      _ style: Style? = nil
+    ) {
+      self.cellProps = cellProps
+      self.model = [model]
+      self.style = style
+    }
+
+    public init(
+      cellProps: T.Props,
+      model: [[T.Item]],
+      _ style: Style? = nil
+    ) {
+      self.cellProps = cellProps
+      self.model = model
+      self.style = style
+    }
   }
 
   public typealias Children = Null
