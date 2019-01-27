@@ -5,7 +5,11 @@
 //  Created by Max Desiatov on 03/12/2018.
 //
 
+/* A stored representatin of a `HostComponent` store in a the tree of mounted
+ components by `StackReconciler`.
+ */
 final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
+  private var managedChildren = [Weak<R.Target>: MountedComponent<R>]()
   private var mountedChildren = [MountedComponent<R>]()
   private let type: AnyHostComponent.Type
   private let parentTarget: R.Target

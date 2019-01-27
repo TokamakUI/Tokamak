@@ -31,6 +31,7 @@
 		D163F9D621F27F8C00BA464B /* GluonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163F9D521F27F8C00BA464B /* GluonViewController.swift */; };
 		D16FCB7C21FCB3870033C5C0 /* TableViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16FCB7B21FCB3870033C5C0 /* TableViewBox.swift */; };
 		D16FCB7D21FCB38D0033C5C0 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16FCB7921FCB3160033C5C0 /* ListView.swift */; };
+		D16FCB8121FDD2550033C5C0 /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16FCB8021FDD2550033C5C0 /* Weak.swift */; };
 		D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */; };
 		D1C3A71E21F0C30900C6B884 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C3A71C21F0C2F900C6B884 /* Constraint.swift */; };
 		D1C3A72121F0C47200C6B884 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C3A72021F0C47200C6B884 /* Size.swift */; };
@@ -150,6 +151,7 @@
 		D163F9D521F27F8C00BA464B /* GluonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonViewController.swift; sourceTree = "<group>"; };
 		D16FCB7921FCB3160033C5C0 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		D16FCB7B21FCB3870033C5C0 /* TableViewBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewBox.swift; sourceTree = "<group>"; };
+		D16FCB8021FDD2550033C5C0 /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
 		D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountedNull.swift; sourceTree = "<group>"; };
 		D1C3A71C21F0C2F900C6B884 /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D1C3A72021F0C47200C6B884 /* Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
@@ -386,6 +388,7 @@
 				OBJ_73 /* StackReconciler.swift */,
 				OBJ_74 /* Store.swift */,
 				OBJ_75 /* Unique.swift */,
+				D16FCB8021FDD2550033C5C0 /* Weak.swift */,
 			);
 			name = Gluon;
 			path = Sources/Gluon;
@@ -736,6 +739,7 @@
 				D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */,
 				OBJ_115 /* StackView.swift in Sources */,
 				OBJ_116 /* View.swift in Sources */,
+				D16FCB8121FDD2550033C5C0 /* Weak.swift in Sources */,
 				OBJ_117 /* MountedComponent.swift in Sources */,
 				OBJ_118 /* MountedCompositeComponent.swift in Sources */,
 				OBJ_119 /* MountedHostComponent.swift in Sources */,
