@@ -14,7 +14,7 @@ let _ModalPresenterWitnessTableHack: UIHostComponent.Type = ModalPresenter.self
 let _StackControllerWitnessTableHack: UIHostComponent.Type =
   StackController.self
 
-// Type-erased version `ViewControllerBox` to avoid generics leaking out.
+// Type-erased version of `ViewControllerBox` to avoid generics leaking out.
 public protocol UITarget {
   var node: AnyNode? { get }
   var viewController: UIViewController { get }
