@@ -14,10 +14,16 @@ let _ModalPresenterWitnessTableHack: UIHostComponent.Type = ModalPresenter.self
 let _StackControllerWitnessTableHack: UIHostComponent.Type =
   StackController.self
 
-// Type-erased version of `ViewControllerBox` to avoid generics leaking out.
-public protocol UITarget {
-  var node: AnyNode? { get }
-  var viewController: UIViewController { get }
+public class UITarget {
+  let node: AnyNode?
+
+  init(node: AnyNode?) {
+    self.node = node
+  }
+
+  var viewController: UIViewController {
+    fatalError("viewController should be overriden in UITarget subclass")
+  }
 }
 
 /// UIKitRenderer is an implementation of `Renderer` with UIKit as a target.

@@ -19,10 +19,11 @@ public protocol Renderer: class {
    probably create its own type hierarchy to be able to reason about
    all possible target types available on a specific platform.
    */
-  associatedtype Target
+  associatedtype Target: AnyObject
 
   /** Function called by a reconciler when a new target instance should be
-   created.
+   created and added to the parent (either as a subview or some other way, e.g.
+   installed if it's a layout constraint).
    - parameter parent: Parent target that will own a newly created target
    instance.
    - parameter component: Type of the host component that renders to the
@@ -55,7 +56,7 @@ public protocol Renderer: class {
               node: AnyNode)
 
   /** Function called by a reconciler when an existing target instance should be
-   unmounted: removed the parent and most likely destroyed.
+   unmounted: removed from the parent and most likely destroyed.
    - parameter target: Existing target instance to be unmounted.
    - parameter component: Type of the host component that renders to the
    updated target.

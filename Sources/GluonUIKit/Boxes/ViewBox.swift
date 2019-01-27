@@ -20,9 +20,3 @@ class ViewBox<T: UIView>: ViewControllerBox<UIViewController> {
     super.init(viewController, node)
   }
 }
-
-extension ViewControllerBox: UITarget {
-  var viewController: UIViewController {
-    return containerViewController
-  }
-}
