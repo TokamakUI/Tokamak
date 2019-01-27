@@ -27,7 +27,9 @@ public class UITarget {
 }
 
 /// UIKitRenderer is an implementation of `Renderer` with UIKit as a target.
-class UIKitRenderer: Renderer {
+final class UIKitRenderer: Renderer {
+  typealias Component = MountedHostComponent<UIKitRenderer>
+
   private var reconciler: StackReconciler<UIKitRenderer>?
   private weak var rootViewController: UIViewController!
 
@@ -46,35 +48,35 @@ class UIKitRenderer: Renderer {
     """)
   }
 
-  func mountTarget(to parent: UITarget,
-                   parentNode: AnyNode?,
-                   with component: AnyHostComponent.Type,
-                   node: AnyNode) -> UITarget? {
-    guard let rendererComponent = component as? UIHostComponent.Type else {
-      typeAssertionFailure(for: component)
+  func mountTarget(
+    to parent: UITarget,
+    parentNode: AnyNode?,
+    with component: Component
+  ) -> UITarget? {
+    guard let rendererComponent = component.type as? UIHostComponent.Type else {
+      typeAssertionFailure(for: component.type)
       return nil
     }
 
     return rendererComponent.mountTarget(to: parent,
-                                         node: node)
+                                         component: component)
   }
 
   func update(target: UITarget,
-              with component: AnyHostComponent.Type,
-              node: AnyNode) {
-    guard let rendererComponent = component as? UIHostComponent.Type else {
-      typeAssertionFailure(for: component)
+              with component: Component) {
+    guard let rendererComponent = component.type as? UIHostComponent.Type else {
+      typeAssertionFailure(for: component.type)
       return
     }
 
     rendererComponent.update(target: target,
-                             node: node)
+                             node: component.node)
   }
 
   func unmount(target: UITarget,
-               with component: AnyHostComponent.Type) {
-    guard let rendererComponent = component as? UIHostComponent.Type else {
-      typeAssertionFailure(for: component)
+               with component: Component) {
+    guard let rendererComponent = component.type as? UIHostComponent.Type else {
+      typeAssertionFailure(for: component.type)
       return
     }
 

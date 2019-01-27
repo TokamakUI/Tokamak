@@ -5,15 +5,16 @@
 //  Created by Max Desiatov on 03/12/2018.
 //
 
-/* A stored representatin of a `HostComponent` store in a the tree of mounted
+/* A representation of a `HostComponent` stored in the tree of mounted
  components by `StackReconciler`.
  */
-final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
+public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
   private var managedChildren = [Weak<R.Target>: MountedComponent<R>]()
   private var mountedChildren = [MountedComponent<R>]()
-  private let type: AnyHostComponent.Type
   private let parentTarget: R.Target
   private var target: R.Target?
+
+  public let type: AnyHostComponent.Type
 
   init(_ node: AnyNode,
        _ type: AnyHostComponent.Type,
@@ -29,8 +30,7 @@ final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
     guard
       let target = reconciler.renderer?.mountTarget(to: parentTarget,
                                                     parentNode: parent?.node,
-                                                    with: type,
-                                                    node: node)
+                                                    with: self)
     else { return }
 
     self.target = target
@@ -55,15 +55,14 @@ final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
   override func unmount(with reconciler: StackReconciler<R>) {
     guard let target = target else { return }
 
-    reconciler.renderer?.unmount(target: target, with: type)
+    reconciler.renderer?.unmount(target: target, with: self)
   }
 
   override func update(with reconciler: StackReconciler<R>) {
     guard let target = target else { return }
 
     reconciler.renderer?.update(target: target,
-                                with: type,
-                                node: node)
+                                with: self)
 
     switch node.children.value {
     case var nodes as [AnyNode]:

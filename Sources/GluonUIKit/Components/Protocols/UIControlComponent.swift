@@ -16,10 +16,12 @@ protocol UIControlComponent: UIViewComponent
 }
 
 extension UIControlComponent where Target == Target.DefaultValue {
-  static func box(for control: Target,
-                  _ viewController: UIViewController,
-                  _ node: AnyNode) -> ViewBox<Target> {
-    return ControlBox(control, viewController, node)
+  static func box(
+    for view: Target,
+    _ viewController: UIViewController,
+    _ component: UIKitRenderer.Component
+  ) -> ViewBox<Target> {
+    return ControlBox(view, viewController, component.node)
   }
 
   static func update(view box: ViewBox<Target>,

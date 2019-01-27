@@ -18,7 +18,7 @@ protocol UIViewComponent: UIHostComponent, HostComponent {
   static func box(
     for view: Target,
     _ viewController: UIViewController,
-    _ node: AnyNode
+    _ component: UIKitRenderer.Component
   ) -> ViewBox<Target>
 }
 
@@ -58,19 +58,19 @@ extension UIViewComponent where Target == Target.DefaultValue,
   static func box(
     for view: Target,
     _ viewController: UIViewController,
-    _ node: AnyNode
+    _ component: UIKitRenderer.Component
   ) -> ViewBox<Target> {
-    return ViewBox(view, viewController, node)
+    return ViewBox(view, viewController, component.node)
   }
 
   static func mountTarget(to parent: UITarget,
-                          node: AnyNode) -> UITarget? {
-    guard let children = node.children.value as? Children else {
+                          component: UIKitRenderer.Component) -> UITarget? {
+    guard let children = component.node.children.value as? Children else {
       childrenAssertionFailure()
       return nil
     }
 
-    guard let props = node.props.value as? Props else {
+    guard let props = component.node.props.value as? Props else {
       propsAssertionFailure()
       return nil
     }
@@ -88,10 +88,10 @@ extension UIViewComponent where Target == Target.DefaultValue,
       result = box(
         for: target,
         ContainerViewController(contained: target),
-        node
+        component
       )
     } else {
-      result = box(for: target, parent.viewController, node)
+      result = box(for: target, parent.viewController, component)
     }
 
     switch parent {

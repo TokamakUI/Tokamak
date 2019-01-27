@@ -17,7 +17,7 @@ public struct CellPath {
  in this section.
  */
 public protocol SectionedModel: RandomAccessCollection
-  where Element: RandomAccessCollection {
+  where Element: RandomAccessCollection, Index == Int {
   static func single(section: Element) -> Self
 }
 

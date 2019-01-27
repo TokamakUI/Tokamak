@@ -8,11 +8,11 @@
 import Gluon
 import UIKit
 
-private final class DataSource<T: CellProvider>: NSObject,
+final class DataSource<T: CellProvider>: NSObject,
   UITableViewDataSource {
-  private let model: [[T]]
+  var model: T.Model
 
-  init(model: [[T]]) {
+  init(_ model: T.Model) {
     self.model = model
   }
 
@@ -41,4 +41,18 @@ final class GluonTableView: UITableView, Default {
   }
 }
 
-final class TableViewBox: ViewBox<GluonTableView> {}
+final class TableViewBox<T: CellProvider>: ViewBox<GluonTableView> {
+  weak var component: UIKitRenderer.Component?
+  var dataSource: DataSource<T>
+
+  init(
+    _ view: GluonTableView,
+    _ viewController: UIViewController,
+    _ component: UIKitRenderer.Component,
+    _ model: T.Model
+  ) {
+    dataSource = DataSource(model)
+    self.component = component
+    super.init(view, viewController, component.node)
+  }
+}

@@ -5,8 +5,8 @@
 //  Created by Max Desiatov on 28/11/2018.
 //
 
-class MountedComponent<R: Renderer> {
-  var node: AnyNode
+public class MountedComponent<R: Renderer> {
+  public internal(set) var node: AnyNode
   private(set) weak var parent: MountedComponent<R>?
 
   init(_ node: AnyNode, _ parent: MountedComponent<R>?) {
