@@ -14,11 +14,13 @@ let _ModalPresenterWitnessTableHack: UIHostComponent.Type = ModalPresenter.self
 let _StackControllerWitnessTableHack: UIHostComponent.Type =
   StackController.self
 
+// Type-erased version `ViewControllerBox` to avoid generics leaking out.
 public protocol UITarget {
   var node: AnyNode? { get }
   var viewController: UIViewController { get }
 }
 
+/// UIKitRenderer is an implementation of `Renderer` with UIKit as a target.
 class UIKitRenderer: Renderer {
   private var reconciler: StackReconciler<UIKitRenderer>?
   private weak var rootViewController: UIViewController!
