@@ -18,7 +18,7 @@ extension ListView: UIViewComponent {
       fatalError("incorrect props type stored in ListView node")
     }
 
-    return TableViewBox<T>(view, viewController, component, props.model)
+    return TableViewBox<T>(view, viewController, component, props)
   }
 
   static func update(view box: ViewBox<GluonTableView>,
@@ -29,6 +29,6 @@ extension ListView: UIViewComponent {
       return
     }
 
-    box.dataSource.model = props.model
+    box.dataSource.props = props
   }
 }

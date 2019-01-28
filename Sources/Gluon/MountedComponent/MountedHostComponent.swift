@@ -26,6 +26,10 @@ public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
     super.init(node, parent)
   }
 
+  public func manage(child: R.Target, with: AnyNode) {}
+
+  public func reconcile(managed child: R.Target, with: AnyNode) {}
+
   override func mount(with reconciler: StackReconciler<R>) {
     guard
       let target = reconciler.renderer?.mountTarget(to: parentTarget,

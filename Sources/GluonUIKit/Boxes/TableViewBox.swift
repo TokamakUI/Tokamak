@@ -8,30 +8,59 @@
 import Gluon
 import UIKit
 
+final class TableCellBox: ViewBox<UITableViewCell> {}
+
+extension CellPath {
+  init(_ path: IndexPath) {
+    self.init(section: path.section, item: path.item)
+  }
+}
+
 final class DataSource<T: CellProvider>: NSObject,
   UITableViewDataSource {
-  var model: T.Model
+  weak var viewController: UIViewController?
+  weak var component: UIKitRenderer.Component?
+  var props: ListView<T>.Props
 
-  init(_ model: T.Model) {
-    self.model = model
+  init(_ props: ListView<T>.Props, _ component: UIKitRenderer.Component) {
+    self.props = props
+    self.component = component
   }
 
   func numberOfSections(in tableView: UITableView) -> Int {
-    return model.count
+    return props.model.count
   }
 
   func tableView(
     _ tableView: UITableView,
     numberOfRowsInSection section: Int
   ) -> Int {
-    return model[section].count
+    return props.model[section].count
   }
 
   func tableView(
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath
   ) -> UITableViewCell {
-    return UITableViewCell(style: .default, reuseIdentifier: "blah")
+    let item = props.model[indexPath.section][indexPath.row]
+
+    let (id, node) = T.cell(
+      props: props.cellProps,
+      item: item,
+      path: CellPath(indexPath)
+    )
+
+    if let cell = tableView.dequeueReusableCell(withIdentifier: id.rawValue) {
+//      component?.reconcile(managed: , with: node)
+      return cell
+    } else {
+      let result = UITableViewCell(
+        style: .default,
+        reuseIdentifier: id.rawValue
+      )
+//      component?.manage(child: , with: node)
+      return result
+    }
   }
 }
 
@@ -42,17 +71,15 @@ final class GluonTableView: UITableView, Default {
 }
 
 final class TableViewBox<T: CellProvider>: ViewBox<GluonTableView> {
-  weak var component: UIKitRenderer.Component?
   var dataSource: DataSource<T>
 
   init(
     _ view: GluonTableView,
     _ viewController: UIViewController,
     _ component: UIKitRenderer.Component,
-    _ model: T.Model
+    _ props: ListView<T>.Props
   ) {
-    dataSource = DataSource(model)
-    self.component = component
+    dataSource = DataSource(props, component)
     super.init(view, viewController, component.node)
   }
 }

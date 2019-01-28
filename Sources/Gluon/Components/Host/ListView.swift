@@ -6,8 +6,13 @@
 //
 
 public struct CellPath {
-  public let item: Int
   public let section: Int
+  public let item: Int
+
+  public init(section: Int, item: Int) {
+    self.section = section
+    self.item = item
+  }
 }
 
 /** A collection of sections with random access to its elements and
@@ -17,11 +22,12 @@ public struct CellPath {
  in this section.
  */
 public protocol SectionedModel: RandomAccessCollection
-  where Element: RandomAccessCollection, Index == Int {
+  where Element: RandomAccessCollection, Index == Int, Element.Index == Int {
   static func single(section: Element) -> Self
 }
 
-extension Array: SectionedModel where Element: RandomAccessCollection {
+extension Array: SectionedModel
+  where Element: RandomAccessCollection, Element.Index == Int {
   public static func single(section: Element) -> [Element] {
     return [section]
   }
