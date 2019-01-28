@@ -18,11 +18,11 @@ protocol UIValueComponent: UIControlComponent
 
 extension UIValueComponent {
   static func box(
-    for control: Target,
+    for view: Target,
     _ viewController: UIViewController,
-    _ node: AnyNode
+    _ component: UIKitRenderer.Component
   ) -> ViewBox<Target> {
-    return ValueControlBox(control, viewController, node)
+    return ValueControlBox(view, viewController, component.node)
   }
 
   static func update(control box: ControlBox<Target>,
