@@ -28,9 +28,7 @@ public class UITarget {
 
 /// UIKitRenderer is an implementation of `Renderer` with UIKit as a target.
 final class UIKitRenderer: Renderer {
-  typealias Component = MountedHostComponent<UIKitRenderer>
-
-  private var reconciler: StackReconciler<UIKitRenderer>?
+  private(set) var reconciler: StackReconciler<UIKitRenderer>?
   private weak var rootViewController: UIViewController!
 
   init(_ node: AnyNode, rootViewController: UIViewController) {
@@ -50,8 +48,7 @@ final class UIKitRenderer: Renderer {
 
   func mountTarget(
     to parent: UITarget,
-    parentNode: AnyNode?,
-    with component: Component
+    with component: UIKitRenderer.MountedHost
   ) -> UITarget? {
     guard let rendererComponent = component.type as? UIHostComponent.Type else {
       typeAssertionFailure(for: component.type)
@@ -59,11 +56,12 @@ final class UIKitRenderer: Renderer {
     }
 
     return rendererComponent.mountTarget(to: parent,
-                                         component: component)
+                                         component: component,
+                                         self)
   }
 
   func update(target: UITarget,
-              with component: Component) {
+              with component: UIKitRenderer.MountedHost) {
     guard let rendererComponent = component.type as? UIHostComponent.Type else {
       typeAssertionFailure(for: component.type)
       return
@@ -74,7 +72,7 @@ final class UIKitRenderer: Renderer {
   }
 
   func unmount(target: UITarget,
-               with component: Component) {
+               with component: UIKitRenderer.MountedHost) {
     guard let rendererComponent = component.type as? UIHostComponent.Type else {
       typeAssertionFailure(for: component.type)
       return

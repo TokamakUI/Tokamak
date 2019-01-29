@@ -20,7 +20,8 @@ extension UIValueComponent {
   static func box(
     for view: Target,
     _ viewController: UIViewController,
-    _ component: UIKitRenderer.Component
+    _ component: UIKitRenderer.MountedHost,
+    _: UIKitRenderer
   ) -> ViewBox<Target> {
     return ValueControlBox(view, viewController, component.node)
   }

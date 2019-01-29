@@ -9,31 +9,37 @@
  components by `StackReconciler`.
  */
 public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
+  // FIXME: we probably can avoid making this class public
+
   private var managedChildren = [Weak<R.Target>: MountedComponent<R>]()
   private var mountedChildren = [MountedComponent<R>]()
+
+  /** Target of a closest ancestor host component. As a parent of this component
+   might not be a host component, but a composite component, we need to pass
+   around the target of a host component to its closests descendent host
+   comoponents. Thus, a parent target is not the same as a target of a parent
+   component. */
   private let parentTarget: R.Target
+
+  /** Target of this host component supplied by a renderer after mounting has
+   completed.
+   */
   private var target: R.Target?
 
   public let type: AnyHostComponent.Type
 
   init(_ node: AnyNode,
        _ type: AnyHostComponent.Type,
-       _ parent: MountedComponent<R>?,
        _ parentTarget: R.Target) {
     self.type = type
     self.parentTarget = parentTarget
 
-    super.init(node, parent)
+    super.init(node)
   }
-
-  public func manage(child: R.Target, with: AnyNode) {}
-
-  public func reconcile(managed child: R.Target, with: AnyNode) {}
 
   override func mount(with reconciler: StackReconciler<R>) {
     guard
       let target = reconciler.renderer?.mountTarget(to: parentTarget,
-                                                    parentNode: parent?.node,
                                                     with: self)
     else { return }
 
@@ -41,11 +47,11 @@ public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
 
     switch node.children.value {
     case let nodes as [AnyNode]:
-      mountedChildren = nodes.map { $0.makeMountedComponent(self, target) }
+      mountedChildren = nodes.map { $0.makeMountedComponent(target) }
       mountedChildren.forEach { $0.mount(with: reconciler) }
 
     case let node as AnyNode:
-      let child: MountedComponent<R> = node.makeMountedComponent(self, target)
+      let child: MountedComponent<R> = node.makeMountedComponent(target)
       mountedChildren = [child]
       child.mount(with: reconciler)
 
@@ -78,7 +84,7 @@ public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
 
       // no existing children, mount all new
       case (true, false):
-        mountedChildren = nodes.map { $0.makeMountedComponent(self, target) }
+        mountedChildren = nodes.map { $0.makeMountedComponent(target) }
         mountedChildren.forEach { $0.mount(with: reconciler) }
 
       // both arrays have items, reconcile by types and keys
@@ -102,7 +108,7 @@ public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
             newChild = child
           } else {
             child.unmount(with: reconciler)
-            newChild = node.makeMountedComponent(self, target)
+            newChild = node.makeMountedComponent(target)
             newChild.mount(with: reconciler)
           }
           newChildren.append(newChild)
@@ -120,7 +126,8 @@ public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
           // more nodes left than children were mounted,
           // mount remaining nodes
           for node in nodes {
-            let newChild = node.makeMountedComponent(self, target)
+            let newChild: MountedComponent<R> =
+              node.makeMountedComponent(target)
             newChild.mount(with: reconciler)
             newChildren.append(newChild)
           }
@@ -138,7 +145,7 @@ public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
         child.node = node
         child.update(with: reconciler)
       } else {
-        let child: MountedComponent<R> = node.makeMountedComponent(self, target)
+        let child: MountedComponent<R> = node.makeMountedComponent(target)
         child.mount(with: reconciler)
       }
 

@@ -19,7 +19,8 @@ extension UIControlComponent where Target == Target.DefaultValue {
   static func box(
     for view: Target,
     _ viewController: UIViewController,
-    _ component: UIKitRenderer.Component
+    _ component: UIKitRenderer.MountedHost,
+    _ renderer: UIKitRenderer
   ) -> ViewBox<Target> {
     return ControlBox(view, viewController, component.node)
   }

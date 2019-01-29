@@ -12,13 +12,14 @@ extension ListView: UIViewComponent {
   static func box(
     for view: Target,
     _ viewController: UIViewController,
-    _ component: UIKitRenderer.Component
+    _ component: UIKitRenderer.MountedHost,
+    _ renderer: UIKitRenderer
   ) -> ViewBox<GluonTableView> {
     guard let props = component.node.props.value as? Props else {
       fatalError("incorrect props type stored in ListView node")
     }
 
-    return TableViewBox<T>(view, viewController, component, props)
+    return TableViewBox<T>(view, viewController, component, props, renderer)
   }
 
   static func update(view box: ViewBox<GluonTableView>,

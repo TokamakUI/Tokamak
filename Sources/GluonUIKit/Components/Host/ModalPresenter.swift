@@ -10,7 +10,8 @@ import UIKit
 
 extension ModalPresenter: UIHostComponent {
   static func mountTarget(to parent: UITarget,
-                          component: UIKitRenderer.Component) -> UITarget? {
+                          component: UIKitRenderer.MountedHost,
+                          _: UIKitRenderer) -> UITarget? {
     return ViewControllerBox(parent.viewController, component.node)
   }
 

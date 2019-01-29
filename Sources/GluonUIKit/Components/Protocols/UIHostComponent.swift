@@ -15,8 +15,11 @@ import UIKit
 /// providing a configurable single value: `UISwitch`, `UISlider`,
 /// `UIStepper`, `UIDatePicker`, or `UISegmentedControl`.
 protocol UIHostComponent: AnyHostComponent {
-  static func mountTarget(to parent: UITarget,
-                          component: UIKitRenderer.Component) -> UITarget?
+  static func mountTarget(
+    to parent: UITarget,
+    component: UIKitRenderer.MountedHost,
+    _ renderer: UIKitRenderer
+  ) -> UITarget?
 
   static func update(target: UITarget,
                      node: AnyNode)

@@ -8,7 +8,13 @@
 import Gluon
 import UIKit
 
-final class TableCellBox: ViewBox<UITableViewCell> {}
+final class GluonTableCell: UITableViewCell {
+  // FIXME: `component` has a strong reference to `box` through its own
+  // property `target`, should that be `weak` to break a potential reference
+  // cycle?
+  var component: UIKitRenderer.Mounted?
+  weak var box: ViewBox<GluonTableCell>?
+}
 
 extension CellPath {
   init(_ path: IndexPath) {
@@ -19,12 +25,14 @@ extension CellPath {
 final class DataSource<T: CellProvider>: NSObject,
   UITableViewDataSource {
   weak var viewController: UIViewController?
-  weak var component: UIKitRenderer.Component?
+  weak var renderer: UIKitRenderer?
   var props: ListView<T>.Props
 
-  init(_ props: ListView<T>.Props, _ component: UIKitRenderer.Component) {
+  init(
+    _ props: ListView<T>.Props,
+    _ renderer: UIKitRenderer?
+  ) {
     self.props = props
-    self.component = component
   }
 
   func numberOfSections(in tableView: UITableView) -> Int {
@@ -50,15 +58,22 @@ final class DataSource<T: CellProvider>: NSObject,
       path: CellPath(indexPath)
     )
 
-    if let cell = tableView.dequeueReusableCell(withIdentifier: id.rawValue) {
-//      component?.reconcile(managed: , with: node)
+    if let cell = tableView.dequeueReusableCell(
+      withIdentifier: id.rawValue
+    ) as? GluonTableCell, let component = cell.component {
+      renderer?.update(component: component, with: node)
       return cell
     } else {
-      let result = UITableViewCell(
+      let result = GluonTableCell(
         style: .default,
         reuseIdentifier: id.rawValue
       )
-//      component?.manage(child: , with: node)
+      if let viewController = viewController {
+        result.component = renderer?.mount(
+          with: node,
+          to: ViewBox(result, viewController, node)
+        )
+      }
       return result
     }
   }
@@ -76,10 +91,11 @@ final class TableViewBox<T: CellProvider>: ViewBox<GluonTableView> {
   init(
     _ view: GluonTableView,
     _ viewController: UIViewController,
-    _ component: UIKitRenderer.Component,
-    _ props: ListView<T>.Props
+    _ component: UIKitRenderer.MountedHost,
+    _ props: ListView<T>.Props,
+    _ renderer: UIKitRenderer
   ) {
-    dataSource = DataSource(props, component)
+    dataSource = DataSource(props, renderer)
     super.init(view, viewController, component.node)
   }
 }

@@ -30,7 +30,8 @@ final class GluonNavigationController: UINavigationController {
 
 extension StackController: UIHostComponent {
   static func mountTarget(to parent: UITarget,
-                          component: UIKitRenderer.Component) -> UITarget? {
+                          component: UIKitRenderer.MountedHost,
+                          _: UIKitRenderer) -> UITarget? {
     guard let props = component.node.props.value as? Props else {
       propsAssertionFailure()
       return nil
