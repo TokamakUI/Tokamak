@@ -8,12 +8,10 @@
 import Gluon
 
 public final class TestRenderer: Renderer {
-  public typealias Component = MountedHostComponent<TestRenderer>
-
-  private var reconciler: StackReconciler<TestRenderer>!
+  public private(set) var reconciler: StackReconciler<TestRenderer>?
 
   public var rootTarget: TestView {
-    return reconciler.rootTarget
+    return reconciler!.rootTarget
   }
 
   public init(_ node: AnyNode) {
@@ -23,21 +21,27 @@ public final class TestRenderer: Renderer {
                                  renderer: self)
   }
 
-  public func mountTarget(to parent: TestView,
-                          parentNode: AnyNode?,
-                          with component: Component) -> TestView? {
+  public func mountTarget(
+    to parent: TestView,
+    with component: TestRenderer.MountedHost
+  ) -> TestView? {
     let result = TestView(component.node)
     parent.add(subview: result)
 
     return result
   }
 
-  public func update(target: TestView,
-                     with component: Component) {
+  public func update(
+    target: TestView,
+    with component: TestRenderer.MountedHost
+  ) {
     target.node = component.node
   }
 
-  public func unmount(target: TestView, with component: Component) {
+  public func unmount(
+    target: TestView,
+    with component: TestRenderer.MountedHost
+  ) {
     target.removeFromSuperview()
   }
 }

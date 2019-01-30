@@ -60,7 +60,7 @@ public protocol SimpleCellProvider: CellProvider
 }
 
 extension SimpleCellProvider {
-  static func cell(
+  public static func cell(
     props: Props,
     item: Model.Element.Element,
     path: CellPath
@@ -97,4 +97,18 @@ public struct ListView<T: CellProvider>: HostComponent {
   }
 
   public typealias Children = Null
+}
+
+extension ListView.Props where T.Props == Null {
+  public init(model: T.Model, _ style: Style? = nil) {
+    self.cellProps = Null()
+    self.model = model
+    self.style = style
+  }
+
+  public init(singleSection: T.Model.Element, _ style: Style? = nil) {
+    self.cellProps = Null()
+    self.model = T.Model.single(section: singleSection)
+    self.style = style
+  }
 }
