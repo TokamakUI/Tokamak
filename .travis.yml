@@ -18,6 +18,7 @@ before_install:
 script:
 - swiftformat --lint --verbose .
 - swiftlint
+- xcodebuild -scheme GluonUIKit -sdk iphonesimulator
 - xcodebuild test -enableCodeCoverage YES -scheme GluonCore
 after_success:
 - bash <(curl -s https://codecov.io/bash)
