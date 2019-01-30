@@ -101,14 +101,14 @@ public struct ListView<T: CellProvider>: HostComponent {
 
 extension ListView.Props where T.Props == Null {
   public init(model: T.Model, _ style: Style? = nil) {
-    self.cellProps = Null()
+    cellProps = Null()
     self.model = model
     self.style = style
   }
 
   public init(singleSection: T.Model.Element, _ style: Style? = nil) {
-    self.cellProps = Null()
-    self.model = T.Model.single(section: singleSection)
+    cellProps = Null()
+    model = T.Model.single(section: singleSection)
     self.style = style
   }
 }
