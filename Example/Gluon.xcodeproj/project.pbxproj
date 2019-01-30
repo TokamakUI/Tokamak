@@ -14,7 +14,6 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		D126CB7421ECF7A60097300E /* GluonApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C86021DA54780042A261 /* GluonApp.swift */; };
-		D16FCB7F21FCDE4E0033C5C0 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16FCB7E21FCDE4E0033C5C0 /* TableViewController.swift */; };
 		D1DEEC2922009E8000C525EE /* NavRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DEEC2822009E8000C525EE /* NavRouter.swift */; };
 		D1E6BCD221AD4CD6002769E3 /* GluonTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6BCD121AD4CD6002769E3 /* GluonTest.swift */; };
 /* End PBXBuildFile section */
@@ -45,7 +44,6 @@
 		8CADEBB8BFF6F2621CA49E8F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		C1B4A8D80770145FDAFEAE64 /* Pods_Gluon_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gluon_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6DA99382B6892EAB361742F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		D16FCB7E21FCDE4E0033C5C0 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		D1DEEC2822009E8000C525EE /* NavRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavRouter.swift; sourceTree = "<group>"; };
 		D1E0C86021DA54780042A261 /* GluonApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonApp.swift; sourceTree = "<group>"; };
 		D1E6BCD121AD4CD6002769E3 /* GluonTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonTest.swift; sourceTree = "<group>"; };
@@ -101,7 +99,6 @@
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				D1E0C86021DA54780042A261 /* GluonApp.swift */,
 				D1DEEC2822009E8000C525EE /* NavRouter.swift */,
-				D16FCB7E21FCDE4E0033C5C0 /* TableViewController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -295,7 +292,6 @@
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				D1DEEC2922009E8000C525EE /* NavRouter.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
-				D16FCB7F21FCDE4E0033C5C0 /* TableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

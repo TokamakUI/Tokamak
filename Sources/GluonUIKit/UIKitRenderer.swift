@@ -10,13 +10,13 @@ import UIKit
 
 // FIXME: working around "Couldn't lookup symbols: protocol witness table"
 // compiler bug
-let _ModalPresenterWitnessTableHack: UIHostComponent.Type = ModalPresenter.self
-let _StackControllerWitnessTableHack: UIHostComponent.Type =
+let _modalPresenterWitnessTableHack: UIHostComponent.Type = ModalPresenter.self
+let _stackControllerWitnessTableHack: UIHostComponent.Type =
   StackController.self
 
-let _ListViewWitnessTableHack: UIHostComponent.Type = ListView<_Provider>.self
+let _listViewWitnessTableHack: UIHostComponent.Type = ListView<HackyProvider>.self
 
-struct _Provider: SimpleCellProvider {
+struct HackyProvider: SimpleCellProvider {
   static func cell(
     props: Props, item: Int, path: CellPath
   ) -> AnyNode {
