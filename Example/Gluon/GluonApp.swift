@@ -68,7 +68,7 @@ struct ListProvider: SimpleCellProvider {
   typealias Model = [[Int]]
 
   static func cell(props: Null, item: Int, path: CellPath) -> AnyNode {
-    return Label.node("\(item)")
+    return Label.node(.init(Style(Edges.equal(to: .parent))), "\(item)")
   }
 }
 

@@ -12,8 +12,7 @@ final class GluonTableCell: UITableViewCell {
   // FIXME: `component` has a strong reference to `box` through its own
   // property `target`, should that be `weak` to break a potential reference
   // cycle?
-  var component: UIKitRenderer.Mounted?
-  weak var box: ViewBox<GluonTableCell>?
+  fileprivate var component: UIKitRenderer.Mounted?
 }
 
 extension CellPath {
@@ -22,7 +21,7 @@ extension CellPath {
   }
 }
 
-final class DataSource<T: CellProvider>: NSObject,
+private final class DataSource<T: CellProvider>: NSObject,
   UITableViewDataSource {
   weak var viewController: UIViewController?
   weak var renderer: UIKitRenderer?
@@ -30,9 +29,12 @@ final class DataSource<T: CellProvider>: NSObject,
 
   init(
     _ props: ListView<T>.Props,
+    _ viewController: UIViewController,
     _ renderer: UIKitRenderer?
   ) {
     self.props = props
+    self.viewController = viewController
+    self.renderer = renderer
   }
 
   func numberOfSections(in tableView: UITableView) -> Int {
@@ -86,7 +88,16 @@ final class GluonTableView: UITableView, Default {
 }
 
 final class TableViewBox<T: CellProvider>: ViewBox<GluonTableView> {
-  var dataSource: DataSource<T>
+  private var dataSource: DataSource<T>
+
+  var props: ListView<T>.Props {
+    get {
+      return dataSource.props
+    }
+    set {
+      dataSource.props = newValue
+    }
+  }
 
   init(
     _ view: GluonTableView,
@@ -95,7 +106,8 @@ final class TableViewBox<T: CellProvider>: ViewBox<GluonTableView> {
     _ props: ListView<T>.Props,
     _ renderer: UIKitRenderer
   ) {
-    dataSource = DataSource(props, renderer)
+    dataSource = DataSource(props, viewController, renderer)
+    view.dataSource = dataSource
     super.init(view, viewController, component.node)
   }
 }

@@ -14,17 +14,16 @@ let _ModalPresenterWitnessTableHack: UIHostComponent.Type = ModalPresenter.self
 let _StackControllerWitnessTableHack: UIHostComponent.Type =
   StackController.self
 
-let _ListViewWitnessTableHack: UIHostComponent.Type = ListView<Provider>.self
+let _ListViewWitnessTableHack: UIHostComponent.Type = ListView<_Provider>.self
 
-struct Provider: SimpleCellProvider {
+struct _Provider: SimpleCellProvider {
   static func cell(
-    props: Provider.Props, item: Int, path: CellPath
+    props: Props, item: Int, path: CellPath
   ) -> AnyNode {
     return Null.node()
   }
 
   typealias Props = Null
-
   typealias Model = [[Int]]
 }
 

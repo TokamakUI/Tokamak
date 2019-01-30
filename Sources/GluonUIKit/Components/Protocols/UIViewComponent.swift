@@ -109,6 +109,8 @@ extension UIViewComponent where Target == Target.DefaultValue,
       box.view.addSubview(target)
     case let box as ViewBox<GluonView>:
       box.view.addSubview(target)
+    case let box as ViewBox<GluonTableCell>:
+      box.view.addSubview(target)
     case let box as ViewControllerBox<GluonNavigationController>
       where parent.node?.isSubtypeOf(StackController.self) ?? false:
       guard let props = parent.node?.props.value

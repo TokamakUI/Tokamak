@@ -10,7 +10,7 @@ import UIKit
 
 extension ListView: UIViewComponent {
   static func box(
-    for view: Target,
+    for view: GluonTableView,
     _ viewController: UIViewController,
     _ component: UIKitRenderer.MountedHost,
     _ renderer: UIKitRenderer
@@ -30,6 +30,6 @@ extension ListView: UIViewComponent {
       return
     }
 
-    box.dataSource.props = props
+    box.props = props
   }
 }
