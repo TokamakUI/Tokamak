@@ -72,15 +72,13 @@ public struct Height: Equatable {
 public struct Top: Equatable {
   public let target: Constraint.Target
   public let constant: Double
-  public let multiplier: Double
 
   public static func equal(
     to target: Constraint.Target,
-    constant: Double = 0,
-    multiplier: Double = 1
+    constant: Double = 0
   ) -> Constraint {
     return .top(Top(
-      target: target, constant: constant, multiplier: multiplier
+      target: target, constant: constant
     ))
   }
 }
@@ -88,15 +86,13 @@ public struct Top: Equatable {
 public struct Bottom: Equatable {
   public let target: Constraint.Target
   public let constant: Double
-  public let multiplier: Double
 
   public static func equal(
     to target: Constraint.Target,
-    constant: Double = 0,
-    multiplier: Double = 1
+    constant: Double = 0
   ) -> Constraint {
     return .bottom(Bottom(
-      target: target, constant: constant, multiplier: multiplier
+      target: target, constant: constant
     ))
   }
 }
@@ -104,15 +100,13 @@ public struct Bottom: Equatable {
 public struct Left: Equatable {
   public let target: Constraint.Target
   public let constant: Double
-  public let multiplier: Double
 
   public static func equal(
     to target: Constraint.Target,
-    constant: Double = 0,
-    multiplier: Double = 1
+    constant: Double = 0
   ) -> Constraint {
     return .left(Left(
-      target: target, constant: constant, multiplier: multiplier
+      target: target, constant: constant
     ))
   }
 }
@@ -120,15 +114,13 @@ public struct Left: Equatable {
 public struct Right: Equatable {
   public let target: Constraint.Target
   public let constant: Double
-  public let multiplier: Double
 
   public static func equal(
     to target: Constraint.Target,
-    constant: Double = 0,
-    multiplier: Double = 1
+    constant: Double = 0
   ) -> Constraint {
     return .right(Right(
-      target: target, constant: constant, multiplier: multiplier
+      target: target, constant: constant
     ))
   }
 }

@@ -108,18 +108,22 @@ extension UIView {
       return [trailingAnchor.constraint(equalTo: secondAnchor)]
     case let .edges(edges):
       let target = edges.target
-      return constraint(.top(.equal(
-        to: target, .top, offset: edges.insets.top
-      )), next: next) +
-        constraint(.bottom(.equal(
-          to: target, .bottom, offset: edges.insets.bottom
-        )), next: next) +
-        constraint(.left(.equal(
-          to: target, .left, offset: edges.insets.left
-        )), next: next) +
-        constraint(.right(.equal(
-          to: target, .right, offset: edges.insets.right
-        )), next: next)
+      return constraint(Top.equal(
+        to: target, constant: edges.insets.top
+      ), next: next) +
+        constraint(Bottom.equal(
+          to: target, constant: edges.insets.bottom
+        ), next: next) +
+        constraint(Left.equal(
+          to: target, constant: edges.insets.left
+        ), next: next) +
+        constraint(Right.equal(
+          to: target, constant: edges.insets.right
+        ), next: next)
+    case .firstBaseline:
+      fatalError()
+    case .lastBaseline:
+      fatalError()
     }
   }
 }

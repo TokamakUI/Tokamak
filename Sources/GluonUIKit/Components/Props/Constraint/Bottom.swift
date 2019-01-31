@@ -8,7 +8,7 @@
 import Gluon
 import UIKit
 
-extension Bottom: OffsetConstraint {
+extension Bottom: YAxisConstraint {
   var firstAnchor: KeyPath<UIView, NSLayoutYAxisAnchor> {
     return \.bottomAnchor
   }

@@ -8,7 +8,7 @@
 import Gluon
 import UIKit
 
-extension Width: OffsetConstraint {
+extension Width: OwnConstraint {
   var firstAnchor: KeyPath<UIView, NSLayoutDimension> {
     return \.widthAnchor
   }

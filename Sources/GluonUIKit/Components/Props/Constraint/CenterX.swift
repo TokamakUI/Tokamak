@@ -8,7 +8,7 @@
 import Gluon
 import UIKit
 
-extension CenterX: OwnConstraint {
+extension CenterX: XAxisConstraint {
   var firstAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> {
     return \.centerXAnchor
   }

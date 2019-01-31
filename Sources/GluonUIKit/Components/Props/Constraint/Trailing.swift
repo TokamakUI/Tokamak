@@ -8,7 +8,7 @@
 import Gluon
 import UIKit
 
-extension Trailing: OffsetConstraint {
+extension Trailing: XAxisConstraint {
   var firstAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> {
     return \.trailingAnchor
   }
