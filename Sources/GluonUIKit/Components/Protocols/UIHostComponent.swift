@@ -15,8 +15,11 @@ import UIKit
 /// providing a configurable single value: `UISwitch`, `UISlider`,
 /// `UIStepper`, `UIDatePicker`, or `UISegmentedControl`.
 protocol UIHostComponent: AnyHostComponent {
-  static func mountTarget(to parent: UITarget,
-                          node: AnyNode) -> UITarget?
+  static func mountTarget(
+    to parent: UITarget,
+    component: UIKitRenderer.MountedHost,
+    _ renderer: UIKitRenderer
+  ) -> UITarget?
 
   static func update(target: UITarget,
                      node: AnyNode)
@@ -39,6 +42,10 @@ extension UIHostComponent {
 
   static func parentAssertionFailure(_ function: String = #function) {
     typeAssertionFailure("parent target", function)
+  }
+
+  static func boxAssertionFailure(_ function: String = #function) {
+    typeAssertionFailure("box", function)
   }
 
   private static func typeAssertionFailure(_ type: String, _ function: String) {
