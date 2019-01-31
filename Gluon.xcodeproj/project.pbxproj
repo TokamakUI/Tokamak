@@ -34,6 +34,8 @@
 		A633561F21FB5C6D00BCC525 /* Height.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633561E21FB5C6D00BCC525 /* Height.swift */; };
 		A633562121FB5C8800BCC525 /* Leading.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633562021FB5C8800BCC525 /* Leading.swift */; };
 		A633562321FB5CA200BCC525 /* Trailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633562221FB5CA200BCC525 /* Trailing.swift */; };
+		A633562521FB96EE00BCC525 /* CenterX.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633562421FB96EE00BCC525 /* CenterX.swift */; };
+		A633562721FB9DC600BCC525 /* CenterY.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633562621FB9DC600BCC525 /* CenterY.swift */; };
 		D126CB7121ECAF850097300E /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126CB7021ECAF850097300E /* Constraint.swift */; };
 		D144FB9921E8A56D001020F3 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */; };
 		D163F9D621F27F8C00BA464B /* GluonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163F9D521F27F8C00BA464B /* GluonViewController.swift */; };
@@ -158,6 +160,8 @@
 		A633561E21FB5C6D00BCC525 /* Height.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Height.swift; sourceTree = "<group>"; };
 		A633562021FB5C8800BCC525 /* Leading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leading.swift; sourceTree = "<group>"; };
 		A633562221FB5CA200BCC525 /* Trailing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trailing.swift; sourceTree = "<group>"; };
+		A633562421FB96EE00BCC525 /* CenterX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterX.swift; sourceTree = "<group>"; };
+		A633562621FB9DC600BCC525 /* CenterY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterY.swift; sourceTree = "<group>"; };
 		D126CB7021ECAF850097300E /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D126CB7221ECE1400097300E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
@@ -283,6 +287,8 @@
 				A633561E21FB5C6D00BCC525 /* Height.swift */,
 				A633562021FB5C8800BCC525 /* Leading.swift */,
 				A633562221FB5CA200BCC525 /* Trailing.swift */,
+				A633562421FB96EE00BCC525 /* CenterX.swift */,
+				A633562621FB9DC600BCC525 /* CenterY.swift */,
 			);
 			path = Constraint;
 			sourceTree = "<group>";
@@ -700,6 +706,7 @@
 				OBJ_168 /* Color.swift in Sources */,
 				OBJ_169 /* Event.swift in Sources */,
 				D1C3A72121F0C47200C6B884 /* Size.swift in Sources */,
+				A633562721FB9DC600BCC525 /* CenterY.swift in Sources */,
 				OBJ_170 /* Rectangle.swift in Sources */,
 				A633561621FB5C0800BCC525 /* Bottom.swift in Sources */,
 				A62891FB21F5DB83001BE090 /* Switch.swift in Sources */,
@@ -708,6 +715,7 @@
 				OBJ_174 /* UIValueComponent.swift in Sources */,
 				OBJ_175 /* UIViewComponent.swift in Sources */,
 				A633561D21FB5C5400BCC525 /* Right.swift in Sources */,
+				A633562521FB96EE00BCC525 /* CenterX.swift in Sources */,
 				OBJ_176 /* Slider.swift in Sources */,
 				OBJ_177 /* StackController.swift in Sources */,
 				A633562121FB5C8800BCC525 /* Leading.swift in Sources */,

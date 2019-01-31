@@ -165,6 +165,70 @@ public struct Trailing: Equatable {
   }
 }
 
+public struct CenterX: Equatable {
+  public let target: Constraint.Target
+  public let constant: Double
+  public let multiplier: Double
+  
+  public static func equal(
+    to target: Constraint.Target,
+    constant: Double = 0,
+    multiplier: Double = 1
+    ) -> Constraint {
+    return .centerX(CenterX(
+      target: target, constant: constant, multiplier: multiplier
+    ))
+  }
+}
+
+public struct CenterY: Equatable {
+  public let target: Constraint.Target
+  public let constant: Double
+  public let multiplier: Double
+  
+  public static func equal(
+    to target: Constraint.Target,
+    constant: Double = 0,
+    multiplier: Double = 1
+    ) -> Constraint {
+    return .centerY(CenterY(
+      target: target, constant: constant, multiplier: multiplier
+    ))
+  }
+}
+
+public struct FirstBaseline: Equatable {
+  public let target: Constraint.Target
+  public let constant: Double
+  public let multiplier: Double
+  
+  public static func equal(
+    to target: Constraint.Target,
+    constant: Double = 0,
+    multiplier: Double = 1
+    ) -> Constraint {
+    return .firstBaseline(FirstBaseline(
+      target: target, constant: constant, multiplier: multiplier
+    ))
+  }
+}
+
+public struct LastBaseline: Equatable {
+  public let target: Constraint.Target
+  public let constant: Double
+  public let multiplier: Double
+  
+  public static func equal(
+    to target: Constraint.Target,
+    constant: Double = 0,
+    multiplier: Double = 1
+    ) -> Constraint {
+    return .lastBaseline(LastBaseline(
+      target: target, constant: constant, multiplier: multiplier
+    ))
+  }
+}
+
 public enum Constraint: Equatable {
   public enum Target {
     case next
@@ -276,10 +340,12 @@ public enum Constraint: Equatable {
   }
 
   case baseline(VerticalLocation)
+  case firstBaseline(FirstBaseline)
+  case lastBaseline(LastBaseline)
 
   case center(Center)
-  case centerX(HorizontalLocation)
-  case centerY(VerticalLocation)
+  case centerX(CenterX)
+  case centerY(CenterY)
 
   case width(Width)
   case height(Height)
