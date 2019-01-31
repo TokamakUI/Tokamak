@@ -8,12 +8,15 @@
 import Gluon
 import UIKit
 
-class ViewControllerBox<T: UIViewController> {
+class ViewControllerBox<T: UIViewController>: UITarget {
   let containerViewController: T
-  let node: AnyNode?
 
   init(_ viewController: T, _ node: AnyNode?) {
     containerViewController = viewController
-    self.node = node
+    super.init(node: node)
+  }
+
+  override var viewController: UIViewController {
+    return containerViewController
   }
 }
