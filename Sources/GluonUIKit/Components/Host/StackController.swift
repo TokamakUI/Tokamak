@@ -30,15 +30,16 @@ final class GluonNavigationController: UINavigationController {
 
 extension StackController: UIHostComponent {
   static func mountTarget(to parent: UITarget,
-                          node: AnyNode) -> UITarget? {
-    guard let props = node.props.value as? Props else {
+                          component: UIKitRenderer.MountedHost,
+                          _: UIKitRenderer) -> UITarget? {
+    guard let props = component.node.props.value as? Props else {
       propsAssertionFailure()
       return nil
     }
 
     let result = ViewControllerBox(GluonNavigationController {
       props.onPop.value(())
-    }, node)
+    }, component.node)
     props.hidesBarsWhenKeyboardAppears.flatMap {
       result.containerViewController.hidesBarsWhenKeyboardAppears = $0
     }

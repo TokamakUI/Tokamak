@@ -6,8 +6,13 @@
 //
 
 public struct CellPath {
-  public let item: Int
   public let section: Int
+  public let item: Int
+
+  public init(section: Int, item: Int) {
+    self.section = section
+    self.item = item
+  }
 }
 
 /** A collection of sections with random access to its elements and
@@ -17,11 +22,12 @@ public struct CellPath {
  in this section.
  */
 public protocol SectionedModel: RandomAccessCollection
-  where Element: RandomAccessCollection {
+  where Element: RandomAccessCollection, Index == Int, Element.Index == Int {
   static func single(section: Element) -> Self
 }
 
-extension Array: SectionedModel where Element: RandomAccessCollection {
+extension Array: SectionedModel
+  where Element: RandomAccessCollection, Element.Index == Int {
   public static func single(section: Element) -> [Element] {
     return [section]
   }
@@ -54,7 +60,7 @@ public protocol SimpleCellProvider: CellProvider
 }
 
 extension SimpleCellProvider {
-  static func cell(
+  public static func cell(
     props: Props,
     item: Model.Element.Element,
     path: CellPath
@@ -91,4 +97,18 @@ public struct ListView<T: CellProvider>: HostComponent {
   }
 
   public typealias Children = Null
+}
+
+extension ListView.Props where T.Props == Null {
+  public init(model: T.Model, _ style: Style? = nil) {
+    cellProps = Null()
+    self.model = model
+    self.style = style
+  }
+
+  public init(singleSection: T.Model.Element, _ style: Style? = nil) {
+    cellProps = Null()
+    model = T.Model.single(section: singleSection)
+    self.style = style
+  }
 }

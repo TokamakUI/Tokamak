@@ -10,9 +10,22 @@ import UIKit
 
 // FIXME: working around "Couldn't lookup symbols: protocol witness table"
 // compiler bug
-let _ModalPresenterWitnessTableHack: UIHostComponent.Type = ModalPresenter.self
-let _StackControllerWitnessTableHack: UIHostComponent.Type =
+let _modalPresenterWitnessTableHack: UIHostComponent.Type = ModalPresenter.self
+let _stackControllerWitnessTableHack: UIHostComponent.Type =
   StackController.self
+
+let _listViewWitnessTableHack: UIHostComponent.Type = ListView<HackyProvider>.self
+
+struct HackyProvider: SimpleCellProvider {
+  static func cell(
+    props: Props, item: Int, path: CellPath
+  ) -> AnyNode {
+    return Null.node()
+  }
+
+  typealias Props = Null
+  typealias Model = [[Int]]
+}
 
 public class UITarget {
   let node: AnyNode?
@@ -27,8 +40,8 @@ public class UITarget {
 }
 
 /// UIKitRenderer is an implementation of `Renderer` with UIKit as a target.
-class UIKitRenderer: Renderer {
-  private var reconciler: StackReconciler<UIKitRenderer>?
+final class UIKitRenderer: Renderer {
+  private(set) var reconciler: StackReconciler<UIKitRenderer>?
   private weak var rootViewController: UIViewController!
 
   init(_ node: AnyNode, rootViewController: UIViewController) {
@@ -46,35 +59,35 @@ class UIKitRenderer: Renderer {
     """)
   }
 
-  func mountTarget(to parent: UITarget,
-                   parentNode: AnyNode?,
-                   with component: AnyHostComponent.Type,
-                   node: AnyNode) -> UITarget? {
-    guard let rendererComponent = component as? UIHostComponent.Type else {
-      typeAssertionFailure(for: component)
+  func mountTarget(
+    to parent: UITarget,
+    with component: UIKitRenderer.MountedHost
+  ) -> UITarget? {
+    guard let rendererComponent = component.type as? UIHostComponent.Type else {
+      typeAssertionFailure(for: component.type)
       return nil
     }
 
     return rendererComponent.mountTarget(to: parent,
-                                         node: node)
+                                         component: component,
+                                         self)
   }
 
   func update(target: UITarget,
-              with component: AnyHostComponent.Type,
-              node: AnyNode) {
-    guard let rendererComponent = component as? UIHostComponent.Type else {
-      typeAssertionFailure(for: component)
+              with component: UIKitRenderer.MountedHost) {
+    guard let rendererComponent = component.type as? UIHostComponent.Type else {
+      typeAssertionFailure(for: component.type)
       return
     }
 
     rendererComponent.update(target: target,
-                             node: node)
+                             node: component.node)
   }
 
   func unmount(target: UITarget,
-               with component: AnyHostComponent.Type) {
-    guard let rendererComponent = component as? UIHostComponent.Type else {
-      typeAssertionFailure(for: component)
+               with component: UIKitRenderer.MountedHost) {
+    guard let rendererComponent = component.type as? UIHostComponent.Type else {
+      typeAssertionFailure(for: component.type)
       return
     }
 
