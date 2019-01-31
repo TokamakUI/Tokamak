@@ -5,6 +5,18 @@
 //  Created by Max Desiatov on 31/12/2018.
 //
 
+public struct NavigationItem: Equatable {
+  /// The mode to use when displaying the title of the navigation bar.
+  public enum TitleMode {
+    case automatic
+    case large
+    case standard
+  }
+
+  public let title: String?
+  public let titleMode: TitleMode
+}
+
 public protocol StackRouter: Router {
   static func route(
     props: Props,
@@ -12,7 +24,37 @@ public protocol StackRouter: Router {
     push: @escaping (Route) -> (),
     pop: @escaping () -> (),
     hooks: Hooks
+  ) -> (NavigationItem?, AnyNode)
+}
+
+public protocol SimpleStackRouter: StackRouter {
+  static func route(
+    props: Props,
+    route: Route,
+    push: @escaping (Route) -> (),
+    pop: @escaping () -> (),
+    hooks: Hooks
   ) -> AnyNode
+}
+
+extension SimpleStackRouter {
+  public static func route(
+    props: Props,
+    route: Route,
+    push: @escaping (Route) -> (),
+    pop: @escaping () -> (),
+    hooks: Hooks
+  ) -> (NavigationItem?, AnyNode) {
+    return (
+      nil, self.route(
+        props: props,
+        route: route,
+        push: push,
+        pop: pop,
+        hooks: hooks
+      )
+    )
+  }
 }
 
 public struct StackPresenter<T: StackRouter>: LeafComponent {
@@ -51,13 +93,15 @@ public struct StackPresenter<T: StackRouter>: LeafComponent {
         onPop: Handler(pop)
       ),
       stack.value.map {
-        T.route(
+        let pair = T.route(
           props: props.routerProps,
           route: $0,
           push: { stack.set(stack.value + [$0]) },
           pop: pop,
           hooks: hooks
         )
+
+        return StackControllerItem.node(pair.0, pair.1)
       }
     )
   }

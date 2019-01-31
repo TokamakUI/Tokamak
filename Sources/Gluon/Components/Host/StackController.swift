@@ -5,7 +5,22 @@
 //  Created by Max Desiatov on 06/01/2019.
 //
 
+public struct StackControllerItem: HostComponent {
+  public typealias Children = AnyNode
+  public typealias Props = NavigationItem?
+}
+
 public struct StackController: HostComponent {
+  public struct Item: Equatable {
+    public let navigation: NavigationItem?
+    public let node: AnyNode
+
+    public init(navigation: NavigationItem?, node: AnyNode) {
+      self.navigation = navigation
+      self.node = node
+    }
+  }
+
   public typealias Children = [AnyNode]
 
   public struct Props: Equatable {
