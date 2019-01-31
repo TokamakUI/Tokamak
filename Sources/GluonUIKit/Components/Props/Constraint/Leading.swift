@@ -8,12 +8,12 @@
 import Gluon
 import UIKit
 
-extension Leading: OffsetConstraint {
-  var firstAnchor: KeyPath<UIView, NSLayoutDimension> {
+extension Leading: XAxisConstraint {
+  var firstAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> {
     return \.leadingAnchor
   }
 
-  var secondAnchor: KeyPath<UIView, NSLayoutDimension> {
+  var secondAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> {
     return \.leadingAnchor
   }
 }

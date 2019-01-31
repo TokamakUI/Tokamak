@@ -8,13 +8,12 @@
 import Gluon
 import UIKit
 
-extension CenterX: OffsetConstraint {
-  var firstAnchor: KeyPath<UIView, NSLayoutDimension> {
+extension CenterX: OwnConstraint {
+  var firstAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> {
     return \.centerXAnchor
   }
-  
-  var secondAnchor: KeyPath<UIView, NSLayoutDimension> {
+
+  var secondAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> {
     return \.centerXAnchor
   }
 }
-

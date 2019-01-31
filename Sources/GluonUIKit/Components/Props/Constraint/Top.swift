@@ -9,11 +9,11 @@ import Gluon
 import UIKit
 
 extension Top: OffsetConstraint {
-  var firstAnchor: KeyPath<UIView, NSLayoutDimension> {
+  var firstAnchor: KeyPath<UIView, NSLayoutYAxisAnchor> {
     return \.topAnchor
   }
 
-  var secondAnchor: KeyPath<UIView, NSLayoutDimension> {
+  var secondAnchor: KeyPath<UIView, NSLayoutYAxisAnchor> {
     return \.topAnchor
   }
 }

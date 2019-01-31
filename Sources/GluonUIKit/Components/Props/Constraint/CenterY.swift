@@ -12,7 +12,7 @@ extension CenterY: OffsetConstraint {
   var firstAnchor: KeyPath<UIView, NSLayoutDimension> {
     return \.centerYAnchor
   }
-  
+
   var secondAnchor: KeyPath<UIView, NSLayoutDimension> {
     return \.centerYAnchor
   }

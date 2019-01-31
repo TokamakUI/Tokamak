@@ -9,11 +9,11 @@ import Gluon
 import UIKit
 
 extension Right: OffsetConstraint {
-  var firstAnchor: KeyPath<UIView, NSLayoutDimension> {
+  var firstAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> {
     return \.rightAnchor
   }
 
-  var secondAnchor: KeyPath<UIView, NSLayoutDimension> {
+  var secondAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> {
     return \.rightAnchor
   }
 }

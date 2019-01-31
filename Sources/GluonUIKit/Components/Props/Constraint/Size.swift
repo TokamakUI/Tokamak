@@ -106,8 +106,7 @@ extension OffsetConstraint {
     current: UIView,
     parent: UIView?,
     next: UIView?
-    ) -> [NSLayoutConstraint] {
-    
+  ) -> [NSLayoutConstraint] {
     let secondView: UIView?
     switch target {
     case .next:
@@ -115,13 +114,46 @@ extension OffsetConstraint {
     case .parent:
       secondView = parent
     }
-    
+
     guard let second = secondView?[keyPath: secondAnchor] else { return [] }
-    
+
     return [current[keyPath: firstAnchor].constraint(
       equalTo: second,
       multiplier: CGFloat(multiplier),
       constant: CGFloat(constant)
-      )]
+    )]
   }
 }
+
+protocol XAxisConstraint {
+    var firstAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> { get }
+    var secondAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> { get }
+    var target: Constraint.Target { get }
+    var constant: Double { get }
+    var multiplier: Double { get }
+}
+
+extension XAxisConstraint {
+    func constraint(
+        current: UIView,
+        parent: UIView?,
+        next: UIView?
+        ) -> [NSLayoutConstraint] {
+        let secondView: UIView?
+        switch target {
+        case .next:
+            secondView = next
+        case .parent:
+            secondView = parent
+        }
+        
+        guard let second = secondView?[keyPath: secondAnchor] else { return [] }
+        
+        return [current[keyPath: firstAnchor].constraint(
+            equalTo: second,
+            multiplier: CGFloat(multiplier),
+            constant: CGFloat(constant)
+            )]
+    }
+}
+
