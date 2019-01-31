@@ -87,35 +87,35 @@ struct ConstrainModal: LeafComponent {
   struct Props: Equatable {
     let isPresented: State<Bool>
   }
-  
+
   static func render(props: Props, hooks: Hooks) -> AnyNode {
     let sliding = hooks.state(0.5 as Float)
-    
+
     return props.isPresented.value ? ModalPresenter.node(
       View.node(.init(Style(backgroundColor: .white)),
                 StackView.node(.init(
                   axis: .vertical,
                   distribution: .fillEqually,
                   Style(Edges.equal(to: .parent))
-                  ), [
-                    Button.node(.init(
-                      onPress: Handler { props.isPresented.set(false) }
-                      ), "Close Modal"),
-                    Slider.node(.init(
-                    
-                      value: sliding.value,
-                      valueHandler: Handler(sliding.set),
-                      Style(Width.equal(to: .parent))
-                      )),
-                    
-                    Label.node(
-                      .init(
-                        alignment: .center,
-                        Style(Left.equal(to: .parent, constant: Double(sliding.value) * 50.0))
+                ), [
+                  Button.node(.init(
+                    onPress: Handler { props.isPresented.set(false) }
+                  ), "Close Modal"),
+                  Slider.node(.init(
+                    value: sliding.value,
+                    valueHandler: Handler(sliding.set),
+                    Style(Width.equal(to: .parent))
+                  )),
+
+                  Label.node(
+                    .init(
+                      alignment: .center,
+                      Style(Left.equal(to: .parent, constant: Double(sliding.value) * 50.0))
                     ),
-                    "\(sliding.value)"),
-                    ]))
-      ) : Null.node()
+                    "\(sliding.value)"
+                  ),
+      ]))
+    ) : Null.node()
   }
 }
 
@@ -179,7 +179,7 @@ struct Counter: LeafComponent {
         ),
         "Present Table Modal"
       ),
-      
+
       Button.node(
         .init(
           isEnabled: isEnabled.value,
@@ -193,7 +193,7 @@ struct Counter: LeafComponent {
       SimpleModal.node(.init(isPresented: isAnimationModalPresented)),
 
       TableModal.node(.init(isPresented: isTableModalPresented)),
-      
+
       ConstrainModal.node(.init(isPresented: isConstrainModalPresented)),
     ] + (count.value < 15 ? [
       StackView.node(
