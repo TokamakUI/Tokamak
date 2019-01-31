@@ -12,6 +12,9 @@
  the renderer about updates in the component tree.
  */
 public protocol Renderer: class {
+  typealias Mounted = MountedComponent<Self>
+  typealias MountedHost = MountedHostComponent<Self>
+
   /** Component nodes are rendered to platform-specific targets with a renderer.
    Usually a target is a simple view (`UIView` and `NSView` for `UIKit`
    and `AppKit` respectively), but can also include other helper types like
@@ -20,6 +23,9 @@ public protocol Renderer: class {
    all possible target types available on a specific platform.
    */
   associatedtype Target: AnyObject
+
+  /// Reconciler instance used by this renderer.
+  var reconciler: StackReconciler<Self>? { get }
 
   /** Function called by a reconciler when a new target instance should be
    created and added to the parent (either as a subview or some other way, e.g.
@@ -34,9 +40,7 @@ public protocol Renderer: class {
    - returns: The newly created target.
    */
   func mountTarget(to parent: Target,
-                   parentNode: AnyNode?,
-                   with component: AnyHostComponent.Type,
-                   node: AnyNode) -> Target?
+                   with component: MountedHost) -> Target?
 
   /** Function called by a reconciler when an existing target instance should be
    updated.
@@ -52,8 +56,7 @@ public protocol Renderer: class {
    previous updates or on target creation.
    */
   func update(target: Target,
-              with component: AnyHostComponent.Type,
-              node: AnyNode)
+              with component: MountedHost)
 
   /** Function called by a reconciler when an existing target instance should be
    unmounted: removed from the parent and most likely destroyed.
@@ -62,5 +65,28 @@ public protocol Renderer: class {
    updated target.
    */
   func unmount(target: Target,
-               with component: AnyHostComponent.Type)
+               with component: MountedHost)
+}
+
+extension Renderer {
+  public func mount(with node: AnyNode, to parent: Target) -> Mounted {
+    let result: Mounted = node.makeMountedComponent(parent)
+    if let reconciler = reconciler {
+      result.mount(with: reconciler)
+    }
+    return result
+  }
+
+  public func update(component: Mounted, with node: AnyNode) {
+    component.node = node
+    if let reconciler = reconciler {
+      component.update(with: reconciler)
+    }
+  }
+
+  public func unmount(component: Mounted) {
+    if let reconciler = reconciler {
+      component.unmount(with: reconciler)
+    }
+  }
 }

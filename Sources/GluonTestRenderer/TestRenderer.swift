@@ -7,11 +7,11 @@
 
 import Gluon
 
-public class TestRenderer: Renderer {
-  private var reconciler: StackReconciler<TestRenderer>!
+public final class TestRenderer: Renderer {
+  public private(set) var reconciler: StackReconciler<TestRenderer>?
 
   public var rootTarget: TestView {
-    return reconciler.rootTarget
+    return reconciler!.rootTarget
   }
 
   public init(_ node: AnyNode) {
@@ -21,23 +21,27 @@ public class TestRenderer: Renderer {
                                  renderer: self)
   }
 
-  public func mountTarget(to parent: TestView,
-                          parentNode: AnyNode?,
-                          with component: AnyHostComponent.Type,
-                          node: AnyNode) -> TestView? {
-    let result = TestView(node)
+  public func mountTarget(
+    to parent: TestView,
+    with component: TestRenderer.MountedHost
+  ) -> TestView? {
+    let result = TestView(component.node)
     parent.add(subview: result)
 
     return result
   }
 
-  public func update(target: TestView,
-                     with component: AnyHostComponent.Type,
-                     node: AnyNode) {
-    target.node = node
+  public func update(
+    target: TestView,
+    with component: TestRenderer.MountedHost
+  ) {
+    target.node = component.node
   }
 
-  public func unmount(target: TestView, with component: AnyHostComponent.Type) {
+  public func unmount(
+    target: TestView,
+    with component: TestRenderer.MountedHost
+  ) {
     target.removeFromSuperview()
   }
 }

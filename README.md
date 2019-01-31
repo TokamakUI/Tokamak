@@ -306,13 +306,14 @@ contains `1` as a value and values passed to `count.set(_: Int)` on subsequent
 updates:
 
 ```swift
+// values of this type are returned by `hooks.state`
 struct State<T> {
   let value: T
 
   // set the state to a value you already have
   func set(_ value: T)
 
-  // or set the state with a pure function
+  // or update the state with a pure function
   func set(_ updater: (T) -> T)
 }
 ```
@@ -347,7 +348,7 @@ ones: just add it to your `extension Hooks` wherever works best for you.
 ### Renderers
 
 When mapping Gluon's architecture to what's previosly been established in iOS,
-components correspond to a "view-model" layer, while hooks provide a reusable
+`Component` corresponds to a "view-model" layer, while `Hooks` provide a reusable
 "controller" layer. A `Renderer` is a "view" layer in these terms, but it's
 fully managed by Gluon. Not only this greatly simplifies the code of your
 components and allows you to make it declarative, it also completely decouples

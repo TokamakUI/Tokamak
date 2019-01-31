@@ -5,13 +5,11 @@
 //  Created by Max Desiatov on 28/11/2018.
 //
 
-class MountedComponent<R: Renderer> {
-  var node: AnyNode
-  private(set) weak var parent: MountedComponent<R>?
+public class MountedComponent<R: Renderer> {
+  public internal(set) var node: AnyNode
 
-  init(_ node: AnyNode, _ parent: MountedComponent<R>?) {
+  init(_ node: AnyNode) {
     self.node = node
-    self.parent = parent
   }
 
   func mount(with reconciler: StackReconciler<R>) {
@@ -28,18 +26,15 @@ class MountedComponent<R: Renderer> {
 }
 
 extension AnyNode {
-  func makeMountedComponent<R: Renderer>(
-    _ parent: MountedComponent<R>?,
-    _ parentTarget: R.Target
-  )
+  func makeMountedComponent<R: Renderer>(_ parentTarget: R.Target)
     -> MountedComponent<R> {
     switch type {
     case let .host(type):
-      return MountedHostComponent(self, type, parent, parentTarget)
+      return MountedHostComponent(self, type, parentTarget)
     case let .composite(type):
-      return MountedCompositeComponent(self, type, parent, parentTarget)
+      return MountedCompositeComponent(self, type, parentTarget)
     case .null:
-      return MountedNull(self, parent)
+      return MountedNull(self)
     }
   }
 }
