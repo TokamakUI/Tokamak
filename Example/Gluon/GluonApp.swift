@@ -89,32 +89,35 @@ struct ConstrainModal: LeafComponent {
   }
 
   static func render(props: Props, hooks: Hooks) -> AnyNode {
-    let sliding = hooks.state(0.5 as Float)
+    let left = hooks.state(0.5 as Float)
 
     return props.isPresented.value ? ModalPresenter.node(
-      View.node(.init(Style(backgroundColor: .white)),
-                StackView.node(.init(
-                  axis: .vertical,
-                  distribution: .fillEqually,
-                  Style(Edges.equal(to: .parent))
-                ), [
-                  Button.node(.init(
-                    onPress: Handler { props.isPresented.set(false) }
-                  ), "Close Modal"),
-                  Slider.node(.init(
-                    value: sliding.value,
-                    valueHandler: Handler(sliding.set),
-                    Style(Width.equal(to: .parent))
-                  )),
+      View.node(
+        .init(Style(backgroundColor: .white)),
+        StackView.node(.init(
+          axis: .vertical,
+          distribution: .fillEqually,
+          Style(Edges.equal(to: .parent))
+        ), [
+          Button.node(.init(
+            onPress: Handler { props.isPresented.set(false) }
+          ), "Close Modal"),
+          Slider.node(.init(
+            value: left.value,
+            valueHandler: Handler(left.set),
+            Style(Width.equal(to: .parent))
+          )),
 
-                  Label.node(
-                    .init(
-                      alignment: .center,
-                      Style(Left.equal(to: .parent, constant: Double(sliding.value) * 50.0))
-                    ),
-                    "\(sliding.value)"
-                  ),
-      ]))
+          View.node(
+            .init(Style(backgroundColor: .red)),
+            Label.node(.init(
+              alignment: .center,
+              textColor: .white,
+              Style(Left.equal(to: .parent, constant: Double(left.value) * 200))
+            ), "\(left.value)")
+          ),
+        ])
+      )
     ) : Null.node()
   }
 }

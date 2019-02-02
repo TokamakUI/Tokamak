@@ -43,7 +43,6 @@
 		D16FCB7D21FCB38D0033C5C0 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16FCB7921FCB3160033C5C0 /* ListView.swift */; };
 		D16FCB8121FDD2550033C5C0 /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16FCB8021FDD2550033C5C0 /* Weak.swift */; };
 		D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */; };
-		D1C3A71E21F0C30900C6B884 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C3A71C21F0C2F900C6B884 /* Constraint.swift */; };
 		D1C3A72121F0C47200C6B884 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C3A72021F0C47200C6B884 /* Size.swift */; };
 		D1C3A72421F0DE5300C6B884 /* Insets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C3A72221F0DC6300C6B884 /* Insets.swift */; };
 		D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */; };
@@ -51,6 +50,21 @@
 		D1CB7D2E21E29CC80075C0C3 /* StackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2D21E29CC80075C0C3 /* StackController.swift */; };
 		D1E8755521EF2ED200D4A7BA /* HooksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8755421EF2ED200D4A7BA /* HooksTests.swift */; };
 		D1EC92F021F5B8000026C207 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC92EF21F5B8000026C207 /* ListView.swift */; };
+		D1EF77522205C579008829EC /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77512205C579008829EC /* Constraint.swift */; };
+		D1EF77542205C583008829EC /* Edges.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77532205C583008829EC /* Edges.swift */; };
+		D1EF77562205C5F6008829EC /* Width.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77552205C5F6008829EC /* Width.swift */; };
+		D1EF77582205C60D008829EC /* Height.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77572205C60D008829EC /* Height.swift */; };
+		D1EF775A2205C639008829EC /* Top.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77592205C639008829EC /* Top.swift */; };
+		D1EF775C2205C64D008829EC /* Bottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF775B2205C64D008829EC /* Bottom.swift */; };
+		D1EF775E2205C679008829EC /* Left.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF775D2205C679008829EC /* Left.swift */; };
+		D1EF77602205C685008829EC /* Right.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF775F2205C685008829EC /* Right.swift */; };
+		D1EF77622205C6A8008829EC /* Leading.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77612205C6A8008829EC /* Leading.swift */; };
+		D1EF77642205C6C8008829EC /* Trailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77632205C6C8008829EC /* Trailing.swift */; };
+		D1EF77662205C6EA008829EC /* CenterX.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77652205C6EA008829EC /* CenterX.swift */; };
+		D1EF77682205C6F6008829EC /* CenterY.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77672205C6F6008829EC /* CenterY.swift */; };
+		D1EF776A2205C717008829EC /* FirstBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77692205C717008829EC /* FirstBaseline.swift */; };
+		D1EF776C2205C727008829EC /* LastBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF776B2205C727008829EC /* LastBaseline.swift */; };
+		D1EF776E2205C74D008829EC /* SizeConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF776D2205C74D008829EC /* SizeConstraint.swift */; };
 		OBJ_100 /* Animated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* Animated.swift */; };
 		OBJ_101 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* Button.swift */; };
 		OBJ_102 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* Label.swift */; };
@@ -173,7 +187,6 @@
 		D16FCB7B21FCB3870033C5C0 /* TableViewBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewBox.swift; sourceTree = "<group>"; };
 		D16FCB8021FDD2550033C5C0 /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
 		D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountedNull.swift; sourceTree = "<group>"; };
-		D1C3A71C21F0C2F900C6B884 /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D1C3A72021F0C47200C6B884 /* Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
 		D1C3A72221F0DC6300C6B884 /* Insets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Insets.swift; sourceTree = "<group>"; };
 		D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
@@ -181,6 +194,21 @@
 		D1CB7D2D21E29CC80075C0C3 /* StackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackController.swift; sourceTree = "<group>"; };
 		D1E8755421EF2ED200D4A7BA /* HooksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HooksTests.swift; sourceTree = "<group>"; };
 		D1EC92EF21F5B8000026C207 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
+		D1EF77512205C579008829EC /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
+		D1EF77532205C583008829EC /* Edges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Edges.swift; sourceTree = "<group>"; };
+		D1EF77552205C5F6008829EC /* Width.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Width.swift; sourceTree = "<group>"; };
+		D1EF77572205C60D008829EC /* Height.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Height.swift; sourceTree = "<group>"; };
+		D1EF77592205C639008829EC /* Top.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Top.swift; sourceTree = "<group>"; };
+		D1EF775B2205C64D008829EC /* Bottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bottom.swift; sourceTree = "<group>"; };
+		D1EF775D2205C679008829EC /* Left.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Left.swift; sourceTree = "<group>"; };
+		D1EF775F2205C685008829EC /* Right.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Right.swift; sourceTree = "<group>"; };
+		D1EF77612205C6A8008829EC /* Leading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leading.swift; sourceTree = "<group>"; };
+		D1EF77632205C6C8008829EC /* Trailing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trailing.swift; sourceTree = "<group>"; };
+		D1EF77652205C6EA008829EC /* CenterX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterX.swift; sourceTree = "<group>"; };
+		D1EF77672205C6F6008829EC /* CenterY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterY.swift; sourceTree = "<group>"; };
+		D1EF77692205C717008829EC /* FirstBaseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstBaseline.swift; sourceTree = "<group>"; };
+		D1EF776B2205C727008829EC /* LastBaseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastBaseline.swift; sourceTree = "<group>"; };
+		D1EF776D2205C74D008829EC /* SizeConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeConstraint.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -336,6 +364,28 @@
 			path = Host;
 			sourceTree = "<group>";
 		};
+		D1EF77502205C579008829EC /* Constraint */ = {
+			isa = PBXGroup;
+			children = (
+				D1EF77512205C579008829EC /* Constraint.swift */,
+				D1EF77532205C583008829EC /* Edges.swift */,
+				D1EF77552205C5F6008829EC /* Width.swift */,
+				D1EF77572205C60D008829EC /* Height.swift */,
+				D1EF77592205C639008829EC /* Top.swift */,
+				D1EF775B2205C64D008829EC /* Bottom.swift */,
+				D1EF775D2205C679008829EC /* Left.swift */,
+				D1EF775F2205C685008829EC /* Right.swift */,
+				D1EF77612205C6A8008829EC /* Leading.swift */,
+				D1EF77632205C6C8008829EC /* Trailing.swift */,
+				D1EF77652205C6EA008829EC /* CenterX.swift */,
+				D1EF77672205C6F6008829EC /* CenterY.swift */,
+				D1EF77692205C717008829EC /* FirstBaseline.swift */,
+				D1EF776B2205C727008829EC /* LastBaseline.swift */,
+				D1EF776D2205C74D008829EC /* SizeConstraint.swift */,
+			);
+			path = Constraint;
+			sourceTree = "<group>";
+		};
 		OBJ_10 /* GluonTestRenderer */ = {
 			isa = PBXGroup;
 			children = (
@@ -464,8 +514,8 @@
 		OBJ_57 /* Props */ = {
 			isa = PBXGroup;
 			children = (
+				D1EF77502205C579008829EC /* Constraint */,
 				OBJ_58 /* Color.swift */,
-				D1C3A71C21F0C2F900C6B884 /* Constraint.swift */,
 				OBJ_59 /* Event.swift */,
 				OBJ_60 /* Rectangle.swift */,
 				OBJ_61 /* Second.swift */,
@@ -750,21 +800,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				D1C3A71E21F0C30900C6B884 /* Constraint.swift in Sources */,
+				D1EF776E2205C74D008829EC /* SizeConstraint.swift in Sources */,
+				D1EF77602205C685008829EC /* Right.swift in Sources */,
+				D1EF775E2205C679008829EC /* Left.swift in Sources */,
 				OBJ_93 /* AnyEquatable.swift in Sources */,
 				OBJ_94 /* AnyNode.swift in Sources */,
+				D1EF77582205C60D008829EC /* Height.swift in Sources */,
+				D1EF77562205C5F6008829EC /* Width.swift in Sources */,
 				OBJ_95 /* Components.swift in Sources */,
 				OBJ_96 /* Default.swift in Sources */,
 				OBJ_98 /* Hooks.swift in Sources */,
 				OBJ_99 /* Alert.swift in Sources */,
 				OBJ_100 /* Animated.swift in Sources */,
+				D1EF77662205C6EA008829EC /* CenterX.swift in Sources */,
 				OBJ_101 /* Button.swift in Sources */,
 				OBJ_102 /* Label.swift in Sources */,
 				A62891FF21F5F07F001BE090 /* Stepper.swift in Sources */,
 				OBJ_104 /* ModalPresenter.swift in Sources */,
 				D1EC92F021F5B8000026C207 /* ListView.swift in Sources */,
+				D1EF77522205C579008829EC /* Constraint.swift in Sources */,
 				OBJ_105 /* Router.swift in Sources */,
+				D1EF775C2205C64D008829EC /* Bottom.swift in Sources */,
+				D1EF776C2205C727008829EC /* LastBaseline.swift in Sources */,
+				D1EF77642205C6C8008829EC /* Trailing.swift in Sources */,
 				OBJ_106 /* StackPresenter.swift in Sources */,
+				D1EF776A2205C717008829EC /* FirstBaseline.swift in Sources */,
 				OBJ_107 /* TabPresenter.swift in Sources */,
 				D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */,
 				OBJ_108 /* Color.swift in Sources */,
@@ -780,14 +840,18 @@
 				OBJ_115 /* StackView.swift in Sources */,
 				OBJ_116 /* View.swift in Sources */,
 				D16FCB8121FDD2550033C5C0 /* Weak.swift in Sources */,
+				D1EF77542205C583008829EC /* Edges.swift in Sources */,
 				OBJ_117 /* MountedComponent.swift in Sources */,
 				OBJ_118 /* MountedCompositeComponent.swift in Sources */,
 				OBJ_119 /* MountedHostComponent.swift in Sources */,
+				D1EF775A2205C639008829EC /* Top.swift in Sources */,
+				D1EF77622205C6A8008829EC /* Leading.swift in Sources */,
 				OBJ_120 /* Null.swift in Sources */,
 				OBJ_121 /* Renderer.swift in Sources */,
 				OBJ_122 /* StackReconciler.swift in Sources */,
 				OBJ_123 /* Store.swift in Sources */,
 				OBJ_124 /* Unique.swift in Sources */,
+				D1EF77682205C6F6008829EC /* CenterY.swift in Sources */,
 				A62891FA21F5DB02001BE090 /* Switch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

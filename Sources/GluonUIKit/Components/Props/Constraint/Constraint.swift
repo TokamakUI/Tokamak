@@ -15,97 +15,27 @@ extension UIView {
   ) -> [NSLayoutConstraint] {
     switch prop {
     case let .height(height):
-      return height.constraint(
-        current: self,
-        parent: superview,
-        next: next
-      )
+      return height.constraint(current: self, parent: superview, next: next)
     case let .width(width):
-      return width.constraint(
-        current: self,
-        parent: superview,
-        next: next
-      )
-    case .baseline:
-      fatalError()
+      return width.constraint(current: self, parent: superview, next: next)
     case let .bottom(location):
-      let target: UIView?
-      switch location.target {
-      case .next:
-        target = next
-      case .parent:
-        target = superview
-      }
-
-      guard let secondAnchor = target?.bottomAnchor else { return [] }
-
-      return [bottomAnchor.constraint(equalTo: secondAnchor)]
+      return location.constraint(current: self, parent: superview, next: next)
     case let .top(location):
-      let target: UIView?
-      switch location.target {
-      case .next:
-        target = next
-      case .parent:
-        target = superview
-      }
-
-      guard let secondAnchor = target?.topAnchor else { return [] }
-
-      return [topAnchor.constraint(equalTo: secondAnchor)]
+      return location.constraint(current: self, parent: superview, next: next)
     case .center:
       fatalError()
-    case .centerX:
-      fatalError()
-    case .centerY:
-      fatalError()
+    case let .centerX(location):
+      return location.constraint(current: self, parent: superview, next: next)
+    case let .centerY(location):
+      return location.constraint(current: self, parent: superview, next: next)
     case let .left(location):
-      let target: UIView?
-      switch location.target {
-      case .next:
-        target = next
-      case .parent:
-        target = superview
-      }
-
-      guard let secondAnchor = target?.leftAnchor else { return [] }
-
-      return [leftAnchor.constraint(equalTo: secondAnchor)]
+      return location.constraint(current: self, parent: superview, next: next)
     case let .right(location):
-      let target: UIView?
-      switch location.target {
-      case .next:
-        target = next
-      case .parent:
-        target = superview
-      }
-
-      guard let secondAnchor = target?.rightAnchor else { return [] }
-
-      return [rightAnchor.constraint(equalTo: secondAnchor)]
+      return location.constraint(current: self, parent: superview, next: next)
     case let .leading(location):
-      let target: UIView?
-      switch location.target {
-      case .next:
-        target = next
-      case .parent:
-        target = superview
-      }
-
-      guard let secondAnchor = target?.leadingAnchor else { return [] }
-
-      return [leadingAnchor.constraint(equalTo: secondAnchor)]
+      return location.constraint(current: self, parent: superview, next: next)
     case let .trailing(location):
-      let target: UIView?
-      switch location.target {
-      case .next:
-        target = next
-      case .parent:
-        target = superview
-      }
-
-      guard let secondAnchor = target?.trailingAnchor else { return [] }
-
-      return [trailingAnchor.constraint(equalTo: secondAnchor)]
+      return location.constraint(current: self, parent: superview, next: next)
     case let .edges(edges):
       let target = edges.target
       return constraint(Top.equal(
@@ -121,8 +51,13 @@ extension UIView {
           to: target, constant: edges.insets.right
         ), next: next)
     case .firstBaseline:
+      // FIXME:
       fatalError()
     case .lastBaseline:
+      // FIXME:
+      fatalError()
+    case .size:
+      // FIXME:
       fatalError()
     }
   }
