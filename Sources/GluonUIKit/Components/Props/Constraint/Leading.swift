@@ -9,11 +9,11 @@ import Gluon
 import UIKit
 
 extension Leading: XAxisConstraint {
-  var firstAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> {
+  var firstAnchor: KeyPath<Constrainable, NSLayoutXAxisAnchor> {
     return \.leadingAnchor
   }
 
-  var secondAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> {
+  var secondAnchor: KeyPath<Constrainable, NSLayoutXAxisAnchor> {
     return \.leadingAnchor
   }
 }

@@ -9,11 +9,11 @@ import Gluon
 import UIKit
 
 extension CenterY: YAxisConstraint {
-  var firstAnchor: KeyPath<UIView, NSLayoutYAxisAnchor> {
+  var firstAnchor: KeyPath<Constrainable, NSLayoutYAxisAnchor> {
     return \.centerYAnchor
   }
 
-  var secondAnchor: KeyPath<UIView, NSLayoutYAxisAnchor> {
+  var secondAnchor: KeyPath<Constrainable, NSLayoutYAxisAnchor> {
     return \.centerYAnchor
   }
 }

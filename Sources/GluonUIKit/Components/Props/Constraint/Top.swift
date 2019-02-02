@@ -9,11 +9,11 @@ import Gluon
 import UIKit
 
 extension Top: YAxisConstraint {
-  var firstAnchor: KeyPath<UIView, NSLayoutYAxisAnchor> {
+  var firstAnchor: KeyPath<Constrainable, NSLayoutYAxisAnchor> {
     return \.topAnchor
   }
 
-  var secondAnchor: KeyPath<UIView, NSLayoutYAxisAnchor> {
+  var secondAnchor: KeyPath<Constrainable, NSLayoutYAxisAnchor> {
     return \.topAnchor
   }
 }

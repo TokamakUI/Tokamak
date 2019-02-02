@@ -6,8 +6,10 @@
 //
 
 public struct SizeConstraint: Equatable {
-  enum Value {
+  public enum Value: Equatable {
     case constant(Size)
-    case multiplier(Double)
+    case multiplier(Constraint.Target, Double)
   }
+
+  public let value: Value
 }

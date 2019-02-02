@@ -9,11 +9,11 @@ import Gluon
 import UIKit
 
 extension Trailing: XAxisConstraint {
-  var firstAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> {
+  var firstAnchor: KeyPath<Constrainable, NSLayoutXAxisAnchor> {
     return \.trailingAnchor
   }
 
-  var secondAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> {
+  var secondAnchor: KeyPath<Constrainable, NSLayoutXAxisAnchor> {
     return \.trailingAnchor
   }
 }

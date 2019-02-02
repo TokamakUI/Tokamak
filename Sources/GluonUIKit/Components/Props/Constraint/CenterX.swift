@@ -9,11 +9,11 @@ import Gluon
 import UIKit
 
 extension CenterX: XAxisConstraint {
-  var firstAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> {
+  var firstAnchor: KeyPath<Constrainable, NSLayoutXAxisAnchor> {
     return \.centerXAnchor
   }
 
-  var secondAnchor: KeyPath<UIView, NSLayoutXAxisAnchor> {
+  var secondAnchor: KeyPath<Constrainable, NSLayoutXAxisAnchor> {
     return \.centerXAnchor
   }
 }

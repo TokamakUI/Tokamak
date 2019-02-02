@@ -9,11 +9,11 @@ import Gluon
 import UIKit
 
 extension Width: OwnConstraint {
-  var firstAnchor: KeyPath<UIView, NSLayoutDimension> {
+  var firstAnchor: KeyPath<Constrainable, NSLayoutDimension> {
     return \.widthAnchor
   }
 
-  var secondAnchor: KeyPath<UIView, NSLayoutDimension> {
+  var secondAnchor: KeyPath<Constrainable, NSLayoutDimension> {
     return \.widthAnchor
   }
 }
