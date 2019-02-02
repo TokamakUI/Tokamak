@@ -8,15 +8,13 @@
 public struct Leading: Equatable {
   public let target: Constraint.Target
   public let constant: Double
-  public let multiplier: Double
 
   public static func equal(
     to target: Constraint.Target,
-    constant: Double = 0,
-    multiplier: Double = 1
+    constant: Double = 0
   ) -> Constraint {
     return .leading(Leading(
-      target: target, constant: constant, multiplier: multiplier
+      target: target, constant: constant
     ))
   }
 }

@@ -45,7 +45,7 @@ final class ConstraintTests: XCTestCase {
       .constraints(
         [
           Constraint.top(
-            Top(target: .parent, constant: 0.0, multiplier: 1.0)
+            Top(target: .parent, constant: 0.0)
           ),
         ]
       )
@@ -59,7 +59,7 @@ final class ConstraintTests: XCTestCase {
       .constraints(
         [
           Constraint.bottom(
-            Bottom(target: .parent, constant: 0.0, multiplier: 1.0)
+            Bottom(target: .parent, constant: 0.0)
           ),
         ]
       )
@@ -73,7 +73,7 @@ final class ConstraintTests: XCTestCase {
       .constraints(
         [
           Constraint.left(
-            Left(target: .parent, constant: 0.0, multiplier: 1.0)
+            Left(target: .parent, constant: 0.0)
           ),
         ]
       )
@@ -87,7 +87,7 @@ final class ConstraintTests: XCTestCase {
       .constraints(
         [
           Constraint.right(
-            Right(target: .parent, constant: 0.0, multiplier: 1.0)
+            Right(target: .parent, constant: 0.0)
           ),
         ]
       )
@@ -101,7 +101,7 @@ final class ConstraintTests: XCTestCase {
       .constraints(
         [
           Constraint.leading(
-            Leading(target: .parent, constant: 0.0, multiplier: 1.0)
+            Leading(target: .parent, constant: 0.0)
           ),
         ]
       )
@@ -115,7 +115,7 @@ final class ConstraintTests: XCTestCase {
       .constraints(
         [
           Constraint.right(
-            Right(target: .parent, constant: 0.0, multiplier: 1.0)
+            Right(target: .parent, constant: 0.0)
           ),
         ]
       )
