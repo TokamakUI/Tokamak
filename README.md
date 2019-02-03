@@ -65,6 +65,7 @@ of React with its established patterns available to you in Swift.
       * [Components](#components)
       * [Hooks](#hooks)
       * [Renderers](#renderers)
+      * [Standard components](#standard-components)
   * [Example project](#example-project)
   * [Requirements](#requirements)
   * [FAQ](#faq)
@@ -365,7 +366,7 @@ priorities. Imagine an `AppKitRenderer` that allows you to render the same
 component on macOS without any changes applied to the component code and without
 requiring [Marzipan](https://www.imore.com/marzipan)!
 
-## Standard components
+### Standard components
 
 Gluon provides a few basic components that you can reuse in your apps. On iOS
 these components are rendered to corresponding `UIView` subclasses that you're

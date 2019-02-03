@@ -1,4 +1,4 @@
-| Gluon Host Component | Rendered in UIKit as |
+| Gluon Host Component | Rendered on iOS as |
 |---|---|
 | Button | [UIButton](https://developer.apple.com/documentation/uikit/uibutton) |
 | Label | [UILabel](https://developer.apple.com/documentation/uikit/uilabel) |
