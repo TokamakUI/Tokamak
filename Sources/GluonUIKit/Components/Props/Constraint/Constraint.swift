@@ -28,13 +28,11 @@ extension UIView {
       return location.constraint(current: self, parent: superview, next: next)
     case let .center(location):
       return constraint(CenterX.equal(
-        to: location.target,
-        constant: location.constant,
-        multiplier: 1.0
+        to: .external(location.target),
+        constant: location.constant
       ), next: next) + constraint(CenterY.equal(
-        to: location.target,
-        constant: location.constant,
-        multiplier: 1.0
+        to: .external(location.target),
+        constant: location.constant
       ), next: next)
     case let .left(location):
       return location.constraint(current: self, parent: superview, next: next)
@@ -58,12 +56,10 @@ extension UIView {
         constraint(Right.equal(
           to: target, constant: edges.insets.right
         ), next: next)
-    case .firstBaseline:
-      // FIXME:
-      fatalError()
-    case .lastBaseline:
-      // FIXME:
-      fatalError()
+    case let .firstBaseline(location):
+      return location.constraint(current: self, parent: superview, next: next)
+    case let .lastBaseline(location):
+      return location.constraint(current: self, parent: superview, next: next)
     case let .size(size):
       switch size.value {
       case let .constant(constant):

@@ -11,7 +11,7 @@ import UIKit
 protocol YAxisConstraint {
   var firstAnchor: KeyPath<Constrainable, NSLayoutYAxisAnchor> { get }
   var secondAnchor: KeyPath<Constrainable, NSLayoutYAxisAnchor> { get }
-  var target: Constraint.Target { get }
+  var target: Constraint.SafeAreaTarget { get }
   var constant: Double { get }
 }
 
@@ -23,9 +23,9 @@ extension YAxisConstraint {
   ) -> [NSLayoutConstraint] {
     let secondView: Constrainable?
     switch target {
-    case .next:
+    case .external(.next):
       secondView = next
-    case .parent:
+    case .external(.parent):
       secondView = parent
     case .safeArea:
       if #available(iOS 11.0, *) {

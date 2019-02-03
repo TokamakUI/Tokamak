@@ -67,9 +67,11 @@
 		D1EF776E2205C74D008829EC /* SizeConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF776D2205C74D008829EC /* SizeConstraint.swift */; };
 		D1EF77702205F6FA008829EC /* Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF776F2205F6FA008829EC /* Center.swift */; };
 		D1EF77732205FA5B008829EC /* OwnConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77712205FA1F008829EC /* OwnConstraint.swift */; };
-		D1EF77752205FA81008829EC /* OffsetConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77742205FA81008829EC /* OffsetConstraint.swift */; };
 		D1EF77772205FABE008829EC /* YAxisConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77762205FABE008829EC /* YAxisConstraint.swift */; };
 		D1EF77792205FD56008829EC /* Constrainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77782205FD56008829EC /* Constrainable.swift */; };
+		D1EF777B220744FC008829EC /* FirstBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF777A220744FB008829EC /* FirstBaseline.swift */; };
+		D1EF777D220745AB008829EC /* BaselineConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF777C220745AB008829EC /* BaselineConstraint.swift */; };
+		D1EF777F220745F4008829EC /* LastBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF777E220745F4008829EC /* LastBaseline.swift */; };
 		OBJ_100 /* Animated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* Animated.swift */; };
 		OBJ_101 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* Button.swift */; };
 		OBJ_102 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* Label.swift */; };
@@ -216,9 +218,11 @@
 		D1EF776D2205C74D008829EC /* SizeConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeConstraint.swift; sourceTree = "<group>"; };
 		D1EF776F2205F6FA008829EC /* Center.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Center.swift; sourceTree = "<group>"; };
 		D1EF77712205FA1F008829EC /* OwnConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnConstraint.swift; sourceTree = "<group>"; };
-		D1EF77742205FA81008829EC /* OffsetConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetConstraint.swift; sourceTree = "<group>"; };
 		D1EF77762205FABE008829EC /* YAxisConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YAxisConstraint.swift; sourceTree = "<group>"; };
 		D1EF77782205FD56008829EC /* Constrainable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constrainable.swift; sourceTree = "<group>"; };
+		D1EF777A220744FB008829EC /* FirstBaseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstBaseline.swift; sourceTree = "<group>"; };
+		D1EF777C220745AB008829EC /* BaselineConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineConstraint.swift; sourceTree = "<group>"; };
+		D1EF777E220745F4008829EC /* LastBaseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastBaseline.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -333,10 +337,12 @@
 				A633562421FB96EE00BCC525 /* CenterX.swift */,
 				A633562621FB9DC600BCC525 /* CenterY.swift */,
 				D1EF77712205FA1F008829EC /* OwnConstraint.swift */,
-				D1EF77742205FA81008829EC /* OffsetConstraint.swift */,
 				D1C3A72021F0C47200C6B884 /* XAxisConstraint.swift */,
 				D1EF77762205FABE008829EC /* YAxisConstraint.swift */,
 				D1EF77782205FD56008829EC /* Constrainable.swift */,
+				D1EF777A220744FB008829EC /* FirstBaseline.swift */,
+				D1EF777E220745F4008829EC /* LastBaseline.swift */,
+				D1EF777C220745AB008829EC /* BaselineConstraint.swift */,
 			);
 			path = Constraint;
 			sourceTree = "<group>";
@@ -773,6 +779,7 @@
 				A633561F21FB5C6D00BCC525 /* Height.swift in Sources */,
 				A633561921FB5C2B00BCC525 /* Left.swift in Sources */,
 				D144FB9921E8A56D001020F3 /* ViewControllerBox.swift in Sources */,
+				D1EF777F220745F4008829EC /* LastBaseline.swift in Sources */,
 				OBJ_165 /* Button.swift in Sources */,
 				D1EF77732205FA5B008829EC /* OwnConstraint.swift in Sources */,
 				OBJ_166 /* Label.swift in Sources */,
@@ -783,8 +790,8 @@
 				D1C3A72121F0C47200C6B884 /* XAxisConstraint.swift in Sources */,
 				A633562721FB9DC600BCC525 /* CenterY.swift in Sources */,
 				OBJ_170 /* Rectangle.swift in Sources */,
-				D1EF77752205FA81008829EC /* OffsetConstraint.swift in Sources */,
 				A633561621FB5C0800BCC525 /* Bottom.swift in Sources */,
+				D1EF777B220744FC008829EC /* FirstBaseline.swift in Sources */,
 				A62891FB21F5DB83001BE090 /* Switch.swift in Sources */,
 				OBJ_171 /* UIControlComponent.swift in Sources */,
 				OBJ_173 /* UIHostComponent.swift in Sources */,
@@ -792,6 +799,7 @@
 				OBJ_175 /* UIViewComponent.swift in Sources */,
 				A633561D21FB5C5400BCC525 /* Right.swift in Sources */,
 				D1EF77792205FD56008829EC /* Constrainable.swift in Sources */,
+				D1EF777D220745AB008829EC /* BaselineConstraint.swift in Sources */,
 				A633562521FB96EE00BCC525 /* CenterX.swift in Sources */,
 				OBJ_176 /* Slider.swift in Sources */,
 				OBJ_177 /* StackController.swift in Sources */,

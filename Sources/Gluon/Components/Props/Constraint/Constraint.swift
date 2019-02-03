@@ -6,10 +6,14 @@
 //
 
 public enum Constraint: Equatable {
+  public enum SafeAreaTarget: Equatable {
+    case external(Target)
+    case safeArea
+  }
+
   public enum Target {
     case next
     case parent
-    case safeArea
   }
 
   public enum OwnTarget: Equatable {

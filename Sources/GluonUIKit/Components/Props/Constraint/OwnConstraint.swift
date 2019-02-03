@@ -34,12 +34,6 @@ extension OwnConstraint {
         secondView = next
       case .parent:
         secondView = parent
-      case .safeArea:
-        if #available(iOS 11.0, *) {
-          secondView = current.safeAreaLayoutGuide
-        } else {
-          secondView = parent
-        }
       }
 
       guard let second = secondView?[keyPath: secondAnchor] else { return [] }
