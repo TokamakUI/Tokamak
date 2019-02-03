@@ -25,7 +25,7 @@ it (MVVM, MVP, VIPER etc), Gluon provides:
 * **Declarative [DSL](https://en.wikipedia.org/wiki/Domain-specific_language)
 for native UI**: no more conflicts caused by Storyboards, no template languages 
 or XML. Describe UI of your app concisely in Swift and get views native to 
-iOS with full support for accessibility and native navigation gestures.
+iOS with full support for accessibility, auto layout and native navigation gestures.
 
 * **Easy to use one-way data binding**: tired of `didSet`, delegates,
 notifications or KVO? Component's UI is automatically updated based on
