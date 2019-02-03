@@ -13,9 +13,15 @@ public struct Label: HostComponent {
 
     public let alignment: TextAlignment
     public let style: Style?
+    public let textColor: Color?
 
-    public init(alignment: TextAlignment = .natural, _ style: Style? = nil) {
+    public init(
+      alignment: TextAlignment = .natural,
+      textColor: Color? = nil,
+      _ style: Style? = nil
+    ) {
       self.alignment = alignment
+      self.textColor = textColor
       self.style = style
     }
   }

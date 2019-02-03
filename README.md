@@ -141,11 +141,32 @@ subviews. In Gluon this is called `Children`, which behave similar to `Props`,
 but are important enough to be treated separately. `Children` are also immutable
 and `Equatable`, which allows us to observe those for changes too.
 
+### Components
+
+`Component` is a protocol, which couples given `Props` and `Children` on screen
+and provides some declaration how these are rendered on screen:
+
+```swift
+protocol Component {
+  associatedtype Props: Equatable
+  associatedtype Children: Equatable
+}
+```
+
+(Don't worry if you don't know what `associatedtype` means, it's only a simple
+requirement for components to provide these types and make them `Equatable`. If
+you do know what a [PAT](https://www.youtube.com/watch?v=XWoNjiSPqI8) is, you
+also shouldn't worry. 😄 Gluon's API is built specifically to hide "sharp edges"
+of PATs from the public API and to make it easy to use without requiring
+advanced knowledge of Swift. This is similar to what [Swift standard
+library](https://developer.apple.com/documentation/swift/swift_standard_library/)
+has done, which is built on top of PATs but stays flexible and ergonomic).
+
 ### Nodes
 
-A node is a container for `Props`, `Children` and a type of a component
-rendering this "configuration". If you're familiar with React, nodes in Gluon
-correspond to [elements in
+A node is a container for `Props`, `Children` and a type conforming to
+`Component` rendering this "configuration". If you're familiar with React, nodes
+in Gluon correspond to [elements in
 React](https://reactjs.org/docs/glossary.html#elements). When `Children` is an
 array of nodes, we can indirectly form a tree describing the app's UI.
 Corollary, nodes are immutable and `Equatable`. You'd only need to use the
@@ -169,27 +190,6 @@ struct StackView: Component {
   typealias Children = [AnyNode]
 }
 ```
-
-### Components
-
-`Component` is a type, which describes how to render given `Props` and 
-`Children` on screen:
-
-```swift
-protocol Component {
-  associatedtype Props: Equatable
-  associatedtype Children: Equatable
-}
-```
-
-(Don't worry if you don't know what `associatedtype` means, it's only a simple
-requirement for components to provide these types and make them `Equatable`. If
-you do know what a [PAT](https://www.youtube.com/watch?v=XWoNjiSPqI8) is, you
-also shouldn't worry. 😄 Gluon's API is built specifically to hide "sharp edges"
-of PATs from the public API and to make it easy to use without requiring
-advanced knowledge of Swift. This is similar to what [Swift standard
-library](https://developer.apple.com/documentation/swift/swift_standard_library/)
-has done, which is built on top of PATs but stays flexible and ergonomic).
 
 For every component Gluon provides an easy way to create a node for it 
 coupled with given props and children:
