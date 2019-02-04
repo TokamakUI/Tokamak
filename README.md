@@ -372,7 +372,7 @@ Gluon provides a few basic components that you can reuse in your apps. On iOS
 these components are rendered to corresponding `UIView` subclasses that you're
 already used to, e.g. `Button` component is rendered as `UIButton`, `Label` as
 `UILabel` etc. Check out [the complete up to date
-list](https://github.com/MaxDesiatov/Gluon/blob/master/gluon.sh/HostComponents.md)
+list](https://github.com/MaxDesiatov/Gluon/blob/master/gluon.sh/StandardComponents.md)
 for more info.
 
 ## Example project
