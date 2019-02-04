@@ -42,19 +42,23 @@ which is mapped to
 
 Gluon currently supports multiple layout approaches: 
 
-1. Manual frame-based layout and auto layout with constraints. You can pass
-   precomputed layout information as a `frame` argument to [`Style`][style]
-   initializer, e.g.:
+1. Manual frame-based layout.  You can pass precomputed layout information as
+   `frame` argument to [`Style`][style] initializer, e.g.:
 
 ```swift
 Label.node(.init(
-  Style(Rectangle(Point.zero, Size(width: 200, height: 100)))
+  Style(
+    Rectangle(
+      Point.zero, 
+      Size(width: 200, height: 100)
+    )
+  )
 ), "label")
 ```
 
-The downside of this approach is that you have to precomute all of the layout
+The downside of this approach is that you have to precompute all of the layout
 information yourself. It also has to be manually recomputed and updated when
-layout environment has changed on device rotation or when the root window is
+layout environment changes on device rotation or when the root window is
 resized. On the other hand, you're free to attach whatever layout engine you'd
 like to this API. One example could be flexbox support implemented with
 [Yoga](https://github.com/facebook/yoga/tree/master/YogaKit).
