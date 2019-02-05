@@ -72,12 +72,15 @@
 		D1EF777B220744FC008829EC /* FirstBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF777A220744FB008829EC /* FirstBaseline.swift */; };
 		D1EF777D220745AB008829EC /* BaselineConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF777C220745AB008829EC /* BaselineConstraint.swift */; };
 		D1EF777F220745F4008829EC /* LastBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF777E220745F4008829EC /* LastBaseline.swift */; };
+		D1EF77812208AEF5008829EC /* NavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77802208AEF5008829EC /* NavigationItem.swift */; };
+		D1EF77852208BB10008829EC /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77842208BB10008829EC /* TabItem.swift */; };
+		D1EF77862208BB13008829EC /* NavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77822208BAF6008829EC /* NavigationItem.swift */; };
 		OBJ_100 /* Animated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* Animated.swift */; };
 		OBJ_101 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* Button.swift */; };
 		OBJ_102 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* Label.swift */; };
 		OBJ_104 /* ModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_53 /* ModalPresenter.swift */; };
 		OBJ_105 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_54 /* Router.swift */; };
-		OBJ_106 /* StackPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* StackPresenter.swift */; };
+		OBJ_106 /* NavigationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* NavigationPresenter.swift */; };
 		OBJ_107 /* TabPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_56 /* TabPresenter.swift */; };
 		OBJ_108 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_58 /* Color.swift */; };
 		OBJ_109 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_59 /* Event.swift */; };
@@ -223,6 +226,9 @@
 		D1EF777A220744FB008829EC /* FirstBaseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstBaseline.swift; sourceTree = "<group>"; };
 		D1EF777C220745AB008829EC /* BaselineConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineConstraint.swift; sourceTree = "<group>"; };
 		D1EF777E220745F4008829EC /* LastBaseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastBaseline.swift; sourceTree = "<group>"; };
+		D1EF77802208AEF5008829EC /* NavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItem.swift; sourceTree = "<group>"; };
+		D1EF77822208BAF6008829EC /* NavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItem.swift; sourceTree = "<group>"; };
+		D1EF77842208BB10008829EC /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -259,7 +265,7 @@
 		OBJ_50 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		OBJ_53 /* ModalPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPresenter.swift; sourceTree = "<group>"; };
 		OBJ_54 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
-		OBJ_55 /* StackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackPresenter.swift; sourceTree = "<group>"; };
+		OBJ_55 /* NavigationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPresenter.swift; sourceTree = "<group>"; };
 		OBJ_56 /* TabPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPresenter.swift; sourceTree = "<group>"; };
 		OBJ_58 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		OBJ_59 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -376,6 +382,7 @@
 				D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */,
 				OBJ_28 /* Slider.swift */,
 				OBJ_29 /* StackController.swift */,
+				D1EF77802208AEF5008829EC /* NavigationItem.swift */,
 				OBJ_30 /* StackView.swift */,
 				OBJ_31 /* View.swift */,
 				A62891F721F5DAEE001BE090 /* Switch.swift */,
@@ -526,8 +533,10 @@
 			children = (
 				OBJ_53 /* ModalPresenter.swift */,
 				OBJ_54 /* Router.swift */,
-				OBJ_55 /* StackPresenter.swift */,
+				OBJ_55 /* NavigationPresenter.swift */,
 				OBJ_56 /* TabPresenter.swift */,
+				D1EF77822208BAF6008829EC /* NavigationItem.swift */,
+				D1EF77842208BB10008829EC /* TabItem.swift */,
 			);
 			path = Presenters;
 			sourceTree = "<group>";
@@ -807,6 +816,7 @@
 				OBJ_178 /* StackView.swift in Sources */,
 				D163F9D621F27F8C00BA464B /* GluonViewController.swift in Sources */,
 				D16FCB7C21FCB3870033C5C0 /* TableViewBox.swift in Sources */,
+				D1EF77812208AEF5008829EC /* NavigationItem.swift in Sources */,
 				OBJ_179 /* View.swift in Sources */,
 				OBJ_180 /* ContainerViewController.swift in Sources */,
 				OBJ_181 /* ControlBox.swift in Sources */,
@@ -850,7 +860,7 @@
 				D1EF775C2205C64D008829EC /* Bottom.swift in Sources */,
 				D1EF776C2205C727008829EC /* LastBaseline.swift in Sources */,
 				D1EF77642205C6C8008829EC /* Trailing.swift in Sources */,
-				OBJ_106 /* StackPresenter.swift in Sources */,
+				OBJ_106 /* NavigationPresenter.swift in Sources */,
 				D1EF776A2205C717008829EC /* FirstBaseline.swift in Sources */,
 				OBJ_107 /* TabPresenter.swift in Sources */,
 				D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */,
@@ -870,6 +880,7 @@
 				D16FCB8121FDD2550033C5C0 /* Weak.swift in Sources */,
 				D1EF77542205C583008829EC /* Edges.swift in Sources */,
 				OBJ_117 /* MountedComponent.swift in Sources */,
+				D1EF77852208BB10008829EC /* TabItem.swift in Sources */,
 				OBJ_118 /* MountedCompositeComponent.swift in Sources */,
 				OBJ_119 /* MountedHostComponent.swift in Sources */,
 				D1EF775A2205C639008829EC /* Top.swift in Sources */,
@@ -880,6 +891,7 @@
 				OBJ_123 /* Store.swift in Sources */,
 				OBJ_124 /* Unique.swift in Sources */,
 				D1EF77682205C6F6008829EC /* CenterY.swift in Sources */,
+				D1EF77862208BB13008829EC /* NavigationItem.swift in Sources */,
 				A62891FA21F5DB02001BE090 /* Switch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

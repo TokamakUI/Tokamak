@@ -21,7 +21,7 @@ final class ContainerViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func loadView() {
-    view = contained
+  override func viewDidLoad() {
+    view.addSubview(contained)
   }
 }

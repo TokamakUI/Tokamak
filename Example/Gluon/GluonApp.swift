@@ -16,7 +16,7 @@ struct StackModal: PureLeafComponent {
   static func render(props: Props) -> AnyNode {
     return props.isPresented.value ?
       ModalPresenter.node(
-        StackPresenter<NavRouter>.node(
+        NavigationPresenter<NavRouter>.node(
           .init(
             initial: .first,
             routerProps: .init(
