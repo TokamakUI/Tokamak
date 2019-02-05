@@ -131,11 +131,9 @@ struct DatePickerModal: LeafComponent {
     let currentDateTime = Date()
     let date = hooks.state(currentDateTime)
     let dateFormatter = DateFormatter()
-    let timeFormatter = DateFormatter()
     dateFormatter.dateStyle = .medium
-    timeFormatter.timeStyle = .medium
+    dateFormatter.timeStyle = .medium
     let formattedDate = dateFormatter.string(from: date.value)
-    let formattedTime = timeFormatter.string(from: date.value)
     return props.isPresented.value ? ModalPresenter.node(
       View.node(
         .init(Style(backgroundColor: .white)),
@@ -149,7 +147,7 @@ struct DatePickerModal: LeafComponent {
           ), "Close Modal"),
           Label.node(
             .init(alignment: .center),
-            "\(formattedDate) \(formattedTime)"
+            "\(formattedDate)"
           ),
           DatePicker.node(.init(value: date.value,
                                 valueHandler: Handler(date.set),
