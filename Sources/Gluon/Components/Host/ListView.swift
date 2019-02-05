@@ -16,7 +16,7 @@ public struct CellPath {
 }
 
 /** A collection of sections with random access to its elements and
- an ability to create a new `SectionModel` with a single section. The most
+ an ability to create a new `SectionedModel` with a single section. The most
  basic `SectionedModel` is an array of arrays `[[T]]`, where every element
  in the top level array is a section `[T]` and every element `T` is a row/item
  in this section.
