@@ -72,12 +72,12 @@ struct ListProvider: SimpleCellProvider {
   }
 }
 
-struct TableModal: LeafComponent {
+struct TableModal: PureLeafComponent {
   struct Props: Equatable {
     let isPresented: State<Bool>
   }
 
-  static func render(props: Props, hooks _: Hooks) -> AnyNode {
+  static func render(props: Props) -> AnyNode {
     let list = ListView<ListProvider>.node(.init(singleSection: [1, 2, 3]))
     return props.isPresented.value ? ModalPresenter.node(list) : Null.node()
   }
