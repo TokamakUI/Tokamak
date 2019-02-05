@@ -17,7 +17,7 @@
 | Gluon Component | Rendered on iOS as |
 |---|---|
 | [`ModalPresenter`](https://github.com/MaxDesiatov/Gluon/blob/master/Sources/Gluon/Components/Presenters/ModalPresenter.swift) | [`UIViewController`](https://developer.apple.com/documentation/uikit/uiviewcontroller) with modal presentation|
-| [`StackPresenter`](https://github.com/MaxDesiatov/Gluon/blob/master/Sources/Gluon/Components/Presenters/StackPresenter.swift) | [`UINavigationController`](https://developer.apple.com/documentation/uikit/uinavigationcontroller) |
+| [`NavigationPresenter`](https://github.com/MaxDesiatov/Gluon/blob/master/Sources/Gluon/Components/Presenters/NavigationPresenter.swift) | [`UINavigationController`](https://developer.apple.com/documentation/uikit/uinavigationcontroller) |
 | [`TabPresenter`](https://github.com/MaxDesiatov/Gluon/blob/master/Sources/Gluon/Components/Presenters/TabPresenter.swift) | [`UITabBarController`](https://developer.apple.com/documentation/uikit/uitabbarcontroller) |
 
 ## Style
