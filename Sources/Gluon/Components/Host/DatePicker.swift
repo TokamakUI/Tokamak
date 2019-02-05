@@ -13,9 +13,11 @@ public struct DatePicker: HostComponent {
     public let value: Date
     public let valueHandler: Handler<Date>?
     public let isEnabled: Bool
+    public let isAnimated: Bool
 
     public init(
       handlers: EventHandlers = [:],
+      isAnimated: Bool = true,
       isEnabled: Bool = true,
       value: Date,
       valueHandler: Handler<Date>? = nil,
@@ -26,6 +28,7 @@ public struct DatePicker: HostComponent {
       self.value = value
       self.valueHandler = valueHandler
       self.isEnabled = isEnabled
+      self.isAnimated = isAnimated
     }
   }
 

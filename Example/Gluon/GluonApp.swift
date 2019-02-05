@@ -149,9 +149,21 @@ struct DatePickerModal: LeafComponent {
             .init(alignment: .center),
             "\(formattedDate)"
           ),
-          DatePicker.node(.init(value: date.value,
-                                valueHandler: Handler(date.set),
-                                Style(Width.equal(to: .parent)))),
+          DatePicker.node(
+            .init(
+              value: date.value,
+              valueHandler: Handler(date.set),
+              Style(Width.equal(to: .parent))
+            )
+          ),
+          DatePicker.node(
+            .init(
+              isAnimated: false,
+              value: date.value,
+              valueHandler: Handler(date.set),
+              Style(Width.equal(to: .parent))
+            )
+          ),
         ])
       )
     ) : Null.node()

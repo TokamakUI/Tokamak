@@ -30,5 +30,7 @@ extension DatePicker: UIValueComponent {
 
   static func update(valueBox: ValueControlBox<GluonDatePicker>,
                      _ props: DatePicker.Props,
-                     _ children: Null) {}
+                     _ children: Null) {
+    valueBox.view.isAnimated = props.isAnimated
+  }
 }
