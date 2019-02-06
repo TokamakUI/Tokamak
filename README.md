@@ -15,7 +15,7 @@ components backed by fully native views. You can use it for your new iOS apps or
 add to existing apps with little effort and without rewriting the rest of the
 code or changing the app's overall architecture.
 
-Gluon recreates [React's Hooks API](https://reactjs.org/docs/hooks-intro.html)
+Gluon recreates [React Hooks API](https://reactjs.org/docs/hooks-intro.html)
 improving it with Swift's strong type system, high performance and efficient
 memory management thanks to being compiled to a native binary.
 
@@ -37,10 +37,12 @@ easily embed Gluon components within your existing UIKit code or vice versa:
 expose that code as Gluon components. No need to decide whether you should
 subclass `UIView` or `UIViewController` to make your UI composable.
 
-* **Off-screen rendering for unit-tests**: no need to maintain slow and flaky
-UI tests that render everything on a simulator screen and simulate actual
-touch events. All of UI logic written with Gluon can be tested off-screen
-with tests completing in a fraction of a second.
+* **Off-screen rendering for unit-tests**: no need to maintain slow and flaky UI
+tests that render everything on a simulator screen and simulate actual touch
+events. All of UI logic written with Gluon can be tested off-screen with tests
+completing in a fraction of a second. If your UI logic doesn't require any
+code specific to `UIKit` (and Gluon provides helpers to achieve that) you can
+even run your UI-related unit-tests on Linux!
 
 * **Platform-independent core**: our main goal is to eventually support as many
 platforms as possible. Starting with iOS and UIKit, we plan to add renderers
@@ -573,9 +575,10 @@ Swift. Gluon's API brings these benefits when compared to class-based APIs:
 ### Is there anything like [JSX](https://reactjs.org/docs/jsx-in-depth.html) available for Gluon?
 
 At the moment the answer is no, but we find that Gluon's API allows you to
-create nodes much more concisely when compared to `React.createElement` syntax.
-In fact, with Gluon's `.node` API you don't need closing element tags you'd have 
-to write with JSX. E.g. compare this:
+create nodes much more concisely when compared to [`React.createElement`
+syntax](https://reactjs.org/docs/react-without-jsx.html). In fact, with Gluon's
+`.node` API you don't need closing element tags you'd have to write with JSX.
+E.g. compare this:
 
 ```swift
 Label.node("label!")
