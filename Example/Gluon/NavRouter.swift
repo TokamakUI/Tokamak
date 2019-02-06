@@ -33,7 +33,7 @@ struct NavRouter: NavigationRouter {
     switch route {
     case .first:
       return View.node(
-        .init(Style(backgroundColor: .white)), [
+        .init(Style(backgroundColor: .white, Edges.equal(to: .parent))), [
           close,
           Label.node(.init(
             alignment: .center,
@@ -49,7 +49,7 @@ struct NavRouter: NavigationRouter {
       )
     case .second:
       return View.node(
-        .init(Style(backgroundColor: .white)), [
+        .init(Style(backgroundColor: .white, Edges.equal(to: .parent))), [
           close,
           Label.node(.init(
             alignment: .center,

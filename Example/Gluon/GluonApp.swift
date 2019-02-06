@@ -78,7 +78,10 @@ struct TableModal: LeafComponent {
   }
 
   static func render(props: Props, hooks: Hooks) -> AnyNode {
-    let list = ListView<ListProvider>.node(.init(singleSection: [1, 2, 3]))
+    let list = ListView<ListProvider>.node(.init(
+      singleSection: [1, 2, 3],
+      Style(Edges.equal(to: .parent))
+    ))
     return props.isPresented.value ? ModalPresenter.node(list) : Null.node()
   }
 }
