@@ -176,7 +176,7 @@ struct CALayerModal: LeafComponent {
   }
 
   static func render(props: Props, hooks: Hooks) -> AnyNode {
-    let left = hooks.state(0.5 as Float)
+    let state = hooks.state(0.5 as Float)
 
     return props.isPresented.value ? ModalPresenter.node(
       View.node(
@@ -190,8 +190,8 @@ struct CALayerModal: LeafComponent {
             onPress: Handler { props.isPresented.set(false) }
           ), "Close Modal"),
           Slider.node(.init(
-            value: left.value,
-            valueHandler: Handler(left.set),
+            value: state.value,
+            valueHandler: Handler(state.set),
             Style(Width.equal(to: .parent))
           )),
 
@@ -199,9 +199,9 @@ struct CALayerModal: LeafComponent {
             .init(
               Style(
                 backgroundColor: .red,
-                borderWidth: Float(left.value * 10),
-                cornerRadius: Float(left.value * 10),
-                opacity: Float(left.value),
+                borderWidth: Float(state.value * 10),
+                cornerRadius: Float(state.value * 10),
+                opacity: Float(state.value),
                 Width.equal(to: .parent, constant: 10)
               )
             ),
@@ -209,10 +209,10 @@ struct CALayerModal: LeafComponent {
               alignment: .center,
               textColor: .white,
               Style(
-                [Top.equal(to: .parent, constant: Double(left.value) * 100),
-                 Left.equal(to: .parent, constant: Double(left.value) * 200)]
+                [Top.equal(to: .parent, constant: Double(state.value) * 100),
+                 Left.equal(to: .parent, constant: Double(state.value) * 200)]
               )
-            ), "\(left.value)")
+            ), "\(state.value)")
           ),
         ])
       )
