@@ -13,9 +13,11 @@ public struct Switch: HostComponent {
     public let value: Bool
     public let valueHandler: Handler<Bool>?
     public let isEnabled: Bool
+    public let isAnimated: Bool
 
     public init(
       handlers: EventHandlers = [:],
+      isAnimated: Bool = true,
       isEnabled: Bool = true,
       value: Bool,
       valueHandler: Handler<Bool>? = nil,
@@ -26,6 +28,7 @@ public struct Switch: HostComponent {
       self.value = value
       self.valueHandler = valueHandler
       self.isEnabled = isEnabled
+      self.isAnimated = isAnimated
     }
   }
 
