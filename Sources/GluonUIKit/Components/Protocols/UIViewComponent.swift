@@ -39,6 +39,7 @@ private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
   style.borderWidth.flatMap { view.layer.borderWidth = CGFloat($0) }
   style.clipsToBounds.flatMap { view.clipsToBounds = $0 }
   style.cornerRadius.flatMap { view.layer.cornerRadius = CGFloat($0) }
+  style.masksToBounds.flatMap { view.layer.masksToBounds = $0 }
   style.isDoubleSided.flatMap { view.layer.isDoubleSided = $0 }
   style.opacity.flatMap { view.layer.opacity = $0 }
   style.shadowColor.flatMap { view.layer.shadowColor = UIColor($0).cgColor }
