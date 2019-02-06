@@ -31,9 +31,19 @@ private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
 
   let view = target.view
 
+  style.allowsEdgeAntialiasing.flatMap { view.layer.allowsEdgeAntialiasing = $0 }
+  style.allowsGroupOpacity.flatMap { view.layer.allowsGroupOpacity = $0 }
   style.alpha.flatMap { view.alpha = CGFloat($0) }
   style.backgroundColor.flatMap { view.backgroundColor = UIColor($0) }
+  style.borderColor.flatMap { view.layer.borderColor = UIColor($0).cgColor }
+  style.borderWidth.flatMap { view.layer.borderWidth = CGFloat($0) }
   style.clipsToBounds.flatMap { view.clipsToBounds = $0 }
+  style.cornerRadius.flatMap { view.layer.cornerRadius = CGFloat($0) }
+  style.isDoubleSided.flatMap { view.layer.isDoubleSided = $0 }
+  style.opacity.flatMap { view.layer.opacity = $0 }
+  style.shadowColor.flatMap { view.layer.shadowColor = UIColor($0).cgColor }
+  style.shadowOpacity.flatMap { view.layer.shadowOpacity = $0 }
+  style.shadowRadius.flatMap { view.layer.shadowRadius = CGFloat($0) }
 
   switch style.layout {
   case let .frame(frame)?:
