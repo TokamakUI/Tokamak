@@ -298,7 +298,9 @@ state and to be updated when the state changes. We've seen it used in the
 struct Counter: LeafComponent {
   // ...
   static func render(props: Props, hooks: Hooks) -> AnyNode {
-    let count = hooks.state(1)
+    // type signature for this constant is inferred automatically
+    // and is only added here for documentation purposes
+    let count: State<Int> = hooks.state(1)
     // ...
   }
 }
