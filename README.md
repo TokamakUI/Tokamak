@@ -65,6 +65,7 @@ of React with its established patterns available to you in Swift.
       * [Children](#children)
       * [Nodes](#nodes)
       * [Components](#components)
+      * [Render function](#render-function)
       * [Hooks](#hooks)
       * [Renderers](#renderers)
       * [Standard components](#standard-components)
@@ -206,6 +207,14 @@ extension Component {
 }
 ```
 
+Thus an empty vertical stack view is created like this:
+
+```swift
+StackView.node(.init(axis: .vertical), [])
+```
+
+### Render function
+
 One of the most simple components is a [pure
 function](https://en.wikipedia.org/wiki/Pure_function) taking `Props` and
 `Children` as an argument and returning a node tree as a result:
@@ -269,8 +278,8 @@ protocol CompositeComponent: Component {
 }
 ```
 
-In fact, the standard `PureComponent` is a special case of a `CompositeComponent`
-that doesn't use `Hooks` during rendering:
+In fact, the standard `PureComponent` is a special case of a
+`CompositeComponent` that doesn't use `Hooks` during rendering:
 
 ```swift
 // Helpers provided by Gluon:
