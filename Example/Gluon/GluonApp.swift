@@ -67,17 +67,17 @@ struct ListProvider: SimpleCellProvider {
   typealias Props = Null
   typealias Model = [[Int]]
 
-  static func cell(props: Null, item: Int, path: CellPath) -> AnyNode {
+  static func cell(props _: Null, item: Int, path _: CellPath) -> AnyNode {
     return Label.node(.init(Style(Edges.equal(to: .parent))), "\(item)")
   }
 }
 
-struct TableModal: LeafComponent {
+struct TableModal: PureLeafComponent {
   struct Props: Equatable {
     let isPresented: State<Bool>
   }
 
-  static func render(props: Props, hooks: Hooks) -> AnyNode {
+  static func render(props: Props) -> AnyNode {
     let list = ListView<ListProvider>.node(.init(
       singleSection: [1, 2, 3],
       Style(Edges.equal(to: .parent))
@@ -125,6 +125,104 @@ struct ConstrainModal: LeafComponent {
   }
 }
 
+struct DatePickerModal: LeafComponent {
+  struct Props: Equatable {
+    let isPresented: State<Bool>
+  }
+
+  static func render(props: Props, hooks: Hooks) -> AnyNode {
+    let currentDateTime = Date()
+    let date = hooks.state(currentDateTime)
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .medium
+    dateFormatter.timeStyle = .medium
+    let formattedDate = dateFormatter.string(from: date.value)
+    return props.isPresented.value ? ModalPresenter.node(
+      View.node(
+        .init(Style(backgroundColor: .white)),
+        StackView.node(.init(
+          axis: .vertical,
+          distribution: .fillEqually,
+          Style(Edges.equal(to: .parent))
+        ), [
+          Button.node(.init(
+            onPress: Handler { props.isPresented.set(false) }
+          ), "Close Modal"),
+          Label.node(
+            .init(alignment: .center),
+            "\(formattedDate)"
+          ),
+          DatePicker.node(
+            .init(
+              value: date.value,
+              valueHandler: Handler(date.set),
+              Style(Width.equal(to: .parent))
+            )
+          ),
+          DatePicker.node(
+            .init(
+              isAnimated: false,
+              value: date.value,
+              valueHandler: Handler(date.set),
+              Style(Width.equal(to: .parent))
+            )
+          ),
+        ])
+      )
+    ) : Null.node()
+  }
+}
+
+struct CALayerModal: LeafComponent {
+  struct Props: Equatable {
+    let isPresented: State<Bool>
+  }
+
+  static func render(props: Props, hooks: Hooks) -> AnyNode {
+    let state = hooks.state(0.5 as Float)
+
+    return props.isPresented.value ? ModalPresenter.node(
+      View.node(
+        .init(Style(backgroundColor: .white)),
+        StackView.node(.init(
+          axis: .vertical,
+          distribution: .fillEqually,
+          Style(Edges.equal(to: .parent))
+        ), [
+          Button.node(.init(
+            onPress: Handler { props.isPresented.set(false) }
+          ), "Close Modal"),
+          Slider.node(.init(
+            value: state.value,
+            valueHandler: Handler(state.set),
+            Style(Width.equal(to: .parent))
+          )),
+
+          View.node(
+            .init(
+              Style(
+                backgroundColor: .red,
+                borderWidth: Float(state.value * 10),
+                cornerRadius: Float(state.value * 10),
+                opacity: Float(state.value),
+                Width.equal(to: .parent, constant: 10)
+              )
+            ),
+            Label.node(.init(
+              alignment: .center,
+              textColor: .white,
+              Style(
+                [Top.equal(to: .parent, constant: Double(state.value) * 100),
+                 Left.equal(to: .parent, constant: Double(state.value) * 200)]
+              )
+            ), "\(state.value)")
+          ),
+        ])
+      )
+    ) : Null.node()
+  }
+}
+
 struct Counter: LeafComponent {
   struct Props: Equatable {
     let initial: Int
@@ -137,6 +235,8 @@ struct Counter: LeafComponent {
     let isAnimationModalPresented = hooks.state(false)
     let isTableModalPresented = hooks.state(false)
     let isConstrainModalPresented = hooks.state(false)
+    let isDatePickerModalPresented = hooks.state(false)
+    let isCALayerModalPresented = hooks.state(false)
     let switchState = hooks.state(true)
     let stepperState = hooks.state(0.0)
     let isEnabled = hooks.state(true)
@@ -194,6 +294,22 @@ struct Counter: LeafComponent {
         "Present Constrain Modal"
       ),
 
+      Button.node(
+        .init(
+          isEnabled: isEnabled.value,
+          onPress: Handler { isDatePickerModalPresented.set(true) }
+        ),
+        "Present DatePicker Modal"
+      ),
+
+      Button.node(
+        .init(
+          isEnabled: isEnabled.value,
+          onPress: Handler { isCALayerModalPresented.set(true) }
+        ),
+        "Present Core Animation Layer Modal"
+      ),
+
       StackModal.node(.init(isPresented: isStackModalPresented)),
 
       SimpleModal.node(.init(isPresented: isAnimationModalPresented)),
@@ -201,6 +317,10 @@ struct Counter: LeafComponent {
       TableModal.node(.init(isPresented: isTableModalPresented)),
 
       ConstrainModal.node(.init(isPresented: isConstrainModalPresented)),
+
+      DatePickerModal.node(.init(isPresented: isDatePickerModalPresented)),
+
+      CALayerModal.node(.init(isPresented: isCALayerModalPresented)),
     ] + (count.value < 15 ? [
       StackView.node(
         .init(

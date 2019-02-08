@@ -1,17 +1,17 @@
 //
-//  Switch.swift
+//  DatePicker.swift
 //  Gluon
 //
-//  Created by Matvii Hodovaniuk on 1/21/19.
+//  Created by Matvii Hodovaniuk on 2/4/19.
 //
 
-public struct Switch: HostComponent {
+public struct DatePicker: HostComponent {
   public struct Props: Equatable, ControlProps, StyleProps,
     ValueControlProps {
     public let handlers: EventHandlers
     public let style: Style?
-    public let value: Bool
-    public let valueHandler: Handler<Bool>?
+    public let value: Date
+    public let valueHandler: Handler<Date>?
     public let isEnabled: Bool
     public let isAnimated: Bool
 
@@ -19,8 +19,8 @@ public struct Switch: HostComponent {
       handlers: EventHandlers = [:],
       isAnimated: Bool = true,
       isEnabled: Bool = true,
-      value: Bool,
-      valueHandler: Handler<Bool>? = nil,
+      value: Date,
+      valueHandler: Handler<Date>? = nil,
       _ style: Style? = nil
     ) {
       self.handlers = handlers

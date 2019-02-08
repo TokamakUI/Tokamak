@@ -30,5 +30,7 @@ extension Switch: UIValueComponent {
 
   static func update(valueBox: ValueControlBox<GluonSwitch>,
                      _ props: Switch.Props,
-                     _ children: Null) {}
+                     _ children: Null) {
+    valueBox.view.isAnimated = props.isAnimated
+  }
 }
