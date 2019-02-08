@@ -101,12 +101,9 @@ extension UIViewComponent where Target == Target.DefaultValue,
     // UIViewController parent target can't present a bare `ViewBox` target,
     // it needs to be wrapped with `ContainerViewController` first.
     if parentRequiresViewController {
-      result = box(
-        for: target,
-        ContainerViewController(contained: target),
-        component,
-        renderer
-      )
+      let container = ContainerViewController(contained: target)
+      container.loadViewIfNeeded()
+      result = box(for: target, container, component, renderer)
     } else {
       result = box(for: target, parent.viewController, component, renderer)
     }

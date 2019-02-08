@@ -35,18 +35,51 @@ public struct StackView: HostComponent {
     public let alignment: Alignment
     public let axis: Axis
     public let distribution: Distribution
-    public let style: Style?
+
     public let spacing: Double
 
-    public init(alignment: Alignment = .fill,
-                axis: Axis = .horizontal,
-                distribution: Distribution = .fill,
-                spacing: Double = 0,
-                _ style: Style? = nil) {
+    /// not exposing style: UIStackView is a non-rendering subclass of UIView
+    /// https://useyourloaf.com/blog/stack-view-background-color/
+    public let style: Style?
+
+    public init(
+      alignment: Alignment = .fill,
+      axis: Axis = .horizontal,
+      distribution: Distribution = .fill,
+      spacing: Double = 0,
+      _ frame: Rectangle
+    ) {
       self.alignment = alignment
       self.axis = axis
       self.distribution = distribution
-      self.style = style
+      style = Style(frame)
+      self.spacing = spacing
+    }
+
+    public init(
+      alignment: Alignment = .fill,
+      axis: Axis = .horizontal,
+      distribution: Distribution = .fill,
+      spacing: Double = 0,
+      _ constraint: Constraint
+    ) {
+      self.alignment = alignment
+      self.axis = axis
+      self.distribution = distribution
+      style = Style(constraint)
+      self.spacing = spacing
+    }
+
+    public init(
+      alignment: Alignment = .fill,
+      axis: Axis = .horizontal,
+      distribution: Distribution = .fill,
+      spacing: Double = 0
+    ) {
+      self.alignment = alignment
+      self.axis = axis
+      self.distribution = distribution
+      style = nil
       self.spacing = spacing
     }
   }
