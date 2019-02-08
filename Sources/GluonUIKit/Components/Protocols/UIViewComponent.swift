@@ -102,6 +102,8 @@ extension UIViewComponent where Target == Target.DefaultValue,
     // it needs to be wrapped with `ContainerViewController` first.
     if parentRequiresViewController {
       let container = ContainerViewController(contained: target)
+      // trigger `viewDidLoad` on `ContainerViewController` for safe constraints
+      // installation
       container.loadViewIfNeeded()
       result = box(for: target, container, component, renderer)
     } else {
