@@ -35,7 +35,6 @@ public struct StackView: HostComponent {
     public let alignment: Alignment
     public let axis: Axis
     public let distribution: Distribution
-
     public let spacing: Double
 
     /// not exposing style: UIStackView is a non-rendering subclass of UIView
