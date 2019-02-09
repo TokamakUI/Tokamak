@@ -16,7 +16,17 @@ extension NavigationItem: UIHostComponent {
   }
 
   static func update(target: UITarget, node: AnyNode) {
-    // FIXME: update props related to navigation item on the target here
+    guard let target = target as? ViewControllerBox<UIViewController>,
+      let props = node.props.value as? NavigationItem.Props else {
+      propsAssertionFailure()
+      targetAssertionFailure()
+      return
+    }
+
+    let item = target.viewController.navigationItem
+
+    item.title = props.title
+//    item.largeTitleDisplayMode =
   }
 
   static func unmount(target: UITarget) {}
