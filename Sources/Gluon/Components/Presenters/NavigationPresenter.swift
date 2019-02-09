@@ -1,5 +1,5 @@
 //
-//  StackPresenter.swift
+//  NavigationPresenter.swift
 //  Gluon
 //
 //  Created by Max Desiatov on 31/12/2018.
@@ -20,6 +20,7 @@ public struct NavigationPresenter<T: NavigationRouter>: LeafComponent {
     public let hidesBarsWhenKeyboardAppears: Bool?
     public let initial: T.Route
     public let popAnimated: Bool
+    public let prefersLargeTitles: Bool
     public let pushAnimated: Bool
     public let routerProps: T.Props
 
@@ -27,12 +28,14 @@ public struct NavigationPresenter<T: NavigationRouter>: LeafComponent {
       hidesBarsWhenKeyboardAppears: Bool? = nil,
       initial: T.Route,
       popAnimated: Bool = true,
+      prefersLargeTitles: Bool = false,
       pushAnimated: Bool = true,
       routerProps: T.Props
     ) {
       self.hidesBarsWhenKeyboardAppears = hidesBarsWhenKeyboardAppears
       self.initial = initial
       self.popAnimated = popAnimated
+      self.prefersLargeTitles = prefersLargeTitles
       self.pushAnimated = pushAnimated
       self.routerProps = routerProps
     }
@@ -43,10 +46,11 @@ public struct NavigationPresenter<T: NavigationRouter>: LeafComponent {
 
     let pop = { stack.set(Array(stack.value.dropLast())) }
 
-    return StackController.node(
+    return NavigationController.node(
       .init(
         hidesBarsWhenKeyboardAppears: props.hidesBarsWhenKeyboardAppears,
         popAnimated: props.popAnimated,
+        prefersLargeTitles: props.prefersLargeTitles,
         pushAnimated: props.pushAnimated,
         onPop: Handler(pop)
       ),
@@ -68,11 +72,13 @@ extension NavigationPresenter.Props where T.Props == Null {
     hidesBarsWhenKeyboardAppears: Bool? = nil,
     initial: T.Route,
     popAnimated: Bool = true,
+    prefersLargeTitles: Bool = false,
     pushAnimated: Bool = true
   ) {
     self.hidesBarsWhenKeyboardAppears = hidesBarsWhenKeyboardAppears
     self.initial = initial
     self.popAnimated = popAnimated
+    self.prefersLargeTitles = prefersLargeTitles
     self.pushAnimated = pushAnimated
     routerProps = Null()
   }

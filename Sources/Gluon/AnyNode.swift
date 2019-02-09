@@ -34,6 +34,16 @@ public struct AnyNode: Equatable {
   ) -> Bool {
     return isSubtypeOf(T.self) || isSubtypeOf(U.self) || isSubtypeOf(V.self)
   }
+
+  public func isSubtypeOf<T, U, V, W>(
+    _: T.Type,
+    or _: U.Type,
+    or _: V.Type,
+    or _: W.Type
+  ) -> Bool {
+    return isSubtypeOf(T.self) || isSubtypeOf(U.self) || isSubtypeOf(V.self) ||
+      isSubtypeOf(W.self)
+  }
 }
 
 extension Null {

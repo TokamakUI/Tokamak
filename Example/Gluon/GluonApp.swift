@@ -19,6 +19,7 @@ struct NavigationModal: PureLeafComponent {
         NavigationPresenter<NavRouter>.node(
           .init(
             initial: .first,
+            prefersLargeTitles: true,
             routerProps: .init(
               onPress: Handler { props.isPresented.set(false) }
             )

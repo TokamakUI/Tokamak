@@ -37,6 +37,7 @@
 		A633562521FB96EE00BCC525 /* CenterX.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633562421FB96EE00BCC525 /* CenterX.swift */; };
 		A633562721FB9DC600BCC525 /* CenterY.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633562621FB9DC600BCC525 /* CenterY.swift */; };
 		D126CB7121ECAF850097300E /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126CB7021ECAF850097300E /* Constraint.swift */; };
+		D12FFC91220F364B00557924 /* NavigationItemBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12FFC90220F364B00557924 /* NavigationItemBox.swift */; };
 		D144FB9921E8A56D001020F3 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */; };
 		D163F9D621F27F8C00BA464B /* GluonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163F9D521F27F8C00BA464B /* GluonViewController.swift */; };
 		D16FCB7C21FCB3870033C5C0 /* TableViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16FCB7B21FCB3870033C5C0 /* TableViewBox.swift */; };
@@ -47,7 +48,7 @@
 		D1C3A72421F0DE5300C6B884 /* Insets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C3A72221F0DC6300C6B884 /* Insets.swift */; };
 		D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */; };
 		D1CB7D2B21E136520075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */; };
-		D1CB7D2E21E29CC80075C0C3 /* StackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2D21E29CC80075C0C3 /* StackController.swift */; };
+		D1CB7D2E21E29CC80075C0C3 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2D21E29CC80075C0C3 /* NavigationController.swift */; };
 		D1E8755521EF2ED200D4A7BA /* HooksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8755421EF2ED200D4A7BA /* HooksTests.swift */; };
 		D1EC92F021F5B8000026C207 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC92EF21F5B8000026C207 /* ListView.swift */; };
 		D1EF77522205C579008829EC /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77512205C579008829EC /* Constraint.swift */; };
@@ -118,7 +119,7 @@
 		OBJ_174 /* UIValueComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* UIValueComponent.swift */; };
 		OBJ_175 /* UIViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* UIViewComponent.swift */; };
 		OBJ_176 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* Slider.swift */; };
-		OBJ_177 /* StackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* StackController.swift */; };
+		OBJ_177 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* NavigationController.swift */; };
 		OBJ_178 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* StackView.swift */; };
 		OBJ_179 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* View.swift */; };
 		OBJ_180 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* ContainerViewController.swift */; };
@@ -191,6 +192,7 @@
 		A633562621FB9DC600BCC525 /* CenterY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterY.swift; sourceTree = "<group>"; };
 		D126CB7021ECAF850097300E /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D126CB7221ECE1400097300E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D12FFC90220F364B00557924 /* NavigationItemBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItemBox.swift; sourceTree = "<group>"; };
 		D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
 		D163F9D521F27F8C00BA464B /* GluonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonViewController.swift; sourceTree = "<group>"; };
 		D16FCB7921FCB3160033C5C0 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
@@ -201,7 +203,7 @@
 		D1C3A72221F0DC6300C6B884 /* Insets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Insets.swift; sourceTree = "<group>"; };
 		D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
-		D1CB7D2D21E29CC80075C0C3 /* StackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackController.swift; sourceTree = "<group>"; };
+		D1CB7D2D21E29CC80075C0C3 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		D1E8755421EF2ED200D4A7BA /* HooksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HooksTests.swift; sourceTree = "<group>"; };
 		D1EC92EF21F5B8000026C207 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		D1EF77512205C579008829EC /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
@@ -246,7 +248,7 @@
 		OBJ_26 /* UIValueComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIValueComponent.swift; sourceTree = "<group>"; };
 		OBJ_27 /* UIViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewComponent.swift; sourceTree = "<group>"; };
 		OBJ_28 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
-		OBJ_29 /* StackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackController.swift; sourceTree = "<group>"; };
+		OBJ_29 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		OBJ_30 /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 		OBJ_31 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		OBJ_33 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
@@ -363,7 +365,7 @@
 				D1EC92EF21F5B8000026C207 /* ListView.swift */,
 				D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */,
 				OBJ_64 /* Slider.swift */,
-				D1CB7D2D21E29CC80075C0C3 /* StackController.swift */,
+				D1CB7D2D21E29CC80075C0C3 /* NavigationController.swift */,
 				OBJ_65 /* StackView.swift */,
 				OBJ_66 /* View.swift */,
 				A62891F921F5DB02001BE090 /* Switch.swift */,
@@ -381,7 +383,7 @@
 				OBJ_17 /* ModalPresenter.swift */,
 				D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */,
 				OBJ_28 /* Slider.swift */,
-				OBJ_29 /* StackController.swift */,
+				OBJ_29 /* NavigationController.swift */,
 				D1EF77802208AEF5008829EC /* NavigationItem.swift */,
 				OBJ_30 /* StackView.swift */,
 				OBJ_31 /* View.swift */,
@@ -477,6 +479,7 @@
 				OBJ_37 /* ViewBox.swift */,
 				D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */,
 				D16FCB7B21FCB3870033C5C0 /* TableViewBox.swift */,
+				D12FFC90220F364B00557924 /* NavigationItemBox.swift */,
 			);
 			path = Boxes;
 			sourceTree = "<group>";
@@ -797,6 +800,7 @@
 				OBJ_168 /* Color.swift in Sources */,
 				OBJ_169 /* Event.swift in Sources */,
 				D1C3A72121F0C47200C6B884 /* XAxisConstraint.swift in Sources */,
+				D12FFC91220F364B00557924 /* NavigationItemBox.swift in Sources */,
 				A633562721FB9DC600BCC525 /* CenterY.swift in Sources */,
 				OBJ_170 /* Rectangle.swift in Sources */,
 				A633561621FB5C0800BCC525 /* Bottom.swift in Sources */,
@@ -811,7 +815,7 @@
 				D1EF777D220745AB008829EC /* BaselineConstraint.swift in Sources */,
 				A633562521FB96EE00BCC525 /* CenterX.swift in Sources */,
 				OBJ_176 /* Slider.swift in Sources */,
-				OBJ_177 /* StackController.swift in Sources */,
+				OBJ_177 /* NavigationController.swift in Sources */,
 				A633562121FB5C8800BCC525 /* Leading.swift in Sources */,
 				OBJ_178 /* StackView.swift in Sources */,
 				D163F9D621F27F8C00BA464B /* GluonViewController.swift in Sources */,
@@ -866,7 +870,7 @@
 				D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */,
 				OBJ_108 /* Color.swift in Sources */,
 				OBJ_109 /* Event.swift in Sources */,
-				D1CB7D2E21E29CC80075C0C3 /* StackController.swift in Sources */,
+				D1CB7D2E21E29CC80075C0C3 /* NavigationController.swift in Sources */,
 				OBJ_110 /* Rectangle.swift in Sources */,
 				OBJ_111 /* Second.swift in Sources */,
 				OBJ_112 /* Style.swift in Sources */,

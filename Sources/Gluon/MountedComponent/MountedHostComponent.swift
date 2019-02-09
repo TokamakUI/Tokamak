@@ -9,16 +9,14 @@
  components by `StackReconciler`.
  */
 public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
-  // FIXME: we probably can avoid making this class public
-
   private var managedChildren = [Weak<R.Target>: MountedComponent<R>]()
   private var mountedChildren = [MountedComponent<R>]()
 
   /** Target of a closest ancestor host component. As a parent of this component
    might not be a host component, but a composite component, we need to pass
    around the target of a host component to its closests descendent host
-   comoponents. Thus, a parent target is not the same as a target of a parent
-   component. */
+   comoponents. Thus, a parent target is not always the same as a target of
+   a parent component. */
   private let parentTarget: R.Target
 
   /** Target of this host component supplied by a renderer after mounting has

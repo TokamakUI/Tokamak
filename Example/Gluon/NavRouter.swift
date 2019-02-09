@@ -32,32 +32,35 @@ struct NavRouter: NavigationRouter {
       ), "Close Modal")
     switch route {
     case .first:
-      return View.node(
-        .init(Style(backgroundColor: .white, Edges.equal(to: .parent))), [
-          close,
-          Label.node(.init(
-            alignment: .center,
-            Style(Rectangle(Point(x: 0, y: 200),
-                            Size(width: 200, height: 200)))
-          ), "first"),
-          Button.node(.init(
-            onPress: Handler { push(.second) },
-            Style(Rectangle(Point(x: 0, y: 400),
-                            Size(width: 200, height: 200)))
-          ), "second"),
-        ]
-      )
+      return
+        NavigationItem.node(
+          .init(title: "First", titleMode: .standard),
+          View.node(
+            .init(Style(backgroundColor: .white, Edges.equal(to: .parent))), [
+              close,
+              Button.node(.init(
+                onPress: Handler { push(.second) },
+                Style(Rectangle(Point(x: 0, y: 400),
+                                Size(width: 200, height: 200)))
+              ), "Go to Second"),
+            ]
+          )
+        )
     case .second:
-      return View.node(
-        .init(Style(backgroundColor: .white, Edges.equal(to: .parent))), [
-          close,
-          Label.node(.init(
-            alignment: .center,
-            Style(Rectangle(Point(x: 0, y: 200),
-                            Size(width: 200, height: 200)))
-          ), "second"),
-        ]
-      )
+      return
+        NavigationItem.node(
+          .init(title: "Second", titleMode: .large),
+          View.node(
+            .init(Style(backgroundColor: .white, Edges.equal(to: .parent))), [
+              close,
+              Label.node(.init(
+                alignment: .center,
+                Style(Rectangle(Point(x: 0, y: 200),
+                                Size(width: 200, height: 200)))
+              ), "This is second"),
+            ]
+          )
+        )
     }
   }
 }
