@@ -48,6 +48,8 @@
 		D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */; };
 		D1CB7D2B21E136520075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */; };
 		D1CB7D2E21E29CC80075C0C3 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2D21E29CC80075C0C3 /* NavigationController.swift */; };
+		D1D792EB220F79140042A632 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D792EA220F79130042A632 /* State.swift */; };
+		D1D792ED220F79B30042A632 /* Ref.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D792EC220F79B30042A632 /* Ref.swift */; };
 		D1E8755521EF2ED200D4A7BA /* HooksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8755421EF2ED200D4A7BA /* HooksTests.swift */; };
 		D1EC92F021F5B8000026C207 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC92EF21F5B8000026C207 /* ListView.swift */; };
 		D1EF77522205C579008829EC /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77512205C579008829EC /* Constraint.swift */; };
@@ -97,7 +99,6 @@
 		OBJ_120 /* Null.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_71 /* Null.swift */; };
 		OBJ_121 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_72 /* Renderer.swift */; };
 		OBJ_122 /* StackReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_73 /* StackReconciler.swift */; };
-		OBJ_123 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_74 /* Store.swift */; };
 		OBJ_124 /* Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_75 /* Unique.swift */; };
 		OBJ_132 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_144 /* TestRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* TestRenderer.swift */; };
@@ -202,6 +203,8 @@
 		D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		D1CB7D2D21E29CC80075C0C3 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		D1D792EA220F79130042A632 /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		D1D792EC220F79B30042A632 /* Ref.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ref.swift; sourceTree = "<group>"; };
 		D1E8755421EF2ED200D4A7BA /* HooksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HooksTests.swift; sourceTree = "<group>"; };
 		D1EC92EF21F5B8000026C207 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		D1EF77512205C579008829EC /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
@@ -283,7 +286,6 @@
 		OBJ_71 /* Null.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Null.swift; sourceTree = "<group>"; };
 		OBJ_72 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		OBJ_73 /* StackReconciler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackReconciler.swift; sourceTree = "<group>"; };
-		OBJ_74 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		OBJ_75 /* Unique.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unique.swift; sourceTree = "<group>"; };
 		OBJ_79 /* ReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReconcilerTests.swift; sourceTree = "<group>"; };
 		OBJ_8 /* Package.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Package.xcconfig; sourceTree = "<group>"; };
@@ -391,6 +393,16 @@
 			path = Host;
 			sourceTree = "<group>";
 		};
+		D1D792E7220F784A0042A632 /* Hooks */ = {
+			isa = PBXGroup;
+			children = (
+				D1D792EA220F79130042A632 /* State.swift */,
+				OBJ_45 /* Hooks.swift */,
+				D1D792EC220F79B30042A632 /* Ref.swift */,
+			);
+			path = Hooks;
+			sourceTree = "<group>";
+		};
 		D1EF77502205C579008829EC /* Constraint */ = {
 			isa = PBXGroup;
 			children = (
@@ -488,13 +500,12 @@
 				OBJ_41 /* AnyNode.swift */,
 				OBJ_42 /* Components.swift */,
 				OBJ_43 /* Default.swift */,
-				OBJ_45 /* Hooks.swift */,
+				D1D792E7220F784A0042A632 /* Hooks */,
 				OBJ_46 /* Components */,
 				OBJ_67 /* MountedComponent */,
 				OBJ_71 /* Null.swift */,
 				OBJ_72 /* Renderer.swift */,
 				OBJ_73 /* StackReconciler.swift */,
-				OBJ_74 /* Store.swift */,
 				OBJ_75 /* Unique.swift */,
 				D16FCB8021FDD2550033C5C0 /* Weak.swift */,
 			);
@@ -838,8 +849,10 @@
 			buildActionMask = 0;
 			files = (
 				D1EF776E2205C74D008829EC /* SizeConstraint.swift in Sources */,
+				D1D792ED220F79B30042A632 /* Ref.swift in Sources */,
 				D1EF77602205C685008829EC /* Right.swift in Sources */,
 				D1EF775E2205C679008829EC /* Left.swift in Sources */,
+				D1D792EB220F79140042A632 /* State.swift in Sources */,
 				OBJ_93 /* AnyEquatable.swift in Sources */,
 				OBJ_94 /* AnyNode.swift in Sources */,
 				D1EF77582205C60D008829EC /* Height.swift in Sources */,
@@ -888,7 +901,6 @@
 				OBJ_120 /* Null.swift in Sources */,
 				OBJ_121 /* Renderer.swift in Sources */,
 				OBJ_122 /* StackReconciler.swift in Sources */,
-				OBJ_123 /* Store.swift in Sources */,
 				OBJ_124 /* Unique.swift in Sources */,
 				D1EF77682205C6F6008829EC /* CenterY.swift in Sources */,
 				D1EF77862208BB13008829EC /* NavigationItem.swift in Sources */,

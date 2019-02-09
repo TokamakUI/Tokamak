@@ -5,26 +5,6 @@
 //  Created by Max Desiatov on 06/11/2018.
 //
 
-public struct State<T> {
-  public let value: T
-  let setter: Handler<T>
-
-  init(_ value: T, _ setter: @escaping (T) -> ()) {
-    self.value = value
-    self.setter = Handler(setter)
-  }
-
-  public func set(_ value: T) {
-    setter.value(value)
-  }
-
-  public func set(_ updater: (T) -> T) {
-    setter.value(updater(value))
-  }
-}
-
-extension State: Equatable where T: Equatable {}
-
 public struct Hooks {
   var currentState: ((Any) -> (Any, Int))?
   var queueState: ((_ state: Any, _ index: Int) -> ())?
@@ -41,5 +21,9 @@ public struct Hooks {
     let (value, index) = currentState(initial)
 
     return State(value as? T ?? initial) { queueState($0, index) }
+  }
+
+  public func ref<T>(_ initial: T? = nil) -> Ref<T> {
+    return Ref(initial)
   }
 }
