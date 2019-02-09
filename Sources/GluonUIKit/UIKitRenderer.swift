@@ -28,11 +28,14 @@ struct HackyProvider: SimpleCellProvider {
   typealias Model = [[Int]]
 }
 
+// FIXME: move to Gluon module?
 public class UITarget {
-  let node: AnyNode?
+//  let node: AnyNode?
 
-  init(node: AnyNode?) {
-    self.node = node
+  init(
+//    node: AnyNode?
+  ) {
+//    self.node = node
   }
 
   var viewController: UIViewController {

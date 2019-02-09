@@ -9,7 +9,8 @@
  components by `StackReconciler`.
  */
 public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
-  private var managedChildren = [Weak<R.Target>: MountedComponent<R>]()
+  // FIXME: we probably can avoid making this class public
+
   private var mountedChildren = [MountedComponent<R>]()
 
   /** Target of a closest ancestor host component. As a parent of this component

@@ -15,6 +15,7 @@ public struct AnyNode: Equatable {
   }
 
   let key: String?
+  let ref: AnyRef?
   public let props: AnyEquatable
   public let children: AnyEquatable
   let type: ComponentType
@@ -40,6 +41,7 @@ extension Null {
   public static func node() -> AnyNode {
     return AnyNode(
       key: nil,
+      ref: nil,
       props: AnyEquatable(Null()),
       children: AnyEquatable(Null()),
       type: .null
@@ -98,6 +100,7 @@ extension HostComponent {
                           _ props: Props,
                           _ children: Children) -> AnyNode {
     return AnyNode(key: key,
+                   ref: nil,
                    props: AnyEquatable(props),
                    children: AnyEquatable(children),
                    type: .host(self))
@@ -105,12 +108,30 @@ extension HostComponent {
 }
 
 extension CompositeComponent {
-  public static func node(key: String?,
-                          _ props: Props,
-                          _ children: Children) -> AnyNode {
+  public static func node(
+    key: String?,
+    _ props: Props,
+    _ children: Children
+  ) -> AnyNode {
     return AnyNode(key: key,
+                   ref: nil,
                    props: AnyEquatable(props),
                    children: AnyEquatable(children),
                    type: .composite(self))
+  }
+}
+
+extension RefComponent {
+  public static func node(
+    key: String? = nil,
+    ref: Ref<RefType>,
+    _ props: Props,
+    _ children: Children
+  ) -> AnyNode {
+    return AnyNode(key: key,
+                   ref: ref,
+                   props: AnyEquatable(props),
+                   children: AnyEquatable(children),
+                   type: .host(self))
   }
 }
