@@ -37,7 +37,6 @@
 		A633562521FB96EE00BCC525 /* CenterX.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633562421FB96EE00BCC525 /* CenterX.swift */; };
 		A633562721FB9DC600BCC525 /* CenterY.swift in Sources */ = {isa = PBXBuildFile; fileRef = A633562621FB9DC600BCC525 /* CenterY.swift */; };
 		D126CB7121ECAF850097300E /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126CB7021ECAF850097300E /* Constraint.swift */; };
-		D12FFC91220F364B00557924 /* NavigationItemBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12FFC90220F364B00557924 /* NavigationItemBox.swift */; };
 		D144FB9921E8A56D001020F3 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */; };
 		D163F9D621F27F8C00BA464B /* GluonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163F9D521F27F8C00BA464B /* GluonViewController.swift */; };
 		D16FCB7C21FCB3870033C5C0 /* TableViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16FCB7B21FCB3870033C5C0 /* TableViewBox.swift */; };
@@ -192,7 +191,6 @@
 		A633562621FB9DC600BCC525 /* CenterY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterY.swift; sourceTree = "<group>"; };
 		D126CB7021ECAF850097300E /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D126CB7221ECE1400097300E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		D12FFC90220F364B00557924 /* NavigationItemBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItemBox.swift; sourceTree = "<group>"; };
 		D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
 		D163F9D521F27F8C00BA464B /* GluonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonViewController.swift; sourceTree = "<group>"; };
 		D16FCB7921FCB3160033C5C0 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
@@ -479,7 +477,6 @@
 				OBJ_37 /* ViewBox.swift */,
 				D144FB9821E8A56D001020F3 /* ViewControllerBox.swift */,
 				D16FCB7B21FCB3870033C5C0 /* TableViewBox.swift */,
-				D12FFC90220F364B00557924 /* NavigationItemBox.swift */,
 			);
 			path = Boxes;
 			sourceTree = "<group>";
@@ -800,7 +797,6 @@
 				OBJ_168 /* Color.swift in Sources */,
 				OBJ_169 /* Event.swift in Sources */,
 				D1C3A72121F0C47200C6B884 /* XAxisConstraint.swift in Sources */,
-				D12FFC91220F364B00557924 /* NavigationItemBox.swift in Sources */,
 				A633562721FB9DC600BCC525 /* CenterY.swift in Sources */,
 				OBJ_170 /* Rectangle.swift in Sources */,
 				A633561621FB5C0800BCC525 /* Bottom.swift in Sources */,
