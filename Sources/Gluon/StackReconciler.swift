@@ -65,9 +65,26 @@ public final class StackReconciler<R: Renderer> {
     // Avoiding an indirect reference cycle here: this closure can be
     // owned by callbacks owned by node's target, which is strongly referenced
     // by the reconciler.
-    hooks.queueState = { [weak self, weak component] in
+    hooks.queueState = { [weak self, weak component] value, id in
       guard let component = component else { return }
-      self?.queue(state: $0, for: component, id: $1)
+      self?.queue(state: value, for: component, id: id)
+    }
+
+    var effectIndex = 0
+    var scheduledEffects = Set<Int>()
+    hooks.scheduleEffect = { [weak component] observed, effect in
+      defer { effectIndex += 1 }
+
+      guard let component = component else { return }
+
+      if component.effects.count > effectIndex {
+        guard component.effects[effectIndex].0 != observed else { return }
+
+        scheduledEffects.insert(effectIndex)
+      } else {
+        component.effects.append((observed, effect))
+        scheduledEffects.insert(effectIndex)
+      }
     }
 
     let result = component.type.render(
@@ -78,6 +95,14 @@ public final class StackReconciler<R: Renderer> {
 
     hooks.currentState = nil
     hooks.queueState = nil
+    hooks.scheduleEffect = nil
+
+    DispatchQueue.main.async {
+      for i in scheduledEffects {
+        component.effectFinalizers[i]?()
+        component.effectFinalizers[i] = component.effects[i].1()
+      }
+    }
 
     return result
   }

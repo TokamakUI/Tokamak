@@ -19,5 +19,13 @@ public struct Hooks {
    */
   var queueState: ((_ newState: Any, _ index: Int) -> ())?
 
-  var scheduleEffect: ((_ observed: AnyEquatable?, _ effect: Effect) -> ())?
+  /** Closure assigned by the reconciler before every `render` call. Schedules
+   effect exection with this reconciler.
+   */
+  var scheduleEffect: ((
+    _ observed: AnyEquatable?,
+    _ effect: @escaping Effect
+  ) -> ())?
+
+  var ref: ((_ initial: Any) -> AnyRef)?
 }

@@ -5,6 +5,8 @@
 //  Created by Max Desiatov on 03/12/2018.
 //
 
+import Dispatch
+
 final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   Hashable {
   static func ==(lhs: MountedCompositeComponent<R>,
@@ -20,6 +22,8 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   private let parentTarget: R.TargetType
   let type: AnyCompositeComponent.Type
   var state = [Any]()
+  var effects = [(AnyEquatable?, () -> (() -> ())?)]()
+  var effectFinalizers = [(() -> ())?]()
 
   init(_ node: AnyNode,
        _ type: AnyCompositeComponent.Type,
@@ -41,8 +45,12 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
 
   override func unmount(with reconciler: StackReconciler<R>) {
     mountedChildren.forEach { $0.unmount(with: reconciler) }
-    // FIXME: Should call `hooks.effect` finalizers here after `hooks.effect`
-    // is implemented
+
+    DispatchQueue.main.async {
+      for f in self.effectFinalizers {
+        f?()
+      }
+    }
   }
 
   override func update(with reconciler: StackReconciler<R>) {
