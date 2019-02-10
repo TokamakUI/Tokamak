@@ -19,13 +19,36 @@ public struct State<T> {
     self.setter = Handler(setter)
   }
 
+  /// set the state to a specified value
   public func set(_ value: T) {
     setter.value(value)
   }
 
+  /// update the state with a pure function
   public func set(_ updater: (T) -> T) {
     setter.value(updater(value))
   }
 }
 
 extension State: Equatable where T: Equatable {}
+
+extension Hooks {
+  /** Allows a component to have its own state and to be updated when the state
+   changes. Returns a very simple state container, which on initial call of
+   render contains `initial` as a value and values passed to `count.set`
+   on subsequent updates:
+   */
+  public func state<T>(_ initial: T) -> State<T> {
+    guard let currentState = currentState,
+      let queueState = queueState else {
+      fatalError("""
+        attempt to use `state` hook outside of a `render` function,
+        or `render` is not called from a renderer
+      """)
+    }
+
+    let (value, index) = currentState(initial)
+
+    return State(value as? T ?? initial) { queueState($0, index) }
+  }
+}

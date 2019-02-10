@@ -26,7 +26,7 @@ public class MountedComponent<R: Renderer> {
 }
 
 extension AnyNode {
-  func makeMountedComponent<R: Renderer>(_ parentTarget: R.Target)
+  func makeMountedComponent<R: Renderer>(_ parentTarget: R.TargetType)
     -> MountedComponent<R> {
     switch type {
     case let .host(type):

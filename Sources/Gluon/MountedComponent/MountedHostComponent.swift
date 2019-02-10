@@ -23,13 +23,13 @@ public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
   /** Target of this host component supplied by a renderer after mounting has
    completed.
    */
-  private var target: R.Target?
+  private var target: R.TargetType?
 
   public let type: AnyHostComponent.Type
 
   init(_ node: AnyNode,
        _ type: AnyHostComponent.Type,
-       _ parentTarget: R.Target) {
+       _ parentTarget: R.TargetType) {
     self.type = type
     self.parentTarget = parentTarget
 
@@ -70,23 +70,25 @@ public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
   override func update(with reconciler: StackReconciler<R>) {
     guard let target = target else { return }
 
+    target.node = node
     reconciler.renderer?.update(target: target,
                                 with: self)
 
     switch node.children.value {
     case var nodes as [AnyNode]:
       switch (mountedChildren.isEmpty, nodes.isEmpty) {
-      // existing children, new children array is empty, unmount all existing
+      // if existing children present and new children array is empty
+      // then unmount all existing children
       case (false, true):
         mountedChildren.forEach { $0.unmount(with: reconciler) }
         mountedChildren = []
 
-      // no existing children, mount all new
+      // if no existing children then mount all new children
       case (true, false):
         mountedChildren = nodes.map { $0.makeMountedComponent(target) }
         mountedChildren.forEach { $0.mount(with: reconciler) }
 
-      // both arrays have items, reconcile by types and keys
+      // if both arrays have items then reconcile by types and keys
       case (false, false):
         var newChildren = [MountedComponent<R>]()
 

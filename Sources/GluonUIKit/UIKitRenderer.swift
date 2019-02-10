@@ -28,16 +28,7 @@ struct HackyProvider: SimpleCellProvider {
   typealias Model = [[Int]]
 }
 
-// FIXME: move to Gluon module?
-public class UITarget {
-//  let node: AnyNode?
-
-  init(
-//    node: AnyNode?
-  ) {
-//    self.node = node
-  }
-
+class UITarget: Target {
   var viewController: UIViewController {
     fatalError("viewController should be overriden in UITarget subclass")
   }

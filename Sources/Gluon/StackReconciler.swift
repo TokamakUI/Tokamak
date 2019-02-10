@@ -10,12 +10,12 @@ import Dispatch
 public final class StackReconciler<R: Renderer> {
   private var queuedRerenders = Set<MountedCompositeComponent<R>>()
 
-  public let rootTarget: R.Target
+  public let rootTarget: R.TargetType
   private let rootComponent: MountedComponent<R>
   private(set) weak var renderer: R?
   private var hooks = Hooks()
 
-  public init(node: AnyNode, target: R.Target, renderer: R) {
+  public init(node: AnyNode, target: R.TargetType, renderer: R) {
     self.renderer = renderer
     rootTarget = target
 

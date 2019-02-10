@@ -27,3 +27,10 @@ public final class Ref<T>: AnyRef {
     self.value = value
   }
 }
+
+extension Hooks {
+  public func ref<T>(_ initial: T? = nil) -> Ref<T> {
+    // FIXME: return an existing ref if there is one available in reconciler
+    return Ref(initial)
+  }
+}

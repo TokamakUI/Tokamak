@@ -17,13 +17,13 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   }
 
   private var mountedChildren = [MountedComponent<R>]()
-  private let parentTarget: R.Target
+  private let parentTarget: R.TargetType
   let type: AnyCompositeComponent.Type
   var state = [Any]()
 
   init(_ node: AnyNode,
        _ type: AnyCompositeComponent.Type,
-       _ parentTarget: R.Target) {
+       _ parentTarget: R.TargetType) {
     self.type = type
     self.parentTarget = parentTarget
 
