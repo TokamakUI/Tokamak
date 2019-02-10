@@ -6,9 +6,9 @@
 //
 
 open class Target {
-  public internal(set) var node: AnyNode?
+  public internal(set) var node: AnyNode
 
-  public init(node: AnyNode?) {
+  public init(node: AnyNode) {
     self.node = node
   }
 }

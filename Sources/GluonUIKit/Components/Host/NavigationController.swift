@@ -53,8 +53,8 @@ extension NavigationController: UIHostComponent {
     // FIXME: this `case` handler is duplicated with `UIViewComponent`,
     // should this be generalised as a protocol?
     case let box as ViewControllerBox<UIViewController>
-      where parent.node?.isSubtypeOf(ModalPresenter.self) ?? false:
-      guard let props = parent.node?.props.value as? ModalPresenter.Props else {
+      where parent.node.isSubtypeOf(ModalPresenter.self):
+      guard let props = parent.node.props.value as? ModalPresenter.Props else {
         propsAssertionFailure()
         return nil
       }

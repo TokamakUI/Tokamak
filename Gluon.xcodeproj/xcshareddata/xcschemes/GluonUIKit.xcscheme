@@ -28,7 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Gluon::GluonTests"
+               BuildableName = "GluonTests.xctest"
+               BlueprintName = "GluonTests"
+               ReferencedContainer = "container:Gluon.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "Gluon::GluonUIKit"
+            BuildableName = "GluonUIKit.framework"
+            BlueprintName = "GluonUIKit"
+            ReferencedContainer = "container:Gluon.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

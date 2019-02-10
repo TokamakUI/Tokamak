@@ -34,9 +34,7 @@ public final class TestRenderer: Renderer {
   public func update(
     target: TestView,
     with component: TestRenderer.MountedHost
-  ) {
-    target.node = component.node
-  }
+  ) {}
 
   public func unmount(
     target: TestView,
