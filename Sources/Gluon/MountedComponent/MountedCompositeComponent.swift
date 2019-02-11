@@ -8,7 +8,7 @@
 import Dispatch
 
 final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
-  Hashable {
+  HookedComponent, Hashable {
   static func ==(lhs: MountedCompositeComponent<R>,
                  rhs: MountedCompositeComponent<R>) -> Bool {
     return lhs === rhs
@@ -21,9 +21,11 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   private var mountedChildren = [MountedComponent<R>]()
   private let parentTarget: R.TargetType
   let type: AnyCompositeComponent.Type
+
+  // HookedComponent implementation
   var state = [Any]()
-  var effects = [(AnyEquatable?, () -> (() -> ())?)]()
-  var effectFinalizers = [(() -> ())?]()
+  var effects = [(observed: AnyEquatable?, Effect)]()
+  var effectFinalizers = [Finalizer]()
 
   init(_ node: AnyNode,
        _ type: AnyCompositeComponent.Type,

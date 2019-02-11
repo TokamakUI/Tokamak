@@ -5,9 +5,35 @@
 //  Created by Max Desiatov on 06/11/2018.
 //
 
-typealias Effect = () -> (() -> ())?
+typealias Finalizer = (() -> ())?
+typealias Effect = () -> Finalizer
 
-public struct Hooks {
+protocol HookedComponent: class {
+  /// State cells of this component indexed by order of `hooks.state` calls
+  var state: [Any] { get set }
+
+  /// Effect cells of this component indexed by order of `hooks.effect` calls
+  var effects: [(observed: AnyEquatable?, Effect)] { get set }
+
+  /// Finalizer cells of this component received from `Effect` evaluation.
+  /// Indices in this array exactly match indices in `effects` array.
+  var effectFinalizers: [Finalizer] { get set }
+}
+
+/** Functions implemented directly in this class are parts of internal
+ implementation of `Hooks`. The public API is defined in extensions of `Hooks`
+ located in separate files in the same directory.
+ */
+public final class Hooks {
+  weak var component: HookedComponent?
+
+  init(
+    component: HookedComponent,
+    queueState: @escaping (_ value: Any, _ id: Int) -> ()
+  ) {
+    self.component = component
+  }
+
   /** Closure assigned by the reconciler before every `render` call. For a
    given initial state it returns a current value of this state (initialized
    from `initial` if current was absent) and its index.

@@ -13,7 +13,6 @@ public final class StackReconciler<R: Renderer> {
   public let rootTarget: R.TargetType
   private let rootComponent: MountedComponent<R>
   private(set) weak var renderer: R?
-  private var hooks = Hooks()
 
   public init(node: AnyNode, target: R.TargetType, renderer: R) {
     self.renderer = renderer
@@ -48,6 +47,13 @@ public final class StackReconciler<R: Renderer> {
   }
 
   func render(component: MountedCompositeComponent<R>) -> AnyNode {
+    // Avoiding an indirect reference cycle here: this closure can be
+    // owned by callbacks owned by node's target, which is strongly referenced
+    // by the reconciler.
+    let hooks = Hooks(component: component) { [weak self, weak component] value, id in
+      guard let component = component else { return }
+      self?.queue(state: value, for: component, id: id)
+    }
     var stateIndex = 0
     hooks.currentState = { [weak component] in
       defer { stateIndex += 1 }
@@ -60,14 +66,6 @@ public final class StackReconciler<R: Renderer> {
         component.state.append($0)
         return ($0, stateIndex)
       }
-    }
-
-    // Avoiding an indirect reference cycle here: this closure can be
-    // owned by callbacks owned by node's target, which is strongly referenced
-    // by the reconciler.
-    hooks.queueState = { [weak self, weak component] value, id in
-      guard let component = component else { return }
-      self?.queue(state: value, for: component, id: id)
     }
 
     var effectIndex = 0
