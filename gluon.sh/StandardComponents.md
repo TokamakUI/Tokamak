@@ -22,20 +22,22 @@
 
 ## Style
 
-All of the standard components rendered to views get an optional argument
-[`Style`][style]
-passed to their props. It bundles all of the common styling configuration that
-can be applied to view components, but is abstract from a specific renderer
-implementation. Thus, even if you render to UIKit, you can use
-platform-independent layout structs such as [`Point`, `Size`,
+All of the standard components rendered to views (except `StackView`, which
+[only affects layout, but can't be
+styled](https://useyourloaf.com/blog/stack-view-background-color/)) get an
+optional argument [`Style`][style] passed to their props. It bundles all of the
+common styling configuration that can be applied to view components, but is
+abstract from a specific renderer implementation. Thus, even if you render to
+`UIKit` you can use platform-independent layout structs such as [`Point`,
+`Size`,
 `Rectangle`](https://github.com/MaxDesiatov/Gluon/blob/master/Sources/Gluon/Components/Props/Rectangle.swift)
 and
 [`Insets`](https://github.com/MaxDesiatov/Gluon/blob/master/Sources/Gluon/Components/Props/Insets.swift),
-as well as other styling configuration like
+as well as other styling configuration. For example
 [`Color`](https://github.com/MaxDesiatov/Gluon/blob/master/Sources/Gluon/Components/Props/Color.swift)
-which is mapped to
+is mapped to
 [`UIColor`](https://developer.apple.com/documentation/uikit/uicolor) for
-`UIKit` and when `AppKitRenderer` is available would be mapped to
+`UIKit`, and when `AppKitRenderer` is available would be mapped to
 [`NSColor`](https://developer.apple.com/documentation/appkit/nscolor).
 
 ## Layout
