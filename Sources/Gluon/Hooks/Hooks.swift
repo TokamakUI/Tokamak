@@ -47,7 +47,9 @@ public final class Hooks {
   func currentState(_ initial: Any) -> (current: Any, index: Int) {
     defer { stateIndex += 1 }
 
-    guard let component = component else { return (initial, stateIndex) }
+    guard let component = component else {
+      return (initial, stateIndex)
+    }
 
     if component.state.count > stateIndex {
       return (component.state[stateIndex], stateIndex)

@@ -41,8 +41,9 @@ extension Hooks {
   public func state<T>(_ initial: T) -> State<T> {
     let (value, index) = currentState(initial)
 
-    return State(value as? T ?? initial) { [weak self] in
-      self?.queueState($0, index)
+    let queueState = self.queueState
+    return State(value as? T ?? initial) {
+      queueState($0, index)
     }
   }
 }
