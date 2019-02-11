@@ -39,16 +39,10 @@ extension Hooks {
    on subsequent updates:
    */
   public func state<T>(_ initial: T) -> State<T> {
-    guard let currentState = currentState,
-      let queueState = queueState else {
-      fatalError("""
-        attempt to use `state` hook outside of a `render` function,
-        or `render` is not called from a renderer
-      """)
-    }
-
     let (value, index) = currentState(initial)
 
-    return State(value as? T ?? initial) { queueState($0, index) }
+    return State(value as? T ?? initial) { [weak self] in
+      self?.queueState($0, index)
+    }
   }
 }

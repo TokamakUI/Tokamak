@@ -25,25 +25,37 @@ protocol HookedComponent: class {
  located in separate files in the same directory.
  */
 public final class Hooks {
-  weak var component: HookedComponent?
-
-  init(
-    component: HookedComponent,
-    queueState: @escaping (_ value: Any, _ id: Int) -> ()
-  ) {
-    self.component = component
-  }
-
-  /** Closure assigned by the reconciler before every `render` call. For a
-   given initial state it returns a current value of this state (initialized
-   from `initial` if current was absent) and its index.
-   */
-  var currentState: ((_ initial: Any) -> (current: Any, index: Int))?
-
   /** Closure assigned by the reconciler before every `render` call. Queues
    a state update with this reconciler.
    */
-  var queueState: ((_ newState: Any, _ index: Int) -> ())?
+  let queueState: (_ newState: Any, _ index: Int) -> ()
+
+  private weak var component: HookedComponent?
+  private var stateIndex = 0
+
+  init(
+    component: HookedComponent,
+    queueState: @escaping (_ value: Any, _ index: Int) -> ()
+  ) {
+    self.component = component
+    self.queueState = queueState
+  }
+
+  /** For a given initial state it returns a current value of this state
+   (initialized from `initial` if current was absent) and its index.
+   */
+  func currentState(_ initial: Any) -> (current: Any, index: Int) {
+    defer { stateIndex += 1 }
+
+    guard let component = component else { return (initial, stateIndex) }
+
+    if component.state.count > stateIndex {
+      return (component.state[stateIndex], stateIndex)
+    } else {
+      component.state.append(initial)
+      return (initial, stateIndex)
+    }
+  }
 
   /** Closure assigned by the reconciler before every `render` call. Schedules
    effect exection with this reconciler.

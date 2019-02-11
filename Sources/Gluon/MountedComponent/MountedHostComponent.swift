@@ -18,7 +18,7 @@ public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
    around the target of a host component to its closests descendent host
    comoponents. Thus, a parent target is not always the same as a target of
    a parent component. */
-  private let parentTarget: R.Target
+  private let parentTarget: R.TargetType
 
   /** Target of this host component supplied by a renderer after mounting has
    completed.

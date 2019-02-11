@@ -33,7 +33,7 @@ extension NavigationItem: UIHostComponent {
     }
 
     guard
-      let parentProps = parent.node?.props.value as? NavigationController.Props
+      let parentProps = parent.node.props.value as? NavigationController.Props
     else {
       propsAssertionFailure()
       return nil
