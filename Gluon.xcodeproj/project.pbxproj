@@ -47,7 +47,7 @@
 		D1C3A72421F0DE5300C6B884 /* Insets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C3A72221F0DC6300C6B884 /* Insets.swift */; };
 		D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */; };
 		D1CB7D2B21E136520075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */; };
-		D1CB7D2E21E29CC80075C0C3 /* StackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2D21E29CC80075C0C3 /* StackController.swift */; };
+		D1CB7D2E21E29CC80075C0C3 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2D21E29CC80075C0C3 /* NavigationController.swift */; };
 		D1E8755521EF2ED200D4A7BA /* HooksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8755421EF2ED200D4A7BA /* HooksTests.swift */; };
 		D1EC92F021F5B8000026C207 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC92EF21F5B8000026C207 /* ListView.swift */; };
 		D1EF77522205C579008829EC /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77512205C579008829EC /* Constraint.swift */; };
@@ -72,12 +72,15 @@
 		D1EF777B220744FC008829EC /* FirstBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF777A220744FB008829EC /* FirstBaseline.swift */; };
 		D1EF777D220745AB008829EC /* BaselineConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF777C220745AB008829EC /* BaselineConstraint.swift */; };
 		D1EF777F220745F4008829EC /* LastBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF777E220745F4008829EC /* LastBaseline.swift */; };
+		D1EF77812208AEF5008829EC /* NavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77802208AEF5008829EC /* NavigationItem.swift */; };
+		D1EF77852208BB10008829EC /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77842208BB10008829EC /* TabItem.swift */; };
+		D1EF77862208BB13008829EC /* NavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77822208BAF6008829EC /* NavigationItem.swift */; };
 		OBJ_100 /* Animated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* Animated.swift */; };
 		OBJ_101 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* Button.swift */; };
 		OBJ_102 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* Label.swift */; };
 		OBJ_104 /* ModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_53 /* ModalPresenter.swift */; };
 		OBJ_105 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_54 /* Router.swift */; };
-		OBJ_106 /* StackPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* StackPresenter.swift */; };
+		OBJ_106 /* NavigationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* NavigationPresenter.swift */; };
 		OBJ_107 /* TabPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_56 /* TabPresenter.swift */; };
 		OBJ_108 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_58 /* Color.swift */; };
 		OBJ_109 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_59 /* Event.swift */; };
@@ -115,7 +118,7 @@
 		OBJ_174 /* UIValueComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* UIValueComponent.swift */; };
 		OBJ_175 /* UIViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* UIViewComponent.swift */; };
 		OBJ_176 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* Slider.swift */; };
-		OBJ_177 /* StackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* StackController.swift */; };
+		OBJ_177 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* NavigationController.swift */; };
 		OBJ_178 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* StackView.swift */; };
 		OBJ_179 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* View.swift */; };
 		OBJ_180 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* ContainerViewController.swift */; };
@@ -198,7 +201,7 @@
 		D1C3A72221F0DC6300C6B884 /* Insets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Insets.swift; sourceTree = "<group>"; };
 		D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
-		D1CB7D2D21E29CC80075C0C3 /* StackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackController.swift; sourceTree = "<group>"; };
+		D1CB7D2D21E29CC80075C0C3 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		D1E8755421EF2ED200D4A7BA /* HooksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HooksTests.swift; sourceTree = "<group>"; };
 		D1EC92EF21F5B8000026C207 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		D1EF77512205C579008829EC /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
@@ -223,6 +226,9 @@
 		D1EF777A220744FB008829EC /* FirstBaseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstBaseline.swift; sourceTree = "<group>"; };
 		D1EF777C220745AB008829EC /* BaselineConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineConstraint.swift; sourceTree = "<group>"; };
 		D1EF777E220745F4008829EC /* LastBaseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastBaseline.swift; sourceTree = "<group>"; };
+		D1EF77802208AEF5008829EC /* NavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItem.swift; sourceTree = "<group>"; };
+		D1EF77822208BAF6008829EC /* NavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItem.swift; sourceTree = "<group>"; };
+		D1EF77842208BB10008829EC /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -240,7 +246,7 @@
 		OBJ_26 /* UIValueComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIValueComponent.swift; sourceTree = "<group>"; };
 		OBJ_27 /* UIViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewComponent.swift; sourceTree = "<group>"; };
 		OBJ_28 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
-		OBJ_29 /* StackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackController.swift; sourceTree = "<group>"; };
+		OBJ_29 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		OBJ_30 /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 		OBJ_31 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		OBJ_33 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
@@ -259,7 +265,7 @@
 		OBJ_50 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		OBJ_53 /* ModalPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPresenter.swift; sourceTree = "<group>"; };
 		OBJ_54 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
-		OBJ_55 /* StackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackPresenter.swift; sourceTree = "<group>"; };
+		OBJ_55 /* NavigationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPresenter.swift; sourceTree = "<group>"; };
 		OBJ_56 /* TabPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPresenter.swift; sourceTree = "<group>"; };
 		OBJ_58 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		OBJ_59 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -357,7 +363,7 @@
 				D1EC92EF21F5B8000026C207 /* ListView.swift */,
 				D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */,
 				OBJ_64 /* Slider.swift */,
-				D1CB7D2D21E29CC80075C0C3 /* StackController.swift */,
+				D1CB7D2D21E29CC80075C0C3 /* NavigationController.swift */,
 				OBJ_65 /* StackView.swift */,
 				OBJ_66 /* View.swift */,
 				A62891F921F5DB02001BE090 /* Switch.swift */,
@@ -375,7 +381,8 @@
 				OBJ_17 /* ModalPresenter.swift */,
 				D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */,
 				OBJ_28 /* Slider.swift */,
-				OBJ_29 /* StackController.swift */,
+				OBJ_29 /* NavigationController.swift */,
+				D1EF77802208AEF5008829EC /* NavigationItem.swift */,
 				OBJ_30 /* StackView.swift */,
 				OBJ_31 /* View.swift */,
 				A62891F721F5DAEE001BE090 /* Switch.swift */,
@@ -526,8 +533,10 @@
 			children = (
 				OBJ_53 /* ModalPresenter.swift */,
 				OBJ_54 /* Router.swift */,
-				OBJ_55 /* StackPresenter.swift */,
+				OBJ_55 /* NavigationPresenter.swift */,
 				OBJ_56 /* TabPresenter.swift */,
+				D1EF77822208BAF6008829EC /* NavigationItem.swift */,
+				D1EF77842208BB10008829EC /* TabItem.swift */,
 			);
 			path = Presenters;
 			sourceTree = "<group>";
@@ -802,11 +811,12 @@
 				D1EF777D220745AB008829EC /* BaselineConstraint.swift in Sources */,
 				A633562521FB96EE00BCC525 /* CenterX.swift in Sources */,
 				OBJ_176 /* Slider.swift in Sources */,
-				OBJ_177 /* StackController.swift in Sources */,
+				OBJ_177 /* NavigationController.swift in Sources */,
 				A633562121FB5C8800BCC525 /* Leading.swift in Sources */,
 				OBJ_178 /* StackView.swift in Sources */,
 				D163F9D621F27F8C00BA464B /* GluonViewController.swift in Sources */,
 				D16FCB7C21FCB3870033C5C0 /* TableViewBox.swift in Sources */,
+				D1EF77812208AEF5008829EC /* NavigationItem.swift in Sources */,
 				OBJ_179 /* View.swift in Sources */,
 				OBJ_180 /* ContainerViewController.swift in Sources */,
 				OBJ_181 /* ControlBox.swift in Sources */,
@@ -850,13 +860,13 @@
 				D1EF775C2205C64D008829EC /* Bottom.swift in Sources */,
 				D1EF776C2205C727008829EC /* LastBaseline.swift in Sources */,
 				D1EF77642205C6C8008829EC /* Trailing.swift in Sources */,
-				OBJ_106 /* StackPresenter.swift in Sources */,
+				OBJ_106 /* NavigationPresenter.swift in Sources */,
 				D1EF776A2205C717008829EC /* FirstBaseline.swift in Sources */,
 				OBJ_107 /* TabPresenter.swift in Sources */,
 				D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */,
 				OBJ_108 /* Color.swift in Sources */,
 				OBJ_109 /* Event.swift in Sources */,
-				D1CB7D2E21E29CC80075C0C3 /* StackController.swift in Sources */,
+				D1CB7D2E21E29CC80075C0C3 /* NavigationController.swift in Sources */,
 				OBJ_110 /* Rectangle.swift in Sources */,
 				OBJ_111 /* Second.swift in Sources */,
 				OBJ_112 /* Style.swift in Sources */,
@@ -870,6 +880,7 @@
 				D16FCB8121FDD2550033C5C0 /* Weak.swift in Sources */,
 				D1EF77542205C583008829EC /* Edges.swift in Sources */,
 				OBJ_117 /* MountedComponent.swift in Sources */,
+				D1EF77852208BB10008829EC /* TabItem.swift in Sources */,
 				OBJ_118 /* MountedCompositeComponent.swift in Sources */,
 				OBJ_119 /* MountedHostComponent.swift in Sources */,
 				D1EF775A2205C639008829EC /* Top.swift in Sources */,
@@ -880,6 +891,7 @@
 				OBJ_123 /* Store.swift in Sources */,
 				OBJ_124 /* Unique.swift in Sources */,
 				D1EF77682205C6F6008829EC /* CenterY.swift in Sources */,
+				D1EF77862208BB13008829EC /* NavigationItem.swift in Sources */,
 				A62891FA21F5DB02001BE090 /* Switch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

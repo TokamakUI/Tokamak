@@ -31,7 +31,9 @@ private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
 
   let view = target.view
 
-  style.allowsEdgeAntialiasing.flatMap { view.layer.allowsEdgeAntialiasing = $0 }
+  style.allowsEdgeAntialiasing.flatMap {
+    view.layer.allowsEdgeAntialiasing = $0
+  }
   style.allowsGroupOpacity.flatMap { view.layer.allowsGroupOpacity = $0 }
   style.alpha.flatMap { view.alpha = CGFloat($0) }
   style.backgroundColor.flatMap { view.backgroundColor = UIColor($0) }
@@ -95,18 +97,19 @@ extension UIViewComponent where Target == Target.DefaultValue,
     let result: ViewBox<Target>
 
     let parentRequiresViewController = parent.node?.isSubtypeOf(
-      ModalPresenter.self, or: StackController.self, or: AnyTabPresenter.self
+      ModalPresenter.self,
+      or: NavigationController.self,
+      or: AnyTabPresenter.self
     ) ?? false
 
     // UIViewController parent target can't present a bare `ViewBox` target,
     // it needs to be wrapped with `ContainerViewController` first.
     if parentRequiresViewController {
-      result = box(
-        for: target,
-        ContainerViewController(contained: target),
-        component,
-        renderer
-      )
+      let container = ContainerViewController(contained: target)
+      // trigger `viewDidLoad` on `ContainerViewController` for safe constraints
+      // installation
+      container.loadViewIfNeeded()
+      result = box(for: target, container, component, renderer)
     } else {
       result = box(for: target, parent.viewController, component, renderer)
     }
@@ -123,9 +126,9 @@ extension UIViewComponent where Target == Target.DefaultValue,
     case let box as ViewBox<GluonTableCell>:
       box.view.addSubview(target)
     case let box as ViewControllerBox<GluonNavigationController>
-      where parent.node?.isSubtypeOf(StackController.self) ?? false:
+      where parent.node?.isSubtypeOf(NavigationController.self) ?? false:
       guard let props = parent.node?.props.value
-        as? StackController.Props else {
+        as? NavigationController.Props else {
         propsAssertionFailure()
         return nil
       }
@@ -136,7 +139,9 @@ extension UIViewComponent where Target == Target.DefaultValue,
       )
     case let box as ViewControllerBox<UIViewController>
       where parent.node?.isSubtypeOf(ModalPresenter.self) ?? false:
-      guard let props = parent.node?.props.value as? ModalPresenter.Props else {
+      guard
+        let props = parent.node?.props.value as? ModalPresenter.Props
+      else {
         propsAssertionFailure()
         return nil
       }
@@ -144,6 +149,9 @@ extension UIViewComponent where Target == Target.DefaultValue,
       box.viewController.present(result.viewController,
                                  animated: props.presentAnimated,
                                  completion: nil)
+    case let box as ViewControllerBox<UIViewController>
+      where parent.node?.isSubtypeOf(NavigationItem.self) ?? false:
+      box.viewController.view.addSubview(target)
     default:
       parentAssertionFailure()
     }

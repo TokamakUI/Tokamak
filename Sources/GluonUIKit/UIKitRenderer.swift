@@ -12,9 +12,10 @@ import UIKit
 // compiler bug
 let _modalPresenterWitnessTableHack: UIHostComponent.Type = ModalPresenter.self
 let _stackControllerWitnessTableHack: UIHostComponent.Type =
-  StackController.self
-
-let _listViewWitnessTableHack: UIHostComponent.Type = ListView<HackyProvider>.self
+  NavigationController.self
+let _navigationItemWitnessTableHack: UIHostComponent.Type = NavigationItem.self
+let _listViewWitnessTableHack: UIHostComponent.Type =
+  ListView<HackyProvider>.self
 
 struct HackyProvider: SimpleCellProvider {
   static func cell(

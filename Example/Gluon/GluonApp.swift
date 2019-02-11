@@ -8,7 +8,7 @@
 
 import Gluon
 
-struct StackModal: PureLeafComponent {
+struct NavigationModal: PureLeafComponent {
   struct Props: Equatable {
     let isPresented: State<Bool>
   }
@@ -16,9 +16,10 @@ struct StackModal: PureLeafComponent {
   static func render(props: Props) -> AnyNode {
     return props.isPresented.value ?
       ModalPresenter.node(
-        StackPresenter<NavRouter>.node(
+        NavigationPresenter<NavRouter>.node(
           .init(
             initial: .first,
+            prefersLargeTitles: true,
             routerProps: .init(
               onPress: Handler { props.isPresented.set(false) }
             )
@@ -44,21 +45,26 @@ struct SimpleModal: LeafComponent {
     let backgroundColor = hooks.state(0)
 
     return props.isPresented.value ? ModalPresenter.node(
-      View.node(.init(Style(backgroundColor: colors[backgroundColor.value].0)),
-                StackView.node(.init(
-                  axis: .vertical,
-                  distribution: .fillEqually,
-                  Style(Edges.equal(to: .parent))
-                ), [
-                  Button.node(.init(
-                    onPress: Handler { props.isPresented.set(false) }
-                  ), "Close Modal"),
-                  SegmentedControl.node(
-                    .init(value: backgroundColor.value,
-                          valueHandler: Handler(backgroundColor.set)),
-                    colors.map { $0.1 }
-                  ),
-      ]))
+      View.node(
+        .init(Style(
+          backgroundColor: colors[backgroundColor.value].0,
+          Edges.equal(to: .parent)
+        )),
+        StackView.node(.init(
+          axis: .vertical,
+          distribution: .fillEqually,
+          Edges.equal(to: .parent)
+        ), [
+          Button.node(.init(
+            onPress: Handler { props.isPresented.set(false) }
+          ), "Close Modal"),
+          SegmentedControl.node(
+            .init(value: backgroundColor.value,
+                  valueHandler: Handler(backgroundColor.set)),
+            colors.map { $0.1 }
+          ),
+        ])
+      )
     ) : Null.node()
   }
 }
@@ -78,12 +84,15 @@ struct TableModal: PureLeafComponent {
   }
 
   static func render(props: Props) -> AnyNode {
-    let list = ListView<ListProvider>.node(.init(singleSection: [1, 2, 3]))
+    let list = ListView<ListProvider>.node(.init(
+      singleSection: [1, 2, 3],
+      Style(Edges.equal(to: .parent))
+    ))
     return props.isPresented.value ? ModalPresenter.node(list) : Null.node()
   }
 }
 
-struct ConstrainModal: LeafComponent {
+struct ConstraintModal: LeafComponent {
   struct Props: Equatable {
     let isPresented: State<Bool>
   }
@@ -93,11 +102,11 @@ struct ConstrainModal: LeafComponent {
 
     return props.isPresented.value ? ModalPresenter.node(
       View.node(
-        .init(Style(backgroundColor: .white)),
+        .init(Style(backgroundColor: .white, Edges.equal(to: .parent))),
         StackView.node(.init(
           axis: .vertical,
           distribution: .fillEqually,
-          Style(Edges.equal(to: .parent))
+          Edges.equal(to: .parent)
         ), [
           Button.node(.init(
             onPress: Handler { props.isPresented.set(false) }
@@ -136,11 +145,11 @@ struct DatePickerModal: LeafComponent {
     let formattedDate = dateFormatter.string(from: date.value)
     return props.isPresented.value ? ModalPresenter.node(
       View.node(
-        .init(Style(backgroundColor: .white)),
+        .init(Style(backgroundColor: .white, Edges.equal(to: .parent))),
         StackView.node(.init(
           axis: .vertical,
           distribution: .fillEqually,
-          Style(Edges.equal(to: .parent))
+          Edges.equal(to: .parent)
         ), [
           Button.node(.init(
             onPress: Handler { props.isPresented.set(false) }
@@ -180,11 +189,11 @@ struct CALayerModal: LeafComponent {
 
     return props.isPresented.value ? ModalPresenter.node(
       View.node(
-        .init(Style(backgroundColor: .white)),
+        .init(Style(backgroundColor: .white, Edges.equal(to: .parent))),
         StackView.node(.init(
           axis: .vertical,
           distribution: .fillEqually,
-          Style(Edges.equal(to: .parent))
+          Edges.equal(to: .parent)
         ), [
           Button.node(.init(
             onPress: Handler { props.isPresented.set(false) }
@@ -202,7 +211,7 @@ struct CALayerModal: LeafComponent {
                 borderWidth: Float(state.value * 10),
                 cornerRadius: Float(state.value * 10),
                 opacity: Float(state.value),
-                Width.equal(to: .parent, constant: 10)
+                Width.equal(to: .parent)
               )
             ),
             Label.node(.init(
@@ -231,7 +240,7 @@ struct Counter: LeafComponent {
     let isStackModalPresented = hooks.state(false)
     let isAnimationModalPresented = hooks.state(false)
     let isTableModalPresented = hooks.state(false)
-    let isConstrainModalPresented = hooks.state(false)
+    let isConstraintModalPresented = hooks.state(false)
     let isDatePickerModalPresented = hooks.state(false)
     let isCALayerModalPresented = hooks.state(false)
     let switchState = hooks.state(true)
@@ -264,7 +273,7 @@ struct Counter: LeafComponent {
           isEnabled: isEnabled.value,
           onPress: Handler { isStackModalPresented.set(true) }
         ),
-        "Present Stack Modal"
+        "Present Navigation Modal"
       ),
 
       Button.node(
@@ -286,9 +295,9 @@ struct Counter: LeafComponent {
       Button.node(
         .init(
           isEnabled: isEnabled.value,
-          onPress: Handler { isConstrainModalPresented.set(true) }
+          onPress: Handler { isConstraintModalPresented.set(true) }
         ),
-        "Present Constrain Modal"
+        "Present Constraint Modal"
       ),
 
       Button.node(
@@ -307,13 +316,13 @@ struct Counter: LeafComponent {
         "Present Core Animation Layer Modal"
       ),
 
-      StackModal.node(.init(isPresented: isStackModalPresented)),
+      NavigationModal.node(.init(isPresented: isStackModalPresented)),
 
       SimpleModal.node(.init(isPresented: isAnimationModalPresented)),
 
       TableModal.node(.init(isPresented: isTableModalPresented)),
 
-      ConstrainModal.node(.init(isPresented: isConstrainModalPresented)),
+      ConstraintModal.node(.init(isPresented: isConstraintModalPresented)),
 
       DatePickerModal.node(.init(isPresented: isDatePickerModalPresented)),
 
@@ -388,7 +397,7 @@ struct Counter: LeafComponent {
         alignment: .center,
         axis: .vertical,
         distribution: .fillEqually,
-        Style(Edges.equal(to: .parent))
+        Edges.equal(to: .parent)
       ),
       children
     )

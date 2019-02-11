@@ -16,7 +16,9 @@ extension ModalPresenter: UIHostComponent {
   }
 
   static func update(target: UITarget,
-                     node: AnyNode) {}
+                     node: AnyNode) {
+    // FIXME: update presentation-related props on the target here
+  }
 
   static func unmount(target: UITarget) {
     target.viewController.dismiss(animated: true)

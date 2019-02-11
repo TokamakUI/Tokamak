@@ -95,10 +95,11 @@ final class TableViewBox<T: CellProvider>: ViewBox<GluonTableView> {
       return dataSource.props
     }
     set {
-      if dataSource.props.model != newValue.model {
-        defer { view.reloadData() }
-      }
+      let oldModel = dataSource.props.model
       dataSource.props = newValue
+      if oldModel != newValue.model {
+        view.reloadData()
+      }
     }
   }
 

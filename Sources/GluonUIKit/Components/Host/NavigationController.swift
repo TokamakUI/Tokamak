@@ -28,7 +28,7 @@ final class GluonNavigationController: UINavigationController {
   }
 }
 
-extension StackController: UIHostComponent {
+extension NavigationController: UIHostComponent {
   static func mountTarget(to parent: UITarget,
                           component: UIKitRenderer.MountedHost,
                           _: UIKitRenderer) -> UITarget? {
@@ -42,6 +42,11 @@ extension StackController: UIHostComponent {
     }, component.node)
     props.hidesBarsWhenKeyboardAppears.flatMap {
       result.containerViewController.hidesBarsWhenKeyboardAppears = $0
+    }
+
+    if #available(iOS 11.0, *) {
+      result.containerViewController.navigationBar.prefersLargeTitles =
+        props.prefersLargeTitles
     }
 
     switch parent {
