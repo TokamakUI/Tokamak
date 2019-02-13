@@ -46,7 +46,7 @@ public protocol CellProvider {
   ) -> (Identifier, AnyNode)
 }
 
-enum SingleIdentifier: String {
+public enum SingleIdentifier: String {
   case single
 }
 
@@ -107,7 +107,7 @@ public struct ListView<T: CellProvider>: HostComponent {
 extension ListView.Props where T.Props == Null {
   public init(
     model: T.Model,
-    onSelect: Handler<CellPath>?,
+    onSelect: Handler<CellPath>? = nil,
     _ style: Style? = nil
   ) {
     cellProps = Null()
@@ -117,7 +117,7 @@ extension ListView.Props where T.Props == Null {
   }
 
   public init(
-    onSelect: Handler<CellPath>?,
+    onSelect: Handler<CellPath>? = nil,
     singleSection: T.Model.Element,
     _ style: Style? = nil
   ) {

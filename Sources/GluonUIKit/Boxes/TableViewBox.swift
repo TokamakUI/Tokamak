@@ -81,6 +81,18 @@ private final class DataSource<T: CellProvider>: NSObject,
   }
 }
 
+private final class Delegate<T: CellProvider>: NSObject, UITableViewDelegate {
+  var onSelect: ((CellPath) -> ())?
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    onSelect?(CellPath(indexPath))
+  }
+
+  init(_ props: ListView<T>.Props) {
+    onSelect = props.onSelect?.value
+  }
+}
+
 final class GluonTableView: UITableView, Default {
   static var defaultValue: GluonTableView {
     return GluonTableView()
@@ -88,7 +100,8 @@ final class GluonTableView: UITableView, Default {
 }
 
 final class TableViewBox<T: CellProvider>: ViewBox<GluonTableView> {
-  private var dataSource: DataSource<T>
+  private let dataSource: DataSource<T>
+  private let delegate: Delegate<T>
 
   var props: ListView<T>.Props {
     get {
@@ -97,6 +110,7 @@ final class TableViewBox<T: CellProvider>: ViewBox<GluonTableView> {
     set {
       let oldModel = dataSource.props.model
       dataSource.props = newValue
+      delegate.onSelect = newValue.onSelect?.value
       if oldModel != newValue.model {
         view.reloadData()
       }
@@ -111,7 +125,9 @@ final class TableViewBox<T: CellProvider>: ViewBox<GluonTableView> {
     _ renderer: UIKitRenderer
   ) {
     dataSource = DataSource(props, viewController, renderer)
+    delegate = Delegate(props)
     view.dataSource = dataSource
+    view.delegate = delegate
     super.init(view, viewController, component.node)
   }
 }
