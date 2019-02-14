@@ -57,13 +57,13 @@ successfully rebuilt with it and heard positive feedback on React itself, but
 a lot of complaints about overreliance on JavaScript. Gluon makes architecture
 of React with its established patterns available to you in Swift.
 
-_**Important:**_ We consider Gluon quite stable at this point, as in not
-having any blocking bugs that we're aware of. We've also frozen the core API of
-`Component` and `Hooks` types, and there's plenty of [standard 
-components](#standard-components) to start building useful apps. If in the future
-there's a breaking change that's absolutely needed, we aim to deprecate old APIs 
-without breakage and introduce new ones gradually. Nevertheless, we admit
-this can't always be avoided. 
+_**Important:**_ We consider Gluon relatively stable at this point, as in not
+having any blocking or critical bugs that we're aware of. We've also frozen the
+core API of `Component` and `Hooks` types, and there's plenty of [standard
+components](#standard-components) to start building useful apps. If in the
+future there's a breaking change that's absolutely needed, we aim to deprecate
+old APIs without breakage and introduce new ones gradually. Nevertheless, we
+admit this can't always be avoided. 
 
 Looking forward to your feedback which greatly helps us make Gluon the best
 UI framework available!
