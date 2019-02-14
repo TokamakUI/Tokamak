@@ -69,7 +69,6 @@ of React with its established patterns available to you in Swift.
       * [Hooks](#hooks)
       * [Renderers](#renderers)
       * [Standard components](#standard-components)
-  * [Example project](#example-project)
   * [Requirements](#requirements)
   * [FAQ](#faq)
   * [Acknowledgments](#acknowledgments)
@@ -112,6 +111,11 @@ final class ViewController: GluonViewController {
 ```
 
 ![Counter component](GluonCounter.gif)
+
+To run the example project, clone the repo, and run `pod install` from the
+[`Example`](https://github.com/MaxDesiatov/Gluon/tree/master/Example) directory
+first. Then you can open `Example/Gluon.xcworkspace` and run the main 
+executable target `Gluon-Example`.
 
 ## Fundamental concepts
 
@@ -387,13 +391,6 @@ already used to, e.g. `Button` component is rendered as `UIButton`, `Label` as
 `UILabel` etc. Check out [the complete up to date
 list](https://github.com/MaxDesiatov/Gluon/blob/master/gluon.sh/StandardComponents.md)
 for more info.
-
-## Example project
-
-To run the example project, clone the repo, and run `pod install` from the
-[`Example`](https://github.com/MaxDesiatov/Gluon/tree/master/Example) directory
-first. Then you can open `Example/Gluon.xcworkspace` and run the main 
-executable target `Gluon-Example`.
 
 ## Requirements
 
