@@ -37,6 +37,8 @@ extension Label: UIViewComponent {
                      _ children: String) {
     let view = box.view
     view.textAlignment = NSTextAlignment(props.alignment)
+    view.numberOfLines = props.numberOfLines
+    view.lineBreakMode = NSLineBreakMode(props.lineBreakMode)
     props.textColor.flatMap { view.textColor = UIColor($0) }
     view.text = children
   }

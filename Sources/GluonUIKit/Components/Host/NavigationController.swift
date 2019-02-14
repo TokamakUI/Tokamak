@@ -9,6 +9,9 @@ import Gluon
 import UIKit
 
 final class GluonNavigationController: UINavigationController {
+  /// Used to prevent calling `onPop` if this navigation view controller is not
+  /// mounted yet
+  var isMounted = false
   private let onPop: () -> ()
 
   init(onPop: @escaping () -> ()) {
@@ -24,6 +27,7 @@ final class GluonNavigationController: UINavigationController {
   override func didMove(toParent parent: UIViewController?) {
     super.didMove(toParent: parent)
 
+    guard isMounted else { return }
     onPop()
   }
 }
@@ -65,6 +69,14 @@ extension NavigationController: UIHostComponent {
                                    animated: props.presentAnimated,
                                    completion: nil)
       }
+    case let box as ViewBox<UIView>:
+      result.viewController.willMove(toParent: box.viewController)
+      // FIXME: replace with constraints
+      result.viewController.view.frame = box.view.frame
+      box.view.addSubview(result.viewController.view)
+      box.viewController.addChild(result.viewController)
+      result.viewController.didMove(toParent: box.viewController)
+      result.containerViewController.isMounted = true
     default:
       parentAssertionFailure()
     }
