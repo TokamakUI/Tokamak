@@ -63,7 +63,7 @@ core API of `Component` and `Hooks` types, and there's plenty of [standard
 components](#standard-components) to start building useful apps. If in the
 future there's a breaking change that's absolutely needed, we aim to deprecate
 old APIs without breakage and introduce new ones gradually. Nevertheless, we
-admit this can't always be avoided. 
+admit this can't always be achieved. 
 
 Looking forward to your feedback which greatly helps us make Gluon the best
 UI framework available!
