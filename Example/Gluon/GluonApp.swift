@@ -69,29 +69,6 @@ struct SimpleModal: LeafComponent {
   }
 }
 
-struct ListProvider: SimpleCellProvider {
-  typealias Props = Null
-  typealias Model = [[Int]]
-
-  static func cell(props _: Null, item: Int, path _: CellPath) -> AnyNode {
-    return Label.node(.init(Style(Edges.equal(to: .parent))), "\(item)")
-  }
-}
-
-struct TableModal: PureLeafComponent {
-  struct Props: Equatable {
-    let isPresented: State<Bool>
-  }
-
-  static func render(props: Props) -> AnyNode {
-    let list = ListView<ListProvider>.node(.init(
-      singleSection: [1, 2, 3],
-      Style(Edges.equal(to: .parent))
-    ))
-    return props.isPresented.value ? ModalPresenter.node(list) : Null.node()
-  }
-}
-
 struct ConstraintModal: LeafComponent {
   struct Props: Equatable {
     let isPresented: State<Bool>

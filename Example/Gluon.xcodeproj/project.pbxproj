@@ -16,6 +16,7 @@
 		D126CB7421ECF7A60097300E /* GluonApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0C86021DA54780042A261 /* GluonApp.swift */; };
 		D1DEEC2922009E8000C525EE /* NavRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DEEC2822009E8000C525EE /* NavRouter.swift */; };
 		D1E6BCD221AD4CD6002769E3 /* GluonTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6BCD121AD4CD6002769E3 /* GluonTest.swift */; };
+		D1F2C3272214407B008358DC /* TableModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F2C3262214407B008358DC /* TableModal.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		D1DEEC2822009E8000C525EE /* NavRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavRouter.swift; sourceTree = "<group>"; };
 		D1E0C86021DA54780042A261 /* GluonApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonApp.swift; sourceTree = "<group>"; };
 		D1E6BCD121AD4CD6002769E3 /* GluonTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonTest.swift; sourceTree = "<group>"; };
+		D1F2C3262214407B008358DC /* TableModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableModal.swift; sourceTree = "<group>"; };
 		E7F808D1B3715FF294877289 /* Pods-Gluon_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gluon_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Gluon_Example/Pods-Gluon_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -99,6 +101,7 @@
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				D1E0C86021DA54780042A261 /* GluonApp.swift */,
 				D1DEEC2822009E8000C525EE /* NavRouter.swift */,
+				D1F2C3262214407B008358DC /* TableModal.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -289,6 +292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D126CB7421ECF7A60097300E /* GluonApp.swift in Sources */,
+				D1F2C3272214407B008358DC /* TableModal.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				D1DEEC2922009E8000C525EE /* NavRouter.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
