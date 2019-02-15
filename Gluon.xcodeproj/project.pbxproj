@@ -495,7 +495,7 @@
 				OBJ_43 /* Default.swift */,
 				OBJ_45 /* Hooks.swift */,
 				OBJ_46 /* Components */,
-				OBJ_67 /* MountedComponent */,
+				OBJ_67 /* MountedComponents */,
 				OBJ_71 /* Null.swift */,
 				OBJ_72 /* Renderer.swift */,
 				OBJ_73 /* StackReconciler.swift */,
@@ -562,7 +562,7 @@
 			path = Props;
 			sourceTree = "<group>";
 		};
-		OBJ_67 /* MountedComponent */ = {
+		OBJ_67 /* MountedComponents */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_68 /* MountedComponent.swift */,
@@ -570,7 +570,7 @@
 				OBJ_70 /* MountedHostComponent.swift */,
 				D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */,
 			);
-			path = MountedComponent;
+			path = MountedComponents;
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Configs */ = {

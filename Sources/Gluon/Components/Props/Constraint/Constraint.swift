@@ -14,6 +14,8 @@ public enum Constraint: Equatable {
   public enum Target {
     case next
     case parent
+    case topLayoutGuide
+    case bottomLayoutGuide
   }
 
   public enum OwnTarget: Equatable {
