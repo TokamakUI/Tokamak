@@ -65,8 +65,6 @@ future there's a breaking change that's absolutely needed, deprecating old APIs
 without breakage and introducing a replacement gradually is the top priority.
 Nevertheless, its important to note this can't always be achieved. 
 
-Looking forward to your feedback!
-
 ## Table of contents
 
   * [Example code](#example-code)
