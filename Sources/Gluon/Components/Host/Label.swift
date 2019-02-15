@@ -12,15 +12,21 @@ public struct Label: HostComponent {
     }
 
     public let alignment: TextAlignment
+    public let lineBreakMode: LineBreakMode
+    public let numberOfLines: Int
     public let style: Style?
     public let textColor: Color?
 
     public init(
       alignment: TextAlignment = .natural,
+      lineBreakMode: LineBreakMode = .truncateTail,
+      numberOfLines: Int = 1,
       textColor: Color? = nil,
       _ style: Style? = nil
     ) {
       self.alignment = alignment
+      self.lineBreakMode = lineBreakMode
+      self.numberOfLines = numberOfLines
       self.textColor = textColor
       self.style = style
     }

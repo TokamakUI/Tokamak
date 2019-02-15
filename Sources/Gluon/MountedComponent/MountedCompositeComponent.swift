@@ -72,8 +72,8 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
     case let (wrapper?, renderedNode):
       // new node is the same type as existing child, checking props/children
       if wrapper.node.type == renderedNode.type,
-        (wrapper.node.props != renderedNode.props ||
-          wrapper.node.children != renderedNode.children) {
+        wrapper.node.props != renderedNode.props ||
+        wrapper.node.children != renderedNode.children {
         wrapper.node = renderedNode
         wrapper.update(with: reconciler)
       } else

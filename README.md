@@ -57,6 +57,16 @@ successfully rebuilt with it and heard positive feedback on React itself, but
 a lot of complaints about overreliance on JavaScript. Gluon makes architecture
 of React with its established patterns available to you in Swift.
 
+_**Important:**_ Gluon is relatively stable at this point, as in not having any
+blocking or critical bugs that the maintainers are aware of. The core API of
+`Component` and `Hooks` types is frozen, and there's a plenty of [standard
+components](#standard-components) to start building useful apps. If in the
+future there's a breaking change that's absolutely needed, deprecating old APIs
+without breakage and introducing a replacement gradually is the top priority.
+Nevertheless, its important to note this can't always be achieved. 
+
+Looking forward to your feedback!
+
 ## Table of contents
 
   * [Example code](#example-code)
@@ -69,7 +79,6 @@ of React with its established patterns available to you in Swift.
       * [Hooks](#hooks)
       * [Renderers](#renderers)
       * [Standard components](#standard-components)
-  * [Example project](#example-project)
   * [Requirements](#requirements)
   * [FAQ](#faq)
   * [Acknowledgments](#acknowledgments)
@@ -112,6 +121,11 @@ final class ViewController: GluonViewController {
 ```
 
 ![Counter component](GluonCounter.gif)
+
+To run the example project, clone the repo, and run `pod install` from the
+[`Example`](https://github.com/MaxDesiatov/Gluon/tree/master/Example) directory
+first. Then you can open `Example/Gluon.xcworkspace` and run the main 
+executable target `Gluon-Example`.
 
 ## Fundamental concepts
 
@@ -387,13 +401,6 @@ already used to, e.g. `Button` component is rendered as `UIButton`, `Label` as
 `UILabel` etc. Check out [the complete up to date
 list](https://github.com/MaxDesiatov/Gluon/blob/master/gluon.sh/StandardComponents.md)
 for more info.
-
-## Example project
-
-To run the example project, clone the repo, and run `pod install` from the
-[`Example`](https://github.com/MaxDesiatov/Gluon/tree/master/Example) directory
-first. Then you can open `Example/Gluon.xcworkspace` and run the main 
-executable target `Gluon-Example`.
 
 ## Requirements
 

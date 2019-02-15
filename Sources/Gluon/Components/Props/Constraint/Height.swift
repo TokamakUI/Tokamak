@@ -29,4 +29,10 @@ public struct Height: Equatable {
       target: target, constant: constant, multiplier: multiplier
     ))
   }
+
+  public static func equal(to constant: Double) -> Constraint {
+    return .height(Height(
+      target: .own, constant: constant, multiplier: 0
+    ))
+  }
 }

@@ -46,7 +46,7 @@ public protocol CellProvider {
   ) -> (Identifier, AnyNode)
 }
 
-enum SingleIdentifier: String {
+public enum SingleIdentifier: String {
   case single
 }
 
@@ -73,25 +73,30 @@ public struct ListView<T: CellProvider>: HostComponent {
   public struct Props: Equatable, StyleProps {
     public let cellProps: T.Props
     public let model: T.Model
+    public let onSelect: Handler<CellPath>?
     public let style: Style?
 
     public init(
       cellProps: T.Props,
+      onSelect: Handler<CellPath>? = nil,
       singleSection: T.Model.Element,
       _ style: Style? = nil
     ) {
       self.cellProps = cellProps
       model = T.Model.single(section: singleSection)
+      self.onSelect = onSelect
       self.style = style
     }
 
     public init(
       cellProps: T.Props,
+      onSelect: Handler<CellPath>? = nil,
       model: T.Model,
       _ style: Style? = nil
     ) {
       self.cellProps = cellProps
       self.model = model
+      self.onSelect = onSelect
       self.style = style
     }
   }
@@ -100,15 +105,25 @@ public struct ListView<T: CellProvider>: HostComponent {
 }
 
 extension ListView.Props where T.Props == Null {
-  public init(model: T.Model, _ style: Style? = nil) {
+  public init(
+    model: T.Model,
+    onSelect: Handler<CellPath>? = nil,
+    _ style: Style? = nil
+  ) {
     cellProps = Null()
     self.model = model
+    self.onSelect = onSelect
     self.style = style
   }
 
-  public init(singleSection: T.Model.Element, _ style: Style? = nil) {
+  public init(
+    onSelect: Handler<CellPath>? = nil,
+    singleSection: T.Model.Element,
+    _ style: Style? = nil
+  ) {
     cellProps = Null()
     model = T.Model.single(section: singleSection)
+    self.onSelect = onSelect
     self.style = style
   }
 }

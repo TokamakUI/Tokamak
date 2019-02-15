@@ -78,6 +78,8 @@
 		D1EF77812208AEF5008829EC /* NavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77802208AEF5008829EC /* NavigationItem.swift */; };
 		D1EF77852208BB10008829EC /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77842208BB10008829EC /* TabItem.swift */; };
 		D1EF77862208BB13008829EC /* NavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77822208BAF6008829EC /* NavigationItem.swift */; };
+		D1F718592215A074004E5951 /* LineBreakMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F718582215A073004E5951 /* LineBreakMode.swift */; };
+		D1F7185B2215A116004E5951 /* LineBreakMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F7185A2215A116004E5951 /* LineBreakMode.swift */; };
 		OBJ_100 /* Animated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* Animated.swift */; };
 		OBJ_101 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* Button.swift */; };
 		OBJ_102 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* Label.swift */; };
@@ -234,6 +236,8 @@
 		D1EF77802208AEF5008829EC /* NavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItem.swift; sourceTree = "<group>"; };
 		D1EF77822208BAF6008829EC /* NavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItem.swift; sourceTree = "<group>"; };
 		D1EF77842208BB10008829EC /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
+		D1F718582215A073004E5951 /* LineBreakMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineBreakMode.swift; sourceTree = "<group>"; };
+		D1F7185A2215A116004E5951 /* LineBreakMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineBreakMode.swift; sourceTree = "<group>"; };
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -468,6 +472,7 @@
 				OBJ_20 /* Event.swift */,
 				OBJ_21 /* Rectangle.swift */,
 				D1C3A71F21F0C31600C6B884 /* Constraint */,
+				D1F7185A2215A116004E5951 /* LineBreakMode.swift */,
 			);
 			path = Props;
 			sourceTree = "<group>";
@@ -561,11 +566,12 @@
 				D1EF77502205C579008829EC /* Constraint */,
 				OBJ_58 /* Color.swift */,
 				OBJ_59 /* Event.swift */,
+				D1C3A72221F0DC6300C6B884 /* Insets.swift */,
+				D1F718582215A073004E5951 /* LineBreakMode.swift */,
 				OBJ_60 /* Rectangle.swift */,
 				OBJ_61 /* Second.swift */,
 				OBJ_62 /* Style.swift */,
 				OBJ_63 /* TextAlignment.swift */,
-				D1C3A72221F0DC6300C6B884 /* Insets.swift */,
 			);
 			path = Props;
 			sourceTree = "<group>";
@@ -823,6 +829,7 @@
 				A633561D21FB5C5400BCC525 /* Right.swift in Sources */,
 				D1EF77792205FD56008829EC /* Constrainable.swift in Sources */,
 				D1EF777D220745AB008829EC /* BaselineConstraint.swift in Sources */,
+				D1F7185B2215A116004E5951 /* LineBreakMode.swift in Sources */,
 				A633562521FB96EE00BCC525 /* CenterX.swift in Sources */,
 				OBJ_176 /* Slider.swift in Sources */,
 				OBJ_177 /* NavigationController.swift in Sources */,
@@ -869,6 +876,7 @@
 				OBJ_101 /* Button.swift in Sources */,
 				OBJ_102 /* Label.swift in Sources */,
 				A62891FF21F5F07F001BE090 /* Stepper.swift in Sources */,
+				D1F718592215A074004E5951 /* LineBreakMode.swift in Sources */,
 				OBJ_104 /* ModalPresenter.swift in Sources */,
 				D1EC92F021F5B8000026C207 /* ListView.swift in Sources */,
 				D1EF77522205C579008829EC /* Constraint.swift in Sources */,

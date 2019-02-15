@@ -12,7 +12,7 @@ import UIKit
 
 final class ViewController: GluonViewController {
   override var node: AnyNode {
-    return App.node()
+    return NavigationPresenter<Router>.node(.init(initial: .list))
   }
 }
 
