@@ -65,8 +65,6 @@ future there's a breaking change that's absolutely needed, deprecating old APIs
 without breakage and introducing a replacement gradually is the top priority.
 Nevertheless, its important to note this can't always be achieved. 
 
-Looking forward to your feedback!
-
 ## Table of contents
 
   * [Example code](#example-code)
@@ -404,7 +402,7 @@ for more info.
 
 ## Requirements
 
-* iOS 10.0 or later
+* iOS 11.0 or later
 * Xcode 10.1
 * Swift 4.2
 

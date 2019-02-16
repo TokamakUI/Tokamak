@@ -241,7 +241,7 @@
 		"Gluon::Gluon::Product" /* Gluon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Gluon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTestRenderer::Product" /* GluonTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Gluon::GluonTests::Product" /* GluonTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = GluonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		"Gluon::GluonUIKit::Product" /* GluonUIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GluonUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"Gluon::GluonUIKit::Product" /* GluonUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GluonUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_11 /* TestRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRenderer.swift; sourceTree = "<group>"; };
 		OBJ_12 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		OBJ_15 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
@@ -510,7 +510,7 @@
 				OBJ_43 /* Default.swift */,
 				D1D792E7220F784A0042A632 /* Hooks */,
 				OBJ_46 /* Components */,
-				OBJ_67 /* MountedComponent */,
+				OBJ_67 /* MountedComponents */,
 				OBJ_71 /* Null.swift */,
 				OBJ_72 /* Renderer.swift */,
 				OBJ_73 /* StackReconciler.swift */,
@@ -576,7 +576,7 @@
 			path = Props;
 			sourceTree = "<group>";
 		};
-		OBJ_67 /* MountedComponent */ = {
+		OBJ_67 /* MountedComponents */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_68 /* MountedComponent.swift */,
@@ -584,7 +584,7 @@
 				OBJ_70 /* MountedHostComponent.swift */,
 				D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */,
 			);
-			path = MountedComponent;
+			path = MountedComponents;
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Configs */ = {
@@ -1086,6 +1086,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Gluon.xcodeproj/GluonUIKit_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
@@ -1111,6 +1112,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Gluon.xcodeproj/GluonUIKit_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
@@ -1139,6 +1141,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "-DXcode";
@@ -1160,6 +1163,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_OPTIMIZATION_LEVEL = s;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
