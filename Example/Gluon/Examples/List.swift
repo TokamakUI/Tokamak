@@ -17,7 +17,7 @@ private struct Cells: SimpleCellProvider {
     return Label.node(.init(Style(
       [CenterY.equal(to: .parent),
        Height.equal(to: 44),
-       Leading.equal(to: .parent, constant: 20)]
+       Leading.equal(to: .safeArea, constant: 20)]
     )), "\(item.description)")
   }
 
@@ -36,7 +36,9 @@ struct List: PureLeafComponent {
     return ListView<Cells>.node(.init(
       model: [props.model],
       onSelect: props.onSelect,
-      Style(Edges.equal(to: .parent))
+      Style([
+        Edges.equal(to: .parent),
+      ])
     ))
   }
 }

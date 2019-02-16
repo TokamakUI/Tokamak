@@ -84,7 +84,10 @@ private final class DataSource<T: CellProvider>: NSObject,
 private final class Delegate<T: CellProvider>: NSObject, UITableViewDelegate {
   var onSelect: ((CellPath) -> ())?
 
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  func tableView(
+    _ tableView: UITableView,
+    didSelectRowAt indexPath: IndexPath
+  ) {
     onSelect?(CellPath(indexPath))
   }
 

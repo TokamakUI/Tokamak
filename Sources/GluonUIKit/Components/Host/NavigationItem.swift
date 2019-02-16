@@ -64,9 +64,7 @@ extension NavigationItem: UIHostComponent {
     let item = target.viewController.navigationItem
 
     item.title = props.title
-    if #available(iOS 11.0, *) {
-      item.largeTitleDisplayMode = .init(mode: props.titleMode)
-    }
+    item.largeTitleDisplayMode = .init(mode: props.titleMode)
   }
 
   static func unmount(target: UITarget) {}
