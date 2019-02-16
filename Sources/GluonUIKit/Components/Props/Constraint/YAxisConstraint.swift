@@ -28,11 +28,7 @@ extension YAxisConstraint {
     case .external(.parent):
       secondView = parent
     case .safeArea:
-      if #available(iOS 11.0, *) {
-        secondView = current.safeAreaLayoutGuide
-      } else {
-        secondView = parent
-      }
+      secondView = parent?.safeAreaLayoutGuide
     }
 
     guard let second = secondView?[keyPath: secondAnchor] else { return [] }

@@ -48,10 +48,8 @@ extension NavigationController: UIHostComponent {
       result.containerViewController.hidesBarsWhenKeyboardAppears = $0
     }
 
-    if #available(iOS 11.0, *) {
-      result.containerViewController.navigationBar.prefersLargeTitles =
-        props.prefersLargeTitles
-    }
+    result.containerViewController.navigationBar.prefersLargeTitles =
+      props.prefersLargeTitles
 
     switch parent {
     // FIXME: this `case` handler is duplicated with `UIViewComponent`,

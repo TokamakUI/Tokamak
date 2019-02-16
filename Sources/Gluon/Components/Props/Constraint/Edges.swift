@@ -6,13 +6,20 @@
 //
 
 public struct Edges: Equatable {
-  public let target: Constraint.Target
+  public let target: Constraint.SafeAreaTarget
   public let insets: Insets
+
+  public static func equal(
+    to target: Constraint.SafeAreaTarget,
+    insets: Insets = .zero
+  ) -> Constraint {
+    return .edges(Edges(target: target, insets: insets))
+  }
 
   public static func equal(
     to target: Constraint.Target,
     insets: Insets = .zero
   ) -> Constraint {
-    return .edges(Edges(target: target, insets: insets))
+    return .edges(Edges(target: .external(target), insets: insets))
   }
 }

@@ -58,7 +58,7 @@ struct Router: NavigationRouter {
     return NavigationItem.node(
       .init(title: route.description),
       View.node(
-        .init(Style(backgroundColor: .white, Edges.equal(to: .parent))),
+        .init(Style(backgroundColor: .white, Edges.equal(to: .safeArea))),
         result
       )
     )
