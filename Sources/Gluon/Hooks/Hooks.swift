@@ -64,8 +64,8 @@ public final class Hooks {
     }
   }
 
-  /** Closure assigned by the reconciler before every `render` call. Schedules
-   effect exection with this reconciler.
+  /** Schedules effect exection with the current reconciler accessed via
+   `component`.
    */
   func scheduleEffect(
     _ observed: AnyEquatable?,
