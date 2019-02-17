@@ -17,7 +17,6 @@ struct TimerCounter: LeafComponent {
     let timer = hooks.ref(type: Timer.self)
     let interval = hooks.state(1.0)
 
-    print("\(interval.value) at \(Date())")
     hooks.effect(interval.value) { () -> () -> () in
       timer.value = Timer.scheduledTimer(
         withTimeInterval: interval.value,
