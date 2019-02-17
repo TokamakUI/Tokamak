@@ -33,9 +33,10 @@ public protocol Component {
   associatedtype Props: Equatable
   associatedtype Children: Equatable
 
-  static func node(key: String?,
-                   _ props: Props,
-                   _ children: Children) -> AnyNode
+  static func node(
+    _ props: Props,
+    _ children: Children
+  ) -> AnyNode
 }
 
 public protocol CompositeComponent: AnyCompositeComponent, Component {

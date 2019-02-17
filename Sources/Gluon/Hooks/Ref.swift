@@ -5,7 +5,7 @@
 //  Created by Max Desiatov on 09/02/2019.
 //
 
-public protocol AnyRef {
+public protocol AnyRef: class {
   var valueAsAny: Any? { get set }
 }
 

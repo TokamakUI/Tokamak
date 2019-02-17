@@ -35,7 +35,7 @@ struct DatePickers: LeafComponent {
       ),
       Label.node(
         labelProps,
-        "This picker doesn't animate state changes in the next picker"
+        "This picker doesn't animate state changes in the next picker:"
       ),
       DatePicker.node(
         .init(
@@ -46,7 +46,7 @@ struct DatePickers: LeafComponent {
       ),
       Label.node(
         labelProps,
-        "This picker animates state changes in the previous picker"
+        "This picker animates state changes in the previous picker:"
       ),
       DatePicker.node(
         .init(

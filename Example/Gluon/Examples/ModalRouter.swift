@@ -8,7 +8,7 @@
 
 import Gluon
 
-struct NavRouter: NavigationRouter {
+struct ModalRouter: NavigationRouter {
   enum Route {
     case first
     case second

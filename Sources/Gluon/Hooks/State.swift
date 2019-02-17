@@ -5,6 +5,12 @@
 //  Created by Max Desiatov on 09/02/2019.
 //
 
+public protocol Reduceable {
+  associatedtype Action
+
+  mutating func reduce(with: Action)
+}
+
 /** Note that `set` functions are not `mutating`, they never update the
  component's state in-place synchronously, but only schedule an update with
  Gluon at a later time. A call to `render` is only scheduled on the component
@@ -31,6 +37,12 @@ public struct State<T> {
 }
 
 extension State: Equatable where T: Equatable {}
+
+extension State where T: Reduceable {
+  public func set(_ action: T.Action) {
+    // FIXME: allow scheduling `inout` update functions with reconciler
+  }
+}
 
 extension Hooks {
   /** Allows a component to have its own state and to be updated when the state

@@ -8,13 +8,13 @@
 public struct AnyNode: Equatable {
   /// Equatable can't be automatically derived for `type` property?
   public static func ==(lhs: AnyNode, rhs: AnyNode) -> Bool {
-    return lhs.key == rhs.key &&
+    return
+      lhs.ref === rhs.ref &&
       lhs.type == rhs.type &&
       lhs.children == rhs.children &&
       lhs.props == rhs.props
   }
 
-  let key: String?
   let ref: AnyRef?
   public let props: AnyEquatable
   public let children: AnyEquatable
@@ -40,18 +40,11 @@ public struct AnyNode: Equatable {
 extension Null {
   public static func node() -> AnyNode {
     return AnyNode(
-      key: nil,
       ref: nil,
       props: AnyEquatable(Null()),
       children: AnyEquatable(Null()),
       type: .null
     )
-  }
-}
-
-extension Component {
-  public static func node(_ props: Props, _ children: Children) -> AnyNode {
-    return node(key: nil, props, children)
   }
 }
 
@@ -96,42 +89,41 @@ extension Component where Props: Default, Props.DefaultValue == Props,
 }
 
 extension HostComponent {
-  public static func node(key: String?,
-                          _ props: Props,
-                          _ children: Children) -> AnyNode {
-    return AnyNode(key: key,
-                   ref: nil,
-                   props: AnyEquatable(props),
-                   children: AnyEquatable(children),
-                   type: .host(self))
+  public static func node(_ props: Props, _ children: Children) -> AnyNode {
+    return AnyNode(
+      ref: nil,
+      props: AnyEquatable(props),
+      children: AnyEquatable(children),
+      type: .host(self)
+    )
   }
 }
 
 extension CompositeComponent {
   public static func node(
-    key: String?,
     _ props: Props,
     _ children: Children
   ) -> AnyNode {
-    return AnyNode(key: key,
-                   ref: nil,
-                   props: AnyEquatable(props),
-                   children: AnyEquatable(children),
-                   type: .composite(self))
+    return AnyNode(
+      ref: nil,
+      props: AnyEquatable(props),
+      children: AnyEquatable(children),
+      type: .composite(self)
+    )
   }
 }
 
 extension RefComponent {
   public static func node(
-    key: String? = nil,
     ref: Ref<RefType>,
     _ props: Props,
     _ children: Children
   ) -> AnyNode {
-    return AnyNode(key: key,
-                   ref: ref,
-                   props: AnyEquatable(props),
-                   children: AnyEquatable(children),
-                   type: .host(self))
+    return AnyNode(
+      ref: ref,
+      props: AnyEquatable(props),
+      children: AnyEquatable(children),
+      type: .host(self)
+    )
   }
 }
