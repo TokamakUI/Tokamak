@@ -6,7 +6,7 @@
 //
 
 public struct AnyNode: Equatable {
-  /// Equatable can't be automatically derived for `type` property?
+  // Equatable can't be automatically derived for `type` property?
   public static func ==(lhs: AnyNode, rhs: AnyNode) -> Bool {
     return
       lhs.ref === rhs.ref &&
