@@ -65,12 +65,11 @@ public final class StackReconciler<R: Renderer> {
 
     DispatchQueue.main.async {
       for i in hooks.scheduledEffects {
-        let finalizer = component.effects[i].1()
         if component.effectFinalizers.count > i {
           component.effectFinalizers[i]?()
-          component.effectFinalizers[i] = finalizer
+          component.effectFinalizers[i] = component.effects[i].1()
         } else {
-          component.effectFinalizers.append(finalizer)
+          component.effectFinalizers.append(component.effects[i].1())
         }
       }
     }

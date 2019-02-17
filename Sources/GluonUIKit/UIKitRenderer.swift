@@ -68,8 +68,10 @@ final class UIKitRenderer: Renderer {
                                          self)
   }
 
-  func update(target: UITarget,
-              with component: UIKitRenderer.MountedHost) {
+  func update(
+    target: UITarget,
+    with component: UIKitRenderer.MountedHost
+  ) {
     guard let rendererComponent = component.type as? UIHostComponent.Type else {
       typeAssertionFailure(for: component.type)
       return
@@ -79,13 +81,16 @@ final class UIKitRenderer: Renderer {
                              node: component.node)
   }
 
-  func unmount(target: UITarget,
-               with component: UIKitRenderer.MountedHost) {
+  func unmount(
+    target: UITarget,
+    with component: UIKitRenderer.MountedHost,
+    completion: @escaping () -> ()
+  ) {
     guard let rendererComponent = component.type as? UIHostComponent.Type else {
       typeAssertionFailure(for: component.type)
       return
     }
 
-    rendererComponent.unmount(target: target)
+    rendererComponent.unmount(target: target, completion: completion)
   }
 }

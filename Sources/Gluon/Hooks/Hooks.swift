@@ -86,6 +86,8 @@ public final class Hooks {
     if component.effects.count > effectIndex {
       guard component.effects[effectIndex].0 != observed else { return }
 
+      component.effects[effectIndex].0 = observed
+      component.effects[effectIndex].1 = effect
       scheduledEffects.insert(effectIndex)
     } else {
       component.effects.append((observed, effect))
@@ -104,8 +106,8 @@ public final class Hooks {
       return initial
     }
 
-    if component.state.count > stateIndex {
-      guard let result = component.refs[stateIndex] as? Ref<T> else {
+    if component.refs.count > refIndex {
+      guard let result = component.refs[refIndex] as? Ref<T> else {
         assertionFailure(
           """
           unexpected ref type during rendering, possible Rules of Hooks violation

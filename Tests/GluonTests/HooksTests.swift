@@ -10,13 +10,13 @@ import XCTest
 
 @testable import Gluon
 
-extension Int: Reduceable {
+extension Int: Updatable {
   public enum Action {
     case increment
     case decrement
   }
 
-  public mutating func reduce(action: Int.Action) {
+  public mutating func update(_ action: Int.Action) {
     switch action {
     case .decrement:
       self -= 1

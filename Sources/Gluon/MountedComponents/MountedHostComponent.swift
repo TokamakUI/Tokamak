@@ -62,9 +62,9 @@ public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
   override func unmount(with reconciler: StackReconciler<R>) {
     guard let target = target else { return }
 
-    reconciler.renderer?.unmount(target: target, with: self)
-
-    mountedChildren.forEach { $0.unmount(with: reconciler) }
+    reconciler.renderer?.unmount(target: target, with: self) {
+      self.mountedChildren.forEach { $0.unmount(with: reconciler) }
+    }
   }
 
   override func update(with reconciler: StackReconciler<R>) {

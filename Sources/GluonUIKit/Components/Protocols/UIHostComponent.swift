@@ -21,10 +21,9 @@ protocol UIHostComponent: AnyHostComponent {
     _ renderer: UIKitRenderer
   ) -> UITarget?
 
-  static func update(target: UITarget,
-                     node: AnyNode)
+  static func update(target: UITarget, node: AnyNode)
 
-  static func unmount(target: UITarget)
+  static func unmount(target: UITarget, completion: @escaping () -> ())
 }
 
 extension UIHostComponent {

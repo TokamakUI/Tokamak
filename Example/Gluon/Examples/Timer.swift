@@ -15,9 +15,14 @@ struct TimerCounter: LeafComponent {
   static func render(props: Null, hooks: Hooks) -> AnyNode {
     let count = hooks.state(0)
     let timer = hooks.ref(type: Timer.self)
+    let interval = hooks.state(1.0)
 
-    hooks.effect(Null()) { () -> () -> () in
-      timer.value = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+    print("\(interval.value) at \(Date())")
+    hooks.effect(interval.value) { () -> () -> () in
+      timer.value = Timer.scheduledTimer(
+        withTimeInterval: interval.value,
+        repeats: true
+      ) { _ in
         count.set { $0 + 1 }
       }
       return {
@@ -25,6 +30,25 @@ struct TimerCounter: LeafComponent {
       }
     }
 
-    return Label.node(.init(Style(Center.equal(to: .parent))), "\(count.value)")
+    return StackView.node(
+      .init(
+        alignment: .center,
+        axis: .vertical,
+        distribution: .fillEqually,
+        Edges.equal(to: .safeArea)
+      ), [
+        Label.node(
+          .init(alignment: .center),
+          "Adjust timer interval in seconds: \(interval.value)"
+        ),
+        Stepper.node(
+          .init(
+            value: interval.value,
+            valueHandler: Handler(interval.set)
+          )
+        ),
+        Label.node(.init(alignment: .center), "\(count.value)"),
+      ]
+    )
   }
 }

@@ -39,8 +39,10 @@ public protocol Renderer: class {
    target.
    - returns: The newly created target.
    */
-  func mountTarget(to parent: TargetType,
-                   with component: MountedHost) -> TargetType?
+  func mountTarget(
+    to parent: TargetType,
+    with component: MountedHost
+  ) -> TargetType?
 
   /** Function called by a reconciler when an existing target instance should be
    updated.
@@ -55,8 +57,10 @@ public protocol Renderer: class {
    children can be different from children passed on
    previous updates or on target creation.
    */
-  func update(target: TargetType,
-              with component: MountedHost)
+  func update(
+    target: TargetType,
+    with component: MountedHost
+  )
 
   /** Function called by a reconciler when an existing target instance should be
    unmounted: removed from the parent and most likely destroyed.
@@ -64,8 +68,11 @@ public protocol Renderer: class {
    - parameter component: Type of the host component that renders to the
    updated target.
    */
-  func unmount(target: TargetType,
-               with component: MountedHost)
+  func unmount(
+    target: TargetType,
+    with component: MountedHost,
+    completion: @escaping () -> ()
+  )
 }
 
 extension Renderer {

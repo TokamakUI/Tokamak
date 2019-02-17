@@ -5,17 +5,14 @@
 //  Created by Max Desiatov on 09/02/2019.
 //
 
-/// This is inspired by a `reduce` function from the standard library:
-/// `Array(0..<5).reduce(0, +)`, which will reduce an array with a sequence
-/// of `+` applications. Similarly a `Reduceable` value can be reduced with
-/// sequence of actions to a different value. Note that `reduce` function is
-/// mutating here to allow efficient in-place updates. As long as `Reduceable`
-/// is implemented on a value type, this still allows freezing it into an
-/// immutable value when needed.
-public protocol Reduceable {
+/// Formalizes an update to a value with a given action. Note that `update`
+/// function is mutating here to allow efficient in-place updates. As long as
+/// `Updatable` is implemented on a value type, this still allows freezing it
+/// into an immutable value when needed.
+public protocol Updatable {
   associatedtype Action
 
-  mutating func reduce(action: Action)
+  mutating func update(_ action: Action)
 }
 
 typealias Updater<T> = (inout T) -> ()
@@ -57,11 +54,11 @@ public struct State<T> {
 
 extension State: Equatable where T: Equatable {}
 
-extension State where T: Reduceable {
+extension State where T: Updatable {
   /// For any `Reduceable` state you can dispatch an `Action` to reduce that
   /// state to a different value.
   public func set(_ action: T.Action) {
-    updateHandler.value { $0.reduce(action: action) }
+    updateHandler.value { $0.update(action) }
   }
 }
 

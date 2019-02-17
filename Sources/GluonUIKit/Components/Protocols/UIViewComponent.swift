@@ -182,12 +182,14 @@ extension UIViewComponent where Target == Target.DefaultValue,
     update(view: target, props, children)
   }
 
-  static func unmount(target: UITarget) {
+  static func unmount(target: UITarget, completion: () -> ()) {
     switch target {
     case let target as ViewBox<Target>:
       target.view.removeFromSuperview()
     default:
       targetAssertionFailure()
     }
+
+    completion()
   }
 }
