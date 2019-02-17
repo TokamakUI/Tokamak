@@ -340,7 +340,12 @@ struct State<T> {
   func set(_ value: T)
 
   // or update the state with a pure function
-  func set(_ updater: (T) -> T)
+  func set(_ transformer: @escaping (T) -> T)
+
+  // or efficiently update the state in place with a mutating function
+  // (helps avoiding expensive memory allocations when state contains 
+  // large arrays/dictionaries or other copy-on-write value)
+  func set(_ updater: @escaping (inout T) -> ())
 }
 ```
 

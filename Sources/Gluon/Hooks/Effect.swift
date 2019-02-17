@@ -8,7 +8,7 @@
 extension Hooks {
   /// Schedule an effect to be executed on every call to `render`.
   public func effect(closure: @escaping () -> ()) {
-    scheduleEffect?(nil, { closure(); return nil })
+    scheduleEffect(nil, { closure(); return nil })
   }
 
   /** Schedule an effect to be executed on every call to `render`. The effect
@@ -16,7 +16,7 @@ extension Hooks {
    call to `render` or when a component is unmounted.
    */
   public func effect(closure: @escaping () -> () -> ()) {
-    scheduleEffect?(nil, closure)
+    scheduleEffect(nil, closure)
   }
 
   /** Schedule an effect to be executed on calls to `render` when `observed`
@@ -34,7 +34,7 @@ extension Hooks {
    interval has changed.
    */
   public func effect<T: Equatable>(_ observed: T, closure: @escaping () -> ()) {
-    scheduleEffect?(AnyEquatable(observed), { closure(); return nil })
+    scheduleEffect(AnyEquatable(observed), { closure(); return nil })
   }
 
   /** Schedule an effect to be executed on calls to `render` when `observed`
@@ -57,6 +57,6 @@ extension Hooks {
    */
   public func effect<T>(_ observed: T, closure: @escaping () -> () -> ())
     where T: Equatable {
-    scheduleEffect?(AnyEquatable(observed), closure)
+    scheduleEffect(AnyEquatable(observed), closure)
   }
 }

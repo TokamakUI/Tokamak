@@ -23,12 +23,12 @@ public final class StackReconciler<R: Renderer> {
     rootComponent.mount(with: self)
   }
 
-  func queue(state: Any,
+  func queue(updater: (inout Any) -> (),
              for component: MountedCompositeComponent<R>,
              id: Int) {
     let scheduleReconcile = queuedRerenders.isEmpty
 
-    component.state[id] = state
+    updater(&component.state[id])
     queuedRerenders.insert(component)
 
     guard scheduleReconcile else { return }
@@ -52,25 +52,9 @@ public final class StackReconciler<R: Renderer> {
     // by the reconciler.
     let hooks = Hooks(
       component: component
-    ) { [weak self, weak component] value, id in
+    ) { [weak self, weak component] id, updater in
       guard let component = component else { return }
-      self?.queue(state: value, for: component, id: id)
-    }
-    var effectIndex = 0
-    var scheduledEffects = Set<Int>()
-    hooks.scheduleEffect = { [weak component] observed, effect in
-      defer { effectIndex += 1 }
-
-      guard let component = component else { return }
-
-      if component.effects.count > effectIndex {
-        guard component.effects[effectIndex].0 != observed else { return }
-
-        scheduledEffects.insert(effectIndex)
-      } else {
-        component.effects.append((observed, effect))
-        scheduledEffects.insert(effectIndex)
-      }
+      self?.queue(updater: updater, for: component, id: id)
     }
 
     let result = component.type.render(
@@ -80,11 +64,15 @@ public final class StackReconciler<R: Renderer> {
     )
 
     DispatchQueue.main.async {
-      for i in scheduledEffects {
+      for i in hooks.scheduledEffects {
         component.effectFinalizers[i]?()
         component.effectFinalizers[i] = component.effects[i].1()
       }
     }
+
+    // clean up `component` reference to enable assertions when hooks are called
+    // outside of `render`
+    hooks.component = nil
 
     return result
   }

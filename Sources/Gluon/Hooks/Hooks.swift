@@ -28,26 +28,31 @@ public final class Hooks {
   /** Closure assigned by the reconciler before every `render` call. Queues
    a state update with this reconciler.
    */
-  let queueState: (_ newState: Any, _ index: Int) -> ()
+  let queueState: (_ index: Int, _ updater: Updater<Any>) -> ()
 
-  private weak var component: HookedComponent?
+  weak var component: HookedComponent?
+
   private var stateIndex = 0
+
+  private var effectIndex = 0
+  private(set) var scheduledEffects = Set<Int>()
 
   init(
     component: HookedComponent,
-    queueState: @escaping (_ value: Any, _ index: Int) -> ()
+    queueState: @escaping (_ index: Int, _ updater: Updater<Any>) -> ()
   ) {
     self.component = component
     self.queueState = queueState
   }
 
-  /** For a given initial state it returns a current value of this state
+  /** For a given initial state return a current value of this state
    (initialized from `initial` if current was absent) and its index.
    */
   func currentState(_ initial: Any) -> (current: Any, index: Int) {
     defer { stateIndex += 1 }
 
     guard let component = component else {
+      assertionFailure("hooks.state should only be called within `render`")
       return (initial, stateIndex)
     }
 
@@ -62,10 +67,26 @@ public final class Hooks {
   /** Closure assigned by the reconciler before every `render` call. Schedules
    effect exection with this reconciler.
    */
-  var scheduleEffect: ((
+  func scheduleEffect(
     _ observed: AnyEquatable?,
     _ effect: @escaping Effect
-  ) -> ())?
+  ) {
+    defer { effectIndex += 1 }
+
+    guard let component = component else {
+      assertionFailure("hooks.effect should only be called within `render`")
+      return
+    }
+
+    if component.effects.count > effectIndex {
+      guard component.effects[effectIndex].0 != observed else { return }
+
+      scheduledEffects.insert(effectIndex)
+    } else {
+      component.effects.append((observed, effect))
+      scheduledEffects.insert(effectIndex)
+    }
+  }
 
   var ref: ((_ initial: Any) -> AnyRef)?
 }
