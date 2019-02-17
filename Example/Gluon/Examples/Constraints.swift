@@ -17,7 +17,7 @@ struct Constraints: LeafComponent {
     return StackView.node(.init(
       axis: .vertical,
       distribution: .fillEqually,
-      Edges.equal(to: .parent)
+      Edges.equal(to: .safeArea)
     ), [
       Slider.node(.init(
         value: left.value,

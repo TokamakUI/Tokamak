@@ -26,6 +26,7 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   var state = [Any]()
   var effects = [(observed: AnyEquatable?, Effect)]()
   var effectFinalizers = [Finalizer]()
+  var refs = [AnyObject]()
 
   init(_ node: AnyNode,
        _ type: AnyCompositeComponent.Type,

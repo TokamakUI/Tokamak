@@ -5,6 +5,13 @@
 //  Created by Max Desiatov on 09/02/2019.
 //
 
+/// This is inspired by a `reduce` function from the standard library:
+/// `Array(0..<5).reduce(0, +)`, which will reduce an array with a sequence
+/// of `+` applications. Similarly a `Reduceable` value can be reduced with
+/// sequence of actions to a different value. Note that `reduce` function is
+/// mutating here to allow efficient in-place updates. As long as `Reduceable`
+/// is implemented on a value type, this still allows freezing it into an
+/// immutable value when needed.
 public protocol Reduceable {
   associatedtype Action
 
@@ -51,6 +58,8 @@ public struct State<T> {
 extension State: Equatable where T: Equatable {}
 
 extension State where T: Reduceable {
+  /// For any `Reduceable` state you can dispatch an `Action` to reduce that
+  /// state to a different value.
   public func set(_ action: T.Action) {
     updateHandler.value { $0.reduce(action: action) }
   }

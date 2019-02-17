@@ -18,7 +18,7 @@ struct LayerProps: LeafComponent {
       StackView.node(.init(
         axis: .vertical,
         distribution: .fillEqually,
-        Edges.equal(to: .parent)
+        Edges.equal(to: .safeArea)
       ), [
         Slider.node(.init(
           value: state.value,

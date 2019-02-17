@@ -27,7 +27,7 @@ struct DatePickers: LeafComponent {
     return StackView.node(.init(
       axis: .vertical,
       distribution: .fillEqually,
-      Edges.equal(to: .parent)
+      Edges.equal(to: .safeArea)
     ), [
       Label.node(
         labelProps,

@@ -15,7 +15,7 @@ public struct AnyNode: Equatable {
       lhs.props == rhs.props
   }
 
-  let ref: AnyRef?
+  let ref: AnyObject?
   public let props: AnyEquatable
   public let children: AnyEquatable
   let type: ComponentType

@@ -18,6 +18,9 @@ protocol HookedComponent: class {
   /// Finalizer cells of this component received from `Effect` evaluation.
   /// Indices in this array exactly match indices in `effects` array.
   var effectFinalizers: [Finalizer] { get set }
+
+  /// Ref cells of this component indexed by order of `hooks.ref` calls
+  var refs: [AnyObject] { get set }
 }
 
 /** Functions implemented directly in this class are parts of internal
@@ -36,6 +39,8 @@ public final class Hooks {
 
   private var effectIndex = 0
   private(set) var scheduledEffects = Set<Int>()
+
+  private var refIndex = 0
 
   init(
     component: HookedComponent,
@@ -88,5 +93,30 @@ public final class Hooks {
     }
   }
 
-  var ref: ((_ initial: Any) -> AnyRef)?
+  /** For a given initial value return a current ref
+   (initialized from `initial` if current was absent)
+   */
+  func ref<T>(_ initial: Ref<T>) -> Ref<T> {
+    defer { stateIndex += 1 }
+
+    guard let component = component else {
+      assertionFailure("hooks.state should only be called within `render`")
+      return initial
+    }
+
+    if component.state.count > stateIndex {
+      guard let result = component.refs[stateIndex] as? Ref<T> else {
+        assertionFailure(
+          """
+          unexpected ref type during rendering, possible Rules of Hooks violation
+          """
+        )
+        return initial
+      }
+      return result
+    } else {
+      component.refs.append(initial)
+      return initial
+    }
+  }
 }

@@ -16,6 +16,7 @@ enum AppRoute: String, CaseIterable {
   case modals = "Modal Presentation"
   case datePicker = "Date Picker"
   case layerProps = "Layer Props"
+  case timer
 }
 
 extension AppRoute: CustomStringConvertible {
@@ -53,12 +54,14 @@ struct Router: NavigationRouter {
       result = DatePickers.node()
     case .layerProps:
       result = LayerProps.node()
+    case .timer:
+      result = TimerCounter.node()
     }
 
     return NavigationItem.node(
       .init(title: route.description),
       View.node(
-        .init(Style(backgroundColor: .white, Edges.equal(to: .safeArea))),
+        .init(Style(backgroundColor: .white, Edges.equal(to: .parent))),
         result
       )
     )
