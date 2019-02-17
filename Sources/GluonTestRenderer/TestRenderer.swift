@@ -38,7 +38,8 @@ public final class TestRenderer: Renderer {
 
   public func unmount(
     target: TestView,
-    with component: TestRenderer.MountedHost
+    with component: TestRenderer.MountedHost,
+    completion: () -> ()
   ) {
     target.removeFromSuperview()
   }
