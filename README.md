@@ -136,9 +136,10 @@ all built upon a few basic concepts:
 `Props` describe a "configuration" of what you'd like to see on user's screen.
 `Props` are immutable and
 [`Equatable`](https://developer.apple.com/documentation/swift/equatable), which
-allows us to observe when they change. You wouldn't ever need to provide your
-own `Equatable` implementation for `Props` as Swift compiler is able to generate
-one for you [automatically behind the
+allows us to observe when they change. You always use `struct` or `enum` and
+never use `class` for props so that immutability is guaranteed. You wouldn't
+ever need to provide your own `Equatable` implementation for `Props` as Swift
+compiler is able to generate one for you [automatically behind the
 scenes](https://github.com/apple/swift-evolution/blob/master/proposals/0185-synthesize-equatable-hashable.md).
 Here's a simple `Props` struct you could use for your own component like
 `Counter` from the example above:
