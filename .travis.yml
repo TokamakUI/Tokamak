@@ -18,10 +18,10 @@ before_install:
 script:
 - swiftformat --lint --verbose .
 - swiftlint
-- xcodebuild -scheme GluonUIKit -sdk iphonesimulator
-- xcodebuild test -enableCodeCoverage YES -scheme GluonCore
+- xcodebuild -scheme TokamakUIKit -sdk iphonesimulator
+- xcodebuild test -enableCodeCoverage YES -scheme TokamakCore
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 # - swift build
-# - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/Gluon.xcworkspace -scheme Gluon-Example -sdk iphonesimulator9.3 ONLY_ACTIVE_ARCH=NO | xcpretty
+# - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/Tokamak.xcworkspace -scheme Tokamak-Example -sdk iphonesimulator11.0 ONLY_ACTIVE_ARCH=NO | xcpretty
 # - pod lib lint

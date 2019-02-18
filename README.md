@@ -1,26 +1,26 @@
-# Gluon
+# Tokamak
 
 ## React-like framework for native UI written in pure Swift 🛠⚛️📲
 
-[![CI Status](https://img.shields.io/travis/MaxDesiatov/Gluon.svg?style=flat)](https://travis-ci.org/MaxDesiatov/Gluon)
-[![Coverage](https://img.shields.io/codecov/c/github/MaxDesiatov/Gluon/master.svg?style=flat)](https://codecov.io/gh/maxdesiatov/Gluon)
+[![CI Status](https://img.shields.io/travis/MaxDesiatov/Tokamak.svg?style=flat)](https://travis-ci.org/MaxDesiatov/Tokamak)
+[![Coverage](https://img.shields.io/codecov/c/github/MaxDesiatov/Tokamak/master.svg?style=flat)](https://codecov.io/gh/maxdesiatov/Tokamak)
 <!--
-[![Version](https://img.shields.io/cocoapods/v/Gluon.svg?style=flat)](https://cocoapods.org/pods/Gluon)
-[![License](https://img.shields.io/cocoapods/l/Gluon.svg?style=flat)](https://cocoapods.org/pods/Gluon)
-[![Platform](https://img.shields.io/cocoapods/p/Gluon.svg?style=flat)](https://cocoapods.org/pods/Gluon)
+[![Version](https://img.shields.io/cocoapods/v/Tokamak.svg?style=flat)](https://cocoapods.org/pods/Tokamak)
+[![License](https://img.shields.io/cocoapods/l/Tokamak.svg?style=flat)](https://cocoapods.org/pods/Tokamak)
+[![Platform](https://img.shields.io/cocoapods/p/Tokamak.svg?style=flat)](https://cocoapods.org/pods/Tokamak)
 -->
 
-Gluon provides a declarative, testable and scalable API for building UI
+Tokamak provides a declarative, testable and scalable API for building UI
 components backed by fully native views. You can use it for your new iOS apps or
 add to existing apps with little effort and without rewriting the rest of the
 code or changing the app's overall architecture.
 
-Gluon recreates [React Hooks API](https://reactjs.org/docs/hooks-intro.html)
+Tokamak recreates [React Hooks API](https://reactjs.org/docs/hooks-intro.html)
 improving it with Swift's strong type system, high performance and efficient
 memory management thanks to being compiled to a native binary.
 
 When compared to standard UIKit MVC or other patterns built on top of
-it (MVVM, MVP, VIPER etc), Gluon provides:
+it (MVVM, MVP, VIPER etc), Tokamak provides:
 
 * **Declarative [DSL](https://en.wikipedia.org/wiki/Domain-specific_language)
 for native UI**: no more conflicts caused by Storyboards, no template languages 
@@ -33,31 +33,31 @@ state changes.
 
 * **Clean composable architecture**: components can be passed to other
 components as children with an established API focused on code reuse. You can
-easily embed Gluon components within your existing UIKit code or vice versa:
-expose that code as Gluon components. No need to decide whether you should
+easily embed Tokamak components within your existing UIKit code or vice versa:
+expose that code as Tokamak components. No need to decide whether you should
 subclass `UIView` or `UIViewController` to make your UI composable.
 
 * **Off-screen rendering for unit-tests**: no need to maintain slow and flaky UI
 tests that render everything on a simulator screen and simulate actual touch
-events. All of UI logic written with Gluon can be tested off-screen with tests
+events. All of UI logic written with Tokamak can be tested off-screen with tests
 completing in a fraction of a second. If your UI logic doesn't require any
-code specific to `UIKit` (and Gluon provides helpers to achieve that) you can
+code specific to `UIKit` (and Tokamak provides helpers to achieve that) you can
 even run your UI-related unit-tests on Linux!
 
 * **Platform-independent core**: our main goal is to eventually support as many
 platforms as possible. Starting with iOS and UIKit, we plan to add renderers
 for macOS/AppKit, WebAssembly/DOM and native Android in future versions. As
-the core API is cross-platform, UI components written with Gluon won't need to
+the core API is cross-platform, UI components written with Tokamak won't need to
 change to become available on newly added platforms unless you need UI logic
 specific to a device or OS.
 
 * **Architecture proven to work**: React has been available for years and
 gained a lot of traction and is still growing. We've seen so many apps
 successfully rebuilt with it and heard positive feedback on React itself, but
-a lot of complaints about overreliance on JavaScript. Gluon makes architecture
+a lot of complaints about overreliance on JavaScript. Tokamak makes architecture
 of React with its established patterns available to you in Swift.
 
-_**Important:**_ Gluon is relatively stable at this point, as in not having any
+_**Important:**_ Tokamak is relatively stable at this point, as in not having any
 blocking or critical bugs that the maintainers are aware of. The core API of
 `Component` and `Hooks` types is frozen, and there's a plenty of [standard
 components](#standard-components) to start building useful apps. If in the
@@ -86,12 +86,12 @@ Nevertheless, its important to note this can't always be achieved.
 
 ## Example code
 
-An example of a Gluon component that binds a button to a label, embedded
+An example of a Tokamak component that binds a button to a label, embedded
 within an existing UIKit app, looks like this:
 
 ```swift
-import Gluon
-import GluonUIKit
+import Tokamak
+import TokamakUIKit
 
 struct Counter: LeafComponent {
   struct Props: Equatable {
@@ -111,23 +111,23 @@ struct Counter: LeafComponent {
   }
 }
 
-final class ViewController: GluonViewController {
+final class ViewController: TokamakViewController {
   override var node: AnyNode {
     return Counter.node(.init(countFrom: 1))
   }
 }
 ```
 
-![Counter component](GluonCounter.gif)
+![Counter component](TokamakCounter.gif)
 
 To run the example project, clone the repo, and run `pod install` from the
-[`Example`](https://github.com/MaxDesiatov/Gluon/tree/master/Example) directory
-first. Then you can open `Example/Gluon.xcworkspace` and run the main 
-executable target `Gluon-Example`.
+[`Example`](https://github.com/MaxDesiatov/Tokamak/tree/master/Example) directory
+first. Then you can open `Example/Tokamak.xcworkspace` and run the main 
+executable target `Tokamak-Example`.
 
 ## Fundamental concepts
 
-We try to keep Gluon's API as simple as possible and the core algorithm with
+We try to keep Tokamak's API as simple as possible and the core algorithm with
 supporting protocols/structures currently fit in only ~600 lines of code. It's
 all built upon a few basic concepts:
 
@@ -154,7 +154,7 @@ struct Props: Equatable {
 
 Sometimes "configuration" is described in a tree-like fashion. For example, a
 list of views contains an array of subviews, which themselves can contain other
-subviews. In Gluon this is called `Children`, which behave similar to `Props`,
+subviews. In Tokamak this is called `Children`, which behave similar to `Props`,
 but are important enough to be treated separately. `Children` are also immutable
 and `Equatable`, which allows us to observe those for changes too.
 
@@ -173,7 +173,7 @@ protocol Component {
 (Don't worry if you don't know what `associatedtype` means, it's only a simple
 requirement for components to provide these types and make them `Equatable`. If
 you do know what a [PAT](https://www.youtube.com/watch?v=XWoNjiSPqI8) is, you
-also shouldn't worry. 😄 Gluon's API is built specifically to hide "sharp edges"
+also shouldn't worry. 😄 Tokamak's API is built specifically to hide "sharp edges"
 of PATs from the public API and to make it easy to use without requiring
 advanced knowledge of Swift. This is similar to what [Swift standard
 library](https://developer.apple.com/documentation/swift/swift_standard_library/)
@@ -183,20 +183,20 @@ has done, which is built on top of PATs but stays flexible and ergonomic).
 
 A node is a container for `Props`, `Children` and a type conforming to
 `Component` rendering this "configuration". If you're familiar with React, nodes
-in Gluon correspond to [elements in
+in Tokamak correspond to [elements in
 React](https://reactjs.org/docs/glossary.html#elements). When `Children` is an
 array of nodes, we can indirectly form a tree describing the app's UI.
 Corollary, nodes are immutable and `Equatable`. You'd only need to use the
-standard `AnyNode` type provided by Gluon:
+standard `AnyNode` type provided by Tokamak:
 
 ```swift
 struct AnyNode: Equatable {
-  // ... `Props` and `Children` stored here by Gluon as private properties 
+  // ... `Props` and `Children` stored here by Tokamak as private properties 
 }
 ```
  
 Here's an example of an array of nodes used as `Children` in the standard
-`StackView` component provided by Gluon, which describe subviews of the stack
+`StackView` component provided by Tokamak, which describe subviews of the stack
 view.
 
 ```swift
@@ -208,11 +208,11 @@ struct StackView: Component {
 }
 ```
 
-For every component Gluon provides an easy way to create a node for it 
+For every component Tokamak provides an easy way to create a node for it 
 coupled with given props and children:
 
 ```swift
-// this extension and its `node` function are defined for you by Gluon
+// this extension and its `node` function are defined for you by Tokamak
 extension Component {
   static func node(_ props: Props, _ children: Children) -> AnyNode {
     // ...
@@ -235,28 +235,28 @@ function](https://en.wikipedia.org/wiki/Pure_function) taking `Props` and
 ```swift
 protocol PureComponent: Component {
   // this is the function you define for your own components, 
-  // Gluon takes care of the rest
+  // Tokamak takes care of the rest
   static func render(props: Props, children: Children) -> AnyNode
 }
 ```
 
-Gluon calls `render` on your components when their `Props` or `Children` passed
+Tokamak calls `render` on your components when their `Props` or `Children` passed
 from parent components change. You don't ever need to call `render` yourself,
 pass different values as props or children to nodes returned from parent
-`render` and Gluon will update only those views on screen that need to be
+`render` and Tokamak will update only those views on screen that need to be
 updated. 
 
 Note that `render` function does not return *other components*, it returns
 *nodes* that *describe other components*. It's a very important distiction,
-which allows Gluon to stay efficient and to avoid updating deep trees of
+which allows Tokamak to stay efficient and to avoid updating deep trees of
 components.
 
-Some of your components wouldn't need `Children` at all, for those Gluon
+Some of your components wouldn't need `Children` at all, for those Tokamak
 provides a `PureLeafComponent` helper protocol that allows you to implement only
 a single function with a simpler signature:
 
 ```swift
-// Helpers provided by Gluon:
+// Helpers provided by Tokamak:
 
 struct Null: Equatable {}
 
@@ -278,7 +278,7 @@ Quite frequently you need components that are stateful or cause some other
 `Hooks` provide a clear separation between declarative components and other 
 imperative code, such as state management, file I/O, networking etc.
 
-The standard protocol `CompositeComponent` in Gluon gets `Hooks` injected into
+The standard protocol `CompositeComponent` in Tokamak gets `Hooks` injected into
 `render` function as an argument.
 
 ```swift
@@ -295,7 +295,7 @@ In fact, the standard `PureComponent` is a special case of a
 `CompositeComponent` that doesn't use `Hooks` during rendering:
 
 ```swift
-// Helpers provided by Gluon:
+// Helpers provided by Tokamak:
 
 protocol PureComponent: CompositeComponent {
   static func render(props: Props, children: Children) -> AnyNode
@@ -351,7 +351,7 @@ struct State<T> {
 ```
 
 Note that `set` functions are not `mutating`, they never update the component's
-state in-place synchronously, but only schedule an update with Gluon at a later
+state in-place synchronously, but only schedule an update with Tokamak at a later
 time. A call to `render` is only scheduled on the component that obtained this
 state with `hooks.state`. 
 
@@ -379,10 +379,10 @@ ones: just add it to your `extension Hooks` wherever works best for you.
 
 ### Renderers
 
-When mapping Gluon's architecture to what's previosly been established in iOS,
+When mapping Tokamak's architecture to what's previosly been established in iOS,
 `Component` corresponds to a "view-model" layer, while `Hooks` provide a reusable
 "controller" layer. A `Renderer` is a "view" layer in these terms, but it's
-fully managed by Gluon. Not only this greatly simplifies the code of your
+fully managed by Tokamak. Not only this greatly simplifies the code of your
 components and allows you to make it declarative, it also completely decouples
 platform-specific code.  Note that `Counter` component above doesn't contain a
 single type from `UIKit` module, although the component itself is passed to a
@@ -399,11 +399,11 @@ requiring [Marzipan](https://www.imore.com/marzipan)!
 
 ### Standard components
 
-Gluon provides a few basic components that you can reuse in your apps. On iOS
+Tokamak provides a few basic components that you can reuse in your apps. On iOS
 these components are rendered to corresponding `UIView` subclasses that you're
 already used to, e.g. `Button` component is rendered as `UIButton`, `Label` as
 `UILabel` etc. Check out [the complete up to date
-list](https://github.com/MaxDesiatov/Gluon/blob/master/gluon.sh/StandardComponents.md)
+list](https://github.com/MaxDesiatov/Tokamak/blob/master/tokamakui.org/StandardComponents.md)
 for more info.
 
 ## Requirements
@@ -431,7 +431,7 @@ Navigate to the project directory and create `Podfile` with the following comman
 $ pod install
 ```
 
-Inside of your `Podfile`, specify the `Gluon` pod:
+Inside of your `Podfile`, specify the `Tokamak` pod:
 
 ```ruby
 # Uncomment the next line to define a global platform for your project
@@ -442,7 +442,7 @@ target 'YourApp' do
   use_frameworks!
 
   # Pods for Test
-  pod 'Gluon', '~> 0.1'
+  pod 'Tokamak', '~> 0.1'
 end
 ```
 
@@ -480,14 +480,14 @@ React](https://reactjs.org/docs/hooks-rules.html):
 4. Don't call Hooks from any function that's not a `static func render` on a
    component or not a custom Hook. ⚠️
 
-In a future version Gluon will provide a linter able to catch violations of
+In a future version Tokamak will provide a linter able to catch violations of
 Rules of Hooks at compile time.
 
 ### Why do Rules of Hooks exist?
 
 [Same as
 React](https://reactjs.org/docs/hooks-faq.html#how-does-react-associate-hook-calls-with-components),
-Gluon maintains an array of "memory cells" for every stateful component to hold
+Tokamak maintains an array of "memory cells" for every stateful component to hold
 the actual state. It needs to distinguish one Hooks call from another to map
 those to corresponding cells during execution of a `render` function of your
 component. Consider this:
@@ -522,7 +522,7 @@ struct ConditionalCounter: LeafComponent {
 }
 ```
 
-How does Gluon renderer know on subsequent calls to `DoubleCounter.render` which
+How does Tokamak renderer know on subsequent calls to `DoubleCounter.render` which
 state you're actually addressing? It relies on the order of those calls, so if
 the order dynamically changes from one rendering to another, you could
 unexpectedly get a value of the one state cell, when you expected a value of
@@ -558,7 +558,7 @@ struct ConditionalCounter: LeafComponent {
 }
 ```
 
-### Why does Gluon use value types and protocols instead of classes?
+### Why does Tokamak use value types and protocols instead of classes?
 
 Swift developers focused on GUI might be used to classes thanks to abundance of
 class hierarchies in `UIKit` and `AppKit` (although [benefits of composition
@@ -572,8 +572,8 @@ Objective-C in mind, years before Swift became public and [protocol-oriented
 patterns](https://developer.apple.com/videos/play/wwdc2015/408/) were
 established.
 
-One of the main goals of Gluon is to build a UI framework that feels native to
-Swift. Gluon's API brings these benefits when compared to class-based APIs:
+One of the main goals of Tokamak is to build a UI framework that feels native to
+Swift. Tokamak's API brings these benefits when compared to class-based APIs:
 
 - no need to [subclass `NSObject` to conform to commonly used
   protocols](https://stackoverflow.com/questions/31754366/swift-my-custom-uitableviewdatasource-class-thinks-it-doesnt-conform-to-protoc);
@@ -594,11 +594,11 @@ Swift. Gluon's API brings these benefits when compared to class-based APIs:
   imperative code when needed: value types guarantee lack of unexpected
   side effects in pure functions.
 
-### Is there anything like [JSX](https://reactjs.org/docs/jsx-in-depth.html) available for Gluon?
+### Is there anything like [JSX](https://reactjs.org/docs/jsx-in-depth.html) available for Tokamak?
 
-At the moment the answer is no, but we find that Gluon's API allows you to
+At the moment the answer is no, but we find that Tokamak's API allows you to
 create nodes much more concisely when compared to [`React.createElement`
-syntax](https://reactjs.org/docs/react-without-jsx.html). In fact, with Gluon's
+syntax](https://reactjs.org/docs/react-without-jsx.html). In fact, with Tokamak's
 `.node` API you don't need closing element tags you'd have to write with JSX.
 E.g. compare this:
 
@@ -614,12 +614,12 @@ to this:
 
 We do agree that there's an overhead of `.init` for props and a requirement of
 props initializer arguments to be ordered. For the latter, we have a helpful
-convention in Gluon that all named arguments to props initializers should be
+convention in Tokamak that all named arguments to props initializers should be
 ordered alphabetically.
 
 The main problem is that currently there's no easily extensible Swift parser or
 a macro system available that would allow something like JSX to be used for
-Gluon. As soon is it becomes easy to implement, we'd definitely consider it as
+Tokamak. As soon is it becomes easy to implement, we'd definitely consider it as
 an option.
 
 ### Why is `render` function `static` on `Component` protocol?
@@ -661,7 +661,7 @@ struct Counter {
 }
 
 
-// Gluon does something like this internally for your components,
+// Tokamak does something like this internally for your components,
 // consider following a pseudocode:
 let xComponent = Counter.self
 let yComponent = OtherComponent.self
@@ -716,9 +716,9 @@ state, while intended local state is managed with `Hooks`.
 ## Contributing
 
 This project adheres to the [Contributor Covenant Code of
-Conduct](https://github.com/MaxDesiatov/Gluon/blob/master/CODE_OF_CONDUCT.md).
+Conduct](https://github.com/MaxDesiatov/Tokamak/blob/master/CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code. Please report
-unacceptable behavior to conduct@gluon.sh.
+unacceptable behavior to conduct@tokamakui.org.
 
 ## Maintainers
 
@@ -727,6 +727,6 @@ Hodovaniuk](https://matvii.hodovani.uk)
 
 ## License
 
-Gluon is available under the Apache 2.0 license. See the
-[LICENSE](https://github.com/MaxDesiatov/Gluon/blob/master/LICENSE) file for
+Tokamak is available under the Apache 2.0 license. See the
+[LICENSE](https://github.com/MaxDesiatov/Tokamak/blob/master/LICENSE) file for
 more info.
