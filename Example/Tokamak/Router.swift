@@ -17,6 +17,7 @@ enum AppRoute: String, CaseIterable {
   case datePicker = "Date Picker"
   case layerProps = "Layer Props"
   case timer
+  case image
 }
 
 extension AppRoute: CustomStringConvertible {
@@ -56,6 +57,8 @@ struct Router: NavigationRouter {
       result = LayerProps.node()
     case .timer:
       result = TimerCounter.node()
+    case .image:
+      result = ImageExample.node()
     }
 
     return NavigationItem.node(
