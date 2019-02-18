@@ -19,7 +19,7 @@ script:
 - swiftformat --lint --verbose .
 - swiftlint
 - xcodebuild -scheme TokamakUIKit -sdk iphonesimulator
-- xcodebuild test -enableCodeCoverage YES -scheme TokamakCore
+- xcodebuild test -enableCodeCoverage YES -scheme Tokamak
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 # - swift build
