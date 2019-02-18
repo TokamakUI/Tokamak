@@ -1,22 +1,22 @@
 PODS:
-  - Gluon (0.1.0)
-  - GluonUIKit (0.1.0):
-    - Gluon (~> 0.1)
+  - Tokamak (0.1.0)
+  - TokamakUIKit (0.1.0):
+    - Tokamak (~> 0.1)
 
 DEPENDENCIES:
-  - Gluon (from `..`)
-  - GluonUIKit (from `..`)
+  - Tokamak (from `..`)
+  - TokamakUIKit (from `..`)
 
 EXTERNAL SOURCES:
-  Gluon:
+  Tokamak:
     :path: ".."
-  GluonUIKit:
+  TokamakUIKit:
     :path: ".."
 
 SPEC CHECKSUMS:
-  Gluon: 5eb3a35b870287095b92a4203dbf9b6fa423ce02
-  GluonUIKit: d88bc67ed0cc1dcaf89bad30413c9de91a65c629
+  Tokamak: 502731565af11af88173b92a55799e6811240c55
+  TokamakUIKit: 1ba14d4ee2b26eaa5c5e2e416af61b48e02c58eb
 
-PODFILE CHECKSUM: 72db4a70e433e8e9a04a2f588b37abc06f0bfe35
+PODFILE CHECKSUM: fde6d1f4790dafaa632305df0301b976838f0849
 
 COCOAPODS: 1.6.0

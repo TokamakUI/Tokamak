@@ -8,5 +8,5 @@
 /// or specific system versions before calling newer APIs.
 
 MACOSX_DEPLOYMENT_TARGET=10.13
-IPHONEOS_DEPLOYMENT_TARGET=10.0
+IPHONEOS_DEPLOYMENT_TARGET=11.0
 SUPPORTED_PLATFORMS = macosx iphoneos iphonesimulator

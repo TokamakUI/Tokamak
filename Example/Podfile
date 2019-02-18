@@ -1,6 +1,6 @@
 platform :ios, '11.0'
 
-target 'Gluon_Example' do
-  pod 'Gluon', :path => '..'
-  pod 'GluonUIKit', :path => '..'
+target 'TokamakDemo' do
+  pod 'Tokamak', :path => '..'
+  pod 'TokamakUIKit', :path => '..'
 end

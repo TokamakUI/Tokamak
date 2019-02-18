@@ -1,7 +1,7 @@
 import XCTest
 
-import GluonTests
+import TokamakTests
 
 var tests = [XCTestCaseEntry]()
-tests += GluonTests.allTests()
+tests += TokamakTests.allTests()
 XCTMain(tests)
