@@ -22,6 +22,7 @@ struct Counter: LeafComponent {
       distribution: .fillEqually,
       Edges.equal(to: .parent)
     ), [
+      Image.node(.init(named: "gluon")),
       Button.node(
         .init(onPress: Handler { count.set { $0 + 1 } }),
         "Increment"
