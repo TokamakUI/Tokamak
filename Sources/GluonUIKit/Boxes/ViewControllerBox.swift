@@ -11,7 +11,7 @@ import UIKit
 class ViewControllerBox<T: UIViewController>: UITarget {
   let containerViewController: T
 
-  init(_ viewController: T, _ node: AnyNode?) {
+  init(_ viewController: T, _ node: AnyNode) {
     containerViewController = viewController
     super.init(node: node)
   }

@@ -32,6 +32,18 @@ final class GluonNavigationController: UINavigationController {
   }
 }
 
+// FIXME: is this reliable enough? Will this work for
+// `GluonNavigationController` without a navigation bar? Can you even create
+// one without a navigation bar?
+extension GluonNavigationController: UINavigationBarDelegate {
+  func navigationBar(
+    _ navigationBar: UINavigationBar,
+    didPop item: UINavigationItem
+  ) {
+    onPop()
+  }
+}
+
 extension NavigationController: UIHostComponent {
   static func mountTarget(to parent: UITarget,
                           component: UIKitRenderer.MountedHost,
@@ -55,8 +67,8 @@ extension NavigationController: UIHostComponent {
     // FIXME: this `case` handler is duplicated with `UIViewComponent`,
     // should this be generalised as a protocol?
     case let box as ViewControllerBox<UIViewController>
-      where parent.node?.isSubtypeOf(ModalPresenter.self) ?? false:
-      guard let props = parent.node?.props.value as? ModalPresenter.Props else {
+      where parent.node.isSubtypeOf(ModalPresenter.self):
+      guard let props = parent.node.props.value as? ModalPresenter.Props else {
         propsAssertionFailure()
         return nil
       }
@@ -69,7 +81,7 @@ extension NavigationController: UIHostComponent {
       }
     case let box as ViewBox<UIView>:
       result.viewController.willMove(toParent: box.viewController)
-      // FIXME: replace with constraints
+      // FIXME: replace with auto layout constraints
       result.viewController.view.frame = box.view.frame
       box.view.addSubview(result.viewController.view)
       box.viewController.addChild(result.viewController)
@@ -84,5 +96,7 @@ extension NavigationController: UIHostComponent {
 
   static func update(target: UITarget, node: AnyNode) {}
 
-  static func unmount(target: UITarget) {}
+  static func unmount(target: UITarget, completion: () -> ()) {
+    completion()
+  }
 }

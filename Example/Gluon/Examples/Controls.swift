@@ -89,7 +89,7 @@ struct Controls: LeafComponent {
         alignment: .center,
         axis: .vertical,
         distribution: .fillEqually,
-        Edges.equal(to: .parent)
+        Edges.equal(to: .safeArea)
       ),
       children
     )

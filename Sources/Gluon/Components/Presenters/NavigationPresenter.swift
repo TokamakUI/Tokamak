@@ -44,7 +44,7 @@ public struct NavigationPresenter<T: NavigationRouter>: LeafComponent {
   public static func render(props: Props, hooks: Hooks) -> AnyNode {
     let stack = hooks.state([props.initial])
 
-    let pop = { stack.set(Array(stack.value.dropLast())) }
+    let pop = { stack.set { $0.remove(at: $0.count - 1) } }
 
     return NavigationController.node(
       .init(

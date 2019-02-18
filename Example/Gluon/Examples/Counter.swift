@@ -20,7 +20,7 @@ struct Counter: LeafComponent {
       alignment: .center,
       axis: .vertical,
       distribution: .fillEqually,
-      Edges.equal(to: .parent)
+      Edges.equal(to: .safeArea)
     ), [
       Button.node(
         .init(onPress: Handler { count.set { $0 + 1 } }),

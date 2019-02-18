@@ -10,12 +10,9 @@ import Gluon
 /// A class that `TestRenderer` uses as a target.
 /// When rendering to a `TestView` instance it is possible
 /// to examine its `subviews` and `props` for testing.
-public final class TestView {
+public final class TestView: Target {
   /// Subviews of this test view.
   public private(set) var subviews: [TestView]
-
-  /// Props assigned to this test view.
-  public internal(set) var node: AnyNode
 
   /// Parent `TestView` instance that owns this instance as a child
   private weak var parent: TestView?
@@ -30,8 +27,8 @@ public final class TestView {
    */
   init(_ node: AnyNode,
        _ subviews: [TestView] = []) {
-    self.node = node
     self.subviews = subviews
+    super.init(node: node)
   }
 
   /** Add a subview to this test view.

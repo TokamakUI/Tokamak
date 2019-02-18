@@ -5,8 +5,10 @@
 //  Created by Max Desiatov on 03/12/2018.
 //
 
+import Dispatch
+
 final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
-  Hashable {
+  HookedComponent, Hashable {
   static func ==(lhs: MountedCompositeComponent<R>,
                  rhs: MountedCompositeComponent<R>) -> Bool {
     return lhs === rhs
@@ -17,13 +19,18 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   }
 
   private var mountedChildren = [MountedComponent<R>]()
-  private let parentTarget: R.Target
+  private let parentTarget: R.TargetType
   let type: AnyCompositeComponent.Type
+
+  // HookedComponent implementation
   var state = [Any]()
+  var effects = [(observed: AnyEquatable?, Effect)]()
+  var effectFinalizers = [Finalizer]()
+  var refs = [AnyObject]()
 
   init(_ node: AnyNode,
        _ type: AnyCompositeComponent.Type,
-       _ parentTarget: R.Target) {
+       _ parentTarget: R.TargetType) {
     self.type = type
     self.parentTarget = parentTarget
 
@@ -41,8 +48,12 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
 
   override func unmount(with reconciler: StackReconciler<R>) {
     mountedChildren.forEach { $0.unmount(with: reconciler) }
-    // FIXME: Should call `hooks.effect` finalizers here after `hooks.effect`
-    // is implemented
+
+    DispatchQueue.main.async {
+      for f in self.effectFinalizers {
+        f?()
+      }
+    }
   }
 
   override func update(with reconciler: StackReconciler<R>) {

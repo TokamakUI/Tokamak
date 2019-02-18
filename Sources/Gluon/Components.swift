@@ -13,6 +13,10 @@ public protocol AnyHostComponent {}
 
 public protocol HostComponent: AnyHostComponent, Component {}
 
+public protocol RefComponent: HostComponent {
+  associatedtype RefType
+}
+
 /// Type-erased version of `CompositeComponent` to work around
 /// [PAT restrictions](http://www.russbishop.net/swift-associated-types). Users
 /// of Gluon shouldn't ever need to conform to this protocol directly, use
@@ -29,9 +33,10 @@ public protocol Component {
   associatedtype Props: Equatable
   associatedtype Children: Equatable
 
-  static func node(key: String?,
-                   _ props: Props,
-                   _ children: Children) -> AnyNode
+  static func node(
+    _ props: Props,
+    _ children: Children
+  ) -> AnyNode
 }
 
 public protocol CompositeComponent: AnyCompositeComponent, Component {

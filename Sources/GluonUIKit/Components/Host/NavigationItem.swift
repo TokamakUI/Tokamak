@@ -33,7 +33,7 @@ extension NavigationItem: UIHostComponent {
     }
 
     guard
-      let parentProps = parent.node?.props.value as? NavigationController.Props
+      let parentProps = parent.node.props.value as? NavigationController.Props
     else {
       propsAssertionFailure()
       return nil
@@ -67,5 +67,5 @@ extension NavigationItem: UIHostComponent {
     item.largeTitleDisplayMode = .init(mode: props.titleMode)
   }
 
-  static func unmount(target: UITarget) {}
+  static func unmount(target: UITarget, completion: () -> ()) { completion() }
 }

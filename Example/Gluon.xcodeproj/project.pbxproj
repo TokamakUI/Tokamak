@@ -13,10 +13,11 @@
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
+		D11DB6432219C03000013FC3 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DB6422219C03000013FC3 /* Timer.swift */; };
 		D1BFAF772215795900845EA0 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF762215795900845EA0 /* Router.swift */; };
 		D1BFAF792215800A00845EA0 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF782215800A00845EA0 /* Counter.swift */; };
 		D1BFAF7B22158B4000845EA0 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF7A22158B4000845EA0 /* List.swift */; };
-		D1DEEC2922009E8000C525EE /* NavRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DEEC2822009E8000C525EE /* NavRouter.swift */; };
+		D1DEEC2922009E8000C525EE /* ModalRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DEEC2822009E8000C525EE /* ModalRouter.swift */; };
 		D1E6BCD221AD4CD6002769E3 /* GluonTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6BCD121AD4CD6002769E3 /* GluonTest.swift */; };
 		D1F2C3272214407B008358DC /* TableModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F2C3262214407B008358DC /* TableModal.swift */; };
 		D1F7185322159E09004E5951 /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F7185222159E09004E5951 /* Controls.swift */; };
@@ -52,10 +53,11 @@
 		8CADEBB8BFF6F2621CA49E8F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		C1B4A8D80770145FDAFEAE64 /* Pods_Gluon_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gluon_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6DA99382B6892EAB361742F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		D11DB6422219C03000013FC3 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		D1BFAF762215795900845EA0 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		D1BFAF782215800A00845EA0 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		D1BFAF7A22158B4000845EA0 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
-		D1DEEC2822009E8000C525EE /* NavRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavRouter.swift; sourceTree = "<group>"; };
+		D1DEEC2822009E8000C525EE /* ModalRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalRouter.swift; sourceTree = "<group>"; };
 		D1E6BCD121AD4CD6002769E3 /* GluonTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonTest.swift; sourceTree = "<group>"; };
 		D1F2C3262214407B008358DC /* TableModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableModal.swift; sourceTree = "<group>"; };
 		D1F7185222159E09004E5951 /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
@@ -171,15 +173,16 @@
 		D1F7185122159D6E004E5951 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
-				D1BFAF7A22158B4000845EA0 /* List.swift */,
-				D1DEEC2822009E8000C525EE /* NavRouter.swift */,
-				D1F2C3262214407B008358DC /* TableModal.swift */,
 				D1BFAF782215800A00845EA0 /* Counter.swift */,
+				D1F7185E2215A5D0004E5951 /* Constraints.swift */,
 				D1F7185222159E09004E5951 /* Controls.swift */,
 				D1F7185422159EAD004E5951 /* DatePickers.swift */,
 				D1F7185C2215A4A1004E5951 /* LayerProps.swift */,
-				D1F7185E2215A5D0004E5951 /* Constraints.swift */,
+				D1BFAF7A22158B4000845EA0 /* List.swift */,
 				D1F718602215A617004E5951 /* Modals.swift */,
+				D1DEEC2822009E8000C525EE /* ModalRouter.swift */,
+				D1F2C3262214407B008358DC /* TableModal.swift */,
+				D11DB6422219C03000013FC3 /* Timer.swift */,
 			);
 			path = Examples;
 			sourceTree = "<group>";
@@ -324,8 +327,9 @@
 				D1F2C3272214407B008358DC /* TableModal.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				D1F7185F2215A5D0004E5951 /* Constraints.swift in Sources */,
+				D11DB6432219C03000013FC3 /* Timer.swift in Sources */,
 				D1F7185322159E09004E5951 /* Controls.swift in Sources */,
-				D1DEEC2922009E8000C525EE /* NavRouter.swift in Sources */,
+				D1DEEC2922009E8000C525EE /* ModalRouter.swift in Sources */,
 				D1BFAF772215795900845EA0 /* Router.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				D1F7185D2215A4A1004E5951 /* LayerProps.swift in Sources */,

@@ -96,11 +96,11 @@ extension UIViewComponent where Target == Target.DefaultValue,
     let target = Target.defaultValue
     let result: ViewBox<Target>
 
-    let parentRequiresViewController = parent.node?.isSubtypeOf(
+    let parentRequiresViewController = parent.node.isSubtypeOf(
       ModalPresenter.self,
       or: NavigationController.self,
       or: AnyTabPresenter.self
-    ) ?? false
+    )
 
     // UIViewController parent target can't present a bare `ViewBox` target,
     // it needs to be wrapped with `ContainerViewController` first.
@@ -126,8 +126,8 @@ extension UIViewComponent where Target == Target.DefaultValue,
     case let box as ViewBox<GluonTableCell>:
       box.view.addSubview(target)
     case let box as ViewControllerBox<GluonNavigationController>
-      where parent.node?.isSubtypeOf(NavigationController.self) ?? false:
-      guard let props = parent.node?.props.value
+      where parent.node.isSubtypeOf(NavigationController.self):
+      guard let props = parent.node.props.value
         as? NavigationController.Props else {
         propsAssertionFailure()
         return nil
@@ -138,9 +138,9 @@ extension UIViewComponent where Target == Target.DefaultValue,
         animated: props.pushAnimated
       )
     case let box as ViewControllerBox<UIViewController>
-      where parent.node?.isSubtypeOf(ModalPresenter.self) ?? false:
+      where parent.node.isSubtypeOf(ModalPresenter.self):
       guard
-        let props = parent.node?.props.value as? ModalPresenter.Props
+        let props = parent.node.props.value as? ModalPresenter.Props
       else {
         propsAssertionFailure()
         return nil
@@ -150,7 +150,7 @@ extension UIViewComponent where Target == Target.DefaultValue,
                                  animated: props.presentAnimated,
                                  completion: nil)
     case let box as ViewControllerBox<UIViewController>
-      where parent.node?.isSubtypeOf(NavigationItem.self) ?? false:
+      where parent.node.isSubtypeOf(NavigationItem.self):
       box.viewController.view.addSubview(target)
     default:
       parentAssertionFailure()
@@ -182,12 +182,14 @@ extension UIViewComponent where Target == Target.DefaultValue,
     update(view: target, props, children)
   }
 
-  static func unmount(target: UITarget) {
+  static func unmount(target: UITarget, completion: () -> ()) {
     switch target {
     case let target as ViewBox<Target>:
       target.view.removeFromSuperview()
     default:
       targetAssertionFailure()
     }
+
+    completion()
   }
 }

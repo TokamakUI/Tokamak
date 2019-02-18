@@ -41,13 +41,16 @@
 		D163F9D621F27F8C00BA464B /* GluonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163F9D521F27F8C00BA464B /* GluonViewController.swift */; };
 		D16FCB7C21FCB3870033C5C0 /* TableViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16FCB7B21FCB3870033C5C0 /* TableViewBox.swift */; };
 		D16FCB7D21FCB38D0033C5C0 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16FCB7921FCB3160033C5C0 /* ListView.swift */; };
-		D16FCB8121FDD2550033C5C0 /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16FCB8021FDD2550033C5C0 /* Weak.swift */; };
+		D1A1A7692210679B0094EA4F /* Target.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A1A7682210679B0094EA4F /* Target.swift */; };
+		D1A1A76B22106D300094EA4F /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A1A76A22106D300094EA4F /* Effect.swift */; };
 		D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */; };
 		D1C3A72121F0C47200C6B884 /* XAxisConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C3A72021F0C47200C6B884 /* XAxisConstraint.swift */; };
 		D1C3A72421F0DE5300C6B884 /* Insets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C3A72221F0DC6300C6B884 /* Insets.swift */; };
 		D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */; };
 		D1CB7D2B21E136520075C0C3 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */; };
 		D1CB7D2E21E29CC80075C0C3 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CB7D2D21E29CC80075C0C3 /* NavigationController.swift */; };
+		D1D792EB220F79140042A632 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D792EA220F79130042A632 /* State.swift */; };
+		D1D792ED220F79B30042A632 /* Ref.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D792EC220F79B30042A632 /* Ref.swift */; };
 		D1E8755521EF2ED200D4A7BA /* HooksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8755421EF2ED200D4A7BA /* HooksTests.swift */; };
 		D1EC92F021F5B8000026C207 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC92EF21F5B8000026C207 /* ListView.swift */; };
 		D1EF77522205C579008829EC /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EF77512205C579008829EC /* Constraint.swift */; };
@@ -99,7 +102,6 @@
 		OBJ_120 /* Null.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_71 /* Null.swift */; };
 		OBJ_121 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_72 /* Renderer.swift */; };
 		OBJ_122 /* StackReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_73 /* StackReconciler.swift */; };
-		OBJ_123 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_74 /* Store.swift */; };
 		OBJ_124 /* Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_75 /* Unique.swift */; };
 		OBJ_132 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_144 /* TestRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* TestRenderer.swift */; };
@@ -197,13 +199,16 @@
 		D163F9D521F27F8C00BA464B /* GluonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonViewController.swift; sourceTree = "<group>"; };
 		D16FCB7921FCB3160033C5C0 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		D16FCB7B21FCB3870033C5C0 /* TableViewBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewBox.swift; sourceTree = "<group>"; };
-		D16FCB8021FDD2550033C5C0 /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
+		D1A1A7682210679B0094EA4F /* Target.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Target.swift; sourceTree = "<group>"; };
+		D1A1A76A22106D300094EA4F /* Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effect.swift; sourceTree = "<group>"; };
 		D1BDBBE521E0F07800FBBCDF /* MountedNull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountedNull.swift; sourceTree = "<group>"; };
 		D1C3A72021F0C47200C6B884 /* XAxisConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XAxisConstraint.swift; sourceTree = "<group>"; };
 		D1C3A72221F0DC6300C6B884 /* Insets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Insets.swift; sourceTree = "<group>"; };
 		D1CB7D2821E136010075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		D1CB7D2A21E136520075C0C3 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		D1CB7D2D21E29CC80075C0C3 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		D1D792EA220F79130042A632 /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		D1D792EC220F79B30042A632 /* Ref.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ref.swift; sourceTree = "<group>"; };
 		D1E8755421EF2ED200D4A7BA /* HooksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HooksTests.swift; sourceTree = "<group>"; };
 		D1EC92EF21F5B8000026C207 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		D1EF77512205C579008829EC /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
@@ -287,7 +292,6 @@
 		OBJ_71 /* Null.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Null.swift; sourceTree = "<group>"; };
 		OBJ_72 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		OBJ_73 /* StackReconciler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackReconciler.swift; sourceTree = "<group>"; };
-		OBJ_74 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		OBJ_75 /* Unique.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unique.swift; sourceTree = "<group>"; };
 		OBJ_79 /* ReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReconcilerTests.swift; sourceTree = "<group>"; };
 		OBJ_8 /* Package.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Package.xcconfig; sourceTree = "<group>"; };
@@ -395,6 +399,17 @@
 			path = Host;
 			sourceTree = "<group>";
 		};
+		D1D792E7220F784A0042A632 /* Hooks */ = {
+			isa = PBXGroup;
+			children = (
+				D1D792EA220F79130042A632 /* State.swift */,
+				OBJ_45 /* Hooks.swift */,
+				D1D792EC220F79B30042A632 /* Ref.swift */,
+				D1A1A76A22106D300094EA4F /* Effect.swift */,
+			);
+			path = Hooks;
+			sourceTree = "<group>";
+		};
 		D1EF77502205C579008829EC /* Constraint */ = {
 			isa = PBXGroup;
 			children = (
@@ -493,15 +508,14 @@
 				OBJ_41 /* AnyNode.swift */,
 				OBJ_42 /* Components.swift */,
 				OBJ_43 /* Default.swift */,
-				OBJ_45 /* Hooks.swift */,
+				D1D792E7220F784A0042A632 /* Hooks */,
 				OBJ_46 /* Components */,
 				OBJ_67 /* MountedComponents */,
 				OBJ_71 /* Null.swift */,
 				OBJ_72 /* Renderer.swift */,
 				OBJ_73 /* StackReconciler.swift */,
-				OBJ_74 /* Store.swift */,
 				OBJ_75 /* Unique.swift */,
-				D16FCB8021FDD2550033C5C0 /* Weak.swift */,
+				D1A1A7682210679B0094EA4F /* Target.swift */,
 			);
 			name = Gluon;
 			path = Sources/Gluon;
@@ -845,8 +859,10 @@
 			buildActionMask = 0;
 			files = (
 				D1EF776E2205C74D008829EC /* SizeConstraint.swift in Sources */,
+				D1D792ED220F79B30042A632 /* Ref.swift in Sources */,
 				D1EF77602205C685008829EC /* Right.swift in Sources */,
 				D1EF775E2205C679008829EC /* Left.swift in Sources */,
+				D1D792EB220F79140042A632 /* State.swift in Sources */,
 				OBJ_93 /* AnyEquatable.swift in Sources */,
 				OBJ_94 /* AnyNode.swift in Sources */,
 				D1EF77582205C60D008829EC /* Height.swift in Sources */,
@@ -872,12 +888,14 @@
 				D1EF776A2205C717008829EC /* FirstBaseline.swift in Sources */,
 				OBJ_107 /* TabPresenter.swift in Sources */,
 				D1BDBBE621E0F07800FBBCDF /* MountedNull.swift in Sources */,
+				D1A1A7692210679B0094EA4F /* Target.swift in Sources */,
 				OBJ_108 /* Color.swift in Sources */,
 				OBJ_109 /* Event.swift in Sources */,
 				D1CB7D2E21E29CC80075C0C3 /* NavigationController.swift in Sources */,
 				OBJ_110 /* Rectangle.swift in Sources */,
 				OBJ_111 /* Second.swift in Sources */,
 				OBJ_112 /* Style.swift in Sources */,
+				D1A1A76B22106D300094EA4F /* Effect.swift in Sources */,
 				D1C3A72421F0DE5300C6B884 /* Insets.swift in Sources */,
 				D1EF77702205F6FA008829EC /* Center.swift in Sources */,
 				OBJ_113 /* TextAlignment.swift in Sources */,
@@ -885,7 +903,6 @@
 				D1CB7D2921E136010075C0C3 /* SegmentedControl.swift in Sources */,
 				OBJ_115 /* StackView.swift in Sources */,
 				OBJ_116 /* View.swift in Sources */,
-				D16FCB8121FDD2550033C5C0 /* Weak.swift in Sources */,
 				D1EF77542205C583008829EC /* Edges.swift in Sources */,
 				OBJ_117 /* MountedComponent.swift in Sources */,
 				D1EF77852208BB10008829EC /* TabItem.swift in Sources */,
@@ -896,7 +913,6 @@
 				OBJ_120 /* Null.swift in Sources */,
 				OBJ_121 /* Renderer.swift in Sources */,
 				OBJ_122 /* StackReconciler.swift in Sources */,
-				OBJ_123 /* Store.swift in Sources */,
 				OBJ_124 /* Unique.swift in Sources */,
 				D1EF77682205C6F6008829EC /* CenterY.swift in Sources */,
 				D1EF77862208BB13008829EC /* NavigationItem.swift in Sources */,

@@ -16,7 +16,7 @@ struct NavigationModal: PureLeafComponent {
   static func render(props: Props) -> AnyNode {
     return props.isPresented.value ?
       ModalPresenter.node(
-        NavigationPresenter<NavRouter>.node(
+        NavigationPresenter<ModalRouter>.node(
           .init(
             initial: .first,
             prefersLargeTitles: true,
@@ -82,7 +82,7 @@ struct Modals: LeafComponent {
         alignment: .center,
         axis: .vertical,
         distribution: .fillEqually,
-        Edges.equal(to: .parent)
+        Edges.equal(to: .safeArea)
       ),
       [
         Button.node(

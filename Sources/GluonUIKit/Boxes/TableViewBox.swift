@@ -104,6 +104,9 @@ final class GluonTableView: UITableView, Default {
 
 final class TableViewBox<T: CellProvider>: ViewBox<GluonTableView> {
   private let dataSource: DataSource<T>
+
+  // this delegate stays as a constant and doesn't create a reference cycle
+  // swiftlint:disable:next weak_delegate
   private let delegate: Delegate<T>
 
   var props: ListView<T>.Props {
