@@ -37,10 +37,10 @@ public struct Image: HostComponent {
     public let style: Style?
 
     public init(
+      flipsForRTL: Bool = false,
       name: String,
       renderingMode: RenderingMode = RenderingMode.automatic,
       scale: Double = 1.0,
-      flipsForRTL: Bool = false,
       _ style: Style? = nil
     ) {
       source = .name(name)
@@ -52,9 +52,9 @@ public struct Image: HostComponent {
 
     public init(
       data: Data,
+      flipsForRTL: Bool = false,
       renderingMode: RenderingMode = RenderingMode.automatic,
       scale: Double = 1.0,
-      flipsForRTL: Bool = false,
       _ style: Style? = nil
     ) {
       source = .data(data)
