@@ -40,7 +40,7 @@ public struct Image: HostComponent {
     public init(
       flipsForRTL: Bool = false,
       name: String,
-      renderingMode: RenderingMode = RenderingMode.automatic,
+      renderingMode: RenderingMode = .automatic,
       scale: Double = 1.0,
       _ style: Style? = nil
     ) {
@@ -54,7 +54,7 @@ public struct Image: HostComponent {
     public init(
       data: Data,
       flipsForRTL: Bool = false,
-      renderingMode: RenderingMode = RenderingMode.automatic,
+      renderingMode: RenderingMode = .automatic,
       scale: Double = 1.0,
       _ style: Style? = nil
     ) {

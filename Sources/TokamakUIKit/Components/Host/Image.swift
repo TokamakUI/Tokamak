@@ -18,11 +18,11 @@ extension UIImage.RenderingMode {
   public init(_ rawValue: Image.Props.RenderingMode) {
     switch rawValue {
     case .automatic:
-      self = UIImage.RenderingMode.automatic
+      self = .automatic
     case .alwaysOriginal:
-      self = UIImage.RenderingMode.alwaysOriginal
+      self = .alwaysOriginal
     case .alwaysTemplate:
-      self = UIImage.RenderingMode.alwaysTemplate
+      self = .alwaysTemplate
     }
   }
 }
