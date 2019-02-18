@@ -1,18 +1,16 @@
 //
 //  Image.swift
-//  Gluon
+//  Tokamak
 //
 //  Created by Matvii Hodovaniuk on 2/17/19.
 //
 
+import Foundation
+
 public struct Image: HostComponent {
   public typealias Children = [AnyNode]
 
-  public struct Props: Equatable, StyleProps, Default {
-    public static var defaultValue: Props {
-      return Props()
-    }
-
+  public struct Props: Equatable, StyleProps {
     public enum RenderingMode {
       case automatic
       case alwaysOriginal
@@ -39,13 +37,27 @@ public struct Image: HostComponent {
     public let style: Style?
 
     public init(
-      source: Source = .name(""),
+      name: String,
       renderingMode: RenderingMode = RenderingMode.automatic,
       scale: Double = 1.0,
       flipsForRTL: Bool = false,
       _ style: Style? = nil
     ) {
-      self.source = source
+      source = .name(name)
+      self.renderingMode = renderingMode
+      self.scale = scale
+      self.flipsForRTL = flipsForRTL
+      self.style = style
+    }
+
+    public init(
+      data: Data,
+      renderingMode: RenderingMode = RenderingMode.automatic,
+      scale: Double = 1.0,
+      flipsForRTL: Bool = false,
+      _ style: Style? = nil
+    ) {
+      source = .data(data)
       self.renderingMode = renderingMode
       self.scale = scale
       self.flipsForRTL = flipsForRTL

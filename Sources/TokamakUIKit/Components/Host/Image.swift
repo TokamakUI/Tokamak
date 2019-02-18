@@ -1,16 +1,16 @@
 //
 //  Image.swift
-//  Gluon
+//  TokamakUIKit
 //
 //  Created by Matvii Hodovaniuk on 2/17/19.
 //
 
-import Gluon
+import Tokamak
 import UIKit
 
-final class GluonImage: UIImageView, Default {
-  public static var defaultValue: GluonImage {
-    return GluonImage()
+final class TokamakImage: UIImageView, Default {
+  public static var defaultValue: TokamakImage {
+    return TokamakImage()
   }
 }
 
@@ -28,7 +28,11 @@ extension UIImage.RenderingMode {
 }
 
 extension Image: UIViewComponent {
-  static func update(view box: ViewBox<GluonImage>, _ props: Image.Props, _ children: [AnyNode]) {
+  static func update(
+    view box: ViewBox<TokamakImage>,
+    _ props: Image.Props,
+    _ children: [AnyNode]
+  ) {
     let image: UIImage?
 
     switch props.source {
@@ -38,8 +42,6 @@ extension Image: UIViewComponent {
       image = UIImage(data: data)
     }
 
-    image.withRenderingMode(UIImage.RenderingMode(props.renderingMode))
-
-    box.view.image = image
+    box.view.image = image?.withRenderingMode(.init(props.renderingMode))
   }
 }
