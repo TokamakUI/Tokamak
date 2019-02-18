@@ -22,7 +22,8 @@ public struct Image: HostComponent {
       case data(Data)
     }
 
-    // when changed initializes new image with `UIImage(named:)` or `UIImage(data:)`
+    // when changed initializes new image with `UIImage(named:)`
+    // or `UIImage(data:)`
     public let source: Source
 
     // when changed creates new image with `withRenderingMode`
