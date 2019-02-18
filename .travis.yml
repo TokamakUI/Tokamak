@@ -8,7 +8,6 @@ before_install:
 # - gem install cocoapods --pre # Since Travis is not always on latest version
 - brew update
 - brew install swiftformat
-- brew outdated carthage swiftlint || brew upgrade carthage swiftlint
 # - brew outdated carthage || brew upgrade carthage
 # cache: cocoapods
 # podfile: Example/Podfile
@@ -17,7 +16,6 @@ before_install:
 # - pod install --project-directory=Example
 script:
 - swiftformat --lint --verbose .
-- swiftlint
 - xcodebuild -scheme TokamakUIKit -sdk iphonesimulator
 - xcodebuild test -enableCodeCoverage YES -scheme Tokamak
 after_success:
