@@ -12,6 +12,7 @@
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
+		A6D5AF87221B131400DBF186 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D5AF86221B131400DBF186 /* Image.swift */; };
 		C449B806DFEE55B6CEE6478C /* libPods-TokamakDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B96B435A9D67621D318616E /* libPods-TokamakDemo.a */; };
 		D11DB6432219C03000013FC3 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DB6422219C03000013FC3 /* Timer.swift */; };
 		D1BFAF772215795900845EA0 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF762215795900845EA0 /* Router.swift */; };
@@ -38,6 +39,7 @@
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8CADEBB8BFF6F2621CA49E8F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		A6D5AF86221B131400DBF186 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		A9EEF813955DAEEFE1D52ED4 /* Pods-TokamakDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokamakDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokamakDemo/Pods-TokamakDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		C6DA99382B6892EAB361742F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		D11DB6422219C03000013FC3 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				D1DEEC2822009E8000C525EE /* ModalRouter.swift */,
 				D1F2C3262214407B008358DC /* TableModal.swift */,
 				D11DB6422219C03000013FC3 /* Timer.swift */,
+				A6D5AF86221B131400DBF186 /* Image.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 				D11DB6432219C03000013FC3 /* Timer.swift in Sources */,
 				D1F7185322159E09004E5951 /* Controls.swift in Sources */,
 				D1DEEC2922009E8000C525EE /* ModalRouter.swift in Sources */,
+				A6D5AF87221B131400DBF186 /* Image.swift in Sources */,
 				D1BFAF772215795900845EA0 /* Router.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				D1F7185D2215A4A1004E5951 /* LayerProps.swift in Sources */,

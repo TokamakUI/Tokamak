@@ -39,13 +39,13 @@ extension Image: UIViewComponent {
     case let .name(name):
       image = UIImage(named: name)
     case let .data(data):
-        image = UIImage(data: data, scale: CGFloat(props.scale))
+      image = UIImage(data: data, scale: CGFloat(props.scale))
     }
-    
-    if(props.flipsForRTL){
-        image = image?.imageFlippedForRightToLeftLayoutDirection()
+
+    if props.flipsForRTL {
+      image = image?.imageFlippedForRightToLeftLayoutDirection()
     }
-    
+
     box.view.image = image?.withRenderingMode(.init(props.renderingMode))
   }
 }
