@@ -8,10 +8,10 @@
 
 import Tokamak
 
-struct ImageExample: LeafComponent {
+struct ImageExample: PureLeafComponent {
   typealias Props = Null
 
-  static func render(props _: Null, hooks _: Hooks) -> AnyNode {
+  static func render(props _: Null) -> AnyNode {
     return StackView.node(.init(
       alignment: .center,
       axis: .vertical,
