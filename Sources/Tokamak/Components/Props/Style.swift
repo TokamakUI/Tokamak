@@ -14,6 +14,21 @@ public enum Layout: Equatable {
   case constraints([Constraint])
 }
 
+public enum ContentMode {
+  case scaleToFill
+  case scaleAspectFit
+  case scaleAspectFill
+  case center
+  case top
+  case bottom
+  case left
+  case right
+  case topLeft
+  case topRight
+  case bottomLeft
+  case bottomRight
+}
+
 public struct Style: Equatable {
   public let allowsEdgeAntialiasing: Bool?
   public let allowsGroupOpacity: Bool?
@@ -23,6 +38,7 @@ public struct Style: Equatable {
   public let borderWidth: Float?
   public let center: Point?
   public let clipsToBounds: Bool?
+  public let contentMode: ContentMode?
   public let cornerRadius: Float?
   public let isDoubleSided: Bool?
   public let isHidden: Bool?
@@ -42,6 +58,7 @@ public struct Style: Equatable {
     borderWidth: Float? = 0.0,
     center: Point? = nil,
     clipsToBounds: Bool? = nil,
+    contentMode: ContentMode? = ContentMode.scaleToFill,
     cornerRadius: Float? = 0.0,
     isDoubleSided: Bool? = true,
     isHidden: Bool? = nil,
@@ -59,6 +76,7 @@ public struct Style: Equatable {
     self.borderWidth = borderWidth
     self.center = center
     self.clipsToBounds = clipsToBounds
+    self.contentMode = contentMode
     self.cornerRadius = cornerRadius
     self.isDoubleSided = isDoubleSided
     self.isHidden = isHidden
@@ -80,6 +98,7 @@ public struct Style: Equatable {
     borderWidth: Float? = 0.0,
     center: Point? = nil,
     clipsToBounds: Bool? = nil,
+    contentMode: ContentMode? = ContentMode.scaleToFill,
     cornerRadius: Float? = 0.0,
     isDoubleSided: Bool? = true,
     isHidden: Bool? = nil,
@@ -98,6 +117,7 @@ public struct Style: Equatable {
     self.borderWidth = borderWidth
     self.center = center
     self.clipsToBounds = clipsToBounds
+    self.contentMode = contentMode
     self.cornerRadius = cornerRadius
     self.isDoubleSided = isDoubleSided
     self.isHidden = isHidden
@@ -119,6 +139,7 @@ public struct Style: Equatable {
     borderWidth: Float? = 0.0,
     center: Point? = nil,
     clipsToBounds: Bool? = nil,
+    contentMode: ContentMode? = ContentMode.scaleToFill,
     cornerRadius: Float? = 0.0,
     isDoubleSided: Bool? = true,
     isHidden: Bool? = nil,
@@ -137,6 +158,7 @@ public struct Style: Equatable {
     self.borderWidth = borderWidth
     self.center = center
     self.clipsToBounds = clipsToBounds
+    self.contentMode = contentMode
     self.cornerRadius = cornerRadius
     self.isDoubleSided = isDoubleSided
     self.isHidden = isHidden
@@ -158,6 +180,7 @@ public struct Style: Equatable {
     borderWidth: Float? = 0.0,
     center: Point? = nil,
     clipsToBounds: Bool? = nil,
+    contentMode: ContentMode? = ContentMode.scaleToFill,
     cornerRadius: Float? = 0.0,
     isDoubleSided: Bool? = true,
     isHidden: Bool? = nil,
@@ -176,6 +199,7 @@ public struct Style: Equatable {
     self.borderWidth = borderWidth
     self.center = center
     self.clipsToBounds = clipsToBounds
+    self.contentMode = contentMode
     self.cornerRadius = cornerRadius
     self.isDoubleSided = isDoubleSided
     self.isHidden = isHidden

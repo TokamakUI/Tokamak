@@ -8,17 +8,17 @@
 
 import Tokamak
 
-struct ImageExample: LeafComponent {
+struct ImageExample: PureLeafComponent {
   typealias Props = Null
 
-  static func render(props: Null, hooks: Hooks) -> AnyNode {
+  static func render(props _: Null) -> AnyNode {
     return StackView.node(.init(
       alignment: .center,
       axis: .vertical,
       distribution: .fillEqually,
       Edges.equal(to: .safeArea)
     ), [
-      Image.node(.init(name: "tokamak")),
+      Image.node(.init(name: "tokamak", Style(contentMode: .scaleAspectFit))),
     ])
   }
 }
