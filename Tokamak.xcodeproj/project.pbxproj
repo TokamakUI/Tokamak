@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		A6AB60B5221C70340063F88A /* ContentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AB60B4221C70340063F88A /* ContentMode.swift */; };
 		D1B4F8DB221AFB0E00C53C42 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4F8D9221AFB0800C53C42 /* Image.swift */; };
 		D1B4F8DD221AFB2B00C53C42 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4F8DC221AFB2B00C53C42 /* Image.swift */; };
 		OBJ_153 /* AnyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_66 /* AnyEquatable.swift */; };
@@ -182,6 +183,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A6AB60B4221C70340063F88A /* ContentMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMode.swift; sourceTree = "<group>"; };
 		D1B4F8D9221AFB0800C53C42 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		D1B4F8DC221AFB2B00C53C42 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		OBJ_10 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
@@ -436,6 +438,7 @@
 				OBJ_52 /* Event.swift */,
 				OBJ_53 /* LineBreakMode.swift */,
 				OBJ_54 /* Rectangle.swift */,
+				A6AB60B4221C70340063F88A /* ContentMode.swift */,
 			);
 			path = Props;
 			sourceTree = "<group>";
@@ -875,6 +878,7 @@
 				OBJ_272 /* View.swift in Sources */,
 				OBJ_273 /* Color.swift in Sources */,
 				OBJ_274 /* BaselineConstraint.swift in Sources */,
+				A6AB60B5221C70340063F88A /* ContentMode.swift in Sources */,
 				OBJ_275 /* Bottom.swift in Sources */,
 				OBJ_276 /* CenterX.swift in Sources */,
 				OBJ_277 /* CenterY.swift in Sources */,
