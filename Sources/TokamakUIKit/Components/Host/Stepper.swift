@@ -19,5 +19,11 @@ extension Stepper: UIValueComponent {
 
   static func update(valueBox: ValueControlBox<TokamakStepper>,
                      _ props: Stepper.Props,
-                     _ children: Null) {}
+                     _ children: Null) {
+    valueBox.view.stepValue = props.stepValue
+    valueBox.view.minimumValue = props.minimumValue
+    valueBox.view.maximumValue = props.maximumValue
+    valueBox.view.wraps = props.wraps
+    valueBox.view.autorepeat = props.autorepeat
+  }
 }

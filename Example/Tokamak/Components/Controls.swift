@@ -73,9 +73,14 @@ struct Controls: LeafComponent {
         ), [
           Stepper.node(
             .init(
+              autorepeat: false,
               isEnabled: isEnabled.value,
+              maximumValue: 5.0,
+              minimumValue: -5.0,
+              stepValue: 0.5,
               value: stepperState.value,
-              valueHandler: Handler(stepperState.set)
+              valueHandler: Handler(stepperState.set),
+              wraps: true
             )
           ),
 
