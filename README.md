@@ -28,8 +28,8 @@ or XML. Describe UI of your app concisely in Swift and get views native to
 iOS with full support for accessibility, auto layout and native navigation gestures.
 
 * **Easy to use one-way data binding**: tired of `didSet`, delegates,
-notifications or KVO? Component's UI is automatically updated based on
-state changes.
+notifications or KVO? UI components automatically update in response to state 
+changes.
 
 * **Clean composable architecture**: components can be passed to other
 components as children with an established API focused on code reuse. You can
@@ -39,31 +39,32 @@ subclass `UIView` or `UIViewController` to make your UI composable.
 
 * **Off-screen rendering for unit-tests**: no need to maintain slow and flaky UI
 tests that render everything on a simulator screen and simulate actual touch
-events. All of UI logic written with Tokamak can be tested off-screen with tests
-completing in a fraction of a second. If your UI logic doesn't require any
-code specific to `UIKit` (and Tokamak provides helpers to achieve that) you can
-even run your UI-related unit-tests on Linux!
+events to just test UI logic. Components written with Tokamak can be tested
+off-screen with tests completing in a fraction of a second. If your UI doesn't
+require any code specific to `UIKit` (and Tokamak provides helpers to achieve
+that) you can even run your UI-related unit-tests on Linux!
 
 * **Platform-independent core**: our main goal is to eventually support as many
 platforms as possible. Starting with iOS and UIKit, we plan to add renderers
 for macOS/AppKit, WebAssembly/DOM and native Android in future versions. As
 the core API is cross-platform, UI components written with Tokamak won't need to
 change to become available on newly added platforms unless you need UI logic
-specific to a device or OS.
+specific to a device or OS. And if they do, you can still cleanly separate
+platform-specific components thanks to easy composition.
 
-* **Architecture proven to work**: React has been available for years and
-gained a lot of traction and is still growing. We've seen so many apps
-successfully rebuilt with it and heard positive feedback on React itself, but
-a lot of complaints about overreliance on JavaScript. Tokamak makes architecture
-of React with its established patterns available to you in Swift.
+* **Architecture proven to work**: React has been available for years and gained
+a lot of traction and is still growing. We've seen so many apps successfully
+rebuilt with it and heard positive feedback on React itself, but we also see
+a lot of complaints about its overreliance on JavaScript. Tokamak makes
+architecture of React with its established patterns available to you in Swift.
 
-_**Important:**_ Tokamak is relatively stable at this point, as in not having any
-blocking or critical bugs that the maintainers are aware of. The core API of
+_**Important:**_ Tokamak is relatively stable at this point, as in not having
+any blocking or critical bugs that the maintainers are aware of. The core API of
 `Component` and `Hooks` types is frozen, and there's a plenty of [standard
 components](#standard-components) to start building useful apps. If in the
 future there's a breaking change that's absolutely needed, deprecating old APIs
-without breakage and introducing a replacement gradually is the top priority.
-Nevertheless, its important to note this can't always be achieved. 
+in a source-compatible way and introducing a replacement gradually is the top
+priority. Nevertheless, its important to note this can't always be achieved. 
 
 ## Table of contents
 
@@ -124,6 +125,16 @@ To run the example project, clone the repo, and run `pod install` from the
 [`Example`](https://github.com/MaxDesiatov/Tokamak/tree/master/Example) directory
 first. Then you can open `Example/Tokamak.xcworkspace` and run the main 
 executable target `Tokamak-Example`.
+
+## Standard components
+
+Tokamak provides a few basic components that you can reuse in your apps. On iOS
+these components are rendered to corresponding `UIView` subclasses that you're
+already used to, e.g. `Button` component is rendered as `UIButton`, `Label` as
+`UILabel` etc. Check out [the complete up to date
+list](https://github.com/MaxDesiatov/Tokamak/blob/master/tokamakui.org/StandardComponents.md)
+for more info.
+
 
 ## Fundamental concepts
 
@@ -396,15 +407,6 @@ Providing renderers for other platforms in the future is one of our top
 priorities. Imagine an `AppKitRenderer` that allows you to render the same
 component on macOS without any changes applied to the component code and without
 requiring [Marzipan](https://www.imore.com/marzipan)!
-
-### Standard components
-
-Tokamak provides a few basic components that you can reuse in your apps. On iOS
-these components are rendered to corresponding `UIView` subclasses that you're
-already used to, e.g. `Button` component is rendered as `UIButton`, `Label` as
-`UILabel` etc. Check out [the complete up to date
-list](https://github.com/MaxDesiatov/Tokamak/blob/master/tokamakui.org/StandardComponents.md)
-for more info.
 
 ## Requirements
 
