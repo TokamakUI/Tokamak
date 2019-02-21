@@ -30,6 +30,7 @@ public enum ContentMode {
 }
 
 public struct Style: Equatable {
+  public let accessibility: Accessibility?
   public let allowsEdgeAntialiasing: Bool?
   public let allowsGroupOpacity: Bool?
   public let alpha: Double?
@@ -50,6 +51,7 @@ public struct Style: Equatable {
   public let layout: Layout?
 
   public init(
+    accessibility: Accessibility? = nil,
     allowsEdgeAntialiasing: Bool? = false,
     allowsGroupOpacity: Bool? = true,
     alpha: Double? = nil,
@@ -68,6 +70,7 @@ public struct Style: Equatable {
     shadowOpacity: Float? = 0.0,
     shadowRadius: Float? = 3.0
   ) {
+    self.accessibility = accessibility
     self.allowsEdgeAntialiasing = allowsEdgeAntialiasing
     self.allowsGroupOpacity = allowsGroupOpacity
     self.alpha = alpha
@@ -90,6 +93,7 @@ public struct Style: Equatable {
   }
 
   public init(
+    accessibility: Accessibility? = nil,
     allowsEdgeAntialiasing: Bool? = false,
     allowsGroupOpacity: Bool? = true,
     alpha: Double? = nil,
@@ -109,6 +113,7 @@ public struct Style: Equatable {
     shadowRadius: Float? = 3.0,
     _ frame: Rectangle
   ) {
+    self.accessibility = accessibility
     self.allowsEdgeAntialiasing = allowsEdgeAntialiasing
     self.allowsGroupOpacity = allowsGroupOpacity
     self.alpha = alpha
@@ -131,6 +136,7 @@ public struct Style: Equatable {
   }
 
   public init(
+    accessibility: Accessibility? = nil,
     allowsEdgeAntialiasing: Bool? = false,
     allowsGroupOpacity: Bool? = true,
     alpha: Double? = nil,
@@ -150,6 +156,7 @@ public struct Style: Equatable {
     shadowRadius: Float? = 3.0,
     _ constraint: Constraint
   ) {
+    self.accessibility = accessibility
     self.allowsEdgeAntialiasing = allowsEdgeAntialiasing
     self.allowsGroupOpacity = allowsGroupOpacity
     self.alpha = alpha
@@ -172,6 +179,7 @@ public struct Style: Equatable {
   }
 
   public init(
+    accessibility: Accessibility? = nil,
     allowsEdgeAntialiasing: Bool? = false,
     allowsGroupOpacity: Bool? = true,
     alpha: Double? = nil,
@@ -191,6 +199,7 @@ public struct Style: Equatable {
     shadowRadius: Float? = 3.0,
     _ constraints: [Constraint]
   ) {
+    self.accessibility = accessibility
     self.allowsEdgeAntialiasing = allowsEdgeAntialiasing
     self.allowsGroupOpacity = allowsGroupOpacity
     self.alpha = alpha
