@@ -93,6 +93,7 @@ public struct Style: Equatable {
   }
 
   public init(
+    _ frame: Rectangle,
     accessibility: Accessibility? = nil,
     allowsEdgeAntialiasing: Bool? = false,
     allowsGroupOpacity: Bool? = true,
@@ -110,8 +111,7 @@ public struct Style: Equatable {
     opacity: Float? = 1.0,
     shadowColor: Color? = nil,
     shadowOpacity: Float? = 0.0,
-    shadowRadius: Float? = 3.0,
-    _ frame: Rectangle
+    shadowRadius: Float? = 3.0
   ) {
     self.accessibility = accessibility
     self.allowsEdgeAntialiasing = allowsEdgeAntialiasing
@@ -136,6 +136,7 @@ public struct Style: Equatable {
   }
 
   public init(
+    _ constraint: Constraint,
     accessibility: Accessibility? = nil,
     allowsEdgeAntialiasing: Bool? = false,
     allowsGroupOpacity: Bool? = true,
@@ -153,8 +154,7 @@ public struct Style: Equatable {
     opacity: Float? = 1.0,
     shadowColor: Color? = nil,
     shadowOpacity: Float? = 0.0,
-    shadowRadius: Float? = 3.0,
-    _ constraint: Constraint
+    shadowRadius: Float? = 3.0
   ) {
     self.accessibility = accessibility
     self.allowsEdgeAntialiasing = allowsEdgeAntialiasing
@@ -179,6 +179,7 @@ public struct Style: Equatable {
   }
 
   public init(
+    _ constraints: [Constraint],
     accessibility: Accessibility? = nil,
     allowsEdgeAntialiasing: Bool? = false,
     allowsGroupOpacity: Bool? = true,
@@ -196,8 +197,7 @@ public struct Style: Equatable {
     opacity: Float? = 1.0,
     shadowColor: Color? = nil,
     shadowOpacity: Float? = 0.0,
-    shadowRadius: Float? = 3.0,
-    _ constraints: [Constraint]
+    shadowRadius: Float? = 3.0
   ) {
     self.accessibility = accessibility
     self.allowsEdgeAntialiasing = allowsEdgeAntialiasing
