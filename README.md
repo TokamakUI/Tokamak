@@ -166,9 +166,10 @@ struct Props: Equatable {
 
 Sometimes "configuration" is described in a tree-like fashion. For example, a
 list of views contains an array of subviews, which themselves can contain other
-subviews. In Tokamak this is called `Children`, which behave similar to `Props`,
-but are important enough to be treated separately. `Children` are also immutable
-and `Equatable`, which allows us to observe those for changes too.
+subviews. In Tokamak this is called `Children`, which behave similar to
+[`Props`](#props), but are important enough to be treated separately. `Children`
+are also immutable and `Equatable`, which allows us to observe those for changes
+too.
 
 ### Components
 
