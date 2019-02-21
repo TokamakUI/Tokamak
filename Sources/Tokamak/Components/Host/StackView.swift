@@ -42,11 +42,11 @@ public struct StackView: HostComponent {
     public let style: Style?
 
     public init(
+      _ frame: Rectangle,
       alignment: Alignment = .fill,
       axis: Axis = .horizontal,
       distribution: Distribution = .fill,
-      spacing: Double = 0,
-      _ frame: Rectangle,
+      spacing: Double = 0
     ) {
       self.alignment = alignment
       self.axis = axis
@@ -56,16 +56,30 @@ public struct StackView: HostComponent {
     }
 
     public init(
+      _ constraint: Constraint,
       alignment: Alignment = .fill,
       axis: Axis = .horizontal,
       distribution: Distribution = .fill,
-      spacing: Double = 0,
-      _ constraint: Constraint
+      spacing: Double = 0
     ) {
       self.alignment = alignment
       self.axis = axis
       self.distribution = distribution
       style = Style(constraint)
+      self.spacing = spacing
+    }
+
+    public init(
+      _ constraints: [Constraint],
+      alignment: Alignment = .fill,
+      axis: Axis = .horizontal,
+      distribution: Distribution = .fill,
+      spacing: Double = 0
+    ) {
+      self.alignment = alignment
+      self.axis = axis
+      self.distribution = distribution
+      style = Style(constraints)
       self.spacing = spacing
     }
 
