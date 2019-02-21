@@ -172,8 +172,9 @@ and `Equatable`, which allows us to observe those for changes too.
 
 ### Components
 
-`Component` is a protocol, which couples given `Props` and `Children` on screen
-and provides some declaration how these are rendered on screen:
+`Component` is a protocol, which couples given [`Props`](#props) and
+[`Children`](#children) on screen and provides some declaration how these are
+rendered on screen:
 
 ```swift
 protocol Component {
@@ -193,9 +194,9 @@ has done, which is built on top of PATs but stays flexible and ergonomic).
 
 ### Nodes
 
-A node is a container for `Props`, `Children` and a type conforming to
-`Component` rendering this "configuration". If you're familiar with React, nodes
-in Tokamak correspond to [elements in
+A node is a container for [`Props`](#props), [`Children`](#children) and a type
+conforming to [`Component`](#components) rendering this "configuration". If
+you're familiar with React, nodes in Tokamak correspond to [elements in
 React](https://reactjs.org/docs/glossary.html#elements). When `Children` is an
 array of nodes, we can indirectly form a tree describing the app's UI.
 Corollary, nodes are immutable and `Equatable`. You'd only need to use the
@@ -241,8 +242,9 @@ StackView.node(.init(axis: .vertical), [])
 ### Render function
 
 One of the most simple components is a [pure
-function](https://en.wikipedia.org/wiki/Pure_function) taking `Props` and
-`Children` as an argument and returning a node tree as a result:
+function](https://en.wikipedia.org/wiki/Pure_function) taking [`Props`](#props)
+and [`Children`](#children) as an argument and returning a node tree as a
+result:
 
 ```swift
 protocol PureComponent: Component {
