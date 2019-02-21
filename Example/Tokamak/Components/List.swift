@@ -34,11 +34,11 @@ struct List: PureLeafComponent {
 
   static func render(props: Props) -> AnyNode {
     return ListView<Cells>.node(.init(
-      model: [props.model],
-      onSelect: props.onSelect,
       Style([
         Edges.equal(to: .parent),
-      ])
+      ]),
+      model: [props.model],
+      onSelect: props.onSelect
     ))
   }
 }

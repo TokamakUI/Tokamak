@@ -25,9 +25,9 @@ struct DatePickers: LeafComponent {
     )
 
     return StackView.node(.init(
+      Edges.equal(to: .safeArea),
       axis: .vertical,
-      distribution: .fillEqually,
-      Edges.equal(to: .safeArea)
+      distribution: .fillEqually
     ), [
       Label.node(
         labelProps,
@@ -39,9 +39,9 @@ struct DatePickers: LeafComponent {
       ),
       DatePicker.node(
         .init(
+          Style(Width.equal(to: .parent)),
           value: date.value,
-          valueHandler: Handler(date.set),
-          Style(Width.equal(to: .parent))
+          valueHandler: Handler(date.set)
         )
       ),
       Label.node(
@@ -50,10 +50,10 @@ struct DatePickers: LeafComponent {
       ),
       DatePicker.node(
         .init(
+          Style(Width.equal(to: .parent)),
           isAnimated: false,
           value: date.value,
-          valueHandler: Handler(date.set),
-          Style(Width.equal(to: .parent))
+          valueHandler: Handler(date.set)
         )
       ),
     ])

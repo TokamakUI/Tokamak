@@ -13,10 +13,10 @@ struct ImageExample: PureLeafComponent {
 
   static func render(props _: Null) -> AnyNode {
     return StackView.node(.init(
+      Edges.equal(to: .safeArea),
       alignment: .center,
       axis: .vertical,
-      distribution: .fillEqually,
-      Edges.equal(to: .safeArea)
+      distribution: .fillEqually
     ), [
       Image.node(.init(
         Style(contentMode: .scaleAspectFit),

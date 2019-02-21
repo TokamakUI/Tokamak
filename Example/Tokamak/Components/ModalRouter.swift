@@ -36,12 +36,13 @@ struct ModalRouter: NavigationRouter {
         NavigationItem.node(
           .init(title: "First", titleMode: .standard),
           View.node(
-            .init(Style(backgroundColor: .white, Edges.equal(to: .parent))), [
+            .init(Style(Edges.equal(to: .parent), backgroundColor: .white)), [
               close,
               Button.node(.init(
-                onPress: Handler { push(.second) },
                 Style(Rectangle(Point(x: 0, y: 400),
-                                Size(width: 200, height: 200)))
+                                Size(width: 200, height: 200))),
+                onPress: Handler { push(.second) }
+
               ), "Go to Second"),
             ]
           )
@@ -51,12 +52,12 @@ struct ModalRouter: NavigationRouter {
         NavigationItem.node(
           .init(title: "Second", titleMode: .large),
           View.node(
-            .init(Style(backgroundColor: .white, Edges.equal(to: .parent))), [
+            .init(Style(Edges.equal(to: .parent), backgroundColor: .white)), [
               close,
               Label.node(.init(
-                alignment: .center,
                 Style(Rectangle(Point(x: 0, y: 200),
-                                Size(width: 200, height: 200)))
+                                Size(width: 200, height: 200))),
+                alignment: .center
               ), "This is second"),
             ]
           )
