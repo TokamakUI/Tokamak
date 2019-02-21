@@ -703,7 +703,7 @@ authors of components to implement
 [`didSet`](https://www.hackingwithswift.com/read/8/5/property-observers-didset)
 on every instance property, but this is cumbersome and hard to enforce.
 Marking `render` as `static` makes it harder to introduce unobservable local
-state, while intended local state is managed with `Hooks`.
+state, while intended local state is managed with [`Hooks`](#hooks).
 
 
 ## Acknowledgments
