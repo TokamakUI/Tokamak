@@ -145,7 +145,8 @@ all built upon a few basic concepts:
 ### Props
 
 `Props` describe a "configuration" of what you'd like to see on user's screen.
-`Props` are immutable and
+An example could be a `struct` describing background color, layout, initial
+value etc. `Props` are immutable and
 [`Equatable`](https://developer.apple.com/documentation/swift/equatable), which
 allows us to observe when they change. You always use `struct` or `enum` and
 never use `class` for props so that immutability is guaranteed. You wouldn't
