@@ -154,7 +154,7 @@ ever need to provide your own `Equatable` implementation for `Props` as Swift
 compiler is able to generate one for you [automatically behind the
 scenes](https://github.com/apple/swift-evolution/blob/master/proposals/0185-synthesize-equatable-hashable.md).
 Here's a simple `Props` struct you could use for your own component like
-`Counter` from the example above:
+[`Counter`](#example-code) from the example above:
 
 ```swift
 struct Props: Equatable {
@@ -372,7 +372,7 @@ state with `hooks.state`.
 
 When you need state changes to update any of the descendant components, you can
 pass the state value within props or children of nodes returned from `render`.
-In `Counter` component the label's content is "bound" to `count` this way:
+In [`Counter`](#example-code) component the label's content is "bound" to `count` this way:
 
 ```swift
 struct Counter: LeafComponent {
@@ -395,17 +395,17 @@ ones: just add it to your `extension Hooks` wherever works best for you.
 ### Renderers
 
 When mapping Tokamak's architecture to what's previosly been established in iOS,
-`Component` corresponds to a "view-model" layer, while `Hooks` provide a reusable
-"controller" layer. A `Renderer` is a "view" layer in these terms, but it's
-fully managed by Tokamak. Not only this greatly simplifies the code of your
+`Component` corresponds to a "view-model" layer, while `Hooks` provide a
+reusable "controller" layer. A `Renderer` is a "view" layer in these terms, but
+it's fully managed by Tokamak. Not only this greatly simplifies the code of your
 components and allows you to make it declarative, it also completely decouples
-platform-specific code.  Note that `Counter` component above doesn't contain a
-single type from `UIKit` module, although the component itself is passed to a
-specific `UIKitRenderer` to make it available in an app using `UIKit`. On other
-platforms you could use a different renderer, while the component code could
-stay the same if its behavior doesn't need to change for that environment.
-Otherwise you can adjust component's behavior via `Props` and pass different
-"initializing" props depending on the renderer's platform.
+platform-specific code.  Note that [`Counter`](#example-code) component above
+doesn't contain a single type from `UIKit` module, although the component itself
+is passed to a specific `UIKitRenderer` to make it available in an app using
+`UIKit`. On other platforms you could use a different renderer, while the
+component code could stay the same if its behavior doesn't need to change for
+that environment. Otherwise you can adjust component's behavior via `Props` and
+pass different "initializing" props depending on the renderer's platform.
 
 Providing renderers for other platforms in the future is one of our top
 priorities. Imagine an `AppKitRenderer` that allows you to render the same
@@ -528,11 +528,11 @@ struct ConditionalCounter: LeafComponent {
 }
 ```
 
-How does Tokamak renderer know on subsequent calls to `DoubleCounter.render` which
-state you're actually addressing? It relies on the order of those calls, so if
-the order dynamically changes from one rendering to another, you could
-unexpectedly get a value of the one state cell, when you expected a value of
-a different state cell. 
+How does Tokamak renderer know on subsequent calls to
+`ConditionalCounter.render` which state you're actually addressing? It relies on
+the order of those calls, so if the order dynamically changes from one rendering
+to another, you could unexpectedly get a value of the one state cell, when you
+expected a value of a different state cell. 
 
 We encourage you to keep any hooks logic at the top level of a `render`
 definition, which makes all side effects of a component clear upfront and is a
