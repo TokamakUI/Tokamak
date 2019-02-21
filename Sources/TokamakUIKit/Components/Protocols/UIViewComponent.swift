@@ -23,8 +23,8 @@ protocol UIViewComponent: UIHostComponent, HostComponent {
   ) -> ViewBox<Target>
 }
 
-private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
-                                                  _ props: P) {
+private func applyStyle<T: UIView, P: ViewProps>(_ target: ViewBox<T>,
+                                                 _ props: P) {
   guard let style = props.style else {
     return
   }
@@ -69,7 +69,7 @@ private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
 }
 
 extension UIViewComponent where Target == Target.DefaultValue,
-  Props: StyleProps {
+  Props: ViewProps {
   static func box(
     for view: Target,
     _ viewController: UIViewController,

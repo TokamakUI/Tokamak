@@ -6,7 +6,7 @@
 //
 
 public struct Button: HostComponent {
-  public struct Props: Equatable, ControlProps, StyleProps, Default {
+  public struct Props: Equatable, ControlProps, ViewProps, Default {
     public static var defaultValue: Props {
       return Props()
     }

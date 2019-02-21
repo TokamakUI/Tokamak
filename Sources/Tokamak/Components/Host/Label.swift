@@ -6,7 +6,7 @@
 //
 
 public struct Label: HostComponent {
-  public struct Props: Equatable, StyleProps, Default {
+  public struct Props: Equatable, ViewProps, Default {
     public static var defaultValue: Props {
       return Props()
     }

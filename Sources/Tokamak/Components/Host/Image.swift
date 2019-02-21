@@ -10,7 +10,7 @@ import Foundation
 public struct Image: HostComponent {
   public typealias Children = [AnyNode]
 
-  public struct Props: Equatable, StyleProps {
+  public struct Props: Equatable, ViewProps {
     public enum RenderingMode {
       case automatic
       case alwaysOriginal

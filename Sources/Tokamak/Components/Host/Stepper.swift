@@ -6,7 +6,7 @@
 //
 
 public struct Stepper: HostComponent {
-  public struct Props: Equatable, ControlProps, StyleProps,
+  public struct Props: Equatable, ControlProps, ViewProps,
     ValueControlProps {
     public let autorepeat: Bool
     public let handlers: EventHandlers

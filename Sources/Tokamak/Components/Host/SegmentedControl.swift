@@ -6,7 +6,7 @@
 //
 
 public struct SegmentedControl: HostComponent {
-  public struct Props: Equatable, ControlProps, StyleProps,
+  public struct Props: Equatable, ControlProps, ViewProps,
     ValueControlProps {
     public let handlers: EventHandlers
     public let style: Style?
