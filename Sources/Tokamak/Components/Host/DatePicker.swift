@@ -18,12 +18,12 @@ public struct DatePicker: HostComponent {
     public let isAnimated: Bool
 
     public init(
+      _ style: Style? = nil,
       handlers: EventHandlers = [:],
       isAnimated: Bool = true,
       isEnabled: Bool = true,
       value: Date,
-      valueHandler: Handler<Date>? = nil,
-      _ style: Style? = nil
+      valueHandler: Handler<Date>? = nil
     ) {
       self.handlers = handlers
       self.style = style

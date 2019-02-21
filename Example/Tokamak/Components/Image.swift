@@ -18,7 +18,10 @@ struct ImageExample: PureLeafComponent {
       distribution: .fillEqually,
       Edges.equal(to: .safeArea)
     ), [
-      Image.node(.init(name: "tokamak", Style(contentMode: .scaleAspectFit))),
+      Image.node(.init(
+        Style(contentMode: .scaleAspectFit),
+        name: "tokamak"
+      )),
     ])
   }
 }

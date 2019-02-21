@@ -46,7 +46,7 @@ public struct StackView: HostComponent {
       axis: Axis = .horizontal,
       distribution: Distribution = .fill,
       spacing: Double = 0,
-      _ frame: Rectangle
+      _ frame: Rectangle,
     ) {
       self.alignment = alignment
       self.axis = axis

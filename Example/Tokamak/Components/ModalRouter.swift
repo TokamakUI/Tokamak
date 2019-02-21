@@ -27,8 +27,8 @@ struct ModalRouter: NavigationRouter {
   ) -> AnyNode {
     let close =
       Button.node(.init(
-        onPress: props.onPress,
-        Style(Rectangle(.zero, Size(width: 200, height: 200)))
+        Style(Rectangle(.zero, Size(width: 200, height: 200))),
+        onPress: props.onPress
       ), "Close Modal")
     switch route {
     case .first:
