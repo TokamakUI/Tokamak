@@ -31,10 +31,14 @@ struct Counter: LeafComponent {
       Label.node(.init(), "\(sliding.value)"),
     ] : []
 
-    return StackView.node(.init(axis: .vertical,
-                                distribution: .fillEqually,
-                                Edges.equal(to: .parent)),
-                          children)
+    return StackView.node(
+      .init(
+        Edges.equal(to: .parent),
+        axis: .vertical,
+        distribution: .fillEqually
+      ),
+      children
+    )
   }
 }
 

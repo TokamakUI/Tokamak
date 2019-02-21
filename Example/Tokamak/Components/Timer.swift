@@ -35,7 +35,6 @@ struct TimerCounter: LeafComponent {
         alignment: .center,
         axis: .vertical,
         distribution: .fillEqually
-
       ), [
         Label.node(
           .init(alignment: .center),
