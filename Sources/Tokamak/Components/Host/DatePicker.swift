@@ -8,7 +8,7 @@
 import Foundation
 
 public struct DatePicker: HostComponent {
-  public struct Props: Equatable, ControlProps, ViewProps,
+  public struct Props: Equatable, ControlProps, StyleProps,
     ValueControlProps {
     public let handlers: EventHandlers
     public let style: Style?

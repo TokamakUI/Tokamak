@@ -70,7 +70,7 @@ extension SimpleCellProvider {
 }
 
 public struct ListView<T: CellProvider>: HostComponent {
-  public struct Props: Equatable, ViewProps {
+  public struct Props: Equatable, StyleProps {
     public let cellProps: T.Props
     public let model: T.Model
     public let onSelect: Handler<CellPath>?

@@ -5,7 +5,7 @@
 //  Created by Max Desiatov on 31/12/2018.
 //
 
-public protocol ViewProps {
+public protocol StyleProps {
   var style: Style? { get }
 }
 

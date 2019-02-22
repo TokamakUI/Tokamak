@@ -8,7 +8,7 @@
 public struct View: HostComponent {
   public typealias Children = [AnyNode]
 
-  public struct Props: Equatable, ViewProps, Default {
+  public struct Props: Equatable, StyleProps, Default {
     public static var defaultValue: Props {
       return Props()
     }

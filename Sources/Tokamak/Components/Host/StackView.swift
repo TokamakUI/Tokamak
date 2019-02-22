@@ -6,7 +6,7 @@
 //
 
 public struct StackView: HostComponent {
-  public struct Props: Equatable, ViewProps, Default {
+  public struct Props: Equatable, StyleProps, Default {
     public static var defaultValue: Props {
       return Props()
     }
