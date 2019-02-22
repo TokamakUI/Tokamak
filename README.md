@@ -69,6 +69,7 @@ priority. Nevertheless, its important to note this can't always be achieved.
 ## Table of contents
 
   * [Example code](#example-code)
+  * [Standard components](#standard-components)
   * [Fundamental concepts](#fundamental-concepts)
       * [Props](#props)
       * [Children](#children)
@@ -77,7 +78,6 @@ priority. Nevertheless, its important to note this can't always be achieved.
       * [Render function](#render-function)
       * [Hooks](#hooks)
       * [Renderers](#renderers)
-      * [Standard components](#standard-components)
   * [Requirements](#requirements)
   * [FAQ](#faq)
   * [Acknowledgments](#acknowledgments)
@@ -234,7 +234,7 @@ extension Component {
 }
 ```
 
-Thus an empty vertical stack view is created like this:
+For example, an empty vertical stack view is created like this:
 
 ```swift
 StackView.node(.init(axis: .vertical), [])
@@ -242,7 +242,7 @@ StackView.node(.init(axis: .vertical), [])
 
 ### Render function
 
-One of the most simple components is a [pure
+The most simple component is a [pure
 function](https://en.wikipedia.org/wiki/Pure_function) taking [`Props`](#props)
 and [`Children`](#children) as an argument and returning a node tree as a
 result:
@@ -261,8 +261,8 @@ pass different values as props or children to nodes returned from parent
 `render` and Tokamak will update only those views on screen that need to be
 updated. 
 
-Note that `render` function does not return *other components*, it returns
-*nodes* that *describe other components*. It's a very important distiction,
+Note that `render` function **does not return other _components_**, it **returns
+_nodes_ that describe other components**. It's a very important distiction,
 which allows Tokamak to stay efficient and to avoid updating deep trees of
 components.
 
@@ -395,17 +395,20 @@ ones: just add it to your `extension Hooks` wherever works best for you.
 ### Renderers
 
 When mapping Tokamak's architecture to what's previosly been established in iOS,
-`Component` corresponds to a "view-model" layer, while `Hooks` provide a
-reusable "controller" layer. A `Renderer` is a "view" layer in these terms, but
-it's fully managed by Tokamak. Not only this greatly simplifies the code of your
-components and allows you to make it declarative, it also completely decouples
-platform-specific code.  Note that [`Counter`](#example-code) component above
-doesn't contain a single type from `UIKit` module, although the component itself
-is passed to a specific `UIKitRenderer` to make it available in an app using
-`UIKit`. On other platforms you could use a different renderer, while the
-component code could stay the same if its behavior doesn't need to change for
-that environment. Otherwise you can adjust component's behavior via `Props` and
-pass different "initializing" props depending on the renderer's platform.
+[`Component`](#components) corresponds to a "view-model" layer, while
+[`Hooks`](#hooks) provide a reusable "controller" layer. A `Renderer` is a
+"view" layer in these terms, but it's fully managed by Tokamak. Not only this
+greatly simplifies the code of your components and allows you to make it
+declarative, it also completely decouples platform-specific code.  
+
+Note that [`Counter`](#example-code) component above doesn't contain a single
+type from `UIKit` module, although the component itself is passed to a specific
+`UIKitRenderer` (via its `TokamakViewController` public API) to make it
+available in an app that uses `UIKit`. On other platforms you could use a
+different renderer, while the component code could stay the same if its behavior
+doesn't need to change for that environment. Otherwise you can adjust
+component's behavior via [`Props`](#props) and pass different "initializing" props
+depending on the renderer's platform.
 
 Providing renderers for other platforms in the future is one of our top
 priorities. Imagine an `AppKitRenderer` that allows you to render the same
@@ -468,7 +471,7 @@ file.
 
 ### What are "Rules of Hooks"?
 
-Hooks are a great way to inject state and other side effects into pure
+[Hooks](#hooks) are a great way to inject state and other side effects into pure
 functions. In some sense, you could consider Hooks an emulation of [indexed
 monads](https://kseo.github.io/posts/2017-01-12-indexed-monads.html) or
 [algebraic effects](http://www.eff-lang.org), which served as [inspiration for
@@ -484,7 +487,7 @@ React](https://reactjs.org/docs/hooks-rules.html):
    of `Hooks`). 🙌
 3. Don't call Hooks from a loop, condition or nested function/closure. 🚨
 4. Don't call Hooks from any function that's not a `static func render` on a
-   component or not a custom Hook. ⚠️
+   component, or not a custom Hook. ⚠️
 
 In a future version Tokamak will provide a linter able to catch violations of
 Rules of Hooks at compile time.
@@ -708,7 +711,7 @@ state, while intended local state is managed with [`Hooks`](#hooks).
 
 ## Acknowledgments
 
-* Thanks to the [Swift Core Team](https://swift.org/community/) for
+* Thanks to the [Swift community](https://swift.org/community/) for
   building one of the best programming languages available!
 * Thanks to [React
   people](https://reactjs.org/docs/hooks-faq.html#what-is-the-prior-art-for-hooks)
