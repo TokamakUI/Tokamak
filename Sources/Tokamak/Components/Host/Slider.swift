@@ -15,11 +15,11 @@ public struct Slider: HostComponent {
     public let isEnabled: Bool
 
     public init(
+      _ style: Style? = nil,
       handlers: EventHandlers = [:],
       isEnabled: Bool = true,
       value: Float,
-      valueHandler: Handler<Float>? = nil,
-      _ style: Style? = nil
+      valueHandler: Handler<Float>? = nil
     ) {
       self.handlers = handlers
       self.style = style

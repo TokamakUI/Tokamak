@@ -15,11 +15,11 @@ public struct SegmentedControl: HostComponent {
     public let isEnabled: Bool
 
     public init(
+      _ style: Style? = nil,
       handlers: EventHandlers = [:],
       isEnabled: Bool = true,
       value: Int,
-      valueHandler: Handler<Int>? = nil,
-      _ style: Style? = nil
+      valueHandler: Handler<Int>? = nil
     ) {
       self.handlers = handlers
       self.style = style

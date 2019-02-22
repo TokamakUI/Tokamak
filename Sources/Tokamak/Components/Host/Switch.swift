@@ -16,12 +16,12 @@ public struct Switch: HostComponent {
     public let isAnimated: Bool
 
     public init(
+      _ style: Style? = nil,
       handlers: EventHandlers = [:],
       isAnimated: Bool = true,
       isEnabled: Bool = true,
       value: Bool,
-      valueHandler: Handler<Bool>? = nil,
-      _ style: Style? = nil
+      valueHandler: Handler<Bool>? = nil
     ) {
       self.handlers = handlers
       self.style = style

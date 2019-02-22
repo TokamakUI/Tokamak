@@ -47,13 +47,13 @@ struct SimpleModal: LeafComponent {
     return props.isPresented.value ? ModalPresenter.node(
       View.node(
         .init(Style(
-          backgroundColor: colors[backgroundColor.value].0,
-          Edges.equal(to: .parent)
+          Edges.equal(to: .parent),
+          backgroundColor: colors[backgroundColor.value].0
         )),
         StackView.node(.init(
+          Edges.equal(to: .parent),
           axis: .vertical,
-          distribution: .fillEqually,
-          Edges.equal(to: .parent)
+          distribution: .fillEqually
         ), [
           Button.node(.init(
             onPress: Handler { props.isPresented.set(false) }
@@ -79,10 +79,10 @@ struct Modals: LeafComponent {
 
     return StackView.node(
       .init(
+        Edges.equal(to: .safeArea),
         alignment: .center,
         axis: .vertical,
-        distribution: .fillEqually,
-        Edges.equal(to: .safeArea)
+        distribution: .fillEqually
       ),
       [
         Button.node(

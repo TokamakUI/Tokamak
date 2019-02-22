@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		A6AB60B5221C70340063F88A /* ContentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AB60B4221C70340063F88A /* ContentMode.swift */; };
+		A6D188EC221F1CA300C3947C /* Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D188EB221F1CA300C3947C /* Accessibility.swift */; };
 		D1B4F8DB221AFB0E00C53C42 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4F8D9221AFB0800C53C42 /* Image.swift */; };
 		D1B4F8DD221AFB2B00C53C42 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4F8DC221AFB2B00C53C42 /* Image.swift */; };
 		OBJ_153 /* AnyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_66 /* AnyEquatable.swift */; };
@@ -184,6 +185,7 @@
 
 /* Begin PBXFileReference section */
 		A6AB60B4221C70340063F88A /* ContentMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMode.swift; sourceTree = "<group>"; };
+		A6D188EB221F1CA300C3947C /* Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessibility.swift; sourceTree = "<group>"; };
 		D1B4F8D9221AFB0800C53C42 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		D1B4F8DC221AFB2B00C53C42 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		OBJ_10 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
@@ -614,6 +616,7 @@
 				OBJ_114 /* Second.swift */,
 				OBJ_115 /* Style.swift */,
 				OBJ_116 /* TextAlignment.swift */,
+				A6D188EB221F1CA300C3947C /* Accessibility.swift */,
 			);
 			path = Props;
 			sourceTree = "<group>";
@@ -787,6 +790,7 @@
 				OBJ_176 /* Bottom.swift in Sources */,
 				OBJ_177 /* Center.swift in Sources */,
 				D1B4F8DD221AFB2B00C53C42 /* Image.swift in Sources */,
+				A6D188EC221F1CA300C3947C /* Accessibility.swift in Sources */,
 				OBJ_178 /* CenterX.swift in Sources */,
 				OBJ_179 /* CenterY.swift in Sources */,
 				OBJ_180 /* Constraint.swift in Sources */,

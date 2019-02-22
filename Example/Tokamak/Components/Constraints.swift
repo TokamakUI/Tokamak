@@ -15,22 +15,22 @@ struct Constraints: LeafComponent {
     let left = hooks.state(0.5 as Float)
 
     return StackView.node(.init(
+      Edges.equal(to: .safeArea),
       axis: .vertical,
-      distribution: .fillEqually,
-      Edges.equal(to: .safeArea)
+      distribution: .fillEqually
     ), [
       Slider.node(.init(
+        Style(Width.equal(to: .parent)),
         value: left.value,
-        valueHandler: Handler(left.set),
-        Style(Width.equal(to: .parent))
+        valueHandler: Handler(left.set)
       )),
 
       View.node(
         .init(Style(backgroundColor: .red)),
         Label.node(.init(
+          Style(Left.equal(to: .parent, constant: Double(left.value) * 200)),
           alignment: .center,
-          textColor: .white,
-          Style(Left.equal(to: .parent, constant: Double(left.value) * 200))
+          textColor: .white
         ), "\(left.value)")
       ),
     ])

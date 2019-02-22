@@ -17,11 +17,11 @@ public struct Button: HostComponent {
     public let isEnabled: Bool
 
     public init(
+      _ style: Style? = nil,
       handlers: [Event: Handler<()>] = [:],
       isEnabled: Bool = true,
       onPress: Handler<()>? = nil,
-      titleColor: Color? = nil,
-      _ style: Style? = nil
+      titleColor: Color? = nil
     ) {
       var handlers = handlers
       if let onPress = onPress {

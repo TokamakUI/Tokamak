@@ -39,16 +39,16 @@ struct TableRouter: NavigationRouter {
       return NavigationItem.node(
         .init(title: "Table"),
         ListView<ListProvider>.node(.init(
+          Style(Edges.equal(to: .parent)),
           onSelect: Handler { push(.value($0.item + 1)) },
-          singleSection: [1, 2, 3],
-          Style(Edges.equal(to: .parent))
+          singleSection: [1, 2, 3]
         ))
       )
     case let .value(v):
       return View.node(
         .init(Style(
-          backgroundColor: .white,
-          Edges.equal(to: .parent)
+          Edges.equal(to: .parent),
+          backgroundColor: .white
         )),
         Label.node(
           .init(Style(Center.equal(to: .parent))),

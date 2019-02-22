@@ -31,10 +31,10 @@ struct TimerCounter: LeafComponent {
 
     return StackView.node(
       .init(
+        Edges.equal(to: .safeArea),
         alignment: .center,
         axis: .vertical,
-        distribution: .fillEqually,
-        Edges.equal(to: .safeArea)
+        distribution: .fillEqually
       ), [
         Label.node(
           .init(alignment: .center),

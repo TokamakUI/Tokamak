@@ -16,33 +16,33 @@ struct LayerProps: LeafComponent {
 
     return
       StackView.node(.init(
+        Edges.equal(to: .safeArea),
         axis: .vertical,
-        distribution: .fillEqually,
-        Edges.equal(to: .safeArea)
+        distribution: .fillEqually
       ), [
         Slider.node(.init(
+          Style(Width.equal(to: .parent)),
           value: state.value,
-          valueHandler: Handler(state.set),
-          Style(Width.equal(to: .parent))
+          valueHandler: Handler(state.set)
         )),
 
         View.node(
           .init(
             Style(
+              Width.equal(to: .parent),
               backgroundColor: .red,
               borderWidth: Float(state.value * 10),
               cornerRadius: Float(state.value * 10),
-              opacity: Float(state.value),
-              Width.equal(to: .parent)
+              opacity: Float(state.value)
             )
           ),
           Label.node(.init(
-            alignment: .center,
-            textColor: .white,
             Style(
               [Top.equal(to: .parent, constant: Double(state.value) * 100),
                Left.equal(to: .parent, constant: Double(state.value) * 200)]
-            )
+            ),
+            alignment: .center,
+            textColor: .white
           ), "\(state.value)")
         ),
       ])

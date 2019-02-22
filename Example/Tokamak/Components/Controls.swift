@@ -39,10 +39,10 @@ struct Controls: LeafComponent {
       ),
 
       Slider.node(.init(
+        Style(Width.equal(to: .parent)),
         isEnabled: isEnabled.value,
         value: sliding.value,
-        valueHandler: Handler(sliding.set),
-        Style(Width.equal(to: .parent))
+        valueHandler: Handler(sliding.set)
       )),
 
       Label.node(.init(alignment: .center), "\(sliding.value)"),
@@ -91,10 +91,10 @@ struct Controls: LeafComponent {
 
     return StackView.node(
       .init(
+        Edges.equal(to: .safeArea),
         alignment: .center,
         axis: .vertical,
-        distribution: .fillEqually,
-        Edges.equal(to: .safeArea)
+        distribution: .fillEqually
       ),
       children
     )

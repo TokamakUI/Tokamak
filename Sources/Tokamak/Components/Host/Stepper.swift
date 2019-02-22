@@ -20,6 +20,7 @@ public struct Stepper: HostComponent {
     public let style: Style?
 
     public init(
+      _ style: Style? = nil,
       autorepeat: Bool = true,
       handlers: EventHandlers = [:],
       isEnabled: Bool = true,
@@ -28,8 +29,7 @@ public struct Stepper: HostComponent {
       stepValue: Double = 1.0,
       value: Double,
       valueHandler: Handler<Double>? = nil,
-      wraps: Bool = false,
-      _ style: Style? = nil
+      wraps: Bool = false
     ) {
       self.autorepeat = autorepeat
       self.handlers = handlers

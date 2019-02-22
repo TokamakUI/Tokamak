@@ -77,10 +77,10 @@ public struct ListView<T: CellProvider>: HostComponent {
     public let style: Style?
 
     public init(
+      _ style: Style? = nil,
       cellProps: T.Props,
       onSelect: Handler<CellPath>? = nil,
-      singleSection: T.Model.Element,
-      _ style: Style? = nil
+      singleSection: T.Model.Element
     ) {
       self.cellProps = cellProps
       model = T.Model.single(section: singleSection)
@@ -89,10 +89,10 @@ public struct ListView<T: CellProvider>: HostComponent {
     }
 
     public init(
+      _ style: Style? = nil,
       cellProps: T.Props,
-      onSelect: Handler<CellPath>? = nil,
       model: T.Model,
-      _ style: Style? = nil
+      onSelect: Handler<CellPath>? = nil
     ) {
       self.cellProps = cellProps
       self.model = model
@@ -106,9 +106,9 @@ public struct ListView<T: CellProvider>: HostComponent {
 
 extension ListView.Props where T.Props == Null {
   public init(
+    _ style: Style? = nil,
     model: T.Model,
-    onSelect: Handler<CellPath>? = nil,
-    _ style: Style? = nil
+    onSelect: Handler<CellPath>? = nil
   ) {
     cellProps = Null()
     self.model = model
@@ -117,9 +117,9 @@ extension ListView.Props where T.Props == Null {
   }
 
   public init(
+    _ style: Style? = nil,
     onSelect: Handler<CellPath>? = nil,
-    singleSection: T.Model.Element,
-    _ style: Style? = nil
+    singleSection: T.Model.Element
   ) {
     cellProps = Null()
     model = T.Model.single(section: singleSection)

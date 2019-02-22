@@ -17,10 +17,10 @@ struct Counter: LeafComponent {
     let count = hooks.state(props.countFrom)
 
     return StackView.node(.init(
+      Edges.equal(to: .safeArea),
       alignment: .center,
       axis: .vertical,
-      distribution: .fillEqually,
-      Edges.equal(to: .safeArea)
+      distribution: .fillEqually
     ), [
       Button.node(
         .init(onPress: Handler { count.set { $0 + 1 } }),

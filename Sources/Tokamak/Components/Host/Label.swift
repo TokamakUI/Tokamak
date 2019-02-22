@@ -18,11 +18,11 @@ public struct Label: HostComponent {
     public let textColor: Color?
 
     public init(
+      _ style: Style? = nil,
       alignment: TextAlignment = .natural,
       lineBreakMode: LineBreakMode = .truncateTail,
       numberOfLines: Int = 1,
-      textColor: Color? = nil,
-      _ style: Style? = nil
+      textColor: Color? = nil
     ) {
       self.alignment = alignment
       self.lineBreakMode = lineBreakMode
