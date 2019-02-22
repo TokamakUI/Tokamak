@@ -7,22 +7,28 @@
 
 public struct Accessibility: Equatable {
   public let identifier: String?
-  //    public let language: String?
-  //    public let label: String?
-  //    public let hint: String?
-  //    public let value: String?
-  //    public let elementsHidden: Bool // default value `false`
-  //    public let isModal: Bool // default value `false`
+  public let language: String?
+  public let label: String?
+  public let hint: String?
+  public let value: String?
+  public let elementsHidden: Bool
+  public let isModal: Bool
 
   public init(
+    elementsHidden: Bool = false,
+    hint: String? = nil,
+    isModal: Bool = false,
+    label: String? = "",
+    language: String? = nil,
+    value: String? = "",
     identifier: String? = ""
-    //     language: String?,
-    //     label: String?,
-    //     hint: String?,
-    //     value: String?,
-    //     elementsHidden: Bool = false, // default value `false`
-    //     isModal: Bool // default value `false`
   ) {
+    self.elementsHidden = elementsHidden
+    self.hint = hint
+    self.isModal = isModal
+    self.label = label
+    self.language = language
+    self.value = value
     self.identifier = identifier
   }
 }
