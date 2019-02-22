@@ -11,8 +11,7 @@ public struct Trailing: Equatable {
 
   public static func equal(
     to target: Constraint.SafeAreaTarget,
-    constant: Double = 0,
-    multiplier: Double = 1
+    constant: Double = 0
   ) -> Constraint {
     return .trailing(Trailing(
       target: target, constant: constant

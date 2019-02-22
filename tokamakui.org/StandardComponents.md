@@ -1,8 +1,9 @@
-## Views
+## Standard View Components
 
 | Tokamak Component | Rendered on iOS as |
 |---|---|
 | [`Button`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/Button.swift) | [`UIButton`](https://developer.apple.com/documentation/uikit/uibutton) |
+| [`ImageView`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/ImageView.swift) | [`UIImageView`](https://developer.apple.com/documentation/uikit/uilabel) |
 | [`Label`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/Label.swift) | [`UILabel`](https://developer.apple.com/documentation/uikit/uilabel) |
 | [`ListView`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/ListView.swift) | [`UITableView`](https://developer.apple.com/documentation/uikit/uitableview) |
 | [`SegmentedControl`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/SegmentedControl.swift) | [`UISegmentedControl`](https://developer.apple.com/documentation/uikit/uisegmentedcontrol) | 
@@ -12,7 +13,7 @@
 | [`Switch`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/Switch.swift) | [`UISwitch`](https://developer.apple.com/documentation/uikit/uiswitch) |
 | [`View`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/View.swift) | [`UIView`](https://developer.apple.com/documentation/uikit/uiview) |
 
-## Presenters 
+## Standard Presenter Components
 
 | Tokamak Component | Rendered on iOS as |
 |---|---|
@@ -22,14 +23,13 @@
 
 ## Style
 
-All of the standard components rendered to views (except `StackView`, which
-[only affects layout, but can't be
-styled](https://useyourloaf.com/blog/stack-view-background-color/)) get an
-optional argument [`Style`][style] passed to their props. It bundles all of the
-common styling configuration that can be applied to view components, but is
-abstract from a specific renderer implementation. Thus, even if you render to
-`UIKit` you can use platform-independent layout structs such as [`Point`,
-`Size`,
+All of the standard view components get an optional argument [`Style`][style]
+passed to their props (except the `StackView`, which [only affects layout, but
+can't be styled](https://useyourloaf.com/blog/stack-view-background-color/)). It
+bundles all of the common styling configuration that can be applied to view
+components, but is abstract from a specific renderer implementation. Thus, even
+if you render to `UIKit` you can use platform-independent layout structs such as
+[`Point`, `Size`,
 `Rectangle`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Props/Rectangle.swift)
 and
 [`Insets`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Props/Insets.swift),

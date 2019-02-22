@@ -42,11 +42,15 @@ struct TimerCounter: LeafComponent {
         ),
         Stepper.node(
           .init(
+            minimumValue: 1.0,
             value: interval.value,
             valueHandler: Handler(interval.set)
           )
         ),
-        Label.node(.init(alignment: .center), "\(count.value)"),
+        Label.node(
+          .init(alignment: .center),
+          "\(count.value) second\(count.value == 1 ? "" : "s") passed"
+        ),
       ]
     )
   }
