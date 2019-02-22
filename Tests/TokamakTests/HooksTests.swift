@@ -10,6 +10,10 @@ import XCTest
 
 @testable import Tokamak
 
+extension Button: RefComponent {
+  public typealias RefTarget = TestView
+}
+
 extension Int: Updatable {
   public enum Action {
     case increment
@@ -39,10 +43,14 @@ struct Test: LeafComponent {
     let state1 = hooks.custom()
     let state2 = hooks.custom()
     let state3 = hooks.custom()
+    let ref = hooks.ref(type: TestView.self)
 
     return StackView.node([
-      Button.node(.init(onPress: Handler { state1.set { $0 += 1 } }),
-                  "Increment"),
+      Button.node(
+        ref: ref,
+        .init(onPress: Handler { state1.set { $0 += 1 } }),
+        "Increment"
+      ),
       Label.node("\(state1.value)"),
       Button.node(.init(onPress: Handler { state2.set { $0 + 1 } }),
                   "Increment"),
@@ -67,11 +75,14 @@ final class HooksTests: XCTestCase {
       let button2Props = stack.subviews[2].props(Button.Props.self),
       let button2Handler = button2Props.handlers[.touchUpInside]?.value,
       let button3Props = stack.subviews[4].props(Button.Props.self),
-      let button3Handler = button3Props.handlers[.touchUpInside]?.value
+      let button3Handler = button3Props.handlers[.touchUpInside]?.value,
+      let button1Ref = stack.subviews[0].node.ref as? Ref<TestView?>
     else {
       XCTAssert(false, "components have no handlers")
       return
     }
+
+    XCTAssertTrue(button1Ref.value === stack.subviews[0])
 
     button1Handler(())
 
