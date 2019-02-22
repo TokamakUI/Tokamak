@@ -9,14 +9,14 @@ import Tokamak
 import UIKit
 
 final class Action {
-  private let handler: () -> ()
+  private let handler: (()) -> ()
 
-  init(_ handler: @escaping () -> ()) {
+  init(_ handler: @escaping (()) -> ()) {
     self.handler = handler
   }
 
   @objc func perform() {
-    handler()
+    handler(())
   }
 }
 
