@@ -86,7 +86,7 @@ extension Hooks {
     let (value, index) = currentState(initial)
 
     let queueState = self.queueState
-    return State({ value as? T ?? initial }) { (updater: Updater<T>) in
+    return State({ value as? T ?? initial }, { (updater: Updater<T>) in
       queueState(index) {
         // There's no easy way to downcast elements of `[Any]` to `T`
         // and apply `inout` updater without creating copies, working around
@@ -95,6 +95,6 @@ extension Hooks {
           $0.withMemoryRebound(to: T.self, capacity: 1) { updater(&$0[0]) }
         }
       }
-    }
+    })
   }
 }
