@@ -8,16 +8,7 @@
 import Dispatch
 
 final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
-  HookedComponent, Hashable {
-  static func ==(lhs: MountedCompositeComponent<R>,
-                 rhs: MountedCompositeComponent<R>) -> Bool {
-    return lhs === rhs
-  }
-
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(ObjectIdentifier(self))
-  }
-
+  HookedComponent {
   private var mountedChildren = [MountedComponent<R>]()
   private let parentTarget: R.TargetType
   let type: AnyCompositeComponent.Type
@@ -89,5 +80,19 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
         child.mount(with: reconciler)
       }
     }
+  }
+}
+
+/** Implementation of `Hashable` required to store `MountedCompositeComponent`
+ instances in a `Set`.
+ */
+extension MountedCompositeComponent: Hashable {
+  static func ==(lhs: MountedCompositeComponent<R>,
+                 rhs: MountedCompositeComponent<R>) -> Bool {
+    return lhs === rhs
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(ObjectIdentifier(self))
   }
 }

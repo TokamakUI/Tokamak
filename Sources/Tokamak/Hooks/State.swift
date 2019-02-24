@@ -22,57 +22,71 @@ typealias Updater<T> = (inout T) -> ()
  Tokamak at a later time. A call to `render` is only scheduled on the component
  that obtained this state with `hooks.state`.
  */
-public struct State<T> {
-  public let value: T
+public final class State<T> {
+  public var value: T {
+    return getter()
+  }
 
-  /// A closure stored as `Handler` to enable `Equatable` implementation on
-  /// `State` derived by the compiler.
-  let updateHandler: Handler<Updater<T>>
+  var version = UniqueReference()
 
-  init(_ value: T, _ updater: @escaping (Updater<T>) -> ()) {
-    self.value = value
-    updateHandler = Handler(updater)
+  let getter: () -> T
+  let updateHandler: (Updater<T>) -> ()
+
+  init(
+    _ getter: @escaping () -> T,
+    _ updateHandler: @escaping (Updater<T>) -> ()
+  ) {
+    self.getter = getter
+    self.updateHandler = updateHandler
   }
 
   /// set the state to a specified value
   public func set(_ value: T) {
-    updateHandler.value { $0 = value }
+    version = UniqueReference()
+    updateHandler { $0 = value }
   }
 
   /// update the state with a pure function
   public func set(_ transformer: @escaping (T) -> T) {
-    updateHandler.value { $0 = transformer($0) }
+    version = UniqueReference()
+    updateHandler { $0 = transformer($0) }
   }
 
   /// efficiently update the state in place with a mutating function
   /// (helps avoiding expensive memory allocations when state contains
   /// large arrays/dictionaries or other copy-on-write value)
   public func set(_ updater: @escaping (inout T) -> ()) {
-    updateHandler.value(updater)
+    version = UniqueReference()
+    updateHandler(updater)
   }
 }
 
-extension State: Equatable where T: Equatable {}
-
 extension State where T: Updatable {
-  /// For any `Reduceable` state you can dispatch an `Action` to reduce that
+  /// For any `Updatable` state you can dispatch an `Action` to reduce that
   /// state to a different value.
   public func set(_ action: T.Action) {
-    updateHandler.value { $0.update(action) }
+    version = UniqueReference()
+    updateHandler { $0.update(action) }
+  }
+}
+
+extension State: Equatable {
+  public static func ==(lhs: State<T>, rhs: State<T>) -> Bool {
+    return lhs.version == rhs.version
   }
 }
 
 extension Hooks {
   /** Allows a component to have its own state and to be updated when the state
-   changes. Returns a very simple state container, which on initial call of
-   render contains `initial` as a value and values passed to `count.set`
+   changes. Returns a state container, which on initial call to component's
+   `render` contains `initial` as a value and values passed to `State.set`
    on subsequent updates:
    */
   public func state<T>(_ initial: T) -> State<T> {
     let (value, index) = currentState(initial)
 
     let queueState = self.queueState
-    return State(value as? T ?? initial) { (updater: Updater<T>) in
+    return State({ value as? T ?? initial }) { (updater: Updater<T>) in
       queueState(index) {
         // There's no easy way to downcast elements of `[Any]` to `T`
         // and apply `inout` updater without creating copies, working around

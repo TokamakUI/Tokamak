@@ -33,6 +33,8 @@ extension AnyNode {
       return MountedHostComponent(self, type, parentTarget)
     case let .composite(type):
       return MountedCompositeComponent(self, type, parentTarget)
+    case let .context(type):
+      return MountedContext(self, type, parentTarget)
     case .null:
       return MountedNull(self)
     }

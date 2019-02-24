@@ -23,6 +23,8 @@
 /* Begin PBXBuildFile section */
 		A6AB60B5221C70340063F88A /* ContentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AB60B4221C70340063F88A /* ContentMode.swift */; };
 		A6D188EC221F1CA300C3947C /* Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D188EB221F1CA300C3947C /* Accessibility.swift */; };
+		D165874D2220A43500B40613 /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = D165874C2220A43500B40613 /* Context.swift */; };
+		D165874F2220A8E000B40613 /* MountedContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = D165874E2220A8E000B40613 /* MountedContext.swift */; };
 		D1B4F8DB221AFB0E00C53C42 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4F8D9221AFB0800C53C42 /* Image.swift */; };
 		D1B4F8DD221AFB2B00C53C42 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4F8DC221AFB2B00C53C42 /* Image.swift */; };
 		OBJ_153 /* AnyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_66 /* AnyEquatable.swift */; };
@@ -186,6 +188,8 @@
 /* Begin PBXFileReference section */
 		A6AB60B4221C70340063F88A /* ContentMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMode.swift; sourceTree = "<group>"; };
 		A6D188EB221F1CA300C3947C /* Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessibility.swift; sourceTree = "<group>"; };
+		D165874C2220A43500B40613 /* Context.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
+		D165874E2220A8E000B40613 /* MountedContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountedContext.swift; sourceTree = "<group>"; };
 		D1B4F8D9221AFB0800C53C42 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		D1B4F8DC221AFB2B00C53C42 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		OBJ_10 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
@@ -355,6 +359,7 @@
 				OBJ_120 /* Hooks.swift */,
 				OBJ_121 /* Ref.swift */,
 				OBJ_122 /* State.swift */,
+				D165874C2220A43500B40613 /* Context.swift */,
 			);
 			path = Hooks;
 			sourceTree = "<group>";
@@ -364,6 +369,7 @@
 			children = (
 				OBJ_124 /* MountedComponent.swift */,
 				OBJ_125 /* MountedCompositeComponent.swift */,
+				D165874E2220A8E000B40613 /* MountedContext.swift */,
 				OBJ_126 /* MountedHostComponent.swift */,
 				OBJ_127 /* MountedNull.swift */,
 			);
@@ -790,6 +796,7 @@
 				OBJ_174 /* TabPresenter.swift in Sources */,
 				OBJ_175 /* Color.swift in Sources */,
 				OBJ_176 /* Bottom.swift in Sources */,
+				D165874D2220A43500B40613 /* Context.swift in Sources */,
 				OBJ_177 /* Center.swift in Sources */,
 				D1B4F8DD221AFB2B00C53C42 /* Image.swift in Sources */,
 				A6D188EC221F1CA300C3947C /* Accessibility.swift in Sources */,
@@ -813,6 +820,7 @@
 				OBJ_195 /* Rectangle.swift in Sources */,
 				OBJ_196 /* Second.swift in Sources */,
 				OBJ_197 /* Style.swift in Sources */,
+				D165874F2220A8E000B40613 /* MountedContext.swift in Sources */,
 				OBJ_198 /* TextAlignment.swift in Sources */,
 				OBJ_199 /* Default.swift in Sources */,
 				OBJ_200 /* Effect.swift in Sources */,

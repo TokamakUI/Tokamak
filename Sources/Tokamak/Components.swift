@@ -119,32 +119,3 @@ public extension PureLeafComponent {
     return render(props: props)
   }
 }
-
-enum ComponentType: Equatable {
-  static func ==(lhs: ComponentType, rhs: ComponentType) -> Bool {
-    switch (lhs, rhs) {
-    case let (.host(ltype), .host(rtype)):
-      return ltype == rtype
-    case let (.composite(ltype), .composite(rtype)):
-      return ltype == rtype
-    default:
-      return false
-    }
-  }
-
-  case host(AnyHostComponent.Type)
-  case composite(AnyCompositeComponent.Type)
-  case null
-
-  var composite: AnyCompositeComponent.Type? {
-    guard case let .composite(type) = self else { return nil }
-
-    return type
-  }
-
-  var host: AnyHostComponent.Type? {
-    guard case let .host(type) = self else { return nil }
-
-    return type
-  }
-}

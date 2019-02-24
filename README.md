@@ -59,12 +59,12 @@ a lot of complaints about its overreliance on JavaScript. Tokamak makes
 architecture of React with its established patterns available to you in Swift.
 
 _**Important:**_ Tokamak is relatively stable at this point, as in not having
-any blocking or critical bugs that the maintainers are aware of. The core API of
-`Component` and `Hooks` types is frozen, and there's a plenty of [standard
-components](#standard-components) to start building useful apps. If in the
-future there's a breaking change that's absolutely needed, deprecating old APIs
-in a source-compatible way and introducing a replacement gradually is the top
-priority. Nevertheless, its important to note this can't always be achieved. 
+any blocking or critical bugs that the maintainers are aware of. There's a
+plenty of [standard components](#standard-components) to start building useful
+apps. If in the future there's a breaking change that's absolutely needed,
+deprecating old APIs in a source-compatible way and introducing a replacement
+gradually is the top priority. Nevertheless, its important to note this can't
+always be achieved. 
 
 ## Table of contents
 

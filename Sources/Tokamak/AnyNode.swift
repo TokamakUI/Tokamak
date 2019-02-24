@@ -5,6 +5,36 @@
 //  Created by Max Desiatov on 30/11/2018.
 //
 
+enum NodeType: Equatable {
+  static func ==(lhs: NodeType, rhs: NodeType) -> Bool {
+    switch (lhs, rhs) {
+    case let (.host(ltype), .host(rtype)):
+      return ltype == rtype
+    case let (.composite(ltype), .composite(rtype)):
+      return ltype == rtype
+    default:
+      return false
+    }
+  }
+
+  case host(AnyHostComponent.Type)
+  case composite(AnyCompositeComponent.Type)
+  case context(AnyContext.Type)
+  case null
+
+  var composite: AnyCompositeComponent.Type? {
+    guard case let .composite(type) = self else { return nil }
+
+    return type
+  }
+
+  var host: AnyHostComponent.Type? {
+    guard case let .host(type) = self else { return nil }
+
+    return type
+  }
+}
+
 public struct AnyNode: Equatable {
   // Equatable can't be automatically derived for `type` property?
   public static func ==(lhs: AnyNode, rhs: AnyNode) -> Bool {
@@ -18,7 +48,7 @@ public struct AnyNode: Equatable {
   public let ref: AnyObject?
   public let props: AnyEquatable
   public let children: AnyEquatable
-  let type: ComponentType
+  let type: NodeType
 
   public func isSubtypeOf<T>(_: T.Type) -> Bool {
     return type.host is T.Type || type.composite is T.Type
