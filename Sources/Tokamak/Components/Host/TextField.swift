@@ -88,6 +88,7 @@ public struct TextField: HostComponent {
     public let value: String
     public let valueHandler: Handler<String>?
     public let isEnabled: Bool
+    public let isSecureTextEntry: Bool
     public let keyboardAppearance: KeyboardAppearance
     public let keyboardType: KeyboardType
     public let placeholder: String?
@@ -108,6 +109,7 @@ public struct TextField: HostComponent {
       handlers: EventHandlers = [:],
       isAnimated: Bool = true,
       isEnabled: Bool = true,
+      isSecureTextEntry: Bool = false,
       keyboardAppearance: KeyboardAppearance = .default,
       keyboardType: KeyboardType = .default,
       placeholder: String? = nil,
@@ -128,6 +130,7 @@ public struct TextField: HostComponent {
       self.style = style
       self.value = value
       self.valueHandler = valueHandler
+      self.isSecureTextEntry = isSecureTextEntry
       self.isEnabled = isEnabled
       self.keyboardAppearance = keyboardAppearance
       self.keyboardType = keyboardType

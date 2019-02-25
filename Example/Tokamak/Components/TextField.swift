@@ -49,6 +49,13 @@ struct TextFieldExample: LeafComponent {
         value: text.value,
         valueHandler: Handler(text.set)
       )),
+      TextField.node(.init(
+        textFieldStyle,
+        isSecureTextEntry: true,
+        placeholder: "Password",
+        value: text.value,
+        valueHandler: Handler(text.set)
+      )),
     ])
   }
 }

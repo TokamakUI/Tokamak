@@ -196,5 +196,6 @@ extension TextField: UIValueComponent {
     control.keyboardAppearance = UIKeyboardAppearance(props.keyboardAppearance)
     control.returnKeyType = UIReturnKeyType(props.returnKeyType)
     control.borderStyle = UITextField.BorderStyle(props.borderStyle)
+    control.isSecureTextEntry = props.isSecureTextEntry
   }
 }
