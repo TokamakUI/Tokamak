@@ -199,4 +199,8 @@ extension TextField: UIValueComponent {
     control.borderStyle = UITextField.BorderStyle(props.borderStyle)
     control.isSecureTextEntry = props.isSecureTextEntry
   }
+
+  static var valueChangeEvent: Event {
+    return .editingChanged
+  }
 }
