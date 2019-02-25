@@ -31,7 +31,7 @@ struct TextFieldExample: LeafComponent {
     ), [
       TextField.node(.init(
         textFieldStyle,
-        placeholder: "Deafult",
+        placeholder: "Default",
         value: text.value,
         valueHandler: Handler(text.set)
       )),
