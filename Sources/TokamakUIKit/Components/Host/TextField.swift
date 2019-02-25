@@ -175,6 +175,7 @@ final class TokamakTextField: UITextField, Default, ValueStorage {
 
 extension TextField: UIValueComponent {
   typealias Target = TokamakTextField
+  public typealias RefTarget = UITextField
 
   static func update(valueBox: ValueControlBox<TokamakTextField>,
                      _ props: TextField.Props,
