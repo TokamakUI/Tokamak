@@ -13,8 +13,24 @@ public protocol AnyHostComponent {}
 
 public protocol HostComponent: AnyHostComponent, Component {}
 
-public protocol RefComponent: HostComponent {
-  associatedtype RefType
+public protocol AnyRefComponent {
+  static func update(ref: AnyObject, with value: Any)
+}
+
+public protocol RefComponent: AnyRefComponent, HostComponent {
+  associatedtype RefTarget
+}
+
+extension AnyRefComponent where Self: RefComponent {
+  public static func update(ref: AnyObject, with value: Any) {
+    guard let ref = ref as? Ref<RefTarget?>,
+      let value = value as? RefTarget else {
+      assertionFailure("failed to cast objects passed to \(#function)")
+      return
+    }
+
+    ref.value = value
+  }
 }
 
 /// Type-erased version of `CompositeComponent` to work around

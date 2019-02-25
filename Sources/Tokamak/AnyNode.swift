@@ -15,7 +15,7 @@ public struct AnyNode: Equatable {
       lhs.props == rhs.props
   }
 
-  let ref: AnyObject?
+  public let ref: AnyObject?
   public let props: AnyEquatable
   public let children: AnyEquatable
   let type: ComponentType
@@ -115,7 +115,7 @@ extension CompositeComponent {
 
 extension RefComponent {
   public static func node(
-    ref: Ref<RefType>,
+    ref: Ref<RefTarget?>,
     _ props: Props,
     _ children: Children
   ) -> AnyNode {
