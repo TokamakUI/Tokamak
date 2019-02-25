@@ -64,6 +64,37 @@ extension UITextSpellCheckingType {
   }
 }
 
+extension UIKeyboardType {
+  public init(_ type: TextField.Props.KeyboardType) {
+    switch type {
+    case .default:
+      self = .default
+    case .asciiCapable:
+      self = .asciiCapable
+    case .numbersAndPunctuation:
+      self = .numbersAndPunctuation
+    case .URL:
+      self = .URL
+    case .numberPad:
+      self = .numberPad
+    case .phonePad:
+      self = .phonePad
+    case .namePhonePad:
+      self = .namePhonePad
+    case .emailAddress:
+      self = .emailAddress
+    case .decimalPad:
+      self = .decimalPad
+    case .twitter:
+      self = .twitter
+    case .webSearch:
+      self = .webSearch
+    case .asciiCapableNumberPad:
+      self = .asciiCapableNumberPad
+    }
+  }
+}
+
 final class TokamakTextField: UITextField, Default, ValueStorage {
   typealias Value = String
 
@@ -95,10 +126,13 @@ extension TextField: UIValueComponent {
     control.placeholder = props.placeholder
     control.clearsOnBeginEditing = props.clearsOnBeginEditing
     control.clearsOnInsertion = props.clearsOnInsertion
-//    control.borderStyle = Style.init(props.borderStyle)
     control.clearButtonMode = UITextField.ViewMode(props.clearButtonMode)
-    control.autocapitalizationType = UITextAutocapitalizationType(props.autocapitalizationType)
-    control.autocorrectionType = UITextAutocorrectionType(props.autocorrectionType)
-    control.spellCheckingType = UITextSpellCheckingType(props.spellCheckingType)
+    control.autocapitalizationType =
+      UITextAutocapitalizationType(props.autocapitalizationType)
+    control.autocorrectionType =
+      UITextAutocorrectionType(props.autocorrectionType)
+    control.spellCheckingType =
+      UITextSpellCheckingType(props.spellCheckingType)
+    control.keyboardType = UIKeyboardType(props.keyboardType)
   }
 }

@@ -34,6 +34,21 @@ public struct TextField: HostComponent {
       case yes
     }
 
+    public enum KeyboardType {
+      case `default`
+      case asciiCapable
+      case numbersAndPunctuation
+      case URL
+      case numberPad
+      case phonePad
+      case namePhonePad
+      case emailAddress
+      case decimalPad
+      case twitter
+      case webSearch
+      case asciiCapableNumberPad
+    }
+
     public let autocapitalizationType: TextAutocapitalizationType
     public let autocorrectionType: TextAutocorrectionType
     public let borderStyle: Style?
@@ -45,6 +60,7 @@ public struct TextField: HostComponent {
     public let value: String
     public let valueHandler: Handler<String>?
     public let isEnabled: Bool
+    public let keyboardType: KeyboardType
     public let placeholder: String?
     public let spellCheckingType: TextSpellCheckingType
     public let textAlignment: TextAlignment
@@ -53,8 +69,10 @@ public struct TextField: HostComponent {
 
     public init(
       _ style: Style? = nil,
-      autocapitalizationType: TextAutocapitalizationType = TextAutocapitalizationType.sentences,
-      autocorrectionType: TextAutocorrectionType = TextAutocorrectionType.default,
+      autocapitalizationType: TextAutocapitalizationType =
+        TextAutocapitalizationType.sentences,
+      autocorrectionType: TextAutocorrectionType =
+        TextAutocorrectionType.default,
       borderStyle: Style? = nil,
       clearButtonMode: ViewMode = .never,
       clearsOnBeginEditing: Bool = false,
@@ -62,8 +80,10 @@ public struct TextField: HostComponent {
       handlers: EventHandlers = [:],
       isAnimated: Bool = true,
       isEnabled: Bool = true,
+      keyboardType: KeyboardType = KeyboardType.default,
       placeholder: String? = nil,
-      spellCheckingType: TextSpellCheckingType = TextSpellCheckingType.default,
+      spellCheckingType: TextSpellCheckingType =
+        TextSpellCheckingType.default,
       textAlignment: TextAlignment = TextAlignment.natural,
       textColor: Color = .black,
       value: String,
@@ -80,6 +100,7 @@ public struct TextField: HostComponent {
       self.value = value
       self.valueHandler = valueHandler
       self.isEnabled = isEnabled
+      self.keyboardType = keyboardType
       self.placeholder = placeholder
       self.spellCheckingType = spellCheckingType
       self.textAlignment = textAlignment
