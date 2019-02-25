@@ -51,11 +51,14 @@ struct Animation: CompositeComponent {
       ), [
         View.node(ref: ref, .init(), children),
         SegmentedControl.node(
-          .init(value: currentColor.value,
-                valueHandler: Handler {
-                  guard $0 >= 0 else { return }
-                  currentColor.set($0)
-          }),
+          .init(
+            value: currentColor.value,
+            valueHandler: Handler {
+              // sometimes UISegmentedControl allows deselecting all segments
+              guard $0 >= 0 else { return }
+              currentColor.set($0)
+            }
+          ),
           colors.map { $0.1 }
         ),
       ])
