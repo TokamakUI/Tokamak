@@ -21,10 +21,13 @@ struct TextFieldExample: LeafComponent {
     )
 
     return StackView.node(.init(
-      Edges.equal(to: .safeArea),
+      [
+        Leading.equal(to: .safeArea),
+        Trailing.equal(to: .safeArea),
+        Top.equal(to: .safeArea),
+      ],
       alignment: .top,
-      axis: .vertical,
-      distribution: .equalSpacing
+      axis: .vertical
     ), [
       TextField.node(.init(
         textFieldStyle,
@@ -36,13 +39,6 @@ struct TextFieldExample: LeafComponent {
         textFieldStyle,
         isEnabled: false,
         placeholder: "Disabled",
-        value: text.value,
-        valueHandler: Handler(text.set)
-      )),
-      TextField.node(.init(
-        textFieldStyle,
-        keyboardAppearance: .dark,
-        placeholder: "Dark",
         value: text.value,
         valueHandler: Handler(text.set)
       )),
