@@ -21,21 +21,21 @@ struct Animation: CompositeComponent {
 
   static func render(props: Null, children: Children, hooks: Hooks) -> AnyNode {
     let previousColor = hooks.state(0)
-    let backgroundColor = hooks.state(0)
+    let currentColor = hooks.state(0)
     let ref = hooks.ref(type: UIView.self)
 
-    hooks.effect(backgroundColor.value) {
+    hooks.effect(currentColor.value) {
       guard let view = ref.value else { return }
 
-      guard backgroundColor.value != previousColor.value else {
-        view.backgroundColor = UIColor(colors[backgroundColor.value].0)
+      guard currentColor.value != previousColor.value else {
+        view.backgroundColor = UIColor(colors[currentColor.value].0)
         return
       }
 
       UIView.animate(withDuration: 0.5, animations: {
-        view.backgroundColor = UIColor(colors[backgroundColor.value].0)
+        view.backgroundColor = UIColor(colors[currentColor.value].0)
       }, completion: { _ in
-        previousColor.set(backgroundColor.value)
+        previousColor.set(currentColor.value)
       })
     }
 
@@ -51,10 +51,10 @@ struct Animation: CompositeComponent {
       ), [
         View.node(ref: ref, .init(), children),
         SegmentedControl.node(
-          .init(value: backgroundColor.value,
+          .init(value: currentColor.value,
                 valueHandler: Handler {
                   guard $0 >= 0 else { return }
-                  backgroundColor.set($0)
+                  currentColor.set($0)
           }),
           colors.map { $0.1 }
         ),
