@@ -108,6 +108,37 @@ extension UIKeyboardAppearance {
   }
 }
 
+extension UIReturnKeyType {
+  public init(_ type: TextField.Props.ReturnKeyType) {
+    switch type {
+    case .default:
+      self = .default
+    case .go:
+      self = .go
+    case .google:
+      self = .google
+    case .join:
+      self = .join
+    case .next:
+      self = .next
+    case .route:
+      self = .route
+    case .search:
+      self = .search
+    case .send:
+      self = .send
+    case .yahoo:
+      self = .yahoo
+    case .done:
+      self = .done
+    case .emergencyCall:
+      self = .emergencyCall
+    case .continue:
+      self = .continue
+    }
+  }
+}
+
 final class TokamakTextField: UITextField, Default, ValueStorage {
   typealias Value = String
 
@@ -148,5 +179,6 @@ extension TextField: UIValueComponent {
       UITextSpellCheckingType(props.spellCheckingType)
     control.keyboardType = UIKeyboardType(props.keyboardType)
     control.keyboardAppearance = UIKeyboardAppearance(props.keyboardAppearance)
+    control.returnKeyType = UIReturnKeyType(props.returnKeyType)
   }
 }

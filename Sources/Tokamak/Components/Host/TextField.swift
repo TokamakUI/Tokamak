@@ -55,6 +55,21 @@ public struct TextField: HostComponent {
       case light
     }
 
+    public enum ReturnKeyType {
+      case `default`
+      case go
+      case google
+      case join
+      case next
+      case route
+      case search
+      case send
+      case yahoo
+      case done
+      case emergencyCall
+      case `continue`
+    }
+
     public let autocapitalizationType: TextAutocapitalizationType
     public let autocorrectionType: TextAutocorrectionType
     public let borderStyle: Style?
@@ -69,6 +84,7 @@ public struct TextField: HostComponent {
     public let keyboardAppearance: KeyboardAppearance
     public let keyboardType: KeyboardType
     public let placeholder: String?
+    public let returnKeyType: ReturnKeyType
     public let spellCheckingType: TextSpellCheckingType
     public let textAlignment: TextAlignment
     public let textColor: Color
@@ -76,10 +92,8 @@ public struct TextField: HostComponent {
 
     public init(
       _ style: Style? = nil,
-      autocapitalizationType: TextAutocapitalizationType =
-        TextAutocapitalizationType.sentences,
-      autocorrectionType: TextAutocorrectionType =
-        TextAutocorrectionType.default,
+      autocapitalizationType: TextAutocapitalizationType = TextAutocapitalizationType.sentences,
+      autocorrectionType: TextAutocorrectionType = TextAutocorrectionType.default,
       borderStyle: Style? = nil,
       clearButtonMode: ViewMode = .never,
       clearsOnBeginEditing: Bool = false,
@@ -90,8 +104,8 @@ public struct TextField: HostComponent {
       keyboardAppearance: KeyboardAppearance = KeyboardAppearance.default,
       keyboardType: KeyboardType = KeyboardType.default,
       placeholder: String? = nil,
-      spellCheckingType: TextSpellCheckingType =
-        TextSpellCheckingType.default,
+      returnKeyType: ReturnKeyType = ReturnKeyType.default,
+      spellCheckingType: TextSpellCheckingType = TextSpellCheckingType.default,
       textAlignment: TextAlignment = TextAlignment.natural,
       textColor: Color = .black,
       value: String,
@@ -111,6 +125,7 @@ public struct TextField: HostComponent {
       self.keyboardAppearance = keyboardAppearance
       self.keyboardType = keyboardType
       self.placeholder = placeholder
+      self.returnKeyType = returnKeyType
       self.spellCheckingType = spellCheckingType
       self.textAlignment = textAlignment
       self.textColor = textColor
