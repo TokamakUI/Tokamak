@@ -16,6 +16,7 @@ final class TokamakStepper: UIStepper, Default, ValueStorage {
 
 extension Stepper: UIValueComponent {
   typealias Target = TokamakStepper
+  public typealias RefTarget = UIStepper
 
   static func update(valueBox: ValueControlBox<TokamakStepper>,
                      _ props: Stepper.Props,

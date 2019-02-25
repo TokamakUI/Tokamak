@@ -60,6 +60,8 @@ extension UIStackView.Distribution {
 }
 
 extension StackView: UIViewComponent {
+  public typealias RefTarget = UIStackView
+
   static func update(view box: ViewBox<TokamakStackView>,
                      _ props: StackView.Props,
                      _: [AnyNode]) {

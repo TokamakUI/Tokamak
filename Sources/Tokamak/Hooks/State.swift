@@ -5,16 +5,6 @@
 //  Created by Max Desiatov on 09/02/2019.
 //
 
-/// Formalizes an update to a value with a given action. Note that `update`
-/// function is mutating here to allow efficient in-place updates. As long as
-/// `Updatable` is implemented on a value type, this still allows freezing it
-/// into an immutable value when needed.
-public protocol Updatable {
-  associatedtype Action
-
-  mutating func update(_ action: Action)
-}
-
 typealias Updater<T> = (inout T) -> ()
 
 /** Note that `set` functions are not `mutating`, they never update the
@@ -53,14 +43,6 @@ public struct State<T> {
 }
 
 extension State: Equatable where T: Equatable {}
-
-extension State where T: Updatable {
-  /// For any `Reduceable` state you can dispatch an `Action` to reduce that
-  /// state to a different value.
-  public func set(_ action: T.Action) {
-    updateHandler.value { $0.update(action) }
-  }
-}
 
 extension Hooks {
   /** Allows a component to have its own state and to be updated when the state

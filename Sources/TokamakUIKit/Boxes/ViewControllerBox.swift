@@ -19,4 +19,8 @@ class ViewControllerBox<T: UIViewController>: UITarget {
   override var viewController: UIViewController {
     return containerViewController
   }
+
+  override var refTarget: Any {
+    return containerViewController
+  }
 }

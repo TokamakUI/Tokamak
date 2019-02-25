@@ -77,6 +77,12 @@ extension Component where Children == [AnyNode] {
   }
 }
 
+extension Component where Props == Null, Children == [AnyNode] {
+  public static func node() -> AnyNode {
+    return node(Null(), [])
+  }
+}
+
 extension Component where Props: Default, Props.DefaultValue == Props,
   Children == [AnyNode] {
   public static func node(_ child: AnyNode) -> AnyNode {
@@ -125,5 +131,25 @@ extension RefComponent {
       children: AnyEquatable(children),
       type: .host(self)
     )
+  }
+}
+
+extension RefComponent where Children == [AnyNode] {
+  public static func node(
+    ref: Ref<RefTarget?>,
+    _ props: Props,
+    _ child: AnyNode
+  ) -> AnyNode {
+    return node(ref: ref, props, [child])
+  }
+
+  public static func node(ref: Ref<RefTarget?>, _ props: Props) -> AnyNode {
+    return node(ref: ref, props, [])
+  }
+}
+
+extension RefComponent where Children == Null {
+  public static func node(ref: Ref<RefTarget?>, _ props: Props) -> AnyNode {
+    return node(ref: ref, props, Null())
   }
 }
