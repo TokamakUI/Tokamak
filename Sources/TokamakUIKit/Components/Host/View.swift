@@ -15,6 +15,8 @@ final class TokamakView: UIView, Default {
 }
 
 extension View: UIViewComponent {
+  public typealias RefTarget = UIView
+
   static func update(view: ViewBox<TokamakView>,
                      _ props: View.Props,
                      _: [AnyNode]) {}

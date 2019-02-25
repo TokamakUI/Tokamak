@@ -25,6 +25,7 @@ final class TokamakSegmentedControl: UISegmentedControl, Default, ValueStorage {
 
 extension SegmentedControl: UIValueComponent {
   typealias Target = TokamakSegmentedControl
+  public typealias RefTarget = UISegmentedControl
 
   static func update(valueBox: ValueControlBox<TokamakSegmentedControl>,
                      _ props: SegmentedControl.Props,

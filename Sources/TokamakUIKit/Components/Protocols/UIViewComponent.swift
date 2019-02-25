@@ -8,7 +8,7 @@
 import Tokamak
 import UIKit
 
-protocol UIViewComponent: UIHostComponent, HostComponent {
+protocol UIViewComponent: UIHostComponent, RefComponent {
   associatedtype Target: UIView & Default
 
   static func update(view box: ViewBox<Target>,
@@ -94,16 +94,6 @@ extension UIViewComponent where Target == Target.DefaultValue,
     component: UIKitRenderer.MountedHost,
     _ renderer: UIKitRenderer
   ) -> UITarget? {
-    guard let children = component.node.children.value as? Children else {
-      childrenAssertionFailure()
-      return nil
-    }
-
-    guard let props = component.node.props.value as? Props else {
-      propsAssertionFailure()
-      return nil
-    }
-
     let target = Target.defaultValue
     let result: ViewBox<Target>
 
@@ -166,9 +156,6 @@ extension UIViewComponent where Target == Target.DefaultValue,
     default:
       parentAssertionFailure()
     }
-
-    applyStyle(result, props)
-    update(view: result, props, children)
 
     return result
   }

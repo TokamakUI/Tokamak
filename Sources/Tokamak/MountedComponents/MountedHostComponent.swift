@@ -42,6 +42,8 @@ public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
 
     self.target = target
 
+    reconciler.renderer?.update(target: target, with: self)
+
     switch node.children.value {
     case let nodes as [AnyNode]:
       mountedChildren = nodes.map { $0.makeMountedComponent(target) }

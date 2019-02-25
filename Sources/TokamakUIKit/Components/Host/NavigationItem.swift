@@ -41,7 +41,6 @@ extension NavigationItem: UIHostComponent {
 
     let viewController = UIViewController()
     let result = ViewControllerBox(viewController, component.node)
-    update(target: result, node: component.node)
 
     parent.containerViewController.pushViewController(
       viewController,

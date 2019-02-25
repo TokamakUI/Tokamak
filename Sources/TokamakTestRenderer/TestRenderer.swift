@@ -28,8 +28,6 @@ public final class TestRenderer: Renderer {
     let result = TestView(component.node)
     parent.add(subview: result)
 
-    update(target: result, with: component)
-
     return result
   }
 

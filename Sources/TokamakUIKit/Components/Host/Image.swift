@@ -28,6 +28,8 @@ extension UIImage.RenderingMode {
 }
 
 extension Image: UIViewComponent {
+  public typealias RefTarget = UIImageView
+
   static func update(
     view box: ViewBox<TokamakImage>,
     _ props: Image.Props,

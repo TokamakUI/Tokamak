@@ -15,6 +15,7 @@
 		A6D5AF87221B131400DBF186 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D5AF86221B131400DBF186 /* Image.swift */; };
 		C449B806DFEE55B6CEE6478C /* libPods-TokamakDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B96B435A9D67621D318616E /* libPods-TokamakDemo.a */; };
 		D11DB6432219C03000013FC3 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DB6422219C03000013FC3 /* Timer.swift */; };
+		D1BB3D302223F6B400C30062 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB3D2F2223F6B400C30062 /* Animation.swift */; };
 		D1BFAF772215795900845EA0 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF762215795900845EA0 /* Router.swift */; };
 		D1BFAF792215800A00845EA0 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF782215800A00845EA0 /* Counter.swift */; };
 		D1BFAF7B22158B4000845EA0 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF7A22158B4000845EA0 /* List.swift */; };
@@ -43,6 +44,7 @@
 		A9EEF813955DAEEFE1D52ED4 /* Pods-TokamakDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokamakDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokamakDemo/Pods-TokamakDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		C6DA99382B6892EAB361742F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		D11DB6422219C03000013FC3 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
+		D1BB3D2F2223F6B400C30062 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		D1BFAF762215795900845EA0 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		D1BFAF782215800A00845EA0 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		D1BFAF7A22158B4000845EA0 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				D1F2C3262214407B008358DC /* TableModal.swift */,
 				D11DB6422219C03000013FC3 /* Timer.swift */,
 				A6D5AF86221B131400DBF186 /* Image.swift */,
+				D1BB3D2F2223F6B400C30062 /* Animation.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				D1F7185D2215A4A1004E5951 /* LayerProps.swift in Sources */,
 				D1BFAF792215800A00845EA0 /* Counter.swift in Sources */,
 				D1F718612215A617004E5951 /* Modals.swift in Sources */,
+				D1BB3D302223F6B400C30062 /* Animation.swift in Sources */,
 				D1F7185522159EAD004E5951 /* DatePickers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
