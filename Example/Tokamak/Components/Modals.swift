@@ -29,42 +29,18 @@ struct NavigationModal: PureLeafComponent {
   }
 }
 
-struct SimpleModal: LeafComponent {
+struct SimpleModal: PureLeafComponent {
   struct Props: Equatable {
     let isPresented: State<Bool>
   }
 
-  private static let colors: [(Color, String)] = [
-    (.white, "white"),
-    (.red, "red"),
-    (.green, "green"),
-    (.blue, "blue"),
-  ]
-
-  static func render(props: Props, hooks: Hooks) -> AnyNode {
-    let backgroundColor = hooks.state(0)
-
+  static func render(props: Props) -> AnyNode {
     return props.isPresented.value ? ModalPresenter.node(
-      View.node(
-        .init(Style(
-          Edges.equal(to: .parent),
-          backgroundColor: colors[backgroundColor.value].0
-        )),
-        StackView.node(.init(
-          Edges.equal(to: .parent),
-          axis: .vertical,
-          distribution: .fillEqually
-        ), [
-          Button.node(.init(
-            onPress: Handler { props.isPresented.set(false) }
-          ), "Close Modal"),
-          SegmentedControl.node(
-            .init(value: backgroundColor.value,
-                  valueHandler: Handler(backgroundColor.set)),
-            colors.map { $0.1 }
-          ),
-        ])
-      )
+      Animation.node(Null(),
+                     Button.node(.init(
+                       Style(Center.equal(to: .parent)),
+                       onPress: Handler { props.isPresented.set(false) }
+      ), "Close Modal"))
     ) : Null.node()
   }
 }
