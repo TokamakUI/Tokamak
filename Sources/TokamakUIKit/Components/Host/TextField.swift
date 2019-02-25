@@ -139,6 +139,21 @@ extension UIReturnKeyType {
   }
 }
 
+extension UITextField.BorderStyle {
+  public init(_ style: TextField.Props.BorderStyle) {
+    switch style {
+    case .none:
+      self = .none
+    case .line:
+      self = .line
+    case .bezel:
+      self = .bezel
+    case .roundedRect:
+      self = .roundedRect
+    }
+  }
+}
+
 final class TokamakTextField: UITextField, Default, ValueStorage {
   typealias Value = String
 
@@ -180,5 +195,6 @@ extension TextField: UIValueComponent {
     control.keyboardType = UIKeyboardType(props.keyboardType)
     control.keyboardAppearance = UIKeyboardAppearance(props.keyboardAppearance)
     control.returnKeyType = UIReturnKeyType(props.returnKeyType)
+    control.borderStyle = UITextField.BorderStyle(props.borderStyle)
   }
 }

@@ -70,9 +70,16 @@ public struct TextField: HostComponent {
       case `continue`
     }
 
+    public enum BorderStyle {
+      case none
+      case line
+      case bezel
+      case roundedRect
+    }
+
     public let autocapitalizationType: TextAutocapitalizationType
     public let autocorrectionType: TextAutocorrectionType
-    public let borderStyle: Style?
+    public let borderStyle: BorderStyle
     public let clearButtonMode: ViewMode
     public let clearsOnBeginEditing: Bool
     public let clearsOnInsertion: Bool
@@ -94,7 +101,7 @@ public struct TextField: HostComponent {
       _ style: Style? = nil,
       autocapitalizationType: TextAutocapitalizationType = TextAutocapitalizationType.sentences,
       autocorrectionType: TextAutocorrectionType = TextAutocorrectionType.default,
-      borderStyle: Style? = nil,
+      borderStyle: BorderStyle = BorderStyle.bezel,
       clearButtonMode: ViewMode = .never,
       clearsOnBeginEditing: Bool = false,
       clearsOnInsertion: Bool = false,
