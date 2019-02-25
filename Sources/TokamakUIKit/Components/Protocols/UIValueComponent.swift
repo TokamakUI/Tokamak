@@ -14,6 +14,8 @@ protocol UIValueComponent: UIControlComponent
   static func update(valueBox: ValueControlBox<Target>,
                      _ props: Props,
                      _ children: Children)
+
+  static var valueChangeEvent: Event { get }
 }
 
 extension UIValueComponent {
@@ -33,6 +35,13 @@ extension UIValueComponent {
 
     update(valueBox: box, props, children)
     box.value = props.value
-    box.bind(valueChangedHandler: props.valueHandler)
+    box.bind(
+      valueChangedHandler: props.valueHandler,
+      for: UIControl.Event(valueChangeEvent)
+    )
+  }
+
+  static var valueChangeEvent: Event {
+    return .valueChanged
   }
 }

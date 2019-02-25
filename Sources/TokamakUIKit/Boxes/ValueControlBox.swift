@@ -27,9 +27,12 @@ final class ValueControlBox<T: UIControl & Default & ValueStorage>:
     }
   }
 
-  func bind(valueChangedHandler: Handler<T.Value>?) {
+  func bind(
+    valueChangedHandler: Handler<T.Value>?,
+    for event: UIControl.Event
+  ) {
     if let existing = self.valueChangedAction {
-      view.removeTarget(existing, action: actionSelector, for: .valueChanged)
+      view.removeTarget(existing, action: actionSelector, for: event)
       valueChangedAction = nil
     }
 
@@ -40,7 +43,7 @@ final class ValueControlBox<T: UIControl & Default & ValueStorage>:
         handler.value(self.view.value)
       }
 
-      view.addTarget(action, action: actionSelector, for: .valueChanged)
+      view.addTarget(action, action: actionSelector, for: event)
       valueChangedAction = action
     }
   }

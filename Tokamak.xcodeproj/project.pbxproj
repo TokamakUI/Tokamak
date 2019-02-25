@@ -21,8 +21,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		A62AC6522223F3C4009B3B25 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D188EF2220222F00C3947C /* TextField.swift */; };
 		A6AB60B5221C70340063F88A /* ContentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AB60B4221C70340063F88A /* ContentMode.swift */; };
 		A6D188EC221F1CA300C3947C /* Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D188EB221F1CA300C3947C /* Accessibility.swift */; };
+		A6D188EE2220221B00C3947C /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D188ED2220221B00C3947C /* TextField.swift */; };
 		D1B4F8DB221AFB0E00C53C42 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4F8D9221AFB0800C53C42 /* Image.swift */; };
 		D1B4F8DD221AFB2B00C53C42 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4F8DC221AFB2B00C53C42 /* Image.swift */; };
 		OBJ_153 /* AnyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_66 /* AnyEquatable.swift */; };
@@ -186,6 +188,8 @@
 /* Begin PBXFileReference section */
 		A6AB60B4221C70340063F88A /* ContentMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMode.swift; sourceTree = "<group>"; };
 		A6D188EB221F1CA300C3947C /* Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessibility.swift; sourceTree = "<group>"; };
+		A6D188ED2220221B00C3947C /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		A6D188EF2220222F00C3947C /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		D1B4F8D9221AFB0800C53C42 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		D1B4F8DC221AFB2B00C53C42 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		OBJ_10 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
@@ -428,6 +432,7 @@
 				OBJ_28 /* Stepper.swift */,
 				OBJ_29 /* Switch.swift */,
 				OBJ_30 /* View.swift */,
+				A6D188EF2220222F00C3947C /* TextField.swift */,
 			);
 			path = Host;
 			sourceTree = "<group>";
@@ -564,6 +569,7 @@
 				OBJ_81 /* Stepper.swift */,
 				OBJ_82 /* Switch.swift */,
 				OBJ_83 /* View.swift */,
+				A6D188ED2220221B00C3947C /* TextField.swift */,
 			);
 			path = Host;
 			sourceTree = "<group>";
@@ -790,6 +796,7 @@
 				OBJ_174 /* TabPresenter.swift in Sources */,
 				OBJ_175 /* Color.swift in Sources */,
 				OBJ_176 /* Bottom.swift in Sources */,
+				A6D188EE2220221B00C3947C /* TextField.swift in Sources */,
 				OBJ_177 /* Center.swift in Sources */,
 				D1B4F8DD221AFB2B00C53C42 /* Image.swift in Sources */,
 				A6D188EC221F1CA300C3947C /* Accessibility.swift in Sources */,
@@ -906,6 +913,7 @@
 				OBJ_292 /* Event.swift in Sources */,
 				OBJ_293 /* LineBreakMode.swift in Sources */,
 				OBJ_294 /* Rectangle.swift in Sources */,
+				A62AC6522223F3C4009B3B25 /* TextField.swift in Sources */,
 				OBJ_295 /* UIControlComponent.swift in Sources */,
 				OBJ_296 /* UIHostComponent.swift in Sources */,
 				OBJ_297 /* UIValueComponent.swift in Sources */,

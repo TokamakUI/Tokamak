@@ -18,6 +18,7 @@ enum AppRoute: String, CaseIterable {
   case layerProps = "Layer Props"
   case timer
   case image
+  case textField = "Text Field"
   case animation
 }
 
@@ -60,6 +61,8 @@ struct Router: NavigationRouter {
       result = TimerCounter.node()
     case .image:
       result = ImageExample.node()
+    case .textField:
+      result = TextFieldExample.node()
     case .animation:
       result = Animation.node()
     }
