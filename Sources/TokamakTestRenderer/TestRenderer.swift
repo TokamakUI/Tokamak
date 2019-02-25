@@ -28,13 +28,21 @@ public final class TestRenderer: Renderer {
     let result = TestView(component.node)
     parent.add(subview: result)
 
+    update(target: result, with: component)
+
     return result
   }
 
   public func update(
     target: TestView,
     with component: TestRenderer.MountedHost
-  ) {}
+  ) {
+    guard
+      let componentType = component.type as? AnyRefComponent.Type,
+      let anyRef = component.node.ref else { return }
+
+    componentType.update(ref: anyRef, with: target)
+  }
 
   public func unmount(
     target: TestView,
