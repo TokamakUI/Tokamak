@@ -7,12 +7,21 @@
 //
 
 import Tokamak
+import TokamakUIKit
 
 struct Constraints: LeafComponent {
   typealias Props = Null
 
   static func render(props: Props, hooks: Hooks) -> AnyNode {
     let left = hooks.state(0.5 as Float)
+    let ref = hooks.ref(type: UIView.self)
+
+    hooks.effect(Null()) {
+      guard let view = ref.value else { return }
+      UIView.animate(withDuration: 2) {
+        view.backgroundColor = .green
+      }
+    }
 
     return StackView.node(.init(
       Edges.equal(to: .safeArea),
@@ -26,6 +35,7 @@ struct Constraints: LeafComponent {
       )),
 
       View.node(
+        ref: ref,
         .init(Style(backgroundColor: .red)),
         Label.node(.init(
           Style(Left.equal(to: .parent, constant: Double(left.value) * 200)),

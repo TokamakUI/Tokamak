@@ -30,7 +30,11 @@ struct HackyProvider: SimpleCellProvider {
 
 class UITarget: Target {
   var viewController: UIViewController {
-    fatalError("viewController should be overriden in UITarget subclass")
+    fatalError("\(#function) should be overriden in UITarget subclass")
+  }
+
+  var refTarget: Any {
+    fatalError("\(#function) should be overriden in UITarget subclass")
   }
 }
 
@@ -79,6 +83,12 @@ final class UIKitRenderer: Renderer {
 
     rendererComponent.update(target: target,
                              node: component.node)
+
+    guard
+      let componentType = component.type as? AnyRefComponent.Type,
+      let anyRef = component.node.ref else { return }
+
+    componentType.update(ref: anyRef, with: target.refTarget)
   }
 
   func unmount(

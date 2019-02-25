@@ -127,3 +127,17 @@ extension RefComponent {
     )
   }
 }
+
+extension RefComponent where Children == [AnyNode] {
+  public static func node(
+    ref: Ref<RefTarget?>,
+    _ props: Props,
+    _ child: AnyNode
+  ) -> AnyNode {
+    return node(ref: ref, props, [child])
+  }
+
+  public static func node(ref: Ref<RefTarget?>, _ props: Props) -> AnyNode {
+    return node(ref: ref, props, [])
+  }
+}

@@ -16,6 +16,7 @@ final class TokamakSlider: UISlider, Default, ValueStorage {
 
 extension Slider: UIValueComponent {
   typealias Target = TokamakSlider
+  public typealias RefTarget = UISlider
 
   static func update(valueBox: ValueControlBox<TokamakSlider>,
                      _ props: Slider.Props,

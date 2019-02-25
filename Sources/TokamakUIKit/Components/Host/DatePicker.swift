@@ -27,6 +27,7 @@ final class TokamakDatePicker: UIDatePicker, Default, ValueStorage {
 
 extension DatePicker: UIValueComponent {
   typealias Target = TokamakDatePicker
+  public typealias RefTarget = UIDatePicker
 
   static func update(valueBox: ValueControlBox<TokamakDatePicker>,
                      _ props: DatePicker.Props,
