@@ -9,7 +9,7 @@ import Tokamak
 import UIKit
 
 extension UIColor {
-  convenience init(_ color: Color) {
+  public convenience init(_ color: Color) {
     switch color.space {
     case .sRGB:
       self.init(red: CGFloat(color.red),

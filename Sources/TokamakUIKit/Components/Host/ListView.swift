@@ -9,6 +9,8 @@ import Tokamak
 import UIKit
 
 extension ListView: UIViewComponent {
+  public typealias RefTarget = UITableView
+
   static func box(
     for view: TokamakTableView,
     _ viewController: UIViewController,

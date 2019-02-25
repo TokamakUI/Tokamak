@@ -19,6 +19,7 @@ final class TokamakButton: UIButton, Default {
 
 extension Button: UIControlComponent {
   typealias Target = TokamakButton
+  public typealias RefTarget = UIButton
 
   static func update(control box: ControlBox<TokamakButton>,
                      _ props: Button.Props,

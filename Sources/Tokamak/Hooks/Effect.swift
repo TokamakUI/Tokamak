@@ -15,7 +15,7 @@ extension Hooks {
    closure should return a cleanup closure to be executed before the next
    call to `render` or when a component is unmounted.
    */
-  public func effect(closure: @escaping () -> () -> ()) {
+  public func finalizedEffect(closure: @escaping () -> () -> ()) {
     scheduleEffect(nil, closure)
   }
 
@@ -55,7 +55,10 @@ extension Hooks {
    trigger effect execution (unsubscribing from updates on old user ID and
    subscribing for new user ID) when the ID has changed.
    */
-  public func effect<T>(_ observed: T, closure: @escaping () -> () -> ())
+  public func finalizedEffect<T>(
+    _ observed: T,
+    closure: @escaping () -> () -> ()
+  )
     where T: Equatable {
     scheduleEffect(AnyEquatable(observed), closure)
   }

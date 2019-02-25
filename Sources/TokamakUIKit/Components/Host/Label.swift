@@ -32,6 +32,8 @@ extension NSTextAlignment {
 }
 
 extension Label: UIViewComponent {
+  public typealias RefTarget = UILabel
+
   static func update(view box: ViewBox<TokamakLabel>,
                      _ props: Label.Props,
                      _ children: String) {

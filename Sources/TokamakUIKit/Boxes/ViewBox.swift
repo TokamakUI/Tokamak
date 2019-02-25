@@ -19,4 +19,8 @@ class ViewBox<T: UIView>: ViewControllerBox<UIViewController> {
 
     super.init(viewController, node)
   }
+
+  override var refTarget: Any {
+    return view
+  }
 }

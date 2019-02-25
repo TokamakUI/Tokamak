@@ -27,6 +27,7 @@ final class TokamakSwitch: UISwitch, Default, ValueStorage {
 
 extension Switch: UIValueComponent {
   typealias Target = TokamakSwitch
+  public typealias RefTarget = UISwitch
 
   static func update(valueBox: ValueControlBox<TokamakSwitch>,
                      _ props: Switch.Props,
