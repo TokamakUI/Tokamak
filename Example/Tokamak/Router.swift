@@ -18,6 +18,7 @@ enum AppRoute: String, CaseIterable {
   case layerProps = "Layer Props"
   case timer
   case image
+  case textField = "Text Field"
 }
 
 extension AppRoute: CustomStringConvertible {
@@ -59,6 +60,8 @@ struct Router: NavigationRouter {
       result = TimerCounter.node()
     case .image:
       result = ImageExample.node()
+    case .textField:
+      result = TextFieldExample.node()
     }
 
     return NavigationItem.node(

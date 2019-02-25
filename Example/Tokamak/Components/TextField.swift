@@ -1,0 +1,58 @@
+//
+//  TextField.swift
+//  TokamakDemo
+//
+//  Created by Matvii Hodovaniuk on 2/25/19.
+//  Copyright © 2019 Tokamak. All rights reserved.
+//
+
+import Tokamak
+
+struct TextFieldExample: LeafComponent {
+  typealias Props = Null
+
+  static func render(props: Props, hooks: Hooks) -> AnyNode {
+    let text = hooks.state("")
+    let textFieldStyle = Style(
+      [
+        Height.equal(to: 44),
+        Width.equal(to: .parent),
+      ]
+    )
+
+    return StackView.node(.init(
+      Edges.equal(to: .safeArea),
+      alignment: .top,
+      axis: .vertical,
+      distribution: .equalSpacing
+    ), [
+      TextField.node(.init(
+        textFieldStyle,
+        placeholder: "Deafult",
+        value: text.value,
+        valueHandler: Handler(text.set)
+      )),
+      TextField.node(.init(
+        textFieldStyle,
+        isEnabled: false,
+        placeholder: "Disabled",
+        value: text.value,
+        valueHandler: Handler(text.set)
+      )),
+      TextField.node(.init(
+        textFieldStyle,
+        keyboardAppearance: .dark,
+        placeholder: "Dark",
+        value: text.value,
+        valueHandler: Handler(text.set)
+      )),
+      TextField.node(.init(
+        textFieldStyle,
+        keyboardAppearance: .dark,
+        placeholder: "Dark",
+        value: text.value,
+        valueHandler: Handler(text.set)
+      )),
+    ])
+  }
+}
