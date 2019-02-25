@@ -95,6 +95,19 @@ extension UIKeyboardType {
   }
 }
 
+extension UIKeyboardAppearance {
+  public init(_ type: TextField.Props.KeyboardAppearance) {
+    switch type {
+    case .default:
+      self = .default
+    case .dark:
+      self = .dark
+    case .light:
+      self = .light
+    }
+  }
+}
+
 final class TokamakTextField: UITextField, Default, ValueStorage {
   typealias Value = String
 
@@ -134,5 +147,6 @@ extension TextField: UIValueComponent {
     control.spellCheckingType =
       UITextSpellCheckingType(props.spellCheckingType)
     control.keyboardType = UIKeyboardType(props.keyboardType)
+    control.keyboardAppearance = UIKeyboardAppearance(props.keyboardAppearance)
   }
 }

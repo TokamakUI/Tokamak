@@ -49,6 +49,12 @@ public struct TextField: HostComponent {
       case asciiCapableNumberPad
     }
 
+    public enum KeyboardAppearance {
+      case `default`
+      case dark
+      case light
+    }
+
     public let autocapitalizationType: TextAutocapitalizationType
     public let autocorrectionType: TextAutocorrectionType
     public let borderStyle: Style?
@@ -60,6 +66,7 @@ public struct TextField: HostComponent {
     public let value: String
     public let valueHandler: Handler<String>?
     public let isEnabled: Bool
+    public let keyboardAppearance: KeyboardAppearance
     public let keyboardType: KeyboardType
     public let placeholder: String?
     public let spellCheckingType: TextSpellCheckingType
@@ -80,6 +87,7 @@ public struct TextField: HostComponent {
       handlers: EventHandlers = [:],
       isAnimated: Bool = true,
       isEnabled: Bool = true,
+      keyboardAppearance: KeyboardAppearance = KeyboardAppearance.default,
       keyboardType: KeyboardType = KeyboardType.default,
       placeholder: String? = nil,
       spellCheckingType: TextSpellCheckingType =
@@ -100,6 +108,7 @@ public struct TextField: HostComponent {
       self.value = value
       self.valueHandler = valueHandler
       self.isEnabled = isEnabled
+      self.keyboardAppearance = keyboardAppearance
       self.keyboardType = keyboardType
       self.placeholder = placeholder
       self.spellCheckingType = spellCheckingType
