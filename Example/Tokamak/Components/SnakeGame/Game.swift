@@ -32,16 +32,7 @@ struct Game {
 
   let mapSize: Size
 
-  func canChangeTo(_ newDirection: Direction) -> Bool {
-    var canChange = false
-    switch currentDirection {
-    case .left, .right:
-      canChange = newDirection == .up || newDirection == .down
-    case Direction.up, Direction.down:
-      canChange = newDirection == .left || newDirection == .right
-    }
-    return canChange
-  }
+  var speed: Int = 1
 
   func move(_ point: Point, mapSize: Size) -> Point {
     var theX = point.x
@@ -68,17 +59,36 @@ struct Game {
         theY = 0
       }
     }
-//    print("x: \(theX) y: \(theY)")
     return Point(x: theX, y: theY)
   }
 }
 
 extension Game {
   mutating func tick() {
-    if !snake.isEmpty {
+    let head = move(snake[0], mapSize: mapSize)
+    let isHeadOnTarget = head.x == target.x && head.y == target.y
+    snake.insert(head, at: 0)
+
+    if !snake.isEmpty && !isHeadOnTarget {
       snake.removeLast()
     }
-    let head = move(snake[0], mapSize: mapSize)
-    snake.insert(head, at: 0)
+
+    if isHeadOnTarget {
+      var isNextTargetGood = false
+      var newTarget = target
+
+      while !isNextTargetGood {
+        isNextTargetGood = true
+        newTarget = Point(
+          x: Double(Int.random(in: 0..<Int(mapSize.width))),
+          y: Double(Int.random(in: 0..<Int(mapSize.height)))
+        )
+        if snake.contains(newTarget) || newTarget == target {
+          isNextTargetGood = false
+        }
+      }
+
+      target = newTarget
+    }
   }
 }

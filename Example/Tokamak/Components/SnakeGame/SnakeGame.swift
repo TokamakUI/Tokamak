@@ -12,8 +12,7 @@ struct SnakeGame: LeafComponent {
   typealias Props = Null
 
   static func render(props: Props, hooks: Hooks) -> AnyNode {
-//        Cell.node(.init(size: 10, location: Point(x: 10, y: 10))),
-    let snakeProps = Snake.Props(cellSize: 10, mapSizeInCells: Size(width: 100, height: 100))
+    let snakeProps = Snake.Props(cellSize: 10, mapSizeInCells: Size(width: 20, height: 20))
 
     return View.node(
       .init(

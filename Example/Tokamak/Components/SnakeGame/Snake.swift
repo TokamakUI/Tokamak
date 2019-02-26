@@ -17,20 +17,21 @@ struct Snake: LeafComponent {
   static func render(props: Props, hooks: Hooks) -> AnyNode {
     let game = hooks.state(
       Game(
-        state: .isPlaying,
+        state: .initial,
         currentDirection: .up,
-        snake: [Point(x: 10, y: 10), Point(x: 11, y: 11)],
-        target: Point(x: 15, y: 15),
-        mapSize: Size(width: 30, height: 30)
+        snake: [Point(x: 10, y: 10), Point(x: 10, y: 11), Point(x: 10, y: 12)],
+        target: Point(x: 0, y: 0),
+        mapSize: Size(width: props.mapSizeInCells.width, height: props.mapSizeInCells.height), speed: 1
       )
     )
     let timer = hooks.ref(type: Timer.self)
+    let interval = hooks.state(10.0)
 
-    hooks.finalizedEffect(game.value.state) {
+    hooks.finalizedEffect([AnyEquatable(game.value.state), AnyEquatable(interval.value)]) {
       guard game.value.state == .isPlaying else { return {} }
 
       timer.value = Timer.scheduledTimer(
-        withTimeInterval: 1,
+        withTimeInterval: 1 / interval.value,
         repeats: true
       ) { _ in
         game.set { $0.tick() }
@@ -40,41 +41,102 @@ struct Snake: LeafComponent {
       }
     }
 
-    return  StackView.node(
-      .init(
-        alignment: .center,
-        axis: .horizontal,
-        spacing: 10.0
-      ),[
-        View.node(
-        [
+    switch game.value.state {
+    case .isPlaying:
+
+      return StackView.node(
+        .init(
+          Edges.equal(to: .parent),
+          axis: .vertical,
+          distribution: .fillEqually,
+          spacing: 10.0
+        ), [
           View.node(
-            Cell.node(.init(size: props.cellSize, location: game.value.target))
+            [
+              View.node(
+                .init(Style([Top.equal(to: .parent, constant: 10), Bottom.equal(to: .parent, constant: 30), Center.equal(to: .parent),
+                             Width.equal(to: Double(props.cellSize) * game.value.mapSize.width + 10),
+                             Height.equal(to: Double(props.cellSize) * game.value.mapSize.height - 30)], borderColor: .black, borderWidth: 2)),
+                [
+                  View.node(
+                    Cell.node(.init(size: props.cellSize, location: game.value.target))
+                  ),
+                  View.node(
+                    game.value.snake.map {
+                      Cell.node(.init(size: props.cellSize, location: $0))
+                    }
+                  ),
+                ]
+              ),
+            ]
           ),
-          View.node(
-            game.value.snake.map {
-              Cell.node(.init(size: props.cellSize, location: $0))
-            }
-          ),
+
+          StackView.node(.init(
+            axis: .vertical,
+            distribution: .fillEqually
+          ), [
+            Button.node(
+              .init(onPress: Handler { game.set { $0.currentDirection = .up } }),
+              "⬆️"
+            ),
+            StackView.node(.init(
+              axis: .horizontal,
+              distribution: .fillEqually
+            ), [
+              Button.node(
+                .init(onPress: Handler { game.set { $0.currentDirection = .left } }),
+                "⬅️"
+              ),
+
+              Button.node(
+                .init(onPress: Handler { game.set { $0.currentDirection = .right } }),
+                "➡️"
+              ),
+            ]),
+            Button.node(
+              .init(onPress: Handler { game.set { $0.currentDirection = .down } }),
+              "⬇️"
+            ),
           ]),
-        
-        Button.node(
-          .init(onPress: Handler { game.set { $0.currentDirection = .up } }),
-          "⬆️ UP"
-        ),
-//        Button.node(
-//          .init(onPress: Handler { game.set { $0.currentDirection = .right } }),
-//          "➡️"
-//        ),
-//        Button.node(
-//          .init(onPress: Handler { game.set { $0.currentDirection = .down } }),
-//          "⬇️"
-//        ),
-//        Button.node(
-//          .init(onPress: Handler { game.set { $0.currentDirection = .left } }),
-//          "⬅️"
-//        ),
-      ]
-    )
+
+          StackView.node(
+            .init(
+              alignment: .center,
+              axis: .vertical,
+              distribution: .fillEqually
+            ),
+            [
+              Stepper.node(
+                .init(
+                  maximumValue: 100.0,
+                  minimumValue: 1.0,
+                  stepValue: 1.0,
+                  value: interval.value,
+                  valueHandler: Handler(interval.set)
+                )
+              ),
+              Label.node(
+                .init(alignment: .center),
+                "\(interval.value)X"
+              ),
+            ]
+          ),
+        ]
+      )
+    default:
+      return StackView.node(
+        .init(
+          Edges.equal(to: .parent),
+          axis: .vertical,
+          distribution: .fillEqually,
+          spacing: 10.0
+        ), [
+          Button.node(
+            .init(onPress: Handler { game.set { $0.state = .isPlaying } }),
+            "Start the game"
+          ),
+        ]
+      )
+    }
   }
 }
