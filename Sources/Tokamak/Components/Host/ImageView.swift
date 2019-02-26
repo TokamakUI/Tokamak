@@ -1,5 +1,5 @@
 //
-//  Image.swift
+//  ImageView.swift
 //  Tokamak
 //
 //  Created by Matvii Hodovaniuk on 2/17/19.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Image: HostComponent {
+public struct ImageView: HostComponent {
   public typealias Children = [AnyNode]
 
   public struct Props: Equatable, StyleProps {

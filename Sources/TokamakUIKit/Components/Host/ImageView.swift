@@ -15,7 +15,7 @@ final class TokamakImage: UIImageView, Default {
 }
 
 extension UIImage.RenderingMode {
-  public init(_ rawValue: Image.Props.RenderingMode) {
+  public init(_ rawValue: ImageView.Props.RenderingMode) {
     switch rawValue {
     case .automatic:
       self = .automatic
@@ -27,12 +27,12 @@ extension UIImage.RenderingMode {
   }
 }
 
-extension Image: UIViewComponent {
+extension ImageView: UIViewComponent {
   public typealias RefTarget = UIImageView
 
   static func update(
     view box: ViewBox<TokamakImage>,
-    _ props: Image.Props,
+    _ props: ImageView.Props,
     _ children: [AnyNode]
   ) {
     var image: UIImage?
