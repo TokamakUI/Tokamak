@@ -74,7 +74,7 @@ struct Game {
 
 extension Game {
   mutating func tick() {
-    if snake.count > 0 {
+    if !snake.isEmpty {
       snake.removeLast()
     }
     let head = move(snake[0], mapSize: mapSize)

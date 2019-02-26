@@ -10,7 +10,7 @@ typealias Effect = () -> Finalizer
 
 protocol HookedComponent: class {
   /// State cells of this component indexed by order of `hooks.state` calls
-  var state: [Any] { get set }
+  var state: [UnsafeMutableRawPointer] { get set }
 
   /// Effect cells of this component indexed by order of `hooks.effect` calls
   var effects: [(observed: AnyEquatable?, Effect)] { get set }
@@ -31,7 +31,10 @@ public final class Hooks {
   /** Closure assigned by the reconciler before every `render` call. Queues
    a state update with this reconciler.
    */
-  let queueState: (_ index: Int, _ updater: Updater<Any>) -> ()
+  let queueState: (
+    _ index: Int,
+    _ updater: (UnsafeMutableRawPointer) -> ()
+  ) -> ()
 
   weak var component: HookedComponent?
 
@@ -44,7 +47,10 @@ public final class Hooks {
 
   init(
     component: HookedComponent,
-    queueState: @escaping (_ index: Int, _ updater: Updater<Any>) -> ()
+    queueState: @escaping (
+      _ index: Int,
+      _ updater: (UnsafeMutableRawPointer) -> ()
+    ) -> ()
   ) {
     self.component = component
     self.queueState = queueState
@@ -53,7 +59,7 @@ public final class Hooks {
   /** For a given initial state return a current value of this state
    (initialized from `initial` if current was absent) and its index.
    */
-  func currentState(_ initial: Any) -> (current: Any, index: Int) {
+  func currentState<T>(_ initial: T) -> (current: T, index: Int) {
     defer { stateIndex += 1 }
 
     guard let component = component else {
@@ -62,9 +68,13 @@ public final class Hooks {
     }
 
     if component.state.count > stateIndex {
-      return (component.state[stateIndex], stateIndex)
+      let pointer = component.state[stateIndex]
+      return (pointer.assumingMemoryBound(to: T.self).pointee, stateIndex)
     } else {
-      component.state.append(initial)
+      let pointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
+      pointer.initialize(to: initial)
+
+      component.state.append(UnsafeMutableRawPointer(pointer))
       return (initial, stateIndex)
     }
   }

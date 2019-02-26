@@ -23,7 +23,11 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   let type: AnyCompositeComponent.Type
 
   // HookedComponent implementation
-  var state = [Any]()
+
+  /// There's no easy way to downcast elements of `[Any]` to `T`
+  /// and apply `inout` updater without creating copies, working around
+  /// that with pointers.
+  var state = [UnsafeMutableRawPointer]()
   var effects = [(observed: AnyEquatable?, Effect)]()
   var effectFinalizers = [Finalizer]()
   var refs = [AnyObject]()
@@ -35,6 +39,12 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
     self.parentTarget = parentTarget
 
     super.init(node)
+  }
+
+  deinit {
+    for s in state {
+      s.deallocate()
+    }
   }
 
   override func mount(with reconciler: StackReconciler<R>) {
