@@ -26,6 +26,8 @@ struct Snake: LeafComponent {
     )
     let timer = hooks.ref(type: Timer.self)
     let interval = hooks.state(10.0)
+    let isEnableVertivalMove = ![.up, .down].contains(game.value.currentDirection)
+    let isEnableHorizontalMove = ![.left, .right].contains(game.value.currentDirection)
 
     hooks.finalizedEffect([AnyEquatable(game.value.state), AnyEquatable(interval.value)]) {
       guard game.value.state == .isPlaying else { return {} }
@@ -76,7 +78,7 @@ struct Snake: LeafComponent {
             distribution: .fillEqually
           ), [
             Button.node(
-              .init(onPress: Handler { game.set { $0.currentDirection = .up } }),
+              .init(isEnabled: isEnableVertivalMove, onPress: Handler { game.set { $0.currentDirection = .up } }),
               "⬆️"
             ),
             StackView.node(.init(
@@ -84,17 +86,17 @@ struct Snake: LeafComponent {
               distribution: .fillEqually
             ), [
               Button.node(
-                .init(onPress: Handler { game.set { $0.currentDirection = .left } }),
+                .init(isEnabled: isEnableHorizontalMove, onPress: Handler { game.set { $0.currentDirection = .left } }),
                 "⬅️"
               ),
 
               Button.node(
-                .init(onPress: Handler { game.set { $0.currentDirection = .right } }),
+                .init(isEnabled: isEnableHorizontalMove, onPress: Handler { game.set { $0.currentDirection = .right } }),
                 "➡️"
               ),
             ]),
             Button.node(
-              .init(onPress: Handler { game.set { $0.currentDirection = .down } }),
+              .init(isEnabled: isEnableVertivalMove, onPress: Handler { game.set { $0.currentDirection = .down } }),
               "⬇️"
             ),
           ]),
