@@ -1,0 +1,83 @@
+//
+//  Game.swift
+//  TokamakDemo
+//
+//  Created by Matvii Hodovaniuk on 2/25/19.
+//  Copyright © 2019 Tokamak. All rights reserved.
+//
+
+import Tokamak
+
+struct Game {
+  enum State {
+    case initial
+    case gameOver
+    case isPlaying
+  }
+
+  var state = State.initial
+
+  enum Direction {
+    case up
+    case down
+    case left
+    case right
+  }
+
+  var currentDirection = Direction.up
+
+  var snake: [Point]
+
+  var target: Point
+
+  let mapSize: Size
+
+  func canChangeTo(_ newDirection: Direction) -> Bool {
+    var canChange = false
+    switch currentDirection {
+    case .left, .right:
+      canChange = newDirection == .up || newDirection == .down
+    case Direction.up, Direction.down:
+      canChange = newDirection == .left || newDirection == .right
+    }
+    return canChange
+  }
+
+  func move(_ point: Point, mapSize: Size) -> Point {
+    var theX = point.x
+    var theY = point.y
+    switch currentDirection {
+    case .left:
+      theX -= 1
+      if theX < 0 {
+        theX = mapSize.width - 1
+      }
+    case .up:
+      theY -= 1
+      if theY < 0 {
+        theY = mapSize.height - 1
+      }
+    case .right:
+      theX += 1
+      if theX > mapSize.width {
+        theX = 0
+      }
+    case .down:
+      theY += 1
+      if theY > mapSize.height {
+        theY = 0
+      }
+    }
+    return Point(x: theX, y: theY)
+  }
+}
+
+extension Game {
+  mutating func tick() {
+    if snake.count > 0 {
+      snake.removeLast()
+    }
+    let head = move(snake[0], mapSize: mapSize)
+    snake.insert(head, at: 0)
+  }
+}
