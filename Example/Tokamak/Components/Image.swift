@@ -18,9 +18,9 @@ struct ImageExample: PureLeafComponent {
       axis: .vertical,
       distribution: .fillEqually
     ), [
-      Image.node(.init(
+      ImageView.node(.init(
         Style(contentMode: .scaleAspectFit),
-        name: "tokamak"
+        image: Image(name: "tokamak")
       )),
     ])
   }

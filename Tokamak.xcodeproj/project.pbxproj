@@ -28,6 +28,7 @@
 		D1B4F8DB221AFB0E00C53C42 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4F8D9221AFB0800C53C42 /* ImageView.swift */; };
 		D1B4F8DD221AFB2B00C53C42 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4F8DC221AFB2B00C53C42 /* ImageView.swift */; };
 		D1CFC81D222546F500B03222 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CFC81C222546F500B03222 /* Image.swift */; };
+		D1CFC8202225622D00B03222 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CFC81E222561AD00B03222 /* Image.swift */; };
 		OBJ_153 /* AnyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_66 /* AnyEquatable.swift */; };
 		OBJ_154 /* AnyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_67 /* AnyNode.swift */; };
 		OBJ_155 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_68 /* Components.swift */; };
@@ -194,6 +195,7 @@
 		D1B4F8D9221AFB0800C53C42 /* ImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		D1B4F8DC221AFB2B00C53C42 /* ImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		D1CFC81C222546F500B03222 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		D1CFC81E222561AD00B03222 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		OBJ_10 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		OBJ_100 /* FirstBaseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstBaseline.swift; sourceTree = "<group>"; };
 		OBJ_101 /* Height.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Height.swift; sourceTree = "<group>"; };
@@ -420,9 +422,9 @@
 		OBJ_17 /* Host */ = {
 			isa = PBXGroup;
 			children = (
-				D1B4F8D9221AFB0800C53C42 /* ImageView.swift */,
 				OBJ_18 /* Button.swift */,
 				OBJ_19 /* DatePicker.swift */,
+				D1B4F8D9221AFB0800C53C42 /* ImageView.swift */,
 				OBJ_20 /* Label.swift */,
 				OBJ_21 /* ListView.swift */,
 				OBJ_22 /* ModalPresenter.swift */,
@@ -445,6 +447,7 @@
 				OBJ_32 /* Color.swift */,
 				OBJ_33 /* Constraint */,
 				OBJ_52 /* Event.swift */,
+				D1CFC81E222561AD00B03222 /* Image.swift */,
 				OBJ_53 /* LineBreakMode.swift */,
 				OBJ_54 /* Rectangle.swift */,
 				A6AB60B4221C70340063F88A /* ContentMode.swift */,
@@ -902,6 +905,7 @@
 				OBJ_278 /* Constrainable.swift in Sources */,
 				D1B4F8DB221AFB0E00C53C42 /* ImageView.swift in Sources */,
 				OBJ_279 /* Constraint.swift in Sources */,
+				D1CFC8202225622D00B03222 /* Image.swift in Sources */,
 				OBJ_280 /* FirstBaseline.swift in Sources */,
 				OBJ_281 /* Height.swift in Sources */,
 				OBJ_282 /* LastBaseline.swift in Sources */,

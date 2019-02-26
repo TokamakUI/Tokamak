@@ -41,7 +41,7 @@ extension Label: UIViewComponent {
     view.textAlignment = NSTextAlignment(props.alignment)
     view.numberOfLines = props.numberOfLines
     view.lineBreakMode = NSLineBreakMode(props.lineBreakMode)
-    props.textColor.flatMap { view.textColor = UIColor($0) }
+    view.textColor = props.textColor.flatMap { UIColor($0) }
     view.text = children
   }
 }
