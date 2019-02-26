@@ -68,6 +68,7 @@ struct Game {
         theY = 0
       }
     }
+//    print("x: \(theX) y: \(theY)")
     return Point(x: theX, y: theY)
   }
 }

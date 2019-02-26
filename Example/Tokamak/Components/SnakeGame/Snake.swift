@@ -21,7 +21,7 @@ struct Snake: LeafComponent {
         currentDirection: .up,
         snake: [Point(x: 10, y: 10), Point(x: 11, y: 11)],
         target: Point(x: 15, y: 15),
-        mapSize: Size(width: 100, height: 100)
+        mapSize: Size(width: 30, height: 30)
       )
     )
     let timer = hooks.ref(type: Timer.self)
@@ -40,16 +40,40 @@ struct Snake: LeafComponent {
       }
     }
 
-    return View.node(
-      [
+    return  StackView.node(
+      .init(
+        alignment: .center,
+        axis: .horizontal,
+        spacing: 10.0
+      ),[
         View.node(
-          Cell.node(.init(size: props.cellSize, location: game.value.target))
+        [
+          View.node(
+            Cell.node(.init(size: props.cellSize, location: game.value.target))
+          ),
+          View.node(
+            game.value.snake.map {
+              Cell.node(.init(size: props.cellSize, location: $0))
+            }
+          ),
+          ]),
+        
+        Button.node(
+          .init(onPress: Handler { game.set { $0.currentDirection = .up } }),
+          "⬆️ UP"
         ),
-        View.node(
-          game.value.snake.map {
-            Cell.node(.init(size: props.cellSize, location: $0))
-          }
-        ),
+//        Button.node(
+//          .init(onPress: Handler { game.set { $0.currentDirection = .right } }),
+//          "➡️"
+//        ),
+//        Button.node(
+//          .init(onPress: Handler { game.set { $0.currentDirection = .down } }),
+//          "⬇️"
+//        ),
+//        Button.node(
+//          .init(onPress: Handler { game.set { $0.currentDirection = .left } }),
+//          "⬅️"
+//        ),
       ]
     )
   }
