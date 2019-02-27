@@ -26,9 +26,13 @@ struct Game: Equatable {
 
   var currentDirection = Direction.up
 
-  var snake: [Point]
+  var snake: [Point] = [
+    Point(x: 10.0, y: 10.0),
+    Point(x: 10.0, y: 11.0),
+    Point(x: 10.0, y: 12.0),
+  ]
 
-  var target: Point
+  var target: Point = Point(x: 0.0, y: 1.0)
 
   let mapSize: Size
 
@@ -58,6 +62,15 @@ struct Game: Equatable {
       }
     }
     return Point(x: x, y: y)
+  }
+
+  public init(mapSize: Size) {
+    self.mapSize = mapSize
+  }
+
+  public init(state: State, mapSize: Size) {
+    self.state = state
+    self.mapSize = mapSize
   }
 }
 

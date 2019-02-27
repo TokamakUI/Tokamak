@@ -8,14 +8,6 @@
 
 import Tokamak
 
-let initialSnake = [
-  Point(x: 10.0, y: 10.0),
-  Point(x: 10.0, y: 11.0),
-  Point(x: 10.0, y: 12.0),
-]
-let initialTarget = Point(x: 0.0, y: 1.0)
-let initialDirection = Game.Direction.up
-
 struct Snake: LeafComponent {
   struct Props: Equatable {
     let cellSize: Double
@@ -25,25 +17,12 @@ struct Snake: LeafComponent {
   static func render(props: Props, hooks: Hooks) -> AnyNode {
     let restartedGameState = Game(
       state: .isPlaying,
-      currentDirection: initialDirection,
-      snake: initialSnake,
-      target: initialTarget,
-      mapSize: Size(
-        width: props.mapSizeInCells.width,
-        height: props.mapSizeInCells.height
-      )
+      mapSize: props.mapSizeInCells
     )
 
     let game = hooks.state(
       Game(
-        state: .initial,
-        currentDirection: initialDirection,
-        snake: initialSnake,
-        target: initialTarget,
-        mapSize: Size(
-          width: props.mapSizeInCells.width,
-          height: props.mapSizeInCells.height
-        )
+        mapSize: props.mapSizeInCells
       )
     )
     let timer = hooks.ref(type: Timer.self)
@@ -78,6 +57,7 @@ struct Snake: LeafComponent {
           Gameboard.node(.init(game: game, cellSize: props.cellSize)),
 
           Gamepad.node(.init(game: game),
+                       
                        [
                          Stepper.node(
                            .init(
