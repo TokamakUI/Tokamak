@@ -29,6 +29,7 @@ struct Gamepad: PureComponent {
     ), [
       Button.node(
         .init(
+          Style(Width.equal(to: .parent, multiplier: 0.5)),
           isEnabled: isVerticalMoveEnabled,
           onPress: Handler {
             game.set { $0.currentDirection = .up }
@@ -63,6 +64,7 @@ struct Gamepad: PureComponent {
       ]),
       Button.node(
         .init(
+          Style(Width.equal(to: .parent, multiplier: 0.5)),
           isEnabled: isVerticalMoveEnabled,
           onPress: Handler { game.set { $0.currentDirection = .down } }
         ),

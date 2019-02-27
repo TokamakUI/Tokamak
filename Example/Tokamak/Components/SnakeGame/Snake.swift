@@ -68,7 +68,6 @@ struct Snake: LeafComponent {
 
     switch game.value.state {
     case .isPlaying:
-
       return StackView.node(
         .init(
           Edges.equal(to: .safeArea),
@@ -76,42 +75,7 @@ struct Snake: LeafComponent {
           distribution: .fillEqually,
           spacing: 10.0
         ), [
-          View.node(
-            [
-              View.node(
-                .init(Style([
-                    Center.equal(to: .parent),
-                  Width.equal(
-                      to: Double(props.cellSize) * game.value.mapSize.width
-                    ),
-                  Height.equal(
-                      to: Double(props.cellSize) * game.value.mapSize.height
-                    ),
-                  ],
-                  borderColor: .black,
-                  borderWidth: 2)),
-                [
-                  View.node(
-                    Cell.node(.init(
-                      color: .red,
-                      size: props.cellSize,
-                      location: game.value.target
-                    ))
-                  ),
-                  View.node(
-                    game.value.snake.map { (location) -> AnyNode in
-                      let props = Cell.Props(
-                        color: .black,
-                        size: props.cellSize,
-                        location: location
-                      )
-                      return Cell.node(props)
-                    }
-                  ),
-                ]
-              ),
-            ]
-          ),
+          Gameboard.node(.init(game: game, cellSize: props.cellSize)),
 
           Gamepad.node(.init(game: game),
                        [
