@@ -15,11 +15,6 @@ struct Snake: LeafComponent {
   }
 
   static func render(props: Props, hooks: Hooks) -> AnyNode {
-    let restartedGameState = Game(
-      state: .isPlaying,
-      mapSize: props.mapSizeInCells
-    )
-
     let game = hooks.state(
       Game(
         mapSize: props.mapSizeInCells
@@ -76,31 +71,9 @@ struct Snake: LeafComponent {
         ]
       )
     case .gameOver:
-      return StackView.node(
-        .init(
-          Edges.equal(to: .parent),
-          axis: .vertical,
-          distribution: .fillEqually,
-          spacing: 10.0
-        ),
-        Button.node(
-          .init(onPress: Handler { game.set { $0 = restartedGameState } }),
-          "Game over! Restart the game"
-        )
-      )
+      return Gamemenu.node(.init(game: game))
     case .initial:
-      return StackView.node(
-        .init(
-          Edges.equal(to: .parent),
-          axis: .vertical,
-          distribution: .fillEqually,
-          spacing: 10.0
-        ),
-        Button.node(
-          .init(onPress: Handler { game.set { $0.state = .isPlaying } }),
-          "Start the game"
-        )
-      )
+      return Gamemenu.node(.init(game: game))
     }
   }
 }

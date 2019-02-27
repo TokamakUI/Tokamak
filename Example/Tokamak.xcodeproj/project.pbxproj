@@ -20,6 +20,7 @@
 		A6654358222690DA00F01C04 /* Gamepad.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6654357222690DA00F01C04 /* Gamepad.swift */; };
 		A665435A22269F9F00F01C04 /* StartGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = A665435922269F9F00F01C04 /* StartGame.swift */; };
 		A67717202226DC7C0028A6F3 /* Gameboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A677171F2226DC7C0028A6F3 /* Gameboard.swift */; };
+		A67717222226E7FD0028A6F3 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67717212226E7FD0028A6F3 /* Menu.swift */; };
 		A6D5AF87221B131400DBF186 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D5AF86221B131400DBF186 /* Image.swift */; };
 		C449B806DFEE55B6CEE6478C /* libPods-TokamakDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B96B435A9D67621D318616E /* libPods-TokamakDemo.a */; };
 		D11DB6432219C03000013FC3 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DB6422219C03000013FC3 /* Timer.swift */; };
@@ -56,6 +57,7 @@
 		A6654357222690DA00F01C04 /* Gamepad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gamepad.swift; sourceTree = "<group>"; };
 		A665435922269F9F00F01C04 /* StartGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGame.swift; sourceTree = "<group>"; };
 		A677171F2226DC7C0028A6F3 /* Gameboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gameboard.swift; sourceTree = "<group>"; };
+		A67717212226E7FD0028A6F3 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		A6D5AF86221B131400DBF186 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		A9EEF813955DAEEFE1D52ED4 /* Pods-TokamakDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokamakDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokamakDemo/Pods-TokamakDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		C6DA99382B6892EAB361742F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				A6654357222690DA00F01C04 /* Gamepad.swift */,
 				A665435922269F9F00F01C04 /* StartGame.swift */,
 				A677171F2226DC7C0028A6F3 /* Gameboard.swift */,
+				A67717212226E7FD0028A6F3 /* Menu.swift */,
 			);
 			path = SnakeGame;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 				A62AC65B22244A5A009B3B25 /* Game.swift in Sources */,
 				D1BFAF792215800A00845EA0 /* Counter.swift in Sources */,
 				D1F718612215A617004E5951 /* Modals.swift in Sources */,
+				A67717222226E7FD0028A6F3 /* Menu.swift in Sources */,
 				A665435A22269F9F00F01C04 /* StartGame.swift in Sources */,
 				A67717202226DC7C0028A6F3 /* Gameboard.swift in Sources */,
 				D1BB3D302223F6B400C30062 /* Animation.swift in Sources */,
