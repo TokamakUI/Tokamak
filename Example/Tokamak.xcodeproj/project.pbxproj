@@ -13,6 +13,14 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		A62AC6542223F5CD009B3B25 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62AC6532223F5CD009B3B25 /* TextField.swift */; };
+		A62AC65622243CC3009B3B25 /* SnakeGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62AC65522243CC3009B3B25 /* SnakeGame.swift */; };
+		A62AC65922243DCB009B3B25 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62AC65822243DCA009B3B25 /* Cell.swift */; };
+		A62AC65B22244A5A009B3B25 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62AC65A22244A5A009B3B25 /* Game.swift */; };
+		A62AC65F22244A98009B3B25 /* Snake.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62AC65E22244A98009B3B25 /* Snake.swift */; };
+		A6654358222690DA00F01C04 /* Gamepad.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6654357222690DA00F01C04 /* Gamepad.swift */; };
+		A665435A22269F9F00F01C04 /* StartGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = A665435922269F9F00F01C04 /* StartGame.swift */; };
+		A67717202226DC7C0028A6F3 /* Gameboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A677171F2226DC7C0028A6F3 /* Gameboard.swift */; };
+		A67717222226E7FD0028A6F3 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67717212226E7FD0028A6F3 /* Menu.swift */; };
 		A6D5AF87221B131400DBF186 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D5AF86221B131400DBF186 /* Image.swift */; };
 		C449B806DFEE55B6CEE6478C /* libPods-TokamakDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B96B435A9D67621D318616E /* libPods-TokamakDemo.a */; };
 		D11DB6432219C03000013FC3 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DB6422219C03000013FC3 /* Timer.swift */; };
@@ -42,6 +50,14 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8CADEBB8BFF6F2621CA49E8F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		A62AC6532223F5CD009B3B25 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		A62AC65522243CC3009B3B25 /* SnakeGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnakeGame.swift; sourceTree = "<group>"; };
+		A62AC65822243DCA009B3B25 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		A62AC65A22244A5A009B3B25 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		A62AC65E22244A98009B3B25 /* Snake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snake.swift; sourceTree = "<group>"; };
+		A6654357222690DA00F01C04 /* Gamepad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gamepad.swift; sourceTree = "<group>"; };
+		A665435922269F9F00F01C04 /* StartGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGame.swift; sourceTree = "<group>"; };
+		A677171F2226DC7C0028A6F3 /* Gameboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gameboard.swift; sourceTree = "<group>"; };
+		A67717212226E7FD0028A6F3 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		A6D5AF86221B131400DBF186 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		A9EEF813955DAEEFE1D52ED4 /* Pods-TokamakDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokamakDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokamakDemo/Pods-TokamakDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		C6DA99382B6892EAB361742F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -152,9 +168,25 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		A62AC65722243DAC009B3B25 /* SnakeGame */ = {
+			isa = PBXGroup;
+			children = (
+				A62AC65522243CC3009B3B25 /* SnakeGame.swift */,
+				A62AC65822243DCA009B3B25 /* Cell.swift */,
+				A62AC65A22244A5A009B3B25 /* Game.swift */,
+				A62AC65E22244A98009B3B25 /* Snake.swift */,
+				A6654357222690DA00F01C04 /* Gamepad.swift */,
+				A665435922269F9F00F01C04 /* StartGame.swift */,
+				A677171F2226DC7C0028A6F3 /* Gameboard.swift */,
+				A67717212226E7FD0028A6F3 /* Menu.swift */,
+			);
+			path = SnakeGame;
+			sourceTree = "<group>";
+		};
 		D1F7185122159D6E004E5951 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A62AC65722243DAC009B3B25 /* SnakeGame */,
 				D1BFAF782215800A00845EA0 /* Counter.swift */,
 				D1F7185E2215A5D0004E5951 /* Constraints.swift */,
 				D1F7185222159E09004E5951 /* Controls.swift */,
@@ -281,16 +313,24 @@
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				A62AC6542223F5CD009B3B25 /* TextField.swift in Sources */,
 				D1F7185F2215A5D0004E5951 /* Constraints.swift in Sources */,
+				A62AC65922243DCB009B3B25 /* Cell.swift in Sources */,
 				D11DB6432219C03000013FC3 /* Timer.swift in Sources */,
+				A62AC65622243CC3009B3B25 /* SnakeGame.swift in Sources */,
 				D1F7185322159E09004E5951 /* Controls.swift in Sources */,
 				D1DEEC2922009E8000C525EE /* ModalRouter.swift in Sources */,
 				A6D5AF87221B131400DBF186 /* Image.swift in Sources */,
 				D1BFAF772215795900845EA0 /* Router.swift in Sources */,
+				A62AC65F22244A98009B3B25 /* Snake.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				D1F7185D2215A4A1004E5951 /* LayerProps.swift in Sources */,
+				A62AC65B22244A5A009B3B25 /* Game.swift in Sources */,
 				D1BFAF792215800A00845EA0 /* Counter.swift in Sources */,
 				D1F718612215A617004E5951 /* Modals.swift in Sources */,
+				A67717222226E7FD0028A6F3 /* Menu.swift in Sources */,
+				A665435A22269F9F00F01C04 /* StartGame.swift in Sources */,
+				A67717202226DC7C0028A6F3 /* Gameboard.swift in Sources */,
 				D1BB3D302223F6B400C30062 /* Animation.swift in Sources */,
+				A6654358222690DA00F01C04 /* Gamepad.swift in Sources */,
 				D1F7185522159EAD004E5951 /* DatePickers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

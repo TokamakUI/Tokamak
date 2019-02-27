@@ -29,4 +29,10 @@ public struct Width: Equatable {
       target: target, constant: constant, multiplier: multiplier
     ))
   }
+
+  public static func equal(to constant: Double) -> Constraint {
+    return .width(Width(
+      target: .own, constant: constant, multiplier: 0
+    ))
+  }
 }

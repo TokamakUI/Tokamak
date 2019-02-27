@@ -54,14 +54,9 @@ extension Hooks {
     let (value, index) = currentState(initial)
 
     let queueState = self.queueState
-    return State(value as? T ?? initial) { (updater: Updater<T>) in
+    return State(value) { (updater: Updater<T>) in
       queueState(index) {
-        // There's no easy way to downcast elements of `[Any]` to `T`
-        // and apply `inout` updater without creating copies, working around
-        // that with pointers.
-        withUnsafeMutablePointer(to: &$0) {
-          $0.withMemoryRebound(to: T.self, capacity: 1) { updater(&$0[0]) }
-        }
+        updater(&$0.assumingMemoryBound(to: T.self).pointee)
       }
     }
   }
