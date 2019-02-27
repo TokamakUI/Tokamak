@@ -79,11 +79,12 @@ struct Snake: LeafComponent {
                 )),
                 [
                   View.node(
-                    Cell.node(.init(size: props.cellSize, location: game.value.target))
+                    Cell.node(.init(color: .red, size: props.cellSize, location: game.value.target))
                   ),
                   View.node(
-                    game.value.snake.map {
-                      Cell.node(.init(size: props.cellSize, location: $0))
+                    game.value.snake.map { (location) -> AnyNode in
+                      let props = Cell.Props(color: .black, size: props.cellSize, location: location)
+                      return Cell.node(props)
                     }
                   ),
                 ]
