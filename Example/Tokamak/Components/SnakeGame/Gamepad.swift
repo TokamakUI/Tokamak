@@ -10,10 +10,6 @@ import Tokamak
 
 struct Gamepad: PureLeafComponent {
   struct Props: Equatable {
-    static func ==(lhs: Gamepad.Props, rhs: Gamepad.Props) -> Bool {
-      return lhs == rhs
-    }
-
     let game: State<Game>
   }
 

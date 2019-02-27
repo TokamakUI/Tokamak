@@ -8,7 +8,7 @@
 
 import Tokamak
 
-struct Game {
+struct Game: Equatable {
   enum State {
     case initial
     case gameOver
