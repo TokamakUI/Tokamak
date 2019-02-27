@@ -32,38 +32,38 @@ struct Game: Equatable {
 
   let mapSize: Size
 
-  func move(_ point: Point, mapSize: Size) -> Point {
-    var theX = point.x
-    var theY = point.y
+  private func moveHead(_ point: Point) -> Point {
+    var x = snake[0].x
+    var y = snake[0].y
     switch currentDirection {
     case .left:
-      theX -= 1
-      if theX < 0 {
-        theX = mapSize.width - 1
+      x -= 1
+      if x < 0 {
+        x = mapSize.width - 1
       }
     case .up:
-      theY -= 1
-      if theY < 0 {
-        theY = mapSize.height - 1
+      y -= 1
+      if y < 0 {
+        y = mapSize.height - 1
       }
     case .right:
-      theX += 1
-      if theX >= mapSize.width {
-        theX = 0
+      x += 1
+      if x >= mapSize.width {
+        x = 0
       }
     case .down:
-      theY += 1
-      if theY >= mapSize.height {
-        theY = 0
+      y += 1
+      if y >= mapSize.height {
+        y = 0
       }
     }
-    return Point(x: theX, y: theY)
+    return Point(x: x, y: y)
   }
 }
 
 extension Game {
   mutating func tick() {
-    let head = move(snake[0], mapSize: mapSize)
+    let head = moveHead(snake[0])
     let isHeadOnTarget = head == target
 
     if snake.contains(head) {
@@ -78,19 +78,14 @@ extension Game {
     }
 
     if isHeadOnTarget {
-      var isNextTargetGood = false
       var newTarget = target
 
-      while !isNextTargetGood {
-        isNextTargetGood = true
+      repeat {
         newTarget = Point(
           x: Double(Int.random(in: 0..<Int(mapSize.width))),
           y: Double(Int.random(in: 0..<Int(mapSize.height)))
         )
-        if snake.contains(newTarget) || newTarget == target {
-          isNextTargetGood = false
-        }
-      }
+      } while snake.contains(newTarget) || newTarget == target
 
       target = newTarget
     }

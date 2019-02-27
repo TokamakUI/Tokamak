@@ -23,9 +23,8 @@ struct SnakeGame: LeafComponent {
           Edges.equal(to: .safeArea),
           backgroundColor: .white
         )
-      ), [
-        Snake.node(snakeProps),
-      ]
+      ),
+      Snake.node(snakeProps)
     )
   }
 }

@@ -68,29 +68,40 @@ struct Snake: LeafComponent {
 
     switch game.value.state {
     case .isPlaying:
+
+      let style = Style(
+        [
+          Center.equal(to: .parent),
+          Width.equal(
+            to: Double(props.cellSize) * game.value.mapSize.width
+          ),
+          Height.equal(
+            to: Double(props.cellSize) * game.value.mapSize.height
+          ),
+        ],
+        borderColor: .black,
+        borderWidth: 2
+      )
+
+      let stepperProps = Stepper.Props(maximumValue: 100.0,
+                                       minimumValue: 1.0,
+                                       stepValue: 1.0,
+                                       value: speed.value,
+                                       valueHandler: Handler(speed.set))
+      
+      let labelProps = Label.Props(alignment: .center)
+
       return StackView.node(
         .init(
           Edges.equal(to: .safeArea),
           axis: .vertical,
-          distribution: .fill,
+          distribution: .fillEqually,
           spacing: 10.0
         ), [
           View.node(
             [
               View.node(
-                .init(Style(
-                  [
-                    Center.equal(to: .parent),
-                    Width.equal(
-                      to: Double(props.cellSize) * game.value.mapSize.width
-                    ),
-                    Height.equal(
-                      to: Double(props.cellSize) * game.value.mapSize.height
-                    ),
-                  ],
-                  borderColor: .black,
-                  borderWidth: 2
-                )),
+                .init(style),
                 [
                   View.node(
                     Cell.node(.init(
@@ -116,28 +127,14 @@ struct Snake: LeafComponent {
 
           Gamepad.node(.init(game: game)),
 
-          StackView.node(
-            .init(
-              alignment: .center,
-              axis: .vertical,
-              distribution: .fillEqually
+          [
+            Stepper.node(
+              stepperProps),
+            Label.node(
+              labelProps,
+              "\(speed.value)X"
             ),
-            [
-              Stepper.node(
-                .init(
-                  maximumValue: 100.0,
-                  minimumValue: 1.0,
-                  stepValue: 1.0,
-                  value: speed.value,
-                  valueHandler: Handler(speed.set)
-                )
-              ),
-              Label.node(
-                .init(alignment: .center),
-                "\(speed.value)X"
-              ),
-            ]
-          ),
+          ],
         ]
       )
     case .gameOver:
@@ -150,7 +147,7 @@ struct Snake: LeafComponent {
         ),
         Button.node(
           .init(onPress: Handler { game.set { $0 = restartedGameState } }),
-          "Restart the game"
+          "Game over! Restart the game"
         )
       )
     case .initial:

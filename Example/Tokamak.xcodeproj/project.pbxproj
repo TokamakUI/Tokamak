@@ -18,6 +18,7 @@
 		A62AC65B22244A5A009B3B25 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62AC65A22244A5A009B3B25 /* Game.swift */; };
 		A62AC65F22244A98009B3B25 /* Snake.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62AC65E22244A98009B3B25 /* Snake.swift */; };
 		A6654358222690DA00F01C04 /* Gamepad.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6654357222690DA00F01C04 /* Gamepad.swift */; };
+		A665435A22269F9F00F01C04 /* StartGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = A665435922269F9F00F01C04 /* StartGame.swift */; };
 		A6D5AF87221B131400DBF186 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D5AF86221B131400DBF186 /* Image.swift */; };
 		C449B806DFEE55B6CEE6478C /* libPods-TokamakDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B96B435A9D67621D318616E /* libPods-TokamakDemo.a */; };
 		D11DB6432219C03000013FC3 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DB6422219C03000013FC3 /* Timer.swift */; };
@@ -52,6 +53,7 @@
 		A62AC65A22244A5A009B3B25 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		A62AC65E22244A98009B3B25 /* Snake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snake.swift; sourceTree = "<group>"; };
 		A6654357222690DA00F01C04 /* Gamepad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gamepad.swift; sourceTree = "<group>"; };
+		A665435922269F9F00F01C04 /* StartGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGame.swift; sourceTree = "<group>"; };
 		A6D5AF86221B131400DBF186 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		A9EEF813955DAEEFE1D52ED4 /* Pods-TokamakDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokamakDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokamakDemo/Pods-TokamakDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		C6DA99382B6892EAB361742F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				A62AC65A22244A5A009B3B25 /* Game.swift */,
 				A62AC65E22244A98009B3B25 /* Snake.swift */,
 				A6654357222690DA00F01C04 /* Gamepad.swift */,
+				A665435922269F9F00F01C04 /* StartGame.swift */,
 			);
 			path = SnakeGame;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 				A62AC65B22244A5A009B3B25 /* Game.swift in Sources */,
 				D1BFAF792215800A00845EA0 /* Counter.swift in Sources */,
 				D1F718612215A617004E5951 /* Modals.swift in Sources */,
+				A665435A22269F9F00F01C04 /* StartGame.swift in Sources */,
 				D1BB3D302223F6B400C30062 /* Animation.swift in Sources */,
 				A6654358222690DA00F01C04 /* Gamepad.swift in Sources */,
 				D1F7185522159EAD004E5951 /* DatePickers.swift in Sources */,

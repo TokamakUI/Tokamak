@@ -1,5 +1,5 @@
 //
-//  Gamepad.swift
+//  StartGame.swift
 //  TokamakDemo
 //
 //  Created by Matvii Hodovaniuk on 2/27/19.
@@ -8,14 +8,12 @@
 
 import Tokamak
 
-struct Gamepad: PureComponent {
+struct StartGame: PureLeafComponent {
   struct Props: Equatable {
     let game: State<Game>
   }
 
-  typealias Children = [AnyNode]
-
-  static func render(props: Props, children: Children) -> AnyNode {
+  static func render(props: StartGame.Props) -> AnyNode {
     let game = props.game
     let isVerticalMoveEnabled = ![.up, .down]
       .contains(game.value.currentDirection)
@@ -23,7 +21,6 @@ struct Gamepad: PureComponent {
       .contains(game.value.currentDirection)
 
     return StackView.node(.init(
-      alignment: .center,
       axis: .vertical,
       distribution: .fillEqually
     ), [
@@ -37,7 +34,6 @@ struct Gamepad: PureComponent {
         "⬆️"
       ),
       StackView.node(.init(
-        [Width.equal(to: .parent)],
         axis: .horizontal,
         distribution: .fillEqually
       ), [
@@ -68,6 +64,6 @@ struct Gamepad: PureComponent {
         ),
         "⬇️"
       ),
-    ] + children)
+    ])
   }
 }

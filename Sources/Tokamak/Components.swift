@@ -86,7 +86,7 @@ public protocol PureComponent: CompositeComponent {
   static func render(props: Props, children: Children) -> AnyNode
 }
 
-extension PureComponent {
+public extension PureComponent {
   static func render(
     props: Props,
     children: Children,
