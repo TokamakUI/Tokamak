@@ -51,28 +51,27 @@ struct Snake: LeafComponent {
         ), [
           Gameboard.node(.init(game: game, cellSize: props.cellSize)),
 
-          Gamepad.node(.init(game: game),
-                       
-                       [
-                         Stepper.node(
-                           .init(
-                             maximumValue: 100.0,
-                             minimumValue: 1.0,
-                             stepValue: 1.0,
-                             value: speed.value,
-                             valueHandler: Handler(speed.set)
-                           )
-                         ),
-                         Label.node(
-                           .init(alignment: .center),
-                           "\(speed.value)X"
-                         ),
-          ]),
+          Gamepad.node(
+            .init(game: game),
+            [
+              Stepper.node(
+                .init(
+                  maximumValue: 100.0,
+                  minimumValue: 1.0,
+                  stepValue: 1.0,
+                  value: speed.value,
+                  valueHandler: Handler(speed.set)
+                )
+              ),
+              Label.node(
+                .init(alignment: .center),
+                "\(speed.value)X"
+              ),
+            ]
+          ),
         ]
       )
-    case .gameOver:
-      return GameMenu.node(.init(game: game))
-    case .initial:
+    case .gameOver, .initial:
       return GameMenu.node(.init(game: game))
     }
   }
