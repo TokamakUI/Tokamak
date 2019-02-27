@@ -71,9 +71,9 @@ struct Snake: LeafComponent {
         ]
       )
     case .gameOver:
-      return Gamemenu.node(.init(game: game))
+      return GameMenu.node(.init(game: game))
     case .initial:
-      return Gamemenu.node(.init(game: game))
+      return GameMenu.node(.init(game: game))
     }
   }
 }

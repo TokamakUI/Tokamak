@@ -8,7 +8,7 @@
 
 import Tokamak
 
-struct Gamemenu: PureComponent {
+struct GameMenu: PureComponent {
   struct Props: Equatable {
     let game: State<Game>
   }
