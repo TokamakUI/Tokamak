@@ -8,6 +8,10 @@
 
 import Tokamak
 
+let initialSnake = [Point(x: 10, y: 10), Point(x: 10, y: 11), Point(x: 10, y: 12)]
+let initialTarget = Point(x: 0, y: 1)
+let initialDirection = Game.Direction.up
+
 struct Snake: LeafComponent {
   struct Props: Equatable {
     let cellSize: Int
@@ -15,12 +19,20 @@ struct Snake: LeafComponent {
   }
 
   static func render(props: Props, hooks: Hooks) -> AnyNode {
+    let restartedGameState = Game(
+      state: .isPlaying,
+      currentDirection: initialDirection,
+      snake: initialSnake,
+      target: initialTarget,
+      mapSize: Size(width: props.mapSizeInCells.width, height: props.mapSizeInCells.height), speed: 1
+    )
+
     let game = hooks.state(
       Game(
         state: .initial,
-        currentDirection: .up,
-        snake: [Point(x: 10, y: 10), Point(x: 10, y: 11), Point(x: 10, y: 12)],
-        target: Point(x: 0, y: 0),
+        currentDirection: initialDirection,
+        snake: initialSnake,
+        target: initialTarget,
         mapSize: Size(width: props.mapSizeInCells.width, height: props.mapSizeInCells.height), speed: 1
       )
     )
@@ -45,14 +57,12 @@ struct Snake: LeafComponent {
 
     switch game.value.state {
     case .isPlaying:
-//      Leading.equal(to: .safeArea),
-//      Trailing.equal(to: .safeArea),
-//      Top.equal(to: .safeArea),
+
       return StackView.node(
         .init(
           Edges.equal(to: .safeArea),
           axis: .vertical,
-          distribution: .fillEqually,
+          distribution: .fill,
           spacing: 10.0
         ), [
           View.node(
@@ -130,6 +140,21 @@ struct Snake: LeafComponent {
                 "\(interval.value)X"
               ),
             ]
+          ),
+        ]
+      )
+
+    case .gameOver:
+      return StackView.node(
+        .init(
+          Edges.equal(to: .parent),
+          axis: .vertical,
+          distribution: .fillEqually,
+          spacing: 10.0
+        ), [
+          Button.node(
+            .init(onPress: Handler { game.set { $0 = restartedGameState } }),
+            "Restart the game"
           ),
         ]
       )

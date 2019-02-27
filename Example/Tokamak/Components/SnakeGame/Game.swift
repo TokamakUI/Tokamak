@@ -51,12 +51,12 @@ struct Game {
     switch currentDirection {
     case .left:
       theX -= 1
-      if theX <= 0 {
+      if theX < 0 {
         theX = mapSize.width - 1
       }
     case .up:
       theY -= 1
-      if theY <= 0 {
+      if theY < 0 {
         theY = mapSize.height - 1
       }
     case .right:
@@ -77,7 +77,13 @@ struct Game {
 extension Game {
   mutating func tick() {
     let head = move(snake[0], mapSize: mapSize)
-    let isHeadOnTarget = head.x == target.x && head.y == target.y
+    let isHeadOnTarget = head == target
+
+    if snake.contains(head) {
+      state = .gameOver
+      return
+    }
+
     snake.insert(head, at: 0)
 
     if !snake.isEmpty && !isHeadOnTarget {
