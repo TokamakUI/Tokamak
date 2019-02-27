@@ -48,10 +48,6 @@ struct Snake: LeafComponent {
     )
     let timer = hooks.ref(type: Timer.self)
     let speed = hooks.state(10.0)
-    let isVerticalMoveEnabled = ![.up, .down]
-      .contains(game.value.currentDirection)
-    let isHorizontalMoveEnabled = ![.left, .right]
-      .contains(game.value.currentDirection)
 
     hooks.finalizedEffect([
       AnyEquatable(game.value.state),
@@ -118,51 +114,7 @@ struct Snake: LeafComponent {
             ]
           ),
 
-          StackView.node(.init(
-            axis: .vertical,
-            distribution: .fillEqually
-          ), [
-            Button.node(
-              .init(
-                isEnabled: isVerticalMoveEnabled,
-                onPress: Handler {
-                  game.set { $0.currentDirection = .up }
-                }
-              ),
-              "⬆️"
-            ),
-            StackView.node(.init(
-              axis: .horizontal,
-              distribution: .fillEqually
-            ), [
-              Button.node(
-                .init(
-                  isEnabled: isHorizontalMoveEnabled,
-                  onPress: Handler {
-                    game.set { $0.currentDirection = .left }
-                  }
-                ),
-                "⬅️"
-              ),
-
-              Button.node(
-                .init(
-                  isEnabled: isHorizontalMoveEnabled,
-                  onPress: Handler {
-                    game.set { $0.currentDirection = .right }
-                  }
-                ),
-                "➡️"
-              ),
-            ]),
-            Button.node(
-              .init(
-                isEnabled: isVerticalMoveEnabled,
-                onPress: Handler { game.set { $0.currentDirection = .down } }
-              ),
-              "⬇️"
-            ),
-          ]),
+          Gamepad.node(.init(game: game)),
 
           StackView.node(
             .init(
