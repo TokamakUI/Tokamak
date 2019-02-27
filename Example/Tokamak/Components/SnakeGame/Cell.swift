@@ -1,5 +1,5 @@
 //
-//  Cell.swift
+//  GameCell.swift
 //  TokamakDemo
 //
 //  Created by Matvii Hodovaniuk on 2/25/19.
@@ -8,7 +8,7 @@
 
 import Tokamak
 
-struct Cell: PureLeafComponent {
+struct GameCell: PureLeafComponent {
   struct Props: Equatable {
     let color: Color
     let size: Double

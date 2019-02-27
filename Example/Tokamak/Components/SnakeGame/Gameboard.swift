@@ -22,20 +22,22 @@ struct Gameboard: PureComponent {
     return View.node(
       [
         View.node(
-          .init(Style([
+          .init(Style(
+            [
               Center.equal(to: .parent),
-            Width.equal(
+              Width.equal(
                 to: props.cellSize * game.value.mapSize.width
               ),
-            Height.equal(
+              Height.equal(
                 to: props.cellSize * game.value.mapSize.height
               ),
             ],
-                      borderColor: .black,
-                      borderWidth: 2)),
+            borderColor: .black,
+            borderWidth: 2
+          )),
           [
             View.node(
-              Cell.node(.init(
+              GameCell.node(.init(
                 color: .red,
                 size: props.cellSize,
                 location: game.value.target
@@ -43,12 +45,12 @@ struct Gameboard: PureComponent {
             ),
             View.node(
               game.value.snake.map { (location) -> AnyNode in
-                let props = Cell.Props(
+                let props = GameCell.Props(
                   color: .black,
                   size: props.cellSize,
                   location: location
                 )
-                return Cell.node(props)
+                return GameCell.node(props)
               }
             ),
           ]
