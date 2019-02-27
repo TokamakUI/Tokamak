@@ -32,6 +32,9 @@ extension Switch: UIValueComponent {
   static func update(valueBox: ValueControlBox<TokamakSwitch>,
                      _ props: Switch.Props,
                      _ children: Null) {
-    valueBox.view.isAnimated = props.isAnimated
+    let view = valueBox.view
+    view.isAnimated = props.isAnimated
+    view.onImage = props.onImage.flatMap { UIImage.from(image: $0) }
+    view.offImage = props.onImage.flatMap { UIImage.from(image: $0) }
   }
 }
