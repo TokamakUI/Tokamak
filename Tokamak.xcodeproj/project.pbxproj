@@ -25,8 +25,10 @@
 		A6AB60B5221C70340063F88A /* ContentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AB60B4221C70340063F88A /* ContentMode.swift */; };
 		A6D188EC221F1CA300C3947C /* Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D188EB221F1CA300C3947C /* Accessibility.swift */; };
 		A6D188EE2220221B00C3947C /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D188ED2220221B00C3947C /* TextField.swift */; };
-		D1B4F8DB221AFB0E00C53C42 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4F8D9221AFB0800C53C42 /* Image.swift */; };
-		D1B4F8DD221AFB2B00C53C42 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4F8DC221AFB2B00C53C42 /* Image.swift */; };
+		D1B4F8DB221AFB0E00C53C42 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4F8D9221AFB0800C53C42 /* ImageView.swift */; };
+		D1B4F8DD221AFB2B00C53C42 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4F8DC221AFB2B00C53C42 /* ImageView.swift */; };
+		D1CFC81D222546F500B03222 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CFC81C222546F500B03222 /* Image.swift */; };
+		D1CFC8202225622D00B03222 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CFC81E222561AD00B03222 /* Image.swift */; };
 		OBJ_153 /* AnyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_66 /* AnyEquatable.swift */; };
 		OBJ_154 /* AnyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_67 /* AnyNode.swift */; };
 		OBJ_155 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_68 /* Components.swift */; };
@@ -190,8 +192,10 @@
 		A6D188EB221F1CA300C3947C /* Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessibility.swift; sourceTree = "<group>"; };
 		A6D188ED2220221B00C3947C /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		A6D188EF2220222F00C3947C /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
-		D1B4F8D9221AFB0800C53C42 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
-		D1B4F8DC221AFB2B00C53C42 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		D1B4F8D9221AFB0800C53C42 /* ImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
+		D1B4F8DC221AFB2B00C53C42 /* ImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
+		D1CFC81C222546F500B03222 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		D1CFC81E222561AD00B03222 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		OBJ_10 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		OBJ_100 /* FirstBaseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstBaseline.swift; sourceTree = "<group>"; };
 		OBJ_101 /* Height.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Height.swift; sourceTree = "<group>"; };
@@ -418,9 +422,9 @@
 		OBJ_17 /* Host */ = {
 			isa = PBXGroup;
 			children = (
-				D1B4F8D9221AFB0800C53C42 /* Image.swift */,
 				OBJ_18 /* Button.swift */,
 				OBJ_19 /* DatePicker.swift */,
+				D1B4F8D9221AFB0800C53C42 /* ImageView.swift */,
 				OBJ_20 /* Label.swift */,
 				OBJ_21 /* ListView.swift */,
 				OBJ_22 /* ModalPresenter.swift */,
@@ -443,6 +447,7 @@
 				OBJ_32 /* Color.swift */,
 				OBJ_33 /* Constraint */,
 				OBJ_52 /* Event.swift */,
+				D1CFC81E222561AD00B03222 /* Image.swift */,
 				OBJ_53 /* LineBreakMode.swift */,
 				OBJ_54 /* Rectangle.swift */,
 				A6AB60B4221C70340063F88A /* ContentMode.swift */,
@@ -555,11 +560,11 @@
 		OBJ_70 /* Host */ = {
 			isa = PBXGroup;
 			children = (
-				D1B4F8DC221AFB2B00C53C42 /* Image.swift */,
 				OBJ_71 /* Alert.swift */,
 				OBJ_72 /* Animated.swift */,
 				OBJ_73 /* Button.swift */,
 				OBJ_74 /* DatePicker.swift */,
+				D1B4F8DC221AFB2B00C53C42 /* ImageView.swift */,
 				OBJ_75 /* Label.swift */,
 				OBJ_76 /* ListView.swift */,
 				OBJ_77 /* NavigationController.swift */,
@@ -568,8 +573,8 @@
 				OBJ_80 /* StackView.swift */,
 				OBJ_81 /* Stepper.swift */,
 				OBJ_82 /* Switch.swift */,
-				OBJ_83 /* View.swift */,
 				A6D188ED2220221B00C3947C /* TextField.swift */,
+				OBJ_83 /* View.swift */,
 			);
 			path = Host;
 			sourceTree = "<group>";
@@ -619,6 +624,7 @@
 				OBJ_93 /* Constraint */,
 				OBJ_110 /* Event.swift */,
 				OBJ_111 /* Insets.swift */,
+				D1CFC81C222546F500B03222 /* Image.swift */,
 				OBJ_112 /* LineBreakMode.swift */,
 				OBJ_113 /* Rectangle.swift */,
 				OBJ_114 /* Second.swift */,
@@ -781,6 +787,7 @@
 				OBJ_159 /* DatePicker.swift in Sources */,
 				OBJ_160 /* Label.swift in Sources */,
 				OBJ_161 /* ListView.swift in Sources */,
+				D1CFC81D222546F500B03222 /* Image.swift in Sources */,
 				OBJ_162 /* NavigationController.swift in Sources */,
 				OBJ_163 /* SegmentedControl.swift in Sources */,
 				OBJ_164 /* Slider.swift in Sources */,
@@ -798,7 +805,7 @@
 				OBJ_176 /* Bottom.swift in Sources */,
 				A6D188EE2220221B00C3947C /* TextField.swift in Sources */,
 				OBJ_177 /* Center.swift in Sources */,
-				D1B4F8DD221AFB2B00C53C42 /* Image.swift in Sources */,
+				D1B4F8DD221AFB2B00C53C42 /* ImageView.swift in Sources */,
 				A6D188EC221F1CA300C3947C /* Accessibility.swift in Sources */,
 				OBJ_178 /* CenterX.swift in Sources */,
 				OBJ_179 /* CenterY.swift in Sources */,
@@ -896,8 +903,9 @@
 				OBJ_276 /* CenterX.swift in Sources */,
 				OBJ_277 /* CenterY.swift in Sources */,
 				OBJ_278 /* Constrainable.swift in Sources */,
-				D1B4F8DB221AFB0E00C53C42 /* Image.swift in Sources */,
+				D1B4F8DB221AFB0E00C53C42 /* ImageView.swift in Sources */,
 				OBJ_279 /* Constraint.swift in Sources */,
+				D1CFC8202225622D00B03222 /* Image.swift in Sources */,
 				OBJ_280 /* FirstBaseline.swift in Sources */,
 				OBJ_281 /* Height.swift in Sources */,
 				OBJ_282 /* LastBaseline.swift in Sources */,

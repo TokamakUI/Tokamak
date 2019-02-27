@@ -15,7 +15,7 @@ final class TokamakImage: UIImageView, Default {
 }
 
 extension UIImage.RenderingMode {
-  public init(_ rawValue: Image.Props.RenderingMode) {
+  public init(_ rawValue: Image.RenderingMode) {
     switch rawValue {
     case .automatic:
       self = .automatic
@@ -27,27 +27,14 @@ extension UIImage.RenderingMode {
   }
 }
 
-extension Image: UIViewComponent {
+extension ImageView: UIViewComponent {
   public typealias RefTarget = UIImageView
 
   static func update(
     view box: ViewBox<TokamakImage>,
-    _ props: Image.Props,
+    _ props: ImageView.Props,
     _ children: [AnyNode]
   ) {
-    var image: UIImage?
-
-    switch props.source {
-    case let .name(name):
-      image = UIImage(named: name)
-    case let .data(data):
-      image = UIImage(data: data, scale: CGFloat(props.scale))
-    }
-
-    if props.flipsForRTL {
-      image = image?.imageFlippedForRightToLeftLayoutDirection()
-    }
-
-    box.view.image = image?.withRenderingMode(.init(props.renderingMode))
+    box.view.image = UIImage.from(image: props.image)
   }
 }
