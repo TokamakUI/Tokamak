@@ -8,13 +8,17 @@
 
 import Tokamak
 
-let initialSnake = [Point(x: 10, y: 10), Point(x: 10, y: 11), Point(x: 10, y: 12)]
-let initialTarget = Point(x: 0, y: 1)
+let initialSnake = [
+  Point(x: 10.0, y: 10.0),
+  Point(x: 10.0, y: 11.0),
+  Point(x: 10.0, y: 12.0),
+]
+let initialTarget = Point(x: 0.0, y: 1.0)
 let initialDirection = Game.Direction.up
 
 struct Snake: LeafComponent {
   struct Props: Equatable {
-    let cellSize: Int
+    let cellSize: Double
     let mapSizeInCells: Size
   }
 
@@ -24,7 +28,10 @@ struct Snake: LeafComponent {
       currentDirection: initialDirection,
       snake: initialSnake,
       target: initialTarget,
-      mapSize: Size(width: props.mapSizeInCells.width, height: props.mapSizeInCells.height), speed: 1
+      mapSize: Size(
+        width: props.mapSizeInCells.width,
+        height: props.mapSizeInCells.height
+      )
     )
 
     let game = hooks.state(
@@ -33,19 +40,27 @@ struct Snake: LeafComponent {
         currentDirection: initialDirection,
         snake: initialSnake,
         target: initialTarget,
-        mapSize: Size(width: props.mapSizeInCells.width, height: props.mapSizeInCells.height), speed: 1
+        mapSize: Size(
+          width: props.mapSizeInCells.width,
+          height: props.mapSizeInCells.height
+        )
       )
     )
     let timer = hooks.ref(type: Timer.self)
-    let interval = hooks.state(10.0)
-    let isEnableVertivalMove = ![.up, .down].contains(game.value.currentDirection)
-    let isEnableHorizontalMove = ![.left, .right].contains(game.value.currentDirection)
+    let speed = hooks.state(10.0)
+    let isVerticalMoveEnabled = ![.up, .down]
+      .contains(game.value.currentDirection)
+    let isHorizontalMoveEnabled = ![.left, .right]
+      .contains(game.value.currentDirection)
 
-    hooks.finalizedEffect([AnyEquatable(game.value.state), AnyEquatable(interval.value)]) {
+    hooks.finalizedEffect([
+      AnyEquatable(game.value.state),
+      AnyEquatable(speed.value),
+    ]) {
       guard game.value.state == .isPlaying else { return {} }
 
       timer.value = Timer.scheduledTimer(
-        withTimeInterval: 1 / interval.value,
+        withTimeInterval: 1 / speed.value,
         repeats: true
       ) { _ in
         game.set { $0.tick() }
@@ -57,7 +72,6 @@ struct Snake: LeafComponent {
 
     switch game.value.state {
     case .isPlaying:
-
       return StackView.node(
         .init(
           Edges.equal(to: .safeArea),
@@ -71,19 +85,31 @@ struct Snake: LeafComponent {
                 .init(Style(
                   [
                     Center.equal(to: .parent),
-                    Width.equal(to: Double(props.cellSize) * game.value.mapSize.width),
-                    Height.equal(to: Double(props.cellSize) * game.value.mapSize.height),
+                    Width.equal(
+                      to: Double(props.cellSize) * game.value.mapSize.width
+                    ),
+                    Height.equal(
+                      to: Double(props.cellSize) * game.value.mapSize.height
+                    ),
                   ],
                   borderColor: .black,
                   borderWidth: 2
                 )),
                 [
                   View.node(
-                    Cell.node(.init(color: .red, size: props.cellSize, location: game.value.target))
+                    Cell.node(.init(
+                      color: .red,
+                      size: props.cellSize,
+                      location: game.value.target
+                    ))
                   ),
                   View.node(
                     game.value.snake.map { (location) -> AnyNode in
-                      let props = Cell.Props(color: .black, size: props.cellSize, location: location)
+                      let props = Cell.Props(
+                        color: .black,
+                        size: props.cellSize,
+                        location: location
+                      )
                       return Cell.node(props)
                     }
                   ),
@@ -97,7 +123,12 @@ struct Snake: LeafComponent {
             distribution: .fillEqually
           ), [
             Button.node(
-              .init(isEnabled: isEnableVertivalMove, onPress: Handler { game.set { $0.currentDirection = .up } }),
+              .init(
+                isEnabled: isVerticalMoveEnabled,
+                onPress: Handler {
+                  game.set { $0.currentDirection = .up }
+                }
+              ),
               "⬆️"
             ),
             StackView.node(.init(
@@ -105,17 +136,30 @@ struct Snake: LeafComponent {
               distribution: .fillEqually
             ), [
               Button.node(
-                .init(isEnabled: isEnableHorizontalMove, onPress: Handler { game.set { $0.currentDirection = .left } }),
+                .init(
+                  isEnabled: isHorizontalMoveEnabled,
+                  onPress: Handler {
+                    game.set { $0.currentDirection = .left }
+                  }
+                ),
                 "⬅️"
               ),
 
               Button.node(
-                .init(isEnabled: isEnableHorizontalMove, onPress: Handler { game.set { $0.currentDirection = .right } }),
+                .init(
+                  isEnabled: isHorizontalMoveEnabled,
+                  onPress: Handler {
+                    game.set { $0.currentDirection = .right }
+                  }
+                ),
                 "➡️"
               ),
             ]),
             Button.node(
-              .init(isEnabled: isEnableVertivalMove, onPress: Handler { game.set { $0.currentDirection = .down } }),
+              .init(
+                isEnabled: isVerticalMoveEnabled,
+                onPress: Handler { game.set { $0.currentDirection = .down } }
+              ),
               "⬇️"
             ),
           ]),
@@ -132,19 +176,18 @@ struct Snake: LeafComponent {
                   maximumValue: 100.0,
                   minimumValue: 1.0,
                   stepValue: 1.0,
-                  value: interval.value,
-                  valueHandler: Handler(interval.set)
+                  value: speed.value,
+                  valueHandler: Handler(speed.set)
                 )
               ),
               Label.node(
                 .init(alignment: .center),
-                "\(interval.value)X"
+                "\(speed.value)X"
               ),
             ]
           ),
         ]
       )
-
     case .gameOver:
       return StackView.node(
         .init(
@@ -152,26 +195,24 @@ struct Snake: LeafComponent {
           axis: .vertical,
           distribution: .fillEqually,
           spacing: 10.0
-        ), [
-          Button.node(
-            .init(onPress: Handler { game.set { $0 = restartedGameState } }),
-            "Restart the game"
-          ),
-        ]
+        ),
+        Button.node(
+          .init(onPress: Handler { game.set { $0 = restartedGameState } }),
+          "Restart the game"
+        )
       )
-    default:
+    case .initial:
       return StackView.node(
         .init(
           Edges.equal(to: .parent),
           axis: .vertical,
           distribution: .fillEqually,
           spacing: 10.0
-        ), [
-          Button.node(
-            .init(onPress: Handler { game.set { $0.state = .isPlaying } }),
-            "Start the game"
-          ),
-        ]
+        ),
+        Button.node(
+          .init(onPress: Handler { game.set { $0.state = .isPlaying } }),
+          "Start the game"
+        )
       )
     }
   }

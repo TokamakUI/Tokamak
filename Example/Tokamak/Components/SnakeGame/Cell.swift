@@ -11,7 +11,7 @@ import Tokamak
 struct Cell: PureLeafComponent {
   struct Props: Equatable {
     let color: Color
-    let size: Int
+    let size: Double
     let location: Point
   }
 
@@ -22,8 +22,8 @@ struct Cell: PureLeafComponent {
       .init(
         Style(
           Rectangle(
-            Point(x: Double(size) * location.x, y: Double(size) * location.y),
-            Size(width: Double(size), height: Double(size))
+            Point(x: size * location.x, y: size * location.y),
+            Size(width: size, height: size)
           ),
           backgroundColor: props.color
         )

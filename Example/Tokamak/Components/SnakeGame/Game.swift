@@ -32,19 +32,6 @@ struct Game {
 
   let mapSize: Size
 
-  var speed: Int = 1
-
-  func canChangeTo(_ newDirection: Direction) -> Bool {
-    var canChange = false
-    switch currentDirection {
-    case .left, .right:
-      canChange = newDirection == .up || newDirection == .down
-    case Direction.up, Direction.down:
-      canChange = newDirection == .left || newDirection == .right
-    }
-    return canChange
-  }
-
   func move(_ point: Point, mapSize: Size) -> Point {
     var theX = point.x
     var theY = point.y
