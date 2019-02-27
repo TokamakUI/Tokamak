@@ -51,22 +51,22 @@ struct Game {
     switch currentDirection {
     case .left:
       theX -= 1
-      if theX < 0 {
+      if theX <= 0 {
         theX = mapSize.width - 1
       }
     case .up:
       theY -= 1
-      if theY < 0 {
+      if theY <= 0 {
         theY = mapSize.height - 1
       }
     case .right:
       theX += 1
-      if theX > mapSize.width {
+      if theX >= mapSize.width {
         theX = 0
       }
     case .down:
       theY += 1
-      if theY > mapSize.height {
+      if theY >= mapSize.height {
         theY = 0
       }
     }

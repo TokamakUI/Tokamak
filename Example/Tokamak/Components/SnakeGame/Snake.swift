@@ -45,10 +45,12 @@ struct Snake: LeafComponent {
 
     switch game.value.state {
     case .isPlaying:
-
+//      Leading.equal(to: .safeArea),
+//      Trailing.equal(to: .safeArea),
+//      Top.equal(to: .safeArea),
       return StackView.node(
         .init(
-          Edges.equal(to: .parent),
+          Edges.equal(to: .safeArea),
           axis: .vertical,
           distribution: .fillEqually,
           spacing: 10.0
@@ -56,9 +58,15 @@ struct Snake: LeafComponent {
           View.node(
             [
               View.node(
-                .init(Style([Top.equal(to: .parent, constant: 10), Bottom.equal(to: .parent, constant: 30), Center.equal(to: .parent),
-                             Width.equal(to: Double(props.cellSize) * game.value.mapSize.width + 10),
-                             Height.equal(to: Double(props.cellSize) * game.value.mapSize.height - 30)], borderColor: .black, borderWidth: 2)),
+                .init(Style(
+                  [
+                    Center.equal(to: .parent),
+                    Width.equal(to: Double(props.cellSize) * game.value.mapSize.width),
+                    Height.equal(to: Double(props.cellSize) * game.value.mapSize.height),
+                  ],
+                  borderColor: .black,
+                  borderWidth: 2
+                )),
                 [
                   View.node(
                     Cell.node(.init(size: props.cellSize, location: game.value.target))
