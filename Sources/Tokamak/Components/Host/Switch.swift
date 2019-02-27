@@ -14,12 +14,16 @@ public struct Switch: HostComponent {
     public let valueHandler: Handler<Bool>?
     public let isEnabled: Bool
     public let isAnimated: Bool
+    public let onImage: Image?
+    public let offImage: Image?
 
     public init(
       _ style: Style? = nil,
       handlers: EventHandlers = [:],
       isAnimated: Bool = true,
       isEnabled: Bool = true,
+      offImage: Image? = nil,
+      onImage: Image? = nil,
       value: Bool,
       valueHandler: Handler<Bool>? = nil
     ) {
@@ -29,6 +33,8 @@ public struct Switch: HostComponent {
       self.valueHandler = valueHandler
       self.isEnabled = isEnabled
       self.isAnimated = isAnimated
+      self.offImage = offImage
+      self.onImage = onImage
     }
   }
 
