@@ -56,9 +56,9 @@ struct Test: LeafComponent {
 
     return StackView.node([
       Button.node(
-        ref: ref,
         .init(onPress: Handler { state1.set { $0 += 1 } }),
-        "Increment"
+        "Increment",
+        ref: ref
       ),
       Label.node("\(state1.value)"),
       Button.node(.init(onPress: Handler { state2.set { $0 + 1 } }),
