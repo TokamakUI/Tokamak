@@ -4,6 +4,7 @@
 
 [![CI Status](https://img.shields.io/travis/MaxDesiatov/Tokamak/master.svg?style=flat)](https://travis-ci.org/MaxDesiatov/Tokamak)
 [![Coverage](https://img.shields.io/codecov/c/github/MaxDesiatov/Tokamak/master.svg?style=flat)](https://codecov.io/gh/maxdesiatov/Tokamak)
+[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/tokamak)
 <!-- [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/tokamak)
 [![Version](https://img.shields.io/cocoapods/v/Tokamak.svg?style=flat)](https://cocoapods.org/pods/Tokamak)
 [![License](https://img.shields.io/cocoapods/l/Tokamak.svg?style=flat)](https://cocoapods.org/pods/Tokamak)
