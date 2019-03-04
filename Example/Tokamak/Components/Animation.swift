@@ -49,7 +49,7 @@ struct Animation: CompositeComponent {
         axis: .vertical,
         distribution: .fillEqually
       ), [
-        View.node(ref: ref, .init(), children),
+        View.node(.init(), children, ref: ref),
         SegmentedControl.node(
           .init(
             value: currentColor.value,
