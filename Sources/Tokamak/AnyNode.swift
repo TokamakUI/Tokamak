@@ -9,16 +9,17 @@ public struct AnyNode: Equatable {
   // Equatable can't be automatically derived for `type` property?
   public static func ==(lhs: AnyNode, rhs: AnyNode) -> Bool {
     return
-      lhs.ref === rhs.ref &&
+
       lhs.type == rhs.type &&
       lhs.children == rhs.children &&
-      lhs.props == rhs.props
+      lhs.props == rhs.props &&
+      lhs.ref === rhs.ref
   }
 
-  public let ref: AnyObject?
   public let props: AnyEquatable
   public let children: AnyEquatable
   let type: ComponentType
+  public let ref: AnyObject?
 
   public func isSubtypeOf<T>(_: T.Type) -> Bool {
     return type.host is T.Type || type.composite is T.Type
@@ -40,10 +41,10 @@ public struct AnyNode: Equatable {
 extension Null {
   public static func node() -> AnyNode {
     return AnyNode(
-      ref: nil,
       props: AnyEquatable(Null()),
       children: AnyEquatable(Null()),
-      type: .null
+      type: .null,
+      ref: nil
     )
   }
 }
@@ -97,10 +98,10 @@ extension Component where Props: Default, Props.DefaultValue == Props,
 extension HostComponent {
   public static func node(_ props: Props, _ children: Children) -> AnyNode {
     return AnyNode(
-      ref: nil,
       props: AnyEquatable(props),
       children: AnyEquatable(children),
-      type: .host(self)
+      type: .host(self),
+      ref: nil
     )
   }
 }
@@ -111,45 +112,45 @@ extension CompositeComponent {
     _ children: Children
   ) -> AnyNode {
     return AnyNode(
-      ref: nil,
       props: AnyEquatable(props),
       children: AnyEquatable(children),
-      type: .composite(self)
+      type: .composite(self),
+      ref: nil
     )
   }
 }
 
 extension RefComponent {
   public static func node(
-    ref: Ref<RefTarget?>,
     _ props: Props,
-    _ children: Children
+    _ children: Children,
+    ref: Ref<RefTarget?>
   ) -> AnyNode {
     return AnyNode(
-      ref: ref,
       props: AnyEquatable(props),
       children: AnyEquatable(children),
-      type: .host(self)
+      type: .host(self),
+      ref: ref
     )
   }
 }
 
 extension RefComponent where Children == [AnyNode] {
   public static func node(
-    ref: Ref<RefTarget?>,
     _ props: Props,
-    _ child: AnyNode
+    _ child: AnyNode,
+    ref: Ref<RefTarget?>
   ) -> AnyNode {
-    return node(ref: ref, props, [child])
+    return node(props, [child], ref: ref)
   }
 
-  public static func node(ref: Ref<RefTarget?>, _ props: Props) -> AnyNode {
-    return node(ref: ref, props, [])
+  public static func node(_ props: Props, ref: Ref<RefTarget?>) -> AnyNode {
+    return node(props, [], ref: ref)
   }
 }
 
 extension RefComponent where Children == Null {
-  public static func node(ref: Ref<RefTarget?>, _ props: Props) -> AnyNode {
-    return node(ref: ref, props, Null())
+  public static func node(_ props: Props, ref: Ref<RefTarget?>) -> AnyNode {
+    return node(props, Null(), ref: ref)
   }
 }
