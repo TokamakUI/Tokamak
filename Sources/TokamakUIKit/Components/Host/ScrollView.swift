@@ -15,8 +15,7 @@ final class TokamakScrollView: UIScrollView, Default {
 }
 
 extension ScrollView: UIViewComponent {
-  static func update(view box: ViewBox<TokamakScrollView>, _ props: ScrollView.Props, _ children: AnyNode) {
-  }
+  static func update(view box: ViewBox<TokamakScrollView>, _ props: ScrollView.Props, _ children: AnyNode) {}
 
   public typealias RefTarget = UIScrollView
 }
