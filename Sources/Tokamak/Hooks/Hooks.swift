@@ -109,7 +109,7 @@ public final class Hooks {
    (initialized from `initial` if current was absent)
    */
   func ref<T>(_ initial: Ref<T>) -> Ref<T> {
-    defer { stateIndex += 1 }
+    defer { refIndex += 1 }
 
     guard let component = component else {
       assertionFailure("hooks.state should only be called within `render`")
