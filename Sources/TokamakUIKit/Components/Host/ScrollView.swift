@@ -41,7 +41,11 @@ extension UIScrollView.IndicatorStyle {
 extension ScrollView: UIViewComponent {
   public typealias RefTarget = UIScrollView
 
-  static func update(view box: ViewBox<TokamakScrollView>, _ props: ScrollView.Props, _ children: AnyNode) {
+  static func update(
+    view box: ViewBox<TokamakScrollView>,
+    _ props: ScrollView.Props,
+    _ children: AnyNode
+  ) {
     let view = box.view
     view.alwaysBounceHorizontal = props.alwaysBounceHorizontal
     view.alwaysBounceVertical = props.alwaysBounceVertical
