@@ -48,6 +48,9 @@ extension ScrollView: UIViewComponent {
     view.bounces = props.bounces
     view.contentInset = UIEdgeInsets(props.contentInset)
     view.indicatorStyle = UIScrollView.IndicatorStyle(props.indicatorStyle)
+    view.scrollIndicatorInsets = UIEdgeInsets(props.scrollIndicatorInsets)
     view.scrollsToTop = props.scrollsToTop
+    view.showsVerticalScrollIndicator = props.showsVerticalScrollIndicator
+    view.showsHorizontalScrollIndicator = props.showsHorizontalScrollIndicator
   }
 }
