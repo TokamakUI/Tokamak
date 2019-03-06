@@ -47,7 +47,10 @@ extension ScrollView: UIViewComponent {
     view.alwaysBounceVertical = props.alwaysBounceVertical
     view.bounces = props.bounces
     view.contentInset = UIEdgeInsets(props.contentInset)
+    view.isDirectionalLockEnabled = props.isDirectionalLockEnabled
+    view.isPagingEnabled = props.isPagingEnabled
     view.indicatorStyle = UIScrollView.IndicatorStyle(props.indicatorStyle)
+    view.isScrollEnabled = props.isScrollEnabled
     view.scrollIndicatorInsets = UIEdgeInsets(props.scrollIndicatorInsets)
     view.scrollsToTop = props.scrollsToTop
     view.showsVerticalScrollIndicator = props.showsVerticalScrollIndicator
