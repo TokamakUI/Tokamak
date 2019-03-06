@@ -154,3 +154,12 @@ extension RefComponent where Children == Null {
     return node(props, Null(), ref: ref)
   }
 }
+
+extension RefComponent where Props: Default, Props.DefaultValue == Props {
+  public static func node(
+    _ children: Children,
+    ref: Ref<RefTarget?>
+  ) -> AnyNode {
+    return node(Props.defaultValue, children, ref: ref)
+  }
+}
