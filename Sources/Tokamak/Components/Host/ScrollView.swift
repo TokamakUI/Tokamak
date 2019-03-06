@@ -45,10 +45,13 @@ public struct ScrollView: HostComponent {
     public let isDirectionalLockEnabled: Bool
     public let isPagingEnabled: Bool
     public let isScrollEnabled: Bool
+    public let maximumZoomScale: Float
+    public let minimumZoomScale: Float
     public let scrollIndicatorInsets: EdgeInsets
     public let scrollsToTop: Bool
     public let showsHorizontalScrollIndicator: Bool
     public let showsVerticalScrollIndicator: Bool
+    public let zoomScale: Float
 
     public init(
       _ style: Style? = nil,
@@ -60,10 +63,13 @@ public struct ScrollView: HostComponent {
       isDirectionalLockEnabled: Bool = false,
       isPagingEnabled: Bool = false,
       isScrollEnabled: Bool = true,
+      maximumZoomScale: Float = 1.0,
+      minimumZoomScale: Float = 1.0,
       scrollIndicatorInsets: EdgeInsets = EdgeInsets(),
       scrollsToTop: Bool = true,
       showsHorizontalScrollIndicator: Bool = true,
-      showsVerticalScrollIndicator: Bool = true
+      showsVerticalScrollIndicator: Bool = true,
+      zoomScale: Float = 1.0
     ) {
       self.style = style
       self.alwaysBounceHorizontal = alwaysBounceHorizontal
@@ -74,10 +80,13 @@ public struct ScrollView: HostComponent {
       self.isPagingEnabled = isPagingEnabled
       self.indicatorStyle = indicatorStyle
       self.isScrollEnabled = isScrollEnabled
+      self.maximumZoomScale = maximumZoomScale
+      self.minimumZoomScale = minimumZoomScale
       self.scrollIndicatorInsets = scrollIndicatorInsets
       self.scrollsToTop = scrollsToTop
       self.showsVerticalScrollIndicator = showsVerticalScrollIndicator
       self.showsHorizontalScrollIndicator = showsHorizontalScrollIndicator
+      self.zoomScale = zoomScale
     }
   }
 

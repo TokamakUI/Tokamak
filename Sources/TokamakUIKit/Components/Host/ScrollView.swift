@@ -51,9 +51,12 @@ extension ScrollView: UIViewComponent {
     view.isPagingEnabled = props.isPagingEnabled
     view.indicatorStyle = UIScrollView.IndicatorStyle(props.indicatorStyle)
     view.isScrollEnabled = props.isScrollEnabled
+    view.maximumZoomScale = CGFloat(props.maximumZoomScale)
+    view.minimumZoomScale = CGFloat(props.minimumZoomScale)
     view.scrollIndicatorInsets = UIEdgeInsets(props.scrollIndicatorInsets)
     view.scrollsToTop = props.scrollsToTop
     view.showsVerticalScrollIndicator = props.showsVerticalScrollIndicator
     view.showsHorizontalScrollIndicator = props.showsHorizontalScrollIndicator
+    view.zoomScale = CGFloat(props.zoomScale)
   }
 }
