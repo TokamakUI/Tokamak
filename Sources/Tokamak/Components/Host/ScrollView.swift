@@ -11,10 +11,40 @@ public struct ScrollView: HostComponent {
       return Props()
     }
 
-    public let style: Style?
+    public struct EdgeInsets: Equatable {
+      public let bottom: Float
+      public let left: Float
+      public let right: Float
+      public let top: Float
 
-    public init(_ style: Style? = nil) {
+      public init(
+        top: Float = 0,
+        left: Float = 0,
+        bottom: Float = 0,
+        right: Float = 0
+      ) {
+        self.top = top
+        self.left = left
+        self.bottom = bottom
+        self.right = right
+      }
+    }
+
+    public let style: Style?
+    public let contentInset: EdgeInsets
+    public let bounces: Bool
+    public let scrollsToTop: Bool
+
+    public init(
+      _ style: Style? = nil,
+      contentInset: EdgeInsets = EdgeInsets(top: 0, left: 0, bottom: 0, right: 0),
+      bounces: Bool = true,
+      scrollsToTop: Bool = true
+    ) {
       self.style = style
+      self.contentInset = contentInset
+      self.bounces = bounces
+      self.scrollsToTop = scrollsToTop
     }
   }
 

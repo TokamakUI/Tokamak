@@ -14,8 +14,19 @@ final class TokamakScrollView: UIScrollView, Default {
   }
 }
 
-extension ScrollView: UIViewComponent {
-  static func update(view box: ViewBox<TokamakScrollView>, _ props: ScrollView.Props, _ children: AnyNode) {}
+extension UIEdgeInsets {
+  public init(_ edges: ScrollView.Props.EdgeInsets) {
+    self.init(top: CGFloat(edges.top), left: CGFloat(edges.left), bottom: CGFloat(edges.bottom), right: CGFloat(edges.right))
+  }
+}
 
+extension ScrollView: UIViewComponent {
   public typealias RefTarget = UIScrollView
+
+  static func update(view box: ViewBox<TokamakScrollView>, _ props: ScrollView.Props, _ children: AnyNode) {
+    let view = box.view
+    view.contentInset = UIEdgeInsets(props.contentInset)
+    view.bounces = props.bounces
+    view.scrollsToTop = props.scrollsToTop
+  }
 }
