@@ -120,6 +120,8 @@ extension UIViewComponent where Target == Target.DefaultValue,
       box.view.addArrangedSubview(target)
     // no covariance/contravariance in Swift generics require next
     // two cases to be duplicated :(
+    case let box as ViewBox<TokamakScrollView>:
+      box.view.addSubview(target)
     case let box as ViewBox<UIView>:
       box.view.addSubview(target)
     case let box as ViewBox<TokamakView>:

@@ -21,6 +21,7 @@ enum AppRoute: String, CaseIterable {
   case textField = "Text Field"
   case animation
   case snakeGame = "Snake Game"
+  case scrollView = "Scroll"
 }
 
 extension AppRoute: CustomStringConvertible {
@@ -68,6 +69,8 @@ struct Router: NavigationRouter {
       result = Animation.node()
     case .snakeGame:
       result = SnakeGame.node()
+    case .scrollView:
+      result = ScrollViewExample.node()
     }
 
     return NavigationItem.node(
