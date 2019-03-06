@@ -31,17 +31,20 @@ public struct ScrollView: HostComponent {
     }
 
     public let style: Style?
+    public let alwaysBounceVertical: Bool
     public let contentInset: EdgeInsets
     public let bounces: Bool
     public let scrollsToTop: Bool
 
     public init(
       _ style: Style? = nil,
-      contentInset: EdgeInsets = EdgeInsets(top: 0, left: 0, bottom: 0, right: 0),
+      alwaysBounceVertical: Bool = false,
       bounces: Bool = true,
+      contentInset: EdgeInsets = EdgeInsets(top: 0, left: 0, bottom: 0, right: 0),
       scrollsToTop: Bool = true
     ) {
       self.style = style
+      self.alwaysBounceVertical = alwaysBounceVertical
       self.contentInset = contentInset
       self.bounces = bounces
       self.scrollsToTop = scrollsToTop

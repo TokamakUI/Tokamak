@@ -25,8 +25,9 @@ extension ScrollView: UIViewComponent {
 
   static func update(view box: ViewBox<TokamakScrollView>, _ props: ScrollView.Props, _ children: AnyNode) {
     let view = box.view
-    view.contentInset = UIEdgeInsets(props.contentInset)
+    view.alwaysBounceVertical = prop.alwaysBounceVertical
     view.bounces = props.bounces
+    view.contentInset = UIEdgeInsets(props.contentInset)
     view.scrollsToTop = props.scrollsToTop
   }
 }
