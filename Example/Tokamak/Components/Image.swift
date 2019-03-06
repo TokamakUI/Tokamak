@@ -8,20 +8,48 @@
 
 import Tokamak
 
-struct ImageExample: PureLeafComponent {
+class ScrollDelegate: NSObject, UIScrollViewDelegate {
+  var view: UIView?
+
+  func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    return view
+  }
+}
+
+struct ImageExample: LeafComponent {
   typealias Props = Null
 
-  static func render(props _: Null) -> AnyNode {
+  static func render(props _: Null, hooks: Hooks) -> AnyNode {
+    let refScroll = hooks.ref(type: UIScrollView.self)
+    let refImage = hooks.ref(type: UIImageView.self)
+    let delegate = hooks.ref(ScrollDelegate())
+
+    hooks.effect {
+      guard let image = refImage.value else { return }
+      guard let scroll = refScroll.value else { return }
+
+      delegate.value.view = image
+      scroll.delegate = delegate.value
+    }
+
     return StackView.node(.init(
       Edges.equal(to: .safeArea),
       alignment: .center,
       axis: .vertical,
-      distribution: .fillEqually
+      distribution: .fill
     ), [
-      ImageView.node(.init(
-        Style(contentMode: .scaleAspectFit),
-        image: Image(name: "tokamak")
-      )),
+      Label.node("You can pan and zoom this image"),
+      ScrollView.node(
+        .init(
+          Style(Width.equal(to: .parent)),
+          maximumZoomScale: 2.0
+        ),
+        ImageView.node(.init(
+          Style(Edges.equal(to: .parent), contentMode: .scaleAspectFit),
+          image: Image(name: "tokamak")
+        ), ref: refImage),
+        ref: refScroll
+      ),
     ])
   }
 }
