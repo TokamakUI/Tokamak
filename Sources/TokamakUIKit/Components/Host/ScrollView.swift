@@ -46,6 +46,7 @@ extension ScrollView: UIViewComponent {
     view.alwaysBounceHorizontal = props.alwaysBounceHorizontal
     view.alwaysBounceVertical = props.alwaysBounceVertical
     view.bounces = props.bounces
+    view.bouncesZoom = props.bouncesZoom
     view.contentInset = UIEdgeInsets(props.contentInset)
     view.isDirectionalLockEnabled = props.isDirectionalLockEnabled
     view.isPagingEnabled = props.isPagingEnabled

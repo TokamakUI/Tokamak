@@ -40,6 +40,7 @@ public struct ScrollView: HostComponent {
     public let alwaysBounceHorizontal: Bool
     public let alwaysBounceVertical: Bool
     public let bounces: Bool
+    public let bouncesZoom: Bool
     public let contentInset: EdgeInsets
     public let indicatorStyle: IndicatorStyle
     public let isDirectionalLockEnabled: Bool
@@ -58,6 +59,7 @@ public struct ScrollView: HostComponent {
       alwaysBounceHorizontal: Bool = false,
       alwaysBounceVertical: Bool = false,
       bounces: Bool = true,
+      bouncesZoom: Bool = true,
       contentInset: EdgeInsets = EdgeInsets(),
       indicatorStyle: IndicatorStyle = .default,
       isDirectionalLockEnabled: Bool = false,
@@ -75,6 +77,7 @@ public struct ScrollView: HostComponent {
       self.alwaysBounceHorizontal = alwaysBounceHorizontal
       self.alwaysBounceVertical = alwaysBounceVertical
       self.bounces = bounces
+      self.bouncesZoom = bouncesZoom
       self.contentInset = contentInset
       self.isDirectionalLockEnabled = isDirectionalLockEnabled
       self.isPagingEnabled = isPagingEnabled
