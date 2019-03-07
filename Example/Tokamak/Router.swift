@@ -22,6 +22,7 @@ enum AppRoute: String, CaseIterable {
   case animation
   case snakeGame = "Snake Game"
   case scrollView = "Scroll"
+  case collection = "Elementary Particles Collection"
 }
 
 extension AppRoute: CustomStringConvertible {
@@ -71,6 +72,8 @@ struct Router: NavigationRouter {
       result = SnakeGame.node()
     case .scrollView:
       result = ScrollViewExample.node()
+    case .collection:
+      result = CollectionExample.node()
     }
 
     return NavigationItem.node(

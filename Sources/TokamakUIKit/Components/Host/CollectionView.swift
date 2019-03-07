@@ -25,7 +25,7 @@ extension CollectionView: UIViewComponent {
   }
 
   static func update(view box: ViewBox<TokamakCollectionView>,
-                     _ props: ListView.Props,
+                     _ props: CollectionView<T>.Props,
                      _ children: Null) {
     guard let box = box as? CollectionViewBox<T> else {
       boxAssertionFailure("box")

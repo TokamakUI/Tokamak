@@ -13,22 +13,31 @@ final class TokamakCollectionCell: UICollectionViewCell {
   // property `target`, should that be `weak` to break a potential reference
   // cycle?
   fileprivate var component: UIKitRenderer.Mounted?
-}
 
-// extension CellPath {
-//    init(_ path: IndexPath) {
-//        self.init(section: path.section, item: path.item)
-//    }
-// }
+  private let _reuseIdentifier: String
+
+  override var reuseIdentifier: String? {
+    return _reuseIdentifier
+  }
+
+  init(reuseIdentifier: String) {
+    _reuseIdentifier = reuseIdentifier
+    super.init(frame: .zero)
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+}
 
 private final class DataSource<T: CellProvider>: NSObject,
   UICollectionViewDataSource {
   weak var viewController: UIViewController?
   weak var renderer: UIKitRenderer?
-  var props: ListView<T>.Props
+  var props: CollectionView<T>.Props
 
   init(
-    _ props: ListView<T>.Props,
+    _ props: CollectionView<T>.Props,
     _ viewController: UIViewController,
     _ renderer: UIKitRenderer?
   ) {
@@ -67,7 +76,6 @@ private final class DataSource<T: CellProvider>: NSObject,
       return cell
     } else {
       let result = TokamakCollectionCell(
-        style: .default,
         reuseIdentifier: id.rawValue
       )
       if let viewController = viewController {
@@ -91,7 +99,7 @@ private final class Delegate<T: CellProvider>: NSObject, UICollectionViewDelegat
     onSelect?(CellPath(indexPath))
   }
 
-  init(_ props: ListView<T>.Props) {
+  init(_ props: CollectionView<T>.Props) {
     onSelect = props.onSelect?.value
   }
 }
@@ -109,7 +117,7 @@ final class CollectionViewBox<T: CellProvider>: ViewBox<TokamakCollectionView> {
   // swiftlint:disable:next weak_delegate
   private let delegate: Delegate<T>
 
-  var props: ListView<T>.Props {
+  var props: CollectionView<T>.Props {
     get {
       return dataSource.props
     }
@@ -127,7 +135,7 @@ final class CollectionViewBox<T: CellProvider>: ViewBox<TokamakCollectionView> {
     _ view: TokamakCollectionView,
     _ viewController: UIViewController,
     _ component: UIKitRenderer.MountedHost,
-    _ props: ListView<T>.Props,
+    _ props: CollectionView<T>.Props,
     _ renderer: UIKitRenderer
   ) {
     dataSource = DataSource(props, viewController, renderer)

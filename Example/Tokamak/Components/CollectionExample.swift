@@ -8,10 +8,34 @@
 
 import Tokamak
 
+enum ElementaryParticles: String, CaseIterable {
+  case up
+  case down
+  case charm
+  case strange
+  case top
+  case bottom
+  case gluon
+  case photon
+  case higs
+  case electron
+  case muon
+  case tau
+  case electronNeutrino = "Electron Neutrino"
+  case muonNeutrino = "Muon Neutrino"
+  case tauNeutrino = "Tau Neutrino"
+  case zBoson = "Z Boson"
+  case wBoson = "W Boson"
+}
+
+extension ElementaryParticles: CustomStringConvertible {
+  var description: String { return rawValue.localizedCapitalized }
+}
+
 private struct Cells: SimpleCellProvider {
   static func cell(
     props: Null,
-    item: AppRoute,
+    item: ElementaryParticles,
     path: CellPath
   ) -> AnyNode {
     return Label.node(.init(Style(
@@ -23,22 +47,18 @@ private struct Cells: SimpleCellProvider {
 
   typealias Props = Null
 
-  typealias Model = [[AppRoute]]
+  typealias Model = [[ElementaryParticles]]
 }
 
-struct Collection: PureLeafComponent {
-  struct Props: Equatable {
-    let model: [AppRoute]
-    let onSelect: Handler<CellPath>
-  }
+struct CollectionExample: PureLeafComponent {
+  typealias Props = Null
 
   static func render(props: Props) -> AnyNode {
     return ListView<Cells>.node(.init(
       Style([
         Edges.equal(to: .parent),
       ]),
-      model: [props.model],
-      onSelect: props.onSelect
+      model: [ElementaryParticles.allCases]
     ))
   }
 }
