@@ -25,6 +25,8 @@
 		A6AB60B5221C70340063F88A /* ContentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AB60B4221C70340063F88A /* ContentMode.swift */; };
 		A6D188EC221F1CA300C3947C /* Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D188EB221F1CA300C3947C /* Accessibility.swift */; };
 		A6D188EE2220221B00C3947C /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D188ED2220221B00C3947C /* TextField.swift */; };
+		A6D6538622319A95007FA886 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* ContainerViewController.swift */; };
+		A6D6538822319B19007FA886 /* CollectionViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D6538722319B19007FA886 /* CollectionViewBox.swift */; };
 		A6DA70CB223032B1009B94C8 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DA70CA223032B1009B94C8 /* CollectionView.swift */; };
 		A6DA70CD223032CF009B94C8 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DA70CC223032CF009B94C8 /* CollectionView.swift */; };
 		A6FEF7912227BAB5008BB292 /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FEF7902227BAB5008BB292 /* ScrollView.swift */; };
@@ -103,7 +105,6 @@
 		OBJ_243 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_138 /* XCTestManifests.swift */; };
 		OBJ_245 /* TokamakTestRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::TokamakTestRenderer::Product" /* TokamakTestRenderer.framework */; };
 		OBJ_246 /* Tokamak.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::Tokamak::Product" /* Tokamak.framework */; };
-		OBJ_254 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* ContainerViewController.swift */; };
 		OBJ_255 /* ControlBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* ControlBox.swift */; };
 		OBJ_256 /* TableViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* TableViewBox.swift */; };
 		OBJ_257 /* ValueControlBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* ValueControlBox.swift */; };
@@ -196,6 +197,7 @@
 		A6D188EB221F1CA300C3947C /* Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessibility.swift; sourceTree = "<group>"; };
 		A6D188ED2220221B00C3947C /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		A6D188EF2220222F00C3947C /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		A6D6538722319B19007FA886 /* CollectionViewBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewBox.swift; sourceTree = "<group>"; };
 		A6DA70CA223032B1009B94C8 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		A6DA70CC223032CF009B94C8 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		A6FEF7902227BAB5008BB292 /* ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollView.swift; sourceTree = "<group>"; };
@@ -625,6 +627,7 @@
 				OBJ_13 /* ValueControlBox.swift */,
 				OBJ_14 /* ViewBox.swift */,
 				OBJ_15 /* ViewControllerBox.swift */,
+				A6D6538722319B19007FA886 /* CollectionViewBox.swift */,
 			);
 			path = Boxes;
 			sourceTree = "<group>";
@@ -891,7 +894,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_254 /* ContainerViewController.swift in Sources */,
 				OBJ_255 /* ControlBox.swift in Sources */,
 				OBJ_256 /* TableViewBox.swift in Sources */,
 				OBJ_257 /* ValueControlBox.swift in Sources */,
@@ -912,7 +914,9 @@
 				OBJ_272 /* View.swift in Sources */,
 				OBJ_273 /* Color.swift in Sources */,
 				OBJ_274 /* BaselineConstraint.swift in Sources */,
+				A6D6538622319A95007FA886 /* ContainerViewController.swift in Sources */,
 				A6AB60B5221C70340063F88A /* ContentMode.swift in Sources */,
+				A6D6538822319B19007FA886 /* CollectionViewBox.swift in Sources */,
 				OBJ_275 /* Bottom.swift in Sources */,
 				OBJ_276 /* CenterX.swift in Sources */,
 				OBJ_277 /* CenterY.swift in Sources */,
