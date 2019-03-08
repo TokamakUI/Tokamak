@@ -128,6 +128,8 @@ extension UIViewComponent where Target == Target.DefaultValue,
       box.view.addSubview(target)
     case let box as ViewBox<TokamakTableCell>:
       box.view.addSubview(target)
+    case let box as ViewBox<TokamakCollectionCell>:
+      box.view.addSubview(target)
     case let box as ViewControllerBox<TokamakNavigationController>
       where parent.node.isSubtypeOf(NavigationController.self):
       guard let props = parent.node.props.value

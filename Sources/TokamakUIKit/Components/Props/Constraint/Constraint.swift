@@ -48,13 +48,13 @@ extension UIView {
         to: target, constant: edges.insets.top
       ), next: next) +
         constraint(Bottom.equal(
-          to: target, constant: edges.insets.bottom
+          to: target, constant: -edges.insets.bottom
         ), next: next) +
         constraint(Left.equal(
           to: target, constant: edges.insets.left
         ), next: next) +
         constraint(Right.equal(
-          to: target, constant: edges.insets.right
+          to: target, constant: -edges.insets.right
         ), next: next)
     case let .firstBaseline(location):
       return location.constraint(current: self, parent: superview, next: next)

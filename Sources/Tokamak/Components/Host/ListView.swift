@@ -35,7 +35,7 @@ extension Array: SectionedModel
 
 public protocol CellProvider {
   associatedtype Props: Equatable
-  associatedtype Identifier: RawRepresentable
+  associatedtype Identifier: RawRepresentable, CaseIterable
     where Identifier.RawValue == String
   associatedtype Model: SectionedModel & Equatable
 
@@ -46,7 +46,7 @@ public protocol CellProvider {
   ) -> (Identifier, AnyNode)
 }
 
-public enum SingleIdentifier: String {
+public enum SingleIdentifier: String, CaseIterable {
   case single
 }
 
