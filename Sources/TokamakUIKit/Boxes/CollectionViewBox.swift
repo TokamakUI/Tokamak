@@ -73,7 +73,7 @@ private final class DataSource<T: CellProvider>: NSObject,
         }
         return cell
       } else {
-        fatalError("err")
+        fatalError("unknown cell type returned from dequeueReusableCell")
       }
     }
   }
