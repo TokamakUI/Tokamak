@@ -54,10 +54,12 @@ struct CollectionExample: PureLeafComponent {
   typealias Props = Null
 
   static func render(props: Props) -> AnyNode {
-    return ListView<Cells>.node(.init(
-      Style([
-        Edges.equal(to: .parent),
-      ]),
+    let style = Style([
+      Edges.equal(to: .parent),
+    ])
+
+    return CollectionView<Cells>.node(.init(
+      style,
       model: [ElementaryParticles.allCases]
     ))
   }

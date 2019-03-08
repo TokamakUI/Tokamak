@@ -22,7 +22,7 @@ enum AppRoute: String, CaseIterable {
   case animation
   case snakeGame = "Snake Game"
   case scrollView = "Scroll"
-  case collection = "Elementary Particles Collection"
+  case collection = "Collection View"
 }
 
 extension AppRoute: CustomStringConvertible {

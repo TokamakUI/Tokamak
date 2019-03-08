@@ -13,21 +13,6 @@ final class TokamakCollectionCell: UICollectionViewCell {
   // property `target`, should that be `weak` to break a potential reference
   // cycle?
   fileprivate var component: UIKitRenderer.Mounted?
-
-  private let _reuseIdentifier: String
-
-  override var reuseIdentifier: String? {
-    return _reuseIdentifier
-  }
-
-  init(reuseIdentifier: String) {
-    _reuseIdentifier = reuseIdentifier
-    super.init(frame: .zero)
-  }
-
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
 }
 
 private final class DataSource<T: CellProvider>: NSObject,
@@ -75,16 +60,17 @@ private final class DataSource<T: CellProvider>: NSObject,
       renderer?.update(component: component, with: node)
       return cell
     } else {
-      let result = TokamakCollectionCell(
-        reuseIdentifier: id.rawValue
-      )
-      if let viewController = viewController {
-        result.component = renderer?.mount(
-          with: node,
-          to: ViewBox(result, viewController, node)
-        )
-      }
-      return result
+      fatalError("err")
+//      let result = TokamakCollectionCell(
+//        reuseIdentifier: id.rawValue
+//      )
+//      if let viewController = viewController {
+//        result.component = renderer?.mount(
+//          with: node,
+//          to: ViewBox(result, viewController, node)
+//        )
+//      }
+//      return result
     }
   }
 }
@@ -106,7 +92,7 @@ private final class Delegate<T: CellProvider>: NSObject, UICollectionViewDelegat
 
 final class TokamakCollectionView: UICollectionView, Default {
   static var defaultValue: TokamakCollectionView {
-    return TokamakCollectionView()
+    return TokamakCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
   }
 }
 
@@ -142,6 +128,10 @@ final class CollectionViewBox<T: CellProvider>: ViewBox<TokamakCollectionView> {
     delegate = Delegate(props)
     view.dataSource = dataSource
     view.delegate = delegate
+
+    for id in T.Identifier.allCases {
+      view.register(TokamakCollectionCell.self, forCellWithReuseIdentifier: id.rawValue)
+    }
     super.init(view, viewController, component.node)
   }
 }

@@ -16,6 +16,8 @@ let _stackControllerWitnessTableHack: UIHostComponent.Type =
 let _navigationItemWitnessTableHack: UIHostComponent.Type = NavigationItem.self
 let _listViewWitnessTableHack: UIHostComponent.Type =
   ListView<HackyProvider>.self
+let _collectionViewWitnessTableHack: UIHostComponent.Type =
+  CollectionView<HackyProvider>.self
 
 struct HackyProvider: SimpleCellProvider {
   static func cell(
