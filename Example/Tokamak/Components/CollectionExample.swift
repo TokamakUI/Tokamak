@@ -41,7 +41,8 @@ private struct Cells: SimpleCellProvider {
     return Label.node(.init(Style(
       [CenterY.equal(to: .parent),
        Height.equal(to: 44),
-       Leading.equal(to: .safeArea, constant: 20)]
+       Leading.equal(to: .parent),
+       Trailing.equal(to: .parent)]
     )), "\(item.description)")
   }
 
@@ -54,12 +55,11 @@ struct CollectionExample: PureLeafComponent {
   typealias Props = Null
 
   static func render(props: Props) -> AnyNode {
-    let style = Style([
-      Edges.equal(to: .parent),
-    ])
-
     return CollectionView<Cells>.node(.init(
-      style,
+      Style(
+        Edges.equal(to: .parent, inset: 20),
+        backgroundColor: .white
+      ),
       model: [ElementaryParticles.allCases]
     ))
   }

@@ -60,17 +60,21 @@ private final class DataSource<T: CellProvider>: NSObject,
       renderer?.update(component: component, with: node)
       return cell
     } else {
-      fatalError("err")
-//      let result = TokamakCollectionCell(
-//        reuseIdentifier: id.rawValue
-//      )
-//      if let viewController = viewController {
-//        result.component = renderer?.mount(
-//          with: node,
-//          to: ViewBox(result, viewController, node)
-//        )
-//      }
-//      return result
+      if let cell = collectionView.dequeueReusableCell(
+        withReuseIdentifier: id.rawValue, for: indexPath
+      ) as? TokamakCollectionCell {
+        if let component = cell.component {
+          renderer?.update(component: component, with: node)
+        } else if let viewController = viewController {
+          cell.component = renderer?.mount(
+            with: node,
+            to: ViewBox(cell, viewController, node)
+          )
+        }
+        return cell
+      } else {
+        fatalError("err")
+      }
     }
   }
 }
@@ -92,7 +96,9 @@ private final class Delegate<T: CellProvider>: NSObject, UICollectionViewDelegat
 
 final class TokamakCollectionView: UICollectionView, Default {
   static var defaultValue: TokamakCollectionView {
-    return TokamakCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    let layout = UICollectionViewFlowLayout()
+    layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+    return TokamakCollectionView(frame: .zero, collectionViewLayout: layout)
   }
 }
 
