@@ -21,7 +21,13 @@ extension CollectionView: UIViewComponent {
       fatalError("incorrect props type stored in CollectionView node")
     }
 
-    return CollectionViewBox<T>(view, viewController, component, props, renderer)
+    return CollectionViewBox<T>(
+      view,
+      viewController,
+      component,
+      props,
+      renderer
+    )
   }
 
   static func update(view box: ViewBox<TokamakCollectionView>,

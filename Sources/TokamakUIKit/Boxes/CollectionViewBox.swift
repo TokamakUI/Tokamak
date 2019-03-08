@@ -79,7 +79,9 @@ private final class DataSource<T: CellProvider>: NSObject,
   }
 }
 
-private final class Delegate<T: CellProvider>: NSObject, UICollectionViewDelegate {
+private final class Delegate<T: CellProvider>:
+  NSObject,
+  UICollectionViewDelegate {
   var onSelect: ((CellPath) -> ())?
 
   func collectionView(
@@ -136,7 +138,10 @@ final class CollectionViewBox<T: CellProvider>: ViewBox<TokamakCollectionView> {
     view.delegate = delegate
 
     for id in T.Identifier.allCases {
-      view.register(TokamakCollectionCell.self, forCellWithReuseIdentifier: id.rawValue)
+      view.register(
+        TokamakCollectionCell.self,
+        forCellWithReuseIdentifier: id.rawValue
+      )
     }
     super.init(view, viewController, component.node)
   }
