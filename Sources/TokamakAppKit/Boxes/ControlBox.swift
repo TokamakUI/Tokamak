@@ -28,6 +28,9 @@ class ControlBox<T: NSControl & Default>: ViewBox<T> {
   private var handlersMask: NSEvent.EventTypeMask = []
   private var handlers = [Event: Handler<()>]()
   private var action: Action!
+
+  // this delegate stays as a constant and doesn't create a reference cycle
+  // swiftlint:disable:next weak_delegate
   let delegate = TextEditingDelegate()
 
   override init(

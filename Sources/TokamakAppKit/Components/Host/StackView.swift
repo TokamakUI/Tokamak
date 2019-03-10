@@ -64,7 +64,9 @@ extension StackView: NSViewComponent {
                      _ props: StackView.Props,
                      _: [AnyNode]) {
     let view = box.view
-    NSLayoutConstraint.Attribute(props.alignment).flatMap { view.alignment = $0 }
+    NSLayoutConstraint.Attribute(props.alignment).flatMap {
+      view.alignment = $0
+    }
     view.orientation = NSUserInterfaceLayoutOrientation(props.axis)
     view.distribution = NSStackView.Distribution(props.distribution)
     view.spacing = CGFloat(props.spacing)

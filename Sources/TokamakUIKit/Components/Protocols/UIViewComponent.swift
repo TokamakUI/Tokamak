@@ -70,8 +70,6 @@ private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
     view.accessibilityIdentifier = $0.identifier
   }
 
-  // center has to be updated after `frame`, otherwise `frame` overrides it
-  style.center.flatMap { view.center = CGPoint($0) }
   style.isHidden.flatMap { view.isHidden = $0 }
 }
 
