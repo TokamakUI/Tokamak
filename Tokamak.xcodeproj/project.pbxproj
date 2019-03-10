@@ -3,17 +3,17 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
 		"Tokamak::TokamakPackageTests::ProductTarget" /* TokamakPackageTests */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = OBJ_252 /* Build configuration list for PBXAggregateTarget "TokamakPackageTests" */;
+			buildConfigurationList = OBJ_301 /* Build configuration list for PBXAggregateTarget "TokamakPackageTests" */;
 			buildPhases = (
 			);
 			dependencies = (
-				OBJ_255 /* PBXTargetDependency */,
+				OBJ_304 /* PBXTargetDependency */,
 			);
 			name = TokamakPackageTests;
 			productName = TokamakPackageTests;
@@ -21,194 +21,222 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		D1BA4DCB22329317003D90A7 /* NSHostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA4DCA22329233003D90A7 /* NSHostComponent.swift */; };
-		D1BA4DCF2232936E003D90A7 /* ViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA4DCE22329358003D90A7 /* ViewBox.swift */; };
-		D1BA4DD022329371003D90A7 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA4DCD22329344003D90A7 /* ViewControllerBox.swift */; };
-		D1BA4DD422329899003D90A7 /* ControlBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA4DD322329899003D90A7 /* ControlBox.swift */; };
-		D1BA4DD8223298FF003D90A7 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA4DD7223298FC003D90A7 /* Color.swift */; };
-		D1BA4DD922329902003D90A7 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA4DD6223298FC003D90A7 /* Event.swift */; };
-		D1C058BE2233D9BE0047205D /* TokamakViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C058BD2233D9BE0047205D /* TokamakViewController.swift */; };
-		D1C058C02233DA530047205D /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_97 /* Label.swift */; };
-		D1C058C12233DA530047205D /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_93 /* Button.swift */; };
-		D1C058C42233DA5F0047205D /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C058C22233DA5F0047205D /* Label.swift */; };
-		D1C058C52233DA5F0047205D /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C058C32233DA5F0047205D /* Button.swift */; };
-		D1C058C62233DAC50047205D /* NSViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_140 /* NSViewComponent.swift */; };
-		D1C058CB2233DB1C0047205D /* UIViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C058C92233DB1C0047205D /* UIViewComponent.swift */; };
-		D1C058D02233DB6C0047205D /* NSControlComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C058CF2233DB6C0047205D /* NSControlComponent.swift */; };
-		D1C058D5223532BD0047205D /* UIControlComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C058D12233DB850047205D /* UIControlComponent.swift */; };
-		D1C058D9223533440047205D /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C058D6223533250047205D /* CollectionView.swift */; };
-		D1C058DB2235335F0047205D /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C058DA2235335F0047205D /* CollectionView.swift */; };
-		D1C058DE2235337A0047205D /* CollectionViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C058DC223533760047205D /* CollectionViewBox.swift */; };
-		D1C058E02235349F0047205D /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C058DF2235349F0047205D /* ContainerViewController.swift */; };
-		D1F1FACB22353A80000CFAF4 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F1FAC822353A80000CFAF4 /* StackView.swift */; };
-		D1F1FACC22353A80000CFAF4 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F1FAC922353A80000CFAF4 /* View.swift */; };
-		D1F1FACD22353A80000CFAF4 /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F1FACA22353A80000CFAF4 /* ScrollView.swift */; };
-		D1F1FACF22353D39000CFAF4 /* LineBreakMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F1FACE22353D39000CFAF4 /* LineBreakMode.swift */; };
-		OBJ_169 /* AnyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* AnyEquatable.swift */; };
-		OBJ_170 /* AnyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* AnyNode.swift */; };
-		OBJ_171 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Components.swift */; };
-		OBJ_172 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* Alert.swift */; };
-		OBJ_173 /* Animated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* Animated.swift */; };
-		OBJ_174 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* Button.swift */; };
-		OBJ_176 /* DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* DatePicker.swift */; };
-		OBJ_177 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* ImageView.swift */; };
-		OBJ_178 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* Label.swift */; };
-		OBJ_179 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* ListView.swift */; };
-		OBJ_180 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* NavigationController.swift */; };
-		OBJ_181 /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* ScrollView.swift */; };
-		OBJ_182 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* SegmentedControl.swift */; };
-		OBJ_183 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* Slider.swift */; };
-		OBJ_184 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* StackView.swift */; };
-		OBJ_185 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* Stepper.swift */; };
-		OBJ_186 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* Switch.swift */; };
-		OBJ_187 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* TextField.swift */; };
-		OBJ_188 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* View.swift */; };
-		OBJ_189 /* ModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* ModalPresenter.swift */; };
-		OBJ_190 /* NavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* NavigationItem.swift */; };
-		OBJ_191 /* NavigationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* NavigationPresenter.swift */; };
-		OBJ_192 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* Router.swift */; };
-		OBJ_193 /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* TabItem.swift */; };
-		OBJ_194 /* TabPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* TabPresenter.swift */; };
-		OBJ_195 /* Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* Accessibility.swift */; };
-		OBJ_196 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_40 /* Color.swift */; };
-		OBJ_197 /* Bottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* Bottom.swift */; };
-		OBJ_198 /* Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* Center.swift */; };
-		OBJ_199 /* CenterX.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_44 /* CenterX.swift */; };
-		OBJ_200 /* CenterY.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_45 /* CenterY.swift */; };
-		OBJ_201 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_46 /* Constraint.swift */; };
-		OBJ_202 /* Edges.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_47 /* Edges.swift */; };
-		OBJ_203 /* FirstBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* FirstBaseline.swift */; };
-		OBJ_204 /* Height.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* Height.swift */; };
-		OBJ_205 /* LastBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* LastBaseline.swift */; };
-		OBJ_206 /* Leading.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_51 /* Leading.swift */; };
-		OBJ_207 /* Left.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_52 /* Left.swift */; };
-		OBJ_208 /* Right.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_53 /* Right.swift */; };
-		OBJ_209 /* SizeConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_54 /* SizeConstraint.swift */; };
-		OBJ_210 /* Top.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* Top.swift */; };
-		OBJ_211 /* Trailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_56 /* Trailing.swift */; };
-		OBJ_212 /* Width.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_57 /* Width.swift */; };
-		OBJ_213 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_58 /* Event.swift */; };
-		OBJ_214 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_59 /* Image.swift */; };
-		OBJ_215 /* Insets.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_60 /* Insets.swift */; };
-		OBJ_216 /* LineBreakMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_61 /* LineBreakMode.swift */; };
-		OBJ_217 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_62 /* Rectangle.swift */; };
-		OBJ_218 /* Second.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_63 /* Second.swift */; };
-		OBJ_219 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_64 /* Style.swift */; };
-		OBJ_220 /* TextAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_65 /* TextAlignment.swift */; };
-		OBJ_221 /* Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_66 /* Default.swift */; };
-		OBJ_222 /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_68 /* Effect.swift */; };
-		OBJ_223 /* Hooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_69 /* Hooks.swift */; };
-		OBJ_224 /* Ref.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_70 /* Ref.swift */; };
-		OBJ_225 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_71 /* State.swift */; };
-		OBJ_226 /* MountedComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_73 /* MountedComponent.swift */; };
-		OBJ_227 /* MountedCompositeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_74 /* MountedCompositeComponent.swift */; };
-		OBJ_228 /* MountedHostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_75 /* MountedHostComponent.swift */; };
-		OBJ_229 /* MountedNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_76 /* MountedNull.swift */; };
-		OBJ_230 /* Null.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_77 /* Null.swift */; };
-		OBJ_231 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_78 /* Renderer.swift */; };
-		OBJ_232 /* StackReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_79 /* StackReconciler.swift */; };
-		OBJ_233 /* Target.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_80 /* Target.swift */; };
-		OBJ_234 /* Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_81 /* Unique.swift */; };
-		OBJ_241 /* AppKitRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_147 /* AppKitRenderer.swift */; };
-		OBJ_243 /* Tokamak.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::Tokamak::Product" /* Tokamak.framework */; };
-		OBJ_250 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
-		OBJ_262 /* TestRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_144 /* TestRenderer.swift */; };
-		OBJ_263 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_145 /* TestView.swift */; };
-		OBJ_265 /* Tokamak.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::Tokamak::Product" /* Tokamak.framework */; };
-		OBJ_271 /* ConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_150 /* ConstraintTests.swift */; };
-		OBJ_272 /* HooksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_151 /* HooksTests.swift */; };
-		OBJ_273 /* ReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_152 /* ReconcilerTests.swift */; };
-		OBJ_274 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_153 /* XCTestManifests.swift */; };
-		OBJ_276 /* TokamakTestRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::TokamakTestRenderer::Product" /* TokamakTestRenderer.framework */; };
-		OBJ_277 /* Tokamak.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::Tokamak::Product" /* Tokamak.framework */; };
-		OBJ_286 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_85 /* ContainerViewController.swift */; };
-		OBJ_287 /* ControlBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_86 /* ControlBox.swift */; };
-		OBJ_288 /* TableViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_87 /* TableViewBox.swift */; };
-		OBJ_289 /* ValueControlBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_88 /* ValueControlBox.swift */; };
-		OBJ_290 /* ViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_89 /* ViewBox.swift */; };
-		OBJ_291 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_90 /* ViewControllerBox.swift */; };
-		OBJ_294 /* DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_95 /* DatePicker.swift */; };
-		OBJ_295 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_96 /* ImageView.swift */; };
-		OBJ_297 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_98 /* ListView.swift */; };
-		OBJ_298 /* ModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_99 /* ModalPresenter.swift */; };
-		OBJ_299 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_100 /* NavigationController.swift */; };
-		OBJ_300 /* NavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_101 /* NavigationItem.swift */; };
-		OBJ_301 /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_102 /* ScrollView.swift */; };
-		OBJ_302 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_103 /* SegmentedControl.swift */; };
-		OBJ_303 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_104 /* Slider.swift */; };
-		OBJ_304 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_105 /* StackView.swift */; };
-		OBJ_305 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_106 /* Stepper.swift */; };
-		OBJ_306 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_107 /* Switch.swift */; };
-		OBJ_307 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_108 /* TextField.swift */; };
-		OBJ_308 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_109 /* View.swift */; };
-		OBJ_309 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_111 /* Color.swift */; };
-		OBJ_310 /* BaselineConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_113 /* BaselineConstraint.swift */; };
-		OBJ_311 /* Bottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_114 /* Bottom.swift */; };
-		OBJ_312 /* CenterX.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_115 /* CenterX.swift */; };
-		OBJ_313 /* CenterY.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_116 /* CenterY.swift */; };
-		OBJ_314 /* Constrainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_117 /* Constrainable.swift */; };
-		OBJ_315 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_118 /* Constraint.swift */; };
-		OBJ_316 /* FirstBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_119 /* FirstBaseline.swift */; };
-		OBJ_317 /* Height.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_120 /* Height.swift */; };
-		OBJ_318 /* LastBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_121 /* LastBaseline.swift */; };
-		OBJ_319 /* Leading.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_122 /* Leading.swift */; };
-		OBJ_320 /* Left.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_123 /* Left.swift */; };
-		OBJ_321 /* OwnConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_124 /* OwnConstraint.swift */; };
-		OBJ_322 /* Right.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_125 /* Right.swift */; };
-		OBJ_323 /* Top.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_126 /* Top.swift */; };
-		OBJ_324 /* Trailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_127 /* Trailing.swift */; };
-		OBJ_325 /* Width.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_128 /* Width.swift */; };
-		OBJ_326 /* XAxisConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_129 /* XAxisConstraint.swift */; };
-		OBJ_327 /* YAxisConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_130 /* YAxisConstraint.swift */; };
-		OBJ_328 /* ContentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_131 /* ContentMode.swift */; };
-		OBJ_329 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_132 /* Event.swift */; };
-		OBJ_330 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_133 /* Image.swift */; };
-		OBJ_331 /* LineBreakMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_134 /* LineBreakMode.swift */; };
-		OBJ_332 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_135 /* Rectangle.swift */; };
-		OBJ_334 /* UIHostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_138 /* UIHostComponent.swift */; };
-		OBJ_335 /* UIValueComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_139 /* UIValueComponent.swift */; };
-		OBJ_337 /* TokamakViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_141 /* TokamakViewController.swift */; };
-		OBJ_338 /* UIKitRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_142 /* UIKitRenderer.swift */; };
-		OBJ_340 /* Tokamak.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::Tokamak::Product" /* Tokamak.framework */; };
+		D15E04332235829000BB0571 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E04322235829000BB0571 /* Rectangle.swift */; };
+		D15E0447223582FD00BB0571 /* FirstBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0435223582EE00BB0571 /* FirstBaseline.swift */; };
+		D15E0448223582FD00BB0571 /* CenterY.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0436223582EE00BB0571 /* CenterY.swift */; };
+		D15E0449223582FD00BB0571 /* Width.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0437223582EE00BB0571 /* Width.swift */; };
+		D15E044A223582FD00BB0571 /* Top.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0438223582EE00BB0571 /* Top.swift */; };
+		D15E044B223582FD00BB0571 /* Bottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0439223582EE00BB0571 /* Bottom.swift */; };
+		D15E044C223582FD00BB0571 /* Trailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E043A223582EE00BB0571 /* Trailing.swift */; };
+		D15E044D223582FD00BB0571 /* CenterX.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E043B223582EE00BB0571 /* CenterX.swift */; };
+		D15E044E223582FD00BB0571 /* LastBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E043C223582EE00BB0571 /* LastBaseline.swift */; };
+		D15E044F223582FD00BB0571 /* Right.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E043D223582EE00BB0571 /* Right.swift */; };
+		D15E0450223582FD00BB0571 /* OwnConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E043E223582EE00BB0571 /* OwnConstraint.swift */; };
+		D15E0451223582FD00BB0571 /* BaselineConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E043F223582EE00BB0571 /* BaselineConstraint.swift */; };
+		D15E0452223582FD00BB0571 /* Leading.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0440223582EE00BB0571 /* Leading.swift */; };
+		D15E0453223582FD00BB0571 /* Height.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0441223582EE00BB0571 /* Height.swift */; };
+		D15E0454223582FD00BB0571 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0442223582EE00BB0571 /* Constraint.swift */; };
+		D15E0455223582FD00BB0571 /* Constrainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0443223582EE00BB0571 /* Constrainable.swift */; };
+		D15E0456223582FD00BB0571 /* Left.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0444223582EE00BB0571 /* Left.swift */; };
+		D15E0457223582FD00BB0571 /* XAxisConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0445223582EE00BB0571 /* XAxisConstraint.swift */; };
+		D15E0458223582FD00BB0571 /* YAxisConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0446223582EE00BB0571 /* YAxisConstraint.swift */; };
+		OBJ_193 /* AnyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* AnyEquatable.swift */; };
+		OBJ_194 /* AnyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* AnyNode.swift */; };
+		OBJ_195 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Components.swift */; };
+		OBJ_196 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* Alert.swift */; };
+		OBJ_197 /* Animated.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* Animated.swift */; };
+		OBJ_198 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* Button.swift */; };
+		OBJ_199 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* CollectionView.swift */; };
+		OBJ_200 /* DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* DatePicker.swift */; };
+		OBJ_201 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* ImageView.swift */; };
+		OBJ_202 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* Label.swift */; };
+		OBJ_203 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* ListView.swift */; };
+		OBJ_204 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* NavigationController.swift */; };
+		OBJ_205 /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* ScrollView.swift */; };
+		OBJ_206 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* SegmentedControl.swift */; };
+		OBJ_207 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* Slider.swift */; };
+		OBJ_208 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* StackView.swift */; };
+		OBJ_209 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* Stepper.swift */; };
+		OBJ_210 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* Switch.swift */; };
+		OBJ_211 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* TextField.swift */; };
+		OBJ_212 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* View.swift */; };
+		OBJ_213 /* ModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* ModalPresenter.swift */; };
+		OBJ_214 /* NavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* NavigationItem.swift */; };
+		OBJ_215 /* NavigationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* NavigationPresenter.swift */; };
+		OBJ_216 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* Router.swift */; };
+		OBJ_217 /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* TabItem.swift */; };
+		OBJ_218 /* TabPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* TabPresenter.swift */; };
+		OBJ_219 /* Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* Accessibility.swift */; };
+		OBJ_220 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_40 /* Color.swift */; };
+		OBJ_221 /* Bottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* Bottom.swift */; };
+		OBJ_222 /* Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* Center.swift */; };
+		OBJ_223 /* CenterX.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_44 /* CenterX.swift */; };
+		OBJ_224 /* CenterY.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_45 /* CenterY.swift */; };
+		OBJ_225 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_46 /* Constraint.swift */; };
+		OBJ_226 /* Edges.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_47 /* Edges.swift */; };
+		OBJ_227 /* FirstBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* FirstBaseline.swift */; };
+		OBJ_228 /* Height.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* Height.swift */; };
+		OBJ_229 /* LastBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* LastBaseline.swift */; };
+		OBJ_230 /* Leading.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_51 /* Leading.swift */; };
+		OBJ_231 /* Left.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_52 /* Left.swift */; };
+		OBJ_232 /* Right.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_53 /* Right.swift */; };
+		OBJ_233 /* SizeConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_54 /* SizeConstraint.swift */; };
+		OBJ_234 /* Top.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* Top.swift */; };
+		OBJ_235 /* Trailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_56 /* Trailing.swift */; };
+		OBJ_236 /* Width.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_57 /* Width.swift */; };
+		OBJ_237 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_58 /* Event.swift */; };
+		OBJ_238 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_59 /* Image.swift */; };
+		OBJ_239 /* Insets.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_60 /* Insets.swift */; };
+		OBJ_240 /* LineBreakMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_61 /* LineBreakMode.swift */; };
+		OBJ_241 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_62 /* Rectangle.swift */; };
+		OBJ_242 /* Second.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_63 /* Second.swift */; };
+		OBJ_243 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_64 /* Style.swift */; };
+		OBJ_244 /* TextAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_65 /* TextAlignment.swift */; };
+		OBJ_245 /* Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_66 /* Default.swift */; };
+		OBJ_246 /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_68 /* Effect.swift */; };
+		OBJ_247 /* Hooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_69 /* Hooks.swift */; };
+		OBJ_248 /* Ref.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_70 /* Ref.swift */; };
+		OBJ_249 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_71 /* State.swift */; };
+		OBJ_250 /* MountedComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_73 /* MountedComponent.swift */; };
+		OBJ_251 /* MountedCompositeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_74 /* MountedCompositeComponent.swift */; };
+		OBJ_252 /* MountedHostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_75 /* MountedHostComponent.swift */; };
+		OBJ_253 /* MountedNull.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_76 /* MountedNull.swift */; };
+		OBJ_254 /* Null.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_77 /* Null.swift */; };
+		OBJ_255 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_78 /* Renderer.swift */; };
+		OBJ_256 /* StackReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_79 /* StackReconciler.swift */; };
+		OBJ_257 /* Target.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_80 /* Target.swift */; };
+		OBJ_258 /* Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_81 /* Unique.swift */; };
+		OBJ_265 /* AppKitRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_149 /* AppKitRenderer.swift */; };
+		OBJ_266 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_151 /* ContainerViewController.swift */; };
+		OBJ_267 /* ControlBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_152 /* ControlBox.swift */; };
+		OBJ_268 /* ViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_153 /* ViewBox.swift */; };
+		OBJ_269 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_154 /* ViewControllerBox.swift */; };
+		OBJ_270 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_157 /* Button.swift */; };
+		OBJ_271 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_158 /* Label.swift */; };
+		OBJ_272 /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_159 /* ScrollView.swift */; };
+		OBJ_273 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_160 /* StackView.swift */; };
+		OBJ_274 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_161 /* View.swift */; };
+		OBJ_275 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_163 /* Color.swift */; };
+		OBJ_276 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_164 /* Event.swift */; };
+		OBJ_277 /* LineBreakMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_165 /* LineBreakMode.swift */; };
+		OBJ_278 /* NSControlComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_167 /* NSControlComponent.swift */; };
+		OBJ_279 /* NSHostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_168 /* NSHostComponent.swift */; };
+		OBJ_280 /* NSViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_169 /* NSViewComponent.swift */; };
+		OBJ_281 /* TokamakViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_170 /* TokamakViewController.swift */; };
+		OBJ_283 /* Tokamak.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::Tokamak::Product" /* Tokamak.framework */; };
+		OBJ_290 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_147 /* Counter.swift */; };
+		OBJ_292 /* Tokamak.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::Tokamak::Product" /* Tokamak.framework */; };
+		OBJ_299 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
+		OBJ_311 /* TestRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_144 /* TestRenderer.swift */; };
+		OBJ_312 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_145 /* TestView.swift */; };
+		OBJ_314 /* Tokamak.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::Tokamak::Product" /* Tokamak.framework */; };
+		OBJ_320 /* ConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_173 /* ConstraintTests.swift */; };
+		OBJ_321 /* HooksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_174 /* HooksTests.swift */; };
+		OBJ_322 /* ReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_175 /* ReconcilerTests.swift */; };
+		OBJ_323 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_176 /* XCTestManifests.swift */; };
+		OBJ_325 /* TokamakTestRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::TokamakTestRenderer::Product" /* TokamakTestRenderer.framework */; };
+		OBJ_326 /* Tokamak.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::Tokamak::Product" /* Tokamak.framework */; };
+		OBJ_334 /* CollectionViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_84 /* CollectionViewBox.swift */; };
+		OBJ_335 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_85 /* ContainerViewController.swift */; };
+		OBJ_336 /* ControlBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_86 /* ControlBox.swift */; };
+		OBJ_337 /* TableViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_87 /* TableViewBox.swift */; };
+		OBJ_338 /* ValueControlBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_88 /* ValueControlBox.swift */; };
+		OBJ_339 /* ViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_89 /* ViewBox.swift */; };
+		OBJ_340 /* ViewControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_90 /* ViewControllerBox.swift */; };
+		OBJ_341 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_93 /* Button.swift */; };
+		OBJ_342 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_94 /* CollectionView.swift */; };
+		OBJ_343 /* DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_95 /* DatePicker.swift */; };
+		OBJ_344 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_96 /* ImageView.swift */; };
+		OBJ_345 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_97 /* Label.swift */; };
+		OBJ_346 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_98 /* ListView.swift */; };
+		OBJ_347 /* ModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_99 /* ModalPresenter.swift */; };
+		OBJ_348 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_100 /* NavigationController.swift */; };
+		OBJ_349 /* NavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_101 /* NavigationItem.swift */; };
+		OBJ_350 /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_102 /* ScrollView.swift */; };
+		OBJ_351 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_103 /* SegmentedControl.swift */; };
+		OBJ_352 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_104 /* Slider.swift */; };
+		OBJ_353 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_105 /* StackView.swift */; };
+		OBJ_354 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_106 /* Stepper.swift */; };
+		OBJ_355 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_107 /* Switch.swift */; };
+		OBJ_356 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_108 /* TextField.swift */; };
+		OBJ_357 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_109 /* View.swift */; };
+		OBJ_358 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_111 /* Color.swift */; };
+		OBJ_359 /* BaselineConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_113 /* BaselineConstraint.swift */; };
+		OBJ_360 /* Bottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_114 /* Bottom.swift */; };
+		OBJ_361 /* CenterX.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_115 /* CenterX.swift */; };
+		OBJ_362 /* CenterY.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_116 /* CenterY.swift */; };
+		OBJ_363 /* Constrainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_117 /* Constrainable.swift */; };
+		OBJ_364 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_118 /* Constraint.swift */; };
+		OBJ_365 /* FirstBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_119 /* FirstBaseline.swift */; };
+		OBJ_366 /* Height.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_120 /* Height.swift */; };
+		OBJ_367 /* LastBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_121 /* LastBaseline.swift */; };
+		OBJ_368 /* Leading.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_122 /* Leading.swift */; };
+		OBJ_369 /* Left.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_123 /* Left.swift */; };
+		OBJ_370 /* OwnConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_124 /* OwnConstraint.swift */; };
+		OBJ_371 /* Right.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_125 /* Right.swift */; };
+		OBJ_372 /* Top.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_126 /* Top.swift */; };
+		OBJ_373 /* Trailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_127 /* Trailing.swift */; };
+		OBJ_374 /* Width.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_128 /* Width.swift */; };
+		OBJ_375 /* XAxisConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_129 /* XAxisConstraint.swift */; };
+		OBJ_376 /* YAxisConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_130 /* YAxisConstraint.swift */; };
+		OBJ_377 /* ContentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_131 /* ContentMode.swift */; };
+		OBJ_378 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_132 /* Event.swift */; };
+		OBJ_379 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_133 /* Image.swift */; };
+		OBJ_380 /* LineBreakMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_134 /* LineBreakMode.swift */; };
+		OBJ_381 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_135 /* Rectangle.swift */; };
+		OBJ_382 /* UIControlComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_137 /* UIControlComponent.swift */; };
+		OBJ_383 /* UIHostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_138 /* UIHostComponent.swift */; };
+		OBJ_384 /* UIValueComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_139 /* UIValueComponent.swift */; };
+		OBJ_385 /* UIViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_140 /* UIViewComponent.swift */; };
+		OBJ_386 /* TokamakViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_141 /* TokamakViewController.swift */; };
+		OBJ_387 /* UIKitRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_142 /* UIKitRenderer.swift */; };
+		OBJ_389 /* Tokamak.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::Tokamak::Product" /* Tokamak.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D1BA4DC222329132003D90A7 /* PBXContainerItemProxy */ = {
+		D15E04262235781100BB0571 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Tokamak::Tokamak";
 			remoteInfo = Tokamak;
 		};
-		D1BA4DC322329132003D90A7 /* PBXContainerItemProxy */ = {
+		D15E04272235781100BB0571 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Tokamak::Tokamak";
 			remoteInfo = Tokamak;
 		};
-		D1BA4DC422329132003D90A7 /* PBXContainerItemProxy */ = {
+		D15E04282235781100BB0571 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Tokamak::Tokamak";
 			remoteInfo = Tokamak;
 		};
-		D1BA4DC522329132003D90A7 /* PBXContainerItemProxy */ = {
+		D15E04292235781100BB0571 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "Tokamak::Tokamak";
+			remoteInfo = Tokamak;
+		};
+		D15E042A2235781100BB0571 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Tokamak::TokamakTestRenderer";
 			remoteInfo = TokamakTestRenderer;
 		};
-		D1BA4DC622329132003D90A7 /* PBXContainerItemProxy */ = {
+		D15E042B2235781100BB0571 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Tokamak::Tokamak";
 			remoteInfo = Tokamak;
 		};
-		D1BA4DC722329134003D90A7 /* PBXContainerItemProxy */ = {
+		D15E042C2235781300BB0571 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
@@ -218,27 +246,29 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D1BA4DCA22329233003D90A7 /* NSHostComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSHostComponent.swift; sourceTree = "<group>"; };
-		D1BA4DCD22329344003D90A7 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
-		D1BA4DCE22329358003D90A7 /* ViewBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewBox.swift; sourceTree = "<group>"; };
-		D1BA4DD322329899003D90A7 /* ControlBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBox.swift; sourceTree = "<group>"; };
-		D1BA4DD6223298FC003D90A7 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
-		D1BA4DD7223298FC003D90A7 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
-		D1C058BD2233D9BE0047205D /* TokamakViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokamakViewController.swift; sourceTree = "<group>"; };
-		D1C058C22233DA5F0047205D /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
-		D1C058C32233DA5F0047205D /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
-		D1C058C92233DB1C0047205D /* UIViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewComponent.swift; sourceTree = "<group>"; };
-		D1C058CF2233DB6C0047205D /* NSControlComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NSControlComponent.swift; path = Sources/TokamakAppKit/Components/Protocols/NSControlComponent.swift; sourceTree = SOURCE_ROOT; };
-		D1C058D12233DB850047205D /* UIControlComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControlComponent.swift; sourceTree = "<group>"; };
-		D1C058D6223533250047205D /* CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
-		D1C058DA2235335F0047205D /* CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
-		D1C058DC223533760047205D /* CollectionViewBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewBox.swift; sourceTree = "<group>"; };
-		D1C058DF2235349F0047205D /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
-		D1F1FAC822353A80000CFAF4 /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
-		D1F1FAC922353A80000CFAF4 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
-		D1F1FACA22353A80000CFAF4 /* ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollView.swift; sourceTree = "<group>"; };
-		D1F1FACE22353D39000CFAF4 /* LineBreakMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineBreakMode.swift; sourceTree = "<group>"; };
-		D1F1FAD0223553A2000CFAF4 /* IDETemplateMacros.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = IDETemplateMacros.plist; sourceTree = SOURCE_ROOT; };
+		D15E042D223578BC00BB0571 /* TokamakUIKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokamakUIKit.podspec; sourceTree = "<group>"; };
+		D15E042E223578BC00BB0571 /* Tokamak.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Tokamak.podspec; sourceTree = "<group>"; };
+		D15E042F223578BC00BB0571 /* TokamakAppKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokamakAppKit.podspec; sourceTree = "<group>"; };
+		D15E0431223578E100BB0571 /* TokamakDemo.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = TokamakDemo.podspec; sourceTree = "<group>"; };
+		D15E04322235829000BB0571 /* Rectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rectangle.swift; sourceTree = "<group>"; };
+		D15E0435223582EE00BB0571 /* FirstBaseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstBaseline.swift; sourceTree = "<group>"; };
+		D15E0436223582EE00BB0571 /* CenterY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterY.swift; sourceTree = "<group>"; };
+		D15E0437223582EE00BB0571 /* Width.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Width.swift; sourceTree = "<group>"; };
+		D15E0438223582EE00BB0571 /* Top.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Top.swift; sourceTree = "<group>"; };
+		D15E0439223582EE00BB0571 /* Bottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bottom.swift; sourceTree = "<group>"; };
+		D15E043A223582EE00BB0571 /* Trailing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trailing.swift; sourceTree = "<group>"; };
+		D15E043B223582EE00BB0571 /* CenterX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterX.swift; sourceTree = "<group>"; };
+		D15E043C223582EE00BB0571 /* LastBaseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastBaseline.swift; sourceTree = "<group>"; };
+		D15E043D223582EE00BB0571 /* Right.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Right.swift; sourceTree = "<group>"; };
+		D15E043E223582EE00BB0571 /* OwnConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnConstraint.swift; sourceTree = "<group>"; };
+		D15E043F223582EE00BB0571 /* BaselineConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineConstraint.swift; sourceTree = "<group>"; };
+		D15E0440223582EE00BB0571 /* Leading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leading.swift; sourceTree = "<group>"; };
+		D15E0441223582EE00BB0571 /* Height.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Height.swift; sourceTree = "<group>"; };
+		D15E0442223582EE00BB0571 /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
+		D15E0443223582EE00BB0571 /* Constrainable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constrainable.swift; sourceTree = "<group>"; };
+		D15E0444223582EE00BB0571 /* Left.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Left.swift; sourceTree = "<group>"; };
+		D15E0445223582EE00BB0571 /* XAxisConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XAxisConstraint.swift; sourceTree = "<group>"; };
+		D15E0446223582EE00BB0571 /* YAxisConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YAxisConstraint.swift; sourceTree = "<group>"; };
 		OBJ_10 /* AnyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNode.swift; sourceTree = "<group>"; };
 		OBJ_100 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		OBJ_101 /* NavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItem.swift; sourceTree = "<group>"; };
@@ -275,24 +305,43 @@
 		OBJ_133 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		OBJ_134 /* LineBreakMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineBreakMode.swift; sourceTree = "<group>"; };
 		OBJ_135 /* Rectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rectangle.swift; sourceTree = "<group>"; };
+		OBJ_137 /* UIControlComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControlComponent.swift; sourceTree = "<group>"; };
 		OBJ_138 /* UIHostComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHostComponent.swift; sourceTree = "<group>"; };
 		OBJ_139 /* UIValueComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIValueComponent.swift; sourceTree = "<group>"; };
 		OBJ_14 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
-		OBJ_140 /* NSViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSViewComponent.swift; sourceTree = "<group>"; };
+		OBJ_140 /* UIViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewComponent.swift; sourceTree = "<group>"; };
 		OBJ_141 /* TokamakViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokamakViewController.swift; sourceTree = "<group>"; };
 		OBJ_142 /* UIKitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitRenderer.swift; sourceTree = "<group>"; };
 		OBJ_144 /* TestRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRenderer.swift; sourceTree = "<group>"; };
 		OBJ_145 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
-		OBJ_147 /* AppKitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppKitRenderer.swift; sourceTree = "<group>"; };
+		OBJ_147 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
+		OBJ_149 /* AppKitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppKitRenderer.swift; sourceTree = "<group>"; };
 		OBJ_15 /* Animated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animated.swift; sourceTree = "<group>"; };
-		OBJ_150 /* ConstraintTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintTests.swift; sourceTree = "<group>"; };
-		OBJ_151 /* HooksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HooksTests.swift; sourceTree = "<group>"; };
-		OBJ_152 /* ReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReconcilerTests.swift; sourceTree = "<group>"; };
-		OBJ_153 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
-		OBJ_154 /* Example */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Example; sourceTree = SOURCE_ROOT; };
-		OBJ_157 /* tokamakui.org */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tokamakui.org; sourceTree = SOURCE_ROOT; };
+		OBJ_151 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		OBJ_152 /* ControlBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBox.swift; sourceTree = "<group>"; };
+		OBJ_153 /* ViewBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewBox.swift; sourceTree = "<group>"; };
+		OBJ_154 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
+		OBJ_157 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		OBJ_158 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		OBJ_159 /* ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollView.swift; sourceTree = "<group>"; };
 		OBJ_16 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		OBJ_160 /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
+		OBJ_161 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		OBJ_163 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		OBJ_164 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		OBJ_165 /* LineBreakMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineBreakMode.swift; sourceTree = "<group>"; };
+		OBJ_167 /* NSControlComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSControlComponent.swift; sourceTree = "<group>"; };
+		OBJ_168 /* NSHostComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSHostComponent.swift; sourceTree = "<group>"; };
+		OBJ_169 /* NSViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSViewComponent.swift; sourceTree = "<group>"; };
+		OBJ_17 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
+		OBJ_170 /* TokamakViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokamakViewController.swift; sourceTree = "<group>"; };
+		OBJ_173 /* ConstraintTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintTests.swift; sourceTree = "<group>"; };
+		OBJ_174 /* HooksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HooksTests.swift; sourceTree = "<group>"; };
+		OBJ_175 /* ReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReconcilerTests.swift; sourceTree = "<group>"; };
+		OBJ_176 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
+		OBJ_177 /* Example */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Example; sourceTree = SOURCE_ROOT; };
 		OBJ_18 /* DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker.swift; sourceTree = "<group>"; };
+		OBJ_180 /* tokamakui.org */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tokamakui.org; sourceTree = SOURCE_ROOT; };
 		OBJ_19 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		OBJ_20 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		OBJ_21 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
@@ -352,6 +401,7 @@
 		OBJ_79 /* StackReconciler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackReconciler.swift; sourceTree = "<group>"; };
 		OBJ_80 /* Target.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Target.swift; sourceTree = "<group>"; };
 		OBJ_81 /* Unique.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unique.swift; sourceTree = "<group>"; };
+		OBJ_84 /* CollectionViewBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewBox.swift; sourceTree = "<group>"; };
 		OBJ_85 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		OBJ_86 /* ControlBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBox.swift; sourceTree = "<group>"; };
 		OBJ_87 /* TableViewBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewBox.swift; sourceTree = "<group>"; };
@@ -360,6 +410,7 @@
 		OBJ_9 /* AnyEquatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyEquatable.swift; sourceTree = "<group>"; };
 		OBJ_90 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
 		OBJ_93 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		OBJ_94 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		OBJ_95 /* DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker.swift; sourceTree = "<group>"; };
 		OBJ_96 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		OBJ_97 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
@@ -367,107 +418,87 @@
 		OBJ_99 /* ModalPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPresenter.swift; sourceTree = "<group>"; };
 		"Tokamak::Tokamak::Product" /* Tokamak.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Tokamak.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Tokamak::TokamakAppKit::Product" /* TokamakAppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TokamakAppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"Tokamak::TokamakDemo::Product" /* TokamakDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TokamakDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Tokamak::TokamakTestRenderer::Product" /* TokamakTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TokamakTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Tokamak::TokamakTests::Product" /* TokamakTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = TokamakTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		"Tokamak::TokamakUIKit::Product" /* TokamakUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TokamakUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"Tokamak::TokamakUIKit::Product" /* TokamakUIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TokamakUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		OBJ_235 /* Frameworks */ = {
+		OBJ_259 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_242 /* Frameworks */ = {
+		OBJ_282 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_243 /* Tokamak.framework in Frameworks */,
+				OBJ_283 /* Tokamak.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_264 /* Frameworks */ = {
+		OBJ_291 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_265 /* Tokamak.framework in Frameworks */,
+				OBJ_292 /* Tokamak.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_275 /* Frameworks */ = {
+		OBJ_313 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_276 /* TokamakTestRenderer.framework in Frameworks */,
-				OBJ_277 /* Tokamak.framework in Frameworks */,
+				OBJ_314 /* Tokamak.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_339 /* Frameworks */ = {
+		OBJ_324 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_340 /* Tokamak.framework in Frameworks */,
+				OBJ_325 /* TokamakTestRenderer.framework in Frameworks */,
+				OBJ_326 /* Tokamak.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_388 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_389 /* Tokamak.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D1BA4DC8223291EC003D90A7 /* Components */ = {
+		D15E0434223582EE00BB0571 /* Constraint */ = {
 			isa = PBXGroup;
 			children = (
-				D1C058BF2233DA080047205D /* Host */,
-				D1BA4DD5223298DB003D90A7 /* Props */,
-				D1BA4DC9223291F5003D90A7 /* Protocols */,
+				D15E0435223582EE00BB0571 /* FirstBaseline.swift */,
+				D15E0436223582EE00BB0571 /* CenterY.swift */,
+				D15E0437223582EE00BB0571 /* Width.swift */,
+				D15E0438223582EE00BB0571 /* Top.swift */,
+				D15E0439223582EE00BB0571 /* Bottom.swift */,
+				D15E043A223582EE00BB0571 /* Trailing.swift */,
+				D15E043B223582EE00BB0571 /* CenterX.swift */,
+				D15E043C223582EE00BB0571 /* LastBaseline.swift */,
+				D15E043D223582EE00BB0571 /* Right.swift */,
+				D15E043E223582EE00BB0571 /* OwnConstraint.swift */,
+				D15E043F223582EE00BB0571 /* BaselineConstraint.swift */,
+				D15E0440223582EE00BB0571 /* Leading.swift */,
+				D15E0441223582EE00BB0571 /* Height.swift */,
+				D15E0442223582EE00BB0571 /* Constraint.swift */,
+				D15E0443223582EE00BB0571 /* Constrainable.swift */,
+				D15E0444223582EE00BB0571 /* Left.swift */,
+				D15E0445223582EE00BB0571 /* XAxisConstraint.swift */,
+				D15E0446223582EE00BB0571 /* YAxisConstraint.swift */,
 			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		D1BA4DC9223291F5003D90A7 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				D1C058CF2233DB6C0047205D /* NSControlComponent.swift */,
-				OBJ_140 /* NSViewComponent.swift */,
-				D1BA4DCA22329233003D90A7 /* NSHostComponent.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
-		D1BA4DCC22329338003D90A7 /* Boxes */ = {
-			isa = PBXGroup;
-			children = (
-				D1C058DF2235349F0047205D /* ContainerViewController.swift */,
-				D1BA4DD322329899003D90A7 /* ControlBox.swift */,
-				D1BA4DCE22329358003D90A7 /* ViewBox.swift */,
-				D1BA4DCD22329344003D90A7 /* ViewControllerBox.swift */,
-			);
-			path = Boxes;
-			sourceTree = "<group>";
-		};
-		D1BA4DD5223298DB003D90A7 /* Props */ = {
-			isa = PBXGroup;
-			children = (
-				D1BA4DD7223298FC003D90A7 /* Color.swift */,
-				D1BA4DD6223298FC003D90A7 /* Event.swift */,
-				D1F1FACE22353D39000CFAF4 /* LineBreakMode.swift */,
-				D1F1FAD0223553A2000CFAF4 /* IDETemplateMacros.plist */,
-			);
-			path = Props;
-			sourceTree = "<group>";
-		};
-		D1C058BF2233DA080047205D /* Host */ = {
-			isa = PBXGroup;
-			children = (
-				D1F1FACA22353A80000CFAF4 /* ScrollView.swift */,
-				D1F1FAC822353A80000CFAF4 /* StackView.swift */,
-				D1F1FAC922353A80000CFAF4 /* View.swift */,
-				OBJ_93 /* Button.swift */,
-				OBJ_97 /* Label.swift */,
-			);
-			path = Host;
+			path = Constraint;
 			sourceTree = "<group>";
 		};
 		OBJ_110 /* Props */ = {
@@ -525,7 +556,7 @@
 				OBJ_14 /* Alert.swift */,
 				OBJ_15 /* Animated.swift */,
 				OBJ_16 /* Button.swift */,
-				D1C058DA2235335F0047205D /* CollectionView.swift */,
+				OBJ_17 /* CollectionView.swift */,
 				OBJ_18 /* DatePicker.swift */,
 				OBJ_19 /* ImageView.swift */,
 				OBJ_20 /* Label.swift */,
@@ -546,10 +577,10 @@
 		OBJ_136 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				D1C058D12233DB850047205D /* UIControlComponent.swift */,
-				D1C058C92233DB1C0047205D /* UIViewComponent.swift */,
+				OBJ_137 /* UIControlComponent.swift */,
 				OBJ_138 /* UIHostComponent.swift */,
 				OBJ_139 /* UIValueComponent.swift */,
+				OBJ_140 /* UIViewComponent.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -564,45 +595,110 @@
 			path = Sources/TokamakTestRenderer;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_146 /* TokamakAppKit */ = {
+		OBJ_146 /* TokamakDemo */ = {
 			isa = PBXGroup;
 			children = (
-				D1BA4DCC22329338003D90A7 /* Boxes */,
-				D1BA4DC8223291EC003D90A7 /* Components */,
-				OBJ_147 /* AppKitRenderer.swift */,
-				D1C058BD2233D9BE0047205D /* TokamakViewController.swift */,
+				OBJ_147 /* Counter.swift */,
+			);
+			name = TokamakDemo;
+			path = Sources/TokamakDemo;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_148 /* TokamakAppKit */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_149 /* AppKitRenderer.swift */,
+				OBJ_150 /* Boxes */,
+				OBJ_155 /* Components */,
+				OBJ_170 /* TokamakViewController.swift */,
 			);
 			name = TokamakAppKit;
 			path = Sources/TokamakAppKit;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_148 /* Tests */ = {
+		OBJ_150 /* Boxes */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_149 /* TokamakTests */,
+				OBJ_151 /* ContainerViewController.swift */,
+				OBJ_152 /* ControlBox.swift */,
+				OBJ_153 /* ViewBox.swift */,
+				OBJ_154 /* ViewControllerBox.swift */,
+			);
+			path = Boxes;
+			sourceTree = "<group>";
+		};
+		OBJ_155 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_156 /* Host */,
+				OBJ_162 /* Props */,
+				OBJ_166 /* Protocols */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		OBJ_156 /* Host */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_157 /* Button.swift */,
+				OBJ_158 /* Label.swift */,
+				OBJ_159 /* ScrollView.swift */,
+				OBJ_160 /* StackView.swift */,
+				OBJ_161 /* View.swift */,
+			);
+			path = Host;
+			sourceTree = "<group>";
+		};
+		OBJ_162 /* Props */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_163 /* Color.swift */,
+				D15E0434223582EE00BB0571 /* Constraint */,
+				OBJ_164 /* Event.swift */,
+				OBJ_165 /* LineBreakMode.swift */,
+				D15E04322235829000BB0571 /* Rectangle.swift */,
+			);
+			path = Props;
+			sourceTree = "<group>";
+		};
+		OBJ_166 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_167 /* NSControlComponent.swift */,
+				OBJ_168 /* NSHostComponent.swift */,
+				OBJ_169 /* NSViewComponent.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		OBJ_171 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_172 /* TokamakTests */,
 			);
 			name = Tests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_149 /* TokamakTests */ = {
+		OBJ_172 /* TokamakTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_150 /* ConstraintTests.swift */,
-				OBJ_151 /* HooksTests.swift */,
-				OBJ_152 /* ReconcilerTests.swift */,
-				OBJ_153 /* XCTestManifests.swift */,
+				OBJ_173 /* ConstraintTests.swift */,
+				OBJ_174 /* HooksTests.swift */,
+				OBJ_175 /* ReconcilerTests.swift */,
+				OBJ_176 /* XCTestManifests.swift */,
 			);
 			name = TokamakTests;
 			path = Tests/TokamakTests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_158 /* Products */ = {
+		OBJ_181 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				"Tokamak::TokamakAppKit::Product" /* TokamakAppKit.framework */,
-				"Tokamak::TokamakTestRenderer::Product" /* TokamakTestRenderer.framework */,
-				"Tokamak::TokamakTests::Product" /* TokamakTests.xctest */,
 				"Tokamak::TokamakUIKit::Product" /* TokamakUIKit.framework */,
+				"Tokamak::TokamakDemo::Product" /* TokamakDemo.framework */,
+				"Tokamak::TokamakTests::Product" /* TokamakTests.xctest */,
+				"Tokamak::TokamakTestRenderer::Product" /* TokamakTestRenderer.framework */,
+				"Tokamak::TokamakAppKit::Product" /* TokamakAppKit.framework */,
 				"Tokamak::Tokamak::Product" /* Tokamak.framework */,
 			);
 			name = Products;
@@ -666,11 +762,15 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
+				D15E042E223578BC00BB0571 /* Tokamak.podspec */,
+				D15E0431223578E100BB0571 /* TokamakDemo.podspec */,
+				D15E042F223578BC00BB0571 /* TokamakAppKit.podspec */,
+				D15E042D223578BC00BB0571 /* TokamakUIKit.podspec */,
 				OBJ_7 /* Sources */,
-				OBJ_148 /* Tests */,
-				OBJ_154 /* Example */,
-				OBJ_157 /* tokamakui.org */,
-				OBJ_158 /* Products */,
+				OBJ_171 /* Tests */,
+				OBJ_177 /* Example */,
+				OBJ_180 /* tokamakui.org */,
+				OBJ_181 /* Products */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -691,9 +791,10 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_8 /* Tokamak */,
+				OBJ_146 /* TokamakDemo */,
+				OBJ_148 /* TokamakAppKit */,
 				OBJ_82 /* TokamakUIKit */,
 				OBJ_143 /* TokamakTestRenderer */,
-				OBJ_146 /* TokamakAppKit */,
 			);
 			name = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -744,7 +845,7 @@
 		OBJ_83 /* Boxes */ = {
 			isa = PBXGroup;
 			children = (
-				D1C058DC223533760047205D /* CollectionViewBox.swift */,
+				OBJ_84 /* CollectionViewBox.swift */,
 				OBJ_85 /* ContainerViewController.swift */,
 				OBJ_86 /* ControlBox.swift */,
 				OBJ_87 /* TableViewBox.swift */,
@@ -768,11 +869,11 @@
 		OBJ_92 /* Host */ = {
 			isa = PBXGroup;
 			children = (
-				D1C058C32233DA5F0047205D /* Button.swift */,
-				D1C058D6223533250047205D /* CollectionView.swift */,
+				OBJ_93 /* Button.swift */,
+				OBJ_94 /* CollectionView.swift */,
 				OBJ_95 /* DatePicker.swift */,
 				OBJ_96 /* ImageView.swift */,
-				D1C058C22233DA5F0047205D /* Label.swift */,
+				OBJ_97 /* Label.swift */,
 				OBJ_98 /* ListView.swift */,
 				OBJ_99 /* ModalPresenter.swift */,
 				OBJ_100 /* NavigationController.swift */,
@@ -794,9 +895,9 @@
 /* Begin PBXNativeTarget section */
 		"Tokamak::SwiftPMPackageDescription" /* TokamakPackageDescription */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_246 /* Build configuration list for PBXNativeTarget "TokamakPackageDescription" */;
+			buildConfigurationList = OBJ_295 /* Build configuration list for PBXNativeTarget "TokamakPackageDescription" */;
 			buildPhases = (
-				OBJ_249 /* Sources */,
+				OBJ_298 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -808,10 +909,10 @@
 		};
 		"Tokamak::Tokamak" /* Tokamak */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_165 /* Build configuration list for PBXNativeTarget "Tokamak" */;
+			buildConfigurationList = OBJ_189 /* Build configuration list for PBXNativeTarget "Tokamak" */;
 			buildPhases = (
-				OBJ_168 /* Sources */,
-				OBJ_235 /* Frameworks */,
+				OBJ_192 /* Sources */,
+				OBJ_259 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -824,32 +925,49 @@
 		};
 		"Tokamak::TokamakAppKit" /* TokamakAppKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_237 /* Build configuration list for PBXNativeTarget "TokamakAppKit" */;
+			buildConfigurationList = OBJ_261 /* Build configuration list for PBXNativeTarget "TokamakAppKit" */;
 			buildPhases = (
-				OBJ_240 /* Sources */,
-				OBJ_242 /* Frameworks */,
+				OBJ_264 /* Sources */,
+				OBJ_282 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_244 /* PBXTargetDependency */,
+				OBJ_284 /* PBXTargetDependency */,
 			);
 			name = TokamakAppKit;
 			productName = TokamakAppKit;
 			productReference = "Tokamak::TokamakAppKit::Product" /* TokamakAppKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		"Tokamak::TokamakTestRenderer" /* TokamakTestRenderer */ = {
+		"Tokamak::TokamakDemo" /* TokamakDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_258 /* Build configuration list for PBXNativeTarget "TokamakTestRenderer" */;
+			buildConfigurationList = OBJ_286 /* Build configuration list for PBXNativeTarget "TokamakDemo" */;
 			buildPhases = (
-				OBJ_261 /* Sources */,
-				OBJ_264 /* Frameworks */,
+				OBJ_289 /* Sources */,
+				OBJ_291 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_266 /* PBXTargetDependency */,
+				OBJ_293 /* PBXTargetDependency */,
+			);
+			name = TokamakDemo;
+			productName = TokamakDemo;
+			productReference = "Tokamak::TokamakDemo::Product" /* TokamakDemo.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"Tokamak::TokamakTestRenderer" /* TokamakTestRenderer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_307 /* Build configuration list for PBXNativeTarget "TokamakTestRenderer" */;
+			buildPhases = (
+				OBJ_310 /* Sources */,
+				OBJ_313 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_315 /* PBXTargetDependency */,
 			);
 			name = TokamakTestRenderer;
 			productName = TokamakTestRenderer;
@@ -858,16 +976,16 @@
 		};
 		"Tokamak::TokamakTests" /* TokamakTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_267 /* Build configuration list for PBXNativeTarget "TokamakTests" */;
+			buildConfigurationList = OBJ_316 /* Build configuration list for PBXNativeTarget "TokamakTests" */;
 			buildPhases = (
-				OBJ_270 /* Sources */,
-				OBJ_275 /* Frameworks */,
+				OBJ_319 /* Sources */,
+				OBJ_324 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_278 /* PBXTargetDependency */,
-				OBJ_279 /* PBXTargetDependency */,
+				OBJ_327 /* PBXTargetDependency */,
+				OBJ_328 /* PBXTargetDependency */,
 			);
 			name = TokamakTests;
 			productName = TokamakTests;
@@ -876,15 +994,15 @@
 		};
 		"Tokamak::TokamakUIKit" /* TokamakUIKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_281 /* Build configuration list for PBXNativeTarget "TokamakUIKit" */;
+			buildConfigurationList = OBJ_330 /* Build configuration list for PBXNativeTarget "TokamakUIKit" */;
 			buildPhases = (
-				OBJ_284 /* Sources */,
-				OBJ_339 /* Frameworks */,
+				OBJ_333 /* Sources */,
+				OBJ_388 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_341 /* PBXTargetDependency */,
+				OBJ_390 /* PBXTargetDependency */,
 			);
 			name = TokamakUIKit;
 			productName = TokamakUIKit;
@@ -900,252 +1018,285 @@
 				LastUpgradeCheck = 9999;
 			};
 			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "Tokamak" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
 			mainGroup = OBJ_5;
-			productRefGroup = OBJ_158 /* Products */;
+			productRefGroup = OBJ_181 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				"Tokamak::Tokamak" /* Tokamak */,
-				"Tokamak::TokamakUIKit" /* TokamakUIKit */,
 				"Tokamak::TokamakAppKit" /* TokamakAppKit */,
+				"Tokamak::TokamakDemo" /* TokamakDemo */,
 				"Tokamak::SwiftPMPackageDescription" /* TokamakPackageDescription */,
 				"Tokamak::TokamakPackageTests::ProductTarget" /* TokamakPackageTests */,
 				"Tokamak::TokamakTestRenderer" /* TokamakTestRenderer */,
 				"Tokamak::TokamakTests" /* TokamakTests */,
+				"Tokamak::TokamakUIKit" /* TokamakUIKit */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		OBJ_168 /* Sources */ = {
+		OBJ_192 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_169 /* AnyEquatable.swift in Sources */,
-				OBJ_170 /* AnyNode.swift in Sources */,
-				OBJ_171 /* Components.swift in Sources */,
-				OBJ_172 /* Alert.swift in Sources */,
-				OBJ_173 /* Animated.swift in Sources */,
-				OBJ_174 /* Button.swift in Sources */,
-				OBJ_176 /* DatePicker.swift in Sources */,
-				OBJ_177 /* ImageView.swift in Sources */,
-				OBJ_178 /* Label.swift in Sources */,
-				OBJ_179 /* ListView.swift in Sources */,
-				OBJ_180 /* NavigationController.swift in Sources */,
-				OBJ_181 /* ScrollView.swift in Sources */,
-				OBJ_182 /* SegmentedControl.swift in Sources */,
-				OBJ_183 /* Slider.swift in Sources */,
-				OBJ_184 /* StackView.swift in Sources */,
-				OBJ_185 /* Stepper.swift in Sources */,
-				OBJ_186 /* Switch.swift in Sources */,
-				OBJ_187 /* TextField.swift in Sources */,
-				OBJ_188 /* View.swift in Sources */,
-				OBJ_189 /* ModalPresenter.swift in Sources */,
-				OBJ_190 /* NavigationItem.swift in Sources */,
-				OBJ_191 /* NavigationPresenter.swift in Sources */,
-				OBJ_192 /* Router.swift in Sources */,
-				OBJ_193 /* TabItem.swift in Sources */,
-				OBJ_194 /* TabPresenter.swift in Sources */,
-				OBJ_195 /* Accessibility.swift in Sources */,
-				OBJ_196 /* Color.swift in Sources */,
-				OBJ_197 /* Bottom.swift in Sources */,
-				OBJ_198 /* Center.swift in Sources */,
-				OBJ_199 /* CenterX.swift in Sources */,
-				OBJ_200 /* CenterY.swift in Sources */,
-				OBJ_201 /* Constraint.swift in Sources */,
-				OBJ_202 /* Edges.swift in Sources */,
-				OBJ_203 /* FirstBaseline.swift in Sources */,
-				OBJ_204 /* Height.swift in Sources */,
-				OBJ_205 /* LastBaseline.swift in Sources */,
-				OBJ_206 /* Leading.swift in Sources */,
-				OBJ_207 /* Left.swift in Sources */,
-				OBJ_208 /* Right.swift in Sources */,
-				OBJ_209 /* SizeConstraint.swift in Sources */,
-				OBJ_210 /* Top.swift in Sources */,
-				OBJ_211 /* Trailing.swift in Sources */,
-				D1C058DB2235335F0047205D /* CollectionView.swift in Sources */,
-				OBJ_212 /* Width.swift in Sources */,
-				OBJ_213 /* Event.swift in Sources */,
-				OBJ_214 /* Image.swift in Sources */,
-				OBJ_215 /* Insets.swift in Sources */,
-				OBJ_216 /* LineBreakMode.swift in Sources */,
-				OBJ_217 /* Rectangle.swift in Sources */,
-				OBJ_218 /* Second.swift in Sources */,
-				OBJ_219 /* Style.swift in Sources */,
-				OBJ_220 /* TextAlignment.swift in Sources */,
-				OBJ_221 /* Default.swift in Sources */,
-				OBJ_222 /* Effect.swift in Sources */,
-				OBJ_223 /* Hooks.swift in Sources */,
-				OBJ_224 /* Ref.swift in Sources */,
-				OBJ_225 /* State.swift in Sources */,
-				OBJ_226 /* MountedComponent.swift in Sources */,
-				OBJ_227 /* MountedCompositeComponent.swift in Sources */,
-				OBJ_228 /* MountedHostComponent.swift in Sources */,
-				OBJ_229 /* MountedNull.swift in Sources */,
-				OBJ_230 /* Null.swift in Sources */,
-				OBJ_231 /* Renderer.swift in Sources */,
-				OBJ_232 /* StackReconciler.swift in Sources */,
-				OBJ_233 /* Target.swift in Sources */,
-				OBJ_234 /* Unique.swift in Sources */,
+				OBJ_193 /* AnyEquatable.swift in Sources */,
+				OBJ_194 /* AnyNode.swift in Sources */,
+				OBJ_195 /* Components.swift in Sources */,
+				OBJ_196 /* Alert.swift in Sources */,
+				OBJ_197 /* Animated.swift in Sources */,
+				OBJ_198 /* Button.swift in Sources */,
+				OBJ_199 /* CollectionView.swift in Sources */,
+				OBJ_200 /* DatePicker.swift in Sources */,
+				OBJ_201 /* ImageView.swift in Sources */,
+				OBJ_202 /* Label.swift in Sources */,
+				OBJ_203 /* ListView.swift in Sources */,
+				OBJ_204 /* NavigationController.swift in Sources */,
+				OBJ_205 /* ScrollView.swift in Sources */,
+				OBJ_206 /* SegmentedControl.swift in Sources */,
+				OBJ_207 /* Slider.swift in Sources */,
+				OBJ_208 /* StackView.swift in Sources */,
+				OBJ_209 /* Stepper.swift in Sources */,
+				OBJ_210 /* Switch.swift in Sources */,
+				OBJ_211 /* TextField.swift in Sources */,
+				OBJ_212 /* View.swift in Sources */,
+				OBJ_213 /* ModalPresenter.swift in Sources */,
+				OBJ_214 /* NavigationItem.swift in Sources */,
+				OBJ_215 /* NavigationPresenter.swift in Sources */,
+				OBJ_216 /* Router.swift in Sources */,
+				OBJ_217 /* TabItem.swift in Sources */,
+				OBJ_218 /* TabPresenter.swift in Sources */,
+				OBJ_219 /* Accessibility.swift in Sources */,
+				OBJ_220 /* Color.swift in Sources */,
+				OBJ_221 /* Bottom.swift in Sources */,
+				OBJ_222 /* Center.swift in Sources */,
+				OBJ_223 /* CenterX.swift in Sources */,
+				OBJ_224 /* CenterY.swift in Sources */,
+				OBJ_225 /* Constraint.swift in Sources */,
+				OBJ_226 /* Edges.swift in Sources */,
+				OBJ_227 /* FirstBaseline.swift in Sources */,
+				OBJ_228 /* Height.swift in Sources */,
+				OBJ_229 /* LastBaseline.swift in Sources */,
+				OBJ_230 /* Leading.swift in Sources */,
+				OBJ_231 /* Left.swift in Sources */,
+				OBJ_232 /* Right.swift in Sources */,
+				OBJ_233 /* SizeConstraint.swift in Sources */,
+				OBJ_234 /* Top.swift in Sources */,
+				OBJ_235 /* Trailing.swift in Sources */,
+				OBJ_236 /* Width.swift in Sources */,
+				OBJ_237 /* Event.swift in Sources */,
+				OBJ_238 /* Image.swift in Sources */,
+				OBJ_239 /* Insets.swift in Sources */,
+				OBJ_240 /* LineBreakMode.swift in Sources */,
+				OBJ_241 /* Rectangle.swift in Sources */,
+				OBJ_242 /* Second.swift in Sources */,
+				OBJ_243 /* Style.swift in Sources */,
+				OBJ_244 /* TextAlignment.swift in Sources */,
+				OBJ_245 /* Default.swift in Sources */,
+				OBJ_246 /* Effect.swift in Sources */,
+				OBJ_247 /* Hooks.swift in Sources */,
+				OBJ_248 /* Ref.swift in Sources */,
+				OBJ_249 /* State.swift in Sources */,
+				OBJ_250 /* MountedComponent.swift in Sources */,
+				OBJ_251 /* MountedCompositeComponent.swift in Sources */,
+				OBJ_252 /* MountedHostComponent.swift in Sources */,
+				OBJ_253 /* MountedNull.swift in Sources */,
+				OBJ_254 /* Null.swift in Sources */,
+				OBJ_255 /* Renderer.swift in Sources */,
+				OBJ_256 /* StackReconciler.swift in Sources */,
+				OBJ_257 /* Target.swift in Sources */,
+				OBJ_258 /* Unique.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_240 /* Sources */ = {
+		OBJ_264 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				D1BA4DD422329899003D90A7 /* ControlBox.swift in Sources */,
-				D1F1FACB22353A80000CFAF4 /* StackView.swift in Sources */,
-				D1F1FACC22353A80000CFAF4 /* View.swift in Sources */,
-				D1C058D02233DB6C0047205D /* NSControlComponent.swift in Sources */,
-				D1C058E02235349F0047205D /* ContainerViewController.swift in Sources */,
-				D1F1FACD22353A80000CFAF4 /* ScrollView.swift in Sources */,
-				D1BA4DCB22329317003D90A7 /* NSHostComponent.swift in Sources */,
-				OBJ_241 /* AppKitRenderer.swift in Sources */,
-				D1BA4DD022329371003D90A7 /* ViewControllerBox.swift in Sources */,
-				D1BA4DCF2232936E003D90A7 /* ViewBox.swift in Sources */,
-				D1C058C12233DA530047205D /* Button.swift in Sources */,
-				D1C058C02233DA530047205D /* Label.swift in Sources */,
-				D1F1FACF22353D39000CFAF4 /* LineBreakMode.swift in Sources */,
-				D1C058BE2233D9BE0047205D /* TokamakViewController.swift in Sources */,
-				D1C058C62233DAC50047205D /* NSViewComponent.swift in Sources */,
-				D1BA4DD922329902003D90A7 /* Event.swift in Sources */,
-				D1BA4DD8223298FF003D90A7 /* Color.swift in Sources */,
+				D15E0456223582FD00BB0571 /* Left.swift in Sources */,
+				OBJ_265 /* AppKitRenderer.swift in Sources */,
+				OBJ_266 /* ContainerViewController.swift in Sources */,
+				D15E0458223582FD00BB0571 /* YAxisConstraint.swift in Sources */,
+				OBJ_267 /* ControlBox.swift in Sources */,
+				D15E0455223582FD00BB0571 /* Constrainable.swift in Sources */,
+				D15E04332235829000BB0571 /* Rectangle.swift in Sources */,
+				OBJ_268 /* ViewBox.swift in Sources */,
+				D15E0453223582FD00BB0571 /* Height.swift in Sources */,
+				OBJ_269 /* ViewControllerBox.swift in Sources */,
+				OBJ_270 /* Button.swift in Sources */,
+				D15E0451223582FD00BB0571 /* BaselineConstraint.swift in Sources */,
+				OBJ_271 /* Label.swift in Sources */,
+				OBJ_272 /* ScrollView.swift in Sources */,
+				OBJ_273 /* StackView.swift in Sources */,
+				D15E0457223582FD00BB0571 /* XAxisConstraint.swift in Sources */,
+				D15E044B223582FD00BB0571 /* Bottom.swift in Sources */,
+				D15E0447223582FD00BB0571 /* FirstBaseline.swift in Sources */,
+				OBJ_274 /* View.swift in Sources */,
+				D15E0452223582FD00BB0571 /* Leading.swift in Sources */,
+				D15E0454223582FD00BB0571 /* Constraint.swift in Sources */,
+				D15E044D223582FD00BB0571 /* CenterX.swift in Sources */,
+				OBJ_275 /* Color.swift in Sources */,
+				OBJ_276 /* Event.swift in Sources */,
+				OBJ_277 /* LineBreakMode.swift in Sources */,
+				D15E0449223582FD00BB0571 /* Width.swift in Sources */,
+				OBJ_278 /* NSControlComponent.swift in Sources */,
+				OBJ_279 /* NSHostComponent.swift in Sources */,
+				D15E044E223582FD00BB0571 /* LastBaseline.swift in Sources */,
+				D15E044F223582FD00BB0571 /* Right.swift in Sources */,
+				D15E044C223582FD00BB0571 /* Trailing.swift in Sources */,
+				OBJ_280 /* NSViewComponent.swift in Sources */,
+				D15E044A223582FD00BB0571 /* Top.swift in Sources */,
+				D15E0448223582FD00BB0571 /* CenterY.swift in Sources */,
+				OBJ_281 /* TokamakViewController.swift in Sources */,
+				D15E0450223582FD00BB0571 /* OwnConstraint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_249 /* Sources */ = {
+		OBJ_289 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_250 /* Package.swift in Sources */,
+				OBJ_290 /* Counter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_261 /* Sources */ = {
+		OBJ_298 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_262 /* TestRenderer.swift in Sources */,
-				OBJ_263 /* TestView.swift in Sources */,
+				OBJ_299 /* Package.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_270 /* Sources */ = {
+		OBJ_310 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_271 /* ConstraintTests.swift in Sources */,
-				OBJ_272 /* HooksTests.swift in Sources */,
-				OBJ_273 /* ReconcilerTests.swift in Sources */,
-				OBJ_274 /* XCTestManifests.swift in Sources */,
+				OBJ_311 /* TestRenderer.swift in Sources */,
+				OBJ_312 /* TestView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_284 /* Sources */ = {
+		OBJ_319 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_286 /* ContainerViewController.swift in Sources */,
-				OBJ_287 /* ControlBox.swift in Sources */,
-				OBJ_288 /* TableViewBox.swift in Sources */,
-				OBJ_289 /* ValueControlBox.swift in Sources */,
-				OBJ_290 /* ViewBox.swift in Sources */,
-				D1C058D5223532BD0047205D /* UIControlComponent.swift in Sources */,
-				OBJ_291 /* ViewControllerBox.swift in Sources */,
-				OBJ_294 /* DatePicker.swift in Sources */,
-				OBJ_295 /* ImageView.swift in Sources */,
-				OBJ_297 /* ListView.swift in Sources */,
-				OBJ_298 /* ModalPresenter.swift in Sources */,
-				OBJ_299 /* NavigationController.swift in Sources */,
-				D1C058C52233DA5F0047205D /* Button.swift in Sources */,
-				OBJ_300 /* NavigationItem.swift in Sources */,
-				OBJ_301 /* ScrollView.swift in Sources */,
-				OBJ_302 /* SegmentedControl.swift in Sources */,
-				D1C058C42233DA5F0047205D /* Label.swift in Sources */,
-				OBJ_303 /* Slider.swift in Sources */,
-				OBJ_304 /* StackView.swift in Sources */,
-				OBJ_305 /* Stepper.swift in Sources */,
-				OBJ_306 /* Switch.swift in Sources */,
-				OBJ_307 /* TextField.swift in Sources */,
-				D1C058DE2235337A0047205D /* CollectionViewBox.swift in Sources */,
-				OBJ_308 /* View.swift in Sources */,
-				OBJ_309 /* Color.swift in Sources */,
-				OBJ_310 /* BaselineConstraint.swift in Sources */,
-				D1C058D9223533440047205D /* CollectionView.swift in Sources */,
-				OBJ_311 /* Bottom.swift in Sources */,
-				OBJ_312 /* CenterX.swift in Sources */,
-				OBJ_313 /* CenterY.swift in Sources */,
-				OBJ_314 /* Constrainable.swift in Sources */,
-				OBJ_315 /* Constraint.swift in Sources */,
-				OBJ_316 /* FirstBaseline.swift in Sources */,
-				OBJ_317 /* Height.swift in Sources */,
-				D1C058CB2233DB1C0047205D /* UIViewComponent.swift in Sources */,
-				OBJ_318 /* LastBaseline.swift in Sources */,
-				OBJ_319 /* Leading.swift in Sources */,
-				OBJ_320 /* Left.swift in Sources */,
-				OBJ_321 /* OwnConstraint.swift in Sources */,
-				OBJ_322 /* Right.swift in Sources */,
-				OBJ_323 /* Top.swift in Sources */,
-				OBJ_324 /* Trailing.swift in Sources */,
-				OBJ_325 /* Width.swift in Sources */,
-				OBJ_326 /* XAxisConstraint.swift in Sources */,
-				OBJ_327 /* YAxisConstraint.swift in Sources */,
-				OBJ_328 /* ContentMode.swift in Sources */,
-				OBJ_329 /* Event.swift in Sources */,
-				OBJ_330 /* Image.swift in Sources */,
-				OBJ_331 /* LineBreakMode.swift in Sources */,
-				OBJ_332 /* Rectangle.swift in Sources */,
-				OBJ_334 /* UIHostComponent.swift in Sources */,
-				OBJ_335 /* UIValueComponent.swift in Sources */,
-				OBJ_337 /* TokamakViewController.swift in Sources */,
-				OBJ_338 /* UIKitRenderer.swift in Sources */,
+				OBJ_320 /* ConstraintTests.swift in Sources */,
+				OBJ_321 /* HooksTests.swift in Sources */,
+				OBJ_322 /* ReconcilerTests.swift in Sources */,
+				OBJ_323 /* XCTestManifests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_333 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_334 /* CollectionViewBox.swift in Sources */,
+				OBJ_335 /* ContainerViewController.swift in Sources */,
+				OBJ_336 /* ControlBox.swift in Sources */,
+				OBJ_337 /* TableViewBox.swift in Sources */,
+				OBJ_338 /* ValueControlBox.swift in Sources */,
+				OBJ_339 /* ViewBox.swift in Sources */,
+				OBJ_340 /* ViewControllerBox.swift in Sources */,
+				OBJ_341 /* Button.swift in Sources */,
+				OBJ_342 /* CollectionView.swift in Sources */,
+				OBJ_343 /* DatePicker.swift in Sources */,
+				OBJ_344 /* ImageView.swift in Sources */,
+				OBJ_345 /* Label.swift in Sources */,
+				OBJ_346 /* ListView.swift in Sources */,
+				OBJ_347 /* ModalPresenter.swift in Sources */,
+				OBJ_348 /* NavigationController.swift in Sources */,
+				OBJ_349 /* NavigationItem.swift in Sources */,
+				OBJ_350 /* ScrollView.swift in Sources */,
+				OBJ_351 /* SegmentedControl.swift in Sources */,
+				OBJ_352 /* Slider.swift in Sources */,
+				OBJ_353 /* StackView.swift in Sources */,
+				OBJ_354 /* Stepper.swift in Sources */,
+				OBJ_355 /* Switch.swift in Sources */,
+				OBJ_356 /* TextField.swift in Sources */,
+				OBJ_357 /* View.swift in Sources */,
+				OBJ_358 /* Color.swift in Sources */,
+				OBJ_359 /* BaselineConstraint.swift in Sources */,
+				OBJ_360 /* Bottom.swift in Sources */,
+				OBJ_361 /* CenterX.swift in Sources */,
+				OBJ_362 /* CenterY.swift in Sources */,
+				OBJ_363 /* Constrainable.swift in Sources */,
+				OBJ_364 /* Constraint.swift in Sources */,
+				OBJ_365 /* FirstBaseline.swift in Sources */,
+				OBJ_366 /* Height.swift in Sources */,
+				OBJ_367 /* LastBaseline.swift in Sources */,
+				OBJ_368 /* Leading.swift in Sources */,
+				OBJ_369 /* Left.swift in Sources */,
+				OBJ_370 /* OwnConstraint.swift in Sources */,
+				OBJ_371 /* Right.swift in Sources */,
+				OBJ_372 /* Top.swift in Sources */,
+				OBJ_373 /* Trailing.swift in Sources */,
+				OBJ_374 /* Width.swift in Sources */,
+				OBJ_375 /* XAxisConstraint.swift in Sources */,
+				OBJ_376 /* YAxisConstraint.swift in Sources */,
+				OBJ_377 /* ContentMode.swift in Sources */,
+				OBJ_378 /* Event.swift in Sources */,
+				OBJ_379 /* Image.swift in Sources */,
+				OBJ_380 /* LineBreakMode.swift in Sources */,
+				OBJ_381 /* Rectangle.swift in Sources */,
+				OBJ_382 /* UIControlComponent.swift in Sources */,
+				OBJ_383 /* UIHostComponent.swift in Sources */,
+				OBJ_384 /* UIValueComponent.swift in Sources */,
+				OBJ_385 /* UIViewComponent.swift in Sources */,
+				OBJ_386 /* TokamakViewController.swift in Sources */,
+				OBJ_387 /* UIKitRenderer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		OBJ_244 /* PBXTargetDependency */ = {
+		OBJ_284 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::Tokamak" /* Tokamak */;
-			targetProxy = D1BA4DC422329132003D90A7 /* PBXContainerItemProxy */;
+			targetProxy = D15E04292235781100BB0571 /* PBXContainerItemProxy */;
 		};
-		OBJ_255 /* PBXTargetDependency */ = {
+		OBJ_293 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "Tokamak::Tokamak" /* Tokamak */;
+			targetProxy = D15E04272235781100BB0571 /* PBXContainerItemProxy */;
+		};
+		OBJ_304 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::TokamakTests" /* TokamakTests */;
-			targetProxy = D1BA4DC722329134003D90A7 /* PBXContainerItemProxy */;
+			targetProxy = D15E042C2235781300BB0571 /* PBXContainerItemProxy */;
 		};
-		OBJ_266 /* PBXTargetDependency */ = {
+		OBJ_315 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::Tokamak" /* Tokamak */;
-			targetProxy = D1BA4DC222329132003D90A7 /* PBXContainerItemProxy */;
+			targetProxy = D15E04282235781100BB0571 /* PBXContainerItemProxy */;
 		};
-		OBJ_278 /* PBXTargetDependency */ = {
+		OBJ_327 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::TokamakTestRenderer" /* TokamakTestRenderer */;
-			targetProxy = D1BA4DC522329132003D90A7 /* PBXContainerItemProxy */;
+			targetProxy = D15E042A2235781100BB0571 /* PBXContainerItemProxy */;
 		};
-		OBJ_279 /* PBXTargetDependency */ = {
+		OBJ_328 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::Tokamak" /* Tokamak */;
-			targetProxy = D1BA4DC622329132003D90A7 /* PBXContainerItemProxy */;
+			targetProxy = D15E042B2235781100BB0571 /* PBXContainerItemProxy */;
 		};
-		OBJ_341 /* PBXTargetDependency */ = {
+		OBJ_390 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::Tokamak" /* Tokamak */;
-			targetProxy = D1BA4DC322329132003D90A7 /* PBXContainerItemProxy */;
+			targetProxy = D15E04262235781100BB0571 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		OBJ_166 /* Debug */ = {
+		OBJ_190 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -1155,7 +1306,10 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tokamak.xcodeproj/Tokamak_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -1169,7 +1323,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_167 /* Release */ = {
+		OBJ_191 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -1179,7 +1333,10 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tokamak.xcodeproj/Tokamak_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -1193,7 +1350,7 @@
 			};
 			name = Release;
 		};
-		OBJ_238 /* Debug */ = {
+		OBJ_262 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -1203,7 +1360,10 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakAppKit_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
@@ -1212,14 +1372,13 @@
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 4.2;
 				TARGET_NAME = TokamakAppKit;
 			};
 			name = Debug;
 		};
-		OBJ_239 /* Release */ = {
+		OBJ_263 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -1229,7 +1388,10 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakAppKit_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
@@ -1238,14 +1400,67 @@
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 4.2;
 				TARGET_NAME = TokamakAppKit;
 			};
 			name = Release;
 		};
-		OBJ_247 /* Debug */ = {
+		OBJ_287 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakDemo_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = TokamakDemo;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = TokamakDemo;
+			};
+			name = Debug;
+		};
+		OBJ_288 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakDemo_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = TokamakDemo;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = TokamakDemo;
+			};
+			name = Release;
+		};
+		OBJ_296 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				LD = /usr/bin/true;
@@ -1254,166 +1469,12 @@
 			};
 			name = Debug;
 		};
-		OBJ_248 /* Release */ = {
+		OBJ_297 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				LD = /usr/bin/true;
 				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
 				SWIFT_VERSION = 4.2;
-			};
-			name = Release;
-		};
-		OBJ_253 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Debug;
-		};
-		OBJ_254 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Release;
-		};
-		OBJ_259 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakTestRenderer_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = TokamakTestRenderer;
-				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = TokamakTestRenderer;
-			};
-			name = Debug;
-		};
-		OBJ_260 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakTestRenderer_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = TokamakTestRenderer;
-				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = TokamakTestRenderer;
-			};
-			name = Release;
-		};
-		OBJ_268 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakTests_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = TokamakTests;
-			};
-			name = Debug;
-		};
-		OBJ_269 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakTests_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = TokamakTests;
-			};
-			name = Release;
-		};
-		OBJ_282 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakUIKit_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = TokamakUIKit;
-				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = TokamakUIKit;
-			};
-			name = Debug;
-		};
-		OBJ_283 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakUIKit_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = TokamakUIKit;
-				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = TokamakUIKit;
 			};
 			name = Release;
 		};
@@ -1443,6 +1504,176 @@
 			};
 			name = Debug;
 		};
+		OBJ_302 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		OBJ_303 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		OBJ_308 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakTestRenderer_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = TokamakTestRenderer;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = TokamakTestRenderer;
+			};
+			name = Debug;
+		};
+		OBJ_309 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakTestRenderer_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = TokamakTestRenderer;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = TokamakTestRenderer;
+			};
+			name = Release;
+		};
+		OBJ_317 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakTests_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = TokamakTests;
+			};
+			name = Debug;
+		};
+		OBJ_318 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakTests_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = TokamakTests;
+			};
+			name = Release;
+		};
+		OBJ_331 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakUIKit_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = TokamakUIKit;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = TokamakUIKit;
+			};
+			name = Debug;
+		};
+		OBJ_332 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = Tokamak.xcodeproj/TokamakUIKit_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = TokamakUIKit;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = TokamakUIKit;
+			};
+			name = Release;
+		};
 		OBJ_4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1458,7 +1689,8 @@
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				USE_HEADERMAP = NO;
 			};
 			name = Release;
@@ -1466,11 +1698,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		OBJ_165 /* Build configuration list for PBXNativeTarget "Tokamak" */ = {
+		OBJ_189 /* Build configuration list for PBXNativeTarget "Tokamak" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_166 /* Debug */,
-				OBJ_167 /* Release */,
+				OBJ_190 /* Debug */,
+				OBJ_191 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1484,56 +1716,65 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_237 /* Build configuration list for PBXNativeTarget "TokamakAppKit" */ = {
+		OBJ_261 /* Build configuration list for PBXNativeTarget "TokamakAppKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_238 /* Debug */,
-				OBJ_239 /* Release */,
+				OBJ_262 /* Debug */,
+				OBJ_263 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_246 /* Build configuration list for PBXNativeTarget "TokamakPackageDescription" */ = {
+		OBJ_286 /* Build configuration list for PBXNativeTarget "TokamakDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_247 /* Debug */,
-				OBJ_248 /* Release */,
+				OBJ_287 /* Debug */,
+				OBJ_288 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_252 /* Build configuration list for PBXAggregateTarget "TokamakPackageTests" */ = {
+		OBJ_295 /* Build configuration list for PBXNativeTarget "TokamakPackageDescription" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_253 /* Debug */,
-				OBJ_254 /* Release */,
+				OBJ_296 /* Debug */,
+				OBJ_297 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_258 /* Build configuration list for PBXNativeTarget "TokamakTestRenderer" */ = {
+		OBJ_301 /* Build configuration list for PBXAggregateTarget "TokamakPackageTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_259 /* Debug */,
-				OBJ_260 /* Release */,
+				OBJ_302 /* Debug */,
+				OBJ_303 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_267 /* Build configuration list for PBXNativeTarget "TokamakTests" */ = {
+		OBJ_307 /* Build configuration list for PBXNativeTarget "TokamakTestRenderer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_268 /* Debug */,
-				OBJ_269 /* Release */,
+				OBJ_308 /* Debug */,
+				OBJ_309 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_281 /* Build configuration list for PBXNativeTarget "TokamakUIKit" */ = {
+		OBJ_316 /* Build configuration list for PBXNativeTarget "TokamakTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_282 /* Debug */,
-				OBJ_283 /* Release */,
+				OBJ_317 /* Debug */,
+				OBJ_318 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_330 /* Build configuration list for PBXNativeTarget "TokamakUIKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_331 /* Debug */,
+				OBJ_332 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

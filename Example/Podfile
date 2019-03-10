@@ -1,13 +1,19 @@
-target 'TokamakDemo' do
+def common_pods
+  pod 'Tokamak', :path => '..'
+  pod 'TokamakDemo', :path => '..'
+end
+
+
+target 'TokamakDemo-iOS' do
   platform :ios, '11.0'
 
-  pod 'Tokamak', :path => '..'
+  common_pods
   pod 'TokamakUIKit', :path => '..'
 end
 
-target 'TokamakDemoMac' do
+target 'TokamakDemo-macOS' do
   platform :macos, '10.14'
 
-  pod 'Tokamak', :path => '..'
+  common_pods
   pod 'TokamakAppKit', :path => '..'
 end

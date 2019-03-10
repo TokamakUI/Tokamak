@@ -42,10 +42,15 @@ class ControlBox<T: NSControl & Default>: ViewBox<T> {
     }
 
     action = Action { [weak self] in
-      guard let eventMask = NSApp.currentEvent?.associatedEventsMask,
-        let event = Event(eventMask) else { return }
+      guard let eventMask = NSApp.currentEvent?.associatedEventsMask else {
+        return
+      }
 
-      self?.handlers[event]?.value(())
+      let events = eventMask.elements().compactMap({ Event($0) })
+
+      for e in events {
+        self?.handlers[e]?.value(())
+      }
     }
     view.target = action
     view.action = actionSelector
@@ -53,6 +58,26 @@ class ControlBox<T: NSControl & Default>: ViewBox<T> {
 
   func bind(handlers: [Event: Handler<()>]) {
     self.handlers = handlers
+  }
+}
+
+/// `OptionSet` enumeration for easy conversion from `EventTypeMask` to `Event`
+extension OptionSet where RawValue: FixedWidthInteger {
+  func elements() -> AnySequence<Self> {
+    var remainingBits = rawValue
+    var bitMask: RawValue = 1
+    return AnySequence {
+      AnyIterator {
+        while remainingBits != 0 {
+          defer { bitMask = bitMask &* 2 }
+          if remainingBits & bitMask != 0 {
+            remainingBits = remainingBits & ~bitMask
+            return Self(rawValue: bitMask)
+          }
+        }
+        return nil
+      }
+    }
   }
 }
 

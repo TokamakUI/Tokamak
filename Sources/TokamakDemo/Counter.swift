@@ -9,12 +9,16 @@
 
 import Tokamak
 
-struct Counter: LeafComponent {
-  struct Props: Equatable {
-    let countFrom: Int
+public struct Counter: LeafComponent {
+  public struct Props: Equatable {
+    public let countFrom: Int
+
+    public init(countFrom: Int) {
+      self.countFrom = countFrom
+    }
   }
 
-  static func render(props: Counter.Props, hooks: Hooks) -> AnyNode {
+  public static func render(props: Counter.Props, hooks: Hooks) -> AnyNode {
     let count = hooks.state(props.countFrom)
 
     return StackView.node(.init(

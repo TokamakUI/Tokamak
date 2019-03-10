@@ -50,19 +50,19 @@ private func applyStyle<T: NSView, P: StyleProps>(_ target: ViewBox<T>,
 //  style.shadowOpacity.flatMap { view.layer.shadowOpacity = $0 }
 //  style.shadowRadius.flatMap { view.layer.shadowRadius = CGFloat($0) }
 
-//  switch style.layout {
-//  case let .frame(frame)?:
-//    view.frame = CGRect(frame)
-//  case let .constraints(constraints)?:
-//    view.translatesAutoresizingMaskIntoConstraints = false
-//    NSLayoutConstraint.deactivate(target.constraints)
-//    target.constraints = Array(constraints.compactMap {
-//      view.constraint($0, next: nil)
-//    }.joined())
-//    NSLayoutConstraint.activate(target.constraints)
-//  case nil:
-//    ()
-//  }
+  switch style.layout {
+  case let .frame(frame)?:
+    view.frame = CGRect(frame)
+  case let .constraints(constraints)?:
+    view.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.deactivate(target.constraints)
+    target.constraints = Array(constraints.compactMap {
+      view.constraint($0, next: nil)
+    }.joined())
+    NSLayoutConstraint.activate(target.constraints)
+  case nil:
+    ()
+  }
 
   //  style.accessibility.flatMap {
 //    view.accessibilityElementsHidden = $0.elementsHidden

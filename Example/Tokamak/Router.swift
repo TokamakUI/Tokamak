@@ -8,6 +8,7 @@
 //
 
 import Tokamak
+import TokamakDemo
 
 enum AppRoute: String, CaseIterable {
   case list = "Examples"

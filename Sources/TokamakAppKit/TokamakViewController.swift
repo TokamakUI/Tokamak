@@ -19,6 +19,10 @@ open class TokamakViewController: NSViewController {
     return Null.node()
   }
 
+  open override func loadView() {
+    view = NSView()
+  }
+
   open override func viewDidLoad() {
     super.viewDidLoad()
 

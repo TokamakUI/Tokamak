@@ -16,7 +16,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   @IBOutlet var window: NSWindow!
 
   func applicationDidFinishLaunching(_ aNotification: Notification) {
-    // Insert code here to initialize your application
+    window.contentViewController = ViewController()
+    window.makeKeyAndOrderFront(self)
+    window.setFrameOrigin(CGPoint(x: 100, y: 1000))
   }
 
   func applicationWillTerminate(_ aNotification: Notification) {

@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D1C058AE2233D4A20047205D"
-               BuildableName = "TokamakDemoMac.app"
-               BlueprintName = "TokamakDemoMac"
+               BuildableName = "TokamakDemo-macOS.app"
+               BlueprintName = "TokamakDemo-macOS"
                ReferencedContainer = "container:Tokamak.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,8 +33,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D1C058AE2233D4A20047205D"
-            BuildableName = "TokamakDemoMac.app"
-            BlueprintName = "TokamakDemoMac"
+            BuildableName = "TokamakDemo-macOS.app"
+            BlueprintName = "TokamakDemo-macOS"
             ReferencedContainer = "container:Tokamak.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -56,8 +56,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D1C058AE2233D4A20047205D"
-            BuildableName = "TokamakDemoMac.app"
-            BlueprintName = "TokamakDemoMac"
+            BuildableName = "TokamakDemo-macOS.app"
+            BlueprintName = "TokamakDemo-macOS"
             ReferencedContainer = "container:Tokamak.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -75,8 +75,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D1C058AE2233D4A20047205D"
-            BuildableName = "TokamakDemoMac.app"
-            BlueprintName = "TokamakDemoMac"
+            BuildableName = "TokamakDemo-macOS.app"
+            BlueprintName = "TokamakDemo-macOS"
             ReferencedContainer = "container:Tokamak.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -10,7 +10,10 @@ import Tokamak
 
 final class TokamakLabel: NSTextView, Default {
   static var defaultValue: TokamakLabel {
-    return TokamakLabel()
+    let result = TokamakLabel()
+    result.isEditable = false
+    result.backgroundColor = .clear
+    return result
   }
 }
 
@@ -41,7 +44,11 @@ extension Label: NSViewComponent {
     view.alignment = NSTextAlignment(props.alignment)
     view.textContainer?.maximumNumberOfLines = props.numberOfLines
     view.textContainer?.lineBreakMode = NSLineBreakMode(props.lineBreakMode)
-    view.textColor = props.textColor.flatMap { NSColor($0) }
+    if let textColor = props.textColor {
+      view.textColor = NSColor(textColor)
+    } else {
+      view.textColor = .textColor
+    }
     view.string = children
   }
 }

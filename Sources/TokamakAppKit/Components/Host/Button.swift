@@ -13,7 +13,9 @@ final class TokamakButton: NSButton, Default {
   /// as a plain `UIView` needs a different implementation of `defaultValue`
   /// and subclass extensions can't override extensions of a parent class.
   static var defaultValue: TokamakButton {
-    return TokamakButton()
+    let result = TokamakButton()
+    result.bezelStyle = .rounded
+    return result
   }
 }
 

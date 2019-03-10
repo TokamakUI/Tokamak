@@ -29,7 +29,7 @@ TODO: Add long description of the pod here.
   s.social_media_url = 'https://twitter.com/MaxDesiatov'
 
   s.ios.deployment_target = '11.0'
-  s.osx.deployment_target = '10.13'
+  s.macos.deployment_target = '10.14'
 
   s.source_files = 'Sources/Tokamak/**/*'
   

@@ -59,10 +59,12 @@ extension NSEvent.EventTypeMask {
 extension Event {
   public init?(_ value: NSEvent.EventTypeMask) {
     switch value {
-    //    case .touchDown:
-    //      self = .leftMouseDown
-    //    case .touchUpInside:
-    //      self = .leftMouseUp
+    case .leftMouseDown:
+      self = .touchDown
+    case .leftMouseUp:
+      self = .touchUpInside
+    case .leftMouseDragged:
+      self = .touchDragInside
     //    case .touchDragInside:
     //      self = .leftMouseDragged
     //    case .touchDownRepeat:
@@ -98,7 +100,6 @@ extension Event {
     //    case .allEvents:
     //      self = .any
     default:
-      assertionFailure()
       return nil
     }
   }

@@ -40,6 +40,10 @@ let package = Package(
       dependencies: []
     ),
     .target(
+      name: "TokamakDemo",
+      dependencies: ["Tokamak"]
+    ),
+    .target(
       name: "TokamakUIKit",
       dependencies: ["Tokamak"]
     ),
