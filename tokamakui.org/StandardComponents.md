@@ -3,14 +3,18 @@
 | Tokamak Component | Rendered on iOS as |
 |---|---|
 | [`Button`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/Button.swift) | [`UIButton`](https://developer.apple.com/documentation/uikit/uibutton) |
+| [`CollectionView`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/CollectionView.swift) | [`UICollectionView`](https://developer.apple.com/documentation/uikit/uicollectionview) |
+| [`DatePicker`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/DatePicker.swift) | [`UIDatePicker`](https://developer.apple.com/documentation/uikit/uidatepicker) |
 | [`ImageView`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/ImageView.swift) | [`UIImageView`](https://developer.apple.com/documentation/uikit/uilabel) |
 | [`Label`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/Label.swift) | [`UILabel`](https://developer.apple.com/documentation/uikit/uilabel) |
 | [`ListView`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/ListView.swift) | [`UITableView`](https://developer.apple.com/documentation/uikit/uitableview) |
+| [`ScrollView`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/ScrollView.swift) | [`UIScrollView`](https://developer.apple.com/documentation/uikit/uiscrollview) |
 | [`SegmentedControl`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/SegmentedControl.swift) | [`UISegmentedControl`](https://developer.apple.com/documentation/uikit/uisegmentedcontrol) | 
 | [`Slider`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/Slider.swift) | [`UISlider`](https://developer.apple.com/documentation/uikit/uislider) |
 | [`StackView`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/StackView.swift) | [`UIStackView`](https://developer.apple.com/documentation/uikit/uistackview) |
 | [`Stepper`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/Stepper.swift) | [`UIStepper`](https://developer.apple.com/documentation/uikit/uistepper) |
 | [`Switch`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/Switch.swift) | [`UISwitch`](https://developer.apple.com/documentation/uikit/uiswitch) |
+| [`TextField`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/TextField.swift) | [`UITextField`](https://developer.apple.com/documentation/uikit/uitextfield) |
 | [`View`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/View.swift) | [`UIView`](https://developer.apple.com/documentation/uikit/uiview) |
 
 ## Standard Presenter Components
