@@ -9,7 +9,7 @@ import Tokamak
 import UIKit
 
 extension UIView.ContentMode {
-  public init(_ contentMode: ContentMode) {
+  public init(_ contentMode: Image.ContentMode) {
     switch contentMode {
     case .scaleToFill:
       self = .scaleToFill

@@ -18,7 +18,7 @@ public struct Counter: LeafComponent {
     }
   }
 
-  public static func render(props: Counter.Props, hooks: Hooks) -> AnyNode {
+  public static func render(props: Props, hooks: Hooks) -> AnyNode {
     let count = hooks.state(props.countFrom)
 
     return StackView.node(.init(

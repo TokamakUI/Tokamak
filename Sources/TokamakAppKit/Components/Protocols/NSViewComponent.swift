@@ -8,12 +8,20 @@
 import AppKit
 import Tokamak
 
+public extension NSView {
+  var wantsUpdateLayer: Bool {
+    return true
+  }
+}
+
 protocol NSViewComponent: NSHostComponent, RefComponent {
   associatedtype Target: NSView & Default
 
-  static func update(view box: ViewBox<Target>,
-                     _ props: Props,
-                     _ children: Children)
+  static func update(
+    view box: ViewBox<Target>,
+    _ props: Props,
+    _ children: Children
+  )
 
   static func box(
     for view: Target,
@@ -31,24 +39,20 @@ private func applyStyle<T: NSView, P: StyleProps>(_ target: ViewBox<T>,
 
   let view = target.view
 
-  // FIXME:
-//  style.allowsEdgeAntialiasing.flatMap {
-//    view.layer.allowsEdgeAntialiasing = $0
-//  }
-//  style.allowsGroupOpacity.flatMap { view.layer.allowsGroupOpacity = $0 }
-//  style.alpha.flatMap { view.alpha = CGFloat($0) }
-//  style.backgroundColor.flatMap { view.backgroundColor = UIColor($0) }
-//  style.borderColor.flatMap { view.layer.borderColor = UIColor($0).cgColor }
-//  style.borderWidth.flatMap { view.layer.borderWidth = CGFloat($0) }
-//  style.clipsToBounds.flatMap { view.clipsToBounds = $0 }
-//  style.contentMode.flatMap { view.contentMode = UIView.ContentMode($0) }
-//  style.cornerRadius.flatMap { view.layer.cornerRadius = CGFloat($0) }
-//  style.masksToBounds.flatMap { view.layer.masksToBounds = $0 }
-//  style.isDoubleSided.flatMap { view.layer.isDoubleSided = $0 }
-//  style.opacity.flatMap { view.layer.opacity = $0 }
-//  style.shadowColor.flatMap { view.layer.shadowColor = UIColor($0).cgColor }
-//  style.shadowOpacity.flatMap { view.layer.shadowOpacity = $0 }
-//  style.shadowRadius.flatMap { view.layer.shadowRadius = CGFloat($0) }
+  style.allowsEdgeAntialiasing.flatMap {
+    view.layer?.allowsEdgeAntialiasing = $0
+  }
+  style.allowsGroupOpacity.flatMap { view.layer?.allowsGroupOpacity = $0 }
+  style.backgroundColor.flatMap { view.layer?.backgroundColor = NSColor($0).cgColor }
+  style.borderColor.flatMap { view.layer?.borderColor = NSColor($0).cgColor }
+  style.borderWidth.flatMap { view.layer?.borderWidth = CGFloat($0) }
+  style.cornerRadius.flatMap { view.layer?.cornerRadius = CGFloat($0) }
+  style.masksToBounds.flatMap { view.layer?.masksToBounds = $0 }
+  style.isDoubleSided.flatMap { view.layer?.isDoubleSided = $0 }
+  style.opacity.flatMap { view.layer?.opacity = $0 }
+  style.shadowColor.flatMap { view.layer?.shadowColor = NSColor($0).cgColor }
+  style.shadowOpacity.flatMap { view.layer?.shadowOpacity = $0 }
+  style.shadowRadius.flatMap { view.layer?.shadowRadius = CGFloat($0) }
 
   switch style.layout {
   case let .frame(frame)?:
@@ -64,15 +68,11 @@ private func applyStyle<T: NSView, P: StyleProps>(_ target: ViewBox<T>,
     ()
   }
 
-  //  style.accessibility.flatMap {
-//    view.accessibilityElementsHidden = $0.elementsHidden
-//    view.accessibilityHint = $0.hint
-//    view.accessibilityViewIsModal = $0.isModal
-//    view.accessibilityLabel = $0.label
-//    view.accessibilityLanguage = $0.language
-//    view.accessibilityValue = $0.value
-//    view.accessibilityIdentifier = $0.identifier
-//  }
+  style.accessibility.flatMap {
+    view.setAccessibilityLabel($0.label)
+    view.setAccessibilityValue($0.value)
+    view.setAccessibilityIdentifier($0.identifier)
+  }
 
   // center has to be updated after `frame`, otherwise `frame` overrides it
 //  style.center.flatMap { view.center = CGPoint($0) }
@@ -127,6 +127,7 @@ extension NSViewComponent where Target == Target.DefaultValue,
       box.view.addSubview(target)
     case let box as ViewBox<TokamakView>:
       box.view.addSubview(target)
+    // FIXME:
     //    case let box as ViewBox<TokamakTableCell>:
     //      box.view.addSubview(target)
     //    case let box as ViewBox<TokamakCollectionCell>:

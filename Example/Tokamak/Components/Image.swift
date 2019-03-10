@@ -46,8 +46,8 @@ struct ImageExample: LeafComponent {
           maximumZoomScale: 2.0
         ),
         ImageView.node(.init(
-          Style(Edges.equal(to: .parent), contentMode: .scaleAspectFit),
-          image: Image(name: "tokamak")
+          Style(Edges.equal(to: .parent)),
+          image: Image(contentMode: .scaleAspectFit, name: "tokamak")
         ), ref: refImage),
         ref: refScroll
       ),

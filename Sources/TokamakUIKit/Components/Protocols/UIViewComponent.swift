@@ -35,12 +35,9 @@ private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
     view.layer.allowsEdgeAntialiasing = $0
   }
   style.allowsGroupOpacity.flatMap { view.layer.allowsGroupOpacity = $0 }
-  style.alpha.flatMap { view.alpha = CGFloat($0) }
   style.backgroundColor.flatMap { view.backgroundColor = UIColor($0) }
   style.borderColor.flatMap { view.layer.borderColor = UIColor($0).cgColor }
   style.borderWidth.flatMap { view.layer.borderWidth = CGFloat($0) }
-  style.clipsToBounds.flatMap { view.clipsToBounds = $0 }
-  style.contentMode.flatMap { view.contentMode = UIView.ContentMode($0) }
   style.cornerRadius.flatMap { view.layer.cornerRadius = CGFloat($0) }
   style.masksToBounds.flatMap { view.layer.masksToBounds = $0 }
   style.isDoubleSided.flatMap { view.layer.isDoubleSided = $0 }
