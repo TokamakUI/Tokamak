@@ -25,11 +25,16 @@
 		A6D6538122312263007FA886 /* CollectionExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D6538022312263007FA886 /* CollectionExample.swift */; };
 		A6FEF7952227C1CC008BB292 /* Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FEF7942227C1CC008BB292 /* Scroll.swift */; };
 		C449B806DFEE55B6CEE6478C /* libPods-TokamakDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B96B435A9D67621D318616E /* libPods-TokamakDemo.a */; };
+		CB7B5929E92275431DDA6DE9 /* libPods-TokamakDemoMac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29EC40DD73BB1C697C26F06D /* libPods-TokamakDemoMac.a */; };
 		D11DB6432219C03000013FC3 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DB6422219C03000013FC3 /* Timer.swift */; };
 		D1BB3D302223F6B400C30062 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB3D2F2223F6B400C30062 /* Animation.swift */; };
 		D1BFAF772215795900845EA0 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF762215795900845EA0 /* Router.swift */; };
 		D1BFAF792215800A00845EA0 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF782215800A00845EA0 /* Counter.swift */; };
 		D1BFAF7B22158B4000845EA0 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF7A22158B4000845EA0 /* List.swift */; };
+		D1C058B22233D4A20047205D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C058B12233D4A20047205D /* AppDelegate.swift */; };
+		D1C058B42233D4A30047205D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1C058B32233D4A30047205D /* Assets.xcassets */; };
+		D1C058B72233D4A30047205D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1C058B52233D4A30047205D /* MainMenu.xib */; };
+		D1C058D42235311A0047205D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C058D32235311A0047205D /* ViewController.swift */; };
 		D1DEEC2922009E8000C525EE /* ModalRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DEEC2822009E8000C525EE /* ModalRouter.swift */; };
 		D1F2C3272214407B008358DC /* TableModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F2C3262214407B008358DC /* TableModal.swift */; };
 		D1F7185322159E09004E5951 /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F7185222159E09004E5951 /* Controls.swift */; };
@@ -40,6 +45,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		000AE579656D47E2A1CE5A1E /* Pods-TokamakDemoMac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokamakDemoMac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokamakDemoMac/Pods-TokamakDemoMac.debug.xcconfig"; sourceTree = "<group>"; };
+		29EC40DD73BB1C697C26F06D /* libPods-TokamakDemoMac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokamakDemoMac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		53F6886F05884AF3AC87DBC1 /* Pods-TokamakDemoMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokamakDemoMac.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokamakDemoMac/Pods-TokamakDemoMac.release.xcconfig"; sourceTree = "<group>"; };
 		5B96B435A9D67621D318616E /* libPods-TokamakDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokamakDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EDE96CE7CBE2345FEE1A935 /* Pods-TokamakDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokamakDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokamakDemo/Pods-TokamakDemo.release.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* TokamakDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TokamakDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +78,13 @@
 		D1BFAF762215795900845EA0 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		D1BFAF782215800A00845EA0 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		D1BFAF7A22158B4000845EA0 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
+		D1C058AF2233D4A20047205D /* TokamakDemoMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TokamakDemoMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1C058B12233D4A20047205D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D1C058B32233D4A30047205D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D1C058B62233D4A30047205D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		D1C058B82233D4A30047205D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D1C058B92233D4A30047205D /* TokamakDemoMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TokamakDemoMac.entitlements; sourceTree = "<group>"; };
+		D1C058D32235311A0047205D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D1DEEC2822009E8000C525EE /* ModalRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalRouter.swift; sourceTree = "<group>"; };
 		D1E6BCD121AD4CD6002769E3 /* TokamakTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokamakTest.swift; sourceTree = "<group>"; };
 		D1F2C3262214407B008358DC /* TableModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableModal.swift; sourceTree = "<group>"; };
@@ -89,6 +104,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D1C058AC2233D4A20047205D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB7B5929E92275431DDA6DE9 /* libPods-TokamakDemoMac.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -97,6 +120,7 @@
 			children = (
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* TokamakDemo */,
+				D1C058B02233D4A20047205D /* TokamakDemoMac */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				D360275A0620D06017CFB567 /* Pods */,
@@ -110,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				607FACD01AFB9204008FA782 /* TokamakDemo.app */,
+				D1C058AF2233D4A20047205D /* TokamakDemoMac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -117,8 +142,8 @@
 		607FACD21AFB9204008FA782 /* TokamakDemo */ = {
 			isa = PBXGroup;
 			children = (
-				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				D1F7185122159D6E004E5951 /* Components */,
+				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				D1BFAF762215795900845EA0 /* Router.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
@@ -168,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				5B96B435A9D67621D318616E /* libPods-TokamakDemo.a */,
+				29EC40DD73BB1C697C26F06D /* libPods-TokamakDemoMac.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -185,6 +211,19 @@
 				A67717212226E7FD0028A6F3 /* Menu.swift */,
 			);
 			path = SnakeGame;
+			sourceTree = "<group>";
+		};
+		D1C058B02233D4A20047205D /* TokamakDemoMac */ = {
+			isa = PBXGroup;
+			children = (
+				D1C058D32235311A0047205D /* ViewController.swift */,
+				D1C058B12233D4A20047205D /* AppDelegate.swift */,
+				D1C058B32233D4A30047205D /* Assets.xcassets */,
+				D1C058B52233D4A30047205D /* MainMenu.xib */,
+				D1C058B82233D4A30047205D /* Info.plist */,
+				D1C058B92233D4A30047205D /* TokamakDemoMac.entitlements */,
+			);
+			path = TokamakDemoMac;
 			sourceTree = "<group>";
 		};
 		D1F7185122159D6E004E5951 /* Components */ = {
@@ -215,6 +254,8 @@
 			children = (
 				A9EEF813955DAEEFE1D52ED4 /* Pods-TokamakDemo.debug.xcconfig */,
 				5EDE96CE7CBE2345FEE1A935 /* Pods-TokamakDemo.release.xcconfig */,
+				000AE579656D47E2A1CE5A1E /* Pods-TokamakDemoMac.debug.xcconfig */,
+				53F6886F05884AF3AC87DBC1 /* Pods-TokamakDemoMac.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -240,13 +281,31 @@
 			productReference = 607FACD01AFB9204008FA782 /* TokamakDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D1C058AE2233D4A20047205D /* TokamakDemoMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D1C058BC2233D4A30047205D /* Build configuration list for PBXNativeTarget "TokamakDemoMac" */;
+			buildPhases = (
+				236A4840826C316AFA9800F9 /* [CP] Check Pods Manifest.lock */,
+				D1C058AB2233D4A20047205D /* Sources */,
+				D1C058AC2233D4A20047205D /* Frameworks */,
+				D1C058AD2233D4A20047205D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TokamakDemoMac;
+			productName = TokamakDemoMac;
+			productReference = D1C058AF2233D4A20047205D /* TokamakDemoMac.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = Tokamak;
 				TargetAttributes = {
@@ -254,6 +313,9 @@
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = H4Z9Z4RD2G;
 						LastSwiftMigration = 1000;
+					};
+					D1C058AE2233D4A20047205D = {
+						CreatedOnToolsVersion = 10.1;
 					};
 				};
 			};
@@ -271,6 +333,7 @@
 			projectRoot = "";
 			targets = (
 				607FACCF1AFB9204008FA782 /* TokamakDemo */,
+				D1C058AE2233D4A20047205D /* TokamakDemoMac */,
 			);
 		};
 /* End PBXProject section */
@@ -286,9 +349,40 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D1C058AD2233D4A20047205D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1C058B42233D4A30047205D /* Assets.xcassets in Resources */,
+				D1C058B72233D4A30047205D /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		236A4840826C316AFA9800F9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TokamakDemoMac-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		EC5FD3EFB14C0031402120B7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -343,6 +437,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D1C058AB2233D4A20047205D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1C058D42235311A0047205D /* ViewController.swift in Sources */,
+				D1C058B22233D4A20047205D /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -360,6 +463,14 @@
 				607FACDF1AFB9204008FA782 /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		D1C058B52233D4A30047205D /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D1C058B62233D4A30047205D /* Base */,
+			);
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -507,6 +618,69 @@
 			};
 			name = Release;
 		};
+		D1C058BA2233D4A30047205D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 000AE579656D47E2A1CE5A1E /* Pods-TokamakDemoMac.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = TokamakDemoMac/TokamakDemoMac.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = TokamakDemoMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxdesiatov.TokamakDemoMac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		D1C058BB2233D4A30047205D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 53F6886F05884AF3AC87DBC1 /* Pods-TokamakDemoMac.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = TokamakDemoMac/TokamakDemoMac.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = TokamakDemoMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxdesiatov.TokamakDemoMac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -524,6 +698,15 @@
 			buildConfigurations = (
 				607FACF01AFB9204008FA782 /* Debug */,
 				607FACF11AFB9204008FA782 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D1C058BC2233D4A30047205D /* Build configuration list for PBXNativeTarget "TokamakDemoMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D1C058BA2233D4A30047205D /* Debug */,
+				D1C058BB2233D4A30047205D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -5,11 +5,11 @@
 //  Created by Max Desiatov on 31/12/2018.
 //
 
-public struct Alert: HostComponent {
-  public struct Props: Equatable {
+struct Alert: HostComponent {
+  struct Props: Equatable {
     let title: String?
     let message: String?
   }
 
-  public typealias Children = [AnyNode]
+  typealias Children = [AnyNode]
 }

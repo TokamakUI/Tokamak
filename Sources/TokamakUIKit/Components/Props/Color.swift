@@ -1,5 +1,5 @@
 //
-//  UIColor.swift
+//  Color.swift
 //  TokamakUIKit
 //
 //  Created by Max Desiatov on 14/12/2018.

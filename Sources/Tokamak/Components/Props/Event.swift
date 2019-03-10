@@ -23,6 +23,12 @@ public enum Event: CaseIterable, Hashable {
   case allTouchEvents
   case allEditingEvents
   case allEvents
+
+  // FIXME: provisional stability, taken from Marzipan preview symbols
+  // https://www.highcaffeinecontent.com/blog/20190302-Making-Marzipan-Apps-Sing
+  case hoverEnter
+  case hoverExit
+  case contextualMenu
 }
 
 public typealias EventHandlers = [Event: Handler<()>]

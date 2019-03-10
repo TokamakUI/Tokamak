@@ -29,13 +29,16 @@ class ControlBox<T: UIControl & Default>: ViewBox<T> {
 
   func bind(handlers: [Event: Handler<()>]) {
     for (e, h) in self.handlers {
-      view.removeTarget(h, action: actionSelector, for: UIControl.Event(e))
+      guard let event = UIControl.Event(e) else { continue }
+      view.removeTarget(h, action: actionSelector, for: event)
     }
     self.handlers.removeAll()
 
     for (e, h) in handlers {
+      guard let event = UIControl.Event(e) else { continue }
+
       let action = Action(h.value)
-      view.addTarget(action, action: actionSelector, for: UIControl.Event(e))
+      view.addTarget(action, action: actionSelector, for: event)
 
       self.handlers[e] = action
     }

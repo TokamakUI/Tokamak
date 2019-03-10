@@ -3,7 +3,8 @@
 //  Tokamak_Tests
 //
 //  Created by Max Desiatov on 27/11/2018.
-//  Copyright © 2018 Max Desiatov. All rights reserved.
+//  Copyright © 2018 Max Desiatov. Tokamak is available under the Apache 2.0
+//  license. See the LICENSE file for more info.
 //
 
 import XCTest

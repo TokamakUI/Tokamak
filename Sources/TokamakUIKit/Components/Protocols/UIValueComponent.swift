@@ -31,14 +31,12 @@ extension UIValueComponent {
   static func update(control box: ControlBox<Target>,
                      _ props: Props,
                      _ children: Children) {
-    guard let box = box as? ValueControlBox<Target> else { return }
+    guard let box = box as? ValueControlBox<Target>,
+      let event = UIControl.Event(valueChangeEvent) else { return }
 
     update(valueBox: box, props, children)
     box.value = props.value
-    box.bind(
-      valueChangedHandler: props.valueHandler,
-      for: UIControl.Event(valueChangeEvent)
-    )
+    box.bind(valueChangedHandler: props.valueHandler, for: event)
   }
 
   static var valueChangeEvent: Event {

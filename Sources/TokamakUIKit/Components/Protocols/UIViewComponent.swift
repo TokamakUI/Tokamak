@@ -1,5 +1,5 @@
 //
-//  UIKitViewComponent.swift
+//  UIViewComponent.swift
 //  TokamakUIKit
 //
 //  Created by Max Desiatov on 02/12/2018.
