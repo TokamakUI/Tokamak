@@ -43,7 +43,9 @@ private func applyStyle<T: NSView, P: StyleProps>(_ target: ViewBox<T>,
     view.layer?.allowsEdgeAntialiasing = $0
   }
   style.allowsGroupOpacity.flatMap { view.layer?.allowsGroupOpacity = $0 }
-  style.backgroundColor.flatMap { view.layer?.backgroundColor = NSColor($0).cgColor }
+  style.backgroundColor.flatMap {
+    view.layer?.backgroundColor = NSColor($0).cgColor
+  }
   style.borderColor.flatMap { view.layer?.borderColor = NSColor($0).cgColor }
   style.borderWidth.flatMap { view.layer?.borderWidth = CGFloat($0) }
   style.cornerRadius.flatMap { view.layer?.cornerRadius = CGFloat($0) }
