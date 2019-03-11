@@ -34,7 +34,7 @@ public struct Image: Equatable {
     case data(Data)
   }
 
-  public let contentMode: ContentMode?
+  public let contentMode: ContentMode
 
   /// when changed initializes new image with given data or name
   public let source: Source

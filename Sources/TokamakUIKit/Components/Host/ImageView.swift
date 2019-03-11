@@ -35,9 +35,7 @@ extension ImageView: UIViewComponent {
     _ props: ImageView.Props,
     _ children: [AnyNode]
   ) {
-    props.image.contentMode.flatMap {
-      box.view.contentMode = UIView.ContentMode($0)
-    }
+    box.view.contentMode = props.image.contentMode
     box.view.image = UIImage.from(image: props.image)
   }
 }
