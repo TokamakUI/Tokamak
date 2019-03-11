@@ -247,8 +247,6 @@
 		OBJ_138 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		OBJ_139 /* Example */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Example; sourceTree = SOURCE_ROOT; };
 		OBJ_14 /* ViewBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewBox.swift; sourceTree = "<group>"; };
-		OBJ_140 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = SOURCE_ROOT; };
-		OBJ_141 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = SOURCE_ROOT; };
 		OBJ_142 /* tokamakui.org */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tokamakui.org; sourceTree = SOURCE_ROOT; };
 		OBJ_15 /* ViewControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBox.swift; sourceTree = "<group>"; };
 		OBJ_18 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
@@ -499,8 +497,6 @@
 				OBJ_7 /* Sources */,
 				OBJ_133 /* Tests */,
 				OBJ_139 /* Example */,
-				OBJ_140 /* docs */,
-				OBJ_141 /* build */,
 				OBJ_142 /* tokamakui.org */,
 				OBJ_143 /* Products */,
 			);
