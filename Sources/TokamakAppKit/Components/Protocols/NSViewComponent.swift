@@ -120,14 +120,14 @@ extension NSViewComponent where Target == Target.DefaultValue,
     case let box as ViewBox<TokamakStackView>:
       box.view.addArrangedSubview(target)
     // no covariance/contravariance in Swift generics require next
-    // two cases to be duplicated :(
-    case let box as ViewBox<TokamakScrollView>:
-      box.view.addSubview(target)
+    // few cases to be duplicated :(
     case let box as ViewBox<NSView>:
       box.view.addSubview(target)
     case let box as ViewBox<TokamakView>:
       box.view.addSubview(target)
     // FIXME:
+    //    case let box as ViewBox<TokamakScrollView>:
+    //      box.view.addSubview(target)
     //    case let box as ViewBox<TokamakTableCell>:
     //      box.view.addSubview(target)
     //    case let box as ViewBox<TokamakCollectionCell>:
