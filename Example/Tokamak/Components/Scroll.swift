@@ -22,7 +22,7 @@ struct ScrollViewExample: LeafComponent {
             axis: .vertical,
             distribution: .fill
           ),
-          (1..<100).map { Label.node("Text \($0)") }
+          (1..<100).map { Label.node(.init(text: "Text \($0)")) }
         )
       )
     )

@@ -36,10 +36,10 @@ struct TimerCounter: LeafComponent {
         axis: .vertical,
         distribution: .fillEqually
       ), [
-        Label.node(
-          .init(alignment: .center),
-          "Adjust timer interval in seconds: \(interval.value)"
-        ),
+        Label.node(.init(
+          alignment: .center,
+          text: "Adjust timer interval in seconds: \(interval.value)"
+        )),
         Stepper.node(
           .init(
             minimumValue: 1.0,
@@ -47,10 +47,10 @@ struct TimerCounter: LeafComponent {
             valueHandler: Handler(interval.set)
           )
         ),
-        Label.node(
-          .init(alignment: .center),
-          "\(count.value) second\(count.value == 1 ? "" : "s") passed"
-        ),
+        Label.node(.init(
+          alignment: .center,
+          text: "\(count.value) second\(count.value == 1 ? "" : "s") passed"
+        )),
       ]
     )
   }

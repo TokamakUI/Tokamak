@@ -63,10 +63,10 @@ struct Snake: LeafComponent {
                   valueHandler: Handler(speed.set)
                 )
               ),
-              Label.node(
-                .init(alignment: .center),
-                "\(speed.value)X"
-              ),
+              Label.node(.init(
+                alignment: .center,
+                text: "\(speed.value)X"
+              )),
             ]
           ),
         ]
