@@ -18,17 +18,20 @@ struct Counter: LeafComponent {
     let sliding = hooks.state(0.5 as Float)
 
     let children = count.value < 45 ? [
-      Button.node(.init(handlers: [
-        .touchUpInside: Handler { count.set { $0 + 1 } },
-      ]), "Increment"),
+      Button.node(.init(
+        handlers: [
+          .touchUpInside: Handler { count.set { $0 + 1 } },
+        ],
+        text: "Increment"
+      )),
 
-      Label.node(.init(), "\(count.value)"),
+      Label.node(.init(text: "\(count.value)")),
 
       Slider.node(Slider.Props(
         value: sliding.value, valueHandler: Handler(sliding.set)
       )),
 
-      Label.node(.init(), "\(sliding.value)"),
+      Label.node(.init(text: "\(sliding.value)")),
     ] : []
 
     return StackView.node(
@@ -55,7 +58,7 @@ final class ReconcilerTests: XCTestCase {
     XCTAssertEqual(stack.subviews.count, 4)
     XCTAssertTrue(stack.subviews[0].node.isSubtypeOf(Button.self))
     XCTAssertTrue(stack.subviews[1].node.isSubtypeOf(Label.self))
-    XCTAssertEqual(stack.subviews[1].node.children, AnyEquatable("42"))
+    XCTAssertEqual(stack.subviews[1].props(Label.Props.self)?.text, "42")
   }
 
   func testUpdate() {
@@ -86,7 +89,7 @@ final class ReconcilerTests: XCTestCase {
       XCTAssertTrue(newStack.subviews[0].node.isSubtypeOf(Button.self))
       XCTAssertTrue(newStack.subviews[1].node.isSubtypeOf(Label.self))
       XCTAssertTrue(originalLabel === newStack.subviews[1])
-      XCTAssertEqual(newStack.subviews[1].node.children, AnyEquatable("43"))
+      XCTAssertEqual(newStack.subviews[1].props(Label.Props.self)?.text, "43")
 
       e.fulfill()
     }
@@ -136,7 +139,7 @@ final class ReconcilerTests: XCTestCase {
         }
 
         XCTAssertEqual(sliderProps.value, 0.25)
-        XCTAssertEqual(newStack.subviews[1].node.children, AnyEquatable("43"))
+        XCTAssertEqual(newStack.subviews[1].props(Label.Props.self)?.text, "43")
 
         buttonHandler(())
 
@@ -153,7 +156,8 @@ final class ReconcilerTests: XCTestCase {
           XCTAssertTrue(originalLabel === newStack.subviews[1])
 
           XCTAssertEqual(sliderProps.value, 0.25)
-          XCTAssertEqual(newStack.subviews[1].node.children, AnyEquatable("44"))
+          XCTAssertEqual(newStack.subviews[1].props(Label.Props.self)?.text,
+                         "44")
           e.fulfill()
         }
       }
