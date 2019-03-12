@@ -38,12 +38,15 @@ private struct Cells: SimpleCellProvider {
     item: ElementaryParticles,
     path: CellPath
   ) -> AnyNode {
-    return Label.node(.init(Style(
-      [CenterY.equal(to: .parent),
-       Height.equal(to: 44),
-       Leading.equal(to: .parent),
-       Trailing.equal(to: .parent)]
-    )), "\(item.description)")
+    return Label.node(.init(
+      Style(
+        [CenterY.equal(to: .parent),
+         Height.equal(to: 44),
+         Leading.equal(to: .parent),
+         Trailing.equal(to: .parent)]
+      ),
+      text: "\(item.description)"
+    ))
   }
 
   typealias Props = Null

@@ -28,8 +28,9 @@ struct ModalRouter: NavigationRouter {
     let close =
       Button.node(.init(
         Style(Rectangle(.zero, Size(width: 200, height: 200))),
-        onPress: props.onPress
-      ), "Close Modal")
+        onPress: props.onPress,
+        text: "Close Modal"
+      ))
     switch route {
     case .first:
       return
@@ -41,9 +42,9 @@ struct ModalRouter: NavigationRouter {
               Button.node(.init(
                 Style(Rectangle(Point(x: 0, y: 400),
                                 Size(width: 200, height: 200))),
-                onPress: Handler { push(.second) }
-
-              ), "Go to Second"),
+                onPress: Handler { push(.second) },
+                text: "Go to Second"
+              )),
             ]
           )
         )
@@ -57,8 +58,9 @@ struct ModalRouter: NavigationRouter {
               Label.node(.init(
                 Style(Rectangle(Point(x: 0, y: 200),
                                 Size(width: 200, height: 200))),
-                alignment: .center
-              ), "This is second"),
+                alignment: .center,
+                text: "This is second"
+              )),
             ]
           )
         )

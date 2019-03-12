@@ -30,8 +30,9 @@ struct Constraints: LeafComponent {
         Label.node(.init(
           Style(Left.equal(to: .parent, constant: Double(left.value) * 200)),
           alignment: .center,
+          text: "\(left.value)",
           textColor: .white
-        ), "\(left.value)")
+        ))
       ),
     ])
   }

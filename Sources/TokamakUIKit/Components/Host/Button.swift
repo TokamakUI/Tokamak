@@ -23,13 +23,13 @@ extension Button: UIControlComponent {
 
   static func update(control box: ControlBox<TokamakButton>,
                      _ props: Button.Props,
-                     _ children: String) {
+                     _ children: [AnyNode]) {
     let control = box.view
 
     if let titleColor = props.titleColor {
       control.setTitleColor(UIColor(titleColor), for: .normal)
     }
 
-    control.setTitle(children, for: .normal)
+    control.setTitle(props.text, for: .normal)
   }
 }
