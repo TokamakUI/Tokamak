@@ -134,7 +134,7 @@ Tokamak provides a few basic components that you can reuse in your apps. On iOS
 these components are rendered to corresponding `UIView` subclasses that you're
 already used to, e.g. `Button` component is rendered as `UIButton`, `Label` as
 `UILabel` etc. Check out [the complete up to date
-list](https://github.com/MaxDesiatov/Tokamak/blob/master/tokamakui.org/StandardComponents.md)
+list](https://github.com/MaxDesiatov/Tokamak/blob/master/tokamak.dev/StandardComponents.md)
 for more info.
 
 
@@ -731,7 +731,7 @@ state, while intended local state is managed with [`Hooks`](#hooks).
 This project adheres to the [Contributor Covenant Code of
 Conduct](https://github.com/MaxDesiatov/Tokamak/blob/master/CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code. Please report
-unacceptable behavior to conduct@tokamakui.org.
+unacceptable behavior to conduct@tokamak.dev.
 
 ## Maintainers
 
