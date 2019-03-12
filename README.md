@@ -46,12 +46,13 @@ require any code specific to `UIKit` (and Tokamak provides helpers to achieve
 that) you can even run your UI-related unit-tests on Linux!
 
 * **Platform-independent core**: our main goal is to eventually support as many
-platforms as possible. Starting with iOS and UIKit, we plan to add renderers
-for macOS/AppKit, WebAssembly/DOM and native Android in future versions. As
-the core API is cross-platform, UI components written with Tokamak won't need to
-change to become available on newly added platforms unless you need UI logic
-specific to a device or OS. And if they do, you can still cleanly separate
-platform-specific components thanks to easy composition.
+platforms as possible. Starting with iOS/UIKit and basic support for
+macOS/AppKit, we plan to add renderers for WebAssembly/DOM and native Android
+in future versions. As the core API is cross-platform, UI components written
+with Tokamak won't need to change to become available on newly added platforms
+unless you need UI logic specific to a device or OS. And if they do, you can
+still cleanly separate platform-specific components thanks to easy
+composition.
 
 * **Architecture proven to work**: React has been available for years and gained
 a lot of traction and is still growing. We've seen so many apps successfully
@@ -412,13 +413,15 @@ component's behavior via [`Props`](#props) and pass different "initializing" pro
 depending on the renderer's platform.
 
 Providing renderers for other platforms in the future is one of our top
-priorities. Imagine an `AppKitRenderer` that allows you to render the same
-component on macOS without any changes applied to the component code and without
+priorities. Tokamak already provides basic support for macOS apps in
+`TokamakAppKit` module that allows you to render same standard components on iOS
+and macOS without any changes applied to the component code and without
 requiring [Marzipan](https://www.imore.com/marzipan)!
 
 ## Requirements
 
-* iOS 11.0 or later
+* iOS 11.0 or later for `TokamakUIKit`
+* macOS 10.14 for `TokamakAppKit`
 * Xcode 10.1
 * Swift 4.2
 
