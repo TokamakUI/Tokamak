@@ -36,12 +36,12 @@ extension Label: UIViewComponent {
 
   static func update(view box: ViewBox<TokamakLabel>,
                      _ props: Label.Props,
-                     _ children: String) {
+                     _ children: [AnyNode]) {
     let view = box.view
     view.textAlignment = NSTextAlignment(props.alignment)
     view.numberOfLines = props.numberOfLines
     view.lineBreakMode = NSLineBreakMode(props.lineBreakMode)
     view.textColor = props.textColor.flatMap { UIColor($0) }
-    view.text = children
+    view.text = props.text
   }
 }

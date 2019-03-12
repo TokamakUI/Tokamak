@@ -34,9 +34,9 @@ struct Gamepad: PureComponent {
           isEnabled: isVerticalMoveEnabled,
           onPress: Handler {
             game.set { $0.currentDirection = .up }
-          }
-        ),
-        "⬆️"
+          },
+          text: "⬆️"
+        )
       ),
       StackView.node(.init(
         [Width.equal(to: .parent)],
@@ -48,9 +48,9 @@ struct Gamepad: PureComponent {
             isEnabled: isHorizontalMoveEnabled,
             onPress: Handler {
               game.set { $0.currentDirection = .left }
-            }
-          ),
-          "⬅️"
+            },
+            text: "⬅️"
+          )
         ),
 
         Button.node(
@@ -58,9 +58,9 @@ struct Gamepad: PureComponent {
             isEnabled: isHorizontalMoveEnabled,
             onPress: Handler {
               game.set { $0.currentDirection = .right }
-            }
-          ),
-          "➡️"
+            },
+            text: "➡️"
+          )
         ),
       ]),
       Button.node(
@@ -68,8 +68,7 @@ struct Gamepad: PureComponent {
           Style(Width.equal(to: .parent, multiplier: 0.5)),
           isEnabled: isVerticalMoveEnabled,
           onPress: Handler { game.set { $0.currentDirection = .down } }
-        ),
-        "⬇️"
+        )
       ),
     ] + children)
   }

@@ -15,11 +15,14 @@ private struct Cells: SimpleCellProvider {
     item: AppRoute,
     path: CellPath
   ) -> AnyNode {
-    return Label.node(.init(Style(
-      [CenterY.equal(to: .parent),
-       Height.equal(to: 44),
-       Leading.equal(to: .safeArea, constant: 20)]
-    )), "\(item.description)")
+    return Label.node(.init(
+      Style(
+        [CenterY.equal(to: .parent),
+         Height.equal(to: 44),
+         Leading.equal(to: .safeArea, constant: 20)]
+      ),
+      text: "\(item.description)"
+    ))
   }
 
   typealias Props = Null

@@ -19,25 +19,24 @@ struct DatePickers: LeafComponent {
     dateFormatter.dateStyle = .medium
     dateFormatter.timeStyle = .medium
     let formattedDate = dateFormatter.string(from: date.value)
-    let labelProps = Label.Props(
-      alignment: .center,
-      lineBreakMode: .wordWrap,
-      numberOfLines: 0
-    )
 
     return StackView.node(.init(
       Edges.equal(to: .safeArea),
       axis: .vertical,
       distribution: .fillEqually
     ), [
-      Label.node(
-        labelProps,
-        "\(formattedDate)"
-      ),
-      Label.node(
-        labelProps,
-        "This picker doesn't animate state changes in the next picker:"
-      ),
+      Label.node(.init(
+        alignment: .center,
+        lineBreakMode: .wordWrap,
+        numberOfLines: 0,
+        text: "\(formattedDate)"
+      )),
+      Label.node(.init(
+        alignment: .center,
+        lineBreakMode: .wordWrap,
+        numberOfLines: 0,
+        text: "This picker doesn't animate state changes in the next picker:"
+      )),
       DatePicker.node(
         .init(
           Style(Width.equal(to: .parent)),
@@ -45,10 +44,12 @@ struct DatePickers: LeafComponent {
           valueHandler: Handler(date.set)
         )
       ),
-      Label.node(
-        labelProps,
-        "This picker animates state changes in the previous picker:"
-      ),
+      Label.node(.init(
+        alignment: .center,
+        lineBreakMode: .wordWrap,
+        numberOfLines: 0,
+        text: "This picker animates state changes in the previous picker:"
+      )),
       DatePicker.node(
         .init(
           Style(Width.equal(to: .parent)),

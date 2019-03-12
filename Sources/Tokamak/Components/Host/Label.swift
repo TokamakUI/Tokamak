@@ -15,6 +15,7 @@ public struct Label: HostComponent {
     public let lineBreakMode: LineBreakMode
     public let numberOfLines: Int
     public let style: Style?
+    public let text: String
     public let textColor: Color?
 
     public init(
@@ -22,15 +23,23 @@ public struct Label: HostComponent {
       alignment: TextAlignment = .natural,
       lineBreakMode: LineBreakMode = .truncateTail,
       numberOfLines: Int = 1,
+      text: String = "",
       textColor: Color? = nil
     ) {
       self.alignment = alignment
       self.lineBreakMode = lineBreakMode
       self.numberOfLines = numberOfLines
+      self.text = text
       self.textColor = textColor
       self.style = style
     }
   }
 
-  public typealias Children = String
+  public typealias Children = [AnyNode]
+}
+
+extension Label.Props: ExpressibleByStringLiteral {
+  public init(stringLiteral value: String) {
+    self.init(text: value)
+  }
 }

@@ -15,12 +15,14 @@ public struct Button: HostComponent {
     public let style: Style?
     public let titleColor: Color?
     public let isEnabled: Bool
+    public let text: String
 
     public init(
       _ style: Style? = nil,
       handlers: [Event: Handler<()>] = [:],
       isEnabled: Bool = true,
       onPress: Handler<()>? = nil,
+      text: String = "",
       titleColor: Color? = nil
     ) {
       var handlers = handlers
@@ -31,8 +33,15 @@ public struct Button: HostComponent {
       self.style = style
       self.titleColor = titleColor
       self.isEnabled = isEnabled
+      self.text = text
     }
   }
 
-  public typealias Children = String
+  public typealias Children = [AnyNode]
+}
+
+extension Button.Props: ExpressibleByStringLiteral {
+  public init(stringLiteral value: String) {
+    self.init(text: value)
+  }
 }

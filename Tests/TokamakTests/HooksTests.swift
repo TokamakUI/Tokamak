@@ -56,21 +56,25 @@ struct Test: LeafComponent {
 
     return StackView.node([
       Button.node(
-        .init(onPress: Handler { state1.set { $0 += 1 } }),
-        "Increment",
+        .init(
+          onPress: Handler { state1.set { $0 += 1 } },
+          text: "Increment"
+        ),
         ref: ref
       ),
-      Label.node("\(state1.value)"),
-      Button.node(.init(onPress: Handler { state2.set { $0 + 1 } }),
-                  "Increment"),
-      Label.node("\(state2.value)"),
+      Label.node(.init(text: "\(state1.value)")),
+      Button.node(.init(
+        onPress: Handler { state2.set { $0 + 1 } },
+        text: "Increment"
+      )),
+      Label.node(.init(text: "\(state2.value)")),
       Button.node(
         .init(
           onPress: Handler {
             state3.set { $0.points.append(Point(x: 42, y: 42)) }
-          }
-        ),
-        "Increment"
+          },
+          text: "Increment"
+        )
       ),
     ])
   }
@@ -108,8 +112,15 @@ final class HooksTests: XCTestCase {
     let e = expectation(description: "rerender")
 
     DispatchQueue.main.async {
-      XCTAssertEqual(stack.subviews[1].node.children, AnyEquatable("43"))
-      XCTAssertEqual(stack.subviews[3].node.children, AnyEquatable("44"))
+      guard let text1 = stack.subviews[1].props(Label.Props.self),
+        let text3 = stack.subviews[3].props(Label.Props.self) else {
+        XCTAssert(false, "wrong props types")
+        e.fulfill()
+        return
+      }
+
+      XCTAssertEqual(text1.text, "43")
+      XCTAssertEqual(text3.text, "44")
 
       e.fulfill()
     }

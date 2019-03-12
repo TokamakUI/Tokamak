@@ -14,11 +14,14 @@ struct ListProvider: SimpleCellProvider {
   typealias Model = [[Int]]
 
   static func cell(props _: Null, item: Int, path _: CellPath) -> AnyNode {
-    return Label.node(.init(Style(
-      [CenterY.equal(to: .parent),
-       Height.equal(to: 44),
-       Leading.equal(to: .parent, constant: 20)]
-    )), "\(item)")
+    return Label.node(.init(
+      Style(
+        [CenterY.equal(to: .parent),
+         Height.equal(to: 44),
+         Leading.equal(to: .parent, constant: 20)]
+      ),
+      text: "\(item)"
+    ))
   }
 }
 
@@ -51,10 +54,10 @@ struct TableRouter: NavigationRouter {
           Edges.equal(to: .parent),
           backgroundColor: .white
         )),
-        Label.node(
-          .init(Style(Center.equal(to: .parent))),
-          "\(v)"
-        )
+        Label.node(.init(
+          Style(Center.equal(to: .parent)),
+          text: "\(v)"
+        ))
       )
     }
   }

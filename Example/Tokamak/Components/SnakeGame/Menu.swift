@@ -35,10 +35,10 @@ struct GameMenu: PureComponent {
           distribution: .fillEqually,
           spacing: 10.0
         ),
-        Button.node(
-          .init(onPress: Handler { game.set { $0 = restartedGameState } }),
-          "Game over! Restart the game"
-        )
+        Button.node(.init(
+          onPress: Handler { game.set { $0 = restartedGameState } },
+          text: "Game over! Restart the game"
+        ))
       )
     case .initial:
       return StackView.node(
@@ -48,10 +48,10 @@ struct GameMenu: PureComponent {
           distribution: .fillEqually,
           spacing: 10.0
         ),
-        Button.node(
-          .init(onPress: Handler { game.set { $0.state = .isPlaying } }),
-          "Start the game"
-        )
+        Button.node(.init(
+          onPress: Handler { game.set { $0.state = .isPlaying } },
+          text: "Start the game"
+        ))
       )
     }
   }

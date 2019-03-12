@@ -27,12 +27,12 @@ public struct Counter: LeafComponent {
       axis: .vertical,
       distribution: .fillEqually
     ), [
-      Button.node(
-        .init(onPress: Handler { count.set { $0 + 1 } }),
-        "Increment"
-      ),
+      Button.node(.init(
+        onPress: Handler { count.set { $0 + 1 } },
+        text: "Increment"
+      )),
 
-      Label.node(.init(alignment: .center), "\(count.value)"),
+      Label.node(.init(alignment: .center, text: "\(count.value)")),
     ])
   }
 }

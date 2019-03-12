@@ -37,11 +37,14 @@ struct SimpleModal: PureLeafComponent {
 
   static func render(props: Props) -> AnyNode {
     return props.isPresented.value ? ModalPresenter.node(
-      Animation.node(Null(),
-                     Button.node(.init(
-                       Style(Center.equal(to: .parent)),
-                       onPress: Handler { props.isPresented.set(false) }
-      ), "Close Modal"))
+      Animation.node(
+        Null(),
+        Button.node(.init(
+          Style(Center.equal(to: .parent)),
+          onPress: Handler { props.isPresented.set(false) },
+          text: "Close Modal"
+        ))
+      )
     ) : Null.node()
   }
 }
@@ -62,20 +65,20 @@ struct Modals: LeafComponent {
         distribution: .fillEqually
       ),
       [
-        Button.node(
-          .init(onPress: Handler { isAnimationModalPresented.set(true) }),
-          "Present Simple Modal"
-        ),
+        Button.node(.init(
+          onPress: Handler { isAnimationModalPresented.set(true) },
+          text: "Present Simple Modal"
+        )),
 
-        Button.node(
-          .init(onPress: Handler { isStackModalPresented.set(true) }),
-          "Present Navigation Modal"
-        ),
+        Button.node(.init(
+          onPress: Handler { isStackModalPresented.set(true) },
+          text: "Present Navigation Modal"
+        )),
 
-        Button.node(
-          .init(onPress: Handler { isTableModalPresented.set(true) }),
-          "Present Table Modal"
-        ),
+        Button.node(.init(
+          onPress: Handler { isTableModalPresented.set(true) },
+          text: "Present Table Modal"
+        )),
 
         NavigationModal.node(.init(isPresented: isStackModalPresented)),
 

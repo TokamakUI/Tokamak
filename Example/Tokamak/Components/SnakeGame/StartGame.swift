@@ -30,9 +30,9 @@ struct StartGame: PureLeafComponent {
           isEnabled: isVerticalMoveEnabled,
           onPress: Handler {
             game.set { $0.currentDirection = .up }
-          }
-        ),
-        "⬆️"
+          },
+          text: "⬆️"
+        )
       ),
       StackView.node(.init(
         axis: .horizontal,
@@ -43,9 +43,9 @@ struct StartGame: PureLeafComponent {
             isEnabled: isHorizontalMoveEnabled,
             onPress: Handler {
               game.set { $0.currentDirection = .left }
-            }
-          ),
-          "⬅️"
+            },
+            text: "⬅️"
+          )
         ),
 
         Button.node(
@@ -53,17 +53,17 @@ struct StartGame: PureLeafComponent {
             isEnabled: isHorizontalMoveEnabled,
             onPress: Handler {
               game.set { $0.currentDirection = .right }
-            }
-          ),
-          "➡️"
+            },
+            text: "➡️"
+          )
         ),
       ]),
       Button.node(
         .init(
           isEnabled: isVerticalMoveEnabled,
-          onPress: Handler { game.set { $0.currentDirection = .down } }
-        ),
-        "⬇️"
+          onPress: Handler { game.set { $0.currentDirection = .down } },
+          text: "⬇️"
+        )
       ),
     ])
   }

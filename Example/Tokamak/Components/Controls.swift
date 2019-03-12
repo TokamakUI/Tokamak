@@ -32,10 +32,10 @@ struct Controls: LeafComponent {
             )
           ),
 
-          Label.node(
-            .init(alignment: .center),
-            "isEnabled \(isEnabled.value)"
-          ),
+          Label.node(.init(
+            alignment: .center,
+            text: "isEnabled \(isEnabled.value)"
+          )),
         ]
       ),
 
@@ -46,7 +46,7 @@ struct Controls: LeafComponent {
         valueHandler: Handler(sliding.set)
       )),
 
-      Label.node(.init(alignment: .center), "\(sliding.value)"),
+      Label.node(.init(alignment: .center, text: "\(sliding.value)")),
 
       StackView.node(
         .init(
@@ -62,7 +62,7 @@ struct Controls: LeafComponent {
             )
           ),
 
-          Label.node(.init(alignment: .center), "\(switchState.value)"),
+          Label.node(.init(alignment: .center, text: "\(switchState.value)")),
         ]
       ),
 
@@ -85,7 +85,7 @@ struct Controls: LeafComponent {
             )
           ),
 
-          Label.node(.init(alignment: .center), "\(stepperState.value)"),
+          Label.node(.init(alignment: .center, text: "\(stepperState.value)")),
         ]
       ),
     ]

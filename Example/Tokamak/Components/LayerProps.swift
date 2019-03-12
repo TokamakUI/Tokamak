@@ -43,8 +43,9 @@ struct LayerProps: LeafComponent {
                Left.equal(to: .parent, constant: Double(state.value) * 200)]
             ),
             alignment: .center,
+            text: "\(state.value)",
             textColor: .white
-          ), "\(state.value)")
+          ))
         ),
       ])
   }
