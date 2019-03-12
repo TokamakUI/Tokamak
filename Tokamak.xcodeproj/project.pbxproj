@@ -339,7 +339,6 @@
 		OBJ_176 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		OBJ_177 /* Example */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Example; sourceTree = SOURCE_ROOT; };
 		OBJ_18 /* DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker.swift; sourceTree = "<group>"; };
-		OBJ_180 /* tokamakui.org */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tokamakui.org; sourceTree = SOURCE_ROOT; };
 		OBJ_19 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		OBJ_20 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		OBJ_21 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
@@ -766,7 +765,6 @@
 				OBJ_7 /* Sources */,
 				OBJ_171 /* Tests */,
 				OBJ_177 /* Example */,
-				OBJ_180 /* tokamakui.org */,
 				OBJ_181 /* Products */,
 			);
 			indentWidth = 2;
