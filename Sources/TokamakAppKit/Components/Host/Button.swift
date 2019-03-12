@@ -25,11 +25,11 @@ extension Button: NSControlComponent {
 
   static func update(control box: ControlBox<TokamakButton>,
                      _ props: Button.Props,
-                     _ children: String) {
+                     _ children: [AnyNode]) {
     let control = box.view
 
     control.contentTintColor = props.titleColor.flatMap { NSColor($0) }
 
-    control.title = children
+    control.title = props.text
   }
 }

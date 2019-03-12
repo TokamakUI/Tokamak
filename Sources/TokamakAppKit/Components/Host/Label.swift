@@ -39,7 +39,7 @@ extension Label: NSViewComponent {
 
   static func update(view box: ViewBox<TokamakLabel>,
                      _ props: Label.Props,
-                     _ children: String) {
+                     _ children: [AnyNode]) {
     let view = box.view
     view.alignment = NSTextAlignment(props.alignment)
     view.textContainer?.maximumNumberOfLines = props.numberOfLines
@@ -49,6 +49,6 @@ extension Label: NSViewComponent {
     } else {
       view.textColor = .textColor
     }
-    view.string = children
+    view.string = props.text
   }
 }
