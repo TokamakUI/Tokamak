@@ -3,7 +3,8 @@
 //  TokamakDemo
 //
 //  Created by Max Desiatov on 25/02/2019.
-//  Copyright © 2019 Tokamak. All rights reserved.
+//  Copyright © 2019 Tokamak. Tokamak is available under the Apache 2.0
+//  license. See the LICENSE file for more info.
 //
 
 import Tokamak

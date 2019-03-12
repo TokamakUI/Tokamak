@@ -9,7 +9,7 @@ import Tokamak
 import UIKit
 
 extension UIControl.Event {
-  public init(_ value: Event) {
+  public init?(_ value: Event) {
     switch value {
     case .touchDown:
       self = .touchDown
@@ -45,6 +45,8 @@ extension UIControl.Event {
       self = .allEditingEvents
     case .allEvents:
       self = .allEvents
+    case .hoverEnter, .hoverExit, .contextualMenu:
+      return nil
     }
   }
 }

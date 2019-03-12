@@ -18,6 +18,10 @@ let package = Package(
       targets: ["TokamakUIKit"]
     ),
     .library(
+      name: "TokamakAppKit",
+      targets: ["TokamakAppKit"]
+    ),
+    .library(
       name: "TokamakTestRenderer",
       targets: ["TokamakTestRenderer"]
     ),
@@ -36,7 +40,15 @@ let package = Package(
       dependencies: []
     ),
     .target(
+      name: "TokamakDemo",
+      dependencies: ["Tokamak"]
+    ),
+    .target(
       name: "TokamakUIKit",
+      dependencies: ["Tokamak"]
+    ),
+    .target(
+      name: "TokamakAppKit",
       dependencies: ["Tokamak"]
     ),
     .target(

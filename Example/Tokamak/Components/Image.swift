@@ -3,7 +3,8 @@
 //  TokamakDemo
 //
 //  Created by Matvii Hodovaniuk on 2/18/19.
-//  Copyright © 2019 Tokamak. All rights reserved.
+//  Copyright © 2019 Tokamak. Tokamak is available under the Apache 2.0
+//  license. See the LICENSE file for more info.
 //
 
 import Tokamak
@@ -45,8 +46,8 @@ struct ImageExample: LeafComponent {
           maximumZoomScale: 2.0
         ),
         ImageView.node(.init(
-          Style(Edges.equal(to: .parent), contentMode: .scaleAspectFit),
-          image: Image(name: "tokamak")
+          Style(Edges.equal(to: .parent)),
+          image: Image(contentMode: .scaleAspectFit, name: "tokamak")
         ), ref: refImage),
         ref: refScroll
       ),

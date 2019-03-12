@@ -1,5 +1,5 @@
 //
-//  UIKitViewComponent.swift
+//  UIViewComponent.swift
 //  TokamakUIKit
 //
 //  Created by Max Desiatov on 02/12/2018.
@@ -35,12 +35,9 @@ private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
     view.layer.allowsEdgeAntialiasing = $0
   }
   style.allowsGroupOpacity.flatMap { view.layer.allowsGroupOpacity = $0 }
-  style.alpha.flatMap { view.alpha = CGFloat($0) }
   style.backgroundColor.flatMap { view.backgroundColor = UIColor($0) }
   style.borderColor.flatMap { view.layer.borderColor = UIColor($0).cgColor }
   style.borderWidth.flatMap { view.layer.borderWidth = CGFloat($0) }
-  style.clipsToBounds.flatMap { view.clipsToBounds = $0 }
-  style.contentMode.flatMap { view.contentMode = UIView.ContentMode($0) }
   style.cornerRadius.flatMap { view.layer.cornerRadius = CGFloat($0) }
   style.masksToBounds.flatMap { view.layer.masksToBounds = $0 }
   style.isDoubleSided.flatMap { view.layer.isDoubleSided = $0 }
@@ -73,8 +70,6 @@ private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
     view.accessibilityIdentifier = $0.identifier
   }
 
-  // center has to be updated after `frame`, otherwise `frame` overrides it
-  style.center.flatMap { view.center = CGPoint($0) }
   style.isHidden.flatMap { view.isHidden = $0 }
 }
 

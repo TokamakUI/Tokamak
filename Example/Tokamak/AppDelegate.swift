@@ -3,7 +3,8 @@
 //  Tokamak_Example
 //
 //  Created by Max Desiatov on 09/15/2018.
-//  Copyright (c) 2018 Max Desiatov. All rights reserved.
+//  Copyright (c) 2018 Max Desiatov. Tokamak is available under the Apache 2.0
+//  license. See the LICENSE file for more info.
 //
 
 import UIKit

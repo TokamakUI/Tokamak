@@ -1,9 +1,10 @@
 //
 //  Timer.swift
-//  Tokamak_Example
+//  TokamakDemo
 //
 //  Created by Max Desiatov on 17/02/2019.
-//  Copyright © 2019 Max Desiatov. All rights reserved.
+//  Copyright © 2019 Max Desiatov. Tokamak is available under the Apache 2.0
+//  license. See the LICENSE file for more info.
 //
 
 import Foundation

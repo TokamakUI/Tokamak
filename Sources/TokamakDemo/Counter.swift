@@ -1,19 +1,24 @@
 //
 //  Counter.swift
-//  Tokamak_Example
+//  TokamakDemo
 //
 //  Created by Max Desiatov on 14/02/2019.
-//  Copyright © 2019 Max Desiatov. All rights reserved.
+//  Copyright © 2019 Max Desiatov. Tokamak is available under the Apache 2.0
+//  license. See the LICENSE file for more info.
 //
 
 import Tokamak
 
-struct Counter: LeafComponent {
-  struct Props: Equatable {
-    let countFrom: Int
+public struct Counter: LeafComponent {
+  public struct Props: Equatable {
+    public let countFrom: Int
+
+    public init(countFrom: Int) {
+      self.countFrom = countFrom
+    }
   }
 
-  static func render(props: Counter.Props, hooks: Hooks) -> AnyNode {
+  public static func render(props: Props, hooks: Hooks) -> AnyNode {
     let count = hooks.state(props.countFrom)
 
     return StackView.node(.init(
