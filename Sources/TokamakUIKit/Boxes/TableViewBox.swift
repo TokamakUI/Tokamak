@@ -9,10 +9,16 @@ import Tokamak
 import UIKit
 
 final class TokamakTableCell: UITableViewCell {
-  // FIXME: `component` has a strong reference to `box` through its own
-  // property `target`, should that be `weak` to break a potential reference
-  // cycle?
-  fileprivate var component: UIKitRenderer.Mounted?
+  fileprivate weak var component: UIKitRenderer.Mounted?
+  fileprivate weak var renderer: UIKitRenderer?
+
+  /** This is important to implement as forgetting to unmount the component
+   will leave effects not finalized with possible resource and/or memory leaks.
+   */
+  deinit {
+    guard let component = component else { return }
+    renderer?.unmount(component: component)
+  }
 }
 
 extension CellPath {
@@ -71,6 +77,7 @@ private final class DataSource<T: CellProvider>: NSObject,
         reuseIdentifier: id.rawValue
       )
       if let viewController = viewController {
+        result.renderer = renderer
         result.component = renderer?.mount(
           with: node,
           to: ViewBox(result, viewController, node)

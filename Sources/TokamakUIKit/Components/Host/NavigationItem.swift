@@ -21,10 +21,12 @@ extension UINavigationItem.LargeTitleDisplayMode {
   }
 }
 
-extension NavigationItem: UIHostComponent {
+extension NavigationItem: UIHostComponent, RefComponent {
+  public typealias RefTarget = UINavigationItem
+
   static func mountTarget(to parent: UITarget,
                           component: UIKitRenderer.MountedHost,
-                          _: UIKitRenderer) -> UITarget? {
+                          _ renderer: UIKitRenderer) -> UITarget? {
     guard
       let parent = parent as? ViewControllerBox<TokamakNavigationController>
     else {
@@ -40,7 +42,7 @@ extension NavigationItem: UIHostComponent {
     }
 
     let viewController = UIViewController()
-    let result = ViewControllerBox(viewController, component.node)
+    let result = NavigationItemBox(renderer, viewController, component.node)
 
     parent.containerViewController.pushViewController(
       viewController,
@@ -51,7 +53,7 @@ extension NavigationItem: UIHostComponent {
   }
 
   static func update(target: UITarget, node: AnyNode) {
-    guard let target = target as? ViewControllerBox<UIViewController> else {
+    guard let target = target as? NavigationItemBox else {
       targetAssertionFailure()
       return
     }
@@ -66,5 +68,7 @@ extension NavigationItem: UIHostComponent {
     item.largeTitleDisplayMode = .init(mode: props.titleMode)
   }
 
-  static func unmount(target: UITarget, completion: () -> ()) { completion() }
+  static func unmount(target: UITarget, completion: () -> ()) {
+    completion()
+  }
 }

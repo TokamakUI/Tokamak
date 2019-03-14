@@ -14,12 +14,30 @@ public struct NavigationItem: HostComponent {
       case standard
     }
 
+    public let backItem: AnyNode?
+    public let hidesBackItem: Bool
+    public let leftItems: [AnyNode]
+    public let rightItems: [AnyNode]
     public let title: String?
     public let titleMode: TitleMode
+    public let titleView: AnyNode?
 
-    public init(title: String? = nil, titleMode: TitleMode = .automatic) {
+    public init(
+      backItem: AnyNode? = nil,
+      hidesBackItem: Bool = false,
+      leftItems: [AnyNode] = [],
+      rightItems: [AnyNode] = [],
+      title: String? = nil,
+      titleMode: TitleMode = .automatic,
+      titleView: AnyNode? = nil
+    ) {
+      self.backItem = backItem
+      self.hidesBackItem = hidesBackItem
+      self.leftItems = leftItems
+      self.rightItems = rightItems
       self.title = title
       self.titleMode = titleMode
+      self.titleView = titleView
     }
   }
 

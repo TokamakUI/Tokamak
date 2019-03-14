@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		D1292809223831B7004BAED3 /* NavigationItemBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1292808223831B7004BAED3 /* NavigationItemBox.swift */; };
 		D15E04332235829000BB0571 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E04322235829000BB0571 /* Rectangle.swift */; };
 		D15E0447223582FD00BB0571 /* FirstBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0435223582EE00BB0571 /* FirstBaseline.swift */; };
 		D15E0448223582FD00BB0571 /* CenterY.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0436223582EE00BB0571 /* CenterY.swift */; };
@@ -245,6 +246,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D1292808223831B7004BAED3 /* NavigationItemBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItemBox.swift; sourceTree = "<group>"; };
 		D15E042D223578BC00BB0571 /* TokamakUIKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokamakUIKit.podspec; sourceTree = "<group>"; };
 		D15E042E223578BC00BB0571 /* Tokamak.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Tokamak.podspec; sourceTree = "<group>"; };
 		D15E042F223578BC00BB0571 /* TokamakAppKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokamakAppKit.podspec; sourceTree = "<group>"; };
@@ -847,6 +849,7 @@
 				OBJ_88 /* ValueControlBox.swift */,
 				OBJ_89 /* ViewBox.swift */,
 				OBJ_90 /* ViewControllerBox.swift */,
+				D1292808223831B7004BAED3 /* NavigationItemBox.swift */,
 			);
 			path = Boxes;
 			sourceTree = "<group>";
@@ -1211,6 +1214,7 @@
 				OBJ_350 /* ScrollView.swift in Sources */,
 				OBJ_351 /* SegmentedControl.swift in Sources */,
 				OBJ_352 /* Slider.swift in Sources */,
+				D1292809223831B7004BAED3 /* NavigationItemBox.swift in Sources */,
 				OBJ_353 /* StackView.swift in Sources */,
 				OBJ_354 /* Stepper.swift in Sources */,
 				OBJ_355 /* Switch.swift in Sources */,

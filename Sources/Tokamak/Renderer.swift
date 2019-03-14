@@ -76,6 +76,10 @@ public protocol Renderer: class {
 }
 
 extension Renderer {
+  /** It is the callers responsibility to retain the ownership of the returned
+   mounted component and to unmount that component (usually when ownership
+   is released).
+   */
   public func mount(with node: AnyNode, to parent: TargetType) -> Mounted {
     let result: Mounted = node.makeMountedComponent(parent)
     if let reconciler = reconciler {
@@ -84,6 +88,7 @@ extension Renderer {
     return result
   }
 
+  /** Explicitly updates the component owned by the owner. */
   public func update(component: Mounted, with node: AnyNode) {
     component.node = node
     if let reconciler = reconciler {
@@ -91,6 +96,7 @@ extension Renderer {
     }
   }
 
+  /** Allows the owner of the component to explicitly unmount it. */
   public func unmount(component: Mounted) {
     if let reconciler = reconciler {
       component.unmount(with: reconciler)

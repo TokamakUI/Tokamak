@@ -38,6 +38,17 @@ struct TableRouter: NavigationRouter {
     pop: @escaping () -> (),
     hooks: Hooks
   ) -> AnyNode {
+    let item = hooks.ref(type: UINavigationItem.self)
+
+    // FIXME: to be replaced with left/right buttons API for `NavigationItem`
+    hooks.effect(Null()) {
+      guard let item = item.value else { return }
+
+      let button = UIButton(type: .system)
+      button.setTitle("Close", for: .normal)
+      item.leftBarButtonItem = UIBarButtonItem(customView: button)
+    }
+
     switch route {
     case .table:
       return NavigationItem.node(
@@ -46,7 +57,8 @@ struct TableRouter: NavigationRouter {
           Style(Edges.equal(to: .parent)),
           onSelect: Handler { push(.value($0.item + 1)) },
           singleSection: [1, 2, 3]
-        ))
+        )),
+        ref: item
       )
     case let .value(v):
       return View.node(
