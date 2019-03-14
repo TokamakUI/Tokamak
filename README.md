@@ -63,10 +63,14 @@ architecture of React with its established patterns available to you in Swift.
 _**Important:**_ Tokamak is relatively stable at this point, as in not having
 any blocking or critical bugs that the maintainers are aware of. The core API of
 `Component` and `Hooks` types is frozen, and there's a plenty of [standard
-components](#standard-components) to start building useful apps. If in the
-future there's a breaking change that's absolutely needed, deprecating old APIs
-in a source-compatible way and introducing a replacement gradually is the top
-priority. Nevertheless, its important to note this can't always be achieved. 
+components](#standard-components) to start building useful apps on iOS. The
+macOS/AppKit renderer has support for only the most basic components and
+improving its feature parity with the iOS renderer is the top priority. If in
+the future there's a breaking change that's absolutely needed, we aim to
+deprecate old APIs in a source-compatible way and will introduce any
+replacements gradually. It's important to note that source breaking
+changes can't always be avoided, but they would be reflected with 
+appropriate version number change and migration guides.
 
 ## Table of contents
 
@@ -94,7 +98,6 @@ within an existing UIKit app, looks like this:
 
 ```swift
 import Tokamak
-import TokamakUIKit
 
 struct Counter: LeafComponent {
   struct Props: Equatable {
@@ -113,6 +116,12 @@ struct Counter: LeafComponent {
     ])
   }
 }
+```
+
+Then you can add this component to any iOS app as a view controller this way:
+
+```swift
+import TokamakUIKit
 
 final class ViewController: TokamakViewController {
   override var node: AnyNode {
@@ -122,6 +131,30 @@ final class ViewController: TokamakViewController {
 ```
 
 ![Counter component](TokamakCounter.gif)
+
+Or similarly it can be added to a macOS app:
+
+```swift
+import TokamakAppKit
+
+final class ViewController: TokamakViewController {
+  override var node: AnyNode {
+    return View.node(
+      .init(Style([
+        Edges.equal(to: .parent),
+        Width.equal(to: 200),
+        Height.equal(to: 100),
+      ])),
+      Counter.node(.init(countFrom: 1))
+    )
+  }
+}
+```
+
+Note that we added explicit constraints to use this as a window's root view 
+controller, and windows don't have a fixed predefined size by default.
+
+![Counter component](TokamakCounterAppKit.gif)
 
 To run the example project, clone the repo, and run `pod install` from the
 [`Example`](https://github.com/MaxDesiatov/Tokamak/tree/master/Example) directory
