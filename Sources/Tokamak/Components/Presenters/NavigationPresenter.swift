@@ -5,7 +5,10 @@
 //  Created by Max Desiatov on 31/12/2018.
 //
 
-public protocol NavigationRouter: Router {
+public protocol NavigationRouter {
+  associatedtype Props: Equatable
+  associatedtype Route: Equatable
+
   static func route(
     props: Props,
     route: Route,

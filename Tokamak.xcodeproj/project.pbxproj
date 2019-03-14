@@ -63,9 +63,7 @@
 		OBJ_213 /* ModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* ModalPresenter.swift */; };
 		OBJ_214 /* NavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* NavigationItem.swift */; };
 		OBJ_215 /* NavigationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* NavigationPresenter.swift */; };
-		OBJ_216 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* Router.swift */; };
 		OBJ_217 /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* TabItem.swift */; };
-		OBJ_218 /* TabPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* TabPresenter.swift */; };
 		OBJ_219 /* Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* Accessibility.swift */; };
 		OBJ_220 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_40 /* Color.swift */; };
 		OBJ_221 /* Bottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* Bottom.swift */; };
@@ -354,9 +352,7 @@
 		OBJ_32 /* ModalPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPresenter.swift; sourceTree = "<group>"; };
 		OBJ_33 /* NavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItem.swift; sourceTree = "<group>"; };
 		OBJ_34 /* NavigationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPresenter.swift; sourceTree = "<group>"; };
-		OBJ_35 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		OBJ_36 /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
-		OBJ_37 /* TabPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPresenter.swift; sourceTree = "<group>"; };
 		OBJ_39 /* Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessibility.swift; sourceTree = "<group>"; };
 		OBJ_40 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		OBJ_42 /* Bottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bottom.swift; sourceTree = "<group>"; };
@@ -418,7 +414,7 @@
 		"Tokamak::TokamakDemo::Product" /* TokamakDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TokamakDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Tokamak::TokamakTestRenderer::Product" /* TokamakTestRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TokamakTestRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Tokamak::TokamakTests::Product" /* TokamakTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = TokamakTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		"Tokamak::TokamakUIKit::Product" /* TokamakUIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TokamakUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"Tokamak::TokamakUIKit::Product" /* TokamakUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TokamakUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -706,9 +702,7 @@
 				OBJ_32 /* ModalPresenter.swift */,
 				OBJ_33 /* NavigationItem.swift */,
 				OBJ_34 /* NavigationPresenter.swift */,
-				OBJ_35 /* Router.swift */,
 				OBJ_36 /* TabItem.swift */,
-				OBJ_37 /* TabPresenter.swift */,
 			);
 			path = Presenters;
 			sourceTree = "<group>";
@@ -1064,9 +1058,7 @@
 				OBJ_213 /* ModalPresenter.swift in Sources */,
 				OBJ_214 /* NavigationItem.swift in Sources */,
 				OBJ_215 /* NavigationPresenter.swift in Sources */,
-				OBJ_216 /* Router.swift in Sources */,
 				OBJ_217 /* TabItem.swift in Sources */,
-				OBJ_218 /* TabPresenter.swift in Sources */,
 				OBJ_219 /* Accessibility.swift in Sources */,
 				OBJ_220 /* Color.swift in Sources */,
 				OBJ_221 /* Bottom.swift in Sources */,
@@ -1359,6 +1351,7 @@
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -1366,6 +1359,7 @@
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 4.2;
 				TARGET_NAME = TokamakAppKit;
@@ -1387,6 +1381,7 @@
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -1394,6 +1389,7 @@
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 4.2;
 				TARGET_NAME = TokamakAppKit;
@@ -1628,6 +1624,7 @@
 					"$(inherited)",
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -1635,6 +1632,7 @@
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 4.2;
 				TARGET_NAME = TokamakUIKit;
@@ -1655,6 +1653,7 @@
 					"$(inherited)",
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -1662,6 +1661,7 @@
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 4.2;
 				TARGET_NAME = TokamakUIKit;
