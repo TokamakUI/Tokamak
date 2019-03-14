@@ -12,12 +12,24 @@ final class TokamakTabController: UITabBarController {
   /// Used to prevent calling `onPop` if this navigation view controller is not
   /// mounted yet
   var isMounted = false
-//    private let onPop: () -> ()
 
   init(onPop: @escaping () -> ()) {
-//        self.onPop = onPop
-
     super.init(nibName: nil, bundle: nil)
+//    let tabBarCnt = UITabBarController()
+//    let firstVc = UIViewController()
+//    firstVc.title = "First"
+//    firstVc.view.backgroundColor = UIColor.red
+//    firstVc.tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "HomeTab"), tag: 0)
+//
+//    let secondVc = UIViewController()
+//    secondVc.title = "Second"
+//    secondVc.view.backgroundColor = UIColor.green
+//    secondVc.tabBarItem = UITabBarItem(title: "Location", image: UIImage(named: "Location"), tag: 1)
+//
+//    let controllerArray = [firstVc, secondVc]
+//    tabBarCnt.viewControllers = controllerArray.map { UINavigationController(rootViewController: $0) }
+//
+//    view.addSubview(tabBarCnt.view)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -32,47 +44,15 @@ final class TokamakTabController: UITabBarController {
   }
 }
 
-// FIXME: is this reliable enough? Will this work for
-// `TokamakNavigationController` without a navigation bar? Can you even create
-// one without a navigation bar?
-extension TokamakTabController: UITabBarControllerDelegate {
-  func navigationBar(
-    _ navigationBar: UINavigationBar,
-    didPop item: UINavigationItem
-  ) {
-//    onPop()
-  }
-
-//  func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-//
-//  }
-}
-
 extension TabController: UIHostComponent {
   static func mountTarget(to parent: UITarget,
                           component: UIKitRenderer.MountedHost,
                           _: UIKitRenderer) -> UITarget? {
-//    guard let props = component.node.props.value as? Props else {
-//      propsAssertionFailure()
-//      return nil
-//    }
-
     let result = ViewControllerBox(TokamakTabController {}, component.node)
-//    let result = ViewControllerBox(TokamakTabController {}, component.node)
-//    let result = ViewControllerBox(TokamakTabController(coder: component.node), component.node)
-//    props.hidesBarsWhenKeyboardAppears.flatMap {
-//      result.containerViewController.hidesBarsWhenKeyboardAppears = $0
-//    }
-
-//    result.containerViewController.navigationBar.prefersLargeTitles =
-//      props.prefersLargeTitles
 
     switch parent {
-    // FIXME: this `case` handler is duplicated with `UIViewComponent`,
-    // should this be generalised as a protocol?
-    case let box as ViewControllerBox<UIViewController>
-      where parent.node.isSubtypeOf(ModalPresenter.self):
-      guard let props = parent.node.props.value as? ModalPresenter.Props else {
+    case let box as ViewControllerBox<UIViewController>:
+      guard let props = parent.node.props.value as? TabController.Props else {
         propsAssertionFailure()
         return nil
       }
@@ -80,7 +60,7 @@ extension TabController: UIHostComponent {
       // allow children nodes to be mounted first before presenting
       DispatchQueue.main.async {
         box.viewController.present(result.viewController,
-                                   animated: props.presentAnimated,
+                                   animated: props.isAnimated,
                                    completion: nil)
       }
     case let box as ViewBox<UIView>:

@@ -63,12 +63,7 @@ public struct TabPresenter<T: TabRouter>: LeafComponent {
 
     return TabController.node(
       .init(
-//        hidesBarsWhenKeyboardAppears: props.hidesBarsWhenKeyboardAppears,
-//        popAnimated: props.popAnimated,
-//        prefersLargeTitles: props.prefersLargeTitles,
-//        pushAnimated: props.pushAnimated,
-//        onPop: Handler(pop)
-//        current: 1
+        isAnimated: true
       ),
       stack.value.map {
         T.route(

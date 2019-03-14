@@ -146,8 +146,8 @@ extension UIViewComponent where Target == Target.DefaultValue,
       }
 
       box.containerViewController.setViewControllers(
-        [viewController],
-        animated: props.pushAnimated
+        [result.viewController],
+        animated: props.isAnimated
       )
     case let box as ViewControllerBox<UIViewController>
       where parent.node.isSubtypeOf(ModalPresenter.self):
