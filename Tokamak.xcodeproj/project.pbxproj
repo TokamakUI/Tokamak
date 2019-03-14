@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		A675A59922390218005173E5 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59822390218005173E5 /* TabController.swift */; };
+		A675A59B223910E1005173E5 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59A223910E1005173E5 /* TabController.swift */; };
 		D15E04332235829000BB0571 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E04322235829000BB0571 /* Rectangle.swift */; };
 		D15E0447223582FD00BB0571 /* FirstBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0435223582EE00BB0571 /* FirstBaseline.swift */; };
 		D15E0448223582FD00BB0571 /* CenterY.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0436223582EE00BB0571 /* CenterY.swift */; };
@@ -245,6 +247,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A675A59822390218005173E5 /* TabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
+		A675A59A223910E1005173E5 /* TabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
 		D15E042D223578BC00BB0571 /* TokamakUIKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokamakUIKit.podspec; sourceTree = "<group>"; };
 		D15E042E223578BC00BB0571 /* Tokamak.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Tokamak.podspec; sourceTree = "<group>"; };
 		D15E042F223578BC00BB0571 /* TokamakAppKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokamakAppKit.podspec; sourceTree = "<group>"; };
@@ -567,6 +571,7 @@
 				OBJ_28 /* Switch.swift */,
 				OBJ_29 /* TextField.swift */,
 				OBJ_30 /* View.swift */,
+				A675A59822390218005173E5 /* TabController.swift */,
 			);
 			path = Host;
 			sourceTree = "<group>";
@@ -881,6 +886,7 @@
 				OBJ_107 /* Switch.swift */,
 				OBJ_108 /* TextField.swift */,
 				OBJ_109 /* View.swift */,
+				A675A59A223910E1005173E5 /* TabController.swift */,
 			);
 			path = Host;
 			sourceTree = "<group>";
@@ -1081,6 +1087,7 @@
 				OBJ_230 /* Leading.swift in Sources */,
 				OBJ_231 /* Left.swift in Sources */,
 				OBJ_232 /* Right.swift in Sources */,
+				A675A59922390218005173E5 /* TabController.swift in Sources */,
 				OBJ_233 /* SizeConstraint.swift in Sources */,
 				OBJ_234 /* Top.swift in Sources */,
 				OBJ_235 /* Trailing.swift in Sources */,
@@ -1207,6 +1214,7 @@
 				OBJ_346 /* ListView.swift in Sources */,
 				OBJ_347 /* ModalPresenter.swift in Sources */,
 				OBJ_348 /* NavigationController.swift in Sources */,
+				A675A59B223910E1005173E5 /* TabController.swift in Sources */,
 				OBJ_349 /* NavigationItem.swift in Sources */,
 				OBJ_350 /* ScrollView.swift in Sources */,
 				OBJ_351 /* SegmentedControl.swift in Sources */,
