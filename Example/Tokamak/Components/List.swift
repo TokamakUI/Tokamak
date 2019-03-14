@@ -9,7 +9,7 @@
 
 import Tokamak
 
-private struct Cells: SimpleCellProvider {
+private struct Cells: CellProvider {
   static func cell(
     props: Null,
     item: AppRoute,
@@ -27,7 +27,7 @@ private struct Cells: SimpleCellProvider {
 
   typealias Props = Null
 
-  typealias Model = [[AppRoute]]
+  typealias Model = AppRoute
 }
 
 struct List: PureLeafComponent {

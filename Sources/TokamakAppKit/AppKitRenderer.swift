@@ -21,7 +21,7 @@ import Tokamak
 // let _collectionViewWitnessTableHack: NSHostComponent.Type =
 //    CollectionView<HackyProvider>.self
 
-struct HackyProvider: SimpleCellProvider {
+struct HackyProvider: CellProvider {
   static func cell(
     props: Props, item: Int, path: CellPath
   ) -> AnyNode {

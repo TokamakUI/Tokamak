@@ -33,15 +33,17 @@ extension Array: SectionedModel
   }
 }
 
-public protocol CellProvider {
+public protocol IdentifiedCellProvider {
   associatedtype Props: Equatable
   associatedtype Identifier: RawRepresentable, CaseIterable
     where Identifier.RawValue == String
-  associatedtype Model: SectionedModel & Equatable
+  associatedtype Model: Equatable
+  associatedtype Sections: SectionedModel & Equatable = [[Model]] where
+    Sections.Element.Element == Model
 
   static func cell(
     props: Props,
-    item: Model.Element.Element,
+    item: Model,
     path: CellPath
   ) -> (Identifier, AnyNode)
 }
@@ -50,19 +52,19 @@ public enum SingleIdentifier: String, CaseIterable {
   case single
 }
 
-public protocol SimpleCellProvider: CellProvider
+public protocol CellProvider: IdentifiedCellProvider
   where Identifier == SingleIdentifier {
   static func cell(
     props: Props,
-    item: Model.Element.Element,
+    item: Model,
     path: CellPath
   ) -> AnyNode
 }
 
-extension SimpleCellProvider {
+extension CellProvider {
   public static func cell(
     props: Props,
-    item: Model.Element.Element,
+    item: Model,
     path: CellPath
   ) -> (Identifier, AnyNode) {
     return (.single, cell(props: props, item: item, path: path))
@@ -72,7 +74,7 @@ extension SimpleCellProvider {
 public struct ListView<T: CellProvider>: HostComponent {
   public struct Props: Equatable, StyleProps {
     public let cellProps: T.Props
-    public let model: T.Model
+    public let model: T.Sections
     public let onSelect: Handler<CellPath>?
     public let style: Style?
 
@@ -80,10 +82,10 @@ public struct ListView<T: CellProvider>: HostComponent {
       _ style: Style? = nil,
       cellProps: T.Props,
       onSelect: Handler<CellPath>? = nil,
-      singleSection: T.Model.Element
+      singleSection: T.Sections.Element
     ) {
       self.cellProps = cellProps
-      model = T.Model.single(section: singleSection)
+      model = T.Sections.single(section: singleSection)
       self.onSelect = onSelect
       self.style = style
     }
@@ -91,7 +93,7 @@ public struct ListView<T: CellProvider>: HostComponent {
     public init(
       _ style: Style? = nil,
       cellProps: T.Props,
-      model: T.Model,
+      model: T.Sections,
       onSelect: Handler<CellPath>? = nil
     ) {
       self.cellProps = cellProps
@@ -107,7 +109,7 @@ public struct ListView<T: CellProvider>: HostComponent {
 extension ListView.Props where T.Props == Null {
   public init(
     _ style: Style? = nil,
-    model: T.Model,
+    model: T.Sections,
     onSelect: Handler<CellPath>? = nil
   ) {
     cellProps = Null()
@@ -119,10 +121,10 @@ extension ListView.Props where T.Props == Null {
   public init(
     _ style: Style? = nil,
     onSelect: Handler<CellPath>? = nil,
-    singleSection: T.Model.Element
+    singleSection: T.Sections.Element
   ) {
     cellProps = Null()
-    model = T.Model.single(section: singleSection)
+    model = T.Sections.single(section: singleSection)
     self.onSelect = onSelect
     self.style = style
   }

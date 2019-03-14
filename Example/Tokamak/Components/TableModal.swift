@@ -9,9 +9,9 @@
 
 import Tokamak
 
-struct ListProvider: SimpleCellProvider {
+struct ListProvider: CellProvider {
   typealias Props = Null
-  typealias Model = [[Int]]
+  typealias Model = Int
 
   static func cell(props _: Null, item: Int, path _: CellPath) -> AnyNode {
     return Label.node(.init(

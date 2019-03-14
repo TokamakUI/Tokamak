@@ -8,7 +8,7 @@
 public struct CollectionView<T: CellProvider>: HostComponent {
   public struct Props: Equatable, StyleProps {
     public let cellProps: T.Props
-    public let model: T.Model
+    public let sections: T.Sections
     public let onSelect: Handler<CellPath>?
     public let style: Style?
 
@@ -16,10 +16,10 @@ public struct CollectionView<T: CellProvider>: HostComponent {
       _ style: Style? = nil,
       cellProps: T.Props,
       onSelect: Handler<CellPath>? = nil,
-      singleSection: T.Model.Element
+      singleSection: T.Sections.Element
     ) {
       self.cellProps = cellProps
-      model = T.Model.single(section: singleSection)
+      sections = T.Sections.single(section: singleSection)
       self.onSelect = onSelect
       self.style = style
     }
@@ -27,11 +27,11 @@ public struct CollectionView<T: CellProvider>: HostComponent {
     public init(
       _ style: Style? = nil,
       cellProps: T.Props,
-      model: T.Model,
+      sections: T.Sections,
       onSelect: Handler<CellPath>? = nil
     ) {
       self.cellProps = cellProps
-      self.model = model
+      self.sections = sections
       self.onSelect = onSelect
       self.style = style
     }
@@ -43,11 +43,11 @@ public struct CollectionView<T: CellProvider>: HostComponent {
 extension CollectionView.Props where T.Props == Null {
   public init(
     _ style: Style? = nil,
-    model: T.Model,
+    sections: T.Sections,
     onSelect: Handler<CellPath>? = nil
   ) {
     cellProps = Null()
-    self.model = model
+    self.sections = sections
     self.onSelect = onSelect
     self.style = style
   }
@@ -55,10 +55,10 @@ extension CollectionView.Props where T.Props == Null {
   public init(
     _ style: Style? = nil,
     onSelect: Handler<CellPath>? = nil,
-    singleSection: T.Model.Element
+    singleSection: T.Sections.Element
   ) {
     cellProps = Null()
-    model = T.Model.single(section: singleSection)
+    sections = T.Sections.single(section: singleSection)
     self.onSelect = onSelect
     self.style = style
   }
