@@ -29,7 +29,7 @@ struct HackyProvider: CellProvider {
   }
 
   typealias Props = Null
-  typealias Model = [[Int]]
+  typealias Model = Int
 }
 
 class NSTarget: Target {
