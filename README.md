@@ -72,6 +72,10 @@ replacements gradually. It's important to note that source breaking
 changes can't always be avoided, but they would be reflected with 
 appropriate version number change and migration guides.
 
+Don't forget to check out [Tokamak community on
+Spectrum](https://spectrum.chat/tokamak) and leave your feedback, comments and
+questions!
+
 ## Table of contents
 
   * [Example code](#example-code)
