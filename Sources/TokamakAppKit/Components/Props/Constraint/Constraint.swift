@@ -61,7 +61,7 @@ extension NSView {
     case let .lastBaseline(location):
       return location.constraint(current: self, parent: superview, next: next)
     case let .size(size):
-      switch size.value {
+      switch size {
       case let .constant(constant):
         return constraint(
           Width.equal(to: .own, constant: constant.width), next: next
