@@ -13,6 +13,7 @@ struct TabExample: LeafComponent {
   typealias Props = Null
 
   static func render(props: Props, hooks: Hooks) -> AnyNode {
+    let refTabBar = hooks.ref(type: UITabBarController.self)
     let style = Style(Center.equal(to: .parent))
     let selectedIndex = hooks.state(3)
     return TabController.node(
@@ -20,7 +21,8 @@ struct TabExample: LeafComponent {
       [
         TabItem.node(.init(title: "First"), Label.node(.init(style, text: "First"))),
         TabItem.node(.init(title: "Second"), Label.node(.init(style, text: "Second"))),
-      ]
+      ],
+      ref: refTabBar
 //            [
 //              Label.node(.init(style, text: "First")),
 //              Label.node(.init(style, text: "Second")),

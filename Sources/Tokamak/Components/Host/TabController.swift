@@ -5,7 +5,9 @@
 //  Created by Matvii Hodovaniuk on 3/13/19.
 //
 
-public struct TabController: HostComponent {
+public struct TabController: HostComponent, RefComponent {
+  public typealias RefTarget = UITabBarController
+
   public typealias Children = [AnyNode]
 
   public struct Props: Equatable {

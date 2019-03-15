@@ -20,6 +20,11 @@ final class TokamakTabController: UITabBarController {
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+  func tabBarController(_ tabBarController: UITabBarController,
+                        didSelect viewController: UIViewController) {
+    print("H")
+  }
 }
 
 extension TabController: UIHostComponent {
