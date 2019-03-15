@@ -5,11 +5,20 @@
 //  Created by Max Desiatov on 02/02/2019.
 //
 
-public struct SizeConstraint: Equatable {
-  public enum Value: Equatable {
-    case constant(Size)
-    case multiplier(Constraint.Target, Double)
+public enum SizeConstraint: Equatable {
+  case constant(Size)
+  case multiplier(Constraint.Target, Double)
+}
+
+extension Size {
+  static func equal(to size: Size) -> SizeConstraint {
+    return .constant(size)
   }
 
-  public let value: Value
+  static func equal(
+    to target: Constraint.Target,
+    multiplier: Double = 1.0
+  ) -> SizeConstraint {
+    return .multiplier(target, multiplier)
+  }
 }
