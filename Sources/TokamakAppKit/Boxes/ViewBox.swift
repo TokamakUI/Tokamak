@@ -23,4 +23,13 @@ class ViewBox<T: NSView>: ViewControllerBox<NSViewController> {
   override var refTarget: Any {
     return view
   }
+
+  func addChild<T>(_ vc: ViewControllerBox<T>) {
+    vc.viewController.willMove(toParent: viewController)
+    // FIXME: replace with auto layout constraints
+    vc.viewController.view.frame = view.frame
+    view.addSubview(vc.viewController.view)
+    viewController.addChild(vc.viewController)
+    vc.viewController.didMove(toParent: viewController)
+  }
 }

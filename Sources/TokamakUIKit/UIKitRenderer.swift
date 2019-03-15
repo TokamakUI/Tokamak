@@ -14,6 +14,7 @@ let _modalPresenterWitnessTableHack: UIHostComponent.Type = ModalPresenter.self
 let _stackControllerWitnessTableHack: UIHostComponent.Type =
   NavigationController.self
 let _navigationItemWitnessTableHack: UIHostComponent.Type = NavigationItem.self
+let _tabItemWitnessTableHack: UIHostComponent.Type = TabItem.self
 let _listViewWitnessTableHack: UIHostComponent.Type =
   ListView<HackyProvider>.self
 let _collectionViewWitnessTableHack: UIHostComponent.Type =

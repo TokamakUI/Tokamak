@@ -9,14 +9,22 @@
 
 import Tokamak
 
-struct TabExample: PureLeafComponent {
+struct TabExample: LeafComponent {
   typealias Props = Null
 
-  static func render(props: Props) -> AnyNode {
-    let tabProps = TabController.Props(isAnimated: true)
+  static func render(props: Props, hooks: Hooks) -> AnyNode {
+    let style = Style(Center.equal(to: .parent))
+    let selectedIndex = hooks.state(3)
     return TabController.node(
-      tabProps,
-      [Label.node("First")]
+      .init(isAnimated: true, selectedIndex: selectedIndex),
+      [
+        TabItem.node(.init(title: "First"), Label.node(.init(style, text: "First"))),
+        TabItem.node(.init(title: "Second"), Label.node(.init(style, text: "Second"))),
+      ]
+//            [
+//              Label.node(.init(style, text: "First")),
+//              Label.node(.init(style, text: "Second")),
+//            ]
     )
   }
 }

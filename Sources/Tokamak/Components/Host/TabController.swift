@@ -10,9 +10,15 @@ public struct TabController: HostComponent {
 
   public struct Props: Equatable {
     public let isAnimated: Bool
+    public let selectedIndex: State<Int>?
 
-    public init(isAnimated: Bool = false) {
+    public init(
+      isAnimated: Bool = false,
+      selectedIndex: State<Int>? = nil
+    ) {
       self.isAnimated = isAnimated
+
+      self.selectedIndex = selectedIndex
     }
   }
 }

@@ -145,10 +145,21 @@ extension UIViewComponent where Target == Target.DefaultValue,
         return nil
       }
 
-      box.containerViewController.setViewControllers(
-        [result.viewController],
-        animated: props.isAnimated
-      )
+      if var viewControllers = box.containerViewController.viewControllers {
+        viewControllers.append(result.viewController)
+        box.containerViewController.setViewControllers(
+          viewControllers,
+          animated: props.isAnimated
+        )
+      } else {
+        box.containerViewController.setViewControllers(
+          [result.viewController],
+          animated: props.isAnimated
+        )
+      }
+    case let box as ViewControllerBox<UIViewController>
+      where parent.node.isSubtypeOf(TabItem.self):
+      box.viewController.view.addSubview(target)
     case let box as ViewControllerBox<UIViewController>
       where parent.node.isSubtypeOf(ModalPresenter.self):
       guard
