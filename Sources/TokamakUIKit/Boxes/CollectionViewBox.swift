@@ -32,21 +32,21 @@ private final class DataSource<T: CellProvider>: NSObject,
   }
 
   func numberOfSections(in collectionView: UICollectionView) -> Int {
-    return props.model.count
+    return props.sections.count
   }
 
   func collectionView(
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
   ) -> Int {
-    return props.model[section].count
+    return props.sections[section].count
   }
 
   func collectionView(
     _ collectionView: UICollectionView,
     cellForItemAt indexPath: IndexPath
   ) -> UICollectionViewCell {
-    let item = props.model[indexPath.section][indexPath.row]
+    let item = props.sections[indexPath.section][indexPath.row]
 
     let (id, node) = T.cell(
       props: props.cellProps,
@@ -116,10 +116,10 @@ final class CollectionViewBox<T: CellProvider>: ViewBox<TokamakCollectionView> {
       return dataSource.props
     }
     set {
-      let oldModel = dataSource.props.model
+      let oldSections = dataSource.props.sections
       dataSource.props = newValue
       delegate.onSelect = newValue.onSelect?.value
-      if oldModel != newValue.model {
+      if oldSections != newValue.sections {
         view.reloadData()
       }
     }
