@@ -329,6 +329,8 @@ and passing any other node as a child this way:
 StackRepeater.node(5, Label.node("repeated"))
 ```
 
+which will present a label on screen with text `"repeated"` 5 times.
+
 ### Leaf components
 
 Some of your components wouldn't need `Children` at all, for those Tokamak
