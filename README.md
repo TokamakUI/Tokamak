@@ -78,7 +78,7 @@ questions!
 
   * [Example code](#example-code)
   * [Standard components](#standard-components)
-  * [Fundamental concepts](#fundamental-concepts)
+  * [Quick introduction](#quick-introduction)
       * [Props](#props)
       * [Children](#children)
       * [Components](#components)
@@ -174,7 +174,7 @@ list](https://github.com/MaxDesiatov/Tokamak/blob/master/tokamak.dev/StandardCom
 for more info.
 
 
-## Fundamental concepts
+## Quick introduction
 
 We try to keep Tokamak's API as simple as possible and the core algorithm with
 supporting protocols/structures currently fit in only ~600 lines of code. It's
