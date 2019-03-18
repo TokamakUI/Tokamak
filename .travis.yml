@@ -17,6 +17,7 @@ before_install:
 script:
 - swiftformat --lint --verbose .
 - xcodebuild -scheme TokamakUIKit -sdk iphonesimulator
+- xcodebuild -scheme TokamakAppKit -sdk iphonesimulator
 - xcodebuild test -enableCodeCoverage YES -scheme Tokamak
 after_success:
 - bash <(curl -s https://codecov.io/bash)
