@@ -77,6 +77,7 @@ questions!
 ## Table of contents
 
   * [Example code](#example-code)
+  * [Example project](#example-project)
   * [Standard components](#standard-components)
   * [Quick introduction](#quick-introduction)
       * [Props](#props)
@@ -111,12 +112,15 @@ struct Counter: LeafComponent {
   static func render(props: Props, hooks: Hooks) -> AnyNode {
     let count = hooks.state(props.countFrom)
 
-    return StackView.node(.init(axis: .vertical,
-                                distribution: .fillEqually,
-                                Style(Edges.equal(to: .parent))), [
-      Button.node(.init(onPress: Handler { count.set { $0 + 1 } }),
-                  "Increment"),
-      Label.node(.init(alignment: .center), "\(count.value)")
+    return StackView.node(.init(
+      Edges.equal(to: .parent),
+      axis: .vertical,
+      distribution: .fillEqually), [
+        Button.node(Button.Props(
+          onPress: Handler { count.set { $0 + 1 } },
+          text: "Increment"
+        )),
+        Label.node(.init(alignment: .center, text: "\(count.value)"))
     ])
   }
 }
@@ -160,10 +164,39 @@ controller, and windows don't have a fixed predefined size by default.
 
 ![Counter component](https://github.com/MaxDesiatov/Tokamak/raw/master/TokamakCounterAppKit.gif)
 
-To run the example project, clone the repo, and run `pod install` from the
-[`Example`](https://github.com/MaxDesiatov/Tokamak/tree/master/Example) directory
-first. Then you can open `Example/Tokamak.xcworkspace` and run the main 
-executable target `Tokamak-Example`.
+## Example project
+
+The best way to try Tokamak in action is to run the example project: 
+
+1. Verify that you have [CocoaPods](https://cocoapods.org) and 
+[Xcode 10.1](https://developer.apple.com/xcode/) or later installed:
+
+```shell
+pod --version
+xcode-select -p
+```
+
+2. Clone the repository
+
+```shell 
+git clone https://github.com/MaxDesiatov/Tokamak
+```
+
+3. Install the dependencies in the example project:
+
+```shell
+cd Tokamak/Example
+pod install
+```
+
+4. Open the `Example` workspace from Finder or from Terminal:
+
+```
+open -a Xcode *.xcworkspace
+```
+
+5. Build executable target `TokamakDemo-iOS` for iOS and `TokamakDemo-macOS` for
+macOS.
 
 ## Standard components
 
@@ -451,8 +484,10 @@ struct Counter: LeafComponent {
     let count = hooks.state(1)
 
     return StackView.node([
-        Button.node(.init(onPress: Handler { count.set { $0 + 1 } }), 
-                    "Increment"),
+        Button.node(.init(
+          onPress: Handler { count.set { $0 + 1 } }, 
+          text: "Increment"
+        )),
         Label.node("\(count.value)"),
     ])
   }
@@ -592,8 +627,10 @@ struct ConditionalCounter: LeafComponent {
     return StackView.node([
       Switch.node(.init(value: condition.value,
                         valueHandler: Handler(condition.set)))
-      Button.node(.init(onPress: Handler { count.set { $0 + 1 } }),
-                  "Increment"),
+      Button.node(.init(
+        onPress: Handler { count.set { $0 + 1 } },
+        text: "Increment"
+      )),
       Label.node("\(count.value)"),
     ])
   }
@@ -628,8 +665,10 @@ struct ConditionalCounter: LeafComponent {
     return StackView.node([
       Switch.node(.init(value: condition.value,
                         valueHandler: Handler(condition.set)))
-      Button.node(.init(onPress: Handler { count.set { $0 + 1 } }),
-                  "Increment"),
+      Button.node(.init(
+        onPress: Handler { count.set { $0 + 1 } },
+        text: "Increment"
+      )),
       Label.node("\(count.value)"),
     ])
   }
