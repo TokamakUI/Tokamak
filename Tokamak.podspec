@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Tokamak'
-  s.version          = '0.1.1'
+  s.version          = '0.1.2'
   s.summary          = 'React-like framework for native UI written in pure Swift.'
 
 # This description is used to generate tags and improve search results.
