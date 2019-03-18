@@ -460,8 +460,6 @@ requiring [Marzipan](https://www.imore.com/marzipan)!
 * Xcode 10.1 or later
 * Swift 4.2
 
-<!--
-
 ## Installation
 
 ### CocoaPods
@@ -489,8 +487,8 @@ target 'YourApp' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for Test
-  pod 'Tokamak', '~> 0.1'
+  # Pods for YourApp
+  pod 'TokamakUIKit', '~> 0.1'
 end
 ```
 
@@ -503,8 +501,6 @@ $ pod install
 Open the the `YourApp.xcworkspace` file that was created. This should be the
 file you use everyday to create your app, instead of the `YourApp.xcodeproj`
 file.
-
--->
 
 ## FAQ
 
