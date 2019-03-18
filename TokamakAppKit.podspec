@@ -39,6 +39,7 @@ Pod::Spec.new do |s|
   s.social_media_url = 'https://twitter.com/MaxDesiatov'
 
   s.macos.deployment_target = '10.14'
+  s.swift_version    = '4.2'
 
   s.source_files = 'Sources/TokamakAppKit/**/*'
   
