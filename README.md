@@ -87,6 +87,7 @@ questions!
       * [Hooks](#hooks)
       * [Renderers](#renderers)
   * [Requirements](#requirements)
+  * [Installation](#installation)
   * [FAQ](#faq)
   * [Acknowledgments](#acknowledgments)
   * [Contributing](#contributing)
