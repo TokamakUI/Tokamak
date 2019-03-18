@@ -353,9 +353,9 @@ extension PureLeafComponent {
 }
 ```
 
-This allows you conforming to `PureLeafComponent` instead of `PureComponent`, 
-which allows you to avoid `children` argument in a `render` function when you
-don't need it.
+Thus your components can conform to `PureLeafComponent` instead of
+`PureComponent`, which allows you to avoid `children` argument in a `render`
+function when you don't need it.
 
 ### Hooks
 
