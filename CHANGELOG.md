@@ -1,3 +1,7 @@
+# 0.1.2 (March 18, 2019)
+
+Update example code in README for CocoaPods page.
+
 # 0.1.1 (March 18, 2019)
 
 Update rendered README.md on CocoaPods page.
