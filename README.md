@@ -4,12 +4,10 @@
 
 [![CI Status](https://img.shields.io/travis/MaxDesiatov/Tokamak/master.svg?style=flat)](https://travis-ci.org/MaxDesiatov/Tokamak)
 [![Coverage](https://img.shields.io/codecov/c/github/MaxDesiatov/Tokamak/master.svg?style=flat)](https://codecov.io/gh/maxdesiatov/Tokamak)
-[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/tokamak)
-<!-- [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/tokamak)
 [![Version](https://img.shields.io/cocoapods/v/Tokamak.svg?style=flat)](https://cocoapods.org/pods/Tokamak)
 [![License](https://img.shields.io/cocoapods/l/Tokamak.svg?style=flat)](https://cocoapods.org/pods/Tokamak)
 [![Platform](https://img.shields.io/cocoapods/p/Tokamak.svg?style=flat)](https://cocoapods.org/pods/Tokamak)
--->
+[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/tokamak)
 
 Tokamak provides a declarative, testable and scalable API for building UI
 components backed by fully native views. You can use it for your new iOS apps or
@@ -134,7 +132,7 @@ final class ViewController: TokamakViewController {
 }
 ```
 
-![Counter component](TokamakCounter.gif)
+![Counter component](https://github.com/MaxDesiatov/Tokamak/raw/master/TokamakCounter.gif)
 
 Or similarly it can be added to a macOS app:
 
@@ -158,7 +156,7 @@ final class ViewController: TokamakViewController {
 Note that we added explicit constraints to use this as a window's root view 
 controller, and windows don't have a fixed predefined size by default.
 
-![Counter component](TokamakCounterAppKit.gif)
+![Counter component](https://github.com/MaxDesiatov/Tokamak/raw/master/TokamakCounterAppKit.gif)
 
 To run the example project, clone the repo, and run `pod install` from the
 [`Example`](https://github.com/MaxDesiatov/Tokamak/tree/master/Example) directory
