@@ -84,6 +84,7 @@ questions!
       * [Components](#components)
       * [Nodes](#nodes)
       * [Render function](#render-function)
+      * [Leaf components](#leaf-components)
       * [Hooks](#hooks)
       * [Renderers](#renderers)
   * [Requirements](#requirements)
@@ -303,6 +304,32 @@ Note that `render` function **does not return other _components_**, it **returns
 _nodes_ that describe other components**. It's a very important distiction,
 which allows Tokamak to stay efficient and to avoid updating deep trees of
 components.
+
+Here's an example of a simple component that renders its child in a vertical 
+stack as many times as were passed via its `Props`:
+
+```swift
+struct StackRepeater: PureComponent {
+  typealias Props = UInt
+  typealias Children = AnyNode
+
+  static func render(props x: UInt, children: AnyNode) -> AnyNode {
+    return StackView.node(
+      .init(axis: .vertical),
+      (0..<x).map { _ in children }
+    )
+  }
+}
+```
+
+You can then use `StackRepeater` in any other component by creating its node
+and passing any other node as a child this way:
+
+```swift
+StackRepeater.node(5, Label.node("repeated"))
+```
+
+### Leaf components
 
 Some of your components wouldn't need `Children` at all, for those Tokamak
 provides a `PureLeafComponent` helper protocol that allows you to implement only
