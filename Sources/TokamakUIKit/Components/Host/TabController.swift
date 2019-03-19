@@ -9,10 +9,6 @@ import Tokamak
 import UIKit
 
 final class TokamakTabController: UITabBarController {
-  /// Used to prevent calling `onPop` if this navigation view controller is not
-  /// mounted yet
-  var isMounted = false
-
   init(onPop: @escaping () -> ()) {
     super.init(nibName: nil, bundle: nil)
   }
@@ -31,7 +27,12 @@ extension TabController: UIHostComponent {
   static func mountTarget(to parent: UITarget,
                           component: UIKitRenderer.MountedHost,
                           _: UIKitRenderer) -> UITarget? {
-    let result = ViewControllerBox(TokamakTabController {}, component.node)
+    let props = component.node.props.value as? TabController.Props
+    let result = TabControllerBox(
+      component.node,
+      props!,
+      TokamakTabController {}
+    )
 
     switch parent {
     case let box as ViewControllerBox<UIViewController>
@@ -47,13 +48,14 @@ extension TabController: UIHostComponent {
                                    completion: nil)
       }
     case let box as ViewBox<TokamakView>:
+      // here
       box.addChild(result)
     case let box as ViewBox<UIView>:
       box.addChild(result)
     default:
       parentAssertionFailure()
     }
-    let props = component.node.props.value as? TabController.Props
+
     if let selectedIndex = props?.selectedIndex {
       let index = selectedIndex.value
       DispatchQueue.main.async {
@@ -65,9 +67,9 @@ extension TabController: UIHostComponent {
   }
 
   static func update(target: UITarget, node: AnyNode) {
-    if node.props.value != nil {
-      print(node.props.value)
-    }
+//    if node.props.value != nil {
+//      print(node.props.value)
+//    }
   }
 
   static func unmount(target: UITarget, completion: () -> ()) {

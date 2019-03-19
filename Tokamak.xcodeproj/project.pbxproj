@@ -24,6 +24,7 @@
 		A675A59922390218005173E5 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59822390218005173E5 /* TabController.swift */; };
 		A675A59B223910E1005173E5 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59A223910E1005173E5 /* TabController.swift */; };
 		A675A59D223AE721005173E5 /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59C223AE721005173E5 /* TabItem.swift */; };
+		A675A59F223C2EDE005173E5 /* TabBarControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59E223C2EDE005173E5 /* TabBarControllerBox.swift */; };
 		D15E04332235829000BB0571 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E04322235829000BB0571 /* Rectangle.swift */; };
 		D15E0447223582FD00BB0571 /* FirstBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0435223582EE00BB0571 /* FirstBaseline.swift */; };
 		D15E0448223582FD00BB0571 /* CenterY.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0436223582EE00BB0571 /* CenterY.swift */; };
@@ -251,6 +252,7 @@
 		A675A59822390218005173E5 /* TabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
 		A675A59A223910E1005173E5 /* TabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
 		A675A59C223AE721005173E5 /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
+		A675A59E223C2EDE005173E5 /* TabBarControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarControllerBox.swift; sourceTree = "<group>"; };
 		D15E042D223578BC00BB0571 /* TokamakUIKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokamakUIKit.podspec; sourceTree = "<group>"; };
 		D15E042E223578BC00BB0571 /* Tokamak.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Tokamak.podspec; sourceTree = "<group>"; };
 		D15E042F223578BC00BB0571 /* TokamakAppKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokamakAppKit.podspec; sourceTree = "<group>"; };
@@ -854,6 +856,7 @@
 				OBJ_88 /* ValueControlBox.swift */,
 				OBJ_89 /* ViewBox.swift */,
 				OBJ_90 /* ViewControllerBox.swift */,
+				A675A59E223C2EDE005173E5 /* TabBarControllerBox.swift */,
 			);
 			path = Boxes;
 			sourceTree = "<group>";
@@ -1237,6 +1240,7 @@
 				OBJ_365 /* FirstBaseline.swift in Sources */,
 				OBJ_366 /* Height.swift in Sources */,
 				OBJ_367 /* LastBaseline.swift in Sources */,
+				A675A59F223C2EDE005173E5 /* TabBarControllerBox.swift in Sources */,
 				OBJ_368 /* Leading.swift in Sources */,
 				OBJ_369 /* Left.swift in Sources */,
 				OBJ_370 /* OwnConstraint.swift in Sources */,
