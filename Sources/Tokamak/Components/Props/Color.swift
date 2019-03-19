@@ -50,18 +50,18 @@ extension Color: ExpressibleByIntegerLiteral {
 extension Color {
   public init?(hex: String) {
     let cString = hex.utf8CString
-    
+
     // - 1 for the trailing null terminator
     let hexSize = cString.count - 1
-    
+
     // If the first character is a '#', skip it
     var offset = cString.first == 0x23 ? 1 : 0
-    
+
     // We only support 6 hexadecimal characters
     if hexSize - offset != 6 {
       return nil
     }
-    
+
     func nextByte() -> Int8? {
       if
         let high = cString[offset].hexDecoded(),
@@ -72,10 +72,10 @@ extension Color {
         
         return (high << 4) &+ low
       }
-      
+  
       return nil
     }
-    
+
     guard
       let red = nextByte(),
       let green = nextByte(),
