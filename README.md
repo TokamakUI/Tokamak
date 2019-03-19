@@ -18,6 +18,32 @@ Tokamak recreates [React Hooks API](https://reactjs.org/docs/hooks-intro.html)
 improving it with Swift's strong type system, high performance and efficient
 memory management thanks to being compiled to a native binary.
 
+### Why yet another React-like library?
+
+One of the strong points of React is that in general it makes app architecture
+more declarative, but still preserves a smooth learning curve when compared to
+more complex [FRP
+patterns](https://en.wikipedia.org/wiki/Functional_reactive_programming). In
+addition, its [cross-platform reconciler
+core](https://reactjs.org/docs/reconciliation.html) can be reused across many
+different platforms: on the web, for mobile apps, and [even
+desktop](https://github.com/ptmt/react-native-macos). The downside is that it
+requires you to use JavaScript, which causes [all
+sorts](https://www.destroyallsoftware.com/talks/wat) of [different
+problems](https://facebook.github.io/react-native/blog/#architecture). It's also
+not very easy to integrate React Native with existing iOS apps written in Swift.
+On the other hand, none of the available libraries similar to React written in
+Swift provided a concise API for building component hierarchies, or allowed
+building stateful function-based components similar to what's possible with
+React Hooks. Some only port [Redux](https://redux.js.org), which requires a lot
+of boilerplate, some bake in assumptions about the usage of UIKit, which makes
+them restricted to a single platform.
+
+In short, both plain UIKit MVC and React have advantages and disadvantages. The
+goal of Tokamak is to provide the best of both worlds for Swift: declarative
+architecture, cross-platform core, easy to learn and to integrate into existing
+apps.
+
 When compared to standard UIKit MVC or other patterns built on top of
 it (MVVM, MVP, VIPER etc), Tokamak provides:
 
@@ -98,8 +124,8 @@ questions!
 
 ## Example code
 
-An example of a Tokamak component that binds a button to a label, embedded
-within an existing UIKit app, looks like this:
+An example of a Tokamak component that binds a button to a label looks like
+this:
 
 ```swift
 import Tokamak
