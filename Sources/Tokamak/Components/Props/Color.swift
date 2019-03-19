@@ -35,3 +35,13 @@ public struct Color: Equatable {
   public static var green = Color(red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
   public static var blue = Color(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
 }
+
+extension Color: ExpressibleByIntegerLiteral {
+  public init(integerLiteral bitMask: UInt32) {
+    red = Double((bitMask & 0xFF0000) >> 16) / 255
+    green = Double((bitMask & 0x00FF00) >> 8) / 255
+    blue = Double(bitMask & 0x0000FF) / 255
+    alpha = 1
+    space = .sRGB
+  }
+}
