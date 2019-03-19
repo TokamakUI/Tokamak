@@ -100,8 +100,7 @@ extension NSViewComponent where Target == Target.DefaultValue,
 
     let parentRequiresViewController = parent.node.isSubtypeOf(
       ModalPresenter.self,
-      or: NavigationController.self,
-      or: AnyTabPresenter.self
+      or: NavigationController.self
     )
 
     // UIViewController parent target can't present a bare `ViewBox` target,
