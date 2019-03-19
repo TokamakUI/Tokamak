@@ -37,6 +37,7 @@ public struct Color: Equatable {
 }
 
 extension Color: ExpressibleByIntegerLiteral {
+  /// Allows initializing value of `Color` type from hex values
   public init(integerLiteral bitMask: UInt32) {
     red = Double((bitMask & 0xFF0000) >> 16) / 255
     green = Double((bitMask & 0x00FF00) >> 8) / 255
