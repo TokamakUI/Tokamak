@@ -49,7 +49,7 @@ class ControlBox<T: NSControl & Default>: ViewBox<T> {
         return
       }
 
-      let events = eventMask.elements().compactMap({ Event($0) })
+      let events = eventMask.elements().compactMap { Event($0) }
 
       for e in events {
         self?.handlers[e]?.value(())

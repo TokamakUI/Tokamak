@@ -33,7 +33,7 @@ extension ElementaryParticles: CustomStringConvertible {
   var description: String { return rawValue.localizedCapitalized }
 }
 
-private struct Cells: SimpleCellProvider {
+private struct Cells: CellProvider {
   static func cell(
     props: Null,
     item: ElementaryParticles,
@@ -52,7 +52,7 @@ private struct Cells: SimpleCellProvider {
 
   typealias Props = Null
 
-  typealias Model = [[ElementaryParticles]]
+  typealias Model = ElementaryParticles
 }
 
 struct CollectionExample: PureLeafComponent {
@@ -64,7 +64,7 @@ struct CollectionExample: PureLeafComponent {
         Edges.equal(to: .parent, inset: 20),
         backgroundColor: .white
       ),
-      model: [ElementaryParticles.allCases]
+      singleSection: ElementaryParticles.allCases
     ))
   }
 }

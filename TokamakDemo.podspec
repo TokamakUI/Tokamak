@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
 s.name             = 'TokamakDemo'
-s.version          = '0.1.0'
+s.version          = '0.1.2'
 s.summary          = 'Demo components for Tokamak: React-like UI framework'
 
 # This description is used to generate tags and improve search results.
@@ -40,6 +40,7 @@ s.social_media_url = 'https://twitter.com/MaxDesiatov'
 
 s.ios.deployment_target = '11.0'
 s.macos.deployment_target = '10.14'
+s.swift_version    = '4.2'
 
 s.source_files = 'Sources/TokamakDemo/**/*'
 

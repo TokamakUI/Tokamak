@@ -4,12 +4,10 @@
 
 [![CI Status](https://img.shields.io/travis/MaxDesiatov/Tokamak/master.svg?style=flat)](https://travis-ci.org/MaxDesiatov/Tokamak)
 [![Coverage](https://img.shields.io/codecov/c/github/MaxDesiatov/Tokamak/master.svg?style=flat)](https://codecov.io/gh/maxdesiatov/Tokamak)
-[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/tokamak)
-<!-- [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/tokamak)
 [![Version](https://img.shields.io/cocoapods/v/Tokamak.svg?style=flat)](https://cocoapods.org/pods/Tokamak)
 [![License](https://img.shields.io/cocoapods/l/Tokamak.svg?style=flat)](https://cocoapods.org/pods/Tokamak)
 [![Platform](https://img.shields.io/cocoapods/p/Tokamak.svg?style=flat)](https://cocoapods.org/pods/Tokamak)
--->
+[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/tokamak)
 
 Tokamak provides a declarative, testable and scalable API for building UI
 components backed by fully native views. You can use it for your new iOS apps or
@@ -19,6 +17,32 @@ code or changing the app's overall architecture.
 Tokamak recreates [React Hooks API](https://reactjs.org/docs/hooks-intro.html)
 improving it with Swift's strong type system, high performance and efficient
 memory management thanks to being compiled to a native binary.
+
+### Why yet another React-like library?
+
+One of the strong points of React is that in general it makes app architecture
+more declarative, but still preserves a smooth learning curve when compared to
+more complex [FRP
+patterns](https://en.wikipedia.org/wiki/Functional_reactive_programming). In
+addition, its [cross-platform reconciler
+core](https://reactjs.org/docs/reconciliation.html) can be reused across many
+different platforms: on the web, for mobile apps, and [even
+desktop](https://github.com/ptmt/react-native-macos). The downside is that it
+requires you to use JavaScript, which causes [all
+sorts](https://www.destroyallsoftware.com/talks/wat) of [different
+problems](https://facebook.github.io/react-native/blog/#architecture). It's also
+not very easy to integrate React Native with existing iOS apps written in Swift.
+On the other hand, none of the available libraries similar to React written in
+Swift provided a concise API for building component hierarchies, or allowed
+building stateful function-based components similar to what's possible with
+React Hooks. Some only port [Redux](https://redux.js.org), which requires a lot
+of boilerplate, some bake in assumptions about the usage of UIKit, which makes
+them restricted to a single platform.
+
+In short, both plain UIKit MVC and React have advantages and disadvantages. The
+goal of Tokamak is to provide the best of both worlds for Swift: declarative
+architecture, cross-platform core, easy to learn and to integrate into existing
+apps.
 
 When compared to standard UIKit MVC or other patterns built on top of
 it (MVVM, MVP, VIPER etc), Tokamak provides:
@@ -72,19 +96,26 @@ replacements gradually. It's important to note that source breaking
 changes can't always be avoided, but they would be reflected with 
 appropriate version number change and migration guides.
 
+Don't forget to check out [Tokamak community on
+Spectrum](https://spectrum.chat/tokamak) and leave your feedback, comments and
+questions!
+
 ## Table of contents
 
   * [Example code](#example-code)
+  * [Example project](#example-project)
   * [Standard components](#standard-components)
-  * [Fundamental concepts](#fundamental-concepts)
+  * [Quick introduction](#quick-introduction)
       * [Props](#props)
       * [Children](#children)
       * [Components](#components)
       * [Nodes](#nodes)
       * [Render function](#render-function)
+      * [Leaf components](#leaf-components)
       * [Hooks](#hooks)
       * [Renderers](#renderers)
   * [Requirements](#requirements)
+  * [Installation](#installation)
   * [FAQ](#faq)
   * [Acknowledgments](#acknowledgments)
   * [Contributing](#contributing)
@@ -93,8 +124,8 @@ appropriate version number change and migration guides.
 
 ## Example code
 
-An example of a Tokamak component that binds a button to a label, embedded
-within an existing UIKit app, looks like this:
+An example of a Tokamak component that binds a button to a label looks like
+this:
 
 ```swift
 import Tokamak
@@ -107,12 +138,15 @@ struct Counter: LeafComponent {
   static func render(props: Props, hooks: Hooks) -> AnyNode {
     let count = hooks.state(props.countFrom)
 
-    return StackView.node(.init(axis: .vertical,
-                                distribution: .fillEqually,
-                                Style(Edges.equal(to: .parent))), [
-      Button.node(.init(onPress: Handler { count.set { $0 + 1 } }),
-                  "Increment"),
-      Label.node(.init(alignment: .center), "\(count.value)")
+    return StackView.node(.init(
+      Edges.equal(to: .parent),
+      axis: .vertical,
+      distribution: .fillEqually), [
+        Button.node(Button.Props(
+          onPress: Handler { count.set { $0 + 1 } },
+          text: "Increment"
+        )),
+        Label.node(.init(alignment: .center, text: "\(count.value)"))
     ])
   }
 }
@@ -130,7 +164,7 @@ final class ViewController: TokamakViewController {
 }
 ```
 
-![Counter component](TokamakCounter.gif)
+![Counter component](https://github.com/MaxDesiatov/Tokamak/raw/master/TokamakCounter.gif)
 
 Or similarly it can be added to a macOS app:
 
@@ -154,12 +188,41 @@ final class ViewController: TokamakViewController {
 Note that we added explicit constraints to use this as a window's root view 
 controller, and windows don't have a fixed predefined size by default.
 
-![Counter component](TokamakCounterAppKit.gif)
+![Counter component](https://github.com/MaxDesiatov/Tokamak/raw/master/TokamakCounterAppKit.gif)
 
-To run the example project, clone the repo, and run `pod install` from the
-[`Example`](https://github.com/MaxDesiatov/Tokamak/tree/master/Example) directory
-first. Then you can open `Example/Tokamak.xcworkspace` and run the main 
-executable target `Tokamak-Example`.
+## Example project
+
+The best way to try Tokamak in action is to run the example project: 
+
+1. Verify that you have [CocoaPods](https://cocoapods.org) and 
+[Xcode 10.1](https://developer.apple.com/xcode/) or later installed:
+
+```shell
+pod --version
+xcode-select -p
+```
+
+2. Clone the repository
+
+```shell 
+git clone https://github.com/MaxDesiatov/Tokamak
+```
+
+3. Install the dependencies in the example project:
+
+```shell
+cd Tokamak/Example
+pod install
+```
+
+4. Open the `Example` workspace from Finder or from Terminal:
+
+```
+open -a Xcode *.xcworkspace
+```
+
+5. Build executable target `TokamakDemo-iOS` for iOS and `TokamakDemo-macOS` for
+macOS.
 
 ## Standard components
 
@@ -171,7 +234,7 @@ list](https://github.com/MaxDesiatov/Tokamak/blob/master/tokamak.dev/StandardCom
 for more info.
 
 
-## Fundamental concepts
+## Quick introduction
 
 We try to keep Tokamak's API as simple as possible and the core algorithm with
 supporting protocols/structures currently fit in only ~600 lines of code. It's
@@ -202,7 +265,7 @@ struct Props: Equatable {
 Sometimes "configuration" is described in a tree-like fashion. For example, a
 list of views contains an array of subviews, which themselves can contain other
 subviews. In Tokamak this is called `Children`, which behave similar to
-[`Props`](#props), but are important enough to be treated separately. `Children`
+[`Props`](#props) but are important enough to be treated separately. `Children`
 are also immutable and `Equatable`, which allows us to observe those for changes
 too.
 
@@ -301,6 +364,34 @@ _nodes_ that describe other components**. It's a very important distiction,
 which allows Tokamak to stay efficient and to avoid updating deep trees of
 components.
 
+Here's an example of a simple component that renders its child in a vertical 
+stack as many times as were passed via its `Props`:
+
+```swift
+struct StackRepeater: PureComponent {
+  typealias Props = UInt
+  typealias Children = AnyNode
+
+  static func render(props x: UInt, children: AnyNode) -> AnyNode {
+    return StackView.node(
+      .init(axis: .vertical),
+      (0..<x).map { _ in children }
+    )
+  }
+}
+```
+
+You can then use `StackRepeater` in any other component by creating its node
+and passing any other node as a child this way:
+
+```swift
+StackRepeater.node(5, Label.node("repeated"))
+```
+
+which will present a label on screen with text `"repeated"` 5 times.
+
+### Leaf components
+
 Some of your components wouldn't need `Children` at all, for those Tokamak
 provides a `PureLeafComponent` helper protocol that allows you to implement only
 a single function with a simpler signature:
@@ -320,6 +411,10 @@ extension PureLeafComponent {
   }
 }
 ```
+
+Thus your components can conform to `PureLeafComponent` instead of
+`PureComponent`, which allows you to avoid `children` argument in a `render`
+function when you don't need it.
 
 ### Hooks
 
@@ -415,8 +510,10 @@ struct Counter: LeafComponent {
     let count = hooks.state(1)
 
     return StackView.node([
-        Button.node(.init(onPress: Handler { count.set { $0 + 1 } }), 
-                    "Increment"),
+        Button.node(.init(
+          onPress: Handler { count.set { $0 + 1 } }, 
+          text: "Increment"
+        )),
         Label.node("\(count.value)"),
     ])
   }
@@ -455,10 +552,8 @@ requiring [Marzipan](https://www.imore.com/marzipan)!
 
 * iOS 11.0 or later for `TokamakUIKit`
 * macOS 10.14 for `TokamakAppKit`
-* Xcode 10.1
+* Xcode 10.1 or later
 * Swift 4.2
-
-<!--
 
 ## Installation
 
@@ -481,14 +576,14 @@ Inside of your `Podfile`, specify the `Tokamak` pod:
 
 ```ruby
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+# platform :ios, '11.0'
 
 target 'YourApp' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for Test
-  pod 'Tokamak', '~> 0.1'
+  # Pods for YourApp
+  pod 'TokamakUIKit', '~> 0.1'
 end
 ```
 
@@ -501,8 +596,6 @@ $ pod install
 Open the the `YourApp.xcworkspace` file that was created. This should be the
 file you use everyday to create your app, instead of the `YourApp.xcodeproj`
 file.
-
--->
 
 ## FAQ
 
@@ -560,8 +653,10 @@ struct ConditionalCounter: LeafComponent {
     return StackView.node([
       Switch.node(.init(value: condition.value,
                         valueHandler: Handler(condition.set)))
-      Button.node(.init(onPress: Handler { count.set { $0 + 1 } }),
-                  "Increment"),
+      Button.node(.init(
+        onPress: Handler { count.set { $0 + 1 } },
+        text: "Increment"
+      )),
       Label.node("\(count.value)"),
     ])
   }
@@ -596,8 +691,10 @@ struct ConditionalCounter: LeafComponent {
     return StackView.node([
       Switch.node(.init(value: condition.value,
                         valueHandler: Handler(condition.set)))
-      Button.node(.init(onPress: Handler { count.set { $0 + 1 } }),
-                  "Increment"),
+      Button.node(.init(
+        onPress: Handler { count.set { $0 + 1 } },
+        text: "Increment"
+      )),
       Label.node("\(count.value)"),
     ])
   }

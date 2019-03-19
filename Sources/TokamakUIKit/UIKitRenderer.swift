@@ -20,7 +20,7 @@ let _listViewWitnessTableHack: UIHostComponent.Type =
 let _collectionViewWitnessTableHack: UIHostComponent.Type =
   CollectionView<HackyProvider>.self
 
-struct HackyProvider: SimpleCellProvider {
+struct HackyProvider: CellProvider {
   static func cell(
     props: Props, item: Int, path: CellPath
   ) -> AnyNode {
@@ -28,7 +28,7 @@ struct HackyProvider: SimpleCellProvider {
   }
 
   typealias Props = Null
-  typealias Model = [[Int]]
+  typealias Model = Int
 }
 
 class UITarget: Target {
