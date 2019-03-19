@@ -67,7 +67,6 @@
 		OBJ_213 /* ModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* ModalPresenter.swift */; };
 		OBJ_214 /* NavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* NavigationItem.swift */; };
 		OBJ_215 /* NavigationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* NavigationPresenter.swift */; };
-		OBJ_216 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* Router.swift */; };
 		OBJ_217 /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* TabItem.swift */; };
 		OBJ_218 /* TabPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* TabPresenter.swift */; };
 		OBJ_219 /* Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* Accessibility.swift */; };
@@ -362,7 +361,6 @@
 		OBJ_32 /* ModalPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPresenter.swift; sourceTree = "<group>"; };
 		OBJ_33 /* NavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItem.swift; sourceTree = "<group>"; };
 		OBJ_34 /* NavigationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPresenter.swift; sourceTree = "<group>"; };
-		OBJ_35 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		OBJ_36 /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
 		OBJ_37 /* TabPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPresenter.swift; sourceTree = "<group>"; };
 		OBJ_39 /* Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessibility.swift; sourceTree = "<group>"; };
@@ -715,7 +713,6 @@
 				OBJ_32 /* ModalPresenter.swift */,
 				OBJ_33 /* NavigationItem.swift */,
 				OBJ_34 /* NavigationPresenter.swift */,
-				OBJ_35 /* Router.swift */,
 				OBJ_36 /* TabItem.swift */,
 				OBJ_37 /* TabPresenter.swift */,
 			);
@@ -1076,7 +1073,6 @@
 				OBJ_213 /* ModalPresenter.swift in Sources */,
 				OBJ_214 /* NavigationItem.swift in Sources */,
 				OBJ_215 /* NavigationPresenter.swift in Sources */,
-				OBJ_216 /* Router.swift in Sources */,
 				OBJ_217 /* TabItem.swift in Sources */,
 				OBJ_218 /* TabPresenter.swift in Sources */,
 				OBJ_219 /* Accessibility.swift in Sources */,
