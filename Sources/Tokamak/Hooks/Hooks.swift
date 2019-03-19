@@ -112,7 +112,7 @@ public final class Hooks {
     defer { refIndex += 1 }
 
     guard let component = component else {
-      assertionFailure("hooks.state should only be called within `render`")
+      assertionFailure("hooks.ref should only be called within `render`")
       return initial
     }
 
