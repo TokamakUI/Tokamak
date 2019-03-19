@@ -80,10 +80,10 @@ extension Color {
       let red = nextByte(),
       let green = nextByte(),
       let blue = nextByte()
-    else {
-      return nil
+      else {
+        return nil
     }
-    
+
     self.red = Double(UInt8(bitPattern: red)) / 255
     self.green = Double(UInt8(bitPattern: green)) / 255
     self.blue = Double(UInt8(bitPattern: blue)) / 255
@@ -104,10 +104,10 @@ fileprivate extension Int8 {
     } else if self >= 0x61 && self <= 0x66 {
       return self &- Int8.uppercasedOffset
     }
-    
+
     return nil
   }
-  
+
   static let lowercasedOffset: Int8 = 0x41 &- 10
   static let uppercasedOffset: Int8 = 0x61 &- 10
 }
