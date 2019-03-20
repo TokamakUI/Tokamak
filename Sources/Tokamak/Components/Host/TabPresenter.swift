@@ -1,11 +1,11 @@
 //
-//  TabController.swift
+//  TabPresenter.swift
 //  Tokamak
 //
 //  Created by Matvii Hodovaniuk on 3/13/19.
 //
 
-public struct TabController: HostComponent {
+public struct TabPresenter: HostComponent {
   public typealias Children = [AnyNode]
 
   public struct Props: Equatable {

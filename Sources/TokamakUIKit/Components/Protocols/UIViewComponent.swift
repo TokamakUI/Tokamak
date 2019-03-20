@@ -95,7 +95,7 @@ extension UIViewComponent where Target == Target.DefaultValue,
     let parentRequiresViewController = parent.node.isSubtypeOf(
       ModalPresenter.self,
       or: NavigationController.self,
-      or: TabController.self
+      or: TabPresenter.self
     )
 
     // UIViewController parent target can't present a bare `ViewBox` target,
@@ -137,10 +137,10 @@ extension UIViewComponent where Target == Target.DefaultValue,
         result.viewController,
         animated: props.pushAnimated
       )
-    case let box as ViewControllerBox<TokamakTabController>
-      where parent.node.isSubtypeOf(TabController.self):
+    case let box as ViewControllerBox<TokamakTabPresenter>
+      where parent.node.isSubtypeOf(TabPresenter.self):
       guard let props = parent.node.props.value
-        as? TabController.Props else {
+        as? TabPresenter.Props else {
         propsAssertionFailure()
         return nil
       }

@@ -20,7 +20,7 @@ extension TabItem: UIHostComponent {
     }
 
     guard
-      let parentProps = parent.node.props.value as? TabController.Props
+      let parentProps = parent.node.props.value as? TabPresenter.Props
     else {
       propsAssertionFailure()
       return nil

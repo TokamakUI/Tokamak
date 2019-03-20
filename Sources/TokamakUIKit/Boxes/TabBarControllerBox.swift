@@ -22,7 +22,7 @@ private final class Delegate<T: UITabBarController>:
     )
   }
 
-  init(_ props: TabController.Props) {
+  init(_ props: TabPresenter.Props) {
     selectedIndex = props.selectedIndex
   }
 }
@@ -34,8 +34,8 @@ class TabBarControllerBox: ViewControllerBox<UITabBarController> {
 
   init(
     _ node: AnyNode,
-    _ props: TabController.Props,
-    _ viewController: TokamakTabController
+    _ props: TabPresenter.Props,
+    _ viewController: TokamakTabPresenter
   ) {
     delegate = Delegate(props)
     viewController.delegate = delegate

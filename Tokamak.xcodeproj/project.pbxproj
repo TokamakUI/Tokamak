@@ -21,8 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		A675A59922390218005173E5 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59822390218005173E5 /* TabController.swift */; };
-		A675A59B223910E1005173E5 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59A223910E1005173E5 /* TabController.swift */; };
+		A675A59922390218005173E5 /* TabPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59822390218005173E5 /* TabPresenter.swift */; };
+		A675A59B223910E1005173E5 /* TabPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59A223910E1005173E5 /* TabPresenter.swift */; };
 		A675A59D223AE721005173E5 /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59C223AE721005173E5 /* TabItem.swift */; };
 		A675A59F223C2EDE005173E5 /* TabBarControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59E223C2EDE005173E5 /* TabBarControllerBox.swift */; };
 		D15E04332235829000BB0571 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E04322235829000BB0571 /* Rectangle.swift */; };
@@ -249,8 +249,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A675A59822390218005173E5 /* TabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
-		A675A59A223910E1005173E5 /* TabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
+		A675A59822390218005173E5 /* TabPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPresenter.swift; sourceTree = "<group>"; };
+		A675A59A223910E1005173E5 /* TabPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPresenter.swift; sourceTree = "<group>"; };
 		A675A59C223AE721005173E5 /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
 		A675A59E223C2EDE005173E5 /* TabBarControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarControllerBox.swift; sourceTree = "<group>"; };
 		D15E042D223578BC00BB0571 /* TokamakUIKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokamakUIKit.podspec; sourceTree = "<group>"; };
@@ -575,7 +575,7 @@
 				OBJ_28 /* Switch.swift */,
 				OBJ_29 /* TextField.swift */,
 				OBJ_30 /* View.swift */,
-				A675A59822390218005173E5 /* TabController.swift */,
+				A675A59822390218005173E5 /* TabPresenter.swift */,
 				D1B90571224259FA0077CD5E /* Throbber.swift */,
 			);
 			path = Host;
@@ -890,7 +890,7 @@
 				OBJ_107 /* Switch.swift */,
 				OBJ_108 /* TextField.swift */,
 				OBJ_109 /* View.swift */,
-				A675A59A223910E1005173E5 /* TabController.swift */,
+				A675A59A223910E1005173E5 /* TabPresenter.swift */,
 				A675A59C223AE721005173E5 /* TabItem.swift */,
 				D1B9057322425CED0077CD5E /* Throbber.swift */,
 			);
@@ -1092,7 +1092,7 @@
 				OBJ_230 /* Leading.swift in Sources */,
 				OBJ_231 /* Left.swift in Sources */,
 				OBJ_232 /* Right.swift in Sources */,
-				A675A59922390218005173E5 /* TabController.swift in Sources */,
+				A675A59922390218005173E5 /* TabPresenter.swift in Sources */,
 				OBJ_233 /* SizeConstraint.swift in Sources */,
 				OBJ_234 /* Top.swift in Sources */,
 				OBJ_235 /* Trailing.swift in Sources */,
@@ -1219,7 +1219,7 @@
 				OBJ_346 /* ListView.swift in Sources */,
 				OBJ_347 /* ModalPresenter.swift in Sources */,
 				OBJ_348 /* NavigationController.swift in Sources */,
-				A675A59B223910E1005173E5 /* TabController.swift in Sources */,
+				A675A59B223910E1005173E5 /* TabPresenter.swift in Sources */,
 				OBJ_349 /* NavigationItem.swift in Sources */,
 				OBJ_350 /* ScrollView.swift in Sources */,
 				OBJ_351 /* SegmentedControl.swift in Sources */,

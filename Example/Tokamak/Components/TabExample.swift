@@ -18,7 +18,7 @@ struct TabExample: LeafComponent {
     let style = Style(Center.equal(to: .parent))
     let selectedIndex = hooks.state(0)
 
-    return TabController.node(
+    return TabPresenter.node(
       .init(isAnimated: true, selectedIndex: selectedIndex),
       [
         TabItem.node(

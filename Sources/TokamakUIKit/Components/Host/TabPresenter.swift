@@ -1,5 +1,5 @@
 //
-//  TabController.swift
+//  TabPresenter.swift
 //  TokamakUIKit
 //
 //  Created by Matvii Hodovaniuk on 3/13/19.
@@ -8,7 +8,7 @@
 import Tokamak
 import UIKit
 
-final class TokamakTabController: UITabBarController {
+final class TokamakTabPresenter: UITabBarController {
   init() {
     super.init(nibName: nil, bundle: nil)
   }
@@ -18,17 +18,17 @@ final class TokamakTabController: UITabBarController {
   }
 }
 
-extension TabController: UIHostComponent, RefComponent {
+extension TabPresenter: UIHostComponent, RefComponent {
   public typealias RefTarget = UITabBarController
 
   static func mountTarget(to parent: UITarget,
                           component: UIKitRenderer.MountedHost,
                           _: UIKitRenderer) -> UITarget? {
-    let props = component.node.props.value as? TabController.Props
+    let props = component.node.props.value as? TabPresenter.Props
     let result = TabBarControllerBox(
       component.node,
       props!,
-      TokamakTabController()
+      TokamakTabPresenter()
     )
 
     switch parent {
