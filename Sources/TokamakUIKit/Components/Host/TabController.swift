@@ -61,4 +61,10 @@ extension TabController: UIHostComponent, RefComponent {
 
     return result
   }
+
+  static func update(target: UITarget, node: AnyNode) {}
+
+  static func unmount(target: UITarget, completion: @escaping () -> ()) {
+    completion()
+  }
 }
