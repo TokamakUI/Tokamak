@@ -9,17 +9,12 @@ import Tokamak
 import UIKit
 
 final class TokamakTabController: UITabBarController {
-  init(onPop: @escaping () -> ()) {
+  init() {
     super.init(nibName: nil, bundle: nil)
   }
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  func tabBarController(_ tabBarController: UITabBarController,
-                        didSelect viewController: UIViewController) {
-    print("H")
   }
 }
 
@@ -30,10 +25,10 @@ extension TabController: UIHostComponent, RefComponent {
                           component: UIKitRenderer.MountedHost,
                           _: UIKitRenderer) -> UITarget? {
     let props = component.node.props.value as? TabController.Props
-    let result = TabControllerBox(
+    let result = TabBarControllerBox(
       component.node,
       props!,
-      TokamakTabController {}
+      TokamakTabController()
     )
 
     switch parent {
@@ -50,7 +45,6 @@ extension TabController: UIHostComponent, RefComponent {
                                    completion: nil)
       }
     case let box as ViewBox<TokamakView>:
-      // here
       box.addChild(result)
     case let box as ViewBox<UIView>:
       box.addChild(result)
@@ -66,15 +60,5 @@ extension TabController: UIHostComponent, RefComponent {
     }
 
     return result
-  }
-
-  static func update(target: UITarget, node: AnyNode) {
-//    if node.props.value != nil {
-//      print(node.props.value)
-//    }
-  }
-
-  static func unmount(target: UITarget, completion: () -> ()) {
-    completion()
   }
 }
