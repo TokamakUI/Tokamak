@@ -99,7 +99,8 @@ private extension Int8 {
     // If the character is between 0x30 and 0x39 it is a textual number
     // 0x30 is equal to the ASCII `0` and 0x30 is equal to `0x39`
     if self >= 0x30 && self <= 0x39 {
-      // The binary representation of this character can be found by subtracting the lowest `0` in ASCII
+      // The binary representation of this character can be found by subtracting `0` in ASCII
+      // This will then match `0` in binary. Which means `1` in ASCII matches `1` in binary
       return self &- 0x30
     } else if self >= 0x41 && self <= 0x46 {
       // This block executes if the integer is within the `a-z` lowercased ASCII range
