@@ -13,8 +13,13 @@ private final class Delegate<T: UITabBarController>:
   UITabBarControllerDelegate {
   private let selectedIndex: State<Int>?
 
-  func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-    selectedIndex?.set((tabBarController.viewControllers?.firstIndex(of: viewController)!)!)
+  func tabBarController(
+    _ tabBarController: UITabBarController,
+    didSelect viewController: UIViewController
+  ) {
+    selectedIndex?.set(
+      (tabBarController.viewControllers?.firstIndex(of: viewController)!)!
+    )
   }
 
   init(_ props: TabController.Props) {
@@ -23,6 +28,8 @@ private final class Delegate<T: UITabBarController>:
 }
 
 class TabBarControllerBox: ViewControllerBox<UITabBarController> {
+  // this delegate stays as a constant and doesn't create a reference cycle
+  // swiftlint:disable:next weak_delegate
   private let delegate: Delegate<UITabBarController>
 
   init(
