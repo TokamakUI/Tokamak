@@ -25,7 +25,7 @@ public struct Throbber: HostComponent {
       color: Color? = nil,
       isAnimating: Bool = false,
       hidesWhenStopped: Bool = true,
-      variety: Variety = .white
+      variety: Variety = .gray
     ) {
       self.style = style
       self.color = color
