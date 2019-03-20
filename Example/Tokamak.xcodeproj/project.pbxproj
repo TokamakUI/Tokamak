@@ -26,6 +26,7 @@
 		A6FEF7952227C1CC008BB292 /* Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FEF7942227C1CC008BB292 /* Scroll.swift */; };
 		A75611AA848D0C595B661357 /* libPods-TokamakDemo-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0EAAE47EB8E7CE32883E7C /* libPods-TokamakDemo-iOS.a */; };
 		D11DB6432219C03000013FC3 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DB6422219C03000013FC3 /* Timer.swift */; };
+		D1B90570224258AC0077CD5E /* Throbber.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B9056F224258AC0077CD5E /* Throbber.swift */; };
 		D1BB3D302223F6B400C30062 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB3D2F2223F6B400C30062 /* Animation.swift */; };
 		D1BFAF772215795900845EA0 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF762215795900845EA0 /* Router.swift */; };
 		D1BFAF7B22158B4000845EA0 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF7A22158B4000845EA0 /* List.swift */; };
@@ -76,6 +77,7 @@
 		BA8336497AD51B80F43A0A8C /* Pods-TokamakDemo-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokamakDemo-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokamakDemo-iOS/Pods-TokamakDemo-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C6DA99382B6892EAB361742F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		D11DB6422219C03000013FC3 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
+		D1B9056F224258AC0077CD5E /* Throbber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throbber.swift; sourceTree = "<group>"; };
 		D1BB3D2F2223F6B400C30062 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		D1BFAF762215795900845EA0 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		D1BFAF7A22158B4000845EA0 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 				D1BB3D2F2223F6B400C30062 /* Animation.swift */,
 				A6FEF7942227C1CC008BB292 /* Scroll.swift */,
 				A6D6538022312263007FA886 /* CollectionExample.swift */,
+				D1B9056F224258AC0077CD5E /* Throbber.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -397,6 +400,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1B90570224258AC0077CD5E /* Throbber.swift in Sources */,
 				D1BFAF7B22158B4000845EA0 /* List.swift in Sources */,
 				D1F2C3272214407B008358DC /* TableModal.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,

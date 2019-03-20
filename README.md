@@ -686,16 +686,16 @@ struct ConditionalCounter: LeafComponent {
     let count1 = hooks.state(0)
     let count2 = hooks.state(42)
 
-    let value = (condition ? count1 : count2).value
+    let actualState = condition ? count1 : count2
 
     return StackView.node([
       Switch.node(.init(value: condition.value,
                         valueHandler: Handler(condition.set)))
       Button.node(.init(
-        onPress: Handler { count.set { $0 + 1 } },
+        onPress: Handler { actualState.set { $0 + 1 } },
         text: "Increment"
       )),
-      Label.node("\(count.value)"),
+      Label.node("\(actualState.value)"),
     ])
   }
 }
