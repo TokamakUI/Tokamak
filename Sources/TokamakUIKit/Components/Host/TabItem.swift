@@ -13,7 +13,7 @@ extension TabItem: UIHostComponent {
                           component: UIKitRenderer.MountedHost,
                           _: UIKitRenderer) -> UITarget? {
     guard
-      let parent = parent as? ViewControllerBox<TokamakTabController>
+      let parent = parent as? ViewControllerBox<UITabBarController>
     else {
       parentAssertionFailure()
       return nil

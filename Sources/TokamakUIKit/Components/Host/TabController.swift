@@ -23,7 +23,9 @@ final class TokamakTabController: UITabBarController {
   }
 }
 
-extension TabController: UIHostComponent {
+extension TabController: UIHostComponent, RefComponent {
+  public typealias RefTarget = UITabBarController
+
   static func mountTarget(to parent: UITarget,
                           component: UIKitRenderer.MountedHost,
                           _: UIKitRenderer) -> UITarget? {

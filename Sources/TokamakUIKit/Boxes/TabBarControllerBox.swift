@@ -155,15 +155,25 @@ private final class Delegate<T: UITabBarController>:
   UITabBarControllerDelegate {
   var onSelect: ((Int) -> ())?
 
-  func tabBar(
-    _ tabBar: UITabBar,
-    didSelect item: UITabBarItem
-  ) {
-    onSelect?(1)
+//  func tabBar(
+//    _ tabBar: UITabBar,
+//    didSelect item: UITabBarItem
+//  ) {
+//    onSelect?(1)
+//  }
+  // UITabBarDelegate
+  func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+    print("Selected item")
+  }
+
+  // UITabBarControllerDelegate
+  func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+    print("Selected view controller")
   }
 
   init(_ props: TabController.Props) {
 //        onSelect = props.onSelect?.value
+//    self.delegate = self
   }
 }
 
@@ -178,7 +188,7 @@ class TabControllerBox: ViewControllerBox<UITabBarController> {
     delegate = Delegate(props)
 
     viewController.delegate = delegate
-//        viewController.delegate = Delegate<T: viewController>
+
     super.init(viewController, node)
   }
 }
