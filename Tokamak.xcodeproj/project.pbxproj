@@ -40,6 +40,8 @@
 		D15E0456223582FD00BB0571 /* Left.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0444223582EE00BB0571 /* Left.swift */; };
 		D15E0457223582FD00BB0571 /* XAxisConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0445223582EE00BB0571 /* XAxisConstraint.swift */; };
 		D15E0458223582FD00BB0571 /* YAxisConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0446223582EE00BB0571 /* YAxisConstraint.swift */; };
+		D1B90572224259FA0077CD5E /* Throbber.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B90571224259FA0077CD5E /* Throbber.swift */; };
+		D1B9057422425CED0077CD5E /* Throbber.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B9057322425CED0077CD5E /* Throbber.swift */; };
 		OBJ_193 /* AnyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* AnyEquatable.swift */; };
 		OBJ_194 /* AnyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* AnyNode.swift */; };
 		OBJ_195 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Components.swift */; };
@@ -266,6 +268,8 @@
 		D15E0444223582EE00BB0571 /* Left.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Left.swift; sourceTree = "<group>"; };
 		D15E0445223582EE00BB0571 /* XAxisConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XAxisConstraint.swift; sourceTree = "<group>"; };
 		D15E0446223582EE00BB0571 /* YAxisConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YAxisConstraint.swift; sourceTree = "<group>"; };
+		D1B90571224259FA0077CD5E /* Throbber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throbber.swift; sourceTree = "<group>"; };
+		D1B9057322425CED0077CD5E /* Throbber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throbber.swift; sourceTree = "<group>"; };
 		OBJ_10 /* AnyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNode.swift; sourceTree = "<group>"; };
 		OBJ_100 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		OBJ_101 /* NavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItem.swift; sourceTree = "<group>"; };
@@ -563,6 +567,7 @@
 				OBJ_28 /* Switch.swift */,
 				OBJ_29 /* TextField.swift */,
 				OBJ_30 /* View.swift */,
+				D1B90571224259FA0077CD5E /* Throbber.swift */,
 			);
 			path = Host;
 			sourceTree = "<group>";
@@ -875,6 +880,7 @@
 				OBJ_107 /* Switch.swift */,
 				OBJ_108 /* TextField.swift */,
 				OBJ_109 /* View.swift */,
+				D1B9057322425CED0077CD5E /* Throbber.swift */,
 			);
 			path = Host;
 			sourceTree = "<group>";
@@ -1058,6 +1064,7 @@
 				OBJ_213 /* ModalPresenter.swift in Sources */,
 				OBJ_214 /* NavigationItem.swift in Sources */,
 				OBJ_215 /* NavigationPresenter.swift in Sources */,
+				D1B90572224259FA0077CD5E /* Throbber.swift in Sources */,
 				OBJ_217 /* TabItem.swift in Sources */,
 				OBJ_219 /* Accessibility.swift in Sources */,
 				OBJ_220 /* Color.swift in Sources */,
@@ -1207,6 +1214,7 @@
 				OBJ_354 /* Stepper.swift in Sources */,
 				OBJ_355 /* Switch.swift in Sources */,
 				OBJ_356 /* TextField.swift in Sources */,
+				D1B9057422425CED0077CD5E /* Throbber.swift in Sources */,
 				OBJ_357 /* View.swift in Sources */,
 				OBJ_358 /* Color.swift in Sources */,
 				OBJ_359 /* BaselineConstraint.swift in Sources */,
