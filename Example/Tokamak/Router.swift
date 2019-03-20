@@ -52,8 +52,8 @@ struct Router: NavigationRouter {
         model: model,
         onSelect: Handler { push(model[$0.item]) }
       ))
-    //    case .counter:
-    //      result = Counter.node(.init(countFrom: 1))
+    case .counter:
+      result = Counter.node(.init(countFrom: 1))
     case .controls:
       result = Controls.node()
     case .constraints:
