@@ -63,13 +63,16 @@ extension Color {
     }
 
     func nextByte() -> Int8? {
+      // Take the first byte as the high 4 bits
+      // Then the second byte as the low 4 bits
       if
         let high = cString[offset].hexDecoded(),
         let low = cString[offset].hexDecoded() {
         // In this case, unchecked is still safe as it's between 0 and 6
         offset = offset &+ 2
 
-        return (high << 4) &+ low
+        // Adds the two 4-bit pairs together to form a full byte
+        return (high << 4) & low
       }
 
       return nil
@@ -91,26 +94,31 @@ extension Color {
   }
 }
 
-private let lowerRadix16table: [UInt8] = [
-  0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46,
-]
-private let upperRadix16table: [UInt8] = [
-  0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66,
-]
-
 private extension Int8 {
   func hexDecoded() -> Int8? {
+    // If the character is between 0x30 and 0x39 it is a textual number
+    // 0x30 is equal to the ASCII `0` and 0x30 is equal to `0x39`
     if self >= 0x30 && self <= 0x39 {
+      // The binary representation of this character can be found by subtracting the lowest `0` in ASCII
       return self &- 0x30
     } else if self >= 0x41 && self <= 0x46 {
+      // This block executes if the integer is within the `a-z` lowercased ASCII range
+      // Then uses the algorithm described below to find the correct representation
       return self &- Int8.lowercasedOffset
     } else if self >= 0x61 && self <= 0x66 {
+      // This block executes if the integer is within the `A-Z` uppercased ASCII range
+      // Then uses the algorithm described below to find the correct representation
       return self &- Int8.uppercasedOffset
     }
 
     return nil
   }
 
+  // 'a' in hexadecimal is equal to `10` in decimal
+  // So by subtracting `a` we get the lowercased character narrowed down to base10 offset by 10
+  // By adding 10 (or reducing the subtraction size by 10) we represent this character correctly as base10
   static let lowercasedOffset: Int8 = 0x41 &- 10
+
+  // The same as the lowercasedOffset, except for uppercased ASCII
   static let uppercasedOffset: Int8 = 0x61 &- 10
 }
