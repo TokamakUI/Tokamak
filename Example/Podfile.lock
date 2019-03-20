@@ -1,10 +1,10 @@
 PODS:
-  - Tokamak (0.1.0)
-  - TokamakAppKit (0.1.0):
+  - Tokamak (0.1.2)
+  - TokamakAppKit (0.1.2):
     - Tokamak (~> 0.1)
-  - TokamakDemo (0.1.0):
+  - TokamakDemo (0.1.2):
     - Tokamak (~> 0.1)
-  - TokamakUIKit (0.1.0):
+  - TokamakUIKit (0.1.2):
     - Tokamak (~> 0.1)
 
 DEPENDENCIES:
@@ -24,10 +24,10 @@ EXTERNAL SOURCES:
     :path: ".."
 
 SPEC CHECKSUMS:
-  Tokamak: 20e3e854a9ebf3d8a65211f3f45b7c40d2519e89
-  TokamakAppKit: 5b5cdeab9b51091dbc696e0c891d025dc298e6e2
-  TokamakDemo: c848bba790d0c5adbabbcc8378fd480ee7d2af7a
-  TokamakUIKit: cfed01e60c62a5aff7f8440eb57c9641dadb7709
+  Tokamak: 595fe4fb92b23d92289e2387526b10405a2eb144
+  TokamakAppKit: c7fb2d9d32e08209536b3719b9303e6c90e3f830
+  TokamakDemo: 08c1c8cf8263311775ebe794df90ed9d7e7a3ed2
+  TokamakUIKit: fa9b5bcb2f0f0c4fd5c4c20473ff01cc6b20f32d
 
 PODFILE CHECKSUM: c2d722f96b8e3bcf25d99c2246c9a11ba5223765
 
