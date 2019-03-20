@@ -65,14 +65,13 @@ extension Color {
     func nextByte() -> Int8? {
       if
         let high = cString[offset].hexDecoded(),
-        let low = cString[offset].hexDecoded()
-      {
+        let low = cString[offset].hexDecoded() {
         // In this case, unchecked is still safe as it's between 0 and 6
         offset = offset &+ 2
-        
+
         return (high << 4) &+ low
       }
-  
+
       return nil
     }
 
@@ -80,22 +79,22 @@ extension Color {
       let red = nextByte(),
       let green = nextByte(),
       let blue = nextByte()
-      else {
-        return nil
+    else {
+      return nil
     }
 
     self.red = Double(UInt8(bitPattern: red)) / 255
     self.green = Double(UInt8(bitPattern: green)) / 255
     self.blue = Double(UInt8(bitPattern: blue)) / 255
-    self.alpha = 1
-    self.space = .sRGB
+    alpha = 1
+    space = .sRGB
   }
 }
 
-fileprivate let lowerRadix16table: [UInt8] = [0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46]
-fileprivate let upperRadix16table: [UInt8] = [0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66]
+private let lowerRadix16table: [UInt8] = [0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46]
+private let upperRadix16table: [UInt8] = [0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66]
 
-fileprivate extension Int8 {
+private extension Int8 {
   func hexDecoded() -> Int8? {
     if self >= 0x30 && self <= 0x39 {
       return self &- 0x30
