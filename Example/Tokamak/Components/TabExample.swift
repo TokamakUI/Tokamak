@@ -17,19 +17,44 @@ struct TabExample: LeafComponent {
     let refTabBar = hooks.ref(type: UITabBarController.self)
     let style = Style(Center.equal(to: .parent))
     let selectedIndex = hooks.state(0)
+    let tabsCount = hooks.state(3)
+    let tabsList = [
+      TabItem.node(
+        .init(title: "First"),
+        StackView.node(.init(
+          Edges.equal(to: .safeArea),
+          alignment: .center,
+          axis: .vertical,
+          distribution: .fillEqually
+        ), [
+          Button.node(.init(
+            onPress: Handler { tabsCount.set { $0 - 1 } },
+            text: "Increment"
+          )),
 
+          Label.node(.init(alignment: .center, text: "First")),
+        ])
+      ),
+      TabItem.node(
+        .init(title: "Second"),
+        Label.node(.init(style, text: "Second"))
+      ),
+      TabItem.node(
+        .init(title: "Third"),
+        Label.node(.init(style, text: "Third"))
+      ),
+    ]
+    var newTabList = tabsList
+    if tabsCount.value >= 1 {
+      newTabList = Array(tabsList[0..<tabsCount.value])
+    } else {
+      newTabList = tabsList
+    }
+
+    print(tabsCount.value)
     return TabPresenter.node(
       .init(isAnimated: true, selectedIndex: selectedIndex),
-      [
-        TabItem.node(
-          .init(title: "First"),
-          Label.node(.init(style, text: "First"))
-        ),
-        TabItem.node(
-          .init(title: "Second"),
-          Label.node(.init(style, text: "Second"))
-        ),
-      ],
+      newTabList,
       ref: refTabBar
     )
   }

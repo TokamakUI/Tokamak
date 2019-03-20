@@ -57,8 +57,9 @@ extension TabItem: UIHostComponent {
     let item = target.viewController.tabBarItem
 
     item?.title = props.title
-//    item.largeTitleDisplayMode = .init(mode: props.titleMode)
   }
 
-  static func unmount(target: UITarget, completion: () -> ()) { completion() }
+  static func unmount(target: UITarget, completion: @escaping () -> ()) {
+    target.viewController.dismiss(animated: true) { completion() }
+  }
 }
