@@ -16,9 +16,8 @@ struct TabExample: LeafComponent {
   static func render(props: Props, hooks: Hooks) -> AnyNode {
     let refTabBar = hooks.ref(type: UITabBarController.self)
     let style = Style(Center.equal(to: .parent))
-    let selectedIndex = hooks.state(3)
+    let selectedIndex = hooks.state(0)
 
-    print(selectedIndex.value)
     return TabController.node(
       .init(isAnimated: true, selectedIndex: selectedIndex),
       [
