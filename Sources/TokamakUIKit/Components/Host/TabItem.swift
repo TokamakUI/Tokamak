@@ -59,7 +59,21 @@ extension TabItem: UIHostComponent {
     item?.title = props.title
   }
 
-  static func unmount(target: UITarget, completion: @escaping () -> ()) {
-    target.viewController.dismiss(animated: true) { completion() }
+  static func unmount(
+    target: UITarget,
+    from parent: UITarget,
+    completion: @escaping () -> ()
+  ) {
+    let tabBarController = parent.viewController as! TokamakTabPresenter
+
+    let indexToRemove = tabBarController.viewControllers?
+      .firstIndex(of: target.viewController)
+    if indexToRemove! < (tabBarController.viewControllers?.count)! {
+      var viewControllers = tabBarController.viewControllers
+      viewControllers?.remove(at: indexToRemove!)
+      tabBarController.viewControllers = viewControllers
+    }
+
+    completion()
   }
 }

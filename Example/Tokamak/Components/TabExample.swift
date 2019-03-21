@@ -15,11 +15,10 @@ struct TabExample: LeafComponent {
 
   static func render(props: Props, hooks: Hooks) -> AnyNode {
     let refTabBar = hooks.ref(type: UITabBarController.self)
-    let style = Style(Center.equal(to: .parent))
     let selectedIndex = hooks.state(0)
-    let tabsCount = hooks.state(3)
-    let tabsList = [
-      TabItem.node(
+    let tabsIdToRemove = hooks.state("")
+    var tabDictionary = [
+      "First": TabItem.node(
         .init(title: "First"),
         StackView.node(.init(
           Edges.equal(to: .safeArea),
@@ -28,30 +27,50 @@ struct TabExample: LeafComponent {
           distribution: .fillEqually
         ), [
           Button.node(.init(
-            onPress: Handler { tabsCount.set { $0 - 1 } },
-            text: "Increment"
+            onPress: Handler { tabsIdToRemove.set { _ in "First" } },
+            text: "Remove first tab"
           )),
-
           Label.node(.init(alignment: .center, text: "First")),
         ])
       ),
-      TabItem.node(
+      "Second": TabItem.node(
         .init(title: "Second"),
-        Label.node(.init(style, text: "Second"))
+        StackView.node(.init(
+          Edges.equal(to: .safeArea),
+          alignment: .center,
+          axis: .vertical,
+          distribution: .fillEqually
+        ), [
+          Button.node(.init(
+            onPress: Handler { tabsIdToRemove.set { _ in "Second" } },
+            text: "Remove second tab"
+          )),
+          Label.node(.init(alignment: .center, text: "Second")),
+        ])
       ),
-      TabItem.node(
+      "Third": TabItem.node(
         .init(title: "Third"),
-        Label.node(.init(style, text: "Third"))
+        StackView.node(.init(
+          Edges.equal(to: .safeArea),
+          alignment: .center,
+          axis: .vertical,
+          distribution: .fillEqually
+        ), [
+          Button.node(.init(
+            onPress: Handler { tabsIdToRemove.set { _ in "Third" } },
+            text: "Remove third tab"
+          )),
+          Label.node(.init(alignment: .center, text: "Third")),
+        ])
       ),
     ]
-    var newTabList = tabsList
-    if tabsCount.value >= 1 {
-      newTabList = Array(tabsList[0..<tabsCount.value])
-    } else {
-      newTabList = tabsList
+
+    if tabsIdToRemove.value != "" {
+      tabDictionary.removeValue(forKey: tabsIdToRemove.value)
     }
 
-    print(tabsCount.value)
+    let newTabList = Array(tabDictionary.values.map { $0 })
+
     return TabPresenter.node(
       .init(isAnimated: true, selectedIndex: selectedIndex),
       newTabList,
