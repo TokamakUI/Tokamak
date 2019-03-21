@@ -32,7 +32,7 @@ extension Throbber: UIViewComponent {
 
   static func update(view box: ViewBox<TokamakActivityIndicatorView>,
                      _ props: Throbber.Props,
-                     _: Null) {
+                     _: [AnyNode]) {
     let view = box.view
 
     view.style = UIActivityIndicatorView.Style(props.variety)

@@ -27,6 +27,7 @@
 		A75611AA848D0C595B661357 /* libPods-TokamakDemo-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0EAAE47EB8E7CE32883E7C /* libPods-TokamakDemo-iOS.a */; };
 		D11DB6432219C03000013FC3 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DB6422219C03000013FC3 /* Timer.swift */; };
 		D1B90570224258AC0077CD5E /* Throbber.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B9056F224258AC0077CD5E /* Throbber.swift */; };
+		D1B905762243904B0077CD5E /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B905752243904B0077CD5E /* Network.swift */; };
 		D1BB3D302223F6B400C30062 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB3D2F2223F6B400C30062 /* Animation.swift */; };
 		D1BFAF772215795900845EA0 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF762215795900845EA0 /* Router.swift */; };
 		D1BFAF7B22158B4000845EA0 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF7A22158B4000845EA0 /* List.swift */; };
@@ -78,6 +79,7 @@
 		C6DA99382B6892EAB361742F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		D11DB6422219C03000013FC3 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		D1B9056F224258AC0077CD5E /* Throbber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throbber.swift; sourceTree = "<group>"; };
+		D1B905752243904B0077CD5E /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D1BB3D2F2223F6B400C30062 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		D1BFAF762215795900845EA0 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		D1BFAF7A22158B4000845EA0 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 				A6FEF7942227C1CC008BB292 /* Scroll.swift */,
 				A6D6538022312263007FA886 /* CollectionExample.swift */,
 				D1B9056F224258AC0077CD5E /* Throbber.swift */,
+				D1B905752243904B0077CD5E /* Network.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -423,6 +426,7 @@
 				A67717222226E7FD0028A6F3 /* Menu.swift in Sources */,
 				A665435A22269F9F00F01C04 /* StartGame.swift in Sources */,
 				A67717202226DC7C0028A6F3 /* Gameboard.swift in Sources */,
+				D1B905762243904B0077CD5E /* Network.swift in Sources */,
 				D1BB3D302223F6B400C30062 /* Animation.swift in Sources */,
 				A6654358222690DA00F01C04 /* Gamepad.swift in Sources */,
 				D1F7185522159EAD004E5951 /* DatePickers.swift in Sources */,

@@ -26,6 +26,7 @@ enum AppRoute: String, CaseIterable {
   case scrollView = "Scroll"
   case collection = "Collection View"
   case throbber
+  case network
 }
 
 extension AppRoute: CustomStringConvertible {
@@ -79,6 +80,8 @@ struct Router: NavigationRouter {
       result = CollectionExample.node()
     case .throbber:
       result = ThrobberExample.node()
+    case .network:
+      result = Network.node()
     }
 
     return NavigationItem.node(
