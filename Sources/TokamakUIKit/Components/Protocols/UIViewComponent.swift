@@ -202,7 +202,11 @@ extension UIViewComponent where Target == Target.DefaultValue,
     update(view: target, props, children)
   }
 
-  static func unmount(target: UITarget, completion: () -> ()) {
+  static func unmount(
+    target: UITarget,
+    from parent: UITarget,
+    completion: () -> ()
+  ) {
     switch target {
     case let target as ViewBox<Target>:
       target.view.removeFromSuperview()

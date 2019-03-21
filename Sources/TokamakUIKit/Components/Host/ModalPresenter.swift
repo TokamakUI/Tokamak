@@ -20,7 +20,11 @@ extension ModalPresenter: UIHostComponent {
     // FIXME: update presentation-related props on the target here
   }
 
-  static func unmount(target: UITarget, completion: @escaping () -> ()) {
+  static func unmount(
+    target: UITarget,
+    from parent: UITarget,
+    completion: @escaping () -> ()
+  ) {
     target.viewController.dismiss(animated: true) { completion() }
   }
 }

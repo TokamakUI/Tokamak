@@ -66,5 +66,9 @@ extension NavigationItem: UIHostComponent {
     item.largeTitleDisplayMode = .init(mode: props.titleMode)
   }
 
-  static func unmount(target: UITarget, completion: () -> ()) { completion() }
+  static func unmount(
+    target: UITarget,
+    from parent: UITarget,
+    completion: () -> ()
+  ) { completion() }
 }

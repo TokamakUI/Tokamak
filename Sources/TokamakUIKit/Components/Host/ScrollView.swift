@@ -64,4 +64,12 @@ extension ScrollView: UIViewComponent {
     view.showsHorizontalScrollIndicator = props.showsHorizontalScrollIndicator
     view.zoomScale = CGFloat(props.zoomScale)
   }
+
+  static func unmount(
+    target: UITarget,
+    from parent: UITarget,
+    completion: @escaping () -> ()
+  ) {
+    completion()
+  }
 }

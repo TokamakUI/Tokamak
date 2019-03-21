@@ -64,7 +64,11 @@ extension TabPresenter: UIHostComponent, RefComponent {
 
   static func update(target: UITarget, node: AnyNode) {}
 
-  static func unmount(target: UITarget, completion: @escaping () -> ()) {
+  static func unmount(
+    target: UITarget,
+    from parent: UITarget,
+    completion: @escaping () -> ()
+  ) {
     completion()
   }
 }

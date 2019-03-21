@@ -96,7 +96,11 @@ extension NavigationController: UIHostComponent {
 
   static func update(target: UITarget, node: AnyNode) {}
 
-  static func unmount(target: UITarget, completion: () -> ()) {
+  static func unmount(
+    target: UITarget,
+    from parent: UITarget,
+    completion: () -> ()
+  ) {
     completion()
   }
 }

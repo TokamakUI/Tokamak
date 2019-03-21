@@ -96,6 +96,7 @@ final class UIKitRenderer: Renderer {
 
   func unmount(
     target: UITarget,
+    from parent: UITarget,
     with component: UIKitRenderer.MountedHost,
     completion: @escaping () -> ()
   ) {
@@ -104,6 +105,10 @@ final class UIKitRenderer: Renderer {
       return
     }
 
-    rendererComponent.unmount(target: target, completion: completion)
+    rendererComponent.unmount(
+      target: target,
+      from: parent,
+      completion: completion
+    )
   }
 }
