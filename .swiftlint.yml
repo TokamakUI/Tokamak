@@ -9,6 +9,8 @@ disabled_rules:
 line_length:
 - 80
 - 100
+- ignores_comments
+
 
 function_body_length:
 - 50
