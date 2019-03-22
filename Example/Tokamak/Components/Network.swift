@@ -17,8 +17,7 @@ struct Network: LeafComponent {
       .init(
         Style(Edges.equal(to: .parent)),
         isAnimating: true
-      ),
-      Label.node("blah")
+      )
     )
   }
 }

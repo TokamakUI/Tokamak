@@ -35,5 +35,5 @@ public struct Throbber: HostComponent {
     }
   }
 
-  public typealias Children = [AnyNode]
+  public typealias Children = Null
 }
