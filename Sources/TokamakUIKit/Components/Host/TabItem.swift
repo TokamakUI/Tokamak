@@ -56,6 +56,20 @@ extension TabItem: UIHostComponent {
 
     let item = target.viewController.tabBarItem
 
+    if props.badgeColor != nil {
+      item?.badgeColor = props.badgeColor.flatMap { UIColor($0) }
+    }
+    if props.badgeValue != nil {
+      item?.badgeValue = props.badgeValue
+    }
+
+    if props.image != nil {
+      item?.image = UIImage.from(image: props.image!)
+    }
+    if props.selectedImage != nil {
+      item?.selectedImage = UIImage.from(image: props.selectedImage!)
+    }
+
     item?.title = props.title
   }
 
