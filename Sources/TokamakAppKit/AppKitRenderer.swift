@@ -97,6 +97,7 @@ final class AppKitRenderer: Renderer {
 
   func unmount(
     target: NSTarget,
+    from parent: NSTarget,
     with component: AppKitRenderer.MountedHost,
     completion: @escaping () -> ()
   ) {
