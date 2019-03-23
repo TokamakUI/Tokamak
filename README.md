@@ -124,6 +124,8 @@ questions!
 
 ## Example code
 
+### Counter
+
 An example of a Tokamak component that binds a button to a label looks like
 this:
 
@@ -189,6 +191,8 @@ Note that we added explicit constraints to use this as a window's root view
 controller, and windows don't have a fixed predefined size by default.
 
 ![Counter component](https://github.com/MaxDesiatov/Tokamak/raw/master/TokamakCounterAppKit.gif)
+
+### Networking
 
 ## Example project
 

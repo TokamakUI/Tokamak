@@ -8,11 +8,13 @@
 //
 
 import Tokamak
+import TokamakDemo
 import TokamakUIKit
 import UIKit
 
 final class ViewController: TokamakViewController {
   override var node: AnyNode {
+    return Network.node()
     return NavigationPresenter<Router>.node(.init(initial: .list))
   }
 }

@@ -50,4 +50,5 @@ s.source_files = 'Sources/TokamakDemo/**/*'
 
 # s.public_header_files = 'Pod/Sources/**/*.h'
 s.dependency 'Tokamak', '~> 0.1'
+s.dependency 'Alamofire', '~> 4.8'
 end

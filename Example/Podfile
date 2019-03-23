@@ -8,7 +8,6 @@ target 'TokamakDemo-iOS' do
   platform :ios, '11.0'
 
   common_pods
-  pod 'Alamofire'
   pod 'TokamakUIKit', :path => '..'
 end
 

@@ -19,7 +19,7 @@ final class ViewController: TokamakViewController {
         Width.equal(to: 200),
         Height.equal(to: 100),
       ])),
-      Counter.node(.init(countFrom: 1))
+      Network.node()
     )
   }
 }

@@ -4,12 +4,12 @@ PODS:
   - TokamakAppKit (0.1.2):
     - Tokamak (~> 0.1)
   - TokamakDemo (0.1.2):
+    - Alamofire (~> 4.8)
     - Tokamak (~> 0.1)
   - TokamakUIKit (0.1.2):
     - Tokamak (~> 0.1)
 
 DEPENDENCIES:
-  - Alamofire
   - Tokamak (from `..`)
   - TokamakAppKit (from `..`)
   - TokamakDemo (from `..`)
@@ -33,9 +33,9 @@ SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   Tokamak: 595fe4fb92b23d92289e2387526b10405a2eb144
   TokamakAppKit: c7fb2d9d32e08209536b3719b9303e6c90e3f830
-  TokamakDemo: 08c1c8cf8263311775ebe794df90ed9d7e7a3ed2
+  TokamakDemo: 79102bc97d2601c6376a8f566f571e87988348cb
   TokamakUIKit: fa9b5bcb2f0f0c4fd5c4c20473ff01cc6b20f32d
 
-PODFILE CHECKSUM: 9cc8c95378a3866ed70c9ce6e29b93697eb387fb
+PODFILE CHECKSUM: c2d722f96b8e3bcf25d99c2246c9a11ba5223765
 
 COCOAPODS: 1.6.0

@@ -27,7 +27,6 @@
 		A75611AA848D0C595B661357 /* libPods-TokamakDemo-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0EAAE47EB8E7CE32883E7C /* libPods-TokamakDemo-iOS.a */; };
 		D11DB6432219C03000013FC3 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DB6422219C03000013FC3 /* Timer.swift */; };
 		D1B90570224258AC0077CD5E /* Throbber.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B9056F224258AC0077CD5E /* Throbber.swift */; };
-		D1B905762243904B0077CD5E /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B905752243904B0077CD5E /* Network.swift */; };
 		D1BB3D302223F6B400C30062 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB3D2F2223F6B400C30062 /* Animation.swift */; };
 		D1BFAF772215795900845EA0 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF762215795900845EA0 /* Router.swift */; };
 		D1BFAF7B22158B4000845EA0 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFAF7A22158B4000845EA0 /* List.swift */; };
@@ -78,8 +77,8 @@
 		BA8336497AD51B80F43A0A8C /* Pods-TokamakDemo-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokamakDemo-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokamakDemo-iOS/Pods-TokamakDemo-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C6DA99382B6892EAB361742F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		D11DB6422219C03000013FC3 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
+		D1761D1D2246B5C400F53CEF /* TokamakDemo-macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "TokamakDemo-macOS.entitlements"; sourceTree = "<group>"; };
 		D1B9056F224258AC0077CD5E /* Throbber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throbber.swift; sourceTree = "<group>"; };
-		D1B905752243904B0077CD5E /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D1BB3D2F2223F6B400C30062 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		D1BFAF762215795900845EA0 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		D1BFAF7A22158B4000845EA0 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
@@ -206,6 +205,7 @@
 		D1C058B02233D4A20047205D /* TokamakDemo-macOS */ = {
 			isa = PBXGroup;
 			children = (
+				D1761D1D2246B5C400F53CEF /* TokamakDemo-macOS.entitlements */,
 				D1C058D32235311A0047205D /* ViewController.swift */,
 				D1C058B12233D4A20047205D /* AppDelegate.swift */,
 				D1C058B32233D4A30047205D /* Assets.xcassets */,
@@ -235,7 +235,6 @@
 				A6FEF7942227C1CC008BB292 /* Scroll.swift */,
 				A6D6538022312263007FA886 /* CollectionExample.swift */,
 				D1B9056F224258AC0077CD5E /* Throbber.swift */,
-				D1B905752243904B0077CD5E /* Network.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -311,6 +310,11 @@
 					};
 					D1C058AE2233D4A20047205D = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -426,7 +430,6 @@
 				A67717222226E7FD0028A6F3 /* Menu.swift in Sources */,
 				A665435A22269F9F00F01C04 /* StartGame.swift in Sources */,
 				A67717202226DC7C0028A6F3 /* Gameboard.swift in Sources */,
-				D1B905762243904B0077CD5E /* Network.swift in Sources */,
 				D1BB3D302223F6B400C30062 /* Animation.swift in Sources */,
 				A6654358222690DA00F01C04 /* Gamepad.swift in Sources */,
 				D1F7185522159EAD004E5951 /* DatePickers.swift in Sources */,
@@ -625,7 +628,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "TokamakDemo-macOS/TokamakDemoMac.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "TokamakDemo-macOS/TokamakDemo-macOS.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -658,7 +661,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "TokamakDemo-macOS/TokamakDemoMac.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "TokamakDemo-macOS/TokamakDemo-macOS.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
