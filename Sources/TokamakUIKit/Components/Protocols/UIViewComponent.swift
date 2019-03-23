@@ -23,8 +23,8 @@ protocol UIViewComponent: UIHostComponent, RefComponent {
   ) -> ViewBox<Target>
 }
 
-private func applyStyle<T: UIView, P: StyleProps>(_ target: ViewBox<T>,
-                                                  _ props: P) {
+private func applyStyle<T: UIView>(_ target: ViewBox<T>,
+                                   _ props: StyleProps) {
   guard let style = props.style else {
     return
   }

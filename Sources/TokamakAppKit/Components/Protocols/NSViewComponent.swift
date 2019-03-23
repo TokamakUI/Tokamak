@@ -8,12 +8,6 @@
 import AppKit
 import Tokamak
 
-public extension NSView {
-  var wantsUpdateLayer: Bool {
-    return true
-  }
-}
-
 protocol NSViewComponent: NSHostComponent, RefComponent {
   associatedtype Target: NSView & Default
 
@@ -31,8 +25,8 @@ protocol NSViewComponent: NSHostComponent, RefComponent {
   ) -> ViewBox<Target>
 }
 
-private func applyStyle<T: NSView, P: StyleProps>(_ target: ViewBox<T>,
-                                                  _ props: P) {
+private func applyStyle<T: NSView>(_ target: ViewBox<T>,
+                                   _ props: StyleProps) {
   guard let style = props.style else {
     return
   }
