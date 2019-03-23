@@ -5,8 +5,8 @@
 //  Created by Max Desiatov on 23/03/2019.
 //
 
-import Tokamak
 import AppKit
+import Tokamak
 
 final class TokamakProgressIndicator: NSProgressIndicator, Default {
   public static var defaultValue: TokamakProgressIndicator {
