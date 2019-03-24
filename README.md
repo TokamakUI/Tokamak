@@ -342,7 +342,7 @@ StackView.node(.init(axis: .vertical), [])
 
 The most simple component is a [pure
 function](https://en.wikipedia.org/wiki/Pure_function) taking [`Props`](#props)
-and [`Children`](#children) as an argument and returning a node tree as a
+and [`Children`](#children) as arguments and returning a node tree as a
 result:
 
 ```swift
@@ -423,8 +423,8 @@ Quite frequently you need components that are stateful or cause some other
 `Hooks` provide a clear separation between declarative components and other 
 imperative code, such as state management, file I/O, networking etc.
 
-The standard protocol `CompositeComponent` in Tokamak gets `Hooks` injected into
-`render` function as an argument.
+The standard protocol `CompositeComponent` allows `Hooks` to be injected into
+the `render` function as an argument.
 
 ```swift
 protocol CompositeComponent: Component {
