@@ -78,7 +78,10 @@ extension TabItem: UIHostComponent {
     from parent: UITarget,
     completion: @escaping () -> ()
   ) {
-    let tabBarController = parent.viewController as! TokamakTabPresenter
+    guard let tabBarController = parent.viewController as? TokamakTabPresenter else {
+      parentAssertionFailure()
+      return
+    }
 
     let indexToRemove = tabBarController.viewControllers?
       .firstIndex(of: target.viewController)
