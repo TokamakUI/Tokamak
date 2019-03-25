@@ -575,7 +575,6 @@
 				OBJ_28 /* Switch.swift */,
 				OBJ_29 /* TextField.swift */,
 				OBJ_30 /* View.swift */,
-				A675A59822390218005173E5 /* TabPresenter.swift */,
 				D1B90571224259FA0077CD5E /* Throbber.swift */,
 			);
 			path = Host;
@@ -713,6 +712,7 @@
 		OBJ_31 /* Presenters */ = {
 			isa = PBXGroup;
 			children = (
+				A675A59822390218005173E5 /* TabPresenter.swift */,
 				OBJ_32 /* ModalPresenter.swift */,
 				OBJ_33 /* NavigationItem.swift */,
 				OBJ_34 /* NavigationPresenter.swift */,
