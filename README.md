@@ -207,8 +207,8 @@ Code that implements this component looks like this:
 import Alamofire
 import Tokamak
 
-public struct NetworkDemo: LeafComponent {
-  public typealias Props = Null
+struct NetworkDemo: LeafComponent {
+  typealias Props = Null
 
   enum State {
     case initial
@@ -216,7 +216,7 @@ public struct NetworkDemo: LeafComponent {
     case finished(Result<String>)
   }
 
-  public static func render(props: Null, hooks: Hooks) -> AnyNode {
+  static func render(props: Null, hooks: Hooks) -> AnyNode {
     let state = hooks.state(State.initial)
     let style = Style(Edges.equal(to: .safeArea, inset: 10))
 
