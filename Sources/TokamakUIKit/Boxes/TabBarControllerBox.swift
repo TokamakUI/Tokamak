@@ -35,7 +35,7 @@ class TabBarControllerBox: ViewControllerBox<UITabBarController> {
   init(
     _ node: AnyNode,
     _ props: TabPresenter.Props,
-    _ viewController: TokamakTabPresenter
+    _ viewController: TokamakTabController
   ) {
     delegate = Delegate(props)
     viewController.delegate = delegate

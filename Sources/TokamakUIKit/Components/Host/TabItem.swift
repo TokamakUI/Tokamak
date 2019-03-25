@@ -78,7 +78,7 @@ extension TabItem: UIHostComponent {
     from parent: UITarget,
     completion: @escaping () -> ()
   ) {
-    guard let tabBarController = parent.viewController as? TokamakTabPresenter else {
+    guard let tabBarController = parent.viewController as? TokamakTabController else {
       parentAssertionFailure()
       return
     }

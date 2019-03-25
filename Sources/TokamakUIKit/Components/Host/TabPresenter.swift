@@ -8,7 +8,7 @@
 import Tokamak
 import UIKit
 
-final class TokamakTabPresenter: UITabBarController {
+final class TokamakTabController: UITabBarController {
   init() {
     super.init(nibName: nil, bundle: nil)
   }
@@ -28,7 +28,7 @@ extension TabPresenter: UIHostComponent, RefComponent {
     let result = TabBarControllerBox(
       component.node,
       props!,
-      TokamakTabPresenter()
+      TokamakTabController()
     )
 
     switch parent {

@@ -137,7 +137,7 @@ extension UIViewComponent where Target == Target.DefaultValue,
         result.viewController,
         animated: props.pushAnimated
       )
-    case let box as ViewControllerBox<TokamakTabPresenter>
+    case let box as ViewControllerBox<TokamakTabController>
       where parent.node.isSubtypeOf(TabPresenter.self):
       guard let props = parent.node.props.value
         as? TabPresenter.Props else {
