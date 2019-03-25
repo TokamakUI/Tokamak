@@ -65,11 +65,13 @@ public protocol Renderer: class {
   /** Function called by a reconciler when an existing target instance should be
    unmounted: removed from the parent and most likely destroyed.
    - parameter target: Existing target instance to be unmounted.
+   - parameter parent: Parent of target to direct interaction with parent.
    - parameter component: Type of the host component that renders to the
    updated target.
    */
   func unmount(
     target: TargetType,
+    from parent: TargetType,
     with component: MountedHost,
     completion: @escaping () -> ()
   )

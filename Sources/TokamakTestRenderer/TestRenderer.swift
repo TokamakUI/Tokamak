@@ -44,6 +44,7 @@ public final class TestRenderer: Renderer {
 
   public func unmount(
     target: TestView,
+    from parent: TestView,
     with component: TestRenderer.MountedHost,
     completion: () -> ()
   ) {

@@ -14,6 +14,7 @@ let _modalPresenterWitnessTableHack: UIHostComponent.Type = ModalPresenter.self
 let _stackControllerWitnessTableHack: UIHostComponent.Type =
   NavigationController.self
 let _navigationItemWitnessTableHack: UIHostComponent.Type = NavigationItem.self
+let _tabItemWitnessTableHack: UIHostComponent.Type = TabItem.self
 let _listViewWitnessTableHack: UIHostComponent.Type =
   ListView<HackyProvider>.self
 let _collectionViewWitnessTableHack: UIHostComponent.Type =
@@ -95,6 +96,7 @@ final class UIKitRenderer: Renderer {
 
   func unmount(
     target: UITarget,
+    from parent: UITarget,
     with component: UIKitRenderer.MountedHost,
     completion: @escaping () -> ()
   ) {
@@ -103,6 +105,10 @@ final class UIKitRenderer: Renderer {
       return
     }
 
-    rendererComponent.unmount(target: target, completion: completion)
+    rendererComponent.unmount(
+      target: target,
+      from: parent,
+      completion: completion
+    )
   }
 }

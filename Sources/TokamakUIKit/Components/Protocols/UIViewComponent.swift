@@ -94,7 +94,8 @@ extension UIViewComponent where Target == Target.DefaultValue,
 
     let parentRequiresViewController = parent.node.isSubtypeOf(
       ModalPresenter.self,
-      or: NavigationController.self
+      or: NavigationController.self,
+      or: TabPresenter.self
     )
 
     // UIViewController parent target can't present a bare `ViewBox` target,
@@ -136,6 +137,29 @@ extension UIViewComponent where Target == Target.DefaultValue,
         result.viewController,
         animated: props.pushAnimated
       )
+    case let box as ViewControllerBox<TokamakTabController>
+      where parent.node.isSubtypeOf(TabPresenter.self):
+      guard let props = parent.node.props.value
+        as? TabPresenter.Props else {
+        propsAssertionFailure()
+        return nil
+      }
+
+      if var viewControllers = box.containerViewController.viewControllers {
+        viewControllers.append(result.viewController)
+        box.containerViewController.setViewControllers(
+          viewControllers,
+          animated: props.isAnimated
+        )
+      } else {
+        box.containerViewController.setViewControllers(
+          [result.viewController],
+          animated: props.isAnimated
+        )
+      }
+    case let box as ViewControllerBox<UIViewController>
+      where parent.node.isSubtypeOf(TabItem.self):
+      box.viewController.view.addSubview(target)
     case let box as ViewControllerBox<UIViewController>
       where parent.node.isSubtypeOf(ModalPresenter.self):
       guard
@@ -178,7 +202,11 @@ extension UIViewComponent where Target == Target.DefaultValue,
     update(view: target, props, children)
   }
 
-  static func unmount(target: UITarget, completion: () -> ()) {
+  static func unmount(
+    target: UITarget,
+    from parent: UITarget,
+    completion: () -> ()
+  ) {
     switch target {
     case let target as ViewBox<Target>:
       target.view.removeFromSuperview()

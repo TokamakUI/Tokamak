@@ -25,6 +25,7 @@ enum AppRoute: String, CaseIterable {
   case snakeGame = "Snake Game"
   case scrollView = "Scroll"
   case collection = "Collection View"
+  case tab = "Tab Example"
   case throbber
 }
 
@@ -77,6 +78,8 @@ struct Router: NavigationRouter {
       result = ScrollViewExample.node()
     case .collection:
       result = CollectionExample.node()
+    case .tab:
+      result = TabExample.node()
     case .throbber:
       result = ThrobberExample.node()
     }
