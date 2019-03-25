@@ -26,7 +26,9 @@ struct TabExample: LeafComponent {
     func removeTab(id: Int) -> [Int] {
       if tabsIdToRemove.value.count > 1 {
         var oldList = tabsIdToRemove.value
-        oldList.remove(at: id)
+        if let index = oldList.firstIndex(of: id) {
+          oldList.remove(at: index)
+        }
         return oldList
       } else {
         return tabsIdToRemove.value
@@ -38,35 +40,22 @@ struct TabExample: LeafComponent {
         .init(title: "First"),
         TabContent.node(.init(
           name: "first",
-          id: 0,
           clickHandler: Handler { tabsIdToRemove.set(removeTab(id: 0)) }
         ))
       ),
       TabItem.node(
         .init(title: "Second"),
-        StackView.node(
-          stackViewStyle,
-          [
-            Button.node(.init(
-              onPress: Handler { tabsIdToRemove.set(removeTab(id: 1)) },
-              text: "Remove second tab"
-            )),
-            Label.node(.init(alignment: .center, text: "Second")),
-          ]
-        )
+        TabContent.node(.init(
+          name: "second",
+          clickHandler: Handler { tabsIdToRemove.set(removeTab(id: 1)) }
+        ))
       ),
       TabItem.node(
         .init(title: "Third"),
-        StackView.node(
-          stackViewStyle,
-          [
-            Button.node(.init(
-              onPress: Handler { tabsIdToRemove.set(removeTab(id: 2)) },
-              text: "Remove third tab"
-            )),
-            Label.node(.init(alignment: .center, text: "Third")),
-          ]
-        )
+        TabContent.node(.init(
+          name: "third",
+          clickHandler: Handler { tabsIdToRemove.set(removeTab(id: 2)) }
+        ))
       ),
     ]
 

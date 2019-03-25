@@ -12,7 +12,6 @@ import Tokamak
 struct TabContent: LeafComponent {
   struct Props: Equatable {
     let name: String
-    let id: Int
     let clickHandler: Handler<()>
   }
 
