@@ -15,7 +15,7 @@ struct TabExample: LeafComponent {
 
   static func render(props: Props, hooks: Hooks) -> AnyNode {
     let selectedIndex = hooks.state(0)
-    let tabsIdToRemove = hooks.state([0, 1, 2])
+    let tabsToDisplay = hooks.state([0, 1, 2])
     let stackViewStyle = StackView.Props(
       Edges.equal(to: .safeArea),
       alignment: .center,
@@ -24,35 +24,35 @@ struct TabExample: LeafComponent {
     )
 
     func removeTab(id: Int) -> [Int] {
-      if tabsIdToRemove.value.count > 1 {
-        var oldList = tabsIdToRemove.value
+      if tabsToDisplay.value.count > 1 {
+        var oldList = tabsToDisplay.value
         if let index = oldList.firstIndex(of: id) {
           oldList.remove(at: index)
         }
         return oldList
       } else {
-        return tabsIdToRemove.value
+        return tabsToDisplay.value
       }
     }
 
     let tabs = [
       TabContent.node(.init(
         name: "first",
-        clickHandler: Handler { tabsIdToRemove.set(removeTab(id: 0)) }
+        clickHandler: Handler { tabsToDisplay.set(removeTab(id: 0)) }
       )),
       TabContent.node(.init(
         name: "second",
-        clickHandler: Handler { tabsIdToRemove.set(removeTab(id: 1)) }
+        clickHandler: Handler { tabsToDisplay.set(removeTab(id: 1)) }
       )),
       TabContent.node(.init(
         name: "third",
-        clickHandler: Handler { tabsIdToRemove.set(removeTab(id: 2)) }
+        clickHandler: Handler { tabsToDisplay.set(removeTab(id: 2)) }
       )),
     ]
 
     return TabPresenter.node(
       .init(isAnimated: true, selectedIndex: selectedIndex),
-      Array(tabsIdToRemove.value.map { tabs[$0] })
+      Array(tabsToDisplay.value.map { tabs[$0] })
     )
   }
 }
