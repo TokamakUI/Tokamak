@@ -14,54 +14,54 @@ struct TabExample: LeafComponent {
   typealias Props = Null
 
   static func render(props: Props, hooks: Hooks) -> AnyNode {
-    let refTabBar = hooks.ref(type: UITabBarController.self)
     let selectedIndex = hooks.state(0)
     let tabsIdToRemove = hooks.state("")
+    let stackViewStyle = StackView.Props(
+      Edges.equal(to: .safeArea),
+      alignment: .center,
+      axis: .vertical,
+      distribution: .fillEqually
+    )
+
     var tabDictionary = [
       "First": TabItem.node(
         .init(title: "First"),
-        StackView.node(.init(
-          Edges.equal(to: .safeArea),
-          alignment: .center,
-          axis: .vertical,
-          distribution: .fillEqually
-        ), [
-          Button.node(.init(
-            onPress: Handler { tabsIdToRemove.set { _ in "First" } },
-            text: "Remove first tab"
-          )),
-          Label.node(.init(alignment: .center, text: "First")),
-        ])
+        StackView.node(
+          stackViewStyle,
+          [
+            Button.node(.init(
+              onPress: Handler { tabsIdToRemove.set { _ in "First" } },
+              text: "Remove first tab"
+            )),
+            Label.node(.init(alignment: .center, text: "First")),
+          ]
+        )
       ),
       "Second": TabItem.node(
         .init(title: "Second"),
-        StackView.node(.init(
-          Edges.equal(to: .safeArea),
-          alignment: .center,
-          axis: .vertical,
-          distribution: .fillEqually
-        ), [
-          Button.node(.init(
-            onPress: Handler { tabsIdToRemove.set { _ in "Second" } },
-            text: "Remove second tab"
-          )),
-          Label.node(.init(alignment: .center, text: "Second")),
-        ])
+        StackView.node(
+          stackViewStyle,
+          [
+            Button.node(.init(
+              onPress: Handler { tabsIdToRemove.set { _ in "Second" } },
+              text: "Remove second tab"
+            )),
+            Label.node(.init(alignment: .center, text: "Second")),
+          ]
+        )
       ),
       "Third": TabItem.node(
         .init(title: "Third"),
-        StackView.node(.init(
-          Edges.equal(to: .safeArea),
-          alignment: .center,
-          axis: .vertical,
-          distribution: .fillEqually
-        ), [
-          Button.node(.init(
-            onPress: Handler { tabsIdToRemove.set { _ in "Third" } },
-            text: "Remove third tab"
-          )),
-          Label.node(.init(alignment: .center, text: "Third")),
-        ])
+        StackView.node(
+          stackViewStyle,
+          [
+            Button.node(.init(
+              onPress: Handler { tabsIdToRemove.set { _ in "Third" } },
+              text: "Remove third tab"
+            )),
+            Label.node(.init(alignment: .center, text: "Third")),
+          ]
+        )
       ),
     ]
 
@@ -73,8 +73,7 @@ struct TabExample: LeafComponent {
 
     return TabPresenter.node(
       .init(isAnimated: true, selectedIndex: selectedIndex),
-      newTabList,
-      ref: refTabBar
+      newTabList
     )
   }
 }
