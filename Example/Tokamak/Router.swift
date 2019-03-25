@@ -12,7 +12,7 @@ import TokamakDemo
 
 enum AppRoute: String, CaseIterable {
   case list = "Examples"
-//  case counter
+  case counter
   case controls
   case constraints = "Auto Layout Constraints"
   case modals = "Modal Presentation"
@@ -52,8 +52,8 @@ struct Router: NavigationRouter {
         model: model,
         onSelect: Handler { push(model[$0.item]) }
       ))
-    //    case .counter:
-    //      result = Counter.node(.init(countFrom: 1))
+    case .counter:
+      result = Counter.node(.init(countFrom: 1))
     case .controls:
       result = Controls.node()
     case .constraints:
