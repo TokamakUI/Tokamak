@@ -149,11 +149,19 @@ public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
 
     case let node as AnyNode:
       if let child = mountedChildren.first {
-        child.node = node
-        child.update(with: reconciler)
+        if child.node.type == node.type {
+          child.node = node
+          child.update(with: reconciler)
+        } else {
+          child.unmount(with: reconciler)
+          let child: MountedComponent<R> = node.makeMountedComponent(target)
+          child.mount(with: reconciler)
+          mountedChildren = [child]
+        }
       } else {
         let child: MountedComponent<R> = node.makeMountedComponent(target)
         child.mount(with: reconciler)
+        mountedChildren = [child]
       }
 
     // child type that can't be rendered, but still makes sense as a child
