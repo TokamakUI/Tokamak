@@ -58,19 +58,13 @@ extension TabItem: UIHostComponent {
       return
     }
 
-    if props.badgeColor != nil {
-      item.badgeColor = props.badgeColor.flatMap { UIColor($0) }
-    }
-    if props.badgeValue != nil {
-      item.badgeValue = props.badgeValue
-    }
+    item.badgeColor = props.badgeColor.flatMap { UIColor($0) }
 
-    if props.image != nil {
-      item.image = UIImage.from(image: props.image!)
-    }
-    if props.selectedImage != nil {
-      item.selectedImage = UIImage.from(image: props.selectedImage!)
-    }
+    item.badgeValue = props.badgeValue
+
+    item.image = props.image.flatMap { UIImage.from(image: $0) }
+
+    item.selectedImage = props.selectedImage.flatMap { UIImage.from(image: $0) }
 
     item.title = props.title
   }
