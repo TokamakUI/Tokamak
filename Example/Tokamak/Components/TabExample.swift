@@ -15,7 +15,7 @@ struct TabExample: LeafComponent {
 
   static func render(props: Props, hooks: Hooks) -> AnyNode {
     let selectedIndex = hooks.state(0)
-    let tabsIdToRemove = hooks.state("")
+    let tabsIdToRemove = hooks.state([0, 1, 2])
     let stackViewStyle = StackView.Props(
       Edges.equal(to: .safeArea),
       alignment: .center,
@@ -23,40 +23,45 @@ struct TabExample: LeafComponent {
       distribution: .fillEqually
     )
 
+    func removeTab(id: Int) -> [Int] {
+      if tabsIdToRemove.value.count > 1 {
+        var oldList = tabsIdToRemove.value
+        oldList.remove(at: id)
+        return oldList
+      } else {
+        return tabsIdToRemove.value
+      }
+    }
+
     var tabDictionary = [
-      "First": TabItem.node(
+      TabItem.node(
         .init(title: "First"),
-        StackView.node(
-          stackViewStyle,
-          [
-            Button.node(.init(
-              onPress: Handler { tabsIdToRemove.set { _ in "First" } },
-              text: "Remove first tab"
-            )),
-            Label.node(.init(alignment: .center, text: "First")),
-          ]
-        )
+        TabContent.node(.init(
+          name: "first",
+          id: 0,
+          clickHandler: Handler { tabsIdToRemove.set(removeTab(id: 0)) }
+        ))
       ),
-      "Second": TabItem.node(
+      TabItem.node(
         .init(title: "Second"),
         StackView.node(
           stackViewStyle,
           [
             Button.node(.init(
-              onPress: Handler { tabsIdToRemove.set { _ in "Second" } },
+              onPress: Handler { tabsIdToRemove.set(removeTab(id: 1)) },
               text: "Remove second tab"
             )),
             Label.node(.init(alignment: .center, text: "Second")),
           ]
         )
       ),
-      "Third": TabItem.node(
+      TabItem.node(
         .init(title: "Third"),
         StackView.node(
           stackViewStyle,
           [
             Button.node(.init(
-              onPress: Handler { tabsIdToRemove.set { _ in "Third" } },
+              onPress: Handler { tabsIdToRemove.set(removeTab(id: 2)) },
               text: "Remove third tab"
             )),
             Label.node(.init(alignment: .center, text: "Third")),
@@ -65,11 +70,7 @@ struct TabExample: LeafComponent {
       ),
     ]
 
-    if tabsIdToRemove.value != "" {
-      tabDictionary.removeValue(forKey: tabsIdToRemove.value)
-    }
-
-    let newTabList = Array(tabDictionary.values.map { $0 })
+    let newTabList = Array(tabsIdToRemove.value.map { tabDictionary[$0] })
 
     return TabPresenter.node(
       .init(isAnimated: true, selectedIndex: selectedIndex),
