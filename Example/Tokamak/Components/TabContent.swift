@@ -23,7 +23,7 @@ struct TabContent: LeafComponent {
       distribution: .fillEqually
     )
     return TabItem.node(
-      .init(title: props.name),
+      .init(title: props.name.capitalized),
       StackView.node(
         stackViewStyle,
         [
@@ -31,7 +31,7 @@ struct TabContent: LeafComponent {
             onPress: props.clickHandler,
             text: "Remove \(props.name) tab"
           )),
-          Label.node(.init(alignment: .center, text: props.name.uppercased())),
+          Label.node(.init(alignment: .center, text: props.name.capitalized)),
         ]
       )
     )
