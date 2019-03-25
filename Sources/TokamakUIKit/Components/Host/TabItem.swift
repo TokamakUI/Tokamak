@@ -85,12 +85,13 @@ extension TabItem: UIHostComponent {
       return
     }
 
-    let indexToRemove = tabBarController.viewControllers?
-      .firstIndex(of: target.viewController)
-    if indexToRemove! < (tabBarController.viewControllers?.count)! {
-      var viewControllers = tabBarController.viewControllers
-      viewControllers?.remove(at: indexToRemove!)
-      tabBarController.viewControllers = viewControllers
+    if let indexToRemove = tabBarController.viewControllers?
+      .firstIndex(of: target.viewController) {
+      if indexToRemove < (tabBarController.viewControllers?.count)! {
+        var viewControllers = tabBarController.viewControllers
+        viewControllers?.remove(at: indexToRemove)
+        tabBarController.viewControllers = viewControllers
+      }
     }
 
     completion()

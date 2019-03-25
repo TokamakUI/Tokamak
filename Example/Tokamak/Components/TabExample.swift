@@ -35,7 +35,7 @@ struct TabExample: LeafComponent {
       }
     }
 
-    let tabDictionary = [
+    let tabs = [
       TabContent.node(.init(
         name: "first",
         clickHandler: Handler { tabsIdToRemove.set(removeTab(id: 0)) }
@@ -50,11 +50,9 @@ struct TabExample: LeafComponent {
       )),
     ]
 
-    let newTabList = Array(tabsIdToRemove.value.map { tabDictionary[$0] })
-
     return TabPresenter.node(
       .init(isAnimated: true, selectedIndex: selectedIndex),
-      newTabList
+      Array(tabsIdToRemove.value.map { tabs[$0] })
     )
   }
 }
