@@ -103,6 +103,8 @@ questions!
 ## Table of contents
 
   * [Example code](#example-code)
+      * [Counter](#counter)
+      * [Networking](#networking)
   * [Example project](#example-project)
   * [Standard components](#standard-components)
   * [Quick introduction](#quick-introduction)
@@ -194,7 +196,7 @@ controller, and windows don't have a fixed predefined size by default.
 
 ### Networking
 
-Tokamak allows you to easily express asynchronous state changes as well. Here's
+Tokamak allows you to easily express asynchronous state changes. Here's
 an example of loading content from `https://httpbin.org/drip` URL:
 
 ![Networking demo](https://github.com/MaxDesiatov/Tokamak/raw/master/TokamakNetworking.gif)
