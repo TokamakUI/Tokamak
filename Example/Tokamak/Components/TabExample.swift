@@ -35,28 +35,19 @@ struct TabExample: LeafComponent {
       }
     }
 
-    var tabDictionary = [
-      TabItem.node(
-        .init(title: "First"),
-        TabContent.node(.init(
-          name: "first",
-          clickHandler: Handler { tabsIdToRemove.set(removeTab(id: 0)) }
-        ))
-      ),
-      TabItem.node(
-        .init(title: "Second"),
-        TabContent.node(.init(
-          name: "second",
-          clickHandler: Handler { tabsIdToRemove.set(removeTab(id: 1)) }
-        ))
-      ),
-      TabItem.node(
-        .init(title: "Third"),
-        TabContent.node(.init(
-          name: "third",
-          clickHandler: Handler { tabsIdToRemove.set(removeTab(id: 2)) }
-        ))
-      ),
+    let tabDictionary = [
+      TabContent.node(.init(
+        name: "first",
+        clickHandler: Handler { tabsIdToRemove.set(removeTab(id: 0)) }
+      )),
+      TabContent.node(.init(
+        name: "second",
+        clickHandler: Handler { tabsIdToRemove.set(removeTab(id: 1)) }
+      )),
+      TabContent.node(.init(
+        name: "third",
+        clickHandler: Handler { tabsIdToRemove.set(removeTab(id: 2)) }
+      )),
     ]
 
     let newTabList = Array(tabsIdToRemove.value.map { tabDictionary[$0] })

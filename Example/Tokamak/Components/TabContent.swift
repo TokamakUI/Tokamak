@@ -22,16 +22,18 @@ struct TabContent: LeafComponent {
       axis: .vertical,
       distribution: .fillEqually
     )
-
-    return StackView.node(
-      stackViewStyle,
-      [
-        Button.node(.init(
-          onPress: props.clickHandler,
-          text: "Remove \(props.name) tab"
-        )),
-        Label.node(.init(alignment: .center, text: props.name.uppercased())),
-      ]
+    return TabItem.node(
+      .init(title: props.name),
+      StackView.node(
+        stackViewStyle,
+        [
+          Button.node(.init(
+            onPress: props.clickHandler,
+            text: "Remove \(props.name) tab"
+          )),
+          Label.node(.init(alignment: .center, text: props.name.uppercased())),
+        ]
+      )
     )
   }
 }
