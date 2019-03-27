@@ -43,7 +43,7 @@ struct ImageExample: LeafComponent {
       ScrollView.node(
         .init(
           Style(Width.equal(to: .parent)),
-          scrollOptions: ScrollOptions(maximumZoomScale: 2.0)
+          scrollOptions: .init(maximumZoomScale: 2.0)
         ),
         ImageView.node(.init(
           Style(Edges.equal(to: .parent)),
