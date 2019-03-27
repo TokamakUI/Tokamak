@@ -12,14 +12,14 @@ public struct ScrollView: HostComponent {
     }
 
     public let style: Style?
-    public let scrollProps: ScrollOptions?
+    public let scrollOptions: ScrollOptions?
 
     public init(
       _ style: Style? = nil,
-      scrollProps: ScrollOptions? = nil
+      scrollOptions: ScrollOptions? = nil
     ) {
       self.style = style
-      self.scrollProps = scrollProps
+      self.scrollOptions = scrollOptions
     }
   }
 

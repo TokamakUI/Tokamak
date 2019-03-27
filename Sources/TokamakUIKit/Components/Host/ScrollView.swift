@@ -22,8 +22,8 @@ extension ScrollView: UIViewComponent {
     _ props: ScrollView.Props,
     _ children: AnyNode
   ) {
-    if let scrollProps = props.scrollProps {
-      applyScrollOptions(box, scrollProps)
+    if let scrollOptions = props.scrollOptions {
+      applyScrollOptions(box, scrollOptions)
     }
   }
 

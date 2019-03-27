@@ -77,20 +77,20 @@ public struct ListView<T: CellProvider>: HostComponent {
     public let model: T.Sections
     public let onSelect: Handler<CellPath>?
     public let style: Style?
-    public let scrollProps: ScrollOptions?
+    public let scrollOptions: ScrollOptions?
 
     public init(
       _ style: Style? = nil,
       cellProps: T.Props,
       onSelect: Handler<CellPath>? = nil,
-      scrollProps: ScrollOptions? = nil,
+      scrollOptions: ScrollOptions? = nil,
       singleSection: T.Sections.Element
     ) {
       self.cellProps = cellProps
       model = T.Sections.single(section: singleSection)
       self.onSelect = onSelect
       self.style = style
-      self.scrollProps = scrollProps
+      self.scrollOptions = scrollOptions
     }
 
     public init(
@@ -98,13 +98,13 @@ public struct ListView<T: CellProvider>: HostComponent {
       cellProps: T.Props,
       model: T.Sections,
       onSelect: Handler<CellPath>? = nil,
-      scrollProps: ScrollOptions? = nil
+      scrollOptions: ScrollOptions? = nil
     ) {
       self.cellProps = cellProps
       self.model = model
       self.onSelect = onSelect
       self.style = style
-      self.scrollProps = scrollProps
+      self.scrollOptions = scrollOptions
     }
   }
 
@@ -116,25 +116,25 @@ extension ListView.Props where T.Props == Null {
     _ style: Style? = nil,
     model: T.Sections,
     onSelect: Handler<CellPath>? = nil,
-    scrollProps: ScrollOptions? = nil
+    scrollOptions: ScrollOptions? = nil
   ) {
     cellProps = Null()
     self.model = model
     self.onSelect = onSelect
     self.style = style
-    self.scrollProps = scrollProps
+    self.scrollOptions = scrollOptions
   }
 
   public init(
     _ style: Style? = nil,
     onSelect: Handler<CellPath>? = nil,
-    scrollProps: ScrollOptions? = nil,
+    scrollOptions: ScrollOptions? = nil,
     singleSection: T.Sections.Element
   ) {
     cellProps = Null()
     model = T.Sections.single(section: singleSection)
     self.onSelect = onSelect
     self.style = style
-    self.scrollProps = scrollProps
+    self.scrollOptions = scrollOptions
   }
 }
