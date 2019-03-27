@@ -22,9 +22,7 @@ extension ScrollView: UIViewComponent {
     _ props: ScrollView.Props,
     _ children: AnyNode
   ) {
-    if let scrollOptions = props.scrollOptions {
-      applyScrollOptions(box, scrollOptions)
-    }
+    applyScrollOptions(box, props.scrollOptions)
   }
 
   static func unmount(
