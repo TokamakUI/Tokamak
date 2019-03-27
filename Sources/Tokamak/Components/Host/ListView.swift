@@ -77,29 +77,34 @@ public struct ListView<T: CellProvider>: HostComponent {
     public let model: T.Sections
     public let onSelect: Handler<CellPath>?
     public let style: Style?
+    public let scrollProps: ScrollView.Props?
 
     public init(
       _ style: Style? = nil,
       cellProps: T.Props,
       onSelect: Handler<CellPath>? = nil,
+      scrollProps: ScrollView.Props? = nil,
       singleSection: T.Sections.Element
     ) {
       self.cellProps = cellProps
       model = T.Sections.single(section: singleSection)
       self.onSelect = onSelect
       self.style = style
+      self.scrollProps = scrollProps
     }
 
     public init(
       _ style: Style? = nil,
       cellProps: T.Props,
       model: T.Sections,
-      onSelect: Handler<CellPath>? = nil
+      onSelect: Handler<CellPath>? = nil,
+      scrollProps: ScrollView.Props? = nil
     ) {
       self.cellProps = cellProps
       self.model = model
       self.onSelect = onSelect
       self.style = style
+      self.scrollProps = scrollProps
     }
   }
 
@@ -110,22 +115,26 @@ extension ListView.Props where T.Props == Null {
   public init(
     _ style: Style? = nil,
     model: T.Sections,
-    onSelect: Handler<CellPath>? = nil
+    onSelect: Handler<CellPath>? = nil,
+    scrollProps: ScrollView.Props? = nil
   ) {
     cellProps = Null()
     self.model = model
     self.onSelect = onSelect
     self.style = style
+    self.scrollProps = scrollProps
   }
 
   public init(
     _ style: Style? = nil,
     onSelect: Handler<CellPath>? = nil,
+    scrollProps: ScrollView.Props? = nil,
     singleSection: T.Sections.Element
   ) {
     cellProps = Null()
     model = T.Sections.single(section: singleSection)
     self.onSelect = onSelect
     self.style = style
+    self.scrollProps = scrollProps
   }
 }

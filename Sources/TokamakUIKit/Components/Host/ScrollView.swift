@@ -46,23 +46,7 @@ extension ScrollView: UIViewComponent {
     _ props: ScrollView.Props,
     _ children: AnyNode
   ) {
-    let view = box.view
-    view.alwaysBounceHorizontal = props.alwaysBounceHorizontal
-    view.alwaysBounceVertical = props.alwaysBounceVertical
-    view.bounces = props.bounces
-    view.bouncesZoom = props.bouncesZoom
-    view.contentInset = UIEdgeInsets(props.contentInset)
-    view.isDirectionalLockEnabled = props.isDirectionalLockEnabled
-    view.isPagingEnabled = props.isPagingEnabled
-    view.indicatorStyle = UIScrollView.IndicatorStyle(props.indicatorStyle)
-    view.isScrollEnabled = props.isScrollEnabled
-    view.maximumZoomScale = CGFloat(props.maximumZoomScale)
-    view.minimumZoomScale = CGFloat(props.minimumZoomScale)
-    view.scrollIndicatorInsets = UIEdgeInsets(props.scrollIndicatorInsets)
-    view.scrollsToTop = props.scrollsToTop
-    view.showsVerticalScrollIndicator = props.showsVerticalScrollIndicator
-    view.showsHorizontalScrollIndicator = props.showsHorizontalScrollIndicator
-    view.zoomScale = CGFloat(props.zoomScale)
+    applyScrollOptions(box, props)
   }
 
   static func unmount(

@@ -38,6 +38,10 @@ extension CollectionView: UIViewComponent {
       return
     }
 
+    if let scrollProps = props.scrollProps {
+      applyScrollOptions(box, scrollProps)
+    }
+
     box.props = props
   }
 }
