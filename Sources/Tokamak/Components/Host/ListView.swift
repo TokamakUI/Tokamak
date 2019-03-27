@@ -77,13 +77,13 @@ public struct ListView<T: CellProvider>: HostComponent {
     public let model: T.Sections
     public let onSelect: Handler<CellPath>?
     public let style: Style?
-    public let scrollProps: ScrollView.Props?
+    public let scrollProps: ScrollOptions?
 
     public init(
       _ style: Style? = nil,
       cellProps: T.Props,
       onSelect: Handler<CellPath>? = nil,
-      scrollProps: ScrollView.Props? = nil,
+      scrollProps: ScrollOptions? = nil,
       singleSection: T.Sections.Element
     ) {
       self.cellProps = cellProps
@@ -98,7 +98,7 @@ public struct ListView<T: CellProvider>: HostComponent {
       cellProps: T.Props,
       model: T.Sections,
       onSelect: Handler<CellPath>? = nil,
-      scrollProps: ScrollView.Props? = nil
+      scrollProps: ScrollOptions? = nil
     ) {
       self.cellProps = cellProps
       self.model = model
@@ -116,7 +116,7 @@ extension ListView.Props where T.Props == Null {
     _ style: Style? = nil,
     model: T.Sections,
     onSelect: Handler<CellPath>? = nil,
-    scrollProps: ScrollView.Props? = nil
+    scrollProps: ScrollOptions? = nil
   ) {
     cellProps = Null()
     self.model = model
@@ -128,7 +128,7 @@ extension ListView.Props where T.Props == Null {
   public init(
     _ style: Style? = nil,
     onSelect: Handler<CellPath>? = nil,
-    scrollProps: ScrollView.Props? = nil,
+    scrollProps: ScrollOptions? = nil,
     singleSection: T.Sections.Element
   ) {
     cellProps = Null()

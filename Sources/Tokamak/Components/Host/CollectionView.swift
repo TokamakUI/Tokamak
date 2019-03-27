@@ -11,13 +11,13 @@ public struct CollectionView<T: CellProvider>: HostComponent {
     public let sections: T.Sections
     public let onSelect: Handler<CellPath>?
     public let style: Style?
-    public let scrollProps: ScrollView.Props?
+    public let scrollProps: ScrollOptions?
 
     public init(
       _ style: Style? = nil,
       cellProps: T.Props,
       onSelect: Handler<CellPath>? = nil,
-      scrollProps: ScrollView.Props? = nil,
+      scrollProps: ScrollOptions? = nil,
       singleSection: T.Sections.Element
     ) {
       self.cellProps = cellProps
@@ -32,7 +32,7 @@ public struct CollectionView<T: CellProvider>: HostComponent {
       cellProps: T.Props,
       sections: T.Sections,
       onSelect: Handler<CellPath>? = nil,
-      scrollProps: ScrollView.Props? = nil
+      scrollProps: ScrollOptions? = nil
     ) {
       self.cellProps = cellProps
       self.sections = sections
@@ -50,7 +50,7 @@ extension CollectionView.Props where T.Props == Null {
     _ style: Style? = nil,
     sections: T.Sections,
     onSelect: Handler<CellPath>? = nil,
-    scrollProps: ScrollView.Props? = nil
+    scrollProps: ScrollOptions? = nil
   ) {
     cellProps = Null()
     self.sections = sections
@@ -63,7 +63,7 @@ extension CollectionView.Props where T.Props == Null {
     _ style: Style? = nil,
     onSelect: Handler<CellPath>? = nil,
     singleSection: T.Sections.Element,
-    scrollProps: ScrollView.Props? = nil
+    scrollProps: ScrollOptions? = nil
   ) {
     cellProps = Null()
     sections = T.Sections.single(section: singleSection)

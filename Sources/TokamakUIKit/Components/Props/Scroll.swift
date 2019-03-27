@@ -8,9 +8,33 @@
 import Tokamak
 import UIKit
 
+extension UIEdgeInsets {
+  public init(_ edges: ScrollOptions.EdgeInsets) {
+    self.init(
+      top: CGFloat(edges.top),
+      left: CGFloat(edges.left),
+      bottom: CGFloat(edges.bottom),
+      right: CGFloat(edges.right)
+    )
+  }
+}
+
+extension UIScrollView.IndicatorStyle {
+  public init(_ type: ScrollOptions.IndicatorStyle) {
+    switch type {
+    case .default:
+      self = .default
+    case .black:
+      self = .black
+    case .white:
+      self = .white
+    }
+  }
+}
+
 func applyScrollOptions<T: UIScrollView>(
   _ box: ViewBox<T>,
-  _ props: ScrollView.Props
+  _ props: ScrollOptions
 ) {
   let view = box.view
   view.alwaysBounceHorizontal = props.alwaysBounceHorizontal

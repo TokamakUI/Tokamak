@@ -14,30 +14,6 @@ final class TokamakScrollView: UIScrollView, Default {
   }
 }
 
-extension UIEdgeInsets {
-  public init(_ edges: ScrollView.Props.EdgeInsets) {
-    self.init(
-      top: CGFloat(edges.top),
-      left: CGFloat(edges.left),
-      bottom: CGFloat(edges.bottom),
-      right: CGFloat(edges.right)
-    )
-  }
-}
-
-extension UIScrollView.IndicatorStyle {
-  public init(_ type: ScrollView.Props.IndicatorStyle) {
-    switch type {
-    case .default:
-      self = .default
-    case .black:
-      self = .black
-    case .white:
-      self = .white
-    }
-  }
-}
-
 extension ScrollView: UIViewComponent {
   public typealias RefTarget = UIScrollView
 
@@ -46,7 +22,9 @@ extension ScrollView: UIViewComponent {
     _ props: ScrollView.Props,
     _ children: AnyNode
   ) {
-    applyScrollOptions(box, props)
+    if let scrollProps = props.scrollProps {
+      applyScrollOptions(box, scrollProps)
+    }
   }
 
   static func unmount(
