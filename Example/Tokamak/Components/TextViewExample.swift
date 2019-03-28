@@ -31,8 +31,8 @@ struct TextViewExample: LeafComponent {
         cases.map { String(describing: $0) }
       ),
       TextView.node(.init(
-        text: exampleText,
-        textAlignment: cases[alignment.value]
+        textAlignment: cases[alignment.value],
+        value: exampleText
       )),
     ])
   }

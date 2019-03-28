@@ -17,6 +17,19 @@ final class TokamakTextView: UITextView, Default {
 extension TextView: UIViewComponent {
   public typealias RefTarget = UITextView
 
+  static func box(
+    for view: TokamakTextView,
+    _ viewController: UIViewController,
+    _ component: UIKitRenderer.MountedHost,
+    _ renderer: UIKitRenderer
+  ) -> ViewBox<TokamakTextView> {
+    guard let props = component.node.props.value as? Props else {
+      fatalError("incorrect props type stored in ListView node")
+    }
+
+    return TextViewBox(view, viewController, component, props, renderer)
+  }
+
   static func update(view box: ViewBox<TokamakTextView>,
                      _ props: TextView.Props,
                      _ children: Null) {
@@ -25,6 +38,6 @@ extension TextView: UIViewComponent {
     view.isEditable = props.isEditable
     view.textAlignment = NSTextAlignment(props.textAlignment)
     view.textColor = props.textColor.flatMap { UIColor($0) }
-    view.text = props.text
+    view.text = props.value
   }
 }
