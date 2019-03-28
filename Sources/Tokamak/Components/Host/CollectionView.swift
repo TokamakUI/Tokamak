@@ -11,29 +11,34 @@ public struct CollectionView<T: CellProvider>: HostComponent {
     public let sections: T.Sections
     public let onSelect: Handler<CellPath>?
     public let style: Style?
+    public let scrollOptions: ScrollOptions?
 
     public init(
       _ style: Style? = nil,
       cellProps: T.Props,
       onSelect: Handler<CellPath>? = nil,
+      scrollOptions: ScrollOptions? = nil,
       singleSection: T.Sections.Element
     ) {
       self.cellProps = cellProps
       sections = T.Sections.single(section: singleSection)
       self.onSelect = onSelect
       self.style = style
+      self.scrollOptions = scrollOptions
     }
 
     public init(
       _ style: Style? = nil,
       cellProps: T.Props,
       sections: T.Sections,
-      onSelect: Handler<CellPath>? = nil
+      onSelect: Handler<CellPath>? = nil,
+      scrollOptions: ScrollOptions? = nil
     ) {
       self.cellProps = cellProps
       self.sections = sections
       self.onSelect = onSelect
       self.style = style
+      self.scrollOptions = scrollOptions
     }
   }
 
@@ -44,22 +49,26 @@ extension CollectionView.Props where T.Props == Null {
   public init(
     _ style: Style? = nil,
     sections: T.Sections,
-    onSelect: Handler<CellPath>? = nil
+    onSelect: Handler<CellPath>? = nil,
+    scrollOptions: ScrollOptions? = nil
   ) {
     cellProps = Null()
     self.sections = sections
     self.onSelect = onSelect
     self.style = style
+    self.scrollOptions = scrollOptions
   }
 
   public init(
     _ style: Style? = nil,
     onSelect: Handler<CellPath>? = nil,
-    singleSection: T.Sections.Element
+    singleSection: T.Sections.Element,
+    scrollOptions: ScrollOptions? = nil
   ) {
     cellProps = Null()
     sections = T.Sections.single(section: singleSection)
     self.onSelect = onSelect
     self.style = style
+    self.scrollOptions = scrollOptions
   }
 }
