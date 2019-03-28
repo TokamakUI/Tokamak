@@ -32,6 +32,10 @@ extension ListView: UIViewComponent {
       return
     }
 
+    if let scrollOptions = props.scrollOptions {
+      applyScrollOptions(box, scrollOptions)
+    }
+
     box.props = props
   }
 }
