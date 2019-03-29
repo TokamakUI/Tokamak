@@ -25,7 +25,7 @@ let package = Package(
       name: "TokamakTestRenderer",
       targets: ["TokamakTestRenderer"]
     ),
-    .executable(name: "TokamakLint", targets: ["TokamakLint"]),
+    .executable(name: "TokamakCLI", targets: ["TokamakCLI"]),
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
@@ -58,7 +58,7 @@ let package = Package(
       dependencies: ["Tokamak"]
     ),
     .target(
-      name: "TokamakLint",
+      name: "TokamakCLI",
       dependencies: ["SwiftSyntax"]
     ),
     .testTarget(
