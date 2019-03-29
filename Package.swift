@@ -59,7 +59,7 @@ let package = Package(
     ),
     .target(
       name: "TokamakLint",
-      dependencies: ["Tokamak"]
+      dependencies: []
     ),
     .testTarget(
       name: "TokamakTests",
