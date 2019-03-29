@@ -8,7 +8,7 @@
 typealias Finalizer = (() -> ())?
 typealias Effect = () -> Finalizer
 
-protocol HookedComponent: class {
+protocol HookedComponent: AnyObject {
   /// State cells of this component indexed by order of `hooks.state` calls
   var state: [UnsafeMutableRawPointer] { get set }
 

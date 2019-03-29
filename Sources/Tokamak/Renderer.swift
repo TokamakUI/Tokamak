@@ -11,7 +11,7 @@
  protocol are used by a reconciler (`StackReconciler` instance) to notify
  the renderer about updates in the component tree.
  */
-public protocol Renderer: class {
+public protocol Renderer: AnyObject {
   typealias Mounted = MountedComponent<Self>
   typealias MountedHost = MountedHostComponent<Self>
 

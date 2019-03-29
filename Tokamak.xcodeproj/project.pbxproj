@@ -21,12 +21,15 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		A629DA9F224D1CBB00FC14D4 /* TextViewBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A629DA9E224D1CBB00FC14D4 /* TextViewBox.swift */; };
 		A675A59922390218005173E5 /* TabPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59822390218005173E5 /* TabPresenter.swift */; };
 		A675A59B223910E1005173E5 /* TabPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59A223910E1005173E5 /* TabPresenter.swift */; };
 		A675A59D223AE721005173E5 /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59C223AE721005173E5 /* TabItem.swift */; };
 		A675A59F223C2EDE005173E5 /* TabBarControllerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675A59E223C2EDE005173E5 /* TabBarControllerBox.swift */; };
 		A69E5887224B8C60000874F8 /* Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E5886224B8C60000874F8 /* Scroll.swift */; };
 		A69E588B224BBF6B000874F8 /* ScrollOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E588A224BBF6B000874F8 /* ScrollOptions.swift */; };
+		A69E588D224BE3DC000874F8 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E588C224BE3DC000874F8 /* TextView.swift */; };
+		A69E588F224BE3F4000874F8 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E588E224BE3F4000874F8 /* TextView.swift */; };
 		D15E04332235829000BB0571 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E04322235829000BB0571 /* Rectangle.swift */; };
 		D15E0447223582FD00BB0571 /* FirstBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0435223582EE00BB0571 /* FirstBaseline.swift */; };
 		D15E0448223582FD00BB0571 /* CenterY.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0436223582EE00BB0571 /* CenterY.swift */; };
@@ -251,12 +254,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A629DA9E224D1CBB00FC14D4 /* TextViewBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewBox.swift; sourceTree = "<group>"; };
 		A675A59822390218005173E5 /* TabPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPresenter.swift; sourceTree = "<group>"; };
 		A675A59A223910E1005173E5 /* TabPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPresenter.swift; sourceTree = "<group>"; };
 		A675A59C223AE721005173E5 /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
 		A675A59E223C2EDE005173E5 /* TabBarControllerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarControllerBox.swift; sourceTree = "<group>"; };
 		A69E5886224B8C60000874F8 /* Scroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scroll.swift; sourceTree = "<group>"; };
 		A69E588A224BBF6B000874F8 /* ScrollOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollOptions.swift; sourceTree = "<group>"; };
+		A69E588C224BE3DC000874F8 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
+		A69E588E224BE3F4000874F8 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		D15E042D223578BC00BB0571 /* TokamakUIKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokamakUIKit.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		D15E042E223578BC00BB0571 /* Tokamak.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Tokamak.podspec; sourceTree = "<group>"; };
 		D15E042F223578BC00BB0571 /* TokamakAppKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokamakAppKit.podspec; sourceTree = "<group>"; };
@@ -581,6 +587,7 @@
 				OBJ_29 /* TextField.swift */,
 				OBJ_30 /* View.swift */,
 				D1B90571224259FA0077CD5E /* Throbber.swift */,
+				A69E588C224BE3DC000874F8 /* TextView.swift */,
 			);
 			path = Host;
 			sourceTree = "<group>";
@@ -862,6 +869,7 @@
 				OBJ_89 /* ViewBox.swift */,
 				OBJ_90 /* ViewControllerBox.swift */,
 				A675A59E223C2EDE005173E5 /* TabBarControllerBox.swift */,
+				A629DA9E224D1CBB00FC14D4 /* TextViewBox.swift */,
 			);
 			path = Boxes;
 			sourceTree = "<group>";
@@ -899,6 +907,7 @@
 				A675A59A223910E1005173E5 /* TabPresenter.swift */,
 				A675A59C223AE721005173E5 /* TabItem.swift */,
 				D1B9057322425CED0077CD5E /* Throbber.swift */,
+				A69E588E224BE3F4000874F8 /* TextView.swift */,
 			);
 			path = Host;
 			sourceTree = "<group>";
@@ -1118,6 +1127,7 @@
 				OBJ_248 /* Ref.swift in Sources */,
 				OBJ_249 /* State.swift in Sources */,
 				OBJ_250 /* MountedComponent.swift in Sources */,
+				A69E588D224BE3DC000874F8 /* TextView.swift in Sources */,
 				OBJ_251 /* MountedCompositeComponent.swift in Sources */,
 				OBJ_252 /* MountedHostComponent.swift in Sources */,
 				OBJ_253 /* MountedNull.swift in Sources */,
@@ -1216,6 +1226,7 @@
 				OBJ_336 /* ControlBox.swift in Sources */,
 				OBJ_337 /* TableViewBox.swift in Sources */,
 				OBJ_338 /* ValueControlBox.swift in Sources */,
+				A69E588F224BE3F4000874F8 /* TextView.swift in Sources */,
 				OBJ_339 /* ViewBox.swift in Sources */,
 				OBJ_340 /* ViewControllerBox.swift in Sources */,
 				OBJ_341 /* Button.swift in Sources */,
@@ -1254,6 +1265,7 @@
 				A675A59D223AE721005173E5 /* TabItem.swift in Sources */,
 				A69E5887224B8C60000874F8 /* Scroll.swift in Sources */,
 				OBJ_371 /* Right.swift in Sources */,
+				A629DA9F224D1CBB00FC14D4 /* TextViewBox.swift in Sources */,
 				OBJ_372 /* Top.swift in Sources */,
 				OBJ_373 /* Trailing.swift in Sources */,
 				OBJ_374 /* Width.swift in Sources */,
