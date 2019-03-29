@@ -159,8 +159,8 @@ struct Counter: LeafComponent {
 Then you can add this component to any iOS app as a view controller this way:
 
 ```swift
-import TokamakUIKit
 import Tokamak
+import TokamakUIKit
 
 final class ViewController: TokamakViewController {
   override var node: AnyNode {
@@ -174,6 +174,7 @@ final class ViewController: TokamakViewController {
 Or similarly it can be added to a macOS app:
 
 ```swift
+import Tokamak
 import TokamakAppKit
 
 final class ViewController: TokamakViewController {
