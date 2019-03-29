@@ -160,6 +160,7 @@ Then you can add this component to any iOS app as a view controller this way:
 
 ```swift
 import TokamakUIKit
+import Tokamak
 
 final class ViewController: TokamakViewController {
   override var node: AnyNode {
