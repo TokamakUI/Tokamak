@@ -9,6 +9,8 @@ import Foundation
 import SwiftSyntax
 
 public struct XcodeReporter: CustomStringConvertible {
+    public var description: String
+
     public static let identifier = "xcode"
     public static let isRealtime = true
 
@@ -26,7 +28,10 @@ public final class CommandLineTool {
 
     public func run() throws {
         let file = CommandLine.arguments[1]
-        let url = URL(fileURLWithPath: file)
+//        let url = URL(fileURLWithPath: file)
         print(XcodeReporter.generateReport(file))
     }
 }
+
+let tool = CommandLineTool()
+let run = try tool.run()
