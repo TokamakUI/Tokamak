@@ -30,6 +30,7 @@
 		A69E588B224BBF6B000874F8 /* ScrollOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E588A224BBF6B000874F8 /* ScrollOptions.swift */; };
 		A69E588D224BE3DC000874F8 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E588C224BE3DC000874F8 /* TextView.swift */; };
 		A69E588F224BE3F4000874F8 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E588E224BE3F4000874F8 /* TextView.swift */; };
+		A6EF8780224EA69300113C9E /* Lint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EF877F224EA69300113C9E /* Lint.swift */; };
 		D15E04332235829000BB0571 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E04322235829000BB0571 /* Rectangle.swift */; };
 		D15E0447223582FD00BB0571 /* FirstBaseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0435223582EE00BB0571 /* FirstBaseline.swift */; };
 		D15E0448223582FD00BB0571 /* CenterY.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15E0436223582EE00BB0571 /* CenterY.swift */; };
@@ -263,6 +264,7 @@
 		A69E588A224BBF6B000874F8 /* ScrollOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollOptions.swift; sourceTree = "<group>"; };
 		A69E588C224BE3DC000874F8 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		A69E588E224BE3F4000874F8 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
+		A6EF877F224EA69300113C9E /* Lint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lint.swift; sourceTree = "<group>"; };
 		D15E042D223578BC00BB0571 /* TokamakUIKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokamakUIKit.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		D15E042E223578BC00BB0571 /* Tokamak.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Tokamak.podspec; sourceTree = "<group>"; };
 		D15E042F223578BC00BB0571 /* TokamakAppKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokamakAppKit.podspec; sourceTree = "<group>"; };
@@ -491,6 +493,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A6EF877B224EA59C00113C9E /* TokamakLint */ = {
+			isa = PBXGroup;
+			children = (
+				A6EF877F224EA69300113C9E /* Lint.swift */,
+			);
+			path = TokamakLint;
+			sourceTree = "<group>";
+		};
 		D15E0434223582EE00BB0571 /* Constraint */ = {
 			isa = PBXGroup;
 			children = (
@@ -806,6 +816,7 @@
 		OBJ_7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				A6EF877B224EA59C00113C9E /* TokamakLint */,
 				OBJ_8 /* Tokamak */,
 				OBJ_146 /* TokamakDemo */,
 				OBJ_148 /* TokamakAppKit */,
@@ -933,6 +944,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = OBJ_189 /* Build configuration list for PBXNativeTarget "Tokamak" */;
 			buildPhases = (
+				A6EF877E224EA5CF00113C9E /* Lint */,
 				OBJ_192 /* Sources */,
 				OBJ_259 /* Frameworks */,
 			);
@@ -1063,6 +1075,27 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A6EF877E224EA5CF00113C9E /* Lint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Lint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/Users/hmi/Documents/swiftTraining/CommandLineTool/.build/debug/CommandLineTool \"/Users/hmi/Documents/maxDesiatov/Tokamak/Example/Tokamak/Components/Constraints.swift\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		OBJ_192 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1132,6 +1165,7 @@
 				OBJ_252 /* MountedHostComponent.swift in Sources */,
 				OBJ_253 /* MountedNull.swift in Sources */,
 				OBJ_254 /* Null.swift in Sources */,
+				A6EF8780224EA69300113C9E /* Lint.swift in Sources */,
 				OBJ_255 /* Renderer.swift in Sources */,
 				OBJ_256 /* StackReconciler.swift in Sources */,
 				OBJ_257 /* Target.swift in Sources */,
