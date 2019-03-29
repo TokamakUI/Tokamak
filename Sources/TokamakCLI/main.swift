@@ -1,5 +1,5 @@
 //
-//  Lint.swift
+//  main.swift
 //  Tokamak
 //
 //  Created by Matvii Hodovaniuk on 3/29/19.
