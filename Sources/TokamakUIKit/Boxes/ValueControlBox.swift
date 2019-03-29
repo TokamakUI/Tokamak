@@ -8,7 +8,7 @@
 import Tokamak
 import UIKit
 
-protocol ValueStorage: class {
+protocol ValueStorage: AnyObject {
   associatedtype Value
 
   var value: Value { get set }

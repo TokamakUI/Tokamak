@@ -35,7 +35,7 @@ extension TextView: UIViewComponent {
                      _ children: Null) {
     let view = box.view
     if let scrollOptions = props.scrollOptions {
-        applyScrollOptions(box, scrollOptions)
+      applyScrollOptions(box, scrollOptions)
     }
     view.allowsEditingTextAttributes = props.allowsEditingTextAttributes
     view.isEditable = props.isEditable
