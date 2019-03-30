@@ -15,6 +15,7 @@
 | [`Stepper`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/Stepper.swift) | [`UIStepper`](https://developer.apple.com/documentation/uikit/uistepper) | not available yet |
 | [`Switch`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/Switch.swift) | [`UISwitch`](https://developer.apple.com/documentation/uikit/uiswitch) | not available yet |
 | [`TextField`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/TextField.swift) | [`UITextField`](https://developer.apple.com/documentation/uikit/uitextfield) | not available yet |
+| [`TextView`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/TextView.swift) | [`UITextView`](https://developer.apple.com/documentation/uikit/uitextview) | not available yet |
 | [`Throbber`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/Throbber.swift) | [`UIActivityIndicatorView`](https://developer.apple.com/documentation/uikit/uiactivityindicatorview) | not available yet |
 | [`View`](https://github.com/MaxDesiatov/Tokamak/blob/master/Sources/Tokamak/Components/Host/View.swift) | [`UIView`](https://developer.apple.com/documentation/uikit/uiview) | [`NSView`](https://developer.apple.com/documentation/appkit/nsview) |
 
