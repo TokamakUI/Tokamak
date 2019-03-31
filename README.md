@@ -48,9 +48,10 @@ When compared to standard UIKit MVC or other patterns built on top of
 it (MVVM, MVP, VIPER etc), Tokamak provides:
 
 * **Declarative [DSL](https://en.wikipedia.org/wiki/Domain-specific_language)
-for native UI**: no more conflicts caused by Storyboards, no template languages 
-or XML. Describe UI of your app concisely in Swift and get views native to 
-iOS with full support for accessibility, auto layout and native navigation gestures.
+for native UI**: no more conflicts caused by Storyboards, no template
+languages or XML. Describe UI of your app concisely in Swift and get views
+native to iOS with full support for accessibility, auto layout and native
+navigation gestures.
 
 * **Easy to use one-way data binding**: tired of `didSet`, delegates,
 notifications or KVO? UI components automatically update in response to state 
@@ -341,7 +342,7 @@ struct Props: Equatable {
 Sometimes "configuration" is described in a tree-like fashion. For example, a
 list of views contains an array of subviews, which themselves can contain other
 subviews. In Tokamak this is called `Children`, which behave similar to
-[`Props`](#props), but are important enough to be treated separately. `Children`
+[`Props`](#props) but are important enough to be treated separately. `Children`
 are also immutable and `Equatable`, which allows us to observe those for changes
 too.
 
@@ -361,8 +362,8 @@ protocol Component {
 (Don't worry if you don't know what `associatedtype` means, it's only a simple
 requirement for components to provide these types and make them `Equatable`. If
 you do know what a [PAT](https://www.youtube.com/watch?v=XWoNjiSPqI8) is, you
-also shouldn't worry. 😄 Tokamak's API is built specifically to hide "sharp edges"
-of PATs from the public API and to make it easy to use without requiring
+also shouldn't worry. 😄 Tokamak's API is built specifically to hide "sharp
+edges" of PATs from the public API and to make it easy to use without requiring
 advanced knowledge of Swift. This is similar to what [Swift standard
 library](https://developer.apple.com/documentation/swift/swift_standard_library/)
 has done, which is built on top of PATs but stays flexible and ergonomic).
@@ -429,11 +430,11 @@ protocol PureComponent: Component {
 }
 ```
 
-Tokamak calls `render` on your components when their `Props` or `Children` passed
-from parent components change. You don't ever need to call `render` yourself,
-pass different values as props or children to nodes returned from parent
-`render` and Tokamak will update only those views on screen that need to be
-updated. 
+Tokamak calls `render` on your components when their `Props` or `Children`
+passed from parent components change. You don't ever need to call `render`
+yourself, pass different values as props or children to nodes returned from
+parent `render` and Tokamak will update only those views on screen that need to
+be updated. 
 
 Note that `render` function **does not return other _components_**, it **returns
 _nodes_ that describe other components**. It's a very important distiction,
@@ -578,7 +579,8 @@ state with `hooks.state`.
 
 When you need state changes to update any of the descendant components, you can
 pass the state value within props or children of nodes returned from `render`.
-In [`Counter`](#example-code) component the label's content is "bound" to `count` this way:
+In [`Counter`](#example-code) component the label's content is "bound" to
+`count` this way:
 
 ```swift
 struct Counter: LeafComponent {
@@ -615,8 +617,8 @@ type from `UIKit` module, although the component itself is passed to a specific
 available in an app that uses `UIKit`. On other platforms you could use a
 different renderer, while the component code could stay the same if its behavior
 doesn't need to change for that environment. Otherwise you can adjust
-component's behavior via [`Props`](#props) and pass different "initializing" props
-depending on the renderer's platform.
+component's behavior via [`Props`](#props) and pass different "initializing"
+props depending on the renderer's platform.
 
 Providing renderers for other platforms in the future is one of our top
 priorities. Tokamak already provides basic support for macOS apps in
@@ -642,7 +644,8 @@ Objective-C Cocoa projects. You can install it with the following command:
 $ gem install cocoapods
 ```
 
-Navigate to the project directory and create `Podfile` with the following command:
+Navigate to the project directory and create `Podfile` with the following
+command:
 
 ```bash
 $ pod install
@@ -702,9 +705,9 @@ Rules of Hooks at compile time.
 
 [Same as
 React](https://reactjs.org/docs/hooks-faq.html#how-does-react-associate-hook-calls-with-components),
-Tokamak maintains an array of "memory cells" for every stateful component to hold
-the actual state. It needs to distinguish one Hooks call from another to map
-those to corresponding cells during execution of a `render` function of your
+Tokamak maintains an array of "memory cells" for every stateful component to
+hold the actual state. It needs to distinguish one Hooks call from another to
+map those to corresponding cells during execution of a `render` function of your
 component. Consider this:
 
 ```swift
@@ -817,9 +820,9 @@ Swift. Tokamak's API brings these benefits when compared to class-based APIs:
 
 At the moment the answer is no, but we find that Tokamak's API allows you to
 create nodes much more concisely when compared to [`React.createElement`
-syntax](https://reactjs.org/docs/react-without-jsx.html). In fact, with Tokamak's
-`.node` API you don't need closing element tags you'd have to write with JSX.
-E.g. compare this:
+syntax](https://reactjs.org/docs/react-without-jsx.html). In fact, with
+Tokamak's `.node` API you don't need closing element tags you'd have to write
+with JSX. E.g. compare this:
 
 ```swift
 Label.node("label!")
