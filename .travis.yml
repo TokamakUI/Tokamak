@@ -2,25 +2,50 @@
 # * https://www.objc.io/issues/6-build-tools/travis-ci/
 # * https://github.com/supermarin/xcpretty#usage
 
-osx_image: xcode10.1
+osx_image: xcode10.2
 language: swift
-before_install:
+
+jobs:
+  include:
+  - stage: lint
+    osx_image: xcode10.2
+    language: swift
+    before_install:
+      - brew update
+      - brew install swiftformat
+    script:
+      - swiftformat --lint --verbose .
+      - swiftlint
+  - &test
+    stage: test
+    osx_image: xcode10
+    language: swift
+    install: skip
+    env: TEST_DEVICE='platform=iOS Simulator,OS=12.0,name=iPhone SE'
+    script:
+      - xcodebuild -scheme TokamakUIKit -sdk iphonesimulator | xcpretty
+      - xcodebuild -scheme TokamakAppKit -sdk macosx10.14 | xcpretty
+      # this runs the build the second time, but it's the only way to make sure
+      # that `Package.swift` is in a good state
+      - swift build --target Tokamak
+      - xcodebuild test -enableCodeCoverage YES -scheme Tokamak | xcpretty
+  - <<: *test
+    osx_image: xcode10.1
+    env: TEST_DEVICE='platform=iOS Simulator,OS=12.1,name=iPhone SE'
+  - <<: *test
+    osx_image: xcode10.2
+    env: TEST_DEVICE='platform=iOS Simulator,OS=12.2,name=iPhone SE'
+    after_success:
+    - bash <(curl -s https://codecov.io/bash)
+
+# before_install:
 # - gem install cocoapods --pre # Since Travis is not always on latest version
-- brew update
-- brew install swiftformat
 # - brew outdated carthage || brew upgrade carthage
 # cache: cocoapods
 # podfile: Example/Podfile
 # before_install:
 # - gem install cocoapods # Since Travis is not always on latest version
 # - pod install --project-directory=Example
-script:
-- swiftformat --lint --verbose .
-- xcodebuild -scheme TokamakUIKit -sdk iphonesimulator
-- xcodebuild -scheme TokamakAppKit -sdk macosx10.14
-- xcodebuild test -enableCodeCoverage YES -scheme Tokamak
-after_success:
-- bash <(curl -s https://codecov.io/bash)
 # - swift build
 # - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/Tokamak.xcworkspace -scheme Tokamak-Example -sdk iphonesimulator11.0 ONLY_ACTIVE_ARCH=NO | xcpretty
 # - pod lib lint
