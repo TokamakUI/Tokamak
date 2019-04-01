@@ -14,3 +14,7 @@ line_length:
 
 function_body_length:
 - 50
+
+included:
+  - Sources
+  - Tests
