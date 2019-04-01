@@ -14,6 +14,9 @@ import XCTest
 final class SwiftSyntaxTests: XCTestCase {
     func testAllFiles() {
         let linter = CommandLineTool()
+        print(linter.self)
+//        let a = try linter.run()
+//        print(a == "")
     }
 }
 
