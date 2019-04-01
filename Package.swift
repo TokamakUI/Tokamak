@@ -65,5 +65,9 @@ let package = Package(
       name: "TokamakTests",
       dependencies: ["TokamakTestRenderer"]
     ),
+    .testTarget(
+        name: "TokamakCLITests",
+        dependencies: ["TokamakTestRenderer"]
+    ),
   ]
 )
