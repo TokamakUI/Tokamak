@@ -64,8 +64,8 @@ class TokenVisitor: SyntaxVisitor {
   }
 
   override func visitPost(_ node: Syntax) {
-    print(node)
-    list.append("</span>")
+//    print(node)
+//    list.append("</span>")
     current.range.endRow = row
     current.range.endColumn = column
     current = current.parent
@@ -73,7 +73,7 @@ class TokenVisitor: SyntaxVisitor {
 
   private func processToken(_ token: TokenSyntax) {
     var kind = "\(token.tokenKind)"
-    if let index = kind.index(of: "(") {
+    if let index = kind.firstIndex(of: "(") {
       kind = String(kind.prefix(upTo: index))
     }
     if kind.hasSuffix("Keyword") {
@@ -146,6 +146,20 @@ class TokenVisitor: SyntaxVisitor {
     }
     return newString
   }
+
+    func isHasType(check node: Node,for type: String) -> Bool {
+        if node.children.count > 0 {
+            for child in node.children {
+                isHasType(check: child, for: type)
+            }
+        }
+        return node.text == type
+    }
+
+    func isInherited(node: Node, from type: String) -> Bool {
+        let types = node.children.reduce("", { $0 == "" ? $1 : $0 + "," + $1 })
+        print(types)
+    }
 }
 
 class Node: Encodable {
@@ -191,4 +205,6 @@ class Node: Encodable {
     try container.encode(range, forKey: .range)
     try container.encode(token, forKey: .token)
   }
+
+
 }

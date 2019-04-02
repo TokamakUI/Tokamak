@@ -23,6 +23,8 @@
 
 /* Begin PBXBuildFile section */
 		A61C4DFC225391E900CF4FCA /* TokenVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61C4DFA225391DE00CF4FCA /* TokenVisitor.swift */; };
+		A61C4DFE2253F4BD00CF4FCA /* TestProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61C4DFD2253F4BD00CF4FCA /* TestProps.swift */; };
+		A61C4DFF2253F4BD00CF4FCA /* TestProps.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61C4DFD2253F4BD00CF4FCA /* TestProps.swift */; };
 		OBJ_274 /* AbsolutePosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_215 /* AbsolutePosition.swift */; };
 		OBJ_275 /* ByteTreeDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_216 /* ByteTreeDeserialization.swift */; };
 		OBJ_276 /* Diagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_217 /* Diagnostic.swift */; };
@@ -335,6 +337,7 @@
 
 /* Begin PBXFileReference section */
 		A61C4DFA225391DE00CF4FCA /* TokenVisitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenVisitor.swift; sourceTree = "<group>"; };
+		A61C4DFD2253F4BD00CF4FCA /* TestProps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProps.swift; sourceTree = "<group>"; };
 		OBJ_10 /* AnyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNode.swift; sourceTree = "<group>"; };
 		OBJ_100 /* BaselineConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineConstraint.swift; sourceTree = "<group>"; };
 		OBJ_101 /* Bottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bottom.swift; sourceTree = "<group>"; };
@@ -863,6 +866,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_205 /* SwiftSyntaxTests.swift */,
+				A61C4DFD2253F4BD00CF4FCA /* TestProps.swift */,
 			);
 			name = TokamakCLITests;
 			path = Tests/TokamakCLITests;
@@ -1587,6 +1591,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				A61C4DFE2253F4BD00CF4FCA /* TestProps.swift in Sources */,
 				OBJ_429 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1595,6 +1600,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				A61C4DFF2253F4BD00CF4FCA /* TestProps.swift in Sources */,
 				OBJ_441 /* SwiftSyntaxTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

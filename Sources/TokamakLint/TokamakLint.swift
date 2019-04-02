@@ -47,25 +47,37 @@ public final class TokamakLint {
   }
 
   public func lintFile(_ path: String) {
-    do {
-      let fileURL: URL = URL(fileURLWithPath: path)
-      let fileSource = try String(contentsOf: fileURL, encoding: .utf8)
-
-      print(fileSource)
-//      if hasTokamakImport(fileSource) {
-        let parsedTree = try SyntaxTreeParser.parse(fileURL)
-        let visitor = TokenVisitor()
-        parsedTree.walk(visitor)
-        print(visitor)
-//      }
-    } catch {
-      print(error)
+    let rightStruct = """
+    struct Props: Equatable {
+        str: String
     }
+"""
+    SwiftSyntax.Parser
+    SyntaxParser.parse(rightStruct)
+//    do {
+//      let fileURL: URL = URL(fileURLWithPath: path)
+////      let fileSource = try String(contentsOf: fileURL, encoding: .utf8)
+////      if hasTokamakImport(fileSource) {
+        let parsedTree = try SyntaxTreeParser.parse(fileURL)
+//        let visitor = TokenVisitor()
+//        parsedTree.walk(visitor)
+////        find "StructDecl"
+////        check children[1] is searchable Name of struct
+////        then find "TypeInheritanceClause"
+////        and concat children
+////        look for search type
+//        visitor.isHasType(check: visitor.tree[0], for: "Equatable")
+////      }
+//    } catch {
+//      print(error)
+//    }
   }
 
   public func isSwiftFile(_ path: String) -> Bool {
     return path.contains(".swift")
   }
+
+    
 
   public func hasTokamakImport(_ code: String) -> Bool {
     return code.contains("import Tokamak")
