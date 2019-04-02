@@ -26,8 +26,8 @@ let package = Package(
       targets: ["TokamakTestRenderer"]
     ),
     .library(
-        name: "TokamakLint",
-        targets: ["TokamakLint"]
+      name: "TokamakLint",
+      targets: ["TokamakLint"]
     ),
     .executable(name: "TokamakCLI", targets: ["TokamakCLI"]),
   ],
@@ -62,19 +62,20 @@ let package = Package(
       dependencies: ["Tokamak"]
     ),
     .target(
-        name: "TokamakCLI",
-        dependencies: ["TokamakLint"]
+      name: "TokamakCLI",
+      dependencies: ["TokamakLint"]
     ),
     .target(
-        name: "TokamakLint",
-        dependencies: ["SwiftSyntax"]
+      name: "TokamakLint",
+      dependencies: ["SwiftSyntax"]
     ),
     .testTarget(
-        name: "TokamakTests",
-        dependencies: ["TokamakTestRenderer"]
+      name: "TokamakTests",
+      dependencies: ["TokamakTestRenderer"]
     ),
     .testTarget(
-        name: "TokamakCLITests",
-        dependencies: ["TokamakLint"]
-    ),  ]
+      name: "TokamakCLITests",
+      dependencies: ["TokamakLint"]
+    ),
+  ]
 )

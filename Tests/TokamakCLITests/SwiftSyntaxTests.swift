@@ -5,16 +5,20 @@
 //  Created by Matvii Hodovaniuk on 3/31/19.
 //
 
-/// Users/hmi/Documents/maxDesiatov/Tokamak/.build/debug/TokamakCLI "/Users/hmi/Documents/maxDesiatov/Tokamak/Sources/TokamakCLI/main.swift"
 
-import TokamakCLI
+import TokamakLint
 import XCTest
 
 final class SwiftSyntaxTests: XCTestCase {
   func testAllFiles() {
-    let linter = CommandLineTool()
-    print(linter.self)
-//        let a = try linter.run()
-//        print(a == "")
+    let linter = TokamakLint()
+    let path = "/Users/hmi/Documents/maxDesiatov/Tokamak/"
+    linter.lintFolder(path)
+  }
+
+  func testFile() {
+    let linter = TokamakLint()
+    let path = "/Users/hmi/Documents/maxDesiatov/Tokamak/Source/Tokamak/Components/Host/Alert.swift"
+    linter.lintFile(path)
   }
 }
