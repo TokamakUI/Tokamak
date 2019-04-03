@@ -47,37 +47,47 @@ public final class TokamakLint {
   }
 
   public func lintFile(_ path: String) {
-    let rightStruct = """
-    struct Props: Equatable {
-        str: String
+    do {
+      let fileURL: URL = URL(fileURLWithPath: path)
+//      let fileSource = try String(contentsOf: fileURL, encoding: .utf8)
+
+      let parsedTree = try SyntaxTreeParser.parse(fileURL)
+      let visitor = TokenVisitor()
+      parsedTree.walk(visitor)
+      let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
+      for structNode in structs {
+//            visitor.getNodes(get: , from: structNode)
+        let isInherited = visitor.isInherited(node: structNode, from: "Equatable")
+        print(isInherited)
+      }
+    } catch {
+      print(error)
     }
-"""
-    SwiftSyntax.Parser
-    SyntaxParser.parse(rightStruct)
-//    do {
-//      let fileURL: URL = URL(fileURLWithPath: path)
-////      let fileSource = try String(contentsOf: fileURL, encoding: .utf8)
-////      if hasTokamakImport(fileSource) {
-        let parsedTree = try SyntaxTreeParser.parse(fileURL)
-//        let visitor = TokenVisitor()
-//        parsedTree.walk(visitor)
-////        find "StructDecl"
-////        check children[1] is searchable Name of struct
-////        then find "TypeInheritanceClause"
-////        and concat children
-////        look for search type
-//        visitor.isHasType(check: visitor.tree[0], for: "Equatable")
-////      }
-//    } catch {
-//      print(error)
-//    }
+  }
+
+  public func isPropsEquatable(_ path: String) -> Bool {
+    var res: Bool = false
+    do {
+      let fileURL: URL = URL(fileURLWithPath: path)
+      let parsedTree = try SyntaxTreeParser.parse(fileURL)
+      let visitor = TokenVisitor()
+      parsedTree.walk(visitor)
+      let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
+      for structNode in structs {
+        if structNode.children[1].text == "Props" {
+          res = visitor.isInherited(node: structNode, from: "Equatable")
+        }
+      }
+    } catch {
+      print(error)
+      return false
+    }
+    return res
   }
 
   public func isSwiftFile(_ path: String) -> Bool {
     return path.contains(".swift")
   }
-
-    
 
   public func hasTokamakImport(_ code: String) -> Bool {
     return code.contains("import Tokamak")

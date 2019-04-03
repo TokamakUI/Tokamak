@@ -17,7 +17,6 @@ class TokenVisitor: SyntaxVisitor {
   var column = 0
 
   override func visitPre(_ node: Syntax) {
-    print(node)
     var syntax = "\(type(of: node))"
     if syntax.hasSuffix("Syntax") {
       syntax = String(syntax.dropLast(6))
@@ -38,7 +37,6 @@ class TokenVisitor: SyntaxVisitor {
   }
 
   override func visit(_ token: TokenSyntax) -> SyntaxVisitorContinueKind {
-    print(token)
     current.text = escapeHtmlSpecialCharacters(token.text)
     current.token = Node.Token(kind: "\(token.tokenKind)", leadingTrivia: "", trailingTrivia: "")
 
@@ -64,7 +62,6 @@ class TokenVisitor: SyntaxVisitor {
   }
 
   override func visitPost(_ node: Syntax) {
-//    print(node)
 //    list.append("</span>")
     current.range.endRow = row
     current.range.endColumn = column
@@ -147,19 +144,46 @@ class TokenVisitor: SyntaxVisitor {
     return newString
   }
 
-    func isHasType(check node: Node,for type: String) -> Bool {
-        if node.children.count > 0 {
-            for child in node.children {
-                isHasType(check: child, for: type)
-            }
-        }
-        return node.text == type
+  func isHasType(check node: Node, for type: String) -> Bool {
+    if node.children.count > 0 {
+      for child in node.children {
+        isHasType(check: child, for: type)
+      }
     }
+    return node.text == type
+  }
 
-    func isInherited(node: Node, from type: String) -> Bool {
-        let types = node.children.reduce("", { $0 == "" ? $1 : $0 + "," + $1 })
-        print(types)
+  func concatStrings(str1: String, str2: String) -> String {
+    return str1 == "" ? str2 : str1 + "," + str2
+  }
+
+  public func getNodes(get type: String, from node: Node) -> [Node] {
+    var nodes: [Node] = []
+    walkAndGrab(get: type, from: node, to: &nodes)
+    return nodes
+  }
+
+  public func walkAndGrab(get type: String, from node: Node, to list: inout [Node]) {
+    if node.text == type {
+      list.append(node)
     }
+    if node.children.count > 0 {
+      for child in node.children {
+        walkAndGrab(get: type, from: child, to: &list)
+      }
+    }
+  }
+
+  func isInherited(node: Node, from type: String) -> Bool {
+    var str: String = ""
+    let typeNodes = getNodes(get: "SimpleTypeIdentifier", from: node)
+    for node in typeNodes {
+      for type in node.children {
+        str.append("\(type.text)")
+      }
+    }
+    return str.contains(type)
+  }
 }
 
 class Node: Encodable {
@@ -205,6 +229,4 @@ class Node: Encodable {
     try container.encode(range, forKey: .range)
     try container.encode(token, forKey: .token)
   }
-
-
 }
