@@ -631,7 +631,7 @@ requiring [Marzipan](https://www.imore.com/marzipan)!
 * iOS 11.0 or later for `TokamakUIKit`
 * macOS 10.14 for `TokamakAppKit`
 * Xcode 10.1 or later
-* Swift 4.2
+* Swift 4.2 or later
 
 ## Installation
 
