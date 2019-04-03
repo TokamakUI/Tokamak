@@ -6,16 +6,17 @@
 //
 
 import Foundation
-// import SwiftSyntax
 import TokamakLint
 
 public final class CommandLineTool {
-  private let arguments: [String]
   private let lint: TokamakLint
 
   public init() {
     let lint = TokamakLint()
     self.lint = lint
-    arguments = ["a", "b"]
+    print(lint.isPropsEquatable("/Users/hmi/Documents/maxDesiatov/Tokamak/Tests/TokamakCLITests/TestPropsEquatable.swift"))
+    print("/Users/hmi/Documents/maxDesiatov/Tokamak/Example/Tokamak/Components/Constraints.swift:1:2: warning: Line Length Violation: Violation Reason. (line_length)")
   }
 }
+
+let tool = CommandLineTool()

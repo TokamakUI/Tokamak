@@ -76,6 +76,9 @@ public final class TokamakLint {
       for structNode in structs {
         if structNode.children[1].text == "Props" {
           res = visitor.isInherited(node: structNode, from: "Equatable")
+            if !res {
+                print("\(path):\(structNode.range.startRow):\(structNode.range.startColumn): warning: Props is not Equatable")
+            }
         }
       }
     } catch {

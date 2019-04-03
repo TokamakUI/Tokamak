@@ -33,15 +33,15 @@ final class SwiftSyntaxTests: XCTestCase {
     linter.lintFile(path)
   }
 
-  func testPropsIsEquatable() {
-    let linter = TokamakLint()
-    let path = "/Users/hmi/Documents/maxDesiatov/Tokamak/Tests/TokamakCLITests/TestPropsEquatable.swift"
-    XCTAssertTrue(linter.isPropsEquatable(path))
-  }
+//  func testPropsIsEquatable() {
+//    let linter = TokamakLint()
+//    let path = "/Users/hmi/Documents/maxDesiatov/Tokamak/Tests/TokamakCLITests/TestPropsEquatable.swift"
+//    XCTAssertTrue(linter.isPropsEquatable(path))
+//  }
 
-  func testPropsIsNotEquatable() {
-    let linter = TokamakLint()
-    let path = "/Users/hmi/Documents/maxDesiatov/Tokamak/Tests/TokamakCLITests/TestPropsIsNotEquatable.swift"
-    XCTAssertFalse(linter.isPropsEquatable(path))
-  }
+//  func testPropsIsNotEquatable() {
+//    let linter = TokamakLint()
+//    let path = "/Users/hmi/Documents/maxDesiatov/Tokamak/Tests/TokamakCLITests/TestPropsIsNotEquatable.swift"
+//    XCTAssertFalse(linter.isPropsEquatable(path))
+//  }
 }
