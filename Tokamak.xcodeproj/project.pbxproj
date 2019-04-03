@@ -319,6 +319,20 @@
 			remoteGlobalIDString = "Tokamak::Tokamak";
 			remoteInfo = Tokamak;
 		};
+		A61C4E1E2254C3E900CF4FCA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "Tokamak::TokamakCLITests";
+			remoteInfo = TokamakCLITests;
+		};
+		A61C4E1F2254C3E900CF4FCA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "Tokamak::TokamakTests";
+			remoteInfo = TokamakTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -1433,7 +1447,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/Users/hmi/Documents/maxDesiatov/Tokamak/.build/debug/TokamakCLI\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1769,12 +1783,12 @@
 		OBJ_480 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::TokamakCLITests" /* TokamakCLITests */;
-			targetProxy = "Tokamak::TokamakCLITests" /* TokamakCLITests */;
+			targetProxy = A61C4E1E2254C3E900CF4FCA /* PBXContainerItemProxy */;
 		};
 		OBJ_481 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::TokamakTests" /* TokamakTests */;
-			targetProxy = "Tokamak::TokamakTests" /* TokamakTests */;
+			targetProxy = A61C4E1F2254C3E900CF4FCA /* PBXContainerItemProxy */;
 		};
 		OBJ_492 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

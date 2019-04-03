@@ -16,6 +16,7 @@ public final class TokamakLint {
   }
 
   public func lintFolder(_ path: String) {
+    print("Lint Folder: \(path)")
     do {
       let resourceKeys: [URLResourceKey] = [.creationDateKey, .isDirectoryKey]
       let baseurl: URL = URL(fileURLWithPath: path)
@@ -28,16 +29,15 @@ public final class TokamakLint {
                       print("directoryEnumerator error at \(url): ", error)
                       return true
         })!
-
       for case let fileURL as URL in enumerator {
         if isSwiftFile(fileURL.path) {
           let fileSource = try String(contentsOf: fileURL, encoding: .utf8)
-
-          print(fileSource)
           if hasTokamakImport(fileSource) {
-            let parsedTree = try SyntaxTreeParser.parse(fileURL)
-            let visitor = TokenVisitor()
-            parsedTree.walk(visitor)
+            print(fileURL.path)
+            lintPropsEquatable(fileURL.path)
+//            let parsedTree = try SyntaxTreeParser.parse(fileURL)
+//            let visitor = TokenVisitor()
+//            parsedTree.walk(visitor)
           }
         }
       }
@@ -49,14 +49,11 @@ public final class TokamakLint {
   public func lintFile(_ path: String) {
     do {
       let fileURL: URL = URL(fileURLWithPath: path)
-//      let fileSource = try String(contentsOf: fileURL, encoding: .utf8)
-
       let parsedTree = try SyntaxTreeParser.parse(fileURL)
       let visitor = TokenVisitor()
       parsedTree.walk(visitor)
       let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
       for structNode in structs {
-//            visitor.getNodes(get: , from: structNode)
         let isInherited = visitor.isInherited(node: structNode, from: "Equatable")
         print(isInherited)
       }
@@ -76,9 +73,9 @@ public final class TokamakLint {
       for structNode in structs {
         if structNode.children[1].text == "Props" {
           res = visitor.isInherited(node: structNode, from: "Equatable")
-            if !res {
-                print("\(path):\(structNode.range.startRow):\(structNode.range.startColumn): warning: Props is not Equatable")
-            }
+          if !res {
+            print("\(path):\(structNode.range.startRow):\(structNode.range.startColumn): warning: Props is not Equatable")
+          }
         }
       }
     } catch {
@@ -86,6 +83,28 @@ public final class TokamakLint {
       return false
     }
     return res
+  }
+
+  public func lintPropsEquatable(_ path: String) {
+    print("Lint Props is Equatable")
+    do {
+      let fileURL: URL = URL(fileURLWithPath: path)
+      let parsedTree = try SyntaxTreeParser.parse(fileURL)
+      let visitor = TokenVisitor()
+      parsedTree.walk(visitor)
+      let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
+      for structNode in structs {
+        if structNode.children[1].text == "Props" {
+          if !visitor.isInherited(node: structNode, from: "Equatable") {
+            print("\(path):\(structNode.children[1].range.startRow + 1):\(structNode.children[1].range.startColumn + 1): warning: Props is not Equatable: add conformance to Equatable protocol to your Props type")
+          } else {
+            print(path)
+          }
+        }
+      }
+    } catch {
+      print(error)
+    }
   }
 
   public func isSwiftFile(_ path: String) -> Bool {
