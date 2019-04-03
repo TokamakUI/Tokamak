@@ -10,16 +10,21 @@ import TokamakLint
 
 public final class CommandLineTool {
   public let lint: TokamakLint
+    public let path: String
 
-  public init() {
-    let lint = TokamakLint()
-    self.lint = lint
-//    print(lint.isPropsEquatable("/Users/hmi/Documents/maxDesiatov/Tokamak/Tests/TokamakCLITests/TestPropsEquatable.swift"))
-//    print("/Users/hmi/Documents/maxDesiatov/Tokamak/Example/Tokamak/Components/Constraints.swift:1:2: warning: Line Length Violation: Violation Reason. (line_length)")
-  }
+    public init(arguments: [String] = CommandLine.arguments) {
+        let lint = TokamakLint()
+
+        if arguments.indices.contains(1) {
+            self.path = arguments[1]
+        } else {
+            let fileManager = FileManager.default
+            let currentDirectoryPath = fileManager.currentDirectoryPath
+            self.path = currentDirectoryPath
+        }
+        self.lint = lint
+    }
 }
 
 let tool = CommandLineTool()
-print("Start Lint")
-//tool.lint.lintFolder("/Users/hmi/Documents/maxDesiatov/Tokamak/Sources/Tokamak/Components/Host")
-tool.lint.lintFolder("/Users/hmi/Documents/maxDesiatov/Tokamak/Example/Tokamak/Components/SnakeGame")
+tool.lint.lintFolder(tool.path)

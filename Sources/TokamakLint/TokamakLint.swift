@@ -8,6 +8,7 @@
 import Foundation
 import SwiftSyntax
 
+
 public final class TokamakLint {
   private let arguments: [String]
 
@@ -55,7 +56,6 @@ public final class TokamakLint {
       let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
       for structNode in structs {
         let isInherited = visitor.isInherited(node: structNode, from: "Equatable")
-        print(isInherited)
       }
     } catch {
       print(error)
@@ -86,7 +86,6 @@ public final class TokamakLint {
   }
 
   public func lintPropsEquatable(_ path: String) {
-    print("Lint Props is Equatable")
     do {
       let fileURL: URL = URL(fileURLWithPath: path)
       let parsedTree = try SyntaxTreeParser.parse(fileURL)
