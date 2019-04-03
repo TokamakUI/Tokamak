@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol Default {
-    var str: String { get }
+  var str: String { get }
 }
 
 struct Props: Default {

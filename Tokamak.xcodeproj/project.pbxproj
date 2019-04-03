@@ -158,7 +158,6 @@
 		OBJ_435 /* SwiftSyntax.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */; };
 		OBJ_444 /* SwiftSyntaxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_206 /* SwiftSyntaxTests.swift */; };
 		OBJ_445 /* TestPropsEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_207 /* TestPropsEquatable.swift */; };
-		OBJ_446 /* TestPropsIsNotEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_208 /* TestPropsIsNotEquatable.swift */; };
 		OBJ_448 /* TokamakLint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::TokamakLint::Product" /* TokamakLint.framework */; };
 		OBJ_449 /* SwiftSyntax.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */; };
 		OBJ_457 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_129 /* Counter.swift */; };
@@ -439,7 +438,6 @@
 		OBJ_203 /* UIKitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitRenderer.swift; sourceTree = "<group>"; };
 		OBJ_206 /* SwiftSyntaxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftSyntaxTests.swift; sourceTree = "<group>"; };
 		OBJ_207 /* TestPropsEquatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPropsEquatable.swift; sourceTree = "<group>"; };
-		OBJ_208 /* TestPropsIsNotEquatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPropsIsNotEquatable.swift; sourceTree = "<group>"; };
 		OBJ_21 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		OBJ_210 /* ColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTests.swift; sourceTree = "<group>"; };
 		OBJ_211 /* ConstraintTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintTests.swift; sourceTree = "<group>"; };
@@ -868,7 +866,6 @@
 			children = (
 				OBJ_206 /* SwiftSyntaxTests.swift */,
 				OBJ_207 /* TestPropsEquatable.swift */,
-				OBJ_208 /* TestPropsIsNotEquatable.swift */,
 			);
 			name = TokamakCLITests;
 			path = Tests/TokamakCLITests;
@@ -1624,7 +1621,6 @@
 			files = (
 				OBJ_444 /* SwiftSyntaxTests.swift in Sources */,
 				OBJ_445 /* TestPropsEquatable.swift in Sources */,
-				OBJ_446 /* TestPropsIsNotEquatable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
