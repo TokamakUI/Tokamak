@@ -8,18 +8,6 @@
 import TokamakLint
 import XCTest
 
-let rightStruct = """
-    struct Props: Equatable {
-        str: String
-    }
-"""
-
-let wrongStruct = """
-    struct Props {
-        str: String
-    }
-"""
-
 final class SwiftSyntaxTests: XCTestCase {
   func testAllFiles() {
     let linter = TokamakLint()

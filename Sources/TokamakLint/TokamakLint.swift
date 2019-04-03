@@ -8,13 +8,8 @@
 import Foundation
 import SwiftSyntax
 
-
 public final class TokamakLint {
-  private let arguments: [String]
-
-  public init() {
-    arguments = ["a", "b"]
-  }
+  public init() {}
 
   public func lintFolder(_ path: String) {
     print("Lint Folder: \(path)")
@@ -36,9 +31,6 @@ public final class TokamakLint {
           if hasTokamakImport(fileSource) {
             print(fileURL.path)
             lintPropsEquatable(fileURL.path)
-//            let parsedTree = try SyntaxTreeParser.parse(fileURL)
-//            let visitor = TokenVisitor()
-//            parsedTree.walk(visitor)
           }
         }
       }
@@ -55,7 +47,11 @@ public final class TokamakLint {
       parsedTree.walk(visitor)
       let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
       for structNode in structs {
-        let isInherited = visitor.isInherited(node: structNode, from: "Equatable")
+        let isInherited = visitor.isInherited(
+          node: structNode,
+          from: "Equatable"
+        )
+        print(isInherited)
       }
     } catch {
       print(error)
@@ -70,12 +66,13 @@ public final class TokamakLint {
       let visitor = TokenVisitor()
       parsedTree.walk(visitor)
       let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
-      for structNode in structs {
-        if structNode.children[1].text == "Props" {
-          res = visitor.isInherited(node: structNode, from: "Equatable")
-          if !res {
-            print("\(path):\(structNode.range.startRow):\(structNode.range.startColumn): warning: Props is not Equatable")
-          }
+      for structNode in structs where structNode.children[1].text == "Props" {
+        res = visitor.isInherited(node: structNode, from: "Equatable")
+        if !res {
+          print("\(path):",
+                "\(structNode.range.startRow):",
+                "\(structNode.range.startColumn):",
+                " warning: Props is not Equatable")
         }
       }
     } catch {
@@ -92,13 +89,15 @@ public final class TokamakLint {
       let visitor = TokenVisitor()
       parsedTree.walk(visitor)
       let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
-      for structNode in structs {
-        if structNode.children[1].text == "Props" {
-          if !visitor.isInherited(node: structNode, from: "Equatable") {
-            print("\(path):\(structNode.children[1].range.startRow + 1):\(structNode.children[1].range.startColumn + 1): warning: Props is not Equatable: add conformance to Equatable protocol to your Props type")
-          } else {
-            print(path)
-          }
+      for structNode in structs where structNode.children[1].text == "Props" {
+        if !visitor.isInherited(node: structNode, from: "Equatable") {
+          print("\(path):",
+                "\(structNode.children[1].range.startRow + 1):",
+                "\(structNode.children[1].range.startColumn + 1):",
+                " warning: Props is not Equatable:",
+                " add conformance to Equatable protocol to your Props type")
+        } else {
+          print(path)
         }
       }
     } catch {

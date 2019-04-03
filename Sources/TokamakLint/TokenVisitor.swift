@@ -9,7 +9,6 @@ import Foundation
 import SwiftSyntax
 
 class TokenVisitor: SyntaxVisitor {
-  public var list = [String]()
   public var tree = [Node]()
   public var current: Node!
 
@@ -21,7 +20,6 @@ class TokenVisitor: SyntaxVisitor {
     if syntax.hasSuffix("Syntax") {
       syntax = String(syntax.dropLast(6))
     }
-    list.append("<span class='\(syntax)' data-toggle='tooltip' title='\(syntax)'>")
 
     let node = Node(text: syntax)
     node.range.startRow = row
@@ -38,20 +36,22 @@ class TokenVisitor: SyntaxVisitor {
 
   override func visit(_ token: TokenSyntax) -> SyntaxVisitorContinueKind {
     current.text = escapeHtmlSpecialCharacters(token.text)
-    current.token = Node.Token(kind: "\(token.tokenKind)", leadingTrivia: "", trailingTrivia: "")
+    current.token = Node.Token(
+      kind: "\(token.tokenKind)",
+      leadingTrivia: "",
+      trailingTrivia: ""
+    )
 
     current.range.startRow = row
     current.range.startColumn = column
 
     token.leadingTrivia.forEach { piece in
       let trivia = processTriviaPiece(piece)
-      list.append(trivia)
       current.token?.leadingTrivia += replaceSymbols(text: trivia)
     }
     processToken(token)
     token.trailingTrivia.forEach { piece in
       let trivia = processTriviaPiece(piece)
-      list.append(trivia)
       current.token?.trailingTrivia += replaceSymbols(text: trivia)
     }
 
@@ -62,7 +62,6 @@ class TokenVisitor: SyntaxVisitor {
   }
 
   override func visitPost(_ node: Syntax) {
-//    list.append("</span>")
     current.range.endRow = row
     current.range.endColumn = column
     current = current.parent
@@ -77,7 +76,6 @@ class TokenVisitor: SyntaxVisitor {
       kind = "keyword"
     }
 
-    list.append("<span class='token \(kind)' data-toggle='tooltip' title='\(token.tokenKind)'>" + escapeHtmlSpecialCharacters(token.text) + "</span>")
     column += token.text.count
   }
 
@@ -90,7 +88,9 @@ class TokenVisitor: SyntaxVisitor {
     case let .tabs(count):
       trivia += String(repeating: "&nbsp;", count: count * 2)
       column += count * 2
-    case let .newlines(count), let .carriageReturns(count), let .carriageReturnLineFeeds(count):
+    case let .newlines(count),
+         let .carriageReturns(count),
+         let .carriageReturnLineFeeds(count):
       trivia += String(repeating: "<br>\n", count: count)
       row += count
       column = 0
@@ -116,15 +116,21 @@ class TokenVisitor: SyntaxVisitor {
   }
 
   private func withSpanTag(class c: String, text: String) -> String {
-    return "<span class='\(c)'>" + escapeHtmlSpecialCharacters(text) + "</span>"
+    return "<span class='\(c)'>" +
+      escapeHtmlSpecialCharacters(text) +
+      "</span>"
   }
 
   private func replaceSymbols(text: String) -> String {
-    return text.replacingOccurrences(of: "&nbsp;", with: "␣").replacingOccurrences(of: "<br>", with: "<br>↲")
+    return text.replacingOccurrences(of: "&nbsp;", with: "␣")
+      .replacingOccurrences(of: "<br>", with: "<br>↲")
   }
 
   private func processComment(text: String) {
-    let comments = text.split(separator: "\n", omittingEmptySubsequences: false)
+    let comments = text.split(
+      separator: "\n",
+      omittingEmptySubsequences: false
+    )
     row += comments.count - 1
     column += comments.last!.count
   }
@@ -139,22 +145,14 @@ class TokenVisitor: SyntaxVisitor {
       "'": "&apos;",
     ]
     for (escaped, unescaped) in specialCharacters {
-      newString = newString.replacingOccurrences(of: escaped, with: unescaped, options: .literal, range: nil)
+      newString = newString.replacingOccurrences(
+        of: escaped,
+        with: unescaped,
+        options: .literal,
+        range: nil
+      )
     }
     return newString
-  }
-
-  func isHasType(check node: Node, for type: String) -> Bool {
-    if node.children.count > 0 {
-      for child in node.children {
-        isHasType(check: child, for: type)
-      }
-    }
-    return node.text == type
-  }
-
-  func concatStrings(str1: String, str2: String) -> String {
-    return str1 == "" ? str2 : str1 + "," + str2
   }
 
   public func getNodes(get type: String, from node: Node) -> [Node] {
@@ -163,7 +161,11 @@ class TokenVisitor: SyntaxVisitor {
     return nodes
   }
 
-  public func walkAndGrab(get type: String, from node: Node, to list: inout [Node]) {
+  public func walkAndGrab(
+    get type: String,
+    from node: Node,
+    to list: inout [Node]
+  ) {
     if node.text == type {
       list.append(node)
     }
