@@ -5,6 +5,8 @@
 //  Created by Matvii Hodovaniuk on 4/2/19.
 //
 
+// add code comments to methods
+
 import Foundation
 import SwiftSyntax
 
@@ -162,7 +164,7 @@ class TokenVisitor: SyntaxVisitor {
   }
 }
 
-class Node: Encodable {
+class Node {
   var text: String
   var children = [Node]()
   weak var parent: Node?
@@ -196,13 +198,5 @@ class Node: Encodable {
   func add(node: Node) {
     node.parent = self
     children.append(node)
-  }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(text, forKey: .text)
-    try container.encode(children, forKey: .children)
-    try container.encode(range, forKey: .range)
-    try container.encode(token, forKey: .token)
   }
 }
