@@ -4,6 +4,7 @@
 //
 //  Created by Matvii Hodovaniuk on 4/2/19.
 //
+// TokamakLintTests testPropsIsEquatable test use this file
 
 import Foundation
 
