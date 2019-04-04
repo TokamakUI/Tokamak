@@ -156,7 +156,7 @@
 		OBJ_432 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_127 /* main.swift */; };
 		OBJ_434 /* TokamakLint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::TokamakLint::Product" /* TokamakLint.framework */; };
 		OBJ_435 /* SwiftSyntax.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */; };
-		OBJ_444 /* SwiftSyntaxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_206 /* SwiftSyntaxTests.swift */; };
+		OBJ_444 /* TokamakLintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_206 /* TokamakLintTests.swift */; };
 		OBJ_445 /* TestPropsEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_207 /* TestPropsEquatable.swift */; };
 		OBJ_448 /* TokamakLint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::TokamakLint::Product" /* TokamakLint.framework */; };
 		OBJ_449 /* SwiftSyntax.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */; };
@@ -436,7 +436,7 @@
 		OBJ_201 /* UIViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewComponent.swift; sourceTree = "<group>"; };
 		OBJ_202 /* TokamakViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokamakViewController.swift; sourceTree = "<group>"; };
 		OBJ_203 /* UIKitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitRenderer.swift; sourceTree = "<group>"; };
-		OBJ_206 /* SwiftSyntaxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftSyntaxTests.swift; sourceTree = "<group>"; };
+		OBJ_206 /* TokamakLintTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokamakLintTests.swift; sourceTree = "<group>"; };
 		OBJ_207 /* TestPropsEquatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPropsEquatable.swift; sourceTree = "<group>"; };
 		OBJ_21 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		OBJ_210 /* ColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTests.swift; sourceTree = "<group>"; };
@@ -864,7 +864,7 @@
 		OBJ_205 /* TokamakCLITests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_206 /* SwiftSyntaxTests.swift */,
+				OBJ_206 /* TokamakLintTests.swift */,
 				OBJ_207 /* TestPropsEquatable.swift */,
 			);
 			name = TokamakCLITests;
@@ -1619,7 +1619,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_444 /* SwiftSyntaxTests.swift in Sources */,
+				OBJ_444 /* TokamakLintTests.swift in Sources */,
 				OBJ_445 /* TestPropsEquatable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
