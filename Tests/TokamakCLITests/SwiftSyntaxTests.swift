@@ -9,21 +9,21 @@ import TokamakLint
 import XCTest
 
 final class SwiftSyntaxTests: XCTestCase {
-  func testAllFiles() {
+  func testAllFiles() throws {
     let linter = TokamakLint()
     let path = "/Users/hmi/Documents/maxDesiatov/Tokamak/"
-    linter.lintFolder(path)
+    try linter.lintFolder(path)
   }
 
-  func testFile() {
+  func testFile() throws {
     let linter = TokamakLint()
     let path = "/Users/hmi/Documents/maxDesiatov/Tokamak/Sources/Tokamak/Components/Host/Alert.swift"
-    linter.lintFile(path)
+    try linter.lintFile(path)
   }
 
-  func testPropsIsEquatable() {
+  func testPropsIsEquatable() throws {
     let linter = TokamakLint()
     let path = "/Users/hmi/Documents/maxDesiatov/Tokamak/Tests/TokamakCLITests/TestPropsEquatable.swift"
-    XCTAssertTrue(linter.isPropsEquatable(path))
+    XCTAssertTrue(try linter.isPropsEquatable(path))
   }
 }

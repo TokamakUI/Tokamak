@@ -15,16 +15,15 @@ public final class CommandLineTool {
   public init(arguments: [String] = CommandLine.arguments) {
     let lint = TokamakLint()
 
-    if arguments.indices.contains(1) {
-      path = arguments[1]
+    if let path = arguments.first {
+      self.path = path
     } else {
       let fileManager = FileManager.default
-      let currentDirectoryPath = fileManager.currentDirectoryPath
-      path = currentDirectoryPath
+      path = fileManager.currentDirectoryPath
     }
     self.lint = lint
   }
 }
 
 let tool = CommandLineTool()
-tool.lint.lintFolder(tool.path)
+try tool.lint.lintFolder(tool.path)
