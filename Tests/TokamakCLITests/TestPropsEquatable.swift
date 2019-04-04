@@ -11,6 +11,6 @@ public protocol Default {
   var str: String { get }
 }
 
-struct Props: Default {
+struct Props: Equatable, Default {
   var str: String
 }
