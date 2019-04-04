@@ -10,7 +10,7 @@ import SwiftSyntax
 
 class TokenVisitor: SyntaxVisitor {
   public var tree = [Node]()
-  public var current: Node!
+  public var current: Node?
 
   var row = 0
   var column = 0
@@ -29,42 +29,43 @@ class TokenVisitor: SyntaxVisitor {
     if current == nil {
       tree.append(node)
     } else {
-      current.add(node: node)
+      current?.add(node: node)
     }
     current = node
   }
 
   override func visit(_ token: TokenSyntax) -> SyntaxVisitorContinueKind {
-    current.text = escapeHtmlSpecialCharacters(token.text)
-    current.token = Node.Token(
+    current?.text = escapeHtmlSpecialCharacters(token.text)
+    print(token.text)
+    current?.token = Node.Token(
       kind: "\(token.tokenKind)",
       leadingTrivia: "",
       trailingTrivia: ""
     )
 
-    current.range.startRow = row
-    current.range.startColumn = column
+    current?.range.startRow = row
+    current?.range.startColumn = column
 
     token.leadingTrivia.forEach { piece in
       let trivia = processTriviaPiece(piece)
-      current.token?.leadingTrivia += replaceSymbols(text: trivia)
+      current?.token?.leadingTrivia += replaceSymbols(text: trivia)
     }
     processToken(token)
     token.trailingTrivia.forEach { piece in
       let trivia = processTriviaPiece(piece)
-      current.token?.trailingTrivia += replaceSymbols(text: trivia)
+      current?.token?.trailingTrivia += replaceSymbols(text: trivia)
     }
 
-    current.range.endRow = row
-    current.range.endColumn = column
+    current?.range.endRow = row
+    current?.range.endColumn = column
 
     return .visitChildren
   }
 
   override func visitPost(_ node: Syntax) {
-    current.range.endRow = row
-    current.range.endColumn = column
-    current = current.parent
+    current?.range.endRow = row
+    current?.range.endColumn = column
+    current = current?.parent
   }
 
   private func processToken(_ token: TokenSyntax) {
@@ -97,42 +98,15 @@ class TokenVisitor: SyntaxVisitor {
     case let .backticks(count):
       trivia += String(repeating: "`", count: count)
       column += count
-    case let .lineComment(text):
-      trivia += withSpanTag(class: "lineComment", text: text)
-      processComment(text: text)
-    case let .blockComment(text):
-      trivia += withSpanTag(class: "blockComment", text: text)
-      processComment(text: text)
-    case let .docLineComment(text):
-      trivia += withSpanTag(class: "docLineComment", text: text)
-      processComment(text: text)
-    case let .docBlockComment(text):
-      trivia += withSpanTag(class: "docBlockComment", text: text)
-      processComment(text: text)
     default:
       break
     }
     return trivia
   }
 
-  private func withSpanTag(class c: String, text: String) -> String {
-    return "<span class='\(c)'>" +
-      escapeHtmlSpecialCharacters(text) +
-      "</span>"
-  }
-
   private func replaceSymbols(text: String) -> String {
     return text.replacingOccurrences(of: "&nbsp;", with: "␣")
       .replacingOccurrences(of: "<br>", with: "<br>↲")
-  }
-
-  private func processComment(text: String) {
-    let comments = text.split(
-      separator: "\n",
-      omittingEmptySubsequences: false
-    )
-    row += comments.count - 1
-    column += comments.last!.count
   }
 
   private func escapeHtmlSpecialCharacters(_ string: String) -> String {
