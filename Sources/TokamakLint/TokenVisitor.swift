@@ -5,8 +5,6 @@
 //  Created by Matvii Hodovaniuk on 4/2/19.
 //
 
-// add code comments to methods
-
 import Foundation
 import SwiftSyntax
 
@@ -38,25 +36,14 @@ class TokenVisitor: SyntaxVisitor {
 
   override func visit(_ token: TokenSyntax) -> SyntaxVisitorContinueKind {
     current?.text = escapeHtmlSpecialCharacters(token.text)
-    print(token.text)
     current?.token = Node.Token(
-      kind: "\(token.tokenKind)",
-      leadingTrivia: "",
-      trailingTrivia: ""
+      kind: "\(token.tokenKind)"
     )
 
     current?.range.startRow = row
     current?.range.startColumn = column
 
-    token.leadingTrivia.forEach { piece in
-      let trivia = processTriviaPiece(piece)
-      current?.token?.leadingTrivia += replaceSymbols(text: trivia)
-    }
     processToken(token)
-    token.trailingTrivia.forEach { piece in
-      let trivia = processTriviaPiece(piece)
-      current?.token?.trailingTrivia += replaceSymbols(text: trivia)
-    }
 
     current?.range.endRow = row
     current?.range.endColumn = column
@@ -80,35 +67,6 @@ class TokenVisitor: SyntaxVisitor {
     }
 
     column += token.text.count
-  }
-
-  private func processTriviaPiece(_ piece: TriviaPiece) -> String {
-    var trivia = ""
-    switch piece {
-    case let .spaces(count):
-      trivia += String(repeating: "&nbsp;", count: count)
-      column += count
-    case let .tabs(count):
-      trivia += String(repeating: "&nbsp;", count: count * 2)
-      column += count * 2
-    case let .newlines(count),
-         let .carriageReturns(count),
-         let .carriageReturnLineFeeds(count):
-      trivia += String(repeating: "<br>\n", count: count)
-      row += count
-      column = 0
-    case let .backticks(count):
-      trivia += String(repeating: "`", count: count)
-      column += count
-    default:
-      break
-    }
-    return trivia
-  }
-
-  private func replaceSymbols(text: String) -> String {
-    return text.replacingOccurrences(of: "&nbsp;", with: "␣")
-      .replacingOccurrences(of: "<br>", with: "<br>↲")
   }
 
   private func escapeHtmlSpecialCharacters(_ string: String) -> String {
@@ -180,8 +138,6 @@ class Node {
 
   struct Token: Encodable {
     var kind: String
-    var leadingTrivia: String
-    var trailingTrivia: String
   }
 
   enum CodingKeys: CodingKey {
