@@ -1023,7 +1023,7 @@
 			path = Constraint;
 			sourceTree = "<group>";
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -1046,7 +1046,6 @@
 				OBJ_270 /* TokamakCounter.gif */,
 				OBJ_271 /* TokamakUIKit.podspec */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_69 /* Hooks */ = {
@@ -1272,7 +1271,6 @@
 			buildPhases = (
 				OBJ_431 /* Sources */,
 				OBJ_433 /* Frameworks */,
-				A61C4E1D2254C3BF00CF4FCA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1406,7 +1404,7 @@
 				English,
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_247 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1427,26 +1425,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		A61C4E1D2254C3BF00CF4FCA /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/Users/hmi/Documents/maxDesiatov/Tokamak/.build/debug/TokamakCLI \"/Users/hmi/Documents/maxDesiatov/Tokamak/Sources/Tokamak\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		OBJ_276 /* Sources */ = {
