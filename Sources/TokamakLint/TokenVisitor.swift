@@ -26,27 +26,28 @@ class TokenVisitor: SyntaxVisitor {
     node.range.startColumn = column
     node.range.endRow = row
     node.range.endColumn = column
-    if current == nil {
-      tree.append(node)
+    if let current = current {
+      current.add(node: node)
     } else {
-      current?.add(node: node)
+      tree.append(node)
     }
     current = node
   }
 
   override func visit(_ token: TokenSyntax) -> SyntaxVisitorContinueKind {
-    current?.text = escapeHtmlSpecialCharacters(token.text)
-    current?.token = Node.Token(
+    guard let current = current else { return .visitChildren }
+    current.text = escapeHtmlSpecialCharacters(token.text)
+    current.token = Node.Token(
       kind: "\(token.tokenKind)"
     )
 
-    current?.range.startRow = row
-    current?.range.startColumn = column
+    current.range.startRow = row
+    current.range.startColumn = column
 
     processToken(token)
 
-    current?.range.endRow = row
-    current?.range.endColumn = column
+    current.range.endRow = row
+    current.range.endColumn = column
 
     return .visitChildren
   }

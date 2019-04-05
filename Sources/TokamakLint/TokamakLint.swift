@@ -22,16 +22,19 @@ public final class TokamakLint {
                   errorHandler: { (url, error) -> Bool in
                     print("directoryEnumerator error at \(url): ", error)
                     return true
-      }) else {
+      })?.compactMap({ $0 as? URL }).filter({ isSwiftFile($0.path) })
+    else {
       fatalError("Enumeratrot is nil")
     }
-    for case let fileURL as URL in enumerator {
-      if isSwiftFile(fileURL.path) {
-        print(fileURL.path)
-        let visitor = try walkParsedTree(fileURL.path)
-        if hasTokamakImport(from: visitor) {
-          try isPropsEquatable(fileURL.path)
-        }
+    let count = enumerator.count
+    let enumerated = enumerator.enumerated()
+    for (i, fileURL) in enumerated {
+      print("Linting ",
+            "\(fileURL.lastPathComponent) ",
+            "(\(i)/\(count))")
+      let visitor = try walkParsedTree(fileURL.path)
+      if hasTokamakImport(from: visitor) {
+        try isPropsEquatable(fileURL.path)
       }
     }
   }
@@ -45,7 +48,6 @@ public final class TokamakLint {
           node: structNode,
           from: "Equatable"
         )
-        print(isInherited)
       }
     }
   }
@@ -56,7 +58,7 @@ public final class TokamakLint {
     let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
     for structNode in structs where structNode.children[1].text == "Props" {
       res = visitor.isInherited(node: structNode, from: "Equatable")
-      if !res {
+      guard res else {
         printError(
           at: path,
           row: structNode.range.startRow,
@@ -64,6 +66,7 @@ public final class TokamakLint {
           type: "warning",
           message: "Props is not Equatable"
         )
+        return res
       }
     }
     return res
@@ -92,15 +95,15 @@ public final class TokamakLint {
   }
 
   private func hasTokamakImport(from visitor: TokenVisitor) -> Bool {
-    var isTokamakImportExist = false
+    var doesTokamakImportExist = false
     let imports = visitor.getNodes(get: "ImportDecl", from: visitor.tree[0])
     for importNode in imports {
       let importModules = visitor.getNodes(get: "AccessPathComponent", from: importNode)
       for module in importModules where module.children[0].text == "Tokamak" {
-        isTokamakImportExist = true
+        doesTokamakImportExist = true
       }
     }
 
-    return isTokamakImportExist
+    return doesTokamakImportExist
   }
 }
