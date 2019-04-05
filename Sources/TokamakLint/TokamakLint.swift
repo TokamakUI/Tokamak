@@ -24,7 +24,7 @@ public final class TokamakLint {
                     return true
       })?.compactMap({ $0 as? URL }).filter({ isSwiftFile($0.path) })
     else {
-      fatalError("Enumeratrot is nil")
+      fatalError("Enumerator is nil")
     }
     let count = enumerator.count
     let enumerated = enumerator.enumerated()
