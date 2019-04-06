@@ -8,7 +8,7 @@
 import TokamakLint
 import XCTest
 
-let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!
+let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]
 
 final class SwiftSyntaxTests: XCTestCase {
   func testAllFiles() throws {
@@ -25,7 +25,13 @@ final class SwiftSyntaxTests: XCTestCase {
 
   func testPropsIsEquatable() throws {
     let linter = TokamakLint()
-    let path = "\(srcRoot)/Tests/TokamakCLITests/TestPropsEquatable.swift"
+    let path = "\(srcRoot)/ValidationTests/TestPropsEquatable.swift"
     XCTAssertTrue(try linter.isPropsEquatable(path))
+  }
+
+  func testPropsIsNotEquatable() throws {
+    let linter = TokamakLint()
+    let path = "\(srcRoot)/ValidationTests/TestPropsIsNotEquatable.swift"
+    XCTAssertFalse(try linter.isPropsEquatable(path))
   }
 }

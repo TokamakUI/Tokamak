@@ -14,7 +14,7 @@
 			);
 			dependencies = (
 				OBJ_480 /* PBXTargetDependency */,
-				OBJ_481 /* PBXTargetDependency */,
+				OBJ_482 /* PBXTargetDependency */,
 			);
 			name = TokamakPackageTests;
 			productName = TokamakPackageTests;
@@ -156,8 +156,7 @@
 		OBJ_432 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_127 /* main.swift */; };
 		OBJ_434 /* TokamakLint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::TokamakLint::Product" /* TokamakLint.framework */; };
 		OBJ_435 /* SwiftSyntax.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */; };
-		OBJ_444 /* TokamakLintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_206 /* TokamakLintTests.swift */; };
-		OBJ_445 /* TestPropsEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_207 /* TestPropsEquatable.swift */; };
+		OBJ_446 /* TokamakLintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_208 /* TokamakLintTests.swift */; };
 		OBJ_448 /* TokamakLint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Tokamak::TokamakLint::Product" /* TokamakLint.framework */; };
 		OBJ_449 /* SwiftSyntax.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */; };
 		OBJ_457 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_129 /* Counter.swift */; };
@@ -241,96 +240,96 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		A61C4E122254C38E00CF4FCA /* PBXContainerItemProxy */ = {
+		A66B587E22592B6900DCF499 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Tokamak::Tokamak";
 			remoteInfo = Tokamak;
 		};
-		A61C4E132254C38E00CF4FCA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = OBJ_1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = "SwiftSyntax::SwiftSyntax";
-			remoteInfo = SwiftSyntax;
-		};
-		A61C4E142254C38E00CF4FCA /* PBXContainerItemProxy */ = {
+		A66B587F22592B6900DCF499 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Tokamak::Tokamak";
 			remoteInfo = Tokamak;
 		};
-		A61C4E152254C38E00CF4FCA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = OBJ_1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = "Tokamak::Tokamak";
-			remoteInfo = Tokamak;
-		};
-		A61C4E162254C38E00CF4FCA /* PBXContainerItemProxy */ = {
+		A66B588022592B6900DCF499 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Tokamak::TokamakLint";
 			remoteInfo = TokamakLint;
 		};
-		A61C4E172254C38E00CF4FCA /* PBXContainerItemProxy */ = {
+		A66B588122592B6900DCF499 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "SwiftSyntax::SwiftSyntax";
 			remoteInfo = SwiftSyntax;
 		};
-		A61C4E182254C38E00CF4FCA /* PBXContainerItemProxy */ = {
+		A66B588222592B6900DCF499 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "SwiftSyntax::SwiftSyntax";
+			remoteInfo = SwiftSyntax;
+		};
+		A66B588322592B6900DCF499 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Tokamak::Tokamak";
 			remoteInfo = Tokamak;
 		};
-		A61C4E192254C38E00CF4FCA /* PBXContainerItemProxy */ = {
+		A66B588422592B6900DCF499 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "Tokamak::Tokamak";
+			remoteInfo = Tokamak;
+		};
+		A66B588522592B6900DCF499 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Tokamak::TokamakLint";
 			remoteInfo = TokamakLint;
 		};
-		A61C4E1A2254C38E00CF4FCA /* PBXContainerItemProxy */ = {
+		A66B588622592B6900DCF499 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "SwiftSyntax::SwiftSyntax";
 			remoteInfo = SwiftSyntax;
 		};
-		A61C4E1B2254C39000CF4FCA /* PBXContainerItemProxy */ = {
+		A66B588722592B6A00DCF499 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Tokamak::TokamakTestRenderer";
 			remoteInfo = TokamakTestRenderer;
 		};
-		A61C4E1C2254C39000CF4FCA /* PBXContainerItemProxy */ = {
+		A66B588822592B6A00DCF499 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Tokamak::Tokamak";
 			remoteInfo = Tokamak;
 		};
-		A61C4E1E2254C3E900CF4FCA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = OBJ_1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = "Tokamak::TokamakCLITests";
-			remoteInfo = TokamakCLITests;
-		};
-		A61C4E1F2254C3E900CF4FCA /* PBXContainerItemProxy */ = {
+		A66B588A22592B9B00DCF499 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "Tokamak::TokamakTests";
 			remoteInfo = TokamakTests;
+		};
+		A66B588B22592B9B00DCF499 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "Tokamak::TokamakCLITests";
+			remoteInfo = TokamakCLITests;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -436,8 +435,7 @@
 		OBJ_201 /* UIViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewComponent.swift; sourceTree = "<group>"; };
 		OBJ_202 /* TokamakViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokamakViewController.swift; sourceTree = "<group>"; };
 		OBJ_203 /* UIKitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitRenderer.swift; sourceTree = "<group>"; };
-		OBJ_206 /* TokamakLintTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokamakLintTests.swift; sourceTree = "<group>"; };
-		OBJ_207 /* TestPropsEquatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPropsEquatable.swift; sourceTree = "<group>"; };
+		OBJ_208 /* TokamakLintTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokamakLintTests.swift; sourceTree = "<group>"; };
 		OBJ_21 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		OBJ_210 /* ColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTests.swift; sourceTree = "<group>"; };
 		OBJ_211 /* ConstraintTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintTests.swift; sourceTree = "<group>"; };
@@ -864,8 +862,7 @@
 		OBJ_205 /* TokamakCLITests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_206 /* TokamakLintTests.swift */,
-				OBJ_207 /* TestPropsEquatable.swift */,
+				OBJ_208 /* TokamakLintTests.swift */,
 			);
 			name = TokamakCLITests;
 			path = Tests/TokamakCLITests;
@@ -956,15 +953,15 @@
 			isa = PBXGroup;
 			children = (
 				"Tokamak::TokamakDemo::Product" /* TokamakDemo.framework */,
-				"Tokamak::TokamakTestRenderer::Product" /* TokamakTestRenderer.framework */,
-				"SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */,
-				"Tokamak::TokamakLint::Product" /* TokamakLint.framework */,
 				"Tokamak::TokamakAppKit::Product" /* TokamakAppKit.framework */,
+				"SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */,
+				"Tokamak::TokamakTestRenderer::Product" /* TokamakTestRenderer.framework */,
 				"Tokamak::TokamakCLI::Product" /* TokamakCLI */,
-				"Tokamak::Tokamak::Product" /* Tokamak.framework */,
-				"Tokamak::TokamakUIKit::Product" /* TokamakUIKit.framework */,
 				"Tokamak::TokamakCLITests::Product" /* TokamakCLITests.xctest */,
+				"Tokamak::TokamakUIKit::Product" /* TokamakUIKit.framework */,
 				"Tokamak::TokamakTests::Product" /* TokamakTests.xctest */,
+				"Tokamak::Tokamak::Product" /* Tokamak.framework */,
+				"Tokamak::TokamakLint::Product" /* TokamakLint.framework */,
 			);
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -1023,7 +1020,7 @@
 			path = Constraint;
 			sourceTree = "<group>";
 		};
-		OBJ_5 = {
+		OBJ_5 /*  */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -1046,6 +1043,7 @@
 				OBJ_270 /* TokamakCounter.gif */,
 				OBJ_271 /* TokamakUIKit.podspec */,
 			);
+			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_69 /* Hooks */ = {
@@ -1404,7 +1402,7 @@
 				English,
 				en,
 			);
-			mainGroup = OBJ_5;
+			mainGroup = OBJ_5 /*  */;
 			productRefGroup = OBJ_247 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1597,8 +1595,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_444 /* TokamakLintTests.swift in Sources */,
-				OBJ_445 /* TestPropsEquatable.swift in Sources */,
+				OBJ_446 /* TokamakLintTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1722,67 +1719,67 @@
 		OBJ_426 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::Tokamak" /* Tokamak */;
-			targetProxy = A61C4E152254C38E00CF4FCA /* PBXContainerItemProxy */;
+			targetProxy = A66B587F22592B6900DCF499 /* PBXContainerItemProxy */;
 		};
 		OBJ_436 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::TokamakLint" /* TokamakLint */;
-			targetProxy = A61C4E162254C38E00CF4FCA /* PBXContainerItemProxy */;
+			targetProxy = A66B588022592B6900DCF499 /* PBXContainerItemProxy */;
 		};
 		OBJ_438 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "SwiftSyntax::SwiftSyntax" /* SwiftSyntax */;
-			targetProxy = A61C4E172254C38E00CF4FCA /* PBXContainerItemProxy */;
+			targetProxy = A66B588222592B6900DCF499 /* PBXContainerItemProxy */;
 		};
 		OBJ_450 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::TokamakLint" /* TokamakLint */;
-			targetProxy = A61C4E192254C38E00CF4FCA /* PBXContainerItemProxy */;
+			targetProxy = A66B588522592B6900DCF499 /* PBXContainerItemProxy */;
 		};
 		OBJ_451 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "SwiftSyntax::SwiftSyntax" /* SwiftSyntax */;
-			targetProxy = A61C4E1A2254C38E00CF4FCA /* PBXContainerItemProxy */;
+			targetProxy = A66B588622592B6900DCF499 /* PBXContainerItemProxy */;
 		};
 		OBJ_460 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::Tokamak" /* Tokamak */;
-			targetProxy = A61C4E142254C38E00CF4FCA /* PBXContainerItemProxy */;
+			targetProxy = A66B588422592B6900DCF499 /* PBXContainerItemProxy */;
 		};
 		OBJ_469 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "SwiftSyntax::SwiftSyntax" /* SwiftSyntax */;
-			targetProxy = A61C4E132254C38E00CF4FCA /* PBXContainerItemProxy */;
+			targetProxy = A66B588122592B6900DCF499 /* PBXContainerItemProxy */;
 		};
 		OBJ_480 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = "Tokamak::TokamakCLITests" /* TokamakCLITests */;
-			targetProxy = A61C4E1E2254C3E900CF4FCA /* PBXContainerItemProxy */;
-		};
-		OBJ_481 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
 			target = "Tokamak::TokamakTests" /* TokamakTests */;
-			targetProxy = A61C4E1F2254C3E900CF4FCA /* PBXContainerItemProxy */;
+			targetProxy = A66B588A22592B9B00DCF499 /* PBXContainerItemProxy */;
+		};
+		OBJ_482 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "Tokamak::TokamakCLITests" /* TokamakCLITests */;
+			targetProxy = A66B588B22592B9B00DCF499 /* PBXContainerItemProxy */;
 		};
 		OBJ_492 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::Tokamak" /* Tokamak */;
-			targetProxy = A61C4E182254C38E00CF4FCA /* PBXContainerItemProxy */;
+			targetProxy = A66B588322592B6900DCF499 /* PBXContainerItemProxy */;
 		};
 		OBJ_505 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::TokamakTestRenderer" /* TokamakTestRenderer */;
-			targetProxy = A61C4E1B2254C39000CF4FCA /* PBXContainerItemProxy */;
+			targetProxy = A66B588722592B6A00DCF499 /* PBXContainerItemProxy */;
 		};
 		OBJ_506 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::Tokamak" /* Tokamak */;
-			targetProxy = A61C4E1C2254C39000CF4FCA /* PBXContainerItemProxy */;
+			targetProxy = A66B588822592B6A00DCF499 /* PBXContainerItemProxy */;
 		};
 		OBJ_575 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "Tokamak::Tokamak" /* Tokamak */;
-			targetProxy = A61C4E122254C38E00CF4FCA /* PBXContainerItemProxy */;
+			targetProxy = A66B587E22592B6900DCF499 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
