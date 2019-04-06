@@ -59,13 +59,13 @@ public final class TokamakLint {
     for structNode in structs where structNode.children[1].text == "Props" {
       res = visitor.isInherited(node: structNode, from: "Equatable")
       guard res else {
-        printError(
+        print(formatError(
           at: path,
           row: structNode.range.startRow,
           column: structNode.range.startColumn,
           type: "warning",
           message: "Props is not Equatable"
-        )
+        ))
         return res
       }
     }
@@ -80,14 +80,14 @@ public final class TokamakLint {
     return visitor
   }
 
-  private func printError(
+  private func formatError(
     at path: String,
     row: Int,
     column: Int,
     type: String,
     message: String
-  ) {
-    print("\(path):", "\(row):", "\(column):", " \(type): \(message)")
+  ) -> String {
+    return "\(path): \(row): \(column): \(type): \(message)"
   }
 
   private func isSwiftFile(_ path: String) -> Bool {

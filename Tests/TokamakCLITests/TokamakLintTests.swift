@@ -8,7 +8,7 @@
 import TokamakLint
 import XCTest
 
-let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]
+let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!
 
 final class SwiftSyntaxTests: XCTestCase {
   func testAllFiles() throws {
