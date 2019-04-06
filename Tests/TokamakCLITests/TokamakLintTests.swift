@@ -12,26 +12,22 @@ let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!
 
 final class SwiftSyntaxTests: XCTestCase {
   func testAllFiles() throws {
-    let linter = TokamakLint()
     let path = "\(srcRoot)/"
-    try linter.lintFolder(path)
+    try lintFolder(path)
   }
 
   func testFile() throws {
-    let linter = TokamakLint()
     let path = "\(srcRoot)/Sources/Tokamak/Components/Host/Alert.swift"
-    try linter.lintFile(path)
+    try lintFile(path)
   }
 
   func testPropsIsEquatable() throws {
-    let linter = TokamakLint()
     let path = "\(srcRoot)/ValidationTests/TestPropsEquatable.swift"
-    XCTAssertTrue(try linter.isPropsEquatable(path))
+    XCTAssertTrue(try isPropsEquatable(path))
   }
 
   func testPropsIsNotEquatable() throws {
-    let linter = TokamakLint()
     let path = "\(srcRoot)/ValidationTests/TestPropsIsNotEquatable.swift"
-    XCTAssertFalse(try linter.isPropsEquatable(path))
+    XCTAssertFalse(try isPropsEquatable(path))
   }
 }
