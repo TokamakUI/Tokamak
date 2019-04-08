@@ -11,6 +11,7 @@ import TokamakLint
 do {
   try lintFolder(CommandLine.arguments.first
     ?? FileManager.default.currentDirectoryPath)
-} catch {
-  print("Can't lind folder")
+} catch let error {
+    print("Can't lint folder")
+    print(error)
 }
