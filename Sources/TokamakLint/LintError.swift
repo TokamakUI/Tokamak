@@ -13,10 +13,11 @@ public enum LintError: Error, CustomStringConvertible {
   public var description: String {
     switch self {
     case .propsIsNotEquatable:
-      return """
-        Props is not Equatable:
+      return
+        """
+        Props is not Equatable:\
         add conformance to Equatable protocol to your Props type
-    """
+        """
     }
   }
 }
