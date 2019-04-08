@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		A67D19D8225B74AB00E0C435 /* LintError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67D19D6225B747100E0C435 /* LintError.swift */; };
 		OBJ_277 /* AbsolutePosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_218 /* AbsolutePosition.swift */; };
 		OBJ_278 /* ByteTreeDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_219 /* ByteTreeDeserialization.swift */; };
 		OBJ_279 /* Diagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_220 /* Diagnostic.swift */; };
@@ -334,6 +335,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A67D19D6225B747100E0C435 /* LintError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LintError.swift; sourceTree = "<group>"; };
 		OBJ_10 /* AnyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNode.swift; sourceTree = "<group>"; };
 		OBJ_100 /* BaselineConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineConstraint.swift; sourceTree = "<group>"; };
 		OBJ_101 /* Bottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bottom.swift; sourceTree = "<group>"; };
@@ -718,6 +720,7 @@
 			children = (
 				OBJ_131 /* TokamakLint.swift */,
 				OBJ_132 /* TokenVisitor.swift */,
+				A67D19D6225B747100E0C435 /* LintError.swift */,
 			);
 			name = TokamakLint;
 			path = Sources/TokamakLint;
@@ -1020,7 +1023,7 @@
 			path = Constraint;
 			sourceTree = "<group>";
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -1043,7 +1046,6 @@
 				OBJ_270 /* TokamakCounter.gif */,
 				OBJ_271 /* TokamakUIKit.podspec */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_69 /* Hooks */ = {
@@ -1402,7 +1404,7 @@
 				English,
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_247 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1612,6 +1614,7 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_465 /* TokamakLint.swift in Sources */,
+				A67D19D8225B74AB00E0C435 /* LintError.swift in Sources */,
 				OBJ_466 /* TokenVisitor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

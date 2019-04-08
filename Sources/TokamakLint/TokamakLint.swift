@@ -31,20 +31,25 @@ public func lintFolder(_ path: String) throws {
           "(\(i)/\(count))")
     let visitor = try walkParsedTree(fileURL.path)
     if hasTokamakImport(from: visitor) {
-      try isPropsEquatable(fileURL.path)
+      guard try isPropsEquatable(fileURL.path) else {
+        throw LintError.propsIsNotEquatable
+      }
     }
   }
 }
 
 public func lintFile(_ path: String) throws {
   let visitor = try walkParsedTree(path)
-  if hasTokamakImport(from: visitor) {
-    let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
-    for structNode in structs {
-      let isInherited = visitor.isInherited(
-        node: structNode,
-        from: "Equatable"
-      )
+  guard !hasTokamakImport(from: visitor) else {
+    return
+  }
+  let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
+  for structNode in structs {
+    guard visitor.isInherited(
+      node: structNode,
+      from: "Equatable"
+    ) else {
+      throw LintError.propsIsNotEquatable
     }
   }
 }
@@ -77,7 +82,7 @@ private func walkParsedTree(_ path: String) throws -> TokenVisitor {
   return visitor
 }
 
-private func formatError(
+public func formatError(
   at path: String,
   row: Int,
   column: Int,
