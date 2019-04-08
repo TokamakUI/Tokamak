@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1020"
+   LastUpgradeVersion = "9999"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Tokamak::TokamakDemo"
-               BuildableName = "TokamakDemo.framework"
-               BlueprintName = "TokamakDemo"
+               BlueprintIdentifier = "Tokamak::TokamakCLI"
+               BuildableName = "TokamakCLI"
+               BlueprintName = "TokamakCLI"
                ReferencedContainer = "container:Tokamak.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,6 +28,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Tokamak::TokamakCLITests"
+               BuildableName = "TokamakCLITests.xctest"
+               BlueprintName = "TokamakCLITests"
+               ReferencedContainer = "container:Tokamak.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <AdditionalOptions>
       </AdditionalOptions>
@@ -42,15 +52,23 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Tokamak::TokamakDemo"
-            BuildableName = "TokamakDemo.framework"
-            BlueprintName = "TokamakDemo"
+            BlueprintIdentifier = "Tokamak::TokamakCLI"
+            BuildableName = "TokamakCLI"
+            BlueprintName = "TokamakCLI"
             ReferencedContainer = "container:Tokamak.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "SRCROOT"
+            value = "${SRCROOT}"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -60,15 +78,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Tokamak::TokamakDemo"
-            BuildableName = "TokamakDemo.framework"
-            BlueprintName = "TokamakDemo"
-            ReferencedContainer = "container:Tokamak.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
