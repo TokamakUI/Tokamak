@@ -1,6 +1,6 @@
 //
 //  TokenVisitor.swift
-//  SwiftSyntax
+//  Tokamak
 //
 //  Created by Matvii Hodovaniuk on 4/2/19.
 //
@@ -36,7 +36,7 @@ class TokenVisitor: SyntaxVisitor {
 
   override func visit(_ token: TokenSyntax) -> SyntaxVisitorContinueKind {
     guard let current = current else { return .visitChildren }
-    current.text = escapeHtmlSpecialCharacters(token.text)
+    current.text = token.text
     current.token = Node.Token(
       kind: "\(token.tokenKind)"
     )
@@ -68,26 +68,6 @@ class TokenVisitor: SyntaxVisitor {
     }
 
     column += token.text.count
-  }
-
-  private func escapeHtmlSpecialCharacters(_ string: String) -> String {
-    var newString = string
-    let specialCharacters = [
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      "\"": "&quot;",
-      "'": "&apos;",
-    ]
-    for (escaped, unescaped) in specialCharacters {
-      newString = newString.replacingOccurrences(
-        of: escaped,
-        with: unescaped,
-        options: .literal,
-        range: nil
-      )
-    }
-    return newString
   }
 
   public func getNodes(get type: String, from node: Node) -> [Node] {
