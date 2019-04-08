@@ -8,18 +8,9 @@
 import Foundation
 import TokamakLint
 
-public final class CommandLineTool {
-  public let path: String
-
-  public init(arguments: [String] = CommandLine.arguments) {
-    if let path = arguments.first {
-      self.path = path
-    } else {
-      let fileManager = FileManager.default
-      path = fileManager.currentDirectoryPath
-    }
-  }
+do {
+  try lintFolder(CommandLine.arguments.first
+    ?? FileManager.default.currentDirectoryPath)
+} catch {
+  print("Can't lind folder")
 }
-
-let tool = CommandLineTool()
-try lintFolder(CommandLine.arguments.first ?? FileManager.default.currentDirectoryPath)
