@@ -8,14 +8,14 @@
 import Foundation
 import SwiftSyntax
 
-class TokenVisitor: SyntaxVisitor {
+public class TokenVisitor: SyntaxVisitor {
   public var tree = [Node]()
   public var current: Node?
 
   var row = 0
   var column = 0
 
-  override func visitPre(_ node: Syntax) {
+  public override func visitPre(_ node: Syntax) {
     var syntax = "\(type(of: node))"
     if syntax.hasSuffix("Syntax") {
       syntax = String(syntax.dropLast(6))
@@ -34,7 +34,7 @@ class TokenVisitor: SyntaxVisitor {
     current = node
   }
 
-  override func visit(_ token: TokenSyntax) -> SyntaxVisitorContinueKind {
+  public override func visit(_ token: TokenSyntax) -> SyntaxVisitorContinueKind {
     guard let current = current else { return .visitChildren }
     current.text = token.text
     current.token = Node.Token(
@@ -52,7 +52,7 @@ class TokenVisitor: SyntaxVisitor {
     return .visitChildren
   }
 
-  override func visitPost(_ node: Syntax) {
+  public override func visitPost(_ node: Syntax) {
     current?.range.endRow = row
     current?.range.endColumn = column
     current = current?.parent
@@ -103,7 +103,7 @@ class TokenVisitor: SyntaxVisitor {
   }
 }
 
-class Node {
+public class Node {
   var text: String
   var children = [Node]()
   weak var parent: Node?

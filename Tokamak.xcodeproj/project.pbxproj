@@ -30,7 +30,6 @@
 		A63D1258225CE128009279B5 /* PropsIsEquatableRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63D1257225CE128009279B5 /* PropsIsEquatableRule.swift */; };
 		A63D125B225CE445009279B5 /* XcodeReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63D125A225CE445009279B5 /* XcodeReporter.swift */; };
 		A63D125D225CE46D009279B5 /* Reporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63D125C225CE46D009279B5 /* Reporter.swift */; };
-		A67D19D8225B74AB00E0C435 /* LintError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67D19D6225B747100E0C435 /* LintError.swift */; };
 		OBJ_277 /* AbsolutePosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_218 /* AbsolutePosition.swift */; };
 		OBJ_278 /* ByteTreeDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_219 /* ByteTreeDeserialization.swift */; };
 		OBJ_279 /* Diagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_220 /* Diagnostic.swift */; };
@@ -351,7 +350,6 @@
 		A63D1257225CE128009279B5 /* PropsIsEquatableRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropsIsEquatableRule.swift; sourceTree = "<group>"; };
 		A63D125A225CE445009279B5 /* XcodeReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodeReporter.swift; sourceTree = "<group>"; };
 		A63D125C225CE46D009279B5 /* Reporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reporter.swift; sourceTree = "<group>"; };
-		A67D19D6225B747100E0C435 /* LintError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LintError.swift; sourceTree = "<group>"; };
 		OBJ_10 /* AnyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNode.swift; sourceTree = "<group>"; };
 		OBJ_100 /* BaselineConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineConstraint.swift; sourceTree = "<group>"; };
 		OBJ_101 /* Bottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bottom.swift; sourceTree = "<group>"; };
@@ -679,6 +677,8 @@
 		A63D124D225CDAFE009279B5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				OBJ_131 /* TokamakLint.swift */,
+				OBJ_132 /* TokenVisitor.swift */,
 				A63D124E225CDB16009279B5 /* RuleDescription.swift */,
 				A63D1250225CDCEC009279B5 /* StyleViolation.swift */,
 				A63D1252225CDD1B009279B5 /* Location.swift */,
@@ -774,9 +774,6 @@
 				A63D1256225CE09F009279B5 /* Rules */,
 				A63D124D225CDAFE009279B5 /* Models */,
 				A63D1249225CD72A009279B5 /* Protocols */,
-				OBJ_131 /* TokamakLint.swift */,
-				OBJ_132 /* TokenVisitor.swift */,
-				A67D19D6225B747100E0C435 /* LintError.swift */,
 			);
 			name = TokamakLint;
 			path = Sources/TokamakLint;
@@ -1675,7 +1672,6 @@
 				A63D1255225CDD81009279B5 /* ViolationSeverity.swift in Sources */,
 				A63D124F225CDB16009279B5 /* RuleDescription.swift in Sources */,
 				A63D124C225CDA22009279B5 /* Rule.swift in Sources */,
-				A67D19D8225B74AB00E0C435 /* LintError.swift in Sources */,
 				OBJ_466 /* TokenVisitor.swift in Sources */,
 				A63D1258225CE128009279B5 /* PropsIsEquatableRule.swift in Sources */,
 				A63D125D225CE46D009279B5 /* Reporter.swift in Sources */,

@@ -5,109 +5,48 @@
 //  Created by Matvii Hodovaniuk on 4/9/19.
 //
 
-public struct ConvenienceTypeRule: ASTRule, OptInRule, ConfigurationProviderRule, AutomaticTestableRule {
-    public var configuration = SeverityConfiguration(.warning)
+import Foundation
+import SwiftSyntax
 
-    public init() {}
+public struct PropsIsEquatableRule: Rule {
+  public init() {}
 
-    public static let description = RuleDescription(
-        identifier: "convenience_type",
-        name: "Convenience Type",
-        description: "Types used for hosting only static members should be implemented as a caseless enum " +
-        "to avoid instantiation.",
-        kind: .idiomatic,
-        minSwiftVersion: .fourDotOne,
-        nonTriggeringExamples: [
-            """
-            enum Math { // enum
-              public static let pi = 3.14
-            }
-            """,
-            """
-            // class with inheritance
-            class MathViewController: UIViewController {
-              public static let pi = 3.14
-            }
-            """,
-            """
-            @objc class Math: NSObject { // class visible to Obj-C
-              public static let pi = 3.14
-            }
-            """,
-            """
-            struct Math { // type with non-static declarations
-              public static let pi = 3.14
-              public let randomNumber = 2
-            }
-            """,
-            "class DummyClass {}"
-        ],
-        triggeringExamples: [
-            """
-            ↓struct Math {
-              public static let pi = 3.14
-            }
-            """,
-            """
-            ↓class Math {
-              public static let pi = 3.14
-            }
-            """,
-            """
-            ↓struct Math {
-              public static let pi = 3.14
-              @available(*, unavailable) init() {}
-            }
-            """
-        ]
-    )
+  public static let description = RuleDescription(
+    identifier: "props_is_equatable",
+    name: "Props is Equatable",
+    description: "Component Props type shoud conformance to Equatable protocol"
+  )
 
-    public func validate(file: File, kind: SwiftDeclarationKind,
-                         dictionary: [String: SourceKitRepresentable]) -> [StyleViolation] {
-        guard let offset = dictionary.offset,
-            [.class, .struct].contains(kind),
-            dictionary.inheritedTypes.isEmpty,
-            !dictionary.substructure.isEmpty else {
-                return []
-        }
+  public static func validate(path: String) throws -> [StyleViolation] {
+    let fileURL = URL(fileURLWithPath: path)
+    let parsedTree = try SyntaxTreeParser.parse(fileURL)
+    let visitor = TokenVisitor()
+    parsedTree.walk(visitor)
+    return validate(visitor: visitor)
+  }
 
-        let containsInstanceDeclarations = dictionary.substructure.contains { dict in
-            guard let kind = dict.kind.flatMap(SwiftDeclarationKind.init(rawValue:)) else {
-                return false
-            }
-
-            let instanceKinds: Set<SwiftDeclarationKind> = [.varInstance, .functionSubscript, .functionMethodInstance]
-            guard instanceKinds.contains(kind), let name = dict.name else {
-                return false
-            }
-
-            if name.hasPrefix("init(") {
-                return !isFunctionUnavailable(file: file, dictionary: dict)
-            }
-
-            return true
-        }
-
-        guard !containsInstanceDeclarations else {
-            return []
-        }
-
-        return [
-            StyleViolation(ruleDescription: type(of: self).description,
-                           severity: configuration.severity,
-                           location: Location(file: file, byteOffset: offset))
-        ]
+  public static func validate(visitor: TokenVisitor) -> [StyleViolation] {
+    var violations: [StyleViolation] = []
+    let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
+    for structNode in structs {
+      // should i use guard?
+      if !visitor.isInherited(
+        node: structNode,
+        from: "Equatable"
+      ) {
+        violations.append(
+          StyleViolation(
+            ruleDescription: description,
+            location: Location(
+              file: "",
+              line: structNode.range.startRow,
+              character: structNode.range.startColumn
+            )
+          )
+        )
+      }
     }
 
-    private func isFunctionUnavailable(file: File, dictionary: [String: SourceKitRepresentable]) -> Bool {
-        return dictionary.swiftAttributes.contains { dict -> Bool in
-            guard dict.attribute.flatMap(SwiftDeclarationAttributeKind.init(rawValue:)) == .available,
-                let offset = dict.offset, let length = dict.length,
-                let contents = file.contents.bridge().substringWithByteRange(start: offset, length: length) else {
-                    return false
-            }
-
-            return contents.contains("unavailable")
-        }
-    }
+    return violations
+  }
 }

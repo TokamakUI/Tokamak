@@ -9,49 +9,43 @@ import Foundation
 import SwiftSyntax
 
 public func lintFolder(_ path: String) throws {
-  let resourceKeys: [URLResourceKey] = [.creationDateKey, .isDirectoryKey]
-  let baseurl = URL(fileURLWithPath: path)
-  guard let enumerator = FileManager
-    .default
-    .enumerator(at: baseurl,
-                includingPropertiesForKeys: resourceKeys,
-                options: [.skipsHiddenFiles],
-                errorHandler: { (url, error) -> Bool in
-                  print("directoryEnumerator error at \(url): ", error)
-                  return true
-    })?.compactMap({ $0 as? URL }).filter({ isSwiftFile($0.path) })
-  else {
-    fatalError("Enumerator is nil")
-  }
-  let count = enumerator.count
-  let enumerated = enumerator.enumerated()
-  for (i, fileURL) in enumerated {
-    print("Linting ",
-          "\(fileURL.lastPathComponent) ",
-          "(\(i)/\(count))")
-    let visitor = try walkParsedTree(fileURL.path)
-    if hasTokamakImport(from: visitor) {
-      guard try isPropsEquatable(fileURL.path) else {
-        throw LintError.propsIsNotEquatable
-      }
-    }
-  }
+//  let resourceKeys: [URLResourceKey] = [.creationDateKey, .isDirectoryKey]
+//  let baseurl = URL(fileURLWithPath: path)
+//  guard let enumerator = FileManager
+//    .default
+//    .enumerator(at: baseurl,
+//                includingPropertiesForKeys: resourceKeys,
+//                options: [.skipsHiddenFiles],
+//                errorHandler: { (url, error) -> Bool in
+//                  print("directoryEnumerator error at \(url): ", error)
+//                  return true
+//    })?.compactMap({ $0 as? URL }).filter({ isSwiftFile($0.path) })
+//  else {
+//    fatalError("Enumerator is nil")
+//  }
+//  let count = enumerator.count
+//  let enumerated = enumerator.enumerated()
+//  for (i, fileURL) in enumerated {
+//    print("Linting ",
+//          "\(fileURL.lastPathComponent) ",
+//          "(\(i)/\(count))")
+//    let visitor = try walkParsedTree(fileURL.path)
+//    if hasTokamakImport(from: visitor) {
+//      guard try isPropsEquatable(fileURL.path) else {
+//        throw LintError.propsIsNotEquatable
+//      }
+//    }
+//  }
 }
 
-public func lintFile(_ path: String) throws {
+public func lintFile(_ path: String) throws -> [StyleViolation] {
   let visitor = try walkParsedTree(path)
   guard !hasTokamakImport(from: visitor) else {
-    return
+    return []
   }
-  let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
-  for structNode in structs {
-    guard visitor.isInherited(
-      node: structNode,
-      from: "Equatable"
-    ) else {
-      throw LintError.propsIsNotEquatable
-    }
-  }
+  var errors: [StyleViolation] = []
+  errors.append(contentsOf: PropsIsEquatableRule.validate(visitor: visitor))
+  return errors
 }
 
 public func isPropsEquatable(_ path: String) throws -> Bool {
@@ -108,3 +102,15 @@ private func hasTokamakImport(from visitor: TokenVisitor) -> Bool {
 
   return doesTokamakImportExist
 }
+
+// private func lintInheritance(_ path: String) -> [String] {
+//  let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
+//  for structNode in structs {
+//    guard visitor.isInherited(
+//      node: structNode,
+//      from: "Equatable"
+//    ) else {
+//      errors.append(LintError.propsIsNotEquatable)
+//    }
+//  }
+// }

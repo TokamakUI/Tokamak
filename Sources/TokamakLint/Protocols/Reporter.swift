@@ -6,18 +6,17 @@
 //
 
 public protocol Reporter: CustomStringConvertible {
-    static var identifier: String { get }
-    static var isRealtime: Bool { get }
+  static var identifier: String { get }
+  static var isRealtime: Bool { get }
 
-    static func generateReport(_ violations: [StyleViolation]) -> String
+  static func generateReport(_ violations: [StyleViolation]) -> String
 }
 
-public func reporterFrom(identifier: String) -> Reporter.Type {
-    switch identifier {
-    case XcodeReporter.identifier:
-        return XcodeReporter.self
-    default:
-        queuedFatalError("no reporter with identifier '\(identifier)' available.")
-    }
-}
-
+// public func reporterFrom(identifier: String) -> Reporter.Type {
+//  switch identifier {
+//  case XcodeReporter.identifier:
+//    return XcodeReporter.self
+//  default:
+//    print("no reporter with identifier '\(identifier)' available.")
+//  }
+// }

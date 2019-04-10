@@ -8,19 +8,16 @@
 import Foundation
 
 public protocol Rule {
-    static var description: RuleDescription { get }
-    var configurationDescription: String { get }
+  static var description: RuleDescription { get }
 
-    init() // Rules need to be able to be initialized with default values
-    init(configuration: Any) throws
+  init()
 
-    func validate(file: File, compilerArguments: [String]) -> [StyleViolation]
-    func validate(file: File) -> [StyleViolation]
+  static func validate(path: String) throws -> [StyleViolation]
+  static func validate(visitor: TokenVisitor) -> [StyleViolation]
 }
 
 extension Rule {
-    public func isEqualTo(_ rule: Rule) -> Bool {
-        return type(of: self).description == type(of: rule).description
-    }
+  public func isEqualTo(_ rule: Rule) -> Bool {
+    return type(of: self).description == type(of: rule).description
+  }
 }
-

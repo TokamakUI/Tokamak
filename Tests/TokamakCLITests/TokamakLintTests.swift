@@ -18,7 +18,8 @@ final class SwiftSyntaxTests: XCTestCase {
 
   func testFile() throws {
     let path = "\(srcRoot)/Sources/Tokamak/Components/Host/Alert.swift"
-    try lintFile(path)
+    let result = try lintFile(path)
+    XCTAssertEqual(result, [])
   }
 
   func testPropsIsEquatable() throws {
