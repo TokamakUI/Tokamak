@@ -22,13 +22,15 @@ final class SwiftSyntaxTests: XCTestCase {
     XCTAssertEqual(result, [])
   }
 
-  func testPropsIsEquatable() throws {
+  func testPositivePropsIsEquatableRule() throws {
     let path = "\(srcRoot)/ValidationTests/TestPropsEquatable.swift"
-    XCTAssertTrue(try isPropsEquatable(path))
+    let result = try PropsIsEquatableRule.validate(path: path)
+    XCTAssertEqual(result, [])
   }
 
-  func testPropsIsNotEquatable() throws {
+  func testNegativePropsIsEquatableRule() throws {
     let path = "\(srcRoot)/ValidationTests/TestPropsIsNotEquatable.swift"
-    XCTAssertFalse(try isPropsEquatable(path))
+    let result = try PropsIsEquatableRule.validate(path: path)
+    XCTAssertEqual(result.count, 1)
   }
 }

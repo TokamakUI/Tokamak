@@ -48,42 +48,12 @@ public func lintFile(_ path: String) throws -> [StyleViolation] {
   return errors
 }
 
-public func isPropsEquatable(_ path: String) throws -> Bool {
-  var res: Bool = false
-  let visitor = try walkParsedTree(path)
-  let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
-  for structNode in structs where structNode.children[1].text == "Props" {
-    res = visitor.isInherited(node: structNode, from: "Equatable")
-    guard res else {
-      print(formatError(
-        at: path,
-        row: structNode.range.startRow,
-        column: structNode.range.startColumn,
-        type: "warning",
-        message: "Props is not Equatable"
-      ))
-      return res
-    }
-  }
-  return res
-}
-
 private func walkParsedTree(_ path: String) throws -> TokenVisitor {
   let fileURL = URL(fileURLWithPath: path)
   let parsedTree = try SyntaxTreeParser.parse(fileURL)
   let visitor = TokenVisitor()
   parsedTree.walk(visitor)
   return visitor
-}
-
-public func formatError(
-  at path: String,
-  row: Int,
-  column: Int,
-  type: String,
-  message: String
-) -> String {
-  return "\(path): \(row): \(column): \(type): \(message)"
 }
 
 private func isSwiftFile(_ path: String) -> Bool {

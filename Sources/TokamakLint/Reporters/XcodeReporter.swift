@@ -21,7 +21,6 @@ public struct XcodeReporter: Reporter {
     // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
     return [
       "\(violation.location): ",
-      //      "\(violation.severity.rawValue): ",
       "\(violation.ruleDescription.name) Violation: ",
       violation.reason,
       " (\(violation.ruleDescription.identifier))",
