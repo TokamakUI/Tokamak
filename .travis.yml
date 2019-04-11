@@ -11,10 +11,11 @@ jobs:
     osx_image: xcode10.2
     language: swift
     before_install:
-      - brew update
-      - brew install swiftformat
+      # - brew update
+      # - brew install swiftformat
     script:
-      - swiftformat --lint --verbose .
+      # temporarily disabled due to Swift ABI issues on Xcode 10.2, Mojave 10.14.4
+      # - swiftformat --lint --verbose .
       - swiftlint
   - &test
     stage: test
