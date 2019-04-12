@@ -17,7 +17,7 @@ public struct XcodeReporter: Reporter {
     return violations.map(generateForSingleViolation).joined(separator: "\n")
   }
 
-  internal static func generateForSingleViolation(_ violation: StyleViolation) -> String {
+  static func generateForSingleViolation(_ violation: StyleViolation) -> String {
     // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
     return [
       "\(violation.location): ",
