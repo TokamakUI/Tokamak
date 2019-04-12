@@ -11,11 +11,6 @@ import XCTest
 let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!
 
 final class SwiftSyntaxTests: XCTestCase {
-  func testAllFiles() throws {
-    let path = "\(srcRoot)/"
-    try lintFolder(path)
-  }
-
   func testFile() throws {
     let path = "\(srcRoot)/Sources/Tokamak/Components/Host/Alert.swift"
     let result = try lintFile(path)
