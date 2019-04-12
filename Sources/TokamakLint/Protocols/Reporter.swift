@@ -11,12 +11,3 @@ public protocol Reporter: CustomStringConvertible {
 
   static func generateReport(_ violations: [StyleViolation]) -> String
 }
-
-// public func reporterFrom(identifier: String) -> Reporter.Type {
-//  switch identifier {
-//  case XcodeReporter.identifier:
-//    return XcodeReporter.self
-//  default:
-//    print("no reporter with identifier '\(identifier)' available.")
-//  }
-// }
