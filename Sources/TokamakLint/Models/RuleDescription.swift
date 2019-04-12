@@ -10,8 +10,8 @@ public struct RuleDescription: Equatable {
   public let name: String
   public let description: String
 
-  public init(identifier: String, name: String, description: String) {
-    self.identifier = identifier
+  public init(type: Rule.Type, name: String, description: String) {
+    identifier = String(describing: type)
     self.name = name
     self.description = description
   }

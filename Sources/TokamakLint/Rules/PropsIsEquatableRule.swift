@@ -9,10 +9,8 @@ import Foundation
 import SwiftSyntax
 
 public struct PropsIsEquatableRule: Rule {
-  public init() {}
-
   public static let description = RuleDescription(
-    identifier: "props_is_equatable",
+    type: PropsIsEquatableRule.self,
     name: "Props is Equatable",
     description: "Component Props type shoud conformance to Equatable protocol"
   )
