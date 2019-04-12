@@ -17,15 +17,6 @@ public struct PropsIsEquatableRule: Rule {
     description: "Component Props type shoud conformance to Equatable protocol"
   )
 
-  public static func validate(path: String) throws -> [StyleViolation] {
-    let fileURL = URL(fileURLWithPath: path)
-    let parsedTree = try SyntaxTreeParser.parse(fileURL)
-    let visitor = TokenVisitor()
-    visitor.path = path
-    parsedTree.walk(visitor)
-    return validate(visitor: visitor)
-  }
-
   public static func validate(visitor: TokenVisitor) -> [StyleViolation] {
     var violations: [StyleViolation] = []
     let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
@@ -57,18 +48,18 @@ public struct PropsIsEquatableRule: Rule {
 
     // remove repeated StyleViolation
     // because of walk algorithm that visit nested node several times
-    var unicViolations: [StyleViolation] = []
+    var uniqueViolations: [StyleViolation] = []
     for violation in violations {
-      if !unicViolations.contains(where: { v in
+      if !uniqueViolations.contains(where: { v in
         if v.location.line == violation.location.line {
           return true
         } else {
           return false
         }
       }) {
-        unicViolations.append(violation)
+        uniqueViolations.append(violation)
       }
     }
-    return unicViolations
+    return uniqueViolations
   }
 }
