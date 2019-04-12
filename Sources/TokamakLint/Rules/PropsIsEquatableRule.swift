@@ -21,28 +21,24 @@ public struct PropsIsEquatableRule: Rule {
     var violations: [StyleViolation] = []
     let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
     for structNode in structs {
-      // should it be with guard?
       let propsDecl = visitor.getNodes(get: "Props", from: structNode)
-      if propsDecl.count > 0 {
-        for propsNode in propsDecl {
-          if let propsParent = propsNode.parent {
-            if !visitor.isInherited(
-              node: propsParent,
-              from: "Equatable"
-            ) {
-              violations.append(
-                StyleViolation(
-                  ruleDescription: description,
-                  location: Location(
-                    file: visitor.path ?? "",
-                    line: propsNode.range.startRow,
-                    character: propsNode.range.startColumn
-                  )
-                )
-              )
-            }
-          }
-        }
+      guard propsDecl.count > 0 else { continue }
+
+      for propsNode in propsDecl {
+        guard let propsParent = propsNode.parent, !visitor.isInherited(
+          node: propsParent,
+          from: "Equatable"
+        ) else { continue }
+        violations.append(
+          StyleViolation(
+            ruleDescription: description,
+            location: Location(
+              file: visitor.path ?? "",
+              line: propsNode.range.startRow,
+              character: propsNode.range.startColumn
+            )
+          )
+        )
       }
     }
 
@@ -51,11 +47,7 @@ public struct PropsIsEquatableRule: Rule {
     var uniqueViolations: [StyleViolation] = []
     for violation in violations {
       if !uniqueViolations.contains(where: { v in
-        if v.location.line == violation.location.line {
-          return true
-        } else {
-          return false
-        }
+        v.location.line == violation.location.line
       }) {
         uniqueViolations.append(violation)
       }
