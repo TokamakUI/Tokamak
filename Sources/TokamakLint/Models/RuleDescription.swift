@@ -10,10 +10,6 @@ public struct RuleDescription: Equatable {
   public let name: String
   public let description: String
 
-  public var consoleDescription: String {
-    return "\(name) (\(identifier)): \(description)"
-  }
-
   public init(identifier: String, name: String, description: String) {
     self.identifier = identifier
     self.name = name
