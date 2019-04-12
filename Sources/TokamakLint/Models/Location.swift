@@ -20,7 +20,7 @@ public struct Location: CustomStringConvertible, Comparable {
     let charString: String = ":\(character ?? 1)"
     return [fileString, lineString, charString].joined()
   }
-    
+
   public init(file: String?, line: Int? = nil, character: Int? = nil) {
     self.file = file
     self.line = line

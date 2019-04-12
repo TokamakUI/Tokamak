@@ -10,16 +10,16 @@ import SwiftSyntax
 
 public protocol Rule {
   static var description: RuleDescription { get }
-   static func validate(visitor: TokenVisitor) -> [StyleViolation]
+  static func validate(visitor: TokenVisitor) -> [StyleViolation]
 }
 
 extension Rule {
-   public static func validate(path: String) throws -> [StyleViolation] {
-        let fileURL = URL(fileURLWithPath: path)
-        let parsedTree = try SyntaxTreeParser.parse(fileURL)
-        let visitor = TokenVisitor()
-        visitor.path = path
-        parsedTree.walk(visitor)
-        return validate(visitor: visitor)
-    }
+  public static func validate(path: String) throws -> [StyleViolation] {
+    let fileURL = URL(fileURLWithPath: path)
+    let parsedTree = try SyntaxTreeParser.parse(fileURL)
+    let visitor = TokenVisitor()
+    visitor.path = path
+    parsedTree.walk(visitor)
+    return validate(visitor: visitor)
+  }
 }
