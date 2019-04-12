@@ -9,19 +9,19 @@ import Foundation
 import SwiftSyntax
 
 public struct Location: CustomStringConvertible, Comparable {
-  public let file: String?
-  public let line: Int?
-  public let character: Int?
+  public let file: String
+  public let line: Int
+  public let character: Int
   public var description: String {
     // Xcode likes warnings and errors in the following format:
     // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
-    let fileString: String = file ?? "<nopath>"
-    let lineString: String = ":\(line ?? 1)"
-    let charString: String = ":\(character ?? 1)"
+    let fileString = file
+    let lineString = ":\(line)"
+    let charString = ":\(character)"
     return [fileString, lineString, charString].joined()
   }
 
-  public init(file: String?, line: Int? = nil, character: Int? = nil) {
+  public init(file: String, line: Int, character: Int) {
     self.file = file
     self.line = line
     self.character = character
