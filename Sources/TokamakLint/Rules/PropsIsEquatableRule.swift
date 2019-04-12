@@ -33,21 +33,23 @@ public struct PropsIsEquatableRule: Rule {
       // should it be with guard?
       let propsDecl = visitor.getNodes(get: "Props", from: structNode)
       if propsDecl.count > 0 {
-        for decl in propsDecl {
-          if !visitor.isInherited(
-            node: decl,
-            from: "Equatable"
-          ) {
-            violations.append(
-              StyleViolation(
-                ruleDescription: description,
-                location: Location(
-                  file: visitor.path ?? "",
-                  line: structNode.range.startRow,
-                  character: structNode.range.startColumn
+        for propsNode in propsDecl {
+          if let propsParent = propsNode.parent {
+            if !visitor.isInherited(
+              node: propsParent,
+              from: "Equatable"
+            ) {
+              violations.append(
+                StyleViolation(
+                  ruleDescription: description,
+                  location: Location(
+                    file: visitor.path ?? "",
+                    line: propsNode.range.startRow,
+                    character: propsNode.range.startColumn
+                  )
                 )
               )
-            )
+            }
           }
         }
       }

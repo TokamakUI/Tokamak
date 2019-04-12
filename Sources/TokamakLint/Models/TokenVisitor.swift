@@ -42,6 +42,8 @@ public class TokenVisitor: SyntaxVisitor {
       kind: "\(token.tokenKind)"
     )
 
+    row = token.position.line
+
     current.range.startRow = row
     current.range.startColumn = column
 
@@ -49,6 +51,9 @@ public class TokenVisitor: SyntaxVisitor {
 
     current.range.endRow = row
     current.range.endColumn = column
+
+    // clean acculumative variable that increment in processToken
+    column = 0
 
     return .visitChildren
   }
