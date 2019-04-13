@@ -15,10 +15,7 @@ public struct Location: CustomStringConvertible, Comparable {
   public var description: String {
     // Xcode likes warnings and errors in the following format:
     // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
-    let fileString = file
-    let lineString = ":\(line)"
-    let charString = ":\(character)"
-    return [fileString, lineString, charString].joined()
+    return "\(file):\(line):\(character)"
   }
 
   public init(file: String, line: Int, character: Int) {
@@ -37,18 +34,5 @@ public struct Location: CustomStringConvertible, Comparable {
       return lhs.line < rhs.line
     }
     return lhs.character < rhs.character
-  }
-}
-
-private extension Optional where Wrapped: Comparable {
-  static func <(lhs: Optional, rhs: Optional) -> Bool {
-    switch (lhs, rhs) {
-    case let (lhs?, rhs?):
-      return lhs < rhs
-    case (nil, _?):
-      return true
-    default:
-      return false
-    }
   }
 }
