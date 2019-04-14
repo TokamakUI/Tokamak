@@ -11,23 +11,21 @@ import XCTest
 let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!
 
 final class SwiftSyntaxTests: XCTestCase {
-  func testAllFiles() throws {
-    let path = "\(srcRoot)/"
-    try lintFolder(path)
-  }
-
   func testFile() throws {
     let path = "\(srcRoot)/Sources/Tokamak/Components/Host/Alert.swift"
-    try lintFile(path)
+    let result = try lintFile(path)
+    XCTAssertEqual(result, [])
   }
 
-  func testPropsIsEquatable() throws {
+  func testPositivePropsIsEquatableRule() throws {
     let path = "\(srcRoot)/ValidationTests/TestPropsEquatable.swift"
-    XCTAssertTrue(try isPropsEquatable(path))
+    let result = try PropsIsEquatableRule.validate(path: path)
+    XCTAssertEqual(result, [])
   }
 
-  func testPropsIsNotEquatable() throws {
+  func testNegativePropsIsEquatableRule() throws {
     let path = "\(srcRoot)/ValidationTests/TestPropsIsNotEquatable.swift"
-    XCTAssertFalse(try isPropsEquatable(path))
+    let result = try PropsIsEquatableRule.validate(path: path)
+    XCTAssertEqual(result.count, 1)
   }
 }
