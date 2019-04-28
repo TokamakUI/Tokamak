@@ -73,10 +73,11 @@ public extension CompositeComponent {
   ) -> AnyNode {
     guard let props = props.value as? Props,
       let children = children.value as? Children else {
-      fatalError("""
-        incorrect types of `props` and `children` arguments passed to
-        `AnyComponent.render`
-      """)
+      fatalError(
+        """
+        invalid types of `props` and `children` arguments passed to \(#function)
+        """
+      )
     }
     return render(props: props, children: children, hooks: hooks)
   }
