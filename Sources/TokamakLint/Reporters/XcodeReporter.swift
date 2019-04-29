@@ -5,7 +5,7 @@
 //  Created by Matvii Hodovaniuk on 4/9/19.
 //
 
-public struct XcodeReporter: Reporter {
+struct XcodeReporter: Reporter {
   public static let identifier = "xcode"
   public static let isRealtime = true
 

@@ -36,7 +36,7 @@ public func lintFolder(_ path: String) throws {
   }
 }
 
-public func lintFile(_ path: String) throws -> [StyleViolation] {
+func lintFile(_ path: String) throws -> [StyleViolation] {
   let visitor = try walkParsedTree(path)
   visitor.path = path
   guard !hasTokamakImport(from: visitor) else {

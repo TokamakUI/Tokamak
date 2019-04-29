@@ -8,7 +8,7 @@
 import Foundation
 import SwiftSyntax
 
-public protocol Rule {
+protocol Rule {
   static var description: RuleDescription { get }
   static func validate(visitor: TokenVisitor) -> [StyleViolation]
 }

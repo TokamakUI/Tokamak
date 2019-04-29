@@ -8,7 +8,7 @@
 import Foundation
 import SwiftSyntax
 
-public class TokenVisitor: SyntaxVisitor {
+class TokenVisitor: SyntaxVisitor {
   public var tree = [Node]()
   public var path: String?
   public var current: Node?

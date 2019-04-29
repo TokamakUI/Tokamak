@@ -5,7 +5,7 @@
 //  Created by Matvii Hodovaniuk on 3/31/19.
 //
 
-import TokamakLint
+@testable import TokamakLint
 import XCTest
 
 let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!

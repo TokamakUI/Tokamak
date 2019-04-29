@@ -5,12 +5,12 @@
 //  Created by Matvii Hodovaniuk on 4/9/19.
 //
 
-public struct RuleDescription: Equatable {
+struct RuleDescription: Equatable {
   public let identifier: String
   public let name: String
   public let description: String
 
-  public init(type: Rule.Type, name: String, description: String) {
+  init(type: Rule.Type, name: String, description: String) {
     identifier = String(describing: type)
     self.name = name
     self.description = description
