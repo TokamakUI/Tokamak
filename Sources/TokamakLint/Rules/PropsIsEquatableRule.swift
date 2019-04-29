@@ -19,25 +19,29 @@ public struct PropsIsEquatableRule: Rule {
     var violations: [StyleViolation] = []
     let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
     for structNode in structs {
-      let propsDecl = visitor.getNodes(get: "Props", from: structNode)
-      guard propsDecl.count > 0 else { continue }
+      // sometimes there are additional children `ModifierList`
+      // it will be better to filter array to find out if struct name is
+      // `Props`
+      let propsNodes = structNode.children.filter { (node) -> Bool in
+        node.text == "Props"
+      }
+      guard propsNodes.count != 0 else { continue }
+      let propsNode = propsNodes[0]
 
-      for propsNode in propsDecl {
-        guard let propsParent = propsNode.parent, !visitor.isInherited(
-          node: propsParent,
-          from: "Equatable"
-        ) else { continue }
-        violations.append(
-          StyleViolation(
-            ruleDescription: description,
-            location: Location(
-              file: visitor.path ?? "",
-              line: propsNode.range.startRow,
-              character: propsNode.range.startColumn
-            )
+      guard let propsParent = propsNode.parent, !visitor.isInherited(
+        node: propsParent,
+        from: "Equatable"
+      ) else { continue }
+      violations.append(
+        StyleViolation(
+          ruleDescription: description,
+          location: Location(
+            file: visitor.path ?? "",
+            line: propsNode.range.startRow,
+            character: propsNode.range.startColumn
           )
         )
-      }
+      )
     }
 
     // remove repeated StyleViolation

@@ -9,13 +9,8 @@ import Foundation
 import TokamakLint
 
 do {
-  let srcRoot = FileManager.default.currentDirectoryPath
-  let errors = try lintFile("\(srcRoot)/Sources/Tokamak/Components/Host/Alert.swift")
-  if errors.count > 0 {
-    print(XcodeReporter.generateReport(errors))
-  } else {
-    print("Folder clean")
-  }
+  let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!
+  try lintFolder("\(srcRoot)/Sources/Tokamak/Components/Host")
 } catch {
   print("Can't lint folder")
   print(error)

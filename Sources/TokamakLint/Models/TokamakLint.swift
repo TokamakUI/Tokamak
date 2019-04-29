@@ -8,6 +8,34 @@
 import Foundation
 import SwiftSyntax
 
+public func lintFolder(_ path: String) throws {
+  let resourceKeys: [URLResourceKey] = [.creationDateKey, .isDirectoryKey]
+  let baseurl = URL(fileURLWithPath: path)
+  guard let enumerator = FileManager
+    .default
+    .enumerator(at: baseurl,
+                includingPropertiesForKeys: resourceKeys,
+                options: [.skipsHiddenFiles],
+                errorHandler: { (url, error) -> Bool in
+                  print("directoryEnumerator error at \(url): ", error)
+                  return true
+    })?.compactMap({ $0 as? URL }).filter({ isSwiftFile($0.path) })
+  else {
+    fatalError("Enumerator is nil")
+  }
+  let count = enumerator.count
+  let enumerated = enumerator.enumerated()
+  for (i, fileURL) in enumerated {
+    print("Linting ",
+          "\(fileURL.lastPathComponent) ",
+          "(\(i)/\(count))")
+    let errors = try lintFile(fileURL.path)
+    if errors.count > 0 {
+      print(XcodeReporter.generateReport(errors))
+    }
+  }
+}
+
 public func lintFile(_ path: String) throws -> [StyleViolation] {
   let visitor = try walkParsedTree(path)
   visitor.path = path
