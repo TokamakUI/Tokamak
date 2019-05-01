@@ -23,43 +23,43 @@ class TokenVisitor: SyntaxVisitor {
       syntax = String(syntax.dropLast(6))
     }
 
-    let node = Node(text: syntax)
-
-    node.range.startRow = row
-    node.range.startColumn = column
-    node.range.endRow = row
-    node.range.endColumn = column
+    let syntaxNode = Node(text: syntax)
 
     if let current = current {
-      current.add(node: node)
+      current.add(node: syntaxNode)
     } else {
-      tree.append(node)
+      tree.append(syntaxNode)
     }
-    current = node
+    current = syntaxNode
   }
 
   public override func visit(_ token: TokenSyntax) -> SyntaxVisitorContinueKind {
     guard let current = current else { return .visitChildren }
 
     current.text = token.text
-    current.token = Node.Token(
-      kind: "\(token.tokenKind)"
-    )
+    current.token = Node.Token(kind: "\(token.tokenKind)", leadingTrivia: "", trailingTrivia: "")
 
+    // set initial row and column to
     row = token.position.line
     column = token.position.column
 
-    current.range.startRow = row
-    current.range.startColumn = column
-
+    // process trivia pieces before token
     token.leadingTrivia.forEach { piece in
       processTriviaPiece(piece)
     }
+
+    // set start of token
+    current.range.startRow = row
+    current.range.startColumn = column
+
     processToken(token)
+
+    // process trivia pieces after token
     token.trailingTrivia.forEach { piece in
       processTriviaPiece(piece)
     }
 
+    // set end of token
     current.range.endRow = row
     current.range.endColumn = column
 
@@ -67,8 +67,7 @@ class TokenVisitor: SyntaxVisitor {
   }
 
   public override func visitPost(_ node: Syntax) {
-    current?.range.endRow = row
-    current?.range.endColumn = column
+    // go up after full node walk
     current = current?.parent
   }
 
@@ -111,6 +110,7 @@ class TokenVisitor: SyntaxVisitor {
 
   private func processComment(text: String) {
     let comments = text.split(separator: "\n", omittingEmptySubsequences: false)
+    // substract 1 to prevent double newline count in comment and new line
     row += comments.count - 1
     column += comments.last!.count
   }
@@ -164,6 +164,8 @@ public class Node {
 
   struct Token: Encodable {
     var kind: String
+    var leadingTrivia: String
+    var trailingTrivia: String
   }
 
   enum CodingKeys: CodingKey {
