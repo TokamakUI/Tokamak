@@ -18,15 +18,18 @@ class TokenVisitor: SyntaxVisitor {
 
   public override func visitPre(_ node: Syntax) {
     var syntax = "\(type(of: node))"
+
     if syntax.hasSuffix("Syntax") {
       syntax = String(syntax.dropLast(6))
     }
 
     let node = Node(text: syntax)
+
     node.range.startRow = row
     node.range.startColumn = column
     node.range.endRow = row
     node.range.endColumn = column
+
     if let current = current {
       current.add(node: node)
     } else {
@@ -37,23 +40,28 @@ class TokenVisitor: SyntaxVisitor {
 
   public override func visit(_ token: TokenSyntax) -> SyntaxVisitorContinueKind {
     guard let current = current else { return .visitChildren }
+
     current.text = token.text
     current.token = Node.Token(
       kind: "\(token.tokenKind)"
     )
 
     row = token.position.line
+    column = token.position.column
 
     current.range.startRow = row
     current.range.startColumn = column
 
+    token.leadingTrivia.forEach { piece in
+      processTriviaPiece(piece)
+    }
     processToken(token)
+    token.trailingTrivia.forEach { piece in
+      processTriviaPiece(piece)
+    }
 
     current.range.endRow = row
     current.range.endColumn = column
-
-    // clean acculumative variable that increment in processToken
-    column = 0
 
     return .visitChildren
   }
@@ -66,6 +74,7 @@ class TokenVisitor: SyntaxVisitor {
 
   private func processToken(_ token: TokenSyntax) {
     var kind = "\(token.tokenKind)"
+
     if let index = kind.firstIndex(of: "(") {
       kind = String(kind.prefix(upTo: index))
     }
@@ -74,6 +83,36 @@ class TokenVisitor: SyntaxVisitor {
     }
 
     column += token.text.count
+  }
+
+  private func processTriviaPiece(_ piece: TriviaPiece) {
+    switch piece {
+    case let .spaces(count):
+      column += count
+    case let .tabs(count):
+      column += count * 2
+    case let .newlines(count), let .carriageReturns(count), let .carriageReturnLineFeeds(count):
+      row += count
+      column = 0
+    case let .backticks(count):
+      column += count
+    case let .lineComment(text):
+      processComment(text: text)
+    case let .blockComment(text):
+      processComment(text: text)
+    case let .docLineComment(text):
+      processComment(text: text)
+    case let .docBlockComment(text):
+      processComment(text: text)
+    default:
+      break
+    }
+  }
+
+  private func processComment(text: String) {
+    let comments = text.split(separator: "\n", omittingEmptySubsequences: false)
+    row += comments.count - 1
+    column += comments.last!.count
   }
 
   public func getNodes(get type: String, from node: Node) -> [Node] {
