@@ -8,7 +8,7 @@
 import Foundation
 import SwiftSyntax
 
-public struct PropsIsEquatableRule: Rule {
+struct PropsIsEquatableRule: Rule {
   public static let description = RuleDescription(
     type: PropsIsEquatableRule.self,
     name: "Props is Equatable",
