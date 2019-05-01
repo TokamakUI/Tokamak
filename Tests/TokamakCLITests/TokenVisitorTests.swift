@@ -5,9 +5,9 @@
 //  Created by Matvii Hodovaniuk on 5/1/19.
 //
 
+import SwiftSyntax
 @testable import TokamakLint
 import XCTest
-import SwiftSyntax
 
 final class TokenVisitorTests: XCTestCase {
   func testRange() throws {
@@ -21,15 +21,16 @@ final class TokenVisitorTests: XCTestCase {
     visitor.path = path
     parsedTree.walk(visitor)
 
-    let startRow = 9
-    let endRow = 16
-    let startColumn = 15
-    let endColumn = 1
+    let startRow = 11
+    let endRow = 11
+    let startColumn = 0
+    let endColumn = 7
     let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
+    let structDecl = structs[0].children[0]
 
-    XCTAssertEqual(startRow, structs[0].range.startRow)
-    XCTAssertEqual(endRow, structs[0].range.endRow)
-    XCTAssertEqual(startColumn, structs[0].range.startColumn)
-    XCTAssertEqual(endColumn, structs[0].range.endColumn)
+    XCTAssertEqual(startRow, structDecl.range.startRow)
+    XCTAssertEqual(endRow, structDecl.range.endRow)
+    XCTAssertEqual(startColumn, structDecl.range.startColumn)
+    XCTAssertEqual(endColumn, structDecl.range.endColumn)
   }
 }
