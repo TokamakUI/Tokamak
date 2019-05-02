@@ -37,7 +37,6 @@ class TokenVisitor: SyntaxVisitor {
     guard let current = current else { return .visitChildren }
 
     current.text = token.text
-    current.token = Node.Token(kind: "\(token.tokenKind)", leadingTrivia: "", trailingTrivia: "")
 
     // set initial row and column to
     row = token.position.line
@@ -72,15 +71,6 @@ class TokenVisitor: SyntaxVisitor {
   }
 
   private func processToken(_ token: TokenSyntax) {
-    var kind = "\(token.tokenKind)"
-
-    if let index = kind.firstIndex(of: "(") {
-      kind = String(kind.prefix(upTo: index))
-    }
-    if kind.hasSuffix("Keyword") {
-      kind = "keyword"
-    }
-
     column += token.text.count
   }
 
@@ -154,19 +144,12 @@ public class Node {
   var children = [Node]()
   weak var parent: Node?
   var range = Range(startRow: 0, startColumn: 0, endRow: 0, endColumn: 0)
-  var token: Token?
 
   struct Range: Encodable {
     var startRow: Int
     var startColumn: Int
     var endRow: Int
     var endColumn: Int
-  }
-
-  struct Token: Encodable {
-    var kind: String
-    var leadingTrivia: String
-    var trailingTrivia: String
   }
 
   enum CodingKeys: CodingKey {
