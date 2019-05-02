@@ -112,7 +112,7 @@ class TokenVisitor: SyntaxVisitor {
     return nodes
   }
 
-  public func walkAndGrab(
+  private func walkAndGrab(
     get type: String,
     from node: Node,
     to list: inout [Node]
@@ -120,10 +120,8 @@ class TokenVisitor: SyntaxVisitor {
     if node.text == type {
       list.append(node)
     }
-    if node.children.count > 0 {
-      for child in node.children {
-        walkAndGrab(get: type, from: child, to: &list)
-      }
+    for child in node.children {
+      walkAndGrab(get: type, from: child, to: &list)
     }
   }
 
