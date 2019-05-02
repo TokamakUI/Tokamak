@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		A608C16F2279D60F006313FA /* TokenVisitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A608C16D2279D287006313FA /* TokenVisitorTests.swift */; };
 		A63D124C225CDA22009279B5 /* Rule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63D124A225CDA1A009279B5 /* Rule.swift */; };
 		A63D124F225CDB16009279B5 /* RuleDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63D124E225CDB16009279B5 /* RuleDescription.swift */; };
 		A63D1251225CDCEC009279B5 /* StyleViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63D1250225CDCEC009279B5 /* StyleViolation.swift */; };
@@ -342,6 +343,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A608C16D2279D287006313FA /* TokenVisitorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenVisitorTests.swift; sourceTree = "<group>"; };
 		A63D124A225CDA1A009279B5 /* Rule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rule.swift; sourceTree = "<group>"; };
 		A63D124E225CDB16009279B5 /* RuleDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleDescription.swift; sourceTree = "<group>"; };
 		A63D1250225CDCEC009279B5 /* StyleViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleViolation.swift; sourceTree = "<group>"; };
@@ -919,6 +921,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_208 /* TokamakLintTests.swift */,
+				A608C16D2279D287006313FA /* TokenVisitorTests.swift */,
 			);
 			name = TokamakCLITests;
 			path = Tests/TokamakCLITests;
@@ -1650,6 +1653,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				A608C16F2279D60F006313FA /* TokenVisitorTests.swift in Sources */,
 				OBJ_446 /* TokamakLintTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

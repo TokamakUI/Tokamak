@@ -1,5 +1,5 @@
 //
-//  SwiftSyntaxTests.swift
+//  TokamakLintTests.swift
 //  TokamakCLI
 //
 //  Created by Matvii Hodovaniuk on 3/31/19.
@@ -10,9 +10,9 @@ import XCTest
 
 let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!
 
-final class SwiftSyntaxTests: XCTestCase {
+final class TokamakLintTests: XCTestCase {
   func testFile() throws {
-    let path = "\(srcRoot)/Sources/Tokamak/Components/Host/Alert.swift"
+    let path = "\(srcRoot)/Sources/Tokamak/Components/Host/Button.swift"
     let result = try lintFile(path)
     XCTAssertEqual(result, [])
   }
