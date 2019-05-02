@@ -110,9 +110,10 @@ class TokenVisitor: SyntaxVisitor {
 
   private func processComment(text: String) {
     let comments = text.split(separator: "\n", omittingEmptySubsequences: false)
+    guard let last = comments.last else { return }
     // substract 1 to prevent double newline count in comment and new line
     row += comments.count - 1
-    column += comments.last!.count
+    column += last.count
   }
 
   public func getNodes(get type: String, from node: Node) -> [Node] {
