@@ -19,7 +19,6 @@ struct XcodeReporter: Reporter {
 
   static func generateForSingleViolation(_ violation: StyleViolation) -> String {
     // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
-//    print("/Users/hmi/Documents/maxDesiatov/Tokamak/Sources/Tokamak/Components/Host/Alert.swift:9:10: warning: result of call to 'go()' is unused")
     return [
       "\(violation.location): warning: ",
       "\(violation.ruleDescription.name) Violation: ",
