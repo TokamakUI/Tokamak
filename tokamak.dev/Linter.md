@@ -1,6 +1,6 @@
 ## Tokamak Linter
 
-Tokamak Linter is module to check your Tokamak projects for known warning
+Tokamak Linter is a module to check your Tokamak projects for known warnings
 and show them in Xcode or in terminal.
 
 ## How to run
@@ -19,7 +19,7 @@ or
 ### Run in terminal
 
 - run `swift build --product TokamakCLI` in Tokamak directory
-- run `{path to Tokamak}/.build/debug/TokamakCLI "{path to lint folder}"`
+- run `swift run TokamakCLI "{path to lint folder}"` in Tokamak directory
 
 ## Supported Rules
 
