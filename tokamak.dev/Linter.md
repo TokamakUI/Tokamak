@@ -11,7 +11,7 @@ and show them in Xcode or in terminal.
 - add path to TokamakCLI to build phase
 
 ```bash
-{path to TokamakCLI}/TokamakCLI
+{path to TokamakCLI}/TokamakCLI lint {path to folder or file}
 ```
 
 or
