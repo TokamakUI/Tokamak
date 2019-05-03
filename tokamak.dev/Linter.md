@@ -19,7 +19,7 @@ or
 ### Run in terminal
 
 - run `swift build --product TokamakCLI` in Tokamak directory
-- run `swift run TokamakCLI "{path to lint folder}"` in Tokamak directory
+- run `swift run TokamakCLI lint "{path to lint folder or file}"` in Tokamak directory
 
 ## Supported Rules
 
