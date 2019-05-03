@@ -37,11 +37,11 @@ public func lintFolder(_ path: String) throws {
 }
 
 public func lintFile(_ path: String) throws {
-    print("Linting \(path)")
-    let errors = try checkFile(path)
-    if errors.count > 0 {
-        print(XcodeReporter.generateReport(errors))
-    }
+  print("Linting \(path)")
+  let errors = try checkFile(path)
+  if errors.count > 0 {
+    print(XcodeReporter.generateReport(errors))
+  }
 }
 
 func checkFile(_ path: String) throws -> [StyleViolation] {

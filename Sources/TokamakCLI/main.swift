@@ -6,27 +6,27 @@
 //
 
 import Foundation
-import TokamakLint
 import SwiftCLI
+import TokamakLint
 
 class LintCommand: Command {
-    let name = "lint"
-    let shortDescription = "Lint folder or file"
-    let path = Parameter()
+  let name = "lint"
+  let shortDescription = "Lint folder or file"
+  let path = Parameter()
 
-    func execute() throws {
-        do {
-          let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!
-            if path.value.contains(".swift") {
-                try lintFile("\(srcRoot)/\(path.value)")
-            } else {
-                try lintFolder("\(srcRoot)/\(path.value)")
-            }
-        } catch {
-          print("Can't lint folder")
-          print(error)
-        }
+  func execute() throws {
+    do {
+      let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!
+      if path.value.contains(".swift") {
+        try lintFile("\(srcRoot)/\(path.value)")
+      } else {
+        try lintFolder("\(srcRoot)/\(path.value)")
+      }
+    } catch {
+      print("Can't lint folder")
+      print(error)
     }
+  }
 }
 
 let TokamakCLI = CLI(name: "TokamakCLI", version: "1.0.0", description: "Tokamka CLI tools")
