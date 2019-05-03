@@ -15,17 +15,23 @@ class LintCommand: Command {
   let path = Parameter()
 
   func execute() throws {
-    let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!
+    var root: String
+    if let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"] {
+        root = srcRoot
+    } else {
+        root = ""
+    }
+
     if path.value.contains(".swift") {
       do {
-        try lintFile("\(srcRoot)/\(path.value)")
+        try lintFile("\(root)/\(path.value)")
       } catch {
         print("Can't lint file")
         print(error)
       }
     } else {
       do {
-        try lintFolder("\(srcRoot)/\(path.value)")
+        try lintFolder("\(root)/\(path.value)")
       } catch {
         print("Can't lint folder")
         print(error)
