@@ -22,4 +22,10 @@ final class TokamakLintTests: XCTestCase {
     let result = try PropsIsEquatableRule.validate(path: path)
     XCTAssertEqual(result.count, 1)
   }
+
+  func testOneRenderFunctionRule() throws {
+    let path = "\(srcRoot)/ValidationTests/PositiveTestHooksRule.swift"
+    let result = try OneRenderFunctionRule.validate(path: path)
+    XCTAssertEqual(result, [])
+  }
 }

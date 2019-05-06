@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		A678A9FF2280734D00432BE5 /* OneRenderFunctionRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678A9FD2280733D00432BE5 /* OneRenderFunctionRule.swift */; };
 		OBJ_314 /* ArgumentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_229 /* ArgumentList.swift */; };
 		OBJ_315 /* ArgumentListManipulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_230 /* ArgumentListManipulator.swift */; };
 		OBJ_316 /* CLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_231 /* CLI.swift */; };
@@ -373,6 +374,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A678A9FD2280733D00432BE5 /* OneRenderFunctionRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneRenderFunctionRule.swift; sourceTree = "<group>"; };
 		OBJ_10 /* AnyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNode.swift; sourceTree = "<group>"; };
 		OBJ_100 /* BaselineConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineConstraint.swift; sourceTree = "<group>"; };
 		OBJ_101 /* Bottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bottom.swift; sourceTree = "<group>"; };
@@ -839,6 +841,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_144 /* PropsIsEquatableRule.swift */,
+				A678A9FD2280733D00432BE5 /* OneRenderFunctionRule.swift */,
 			);
 			path = Rules;
 			sourceTree = "<group>";
@@ -1181,7 +1184,7 @@
 			path = Constraint;
 			sourceTree = "<group>";
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -1205,7 +1208,6 @@
 				OBJ_307 /* TokamakCounter.gif */,
 				OBJ_308 /* TokamakUIKit.podspec */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_69 /* Hooks */ = {
@@ -1596,7 +1598,7 @@
 				English,
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_282 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1865,6 +1867,7 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_536 /* Location.swift in Sources */,
+				A678A9FF2280734D00432BE5 /* OneRenderFunctionRule.swift in Sources */,
 				OBJ_537 /* RuleDescription.swift in Sources */,
 				OBJ_538 /* StyleViolation.swift in Sources */,
 				OBJ_539 /* TokamakLint.swift in Sources */,
