@@ -29,7 +29,7 @@ let package = Package(
       name: "TokamakLint",
       targets: ["TokamakLint"]
     ),
-    .executable(name: "TokamakCLI", targets: ["TokamakCLI"]),
+    .executable(name: "tokamak", targets: ["TokamakCLI"]),
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
