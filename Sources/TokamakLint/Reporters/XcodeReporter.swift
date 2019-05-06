@@ -20,7 +20,7 @@ struct XcodeReporter: Reporter {
   static func generateForSingleViolation(_ violation: StyleViolation) -> String {
     // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
     return [
-      "\(violation.location): ",
+      "\(violation.location): warning: ",
       "\(violation.ruleDescription.name) Violation: ",
       violation.reason,
       " (\(violation.ruleDescription.identifier))",

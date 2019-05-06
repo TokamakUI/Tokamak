@@ -28,15 +28,23 @@ public func lintFolder(_ path: String) throws {
   for (i, fileURL) in enumerated {
     print("Linting ",
           "\(fileURL.lastPathComponent) ",
-          "(\(i)/\(count))")
-    let errors = try lintFile(fileURL.path)
+          "(\(i + 1)/\(count))")
+    let errors = try checkFile(fileURL.path)
     if errors.count > 0 {
       print(XcodeReporter.generateReport(errors))
     }
   }
 }
 
-func lintFile(_ path: String) throws -> [StyleViolation] {
+public func lintFile(_ path: String) throws {
+  print("Linting \(path)")
+  let errors = try checkFile(path)
+  if errors.count > 0 {
+    print(XcodeReporter.generateReport(errors))
+  }
+}
+
+func checkFile(_ path: String) throws -> [StyleViolation] {
   let visitor = try walkParsedTree(path)
   visitor.path = path
   guard !hasTokamakImport(from: visitor) else {
