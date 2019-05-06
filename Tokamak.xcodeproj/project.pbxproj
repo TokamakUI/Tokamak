@@ -23,6 +23,7 @@
 
 /* Begin PBXBuildFile section */
 		A678A9FF2280734D00432BE5 /* OneRenderFunctionRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678A9FD2280733D00432BE5 /* OneRenderFunctionRule.swift */; };
+		A678AA042280874500432BE5 /* RenderCorespondToNonPureComponentProtocolRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678AA032280874500432BE5 /* RenderCorespondToNonPureComponentProtocolRule.swift */; };
 		OBJ_314 /* ArgumentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_229 /* ArgumentList.swift */; };
 		OBJ_315 /* ArgumentListManipulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_230 /* ArgumentListManipulator.swift */; };
 		OBJ_316 /* CLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_231 /* CLI.swift */; };
@@ -375,6 +376,7 @@
 
 /* Begin PBXFileReference section */
 		A678A9FD2280733D00432BE5 /* OneRenderFunctionRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneRenderFunctionRule.swift; sourceTree = "<group>"; };
+		A678AA032280874500432BE5 /* RenderCorespondToNonPureComponentProtocolRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderCorespondToNonPureComponentProtocolRule.swift; sourceTree = "<group>"; };
 		OBJ_10 /* AnyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNode.swift; sourceTree = "<group>"; };
 		OBJ_100 /* BaselineConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineConstraint.swift; sourceTree = "<group>"; };
 		OBJ_101 /* Bottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bottom.swift; sourceTree = "<group>"; };
@@ -842,6 +844,7 @@
 			children = (
 				OBJ_144 /* PropsIsEquatableRule.swift */,
 				A678A9FD2280733D00432BE5 /* OneRenderFunctionRule.swift */,
+				A678AA032280874500432BE5 /* RenderCorespondToNonPureComponentProtocolRule.swift */,
 			);
 			path = Rules;
 			sourceTree = "<group>";
@@ -1874,6 +1877,7 @@
 				OBJ_540 /* TokenVisitor.swift in Sources */,
 				OBJ_541 /* ViolationSeverity.swift in Sources */,
 				OBJ_542 /* Reporter.swift in Sources */,
+				A678AA042280874500432BE5 /* RenderCorespondToNonPureComponentProtocolRule.swift in Sources */,
 				OBJ_543 /* Rule.swift in Sources */,
 				OBJ_544 /* XcodeReporter.swift in Sources */,
 				OBJ_545 /* PropsIsEquatableRule.swift in Sources */,
