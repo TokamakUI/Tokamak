@@ -11,12 +11,6 @@ import XCTest
 let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!
 
 final class TokamakLintTests: XCTestCase {
-  func testFile() throws {
-    let path = "\(srcRoot)/Sources/Tokamak/Components/Host/Button.swift"
-    let result = try lintFile(path)
-    XCTAssertEqual(result, [])
-  }
-
   func testPositivePropsIsEquatableRule() throws {
     let path = "\(srcRoot)/ValidationTests/TestPropsEquatable.swift"
     let result = try PropsIsEquatableRule.validate(path: path)
