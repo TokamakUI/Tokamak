@@ -15,26 +15,20 @@ struct OneRenderFunctionRule: Rule {
     description: "The component should have only one render function"
   )
 
-  public static func validate(visitor: TokenVisitor) -> [StyleViolation] {
-    var violations: [StyleViolation] = []
+    public static func validate(visitor: TokenVisitor) -> [StyleViolation] {
+        let renders = visitor.getNodes(get: "render", from: visitor.tree[0])
 
-    let renders = visitor.getNodes(get: "render", from: visitor.tree[0])
+        guard renders.count > 1, let file = visitor.path else { return [] }
 
-    if renders.count > 1 {
-      for render in renders {
-        violations.append(
-          StyleViolation(
-            ruleDescription: description,
-            location: Location(
-              file: visitor.path ?? "",
-              line: render.range.startRow,
-              character: render.range.startColumn
+        return renders.map {
+            StyleViolation(
+                ruleDescription: description,
+                location: Location(
+                    file: file,
+                    line: $0.range.startRow,
+                    character: $0.range.startColumn
+                )
             )
-          )
-        )
-      }
+        }
     }
-
-    return violations
-  }
 }
