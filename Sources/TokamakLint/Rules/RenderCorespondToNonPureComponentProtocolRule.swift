@@ -17,8 +17,8 @@ struct RenderCorespondToNonPureComponentProtocolRule: Rule {
 
   public static func validate(visitor: TokenVisitor) -> [StyleViolation] {
     var violations: [StyleViolation] = []
-    var isInheritance = false
-    let nonPureComponentsType = ["AnyCompositeComponent", "CompositeComponent", "LeafComponent", "PureLeafComponent"]
+    var isConform = false
+    let renderWithHooksProtocols = ["CompositeComponent", "LeafComponent"]
 
     // alternative way is to get list of codeblocks and search for block
     // that contain render function
@@ -37,13 +37,13 @@ struct RenderCorespondToNonPureComponentProtocolRule: Rule {
     let types = visitor.getNodes(get: "SimpleTypeIdentifier", from: TypeInheritanceClause)
 
     for type in types {
-      if nonPureComponentsType.contains(type.children[0].text) {
-        isInheritance = true
+      if renderWithHooksProtocols.contains(type.children[0].text) {
+        isConform = true
         break
       }
     }
 
-    if !isInheritance {
+    if !isConform {
       violations.append(
         // remove force unwrap
         StyleViolation(
