@@ -8,6 +8,12 @@
 import Foundation
 import SwiftSyntax
 
+enum TokenDeclType: String {
+  case structure = "StructDecl"
+  case function = "FunctionDecl"
+  case variable = "VariableDecl"
+}
+
 struct RenderCorespondToNonPureComponentProtocolRule: Rule {
   public static let description = RuleDescription(
     type: RenderCorespondToNonPureComponentProtocolRule.self,
@@ -17,41 +23,78 @@ struct RenderCorespondToNonPureComponentProtocolRule: Rule {
 
   public static func validate(visitor: TokenVisitor) -> [StyleViolation] {
     var violations: [StyleViolation] = []
-    var isConform = false
+    var isConforming = false
     let renderWithHooksProtocols = ["CompositeComponent", "LeafComponent"]
 
     // alternative way is to get list of codeblocks and search for block
     // that contain render function
 
-    let renders = visitor.getNodes(get: "render", from: visitor.tree[0])
+    let renders = visitor.getNodes(get: "render", from: visitor.tree[0]).filter {
+      // check if render type if function
 
-    let render = renders[0]
+      var memberDeclListItem: Node = $0
 
-    let component = render.parent?.parent?.parent?.parent?.parent
+      while memberDeclListItem.text != "MemberDeclListItem" && memberDeclListItem.parent != nil {
+        guard let parent = memberDeclListItem.parent else { break }
+        memberDeclListItem = parent
+      }
 
-    guard let TypeInheritanceClause = component?.children[2] else {
-      // should be better value to return
-      return violations
+      guard memberDeclListItem.children[0].text == TokenDeclType.function.rawValue else { return false }
+
+      // check if render is static
+
+      let staticModifier = visitor.getNodes(get: "DeclModifier", from: memberDeclListItem).filter { (modifier) -> Bool in
+        modifier.children[0].text == "static"
+      }
+
+      guard staticModifier.first != nil else { return false }
+
+      // check if render is on first layer of component
+
+      let firstLayerCildrens = memberDeclListItem.children[0].children.map {
+        $0.text
+      }
+
+      guard firstLayerCildrens.contains("render") else { return false }
+
+      return true
     }
 
-    let types = visitor.getNodes(get: "SimpleTypeIdentifier", from: TypeInheritanceClause)
+    guard renders.count == 1 else { return [StyleViolation(
+      ruleDescription: description,
+      location: Location(
+        file: visitor.path ?? "",
+        line: 0,
+        character: 0
+      )
+    )] }
+
+    var codeBlockItem: Node = renders[0]
+
+    while codeBlockItem.text != "CodeBlockItem" && codeBlockItem.parent != nil {
+      guard let parent = codeBlockItem.parent else { break }
+      codeBlockItem = parent
+    }
+
+    let typeInheritanceClause = codeBlockItem.children[0].children[2]
+
+    let types = visitor.getNodes(get: "SimpleTypeIdentifier", from: typeInheritanceClause)
 
     for type in types {
       if renderWithHooksProtocols.contains(type.children[0].text) {
-        isConform = true
+        isConforming = true
         break
       }
     }
 
-    if !isConform {
+    if !isConforming {
       violations.append(
-        // remove force unwrap
         StyleViolation(
           ruleDescription: description,
           location: Location(
             file: visitor.path ?? "",
-            line: (component?.range.startRow)!,
-            character: (component?.range.startColumn)!
+            line: codeBlockItem.range.startRow,
+            character: codeBlockItem.range.startColumn
           )
         )
       )
