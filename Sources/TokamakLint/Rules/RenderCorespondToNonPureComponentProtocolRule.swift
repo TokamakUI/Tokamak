@@ -29,7 +29,7 @@ struct RenderCorespondToNonPureComponentProtocolRule: Rule {
     // alternative way is to get list of codeblocks and search for block
     // that contain render function
 
-    let renders = visitor.getNodes(get: "render", from: visitor.tree[0]).filter {
+    let renders = visitor.getNodes(with: "render", from: visitor.root).filter {
       // check if render type if function
 
       var memberDeclListItem: Node = $0
@@ -43,7 +43,7 @@ struct RenderCorespondToNonPureComponentProtocolRule: Rule {
 
       // check if render is static
 
-      let staticModifier = visitor.getNodes(get: "DeclModifier", from: memberDeclListItem).filter { (modifier) -> Bool in
+      let staticModifier = visitor.getNodes(with: "DeclModifier", from: memberDeclListItem).filter { (modifier) -> Bool in
         modifier.children[0].text == "static"
       }
 
@@ -78,7 +78,7 @@ struct RenderCorespondToNonPureComponentProtocolRule: Rule {
 
     let typeInheritanceClause = codeBlockItem.children[0].children[2]
 
-    let types = visitor.getNodes(get: "SimpleTypeIdentifier", from: typeInheritanceClause)
+    let types = visitor.getNodes(with: "SimpleTypeIdentifier", from: typeInheritanceClause)
 
     for type in types {
       if renderWithHooksProtocols.contains(type.children[0].text) {

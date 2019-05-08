@@ -9,7 +9,8 @@ import Foundation
 import SwiftSyntax
 
 class TokenVisitor: SyntaxVisitor {
-  public var tree = [Node]()
+  // Syntax tree is always have one 'SourceFile' node as a child
+  public var root = Node(text: "Root")
   public var path: String?
   public var current: Node?
 
@@ -28,7 +29,7 @@ class TokenVisitor: SyntaxVisitor {
     if let current = current {
       current.add(node: syntaxNode)
     } else {
-      tree.append(syntaxNode)
+      root.children.append(syntaxNode)
     }
     current = syntaxNode
   }
@@ -106,7 +107,8 @@ class TokenVisitor: SyntaxVisitor {
     column += last.count
   }
 
-  public func getNodes(get type: String, from node: Node) -> [Node] {
+  public func getNodes(with type: String, from node: Node) -> [Node] {
+    guard let first = node.children.first else { return [] }
     var nodes: [Node] = []
     walkAndGrab(get: type, from: node, to: &nodes)
     return nodes
@@ -127,7 +129,7 @@ class TokenVisitor: SyntaxVisitor {
 
   func isInherited(node: Node, from type: String) -> Bool {
     var str: String = ""
-    let typeNodes = getNodes(get: "SimpleTypeIdentifier", from: node)
+    let typeNodes = getNodes(with: "SimpleTypeIdentifier", from: node)
     for node in typeNodes {
       for type in node.children {
         str.append("\(type.text)")

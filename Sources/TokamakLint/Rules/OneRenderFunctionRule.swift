@@ -16,7 +16,7 @@ struct OneRenderFunctionRule: Rule {
   )
 
   public static func validate(visitor: TokenVisitor) -> [StyleViolation] {
-    let renders = visitor.getNodes(get: "render", from: visitor.tree[0])
+    let renders = visitor.getNodes(with: "render", from: visitor.root)
 
     guard renders.count > 1, let file = visitor.path else { return [] }
 
