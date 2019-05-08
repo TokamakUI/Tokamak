@@ -20,7 +20,7 @@ func getRender(from node: Node, at file: String) throws -> Node {
       memberDeclListItem = parent
     }
     guard memberDeclListItem.children[0].text
-      == TokenDeclType.function.rawValue else { return false }
+      == SyntaxKind.functionDecl.rawValue else { return false }
 
     // check if render is static
     let staticModifier = memberDeclListItem.getNodes(
