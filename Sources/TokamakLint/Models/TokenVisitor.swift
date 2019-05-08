@@ -106,37 +106,6 @@ class TokenVisitor: SyntaxVisitor {
     row += comments.count - 1
     column += last.count
   }
-
-  public func getNodes(with type: String, from node: Node) -> [Node] {
-    guard let first = node.children.first else { return [] }
-    var nodes: [Node] = []
-    walkAndGrab(get: type, from: node, to: &nodes)
-    return nodes
-  }
-
-  private func walkAndGrab(
-    get type: String,
-    from node: Node,
-    to list: inout [Node]
-  ) {
-    if node.text == type {
-      list.append(node)
-    }
-    for child in node.children {
-      walkAndGrab(get: type, from: child, to: &list)
-    }
-  }
-
-  func isInherited(node: Node, from type: String) -> Bool {
-    var str: String = ""
-    let typeNodes = getNodes(with: "SimpleTypeIdentifier", from: node)
-    for node in typeNodes {
-      for type in node.children {
-        str.append("\(type.text)")
-      }
-    }
-    return str.contains(type)
-  }
 }
 
 public class Node {
@@ -145,7 +114,7 @@ public class Node {
   weak var parent: Node?
   var range = Range(startRow: 0, startColumn: 0, endRow: 0, endColumn: 0)
 
-  struct Range: Encodable {
+  struct Range {
     var startRow: Int
     var startColumn: Int
     var endRow: Int
@@ -167,4 +136,35 @@ public class Node {
     node.parent = self
     children.append(node)
   }
+
+  func getNodes(with type: String) -> [Node] {
+    guard let first = self.children.first else { return [] }
+    var nodes: [Node] = []
+    walkAndGrab(get: type, from: self, to: &nodes)
+    return nodes
+  }
+
+  func walkAndGrab(
+    get type: String,
+    from node: Node,
+    to list: inout [Node]
+  ) {
+    if node.text == type {
+      list.append(node)
+    }
+    for child in node.children {
+      walkAndGrab(get: type, from: child, to: &list)
+    }
+  }
+}
+
+func isInherited(node: Node, from type: String) -> Bool {
+  var str: String = ""
+  let typeNodes = node.getNodes(with: "SimpleTypeIdentifier")
+  for node in typeNodes {
+    for type in node.children {
+      str.append("\(type.text)")
+    }
+  }
+  return str.contains(type)
 }

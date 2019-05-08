@@ -23,7 +23,9 @@
 
 /* Begin PBXBuildFile section */
 		A678A9FF2280734D00432BE5 /* OneRenderFunctionRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678A9FD2280733D00432BE5 /* OneRenderFunctionRule.swift */; };
-		A678AA042280874500432BE5 /* RenderCorespondToNonPureComponentProtocolRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678AA032280874500432BE5 /* RenderCorespondToNonPureComponentProtocolRule.swift */; };
+		A678AA062280ADAD00432BE5 /* RenderGetsHooksRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678AA052280ADAD00432BE5 /* RenderGetsHooksRule.swift */; };
+		A678AA092282EAAA00432BE5 /* GetRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678AA082282EAAA00432BE5 /* GetRender.swift */; };
+		A678AA0B2282EAF300432BE5 /* TokenTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678AA0A2282EAF300432BE5 /* TokenTypes.swift */; };
 		OBJ_314 /* ArgumentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_229 /* ArgumentList.swift */; };
 		OBJ_315 /* ArgumentListManipulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_230 /* ArgumentListManipulator.swift */; };
 		OBJ_316 /* CLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_231 /* CLI.swift */; };
@@ -376,7 +378,9 @@
 
 /* Begin PBXFileReference section */
 		A678A9FD2280733D00432BE5 /* OneRenderFunctionRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneRenderFunctionRule.swift; sourceTree = "<group>"; };
-		A678AA032280874500432BE5 /* RenderCorespondToNonPureComponentProtocolRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderCorespondToNonPureComponentProtocolRule.swift; sourceTree = "<group>"; };
+		A678AA052280ADAD00432BE5 /* RenderGetsHooksRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderGetsHooksRule.swift; sourceTree = "<group>"; };
+		A678AA082282EAAA00432BE5 /* GetRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRender.swift; sourceTree = "<group>"; };
+		A678AA0A2282EAF300432BE5 /* TokenTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenTypes.swift; sourceTree = "<group>"; };
 		OBJ_10 /* AnyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNode.swift; sourceTree = "<group>"; };
 		OBJ_100 /* BaselineConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineConstraint.swift; sourceTree = "<group>"; };
 		OBJ_101 /* Bottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bottom.swift; sourceTree = "<group>"; };
@@ -733,6 +737,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A678AA072282EA5F00432BE5 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				A678AA082282EAAA00432BE5 /* GetRender.swift */,
+				A678AA0A2282EAF300432BE5 /* TokenTypes.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		OBJ_12 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -800,6 +813,7 @@
 		OBJ_130 /* TokamakLint */ = {
 			isa = PBXGroup;
 			children = (
+				A678AA072282EA5F00432BE5 /* Helpers */,
 				OBJ_131 /* Models */,
 				OBJ_138 /* Protocols */,
 				OBJ_141 /* Reporters */,
@@ -844,7 +858,7 @@
 			children = (
 				OBJ_144 /* PropsIsEquatableRule.swift */,
 				A678A9FD2280733D00432BE5 /* OneRenderFunctionRule.swift */,
-				A678AA032280874500432BE5 /* RenderCorespondToNonPureComponentProtocolRule.swift */,
+				A678AA052280ADAD00432BE5 /* RenderGetsHooksRule.swift */,
 			);
 			path = Rules;
 			sourceTree = "<group>";
@@ -1873,11 +1887,13 @@
 				A678A9FF2280734D00432BE5 /* OneRenderFunctionRule.swift in Sources */,
 				OBJ_537 /* RuleDescription.swift in Sources */,
 				OBJ_538 /* StyleViolation.swift in Sources */,
+				A678AA062280ADAD00432BE5 /* RenderGetsHooksRule.swift in Sources */,
 				OBJ_539 /* TokamakLint.swift in Sources */,
+				A678AA0B2282EAF300432BE5 /* TokenTypes.swift in Sources */,
+				A678AA092282EAAA00432BE5 /* GetRender.swift in Sources */,
 				OBJ_540 /* TokenVisitor.swift in Sources */,
 				OBJ_541 /* ViolationSeverity.swift in Sources */,
 				OBJ_542 /* Reporter.swift in Sources */,
-				A678AA042280874500432BE5 /* RenderCorespondToNonPureComponentProtocolRule.swift in Sources */,
 				OBJ_543 /* Rule.swift in Sources */,
 				OBJ_544 /* XcodeReporter.swift in Sources */,
 				OBJ_545 /* PropsIsEquatableRule.swift in Sources */,

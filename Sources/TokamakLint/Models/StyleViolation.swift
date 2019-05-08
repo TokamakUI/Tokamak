@@ -5,7 +5,7 @@
 //  Created by Matvii Hodovaniuk on 4/9/19.
 //
 
-struct StyleViolation: CustomStringConvertible, Equatable {
+struct StyleViolation: CustomStringConvertible, Equatable, Error {
   public let ruleDescription: RuleDescription
   public let location: Location
   public let reason: String

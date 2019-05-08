@@ -29,9 +29,9 @@ final class TokamakLintTests: XCTestCase {
     XCTAssertEqual(result, [])
   }
 
-  func testRenderCorespondToNonPureComponentProtocolRule() throws {
+  func testRenderGetsHooksRule() throws {
     let path = "\(srcRoot)/ValidationTests/PositiveTestHooksRule.swift"
-    let result = try RenderCorespondToNonPureComponentProtocolRule.validate(path: path)
+    let result = try RenderGetsHooksRule.validate(path: path)
     XCTAssertEqual(result, [])
   }
 }
