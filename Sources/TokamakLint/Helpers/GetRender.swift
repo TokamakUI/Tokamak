@@ -14,7 +14,7 @@ func getRender(from node: Node, at file: String) throws -> Node {
   let renders = node.getNodes(with: "render").filter {
     // check if render type is function
     var memberDeclListItem = $0
-    while memberDeclListItem.text != "MemberDeclListItem"
+    while memberDeclListItem.text != SyntaxKind.memberDeclListItem.rawValue
       && memberDeclListItem.parent != nil {
       guard let parent = memberDeclListItem.parent else { break }
       memberDeclListItem = parent
@@ -24,7 +24,7 @@ func getRender(from node: Node, at file: String) throws -> Node {
 
     // check if render is static
     let staticModifier = memberDeclListItem.getNodes(
-      with: "DeclModifier"
+      with: SyntaxKind.declModifier.rawValue
     ).filter {
       guard let child = $0.children.first else { return false }
       return child.text == "static"

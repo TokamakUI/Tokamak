@@ -160,7 +160,7 @@ public class Node {
 
 func isInherited(node: Node, from type: String) -> Bool {
   var str: String = ""
-  let typeNodes = node.getNodes(with: "SimpleTypeIdentifier")
+  let typeNodes = node.getNodes(with: SyntaxKind.simpleTypeIdentifier.rawValue)
   for node in typeNodes {
     for type in node.children {
       str.append("\(type.text)")

@@ -14,14 +14,14 @@ func isConformace(node: Node, to protocol: String, at path: String) throws -> Bo
 
   var codeBlockItem = try getRender(from: node, at: path)
 
-  while codeBlockItem.text != "CodeBlockItem" && codeBlockItem.parent != nil {
+  while codeBlockItem.text != SyntaxKind.codeBlockItem.rawValue && codeBlockItem.parent != nil {
     guard let parent = codeBlockItem.parent else { break }
     codeBlockItem = parent
   }
 
   let typeInheritanceClause = codeBlockItem.children[0].children[2]
 
-  let types = typeInheritanceClause.getNodes(with: "SimpleTypeIdentifier")
+  let types = typeInheritanceClause.getNodes(with: SyntaxKind.simpleTypeIdentifier.rawValue)
 
   for type in types {
     if renderWithHooksProtocols.contains(type.children[0].text) {

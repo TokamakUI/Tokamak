@@ -17,7 +17,7 @@ struct PropsIsEquatableRule: Rule {
 
   public static func validate(visitor: TokenVisitor) -> [StyleViolation] {
     var violations: [StyleViolation] = []
-    let structs = visitor.root.getNodes(with: "StructDecl")
+    let structs = visitor.root.getNodes(with: SyntaxKind.structDecl.rawValue)
     for structNode in structs {
       // sometimes there are additional children `ModifierList`
       // it will be better to filter array to find out if struct name is
