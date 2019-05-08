@@ -12,8 +12,8 @@ extension Array: Error where Element == StyleViolation {}
 
 func getRender(from node: Node, at file: String) throws -> Node {
   let renders = node.getNodes(with: "render").filter {
-    // check if render type if function
-    var memberDeclListItem: Node = $0
+    // check if render type is function
+    var memberDeclListItem = $0
     while memberDeclListItem.text != "MemberDeclListItem"
       && memberDeclListItem.parent != nil {
       guard let parent = memberDeclListItem.parent else { break }
@@ -25,8 +25,9 @@ func getRender(from node: Node, at file: String) throws -> Node {
     // check if render is static
     let staticModifier = memberDeclListItem.getNodes(
       with: "DeclModifier"
-    ).filter { (modifier) -> Bool in
-      modifier.children[0].text == "static"
+    ).filter {
+      guard let child = $0.children.first else { return false }
+      return child.text == "static"
     }
     guard staticModifier.first != nil else { return false }
 
@@ -56,8 +57,8 @@ func getRender(from node: Node, at file: String) throws -> Node {
         ruleDescription: OneRenderFunctionRule.description,
         location: Location(
           file: file,
-          line: 0,
-          character: 0
+          line: node.range.startRow,
+          character: node.range.startColumn
         )
       )]
     }
