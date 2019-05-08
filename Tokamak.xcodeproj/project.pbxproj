@@ -26,6 +26,7 @@
 		A678AA062280ADAD00432BE5 /* RenderGetsHooksRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678AA052280ADAD00432BE5 /* RenderGetsHooksRule.swift */; };
 		A678AA092282EAAA00432BE5 /* GetRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678AA082282EAAA00432BE5 /* GetRender.swift */; };
 		A678AA0B2282EAF300432BE5 /* TokenTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678AA0A2282EAF300432BE5 /* TokenTypes.swift */; };
+		A678AA0F22831DE100432BE5 /* IsConformance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678AA0E22831DE100432BE5 /* IsConformance.swift */; };
 		OBJ_314 /* ArgumentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_229 /* ArgumentList.swift */; };
 		OBJ_315 /* ArgumentListManipulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_230 /* ArgumentListManipulator.swift */; };
 		OBJ_316 /* CLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_231 /* CLI.swift */; };
@@ -381,6 +382,7 @@
 		A678AA052280ADAD00432BE5 /* RenderGetsHooksRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderGetsHooksRule.swift; sourceTree = "<group>"; };
 		A678AA082282EAAA00432BE5 /* GetRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRender.swift; sourceTree = "<group>"; };
 		A678AA0A2282EAF300432BE5 /* TokenTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenTypes.swift; sourceTree = "<group>"; };
+		A678AA0E22831DE100432BE5 /* IsConformance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsConformance.swift; sourceTree = "<group>"; };
 		OBJ_10 /* AnyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNode.swift; sourceTree = "<group>"; };
 		OBJ_100 /* BaselineConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineConstraint.swift; sourceTree = "<group>"; };
 		OBJ_101 /* Bottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bottom.swift; sourceTree = "<group>"; };
@@ -742,6 +744,7 @@
 			children = (
 				A678AA082282EAAA00432BE5 /* GetRender.swift */,
 				A678AA0A2282EAF300432BE5 /* TokenTypes.swift */,
+				A678AA0E22831DE100432BE5 /* IsConformance.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1884,6 +1887,7 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_536 /* Location.swift in Sources */,
+				A678AA0F22831DE100432BE5 /* IsConformance.swift in Sources */,
 				A678A9FF2280734D00432BE5 /* OneRenderFunctionRule.swift in Sources */,
 				OBJ_537 /* RuleDescription.swift in Sources */,
 				OBJ_538 /* StyleViolation.swift in Sources */,
