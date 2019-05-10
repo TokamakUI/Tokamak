@@ -31,10 +31,8 @@ func getParentOf(type: String, in node: Node) throws -> Node {
 var count = 0
 
 func getFirstChildOf(type: String, in node: Node) throws -> Node {
-  for child in node.children {
-    if child.text == type {
+  for child in node.children where child.text == type {
       return child
-    }
   }
 
   for child in node.children {
