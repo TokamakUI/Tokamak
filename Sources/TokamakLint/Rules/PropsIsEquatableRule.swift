@@ -36,7 +36,7 @@ struct PropsIsEquatableRule: Rule {
         StyleViolation(
           ruleDescription: description,
           location: Location(
-            file: visitor.path ?? "",
+            file: visitor.path,
             line: propsNode.range.startRow,
             character: propsNode.range.startColumn
           )

@@ -11,8 +11,12 @@ import SwiftSyntax
 class TokenVisitor: SyntaxVisitor {
   // Syntax tree is always have one 'SourceFile' node as a child
   public var root = Node(text: "Root")
-  public var path: String?
+  public var path: String
   public var current: Node?
+
+  init(path: String) {
+    self.path = path
+  }
 
   var row = 0
   var column = 0

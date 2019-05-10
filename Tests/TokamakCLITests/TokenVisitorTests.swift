@@ -16,9 +16,8 @@ final class TokenVisitorTests: XCTestCase {
 
     let fileURL = URL(fileURLWithPath: path)
     let parsedTree = try SyntaxTreeParser.parse(fileURL)
-    let visitor = TokenVisitor()
+    let visitor = TokenVisitor(path: path)
 
-    visitor.path = path
     parsedTree.walk(visitor)
 
     let startRow = 11

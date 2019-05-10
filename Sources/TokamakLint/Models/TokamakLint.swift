@@ -56,8 +56,7 @@ func checkFile(_ path: String) throws -> [StyleViolation] {
 private func walkParsedTree(_ path: String) throws -> TokenVisitor {
   let fileURL = URL(fileURLWithPath: path)
   let parsedTree = try SyntaxTreeParser.parse(fileURL)
-  let visitor = TokenVisitor()
-  visitor.path = path
+  let visitor = TokenVisitor(path: path)
   parsedTree.walk(visitor)
   return visitor
 }
