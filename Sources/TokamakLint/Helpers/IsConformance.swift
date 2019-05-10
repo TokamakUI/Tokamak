@@ -8,27 +8,20 @@
 import Foundation
 import SwiftSyntax
 
-func isConformace(node: Node, to protocol: String, at path: String) throws -> Bool {
-  var isConforming = false
+func isCodeBlockItemConformace(node: Node, at path: String) throws -> Bool {
   let renderWithHooksProtocols = ["CompositeComponent", "LeafComponent"]
 
-  var codeBlockItem = try getRender(from: node, at: path)
+  let codeBlockItem = try getParentOf(type: SyntaxKind.codeBlockItem.rawValue, in: node)
 
-  while codeBlockItem.text != SyntaxKind.codeBlockItem.rawValue && codeBlockItem.parent != nil {
-    guard let parent = codeBlockItem.parent else { break }
-    codeBlockItem = parent
-  }
-
-  let typeInheritanceClause = codeBlockItem.children[0].children[2]
+  let typeInheritanceClause = try getFirstChildOf(
+    type: SyntaxKind.typeInheritanceClause.rawValue,
+    in: codeBlockItem
+  )
 
   let types = typeInheritanceClause.getNodes(with: SyntaxKind.simpleTypeIdentifier.rawValue)
 
-  for type in types {
-    if renderWithHooksProtocols.contains(type.children[0].text) {
-      isConforming = true
-      break
-    }
+  return types.contains {
+    guard let child = $0.children.first else { return false }
+    return renderWithHooksProtocols.contains(child.text)
   }
-
-  return isConforming
 }
