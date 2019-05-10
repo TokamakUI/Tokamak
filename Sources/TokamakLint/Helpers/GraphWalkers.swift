@@ -13,7 +13,7 @@ enum GraphWalkersError: Error {
   case noChild
 }
 
-func getParentOf(type: String, in node: Node) throws -> Node {
+func parent(of type: String, in node: Node) -> Node? {
   var nodeParent = node
 
   while nodeParent.text != SyntaxKind.codeBlockItem.rawValue && nodeParent.parent != nil {
@@ -21,28 +21,14 @@ func getParentOf(type: String, in node: Node) throws -> Node {
     nodeParent = parent
   }
 
-  guard nodeParent.text == type else {
-    throw GraphWalkersError.noParent
-  }
+  guard nodeParent.text == type else { return nil }
 
   return nodeParent
 }
 
-var count = 0
+func firstChild(of type: String, in node: Node) -> Node? {
+  guard !node.children.isEmpty else { return nil }
 
-func getFirstChildOf(type: String, in node: Node) throws -> Node {
-  for child in node.children where child.text == type {
-      return child
-  }
-
-  for child in node.children {
-    do {
-      let firstChild = try getFirstChildOf(type: type, in: child)
-      return firstChild
-    } catch {
-      throw error
-    }
-  }
-
-  throw GraphWalkersError.noChild
+  return node.children.first { $0.text == type } ??
+    node.children.compactMap { firstChild(of: type, in: $0) }.first
 }

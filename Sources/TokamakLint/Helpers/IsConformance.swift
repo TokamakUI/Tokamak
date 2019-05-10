@@ -11,14 +11,14 @@ import SwiftSyntax
 func isCodeBlockItemConformace(node: Node, at path: String) throws -> Bool {
   let renderWithHooksProtocols = ["CompositeComponent", "LeafComponent"]
 
-  let codeBlockItem = try getParentOf(type: SyntaxKind.codeBlockItem.rawValue, in: node)
+  guard let codeBlockItem = parent(of: SyntaxKind.codeBlockItem.rawValue, in: node) else { return false }
 
-  let typeInheritanceClause = try getFirstChildOf(
-    type: SyntaxKind.typeInheritanceClause.rawValue,
+  let typeInheritanceClause = firstChild(
+    of: SyntaxKind.typeInheritanceClause.rawValue,
     in: codeBlockItem
   )
 
-  let types = typeInheritanceClause.getNodes(with: SyntaxKind.simpleTypeIdentifier.rawValue)
+  guard types = typeInheritanceClause.getNodes(with: SyntaxKind.simpleTypeIdentifier.rawValue) else { return false }
 
   return types.contains {
     guard let child = $0.children.first else { return false }
