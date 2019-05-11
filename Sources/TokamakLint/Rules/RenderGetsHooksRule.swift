@@ -46,8 +46,8 @@ struct RenderGetsHooksRule: Rule {
     } catch let error as [StyleViolation] {
       return error
     } catch {
-        print(error)
-        return []
+      print(error)
+      return []
     }
 
     return []
