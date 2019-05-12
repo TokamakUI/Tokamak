@@ -38,7 +38,7 @@ public class Node {
   }
 
   func children(with type: String) -> [Node] {
-    guard self.children.first != nil else { return [] }
+    guard children.first != nil else { return [] }
     var nodes: [Node] = []
     walkAndGrab(get: type, from: self, to: &nodes)
     return nodes
