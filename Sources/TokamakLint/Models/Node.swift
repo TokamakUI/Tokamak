@@ -21,13 +21,6 @@ public class Node {
     var endColumn: Int
   }
 
-  enum CodingKeys: CodingKey {
-    case text
-    case children
-    case range
-    case token
-  }
-
   init(text: String) {
     self.text = text
   }
