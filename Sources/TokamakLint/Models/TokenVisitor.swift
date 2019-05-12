@@ -112,59 +112,9 @@ class TokenVisitor: SyntaxVisitor {
   }
 }
 
-public class Node {
-  var text: String
-  var children = [Node]()
-  weak var parent: Node?
-  var range = Range(startRow: 0, startColumn: 0, endRow: 0, endColumn: 0)
-
-  struct Range {
-    var startRow: Int
-    var startColumn: Int
-    var endRow: Int
-    var endColumn: Int
-  }
-
-  enum CodingKeys: CodingKey {
-    case text
-    case children
-    case range
-    case token
-  }
-
-  init(text: String) {
-    self.text = text
-  }
-
-  func add(node: Node) {
-    node.parent = self
-    children.append(node)
-  }
-
-  func getNodes(with type: String) -> [Node] {
-    guard let first = self.children.first else { return [] }
-    var nodes: [Node] = []
-    walkAndGrab(get: type, from: self, to: &nodes)
-    return nodes
-  }
-
-  func walkAndGrab(
-    get type: String,
-    from node: Node,
-    to list: inout [Node]
-  ) {
-    if node.text == type {
-      list.append(node)
-    }
-    for child in node.children {
-      walkAndGrab(get: type, from: child, to: &list)
-    }
-  }
-}
-
 func isInherited(node: Node, from type: String) -> Bool {
   var str: String = ""
-  let typeNodes = node.getNodes(with: SyntaxKind.simpleTypeIdentifier.rawValue)
+  let typeNodes = node.children(with: SyntaxKind.simpleTypeIdentifier.rawValue)
   for node in typeNodes {
     for type in node.children {
       str.append("\(type.text)")
