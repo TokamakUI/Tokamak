@@ -10,43 +10,8 @@ import SwiftSyntax
 
 extension Array: Error where Element == StyleViolation {}
 
-func render(from node: Node, at file: String) -> Node? {
-  let renders = node.getNodes(with: "render").filter {
-    // check if render type is function
-    var memberDeclListItem = $0
-    while memberDeclListItem.text != SyntaxKind.memberDeclListItem.rawValue
-      && memberDeclListItem.parent != nil {
-      guard let parent = memberDeclListItem.parent else { break }
-      memberDeclListItem = parent
-    }
-    guard memberDeclListItem.children[0].text
-      == SyntaxKind.functionDecl.rawValue else { return false }
-
-    // check if render is static
-    let staticModifier = memberDeclListItem.getNodes(
-      with: SyntaxKind.declModifier.rawValue
-    ).filter {
-      guard let child = $0.children.first else { return false }
-      return child.text == "static"
-    }
-    guard staticModifier.first != nil else { return false }
-
-    // check if render is on first layer of component
-    let firstLayerCildrens = memberDeclListItem.children[0].children.map {
-      $0.text
-    }
-    guard firstLayerCildrens.contains("render") else { return false }
-
-    return true
-  }
-
-  guard renders.count == 1 else { return nil }
-
-  return renders[0]
-}
-
 func getRender(from node: Node, at file: String) throws -> Node {
-  let renders = node.getNodes(with: "render").filter {
+  let renders = node.children(with: "render").filter {
     // check if render type is function
     var memberDeclListItem = $0
     while memberDeclListItem.text != SyntaxKind.memberDeclListItem.rawValue
@@ -58,7 +23,7 @@ func getRender(from node: Node, at file: String) throws -> Node {
       == SyntaxKind.functionDecl.rawValue else { return false }
 
     // check if render is static
-    let staticModifier = memberDeclListItem.getNodes(
+    let staticModifier = memberDeclListItem.children(
       with: SyntaxKind.declModifier.rawValue
     ).filter {
       guard let child = $0.children.first else { return false }
