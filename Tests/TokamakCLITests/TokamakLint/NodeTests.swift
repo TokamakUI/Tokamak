@@ -1,6 +1,5 @@
-
 //
-//  GraphWalkersTests.swift
+//  NodeTests.swift
 //  TokamakLint
 //
 //  Created by Matvii Hodovaniuk on 5/11/19.
