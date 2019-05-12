@@ -24,7 +24,7 @@ final class NodeTests: XCTestCase {
 
     let cerseiChildren = Node(text: "Cersei")
 
-    let joffrey = Node(text: "Jofrey")
+    let joffrey = Node(text: "Joffrey")
     joffrey.add(node: Node(text: "Father: Jaime"))
     cerseiChildren.add(node: joffrey)
 

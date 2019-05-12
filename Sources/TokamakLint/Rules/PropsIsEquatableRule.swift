@@ -12,7 +12,7 @@ struct PropsIsEquatableRule: Rule {
   public static let description = RuleDescription(
     type: PropsIsEquatableRule.self,
     name: "Props is Equatable",
-    description: "Component Props type shoud conformance to Equatable protocol"
+    description: "Component Props type should conformance to Equatable protocol"
   )
 
   public static func validate(visitor: TokenVisitor) -> [StyleViolation] {

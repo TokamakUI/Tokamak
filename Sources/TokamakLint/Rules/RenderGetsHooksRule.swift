@@ -28,12 +28,12 @@ struct RenderGetsHooksRule: Rule {
       )] }
       guard let functionSignature = codeBlock.firstChild(of: SyntaxKind.functionSignature.rawValue) else { return [] }
 
-      let hooksArgemnt = functionSignature.children(with: SyntaxKind.simpleTypeIdentifier.rawValue).filter {
+      let hooksArgument = functionSignature.children(with: SyntaxKind.simpleTypeIdentifier.rawValue).filter {
         guard !$0.children.isEmpty, let children = $0.children.first else { return false }
         return children.text == "Hooks"
       }
 
-      guard !hooksArgemnt.isEmpty else {
+      guard !hooksArgument.isEmpty else {
         return [StyleViolation(
           ruleDescription: OneRenderFunctionRule.description,
           location: Location(
