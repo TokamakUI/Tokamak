@@ -32,10 +32,10 @@ func getRender(from node: Node, at file: String) throws -> Node {
     guard staticModifier.first != nil else { return false }
 
     // check if render is on first layer of component
-    let firstLayerCildrens = memberDeclListItem.children[0].children.map {
+    let firstLayerChildren = memberDeclListItem.children[0].children.map {
       $0.text
     }
-    guard firstLayerCildrens.contains("render") else { return false }
+    guard firstLayerChildren.contains("render") else { return false }
 
     return true
   }
