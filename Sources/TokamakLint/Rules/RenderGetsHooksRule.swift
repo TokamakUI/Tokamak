@@ -18,7 +18,7 @@ struct RenderGetsHooksRule: Rule {
   public static func validate(visitor: TokenVisitor) -> [StyleViolation] {
     do {
       let renderFunction = try getRender(from: visitor.root, at: visitor.path)
-      guard let codeBlock = parent(of: SyntaxKind.codeBlockItem.rawValue, in: renderFunction) else { return [StyleViolation(
+      guard let codeBlock = renderFunction.firstParent(of: SyntaxKind.codeBlockItem.rawValue) else { return [StyleViolation(
         ruleDescription: OneRenderFunctionRule.description,
         location: Location(
           file: visitor.path,
@@ -26,9 +26,9 @@ struct RenderGetsHooksRule: Rule {
           character: renderFunction.range.startColumn
         )
       )] }
-      guard let functionSignature = firstChild(of: SyntaxKind.functionSignature.rawValue, in: codeBlock) else { return [] }
+      guard let functionSignature = codeBlock.firstChild(of: SyntaxKind.functionSignature.rawValue) else { return [] }
 
-      let hooksArgemnt = functionSignature.getNodes(with: SyntaxKind.simpleTypeIdentifier.rawValue).filter {
+      let hooksArgemnt = functionSignature.children(with: SyntaxKind.simpleTypeIdentifier.rawValue).filter {
         guard !$0.children.isEmpty, let children = $0.children.first else { return false }
         return children.text == "Hooks"
       }

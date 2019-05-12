@@ -24,7 +24,7 @@ final class TokenVisitorTests: XCTestCase {
     let endRow = 11
     let startColumn = 0
     let endColumn = 7
-    let structs = visitor.root.getNodes(with: "StructDecl")
+    let structs = visitor.root.children(with: "StructDecl")
     let structDecl = structs[0].children[0]
 
     XCTAssertEqual(startRow, structDecl.range.startRow)
