@@ -18,10 +18,10 @@ jobs:
         - swiftlint
     - &test
       stage: test
-      osx_image: xcode10
+      osx_image: xcode10.2
       language: swift
       install: skip
-      env: TEST_DEVICE='platform=iOS Simulator,OS=12.0,name=iPhone SE'
+      env: TEST_DEVICE='platform=iOS Simulator,OS=12.2,name=iPhone SE'
       script:
         - xcodebuild -scheme TokamakUIKit -sdk iphonesimulator | xcpretty
         - xcodebuild -scheme TokamakAppKit -sdk macosx | xcpretty
@@ -30,12 +30,6 @@ jobs:
         # that `Package.swift` is in a good state
         - swift build --target Tokamak
         - xcodebuild test -enableCodeCoverage YES -scheme Tokamak | xcpretty
-    - <<: *test
-      osx_image: xcode10.1
-      env: TEST_DEVICE='platform=iOS Simulator,OS=12.1,name=iPhone SE'
-    - <<: *test
-      osx_image: xcode10.2
-      env: TEST_DEVICE='platform=iOS Simulator,OS=12.2,name=iPhone SE'
       after_success:
         - bash <(curl -s https://codecov.io/bash)
 # before_install:
