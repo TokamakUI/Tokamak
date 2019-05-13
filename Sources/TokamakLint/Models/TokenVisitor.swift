@@ -33,7 +33,7 @@ class TokenVisitor: SyntaxVisitor {
     if let current = current {
       current.add(node: syntaxNode)
     } else {
-      root.children.append(syntaxNode)
+      root.add(node: syntaxNode)
     }
     current = syntaxNode
   }

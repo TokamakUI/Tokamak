@@ -10,8 +10,8 @@ import SwiftSyntax
 
 public class Node {
   var text: String
-  var children = [Node]()
-  weak var parent: Node?
+  private(set) var children = [Node]()
+  private(set) weak var parent: Node?
   var range = Range(startRow: 0, startColumn: 0, endRow: 0, endColumn: 0)
 
   struct Range {
