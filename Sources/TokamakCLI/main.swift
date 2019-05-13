@@ -36,4 +36,4 @@ class LintCommand: Command {
 let TokamakCLI = CLI(name: "TokamakCLI", version: "0.1.2", description: "Tokamak CLI tools")
 
 TokamakCLI.commands = [LintCommand()]
-TokamakCLI.go()
+TokamakCLI.goAndExit()
