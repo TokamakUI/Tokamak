@@ -10,9 +10,9 @@ import SwiftSyntax
 
 class TokenVisitor: SyntaxVisitor {
   // Syntax tree is always has one 'SourceFile' node as a child
-  public var root = Node(text: "Root")
-  public var path: String
-  public var current: Node?
+  var root = Node(text: "Root")
+  var path: String
+  private var current: Node?
 
   init(path: String) {
     self.path = path
@@ -21,7 +21,7 @@ class TokenVisitor: SyntaxVisitor {
   var row = 0
   var column = 0
 
-  public override func visitPre(_ node: Syntax) {
+  override func visitPre(_ node: Syntax) {
     var syntax = "\(type(of: node))"
 
     if syntax.hasSuffix("Syntax") {
@@ -38,7 +38,7 @@ class TokenVisitor: SyntaxVisitor {
     current = syntaxNode
   }
 
-  public override func visit(_ token: TokenSyntax) -> SyntaxVisitorContinueKind {
+  override func visit(_ token: TokenSyntax) -> SyntaxVisitorContinueKind {
     guard let current = current else { return .visitChildren }
 
     current.text = token.text
@@ -70,7 +70,7 @@ class TokenVisitor: SyntaxVisitor {
     return .visitChildren
   }
 
-  public override func visitPost(_ node: Syntax) {
+  override func visitPost(_ node: Syntax) {
     // go up after full node walk
     current = current?.parent
   }
