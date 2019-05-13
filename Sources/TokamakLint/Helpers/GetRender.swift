@@ -19,8 +19,8 @@ func getRender(from node: Node, at file: String) throws -> Node {
       guard let parent = memberDeclListItem.parent else { break }
       memberDeclListItem = parent
     }
-    guard memberDeclListItem.children[0].text
-      == SyntaxKind.functionDecl.rawValue else { return false }
+    guard let functionDecl = memberDeclListItem.children.first,
+      functionDecl.text == SyntaxKind.functionDecl.rawValue else { return false }
 
     // check if render is static
     let staticModifier = memberDeclListItem.children(
@@ -32,12 +32,9 @@ func getRender(from node: Node, at file: String) throws -> Node {
     guard staticModifier.first != nil else { return false }
 
     // check if render is on first layer of component
-    let firstLayerChildren = memberDeclListItem.children[0].children.map {
+    return functionDecl.children.map {
       $0.text
-    }
-    guard firstLayerChildren.contains("render") else { return false }
-
-    return true
+    }.contains("render")
   }
 
   guard renders.count == 1 else {
