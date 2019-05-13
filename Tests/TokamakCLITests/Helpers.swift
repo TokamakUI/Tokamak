@@ -10,7 +10,7 @@ import XCTest
 struct UnexpectedNilError: Error {}
 
 func srcRoot() throws -> String {
-  guard let src = ProcessInfo.processInfo.environment["SRCROOT"] else {
+  guard let src = ProcessInfo.processInfo.environment["TEST_PATH"] else {
     throw UnexpectedNilError()
   }
   return src

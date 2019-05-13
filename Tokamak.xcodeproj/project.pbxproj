@@ -27,7 +27,6 @@
 		A678AA092282EAAA00432BE5 /* GetRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678AA082282EAAA00432BE5 /* GetRender.swift */; };
 		A678AA15228735CF00432BE5 /* NodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678AA13228735C500432BE5 /* NodeTests.swift */; };
 		A678AA1722873F4800432BE5 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678AA1622873F4800432BE5 /* Node.swift */; };
-		A686518C22888C8B00A8AE97 /* NodeStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686518B22888C8B00A8AE97 /* NodeStruct.swift */; };
 		A686519122899E5B00A8AE97 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686519022899E5B00A8AE97 /* Helpers.swift */; };
 		OBJ_314 /* ArgumentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_229 /* ArgumentList.swift */; };
 		OBJ_315 /* ArgumentListManipulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_230 /* ArgumentListManipulator.swift */; };
@@ -385,7 +384,6 @@
 		A678AA082282EAAA00432BE5 /* GetRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRender.swift; sourceTree = "<group>"; };
 		A678AA13228735C500432BE5 /* NodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeTests.swift; sourceTree = "<group>"; };
 		A678AA1622873F4800432BE5 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
-		A686518B22888C8B00A8AE97 /* NodeStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeStruct.swift; sourceTree = "<group>"; };
 		A686519022899E5B00A8AE97 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		OBJ_10 /* AnyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNode.swift; sourceTree = "<group>"; };
 		OBJ_100 /* BaselineConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineConstraint.swift; sourceTree = "<group>"; };
@@ -755,7 +753,6 @@
 			isa = PBXGroup;
 			children = (
 				A678AA13228735C500432BE5 /* NodeTests.swift */,
-				A686518B22888C8B00A8AE97 /* NodeStruct.swift */,
 			);
 			path = TokamakLint;
 			sourceTree = "<group>";
@@ -1701,7 +1698,6 @@
 				OBJ_331 /* Task.swift in Sources */,
 				OBJ_332 /* Term.swift in Sources */,
 				OBJ_333 /* Validation.swift in Sources */,
-				A686518C22888C8B00A8AE97 /* NodeStruct.swift in Sources */,
 				OBJ_334 /* VersionCommand.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

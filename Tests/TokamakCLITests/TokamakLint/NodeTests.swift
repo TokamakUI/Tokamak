@@ -57,7 +57,7 @@ final class NodeTests: XCTestCase {
   }
 
   func testFirstChild() throws {
-    let path = "\(try srcRoot())/ValidationTests/NodeStruct.swift"
+    let path = "\(try srcRoot())/NodeStruct.swift"
     let fileURL = URL(fileURLWithPath: path)
     let parsedTree = try SyntaxTreeParser.parse(fileURL)
     let visitor = TokenVisitor(path: path)
