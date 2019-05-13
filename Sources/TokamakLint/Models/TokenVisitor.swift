@@ -9,7 +9,7 @@ import Foundation
 import SwiftSyntax
 
 class TokenVisitor: SyntaxVisitor {
-  // Syntax tree is always have one 'SourceFile' node as a child
+  // Syntax tree is always has one 'SourceFile' node as a child
   public var root = Node(text: "Root")
   public var path: String
   public var current: Node?
