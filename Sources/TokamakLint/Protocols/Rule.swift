@@ -8,8 +8,6 @@
 import Foundation
 import SwiftSyntax
 
-// todo add check for zero visitor.tree array
-
 protocol Rule {
   static var description: RuleDescription { get }
   static func validate(visitor: TokenVisitor) -> [StyleViolation]

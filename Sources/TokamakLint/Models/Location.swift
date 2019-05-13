@@ -14,7 +14,7 @@ public struct Location: CustomStringConvertible, Comparable {
   public let character: Int
   public var description: String {
     // Xcode likes warnings and errors in the following format:
-    // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
+    // {full_path_to_file}{:line}{:character}: {error, warning}: {content}
     return "\(file):\(line):\(character)"
   }
 
