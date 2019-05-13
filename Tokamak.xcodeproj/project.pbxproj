@@ -28,6 +28,7 @@
 		A678AA15228735CF00432BE5 /* NodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678AA13228735C500432BE5 /* NodeTests.swift */; };
 		A678AA1722873F4800432BE5 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = A678AA1622873F4800432BE5 /* Node.swift */; };
 		A686518C22888C8B00A8AE97 /* NodeStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686518B22888C8B00A8AE97 /* NodeStruct.swift */; };
+		A686519122899E5B00A8AE97 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686519022899E5B00A8AE97 /* Helpers.swift */; };
 		OBJ_314 /* ArgumentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_229 /* ArgumentList.swift */; };
 		OBJ_315 /* ArgumentListManipulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_230 /* ArgumentListManipulator.swift */; };
 		OBJ_316 /* CLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_231 /* CLI.swift */; };
@@ -385,6 +386,7 @@
 		A678AA13228735C500432BE5 /* NodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeTests.swift; sourceTree = "<group>"; };
 		A678AA1622873F4800432BE5 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		A686518B22888C8B00A8AE97 /* NodeStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeStruct.swift; sourceTree = "<group>"; };
+		A686519022899E5B00A8AE97 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		OBJ_10 /* AnyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNode.swift; sourceTree = "<group>"; };
 		OBJ_100 /* BaselineConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineConstraint.swift; sourceTree = "<group>"; };
 		OBJ_101 /* Bottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bottom.swift; sourceTree = "<group>"; };
@@ -1018,6 +1020,7 @@
 				A678AA12228735AB00432BE5 /* TokamakLint */,
 				OBJ_218 /* TokamakLintTests.swift */,
 				OBJ_219 /* TokenVisitorTests.swift */,
+				A686519022899E5B00A8AE97 /* Helpers.swift */,
 			);
 			name = TokamakCLITests;
 			path = Tests/TokamakCLITests;
@@ -1884,6 +1887,7 @@
 				OBJ_516 /* TokamakLintTests.swift in Sources */,
 				OBJ_517 /* TokenVisitorTests.swift in Sources */,
 				A678AA15228735CF00432BE5 /* NodeTests.swift in Sources */,
+				A686519122899E5B00A8AE97 /* Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

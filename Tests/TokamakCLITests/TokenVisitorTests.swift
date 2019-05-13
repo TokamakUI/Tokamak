@@ -11,8 +11,7 @@ import XCTest
 
 final class TokenVisitorTests: XCTestCase {
   func testRange() throws {
-    let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!
-    let path = "\(srcRoot)/ValidationTests/TestPropsEquatable.swift"
+    let path = "\(try srcRoot())/ValidationTests/TestPropsEquatable.swift"
 
     let fileURL = URL(fileURLWithPath: path)
     let parsedTree = try SyntaxTreeParser.parse(fileURL)

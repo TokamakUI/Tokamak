@@ -9,8 +9,6 @@ import SwiftSyntax
 @testable import TokamakLint
 import XCTest
 
-struct UnexpectedNilError: Error {}
-
 final class NodeTests: XCTestCase {
   func testCollectChildren() throws {
     let houseLannister = Node(text: "Tywin")
@@ -52,13 +50,14 @@ final class NodeTests: XCTestCase {
     let jonSnow = Node(text: "Jon Snow")
     rhaegar.add(node: jonSnow)
 
-    guard let madKing = jonSnow.firstParent(of: "Aerys \"the Mad\"") else { throw UnexpectedNilError() }
+    guard let madKing = jonSnow.firstParent(of: "Aerys \"the Mad\"") else {
+      throw UnexpectedNilError()
+    }
     XCTAssertEqual(madKing.text, "Aerys \"the Mad\"")
   }
 
   func testFirstChild() throws {
-    let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!
-    let path = "\(srcRoot)/Tests/TokamakCLITests/TokamakLint/NodeStruct.swift"
+    let path = "\(try srcRoot())/Tests/TokamakCLITests/TokamakLint/NodeStruct.swift"
     let fileURL = URL(fileURLWithPath: path)
     let parsedTree = try SyntaxTreeParser.parse(fileURL)
     let visitor = TokenVisitor(path: path)
