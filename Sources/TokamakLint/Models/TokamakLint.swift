@@ -66,14 +66,8 @@ private func isSwiftFile(_ path: String) -> Bool {
 }
 
 private func hasTokamakImport(from visitor: TokenVisitor) -> Bool {
-  var doesTokamakImportExist = false
-  let imports = visitor.root.children(with: SyntaxKind.importDecl.rawValue)
-  for importNode in imports {
-    let importModules = importNode.children(with: SyntaxKind.accessPathComponent.rawValue)
-    for module in importModules where module.children[0].text == "Tokamak" {
-      doesTokamakImportExist = true
-    }
-  }
-
-  return doesTokamakImportExist
+  return visitor.root.children(with: SyntaxKind.importDecl.rawValue)
+    .flatMap { $0.children(with: SyntaxKind.accessPathComponent.rawValue) }
+    .compactMap { $0.children.first }
+    .contains { $0.text == "Tokamak" }
 }
