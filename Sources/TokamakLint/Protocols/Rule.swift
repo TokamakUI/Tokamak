@@ -14,7 +14,7 @@ protocol Rule {
 }
 
 extension Rule {
-  public static func validate(path: String) throws -> [StyleViolation] {
+static func validate(path: String) throws -> [StyleViolation] {
     let fileURL = URL(fileURLWithPath: path)
     let parsedTree = try SyntaxTreeParser.parse(fileURL)
     let visitor = TokenVisitor(path: path)
