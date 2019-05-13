@@ -28,8 +28,7 @@ struct PropsIsEquatableRule: Rule {
       guard propsNodes.count != 0 else { continue }
       let propsNode = propsNodes[0]
 
-      guard let propsParent = propsNode.parent, !isInherited(
-        node: propsParent,
+      guard let propsParent = propsNode.parent, !propsParent.isInherited(
         from: "Equatable"
       ) else { continue }
       violations.append(

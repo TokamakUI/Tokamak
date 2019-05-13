@@ -69,4 +69,11 @@ public class Node {
     return children.first { $0.text == type } ??
       children.compactMap { $0.firstChild(of: type) }.first
   }
+
+  func isInherited(from type: String) -> Bool {
+    let typeNodes = children(
+      with: SyntaxKind.simpleTypeIdentifier.rawValue
+    )
+    return typeNodes.flatMap { $0.children }.contains { $0.text == type }
+  }
 }

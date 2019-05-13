@@ -111,14 +111,3 @@ class TokenVisitor: SyntaxVisitor {
     column += last.count
   }
 }
-
-func isInherited(node: Node, from type: String) -> Bool {
-  var str: String = ""
-  let typeNodes = node.children(with: SyntaxKind.simpleTypeIdentifier.rawValue)
-  for node in typeNodes {
-    for type in node.children {
-      str.append("\(type.text)")
-    }
-  }
-  return str.contains(type)
-}
