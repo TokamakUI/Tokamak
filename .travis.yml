@@ -7,37 +7,37 @@ language: swift
 
 jobs:
   include:
-  - stage: lint
-    osx_image: xcode10.2
-    language: swift
-    before_install:
-      - brew install swiftformat
-    script:
-      # temporarily disabled due to Swift ABI issues on Xcode 10.2, Mojave 10.14.4
-      - swiftformat --lint --verbose .
-      - swiftlint
-  - &test
-    stage: test
-    osx_image: xcode10
-    language: swift
-    install: skip
-    env: TEST_DEVICE='platform=iOS Simulator,OS=12.0,name=iPhone SE'
-    script:
-      - xcodebuild -scheme TokamakUIKit -sdk iphonesimulator | xcpretty
-      - xcodebuild -scheme TokamakAppKit -sdk macosx10.14 | xcpretty
-      # this runs the build the second time, but it's the only way to make sure
-      # that `Package.swift` is in a good state
-      - swift build --target Tokamak
-      - xcodebuild test -enableCodeCoverage YES -scheme Tokamak | xcpretty
-  - <<: *test
-    osx_image: xcode10.1
-    env: TEST_DEVICE='platform=iOS Simulator,OS=12.1,name=iPhone SE'
-  - <<: *test
-    osx_image: xcode10.2
-    env: TEST_DEVICE='platform=iOS Simulator,OS=12.2,name=iPhone SE'
-    after_success:
-    - bash <(curl -s https://codecov.io/bash)
-
+    - stage: lint
+      osx_image: xcode10.2
+      language: swift
+      before_install:
+        - brew install swiftformat
+      script:
+        # temporarily disabled due to Swift ABI issues on Xcode 10.2, Mojave 10.14.4
+        - swiftformat --lint --verbose .
+        - swiftlint
+    - &test
+      stage: test
+      osx_image: xcode10
+      language: swift
+      install: skip
+      env: TEST_DEVICE='platform=iOS Simulator,OS=12.0,name=iPhone SE'
+      script:
+        - xcodebuild -scheme TokamakUIKit -sdk iphonesimulator | xcpretty
+        - xcodebuild -scheme TokamakAppKit -sdk macosx | xcpretty
+        - xcodebuild test -scheme TokamakCLI -sdk macosx | xcpretty
+        # this runs the build the second time, but it's the only way to make sure
+        # that `Package.swift` is in a good state
+        - swift build --target Tokamak
+        - xcodebuild test -enableCodeCoverage YES -scheme Tokamak | xcpretty
+    - <<: *test
+      osx_image: xcode10.1
+      env: TEST_DEVICE='platform=iOS Simulator,OS=12.1,name=iPhone SE'
+    - <<: *test
+      osx_image: xcode10.2
+      env: TEST_DEVICE='platform=iOS Simulator,OS=12.2,name=iPhone SE'
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
 # before_install:
 # - gem install cocoapods --pre # Since Travis is not always on latest version
 # - brew outdated carthage || brew upgrade carthage
