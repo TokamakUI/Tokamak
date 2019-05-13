@@ -5,17 +5,16 @@
 //  Created by Matvii Hodovaniuk on 4/9/19.
 //
 
-import Foundation
 import SwiftSyntax
 
 struct PropsIsEquatableRule: Rule {
-  public static let description = RuleDescription(
+  static let description = RuleDescription(
     type: PropsIsEquatableRule.self,
     name: "Props is Equatable",
     description: "Component Props type should conform to Equatable protocol"
   )
 
-  public static func validate(visitor: TokenVisitor) -> [StyleViolation] {
+  static func validate(visitor: TokenVisitor) -> [StyleViolation] {
     var violations: [StyleViolation] = []
     let structs = visitor.root.children(with: SyntaxKind.structDecl.rawValue)
     for structNode in structs {

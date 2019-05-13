@@ -5,11 +5,10 @@
 //  Created by Matvii Hodovaniuk on 5/6/19.
 //
 
-import Foundation
 import SwiftSyntax
 
 struct RenderGetsHooksRule: Rule {
-  public static let description = RuleDescription(
+  static let description = RuleDescription(
     type: RenderGetsHooksRule.self,
     name: "Render gets Hooks",
     description: "Non-pure render should get Hooks type argument"
@@ -35,8 +34,7 @@ struct RenderGetsHooksRule: Rule {
       let hooksArgument = functionSignature.children(
         with: SyntaxKind.simpleTypeIdentifier.rawValue
       ).filter {
-        guard !$0.children.isEmpty,
-          let children = $0.children.first else { return false }
+        guard let children = $0.children.first else { return false }
         return children.text == "Hooks"
       }
 
