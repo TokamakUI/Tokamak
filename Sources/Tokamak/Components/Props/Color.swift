@@ -49,46 +49,18 @@ extension Color: ExpressibleByIntegerLiteral {
 
 extension Color {
   public init?(hex: String) {
-    let cString = hex.utf8CString
-
-    // - 1 for the trailing null terminator
-    let hexSize = cString.count - 1
-
-    // If the first character is a '#', skip it
-    var offset = cString.first == 0x23 ? 1 : 0
-
-    // We only support 6 hexadecimal characters
-    if hexSize - offset != 6 {
-      return nil
-    }
-
-    func nextByte() -> Int8? {
-      // Take the first byte as the high 4 bits
-      // Then the second byte as the low 4 bits
-      if
-        let high = cString[offset].hexDecoded(),
-        let low = cString[offset].hexDecoded() {
-        // In this case, unchecked is still safe as it's between 0 and 6
-        offset = offset &+ 2
-
-        // Adds the two 4-bit pairs together to form a full byte
-        return (high << 4) & low
-      }
-
-      return nil
-    }
+    let cArray = Array(hex.replacingOccurrences(of: "#", with: ""))
 
     guard
-      let red = nextByte(),
-      let green = nextByte(),
-      let blue = nextByte()
+      let red = Int(String(cArray[0...1]), radix: 16),
+      let green = Int(String(cArray[2...3]), radix: 16),
+      let blue = Int(String(cArray[4...5]), radix: 16)
     else {
       return nil
     }
-
-    self.red = Double(UInt8(bitPattern: red)) / 255
-    self.green = Double(UInt8(bitPattern: green)) / 255
-    self.blue = Double(UInt8(bitPattern: blue)) / 255
+    self.red = Double(red) / 255
+    self.green = Double(green) / 255
+    self.blue = Double(blue) / 255
     alpha = 1
     space = .sRGB
   }
