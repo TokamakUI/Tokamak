@@ -23,13 +23,15 @@ jobs:
       install: skip
       env: TEST_DEVICE='platform=iOS Simulator,OS=12.2,name=iPhone SE'
       script:
-        - xcodebuild -scheme TokamakUIKit -sdk iphonesimulator | xcpretty
-        - xcodebuild -scheme TokamakAppKit -sdk macosx | xcpretty
-        - xcodebuild test -scheme TokamakCLI -sdk macosx | xcpretty
+        - swift package generate-xcodeproj --xcconfig-overrides Package.xcconfig
+        - git checkout HEAD Tokamak.xcodeproj/xcshareddata/xcschemes/TokamakCLI.xcscheme
+        - set -o pipefail && xcodebuild -scheme TokamakUIKit -sdk iphonesimulator | xcpretty
+        - set -o pipefail && xcodebuild -scheme TokamakAppKit -sdk macosx | xcpretty
+        - set -o pipefail && xcodebuild test -scheme TokamakCLI -sdk macosx | xcpretty
         # this runs the build the second time, but it's the only way to make sure
         # that `Package.swift` is in a good state
         - swift build --target Tokamak
-        - xcodebuild test -enableCodeCoverage YES -scheme Tokamak | xcpretty
+        - set -o pipefail && xcodebuild test -enableCodeCoverage YES -scheme Tokamak | xcpretty
       after_success:
         - bash <(curl -s https://codecov.io/bash)
 # before_install:
@@ -41,5 +43,5 @@ jobs:
 # - gem install cocoapods # Since Travis is not always on latest version
 # - pod install --project-directory=Example
 # - swift build
-# - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/Tokamak.xcworkspace -scheme Tokamak-Example -sdk iphonesimulator11.0 ONLY_ACTIVE_ARCH=NO | xcpretty
+# - set -o pipefail && set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/Tokamak.xcworkspace -scheme Tokamak-Example -sdk iphonesimulator11.0 ONLY_ACTIVE_ARCH=NO | xcpretty
 # - pod lib lint
