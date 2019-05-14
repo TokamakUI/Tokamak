@@ -9,14 +9,19 @@ import Foundation
 import SwiftSyntax
 
 class TokenVisitor: SyntaxVisitor {
-  public var tree = [Node]()
-  public var path: String?
-  public var current: Node?
+  // Syntax tree is always has one 'SourceFile' node as a child
+  var root = Node(text: "Root")
+  var path: String
+  private var current: Node?
+
+  init(path: String) {
+    self.path = path
+  }
 
   var row = 0
   var column = 0
 
-  public override func visitPre(_ node: Syntax) {
+  override func visitPre(_ node: Syntax) {
     var syntax = "\(type(of: node))"
 
     if syntax.hasSuffix("Syntax") {
@@ -28,12 +33,12 @@ class TokenVisitor: SyntaxVisitor {
     if let current = current {
       current.add(node: syntaxNode)
     } else {
-      tree.append(syntaxNode)
+      root.add(node: syntaxNode)
     }
     current = syntaxNode
   }
 
-  public override func visit(_ token: TokenSyntax) -> SyntaxVisitorContinueKind {
+  override func visit(_ token: TokenSyntax) -> SyntaxVisitorContinueKind {
     guard let current = current else { return .visitChildren }
 
     current.text = token.text
@@ -65,7 +70,7 @@ class TokenVisitor: SyntaxVisitor {
     return .visitChildren
   }
 
-  public override func visitPost(_ node: Syntax) {
+  override func visitPost(_ node: Syntax) {
     // go up after full node walk
     current = current?.parent
   }
@@ -104,65 +109,5 @@ class TokenVisitor: SyntaxVisitor {
     // substract 1 to prevent double newline count in comment and new line
     row += comments.count - 1
     column += last.count
-  }
-
-  public func getNodes(get type: String, from node: Node) -> [Node] {
-    var nodes: [Node] = []
-    walkAndGrab(get: type, from: node, to: &nodes)
-    return nodes
-  }
-
-  private func walkAndGrab(
-    get type: String,
-    from node: Node,
-    to list: inout [Node]
-  ) {
-    if node.text == type {
-      list.append(node)
-    }
-    for child in node.children {
-      walkAndGrab(get: type, from: child, to: &list)
-    }
-  }
-
-  func isInherited(node: Node, from type: String) -> Bool {
-    var str: String = ""
-    let typeNodes = getNodes(get: "SimpleTypeIdentifier", from: node)
-    for node in typeNodes {
-      for type in node.children {
-        str.append("\(type.text)")
-      }
-    }
-    return str.contains(type)
-  }
-}
-
-public class Node {
-  var text: String
-  var children = [Node]()
-  weak var parent: Node?
-  var range = Range(startRow: 0, startColumn: 0, endRow: 0, endColumn: 0)
-
-  struct Range: Encodable {
-    var startRow: Int
-    var startColumn: Int
-    var endRow: Int
-    var endColumn: Int
-  }
-
-  enum CodingKeys: CodingKey {
-    case text
-    case children
-    case range
-    case token
-  }
-
-  init(text: String) {
-    self.text = text
-  }
-
-  func add(node: Node) {
-    node.parent = self
-    children.append(node)
   }
 }

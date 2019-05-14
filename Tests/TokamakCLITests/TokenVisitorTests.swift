@@ -11,21 +11,19 @@ import XCTest
 
 final class TokenVisitorTests: XCTestCase {
   func testRange() throws {
-    let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]!
-    let path = "\(srcRoot)/ValidationTests/TestPropsEquatable.swift"
+    let path = "\(try srcRoot())/TestPropsEquatable.swift"
 
     let fileURL = URL(fileURLWithPath: path)
     let parsedTree = try SyntaxTreeParser.parse(fileURL)
-    let visitor = TokenVisitor()
+    let visitor = TokenVisitor(path: path)
 
-    visitor.path = path
     parsedTree.walk(visitor)
 
     let startRow = 11
     let endRow = 11
     let startColumn = 0
     let endColumn = 7
-    let structs = visitor.getNodes(get: "StructDecl", from: visitor.tree[0])
+    let structs = visitor.root.children(with: "StructDecl")
     let structDecl = structs[0].children[0]
 
     XCTAssertEqual(startRow, structDecl.range.startRow)

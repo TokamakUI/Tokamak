@@ -56,8 +56,7 @@ func checkFile(_ path: String) throws -> [StyleViolation] {
 private func walkParsedTree(_ path: String) throws -> TokenVisitor {
   let fileURL = URL(fileURLWithPath: path)
   let parsedTree = try SyntaxTreeParser.parse(fileURL)
-  let visitor = TokenVisitor()
-  visitor.path = path
+  let visitor = TokenVisitor(path: path)
   parsedTree.walk(visitor)
   return visitor
 }
@@ -67,14 +66,8 @@ private func isSwiftFile(_ path: String) -> Bool {
 }
 
 private func hasTokamakImport(from visitor: TokenVisitor) -> Bool {
-  var doesTokamakImportExist = false
-  let imports = visitor.getNodes(get: "ImportDecl", from: visitor.tree[0])
-  for importNode in imports {
-    let importModules = visitor.getNodes(get: "AccessPathComponent", from: importNode)
-    for module in importModules where module.children[0].text == "Tokamak" {
-      doesTokamakImportExist = true
-    }
-  }
-
-  return doesTokamakImportExist
+  return visitor.root.children(with: SyntaxKind.importDecl.rawValue)
+    .flatMap { $0.children(with: SyntaxKind.accessPathComponent.rawValue) }
+    .compactMap { $0.children.first }
+    .contains { $0.text == "Tokamak" }
 }

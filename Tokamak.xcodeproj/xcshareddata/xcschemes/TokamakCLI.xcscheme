@@ -64,8 +64,8 @@
       </BuildableProductRunnable>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = "SRCROOT"
-            value = "${SRCROOT}"
+            key = "TEST_PATH"
+            value = "${SRCROOT}/ValidationTests"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
