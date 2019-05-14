@@ -65,33 +65,3 @@ extension Color {
     space = .sRGB
   }
 }
-
-private extension Int8 {
-  func hexDecoded() -> Int8? {
-    // If the character is between 0x30 and 0x39 it is a textual number
-    // 0x30 is equal to the ASCII `0` and 0x30 is equal to `0x39`
-    if self >= 0x30 && self <= 0x39 {
-      // The binary representation of this character can be found by subtracting `0` in ASCII
-      // This will then match `0` in binary. Which means `1` in ASCII matches `1` in binary
-      return self &- 0x30
-    } else if self >= 0x41 && self <= 0x46 {
-      // This block executes if the integer is within the `a-z` lowercased ASCII range
-      // Then uses the algorithm described below to find the correct representation
-      return self &- Int8.lowercasedOffset
-    } else if self >= 0x61 && self <= 0x66 {
-      // This block executes if the integer is within the `A-Z` uppercased ASCII range
-      // Then uses the algorithm described below to find the correct representation
-      return self &- Int8.uppercasedOffset
-    }
-
-    return nil
-  }
-
-  // 'a' in hexadecimal is equal to `10` in decimal
-  // So by subtracting `a` we get the lowercased character narrowed down to base10 offset by 10
-  // By adding 10 (or reducing the subtraction size by 10) we represent this character correctly as base10
-  static let lowercasedOffset: Int8 = 0x41 &- 10
-
-  // The same as the lowercasedOffset, except for uppercased ASCII
-  static let uppercasedOffset: Int8 = 0x61 &- 10
-}
