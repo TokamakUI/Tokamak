@@ -23,6 +23,8 @@ jobs:
       install: skip
       env: TEST_DEVICE='platform=iOS Simulator,OS=12.2,name=iPhone SE'
       script:
+        - swift package generate-xcodeproj --xcconfig-overrides Package.xcconfig
+        - git checkout HEAD Tokamak.xcodeproj/xcshareddata/xcschemes/TokamakCLI.xcscheme
         - set -o pipefail && xcodebuild -scheme TokamakUIKit -sdk iphonesimulator | xcpretty
         - set -o pipefail && xcodebuild -scheme TokamakAppKit -sdk macosx | xcpretty
         - set -o pipefail && xcodebuild test -scheme TokamakCLI -sdk macosx | xcpretty
