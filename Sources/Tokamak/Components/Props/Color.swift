@@ -51,6 +51,8 @@ extension Color {
   public init?(hex: String) {
     let cArray = Array(hex.replacingOccurrences(of: "#", with: ""))
 
+    guard cArray.count == 6 else { return nil }
+
     guard
       let red = Int(String(cArray[0...1]), radix: 16),
       let green = Int(String(cArray[2...3]), radix: 16),
