@@ -44,5 +44,11 @@ final class ColorTests: XCTestCase {
     XCTAssertEqual(blue.red, 0)
     XCTAssertEqual(blue.green, 0)
     XCTAssertEqual(blue.blue, 1)
+
+    let broken = Color(hex: "#P000FF")
+    XCTAssertEqual(broken, nil)
+
+    let short = Color(hex: "F01")
+    XCTAssertEqual(short, nil)
   }
 }
