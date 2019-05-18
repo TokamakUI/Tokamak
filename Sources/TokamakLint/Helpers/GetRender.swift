@@ -12,7 +12,7 @@ extension Array: Error where Element == StyleViolation {}
 
 extension Node {
   func getRender(at file: String) throws -> Node {
-    let renders = self.children(with: "render").filter {
+    let renders = children(with: "render").filter {
       // check if render type is function
       var memberDeclListItem = $0
       while memberDeclListItem.text != SyntaxKind.memberDeclListItem.rawValue
