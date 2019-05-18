@@ -16,7 +16,7 @@ struct OneRenderFunctionRule: Rule {
 
   static func validate(visitor: TokenVisitor) -> [StyleViolation] {
     do {
-      _ = try getRender(from: visitor.root, at: visitor.path)
+      _ = try visitor.root.getRender(at: visitor.path)
     } catch let error as [StyleViolation] {
       return error
     } catch {

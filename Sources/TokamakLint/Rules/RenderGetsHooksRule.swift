@@ -16,7 +16,7 @@ struct RenderGetsHooksRule: Rule {
 
   public static func validate(visitor: TokenVisitor) -> [StyleViolation] {
     do {
-      let renderFunction = try getRender(from: visitor.root, at: visitor.path)
+      let renderFunction = try visitor.root.getRender(at: visitor.path)
       guard let codeBlock = renderFunction.firstParent(
         of: SyntaxKind.codeBlockItem.rawValue
       ) else { return [StyleViolation(

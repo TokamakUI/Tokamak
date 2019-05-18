@@ -1422,17 +1422,17 @@
       "OBJ_292" = {
          isa = "PBXGroup";
          children = (
-            "Tokamak::TokamakDemo::Product",
-            "Tokamak::TokamakUIKit::Product",
-            "SwiftSyntax::SwiftSyntax::Product",
-            "Tokamak::TokamakTestRenderer::Product",
-            "Tokamak::TokamakAppKit::Product",
             "Tokamak::TokamakLint::Product",
-            "Tokamak::TokamakCLI::Product",
-            "Tokamak::TokamakCLITests::Product",
             "Tokamak::Tokamak::Product",
             "Tokamak::TokamakTests::Product",
-            "SwiftCLI::SwiftCLI::Product"
+            "SwiftSyntax::SwiftSyntax::Product",
+            "Tokamak::TokamakCLI::Product",
+            "Tokamak::TokamakTestRenderer::Product",
+            "Tokamak::TokamakCLITests::Product",
+            "Tokamak::TokamakDemo::Product",
+            "SwiftCLI::SwiftCLI::Product",
+            "Tokamak::TokamakAppKit::Product",
+            "Tokamak::TokamakUIKit::Product"
          );
          name = "Products";
          path = "";
@@ -1511,7 +1511,7 @@
       };
       "OBJ_309" = {
          isa = "PBXFileReference";
-         path = "TokamakDemo.podspec";
+         path = "codecov.yml";
          sourceTree = "<group>";
       };
       "OBJ_31" = {
@@ -1521,45 +1521,50 @@
       };
       "OBJ_310" = {
          isa = "PBXFileReference";
-         path = "Package.xcconfig";
+         path = "TokamakDemo.podspec";
          sourceTree = "<group>";
       };
       "OBJ_311" = {
          isa = "PBXFileReference";
-         path = "TokamakNetworking.gif";
+         path = "Package.xcconfig";
          sourceTree = "<group>";
       };
       "OBJ_312" = {
          isa = "PBXFileReference";
-         path = "LICENSE";
+         path = "TokamakNetworking.gif";
          sourceTree = "<group>";
       };
       "OBJ_313" = {
          isa = "PBXFileReference";
-         path = "CHANGELOG.md";
+         path = "LICENSE";
          sourceTree = "<group>";
       };
       "OBJ_314" = {
          isa = "PBXFileReference";
-         path = "Tokamak.podspec";
+         path = "CHANGELOG.md";
          sourceTree = "<group>";
       };
       "OBJ_315" = {
          isa = "PBXFileReference";
-         path = "TokamakCounterAppKit.gif";
+         path = "Tokamak.podspec";
          sourceTree = "<group>";
       };
       "OBJ_316" = {
          isa = "PBXFileReference";
-         path = "README.md";
+         path = "TokamakCounterAppKit.gif";
          sourceTree = "<group>";
       };
       "OBJ_317" = {
          isa = "PBXFileReference";
-         path = "TokamakCounter.gif";
+         path = "README.md";
          sourceTree = "<group>";
       };
       "OBJ_318" = {
+         isa = "PBXFileReference";
+         path = "TokamakCounter.gif";
+         sourceTree = "<group>";
+      };
+      "OBJ_319" = {
          isa = "PBXFileReference";
          path = "TokamakUIKit.podspec";
          sourceTree = "<group>";
@@ -1569,52 +1574,14 @@
          path = "TextView.swift";
          sourceTree = "<group>";
       };
-      "OBJ_320" = {
+      "OBJ_321" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_321",
-            "OBJ_322"
+            "OBJ_322",
+            "OBJ_323"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
-      };
-      "OBJ_321" = {
-         isa = "XCBuildConfiguration";
-         baseConfigurationReference = "OBJ_8";
-         buildSettings = {
-            ENABLE_TESTABILITY = "YES";
-            FRAMEWORK_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
-            );
-            HEADER_SEARCH_PATHS = (
-               "$(inherited)"
-            );
-            INFOPLIST_FILE = "Tokamak.xcodeproj/SwiftCLI_Info.plist";
-            LD_RUNPATH_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
-            );
-            OTHER_CFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_LDFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_SWIFT_FLAGS = (
-               "$(inherited)"
-            );
-            PRODUCT_BUNDLE_IDENTIFIER = "SwiftCLI";
-            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-            SKIP_INSTALL = "YES";
-            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-               "$(inherited)"
-            );
-            SWIFT_VERSION = "4.0";
-            TARGET_NAME = "SwiftCLI";
-         };
-         name = "Debug";
       };
       "OBJ_322" = {
          isa = "XCBuildConfiguration";
@@ -1652,12 +1619,49 @@
             SWIFT_VERSION = "4.0";
             TARGET_NAME = "SwiftCLI";
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_323" = {
+         isa = "XCBuildConfiguration";
+         baseConfigurationReference = "OBJ_8";
+         buildSettings = {
+            ENABLE_TESTABILITY = "YES";
+            FRAMEWORK_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
+            );
+            HEADER_SEARCH_PATHS = (
+               "$(inherited)"
+            );
+            INFOPLIST_FILE = "Tokamak.xcodeproj/SwiftCLI_Info.plist";
+            LD_RUNPATH_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
+            );
+            OTHER_CFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_LDFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_SWIFT_FLAGS = (
+               "$(inherited)"
+            );
+            PRODUCT_BUNDLE_IDENTIFIER = "SwiftCLI";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SKIP_INSTALL = "YES";
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+               "$(inherited)"
+            );
+            SWIFT_VERSION = "4.0";
+            TARGET_NAME = "SwiftCLI";
+         };
+         name = "Release";
+      };
+      "OBJ_324" = {
          isa = "PBXSourcesBuildPhase";
          files = (
-            "OBJ_324",
             "OBJ_325",
             "OBJ_326",
             "OBJ_327",
@@ -1677,32 +1681,29 @@
             "OBJ_341",
             "OBJ_342",
             "OBJ_343",
-            "OBJ_344"
+            "OBJ_344",
+            "OBJ_345"
          );
-      };
-      "OBJ_324" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_239";
       };
       "OBJ_325" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_240";
+         fileRef = "OBJ_239";
       };
       "OBJ_326" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_241";
+         fileRef = "OBJ_240";
       };
       "OBJ_327" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_242";
+         fileRef = "OBJ_241";
       };
       "OBJ_328" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_243";
+         fileRef = "OBJ_242";
       };
       "OBJ_329" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_244";
+         fileRef = "OBJ_243";
       };
       "OBJ_33" = {
          isa = "PBXFileReference";
@@ -1711,43 +1712,43 @@
       };
       "OBJ_330" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_245";
+         fileRef = "OBJ_244";
       };
       "OBJ_331" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_246";
+         fileRef = "OBJ_245";
       };
       "OBJ_332" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_247";
+         fileRef = "OBJ_246";
       };
       "OBJ_333" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_248";
+         fileRef = "OBJ_247";
       };
       "OBJ_334" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_249";
+         fileRef = "OBJ_248";
       };
       "OBJ_335" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_250";
+         fileRef = "OBJ_249";
       };
       "OBJ_336" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_251";
+         fileRef = "OBJ_250";
       };
       "OBJ_337" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_252";
+         fileRef = "OBJ_251";
       };
       "OBJ_338" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_253";
+         fileRef = "OBJ_252";
       };
       "OBJ_339" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_254";
+         fileRef = "OBJ_253";
       };
       "OBJ_34" = {
          isa = "PBXFileReference";
@@ -1756,55 +1757,41 @@
       };
       "OBJ_340" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_255";
+         fileRef = "OBJ_254";
       };
       "OBJ_341" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_256";
+         fileRef = "OBJ_255";
       };
       "OBJ_342" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_257";
+         fileRef = "OBJ_256";
       };
       "OBJ_343" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_258";
+         fileRef = "OBJ_257";
       };
       "OBJ_344" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_259";
+         fileRef = "OBJ_258";
       };
       "OBJ_345" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_259";
+      };
+      "OBJ_346" = {
          isa = "PBXFrameworksBuildPhase";
          files = (
          );
       };
-      "OBJ_347" = {
+      "OBJ_348" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_348",
-            "OBJ_349"
+            "OBJ_349",
+            "OBJ_350"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
-      };
-      "OBJ_348" = {
-         isa = "XCBuildConfiguration";
-         buildSettings = {
-            LD = "/usr/bin/true";
-            OTHER_SWIFT_FLAGS = (
-               "-swift-version",
-               "4",
-               "-I",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4",
-               "-target",
-               "x86_64-apple-macosx10.10",
-               "-sdk",
-               "/Applications/Xcode10.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
-            );
-            SWIFT_VERSION = "4.0";
-         };
-         name = "Debug";
       };
       "OBJ_349" = {
          isa = "XCBuildConfiguration";
@@ -1822,7 +1809,7 @@
             );
             SWIFT_VERSION = "4.0";
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_35" = {
          isa = "PBXGroup";
@@ -1838,61 +1825,41 @@
          sourceTree = "<group>";
       };
       "OBJ_350" = {
-         isa = "PBXSourcesBuildPhase";
-         files = (
-            "OBJ_351"
-         );
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+            LD = "/usr/bin/true";
+            OTHER_SWIFT_FLAGS = (
+               "-swift-version",
+               "4",
+               "-I",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4",
+               "-target",
+               "x86_64-apple-macosx10.10",
+               "-sdk",
+               "/Applications/Xcode10.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
+            );
+            SWIFT_VERSION = "4.0";
+         };
+         name = "Release";
       };
       "OBJ_351" = {
+         isa = "PBXSourcesBuildPhase";
+         files = (
+            "OBJ_352"
+         );
+      };
+      "OBJ_352" = {
          isa = "PBXBuildFile";
          fileRef = "OBJ_260";
       };
-      "OBJ_353" = {
+      "OBJ_354" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_354",
-            "OBJ_355"
+            "OBJ_355",
+            "OBJ_356"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
-      };
-      "OBJ_354" = {
-         isa = "XCBuildConfiguration";
-         baseConfigurationReference = "OBJ_8";
-         buildSettings = {
-            ENABLE_TESTABILITY = "YES";
-            FRAMEWORK_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
-            );
-            HEADER_SEARCH_PATHS = (
-               "$(inherited)"
-            );
-            INFOPLIST_FILE = "Tokamak.xcodeproj/SwiftSyntax_Info.plist";
-            LD_RUNPATH_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
-            );
-            OTHER_CFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_LDFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_SWIFT_FLAGS = (
-               "$(inherited)"
-            );
-            PRODUCT_BUNDLE_IDENTIFIER = "SwiftSyntax";
-            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-            SKIP_INSTALL = "YES";
-            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-               "$(inherited)"
-            );
-            SWIFT_VERSION = "4.2";
-            TARGET_NAME = "SwiftSyntax";
-         };
-         name = "Debug";
       };
       "OBJ_355" = {
          isa = "XCBuildConfiguration";
@@ -1930,12 +1897,49 @@
             SWIFT_VERSION = "4.2";
             TARGET_NAME = "SwiftSyntax";
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_356" = {
+         isa = "XCBuildConfiguration";
+         baseConfigurationReference = "OBJ_8";
+         buildSettings = {
+            ENABLE_TESTABILITY = "YES";
+            FRAMEWORK_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
+            );
+            HEADER_SEARCH_PATHS = (
+               "$(inherited)"
+            );
+            INFOPLIST_FILE = "Tokamak.xcodeproj/SwiftSyntax_Info.plist";
+            LD_RUNPATH_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
+            );
+            OTHER_CFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_LDFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_SWIFT_FLAGS = (
+               "$(inherited)"
+            );
+            PRODUCT_BUNDLE_IDENTIFIER = "SwiftSyntax";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SKIP_INSTALL = "YES";
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+               "$(inherited)"
+            );
+            SWIFT_VERSION = "4.2";
+            TARGET_NAME = "SwiftSyntax";
+         };
+         name = "Release";
+      };
+      "OBJ_357" = {
          isa = "PBXSourcesBuildPhase";
          files = (
-            "OBJ_357",
             "OBJ_358",
             "OBJ_359",
             "OBJ_360",
@@ -1960,20 +1964,17 @@
             "OBJ_379",
             "OBJ_380",
             "OBJ_381",
-            "OBJ_382"
+            "OBJ_382",
+            "OBJ_383"
          );
-      };
-      "OBJ_357" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_263";
       };
       "OBJ_358" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_264";
+         fileRef = "OBJ_263";
       };
       "OBJ_359" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_265";
+         fileRef = "OBJ_264";
       };
       "OBJ_36" = {
          isa = "PBXFileReference";
@@ -1982,43 +1983,43 @@
       };
       "OBJ_360" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_266";
+         fileRef = "OBJ_265";
       };
       "OBJ_361" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_267";
+         fileRef = "OBJ_266";
       };
       "OBJ_362" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_268";
+         fileRef = "OBJ_267";
       };
       "OBJ_363" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_269";
+         fileRef = "OBJ_268";
       };
       "OBJ_364" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_270";
+         fileRef = "OBJ_269";
       };
       "OBJ_365" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_271";
+         fileRef = "OBJ_270";
       };
       "OBJ_366" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_272";
+         fileRef = "OBJ_271";
       };
       "OBJ_367" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_273";
+         fileRef = "OBJ_272";
       };
       "OBJ_368" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_274";
+         fileRef = "OBJ_273";
       };
       "OBJ_369" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_275";
+         fileRef = "OBJ_274";
       };
       "OBJ_37" = {
          isa = "PBXFileReference";
@@ -2027,43 +2028,43 @@
       };
       "OBJ_370" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_276";
+         fileRef = "OBJ_275";
       };
       "OBJ_371" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_277";
+         fileRef = "OBJ_276";
       };
       "OBJ_372" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_278";
+         fileRef = "OBJ_277";
       };
       "OBJ_373" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_279";
+         fileRef = "OBJ_278";
       };
       "OBJ_374" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_281";
+         fileRef = "OBJ_279";
       };
       "OBJ_375" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_282";
+         fileRef = "OBJ_281";
       };
       "OBJ_376" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_283";
+         fileRef = "OBJ_282";
       };
       "OBJ_377" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_284";
+         fileRef = "OBJ_283";
       };
       "OBJ_378" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_285";
+         fileRef = "OBJ_284";
       };
       "OBJ_379" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_286";
+         fileRef = "OBJ_285";
       };
       "OBJ_38" = {
          isa = "PBXFileReference";
@@ -2072,47 +2073,33 @@
       };
       "OBJ_380" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_287";
+         fileRef = "OBJ_286";
       };
       "OBJ_381" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_288";
+         fileRef = "OBJ_287";
       };
       "OBJ_382" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_289";
+         fileRef = "OBJ_288";
       };
       "OBJ_383" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_289";
+      };
+      "OBJ_384" = {
          isa = "PBXFrameworksBuildPhase";
          files = (
          );
       };
-      "OBJ_385" = {
+      "OBJ_386" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_386",
-            "OBJ_387"
+            "OBJ_387",
+            "OBJ_388"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
-      };
-      "OBJ_386" = {
-         isa = "XCBuildConfiguration";
-         buildSettings = {
-            LD = "/usr/bin/true";
-            OTHER_SWIFT_FLAGS = (
-               "-swift-version",
-               "4.2",
-               "-I",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2",
-               "-target",
-               "x86_64-apple-macosx10.10",
-               "-sdk",
-               "/Applications/Xcode10.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
-            );
-            SWIFT_VERSION = "4.2";
-         };
-         name = "Debug";
       };
       "OBJ_387" = {
          isa = "XCBuildConfiguration";
@@ -2130,73 +2117,49 @@
             );
             SWIFT_VERSION = "4.2";
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_388" = {
-         isa = "PBXSourcesBuildPhase";
-         files = (
-            "OBJ_389"
-         );
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+            LD = "/usr/bin/true";
+            OTHER_SWIFT_FLAGS = (
+               "-swift-version",
+               "4.2",
+               "-I",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2",
+               "-target",
+               "x86_64-apple-macosx10.10",
+               "-sdk",
+               "/Applications/Xcode10.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
+            );
+            SWIFT_VERSION = "4.2";
+         };
+         name = "Release";
       };
       "OBJ_389" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_291";
+         isa = "PBXSourcesBuildPhase";
+         files = (
+            "OBJ_390"
+         );
       };
       "OBJ_39" = {
          isa = "PBXFileReference";
          path = "TabItem.swift";
          sourceTree = "<group>";
       };
-      "OBJ_391" = {
+      "OBJ_390" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_291";
+      };
+      "OBJ_392" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_392",
-            "OBJ_393"
+            "OBJ_393",
+            "OBJ_394"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
-      };
-      "OBJ_392" = {
-         isa = "XCBuildConfiguration";
-         baseConfigurationReference = "OBJ_8";
-         buildSettings = {
-            ENABLE_TESTABILITY = "YES";
-            FRAMEWORK_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
-            );
-            HEADER_SEARCH_PATHS = (
-               "$(inherited)"
-            );
-            INFOPLIST_FILE = "Tokamak.xcodeproj/Tokamak_Info.plist";
-            IPHONEOS_DEPLOYMENT_TARGET = "11.0";
-            LD_RUNPATH_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
-            );
-            MACOSX_DEPLOYMENT_TARGET = "10.14";
-            OTHER_CFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_LDFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_SWIFT_FLAGS = (
-               "$(inherited)"
-            );
-            PRODUCT_BUNDLE_IDENTIFIER = "Tokamak";
-            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-            SKIP_INSTALL = "YES";
-            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-               "$(inherited)"
-            );
-            SWIFT_VERSION = "5.0";
-            TARGET_NAME = "Tokamak";
-            TVOS_DEPLOYMENT_TARGET = "9.0";
-            WATCHOS_DEPLOYMENT_TARGET = "2.0";
-         };
-         name = "Debug";
       };
       "OBJ_393" = {
          isa = "XCBuildConfiguration";
@@ -2238,12 +2201,53 @@
             TVOS_DEPLOYMENT_TARGET = "9.0";
             WATCHOS_DEPLOYMENT_TARGET = "2.0";
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_394" = {
+         isa = "XCBuildConfiguration";
+         baseConfigurationReference = "OBJ_8";
+         buildSettings = {
+            ENABLE_TESTABILITY = "YES";
+            FRAMEWORK_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
+            );
+            HEADER_SEARCH_PATHS = (
+               "$(inherited)"
+            );
+            INFOPLIST_FILE = "Tokamak.xcodeproj/Tokamak_Info.plist";
+            IPHONEOS_DEPLOYMENT_TARGET = "11.0";
+            LD_RUNPATH_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
+            );
+            MACOSX_DEPLOYMENT_TARGET = "10.14";
+            OTHER_CFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_LDFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_SWIFT_FLAGS = (
+               "$(inherited)"
+            );
+            PRODUCT_BUNDLE_IDENTIFIER = "Tokamak";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SKIP_INSTALL = "YES";
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+               "$(inherited)"
+            );
+            SWIFT_VERSION = "5.0";
+            TARGET_NAME = "Tokamak";
+            TVOS_DEPLOYMENT_TARGET = "9.0";
+            WATCHOS_DEPLOYMENT_TARGET = "2.0";
+         };
+         name = "Release";
+      };
+      "OBJ_395" = {
          isa = "PBXSourcesBuildPhase";
          files = (
-            "OBJ_395",
             "OBJ_396",
             "OBJ_397",
             "OBJ_398",
@@ -2310,28 +2314,25 @@
             "OBJ_459",
             "OBJ_460",
             "OBJ_461",
-            "OBJ_462"
+            "OBJ_462",
+            "OBJ_463"
          );
-      };
-      "OBJ_395" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_11";
       };
       "OBJ_396" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_12";
+         fileRef = "OBJ_11";
       };
       "OBJ_397" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_13";
+         fileRef = "OBJ_12";
       };
       "OBJ_398" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_16";
+         fileRef = "OBJ_13";
       };
       "OBJ_399" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_17";
+         fileRef = "OBJ_16";
       };
       "OBJ_4" = {
          isa = "XCBuildConfiguration";
@@ -2377,43 +2378,43 @@
       };
       "OBJ_400" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_18";
+         fileRef = "OBJ_17";
       };
       "OBJ_401" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_19";
+         fileRef = "OBJ_18";
       };
       "OBJ_402" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_20";
+         fileRef = "OBJ_19";
       };
       "OBJ_403" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_21";
+         fileRef = "OBJ_20";
       };
       "OBJ_404" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_22";
+         fileRef = "OBJ_21";
       };
       "OBJ_405" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_23";
+         fileRef = "OBJ_22";
       };
       "OBJ_406" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_24";
+         fileRef = "OBJ_23";
       };
       "OBJ_407" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_25";
+         fileRef = "OBJ_24";
       };
       "OBJ_408" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_26";
+         fileRef = "OBJ_25";
       };
       "OBJ_409" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_27";
+         fileRef = "OBJ_26";
       };
       "OBJ_41" = {
          isa = "PBXGroup";
@@ -2437,43 +2438,43 @@
       };
       "OBJ_410" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_28";
+         fileRef = "OBJ_27";
       };
       "OBJ_411" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_29";
+         fileRef = "OBJ_28";
       };
       "OBJ_412" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_30";
+         fileRef = "OBJ_29";
       };
       "OBJ_413" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_31";
+         fileRef = "OBJ_30";
       };
       "OBJ_414" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_32";
+         fileRef = "OBJ_31";
       };
       "OBJ_415" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_33";
+         fileRef = "OBJ_32";
       };
       "OBJ_416" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_34";
+         fileRef = "OBJ_33";
       };
       "OBJ_417" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_36";
+         fileRef = "OBJ_34";
       };
       "OBJ_418" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_37";
+         fileRef = "OBJ_36";
       };
       "OBJ_419" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_38";
+         fileRef = "OBJ_37";
       };
       "OBJ_42" = {
          isa = "PBXFileReference";
@@ -2482,43 +2483,43 @@
       };
       "OBJ_420" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_39";
+         fileRef = "OBJ_38";
       };
       "OBJ_421" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_40";
+         fileRef = "OBJ_39";
       };
       "OBJ_422" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_42";
+         fileRef = "OBJ_40";
       };
       "OBJ_423" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_43";
+         fileRef = "OBJ_42";
       };
       "OBJ_424" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_45";
+         fileRef = "OBJ_43";
       };
       "OBJ_425" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_46";
+         fileRef = "OBJ_45";
       };
       "OBJ_426" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_47";
+         fileRef = "OBJ_46";
       };
       "OBJ_427" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_48";
+         fileRef = "OBJ_47";
       };
       "OBJ_428" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_49";
+         fileRef = "OBJ_48";
       };
       "OBJ_429" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_50";
+         fileRef = "OBJ_49";
       };
       "OBJ_43" = {
          isa = "PBXFileReference";
@@ -2527,43 +2528,43 @@
       };
       "OBJ_430" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_51";
+         fileRef = "OBJ_50";
       };
       "OBJ_431" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_52";
+         fileRef = "OBJ_51";
       };
       "OBJ_432" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_53";
+         fileRef = "OBJ_52";
       };
       "OBJ_433" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_54";
+         fileRef = "OBJ_53";
       };
       "OBJ_434" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_55";
+         fileRef = "OBJ_54";
       };
       "OBJ_435" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_56";
+         fileRef = "OBJ_55";
       };
       "OBJ_436" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_57";
+         fileRef = "OBJ_56";
       };
       "OBJ_437" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_58";
+         fileRef = "OBJ_57";
       };
       "OBJ_438" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_59";
+         fileRef = "OBJ_58";
       };
       "OBJ_439" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_60";
+         fileRef = "OBJ_59";
       };
       "OBJ_44" = {
          isa = "PBXGroup";
@@ -2591,43 +2592,43 @@
       };
       "OBJ_440" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_61";
+         fileRef = "OBJ_60";
       };
       "OBJ_441" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_62";
+         fileRef = "OBJ_61";
       };
       "OBJ_442" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_63";
+         fileRef = "OBJ_62";
       };
       "OBJ_443" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_64";
+         fileRef = "OBJ_63";
       };
       "OBJ_444" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_65";
+         fileRef = "OBJ_64";
       };
       "OBJ_445" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_66";
+         fileRef = "OBJ_65";
       };
       "OBJ_446" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_67";
+         fileRef = "OBJ_66";
       };
       "OBJ_447" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_68";
+         fileRef = "OBJ_67";
       };
       "OBJ_448" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_69";
+         fileRef = "OBJ_68";
       };
       "OBJ_449" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_70";
+         fileRef = "OBJ_69";
       };
       "OBJ_45" = {
          isa = "PBXFileReference";
@@ -2636,43 +2637,43 @@
       };
       "OBJ_450" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_72";
+         fileRef = "OBJ_70";
       };
       "OBJ_451" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_73";
+         fileRef = "OBJ_72";
       };
       "OBJ_452" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_74";
+         fileRef = "OBJ_73";
       };
       "OBJ_453" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_75";
+         fileRef = "OBJ_74";
       };
       "OBJ_454" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_77";
+         fileRef = "OBJ_75";
       };
       "OBJ_455" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_78";
+         fileRef = "OBJ_77";
       };
       "OBJ_456" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_79";
+         fileRef = "OBJ_78";
       };
       "OBJ_457" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_80";
+         fileRef = "OBJ_79";
       };
       "OBJ_458" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_81";
+         fileRef = "OBJ_80";
       };
       "OBJ_459" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_82";
+         fileRef = "OBJ_81";
       };
       "OBJ_46" = {
          isa = "PBXFileReference";
@@ -2681,71 +2682,33 @@
       };
       "OBJ_460" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_83";
+         fileRef = "OBJ_82";
       };
       "OBJ_461" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_84";
+         fileRef = "OBJ_83";
       };
       "OBJ_462" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_85";
+         fileRef = "OBJ_84";
       };
       "OBJ_463" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_85";
+      };
+      "OBJ_464" = {
          isa = "PBXFrameworksBuildPhase";
          files = (
          );
       };
-      "OBJ_465" = {
+      "OBJ_466" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_466",
-            "OBJ_467"
+            "OBJ_467",
+            "OBJ_468"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
-      };
-      "OBJ_466" = {
-         isa = "XCBuildConfiguration";
-         baseConfigurationReference = "OBJ_8";
-         buildSettings = {
-            ENABLE_TESTABILITY = "YES";
-            FRAMEWORK_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
-            );
-            HEADER_SEARCH_PATHS = (
-               "$(inherited)"
-            );
-            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakAppKit_Info.plist";
-            IPHONEOS_DEPLOYMENT_TARGET = "11.0";
-            LD_RUNPATH_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
-            );
-            MACOSX_DEPLOYMENT_TARGET = "10.14";
-            OTHER_CFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_LDFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_SWIFT_FLAGS = (
-               "$(inherited)"
-            );
-            PRODUCT_BUNDLE_IDENTIFIER = "TokamakAppKit";
-            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-            SKIP_INSTALL = "YES";
-            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-               "$(inherited)"
-            );
-            SWIFT_VERSION = "5.0";
-            TARGET_NAME = "TokamakAppKit";
-            TVOS_DEPLOYMENT_TARGET = "9.0";
-            WATCHOS_DEPLOYMENT_TARGET = "2.0";
-         };
-         name = "Debug";
       };
       "OBJ_467" = {
          isa = "XCBuildConfiguration";
@@ -2787,12 +2750,53 @@
             TVOS_DEPLOYMENT_TARGET = "9.0";
             WATCHOS_DEPLOYMENT_TARGET = "2.0";
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_468" = {
+         isa = "XCBuildConfiguration";
+         baseConfigurationReference = "OBJ_8";
+         buildSettings = {
+            ENABLE_TESTABILITY = "YES";
+            FRAMEWORK_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
+            );
+            HEADER_SEARCH_PATHS = (
+               "$(inherited)"
+            );
+            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakAppKit_Info.plist";
+            IPHONEOS_DEPLOYMENT_TARGET = "11.0";
+            LD_RUNPATH_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
+            );
+            MACOSX_DEPLOYMENT_TARGET = "10.14";
+            OTHER_CFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_LDFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_SWIFT_FLAGS = (
+               "$(inherited)"
+            );
+            PRODUCT_BUNDLE_IDENTIFIER = "TokamakAppKit";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SKIP_INSTALL = "YES";
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+               "$(inherited)"
+            );
+            SWIFT_VERSION = "5.0";
+            TARGET_NAME = "TokamakAppKit";
+            TVOS_DEPLOYMENT_TARGET = "9.0";
+            WATCHOS_DEPLOYMENT_TARGET = "2.0";
+         };
+         name = "Release";
+      };
+      "OBJ_469" = {
          isa = "PBXSourcesBuildPhase";
          files = (
-            "OBJ_469",
             "OBJ_470",
             "OBJ_471",
             "OBJ_472",
@@ -2826,12 +2830,9 @@
             "OBJ_500",
             "OBJ_501",
             "OBJ_502",
-            "OBJ_503"
+            "OBJ_503",
+            "OBJ_504"
          );
-      };
-      "OBJ_469" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_87";
       };
       "OBJ_47" = {
          isa = "PBXFileReference";
@@ -2840,43 +2841,43 @@
       };
       "OBJ_470" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_89";
+         fileRef = "OBJ_87";
       };
       "OBJ_471" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_90";
+         fileRef = "OBJ_89";
       };
       "OBJ_472" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_91";
+         fileRef = "OBJ_90";
       };
       "OBJ_473" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_92";
+         fileRef = "OBJ_91";
       };
       "OBJ_474" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_95";
+         fileRef = "OBJ_92";
       };
       "OBJ_475" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_96";
+         fileRef = "OBJ_95";
       };
       "OBJ_476" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_97";
+         fileRef = "OBJ_96";
       };
       "OBJ_477" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_98";
+         fileRef = "OBJ_97";
       };
       "OBJ_478" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_100";
+         fileRef = "OBJ_98";
       };
       "OBJ_479" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_102";
+         fileRef = "OBJ_100";
       };
       "OBJ_48" = {
          isa = "PBXFileReference";
@@ -2885,43 +2886,43 @@
       };
       "OBJ_480" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_103";
+         fileRef = "OBJ_102";
       };
       "OBJ_481" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_104";
+         fileRef = "OBJ_103";
       };
       "OBJ_482" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_105";
+         fileRef = "OBJ_104";
       };
       "OBJ_483" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_106";
+         fileRef = "OBJ_105";
       };
       "OBJ_484" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_107";
+         fileRef = "OBJ_106";
       };
       "OBJ_485" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_108";
+         fileRef = "OBJ_107";
       };
       "OBJ_486" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_109";
+         fileRef = "OBJ_108";
       };
       "OBJ_487" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_110";
+         fileRef = "OBJ_109";
       };
       "OBJ_488" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_111";
+         fileRef = "OBJ_110";
       };
       "OBJ_489" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_112";
+         fileRef = "OBJ_111";
       };
       "OBJ_49" = {
          isa = "PBXFileReference";
@@ -2930,43 +2931,43 @@
       };
       "OBJ_490" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_113";
+         fileRef = "OBJ_112";
       };
       "OBJ_491" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_114";
+         fileRef = "OBJ_113";
       };
       "OBJ_492" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_115";
+         fileRef = "OBJ_114";
       };
       "OBJ_493" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_116";
+         fileRef = "OBJ_115";
       };
       "OBJ_494" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_117";
+         fileRef = "OBJ_116";
       };
       "OBJ_495" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_118";
+         fileRef = "OBJ_117";
       };
       "OBJ_496" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_119";
+         fileRef = "OBJ_118";
       };
       "OBJ_497" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_120";
+         fileRef = "OBJ_119";
       };
       "OBJ_498" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_121";
+         fileRef = "OBJ_120";
       };
       "OBJ_499" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_122";
+         fileRef = "OBJ_121";
       };
       "OBJ_5" = {
          isa = "PBXGroup";
@@ -2991,7 +2992,8 @@
             "OBJ_315",
             "OBJ_316",
             "OBJ_317",
-            "OBJ_318"
+            "OBJ_318",
+            "OBJ_319"
          );
          path = "";
          sourceTree = "<group>";
@@ -3003,82 +3005,46 @@
       };
       "OBJ_500" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_124";
+         fileRef = "OBJ_122";
       };
       "OBJ_501" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_125";
+         fileRef = "OBJ_124";
       };
       "OBJ_502" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_126";
+         fileRef = "OBJ_125";
       };
       "OBJ_503" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_127";
+         fileRef = "OBJ_126";
       };
       "OBJ_504" = {
-         isa = "PBXFrameworksBuildPhase";
-         files = (
-            "OBJ_505"
-         );
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_127";
       };
       "OBJ_505" = {
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+            "OBJ_506"
+         );
+      };
+      "OBJ_506" = {
          isa = "PBXBuildFile";
          fileRef = "Tokamak::Tokamak::Product";
       };
-      "OBJ_506" = {
+      "OBJ_507" = {
          isa = "PBXTargetDependency";
          target = "Tokamak::Tokamak";
       };
-      "OBJ_508" = {
+      "OBJ_509" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_509",
-            "OBJ_510"
+            "OBJ_510",
+            "OBJ_511"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
-      };
-      "OBJ_509" = {
-         isa = "XCBuildConfiguration";
-         baseConfigurationReference = "OBJ_8";
-         buildSettings = {
-            FRAMEWORK_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
-            );
-            HEADER_SEARCH_PATHS = (
-               "$(inherited)"
-            );
-            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakCLI_Info.plist";
-            IPHONEOS_DEPLOYMENT_TARGET = "11.0";
-            LD_RUNPATH_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
-               "@executable_path"
-            );
-            MACOSX_DEPLOYMENT_TARGET = "10.14";
-            OTHER_CFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_LDFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_SWIFT_FLAGS = (
-               "$(inherited)"
-            );
-            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-               "$(inherited)"
-            );
-            SWIFT_FORCE_DYNAMIC_LINK_STDLIB = "YES";
-            SWIFT_FORCE_STATIC_LINK_STDLIB = "NO";
-            SWIFT_VERSION = "5.0";
-            TARGET_NAME = "TokamakCLI";
-            TVOS_DEPLOYMENT_TARGET = "9.0";
-            WATCHOS_DEPLOYMENT_TARGET = "2.0";
-         };
-         name = "Debug";
       };
       "OBJ_51" = {
          isa = "PBXFileReference";
@@ -3123,70 +3089,12 @@
             TVOS_DEPLOYMENT_TARGET = "9.0";
             WATCHOS_DEPLOYMENT_TARGET = "2.0";
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_511" = {
-         isa = "PBXSourcesBuildPhase";
-         files = (
-            "OBJ_512"
-         );
-      };
-      "OBJ_512" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_129";
-      };
-      "OBJ_513" = {
-         isa = "PBXFrameworksBuildPhase";
-         files = (
-            "OBJ_514",
-            "OBJ_515",
-            "OBJ_516"
-         );
-      };
-      "OBJ_514" = {
-         isa = "PBXBuildFile";
-         fileRef = "SwiftCLI::SwiftCLI::Product";
-      };
-      "OBJ_515" = {
-         isa = "PBXBuildFile";
-         fileRef = "Tokamak::TokamakLint::Product";
-      };
-      "OBJ_516" = {
-         isa = "PBXBuildFile";
-         fileRef = "SwiftSyntax::SwiftSyntax::Product";
-      };
-      "OBJ_517" = {
-         isa = "PBXTargetDependency";
-         target = "SwiftCLI::SwiftCLI";
-      };
-      "OBJ_518" = {
-         isa = "PBXTargetDependency";
-         target = "Tokamak::TokamakLint";
-      };
-      "OBJ_52" = {
-         isa = "PBXFileReference";
-         path = "Height.swift";
-         sourceTree = "<group>";
-      };
-      "OBJ_520" = {
-         isa = "PBXTargetDependency";
-         target = "SwiftSyntax::SwiftSyntax";
-      };
-      "OBJ_522" = {
-         isa = "XCConfigurationList";
-         buildConfigurations = (
-            "OBJ_523",
-            "OBJ_524"
-         );
-         defaultConfigurationIsVisible = "0";
-         defaultConfigurationName = "Release";
-      };
-      "OBJ_523" = {
          isa = "XCBuildConfiguration";
          baseConfigurationReference = "OBJ_8";
          buildSettings = {
-            CLANG_ENABLE_MODULES = "YES";
-            EMBEDDED_CONTENT_CONTAINS_SWIFT = "YES";
             FRAMEWORK_SEARCH_PATHS = (
                "$(inherited)",
                "$(PLATFORM_DIR)/Developer/Library/Frameworks"
@@ -3194,12 +3102,12 @@
             HEADER_SEARCH_PATHS = (
                "$(inherited)"
             );
-            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakCLITests_Info.plist";
+            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakCLI_Info.plist";
             IPHONEOS_DEPLOYMENT_TARGET = "11.0";
             LD_RUNPATH_SEARCH_PATHS = (
                "$(inherited)",
-               "@loader_path/../Frameworks",
-               "@loader_path/Frameworks"
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+               "@executable_path"
             );
             MACOSX_DEPLOYMENT_TARGET = "10.14";
             OTHER_CFLAGS = (
@@ -3214,12 +3122,70 @@
             SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
                "$(inherited)"
             );
+            SWIFT_FORCE_DYNAMIC_LINK_STDLIB = "YES";
+            SWIFT_FORCE_STATIC_LINK_STDLIB = "NO";
             SWIFT_VERSION = "5.0";
-            TARGET_NAME = "TokamakCLITests";
+            TARGET_NAME = "TokamakCLI";
             TVOS_DEPLOYMENT_TARGET = "9.0";
             WATCHOS_DEPLOYMENT_TARGET = "2.0";
          };
-         name = "Debug";
+         name = "Release";
+      };
+      "OBJ_512" = {
+         isa = "PBXSourcesBuildPhase";
+         files = (
+            "OBJ_513"
+         );
+      };
+      "OBJ_513" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_129";
+      };
+      "OBJ_514" = {
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+            "OBJ_515",
+            "OBJ_516",
+            "OBJ_517"
+         );
+      };
+      "OBJ_515" = {
+         isa = "PBXBuildFile";
+         fileRef = "SwiftCLI::SwiftCLI::Product";
+      };
+      "OBJ_516" = {
+         isa = "PBXBuildFile";
+         fileRef = "Tokamak::TokamakLint::Product";
+      };
+      "OBJ_517" = {
+         isa = "PBXBuildFile";
+         fileRef = "SwiftSyntax::SwiftSyntax::Product";
+      };
+      "OBJ_518" = {
+         isa = "PBXTargetDependency";
+         target = "SwiftCLI::SwiftCLI";
+      };
+      "OBJ_519" = {
+         isa = "PBXTargetDependency";
+         target = "Tokamak::TokamakLint";
+      };
+      "OBJ_52" = {
+         isa = "PBXFileReference";
+         path = "Height.swift";
+         sourceTree = "<group>";
+      };
+      "OBJ_521" = {
+         isa = "PBXTargetDependency";
+         target = "SwiftSyntax::SwiftSyntax";
+      };
+      "OBJ_523" = {
+         isa = "XCConfigurationList";
+         buildConfigurations = (
+            "OBJ_524",
+            "OBJ_525"
+         );
+         defaultConfigurationIsVisible = "0";
+         defaultConfigurationName = "Release";
       };
       "OBJ_524" = {
          isa = "XCBuildConfiguration";
@@ -3259,75 +3225,14 @@
             TVOS_DEPLOYMENT_TARGET = "9.0";
             WATCHOS_DEPLOYMENT_TARGET = "2.0";
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_525" = {
-         isa = "PBXSourcesBuildPhase";
-         files = (
-            "OBJ_526",
-            "OBJ_527",
-            "OBJ_528",
-            "OBJ_529"
-         );
-      };
-      "OBJ_526" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_225";
-      };
-      "OBJ_527" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_227";
-      };
-      "OBJ_528" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_228";
-      };
-      "OBJ_529" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_229";
-      };
-      "OBJ_53" = {
-         isa = "PBXFileReference";
-         path = "LastBaseline.swift";
-         sourceTree = "<group>";
-      };
-      "OBJ_530" = {
-         isa = "PBXFrameworksBuildPhase";
-         files = (
-            "OBJ_531",
-            "OBJ_532"
-         );
-      };
-      "OBJ_531" = {
-         isa = "PBXBuildFile";
-         fileRef = "Tokamak::TokamakLint::Product";
-      };
-      "OBJ_532" = {
-         isa = "PBXBuildFile";
-         fileRef = "SwiftSyntax::SwiftSyntax::Product";
-      };
-      "OBJ_533" = {
-         isa = "PBXTargetDependency";
-         target = "Tokamak::TokamakLint";
-      };
-      "OBJ_534" = {
-         isa = "PBXTargetDependency";
-         target = "SwiftSyntax::SwiftSyntax";
-      };
-      "OBJ_536" = {
-         isa = "XCConfigurationList";
-         buildConfigurations = (
-            "OBJ_537",
-            "OBJ_538"
-         );
-         defaultConfigurationIsVisible = "0";
-         defaultConfigurationName = "Release";
-      };
-      "OBJ_537" = {
          isa = "XCBuildConfiguration";
          baseConfigurationReference = "OBJ_8";
          buildSettings = {
-            ENABLE_TESTABILITY = "YES";
+            CLANG_ENABLE_MODULES = "YES";
+            EMBEDDED_CONTENT_CONTAINS_SWIFT = "YES";
             FRAMEWORK_SEARCH_PATHS = (
                "$(inherited)",
                "$(PLATFORM_DIR)/Developer/Library/Frameworks"
@@ -3335,11 +3240,12 @@
             HEADER_SEARCH_PATHS = (
                "$(inherited)"
             );
-            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakDemo_Info.plist";
+            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakCLITests_Info.plist";
             IPHONEOS_DEPLOYMENT_TARGET = "11.0";
             LD_RUNPATH_SEARCH_PATHS = (
                "$(inherited)",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
+               "@loader_path/../Frameworks",
+               "@loader_path/Frameworks"
             );
             MACOSX_DEPLOYMENT_TARGET = "10.14";
             OTHER_CFLAGS = (
@@ -3351,19 +3257,77 @@
             OTHER_SWIFT_FLAGS = (
                "$(inherited)"
             );
-            PRODUCT_BUNDLE_IDENTIFIER = "TokamakDemo";
-            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-            SKIP_INSTALL = "YES";
             SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
                "$(inherited)"
             );
             SWIFT_VERSION = "5.0";
-            TARGET_NAME = "TokamakDemo";
+            TARGET_NAME = "TokamakCLITests";
             TVOS_DEPLOYMENT_TARGET = "9.0";
             WATCHOS_DEPLOYMENT_TARGET = "2.0";
          };
-         name = "Debug";
+         name = "Release";
+      };
+      "OBJ_526" = {
+         isa = "PBXSourcesBuildPhase";
+         files = (
+            "OBJ_527",
+            "OBJ_528",
+            "OBJ_529",
+            "OBJ_530"
+         );
+      };
+      "OBJ_527" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_225";
+      };
+      "OBJ_528" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_227";
+      };
+      "OBJ_529" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_228";
+      };
+      "OBJ_53" = {
+         isa = "PBXFileReference";
+         path = "LastBaseline.swift";
+         sourceTree = "<group>";
+      };
+      "OBJ_530" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_229";
+      };
+      "OBJ_531" = {
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+            "OBJ_532",
+            "OBJ_533"
+         );
+      };
+      "OBJ_532" = {
+         isa = "PBXBuildFile";
+         fileRef = "Tokamak::TokamakLint::Product";
+      };
+      "OBJ_533" = {
+         isa = "PBXBuildFile";
+         fileRef = "SwiftSyntax::SwiftSyntax::Product";
+      };
+      "OBJ_534" = {
+         isa = "PBXTargetDependency";
+         target = "Tokamak::TokamakLint";
+      };
+      "OBJ_535" = {
+         isa = "PBXTargetDependency";
+         target = "SwiftSyntax::SwiftSyntax";
+      };
+      "OBJ_537" = {
+         isa = "XCConfigurationList";
+         buildConfigurations = (
+            "OBJ_538",
+            "OBJ_539"
+         );
+         defaultConfigurationIsVisible = "0";
+         defaultConfigurationName = "Release";
       };
       "OBJ_538" = {
          isa = "XCBuildConfiguration";
@@ -3405,47 +3369,9 @@
             TVOS_DEPLOYMENT_TARGET = "9.0";
             WATCHOS_DEPLOYMENT_TARGET = "2.0";
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_539" = {
-         isa = "PBXSourcesBuildPhase";
-         files = (
-            "OBJ_540"
-         );
-      };
-      "OBJ_54" = {
-         isa = "PBXFileReference";
-         path = "Leading.swift";
-         sourceTree = "<group>";
-      };
-      "OBJ_540" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_131";
-      };
-      "OBJ_541" = {
-         isa = "PBXFrameworksBuildPhase";
-         files = (
-            "OBJ_542"
-         );
-      };
-      "OBJ_542" = {
-         isa = "PBXBuildFile";
-         fileRef = "Tokamak::Tokamak::Product";
-      };
-      "OBJ_543" = {
-         isa = "PBXTargetDependency";
-         target = "Tokamak::Tokamak";
-      };
-      "OBJ_544" = {
-         isa = "XCConfigurationList";
-         buildConfigurations = (
-            "OBJ_545",
-            "OBJ_546"
-         );
-         defaultConfigurationIsVisible = "0";
-         defaultConfigurationName = "Release";
-      };
-      "OBJ_545" = {
          isa = "XCBuildConfiguration";
          baseConfigurationReference = "OBJ_8";
          buildSettings = {
@@ -3457,7 +3383,7 @@
             HEADER_SEARCH_PATHS = (
                "$(inherited)"
             );
-            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakLint_Info.plist";
+            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakDemo_Info.plist";
             IPHONEOS_DEPLOYMENT_TARGET = "11.0";
             LD_RUNPATH_SEARCH_PATHS = (
                "$(inherited)",
@@ -3473,7 +3399,7 @@
             OTHER_SWIFT_FLAGS = (
                "$(inherited)"
             );
-            PRODUCT_BUNDLE_IDENTIFIER = "TokamakLint";
+            PRODUCT_BUNDLE_IDENTIFIER = "TokamakDemo";
             PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
             PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
             SKIP_INSTALL = "YES";
@@ -3481,11 +3407,49 @@
                "$(inherited)"
             );
             SWIFT_VERSION = "5.0";
-            TARGET_NAME = "TokamakLint";
+            TARGET_NAME = "TokamakDemo";
             TVOS_DEPLOYMENT_TARGET = "9.0";
             WATCHOS_DEPLOYMENT_TARGET = "2.0";
          };
-         name = "Debug";
+         name = "Release";
+      };
+      "OBJ_54" = {
+         isa = "PBXFileReference";
+         path = "Leading.swift";
+         sourceTree = "<group>";
+      };
+      "OBJ_540" = {
+         isa = "PBXSourcesBuildPhase";
+         files = (
+            "OBJ_541"
+         );
+      };
+      "OBJ_541" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_131";
+      };
+      "OBJ_542" = {
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+            "OBJ_543"
+         );
+      };
+      "OBJ_543" = {
+         isa = "PBXBuildFile";
+         fileRef = "Tokamak::Tokamak::Product";
+      };
+      "OBJ_544" = {
+         isa = "PBXTargetDependency";
+         target = "Tokamak::Tokamak";
+      };
+      "OBJ_545" = {
+         isa = "XCConfigurationList";
+         buildConfigurations = (
+            "OBJ_546",
+            "OBJ_547"
+         );
+         defaultConfigurationIsVisible = "0";
+         defaultConfigurationName = "Release";
       };
       "OBJ_546" = {
          isa = "XCBuildConfiguration";
@@ -3527,12 +3491,53 @@
             TVOS_DEPLOYMENT_TARGET = "9.0";
             WATCHOS_DEPLOYMENT_TARGET = "2.0";
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_547" = {
+         isa = "XCBuildConfiguration";
+         baseConfigurationReference = "OBJ_8";
+         buildSettings = {
+            ENABLE_TESTABILITY = "YES";
+            FRAMEWORK_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
+            );
+            HEADER_SEARCH_PATHS = (
+               "$(inherited)"
+            );
+            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakLint_Info.plist";
+            IPHONEOS_DEPLOYMENT_TARGET = "11.0";
+            LD_RUNPATH_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
+            );
+            MACOSX_DEPLOYMENT_TARGET = "10.14";
+            OTHER_CFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_LDFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_SWIFT_FLAGS = (
+               "$(inherited)"
+            );
+            PRODUCT_BUNDLE_IDENTIFIER = "TokamakLint";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SKIP_INSTALL = "YES";
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+               "$(inherited)"
+            );
+            SWIFT_VERSION = "5.0";
+            TARGET_NAME = "TokamakLint";
+            TVOS_DEPLOYMENT_TARGET = "9.0";
+            WATCHOS_DEPLOYMENT_TARGET = "2.0";
+         };
+         name = "Release";
+      };
+      "OBJ_548" = {
          isa = "PBXSourcesBuildPhase";
          files = (
-            "OBJ_548",
             "OBJ_549",
             "OBJ_550",
             "OBJ_551",
@@ -3545,16 +3550,13 @@
             "OBJ_558",
             "OBJ_559",
             "OBJ_560",
-            "OBJ_561"
+            "OBJ_561",
+            "OBJ_562"
          );
-      };
-      "OBJ_548" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_134";
       };
       "OBJ_549" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_136";
+         fileRef = "OBJ_134";
       };
       "OBJ_55" = {
          isa = "PBXFileReference";
@@ -3563,43 +3565,43 @@
       };
       "OBJ_550" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_137";
+         fileRef = "OBJ_136";
       };
       "OBJ_551" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_138";
+         fileRef = "OBJ_137";
       };
       "OBJ_552" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_139";
+         fileRef = "OBJ_138";
       };
       "OBJ_553" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_140";
+         fileRef = "OBJ_139";
       };
       "OBJ_554" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_141";
+         fileRef = "OBJ_140";
       };
       "OBJ_555" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_142";
+         fileRef = "OBJ_141";
       };
       "OBJ_556" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_144";
+         fileRef = "OBJ_142";
       };
       "OBJ_557" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_145";
+         fileRef = "OBJ_144";
       };
       "OBJ_558" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_147";
+         fileRef = "OBJ_145";
       };
       "OBJ_559" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_149";
+         fileRef = "OBJ_147";
       };
       "OBJ_56" = {
          isa = "PBXFileReference";
@@ -3608,52 +3610,38 @@
       };
       "OBJ_560" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_150";
+         fileRef = "OBJ_149";
       };
       "OBJ_561" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_151";
+         fileRef = "OBJ_150";
       };
       "OBJ_562" = {
-         isa = "PBXFrameworksBuildPhase";
-         files = (
-            "OBJ_563"
-         );
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_151";
       };
       "OBJ_563" = {
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+            "OBJ_564"
+         );
+      };
+      "OBJ_564" = {
          isa = "PBXBuildFile";
          fileRef = "SwiftSyntax::SwiftSyntax::Product";
       };
-      "OBJ_564" = {
+      "OBJ_565" = {
          isa = "PBXTargetDependency";
          target = "SwiftSyntax::SwiftSyntax";
       };
-      "OBJ_566" = {
+      "OBJ_567" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_567",
-            "OBJ_568"
+            "OBJ_568",
+            "OBJ_569"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
-      };
-      "OBJ_567" = {
-         isa = "XCBuildConfiguration";
-         buildSettings = {
-            LD = "/usr/bin/true";
-            OTHER_SWIFT_FLAGS = (
-               "-swift-version",
-               "5",
-               "-I",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2",
-               "-target",
-               "x86_64-apple-macosx10.10",
-               "-sdk",
-               "/Applications/Xcode10.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
-            );
-            SWIFT_VERSION = "5.0";
-         };
-         name = "Debug";
       };
       "OBJ_568" = {
          isa = "XCBuildConfiguration";
@@ -3671,13 +3659,25 @@
             );
             SWIFT_VERSION = "5.0";
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_569" = {
-         isa = "PBXSourcesBuildPhase";
-         files = (
-            "OBJ_570"
-         );
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+            LD = "/usr/bin/true";
+            OTHER_SWIFT_FLAGS = (
+               "-swift-version",
+               "5",
+               "-I",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2",
+               "-target",
+               "x86_64-apple-macosx10.10",
+               "-sdk",
+               "/Applications/Xcode10.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
+            );
+            SWIFT_VERSION = "5.0";
+         };
+         name = "Release";
       };
       "OBJ_57" = {
          isa = "PBXFileReference";
@@ -3685,46 +3685,43 @@
          sourceTree = "<group>";
       };
       "OBJ_570" = {
+         isa = "PBXSourcesBuildPhase";
+         files = (
+            "OBJ_571"
+         );
+      };
+      "OBJ_571" = {
          isa = "PBXBuildFile";
          fileRef = "OBJ_6";
       };
-      "OBJ_572" = {
+      "OBJ_573" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_573",
-            "OBJ_574"
+            "OBJ_574",
+            "OBJ_575"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
-      };
-      "OBJ_573" = {
-         isa = "XCBuildConfiguration";
-         buildSettings = {
-         };
-         name = "Debug";
       };
       "OBJ_574" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_575" = {
-         isa = "PBXTargetDependency";
-         target = "Tokamak::TokamakCLITests";
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+         };
+         name = "Release";
       };
       "OBJ_576" = {
          isa = "PBXTargetDependency";
          target = "Tokamak::TokamakTests";
       };
-      "OBJ_579" = {
-         isa = "XCConfigurationList";
-         buildConfigurations = (
-            "OBJ_580",
-            "OBJ_581"
-         );
-         defaultConfigurationIsVisible = "0";
-         defaultConfigurationName = "Release";
+      "OBJ_578" = {
+         isa = "PBXTargetDependency";
+         target = "Tokamak::TokamakCLITests";
       };
       "OBJ_58" = {
          isa = "PBXFileReference";
@@ -3732,46 +3729,13 @@
          sourceTree = "<group>";
       };
       "OBJ_580" = {
-         isa = "XCBuildConfiguration";
-         baseConfigurationReference = "OBJ_8";
-         buildSettings = {
-            ENABLE_TESTABILITY = "YES";
-            FRAMEWORK_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
-            );
-            HEADER_SEARCH_PATHS = (
-               "$(inherited)"
-            );
-            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakTestRenderer_Info.plist";
-            IPHONEOS_DEPLOYMENT_TARGET = "11.0";
-            LD_RUNPATH_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
-            );
-            MACOSX_DEPLOYMENT_TARGET = "10.14";
-            OTHER_CFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_LDFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_SWIFT_FLAGS = (
-               "$(inherited)"
-            );
-            PRODUCT_BUNDLE_IDENTIFIER = "TokamakTestRenderer";
-            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-            SKIP_INSTALL = "YES";
-            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-               "$(inherited)"
-            );
-            SWIFT_VERSION = "5.0";
-            TARGET_NAME = "TokamakTestRenderer";
-            TVOS_DEPLOYMENT_TARGET = "9.0";
-            WATCHOS_DEPLOYMENT_TARGET = "2.0";
-         };
-         name = "Debug";
+         isa = "XCConfigurationList";
+         buildConfigurations = (
+            "OBJ_581",
+            "OBJ_582"
+         );
+         defaultConfigurationIsVisible = "0";
+         defaultConfigurationName = "Release";
       };
       "OBJ_581" = {
          isa = "XCBuildConfiguration";
@@ -3813,52 +3777,13 @@
             TVOS_DEPLOYMENT_TARGET = "9.0";
             WATCHOS_DEPLOYMENT_TARGET = "2.0";
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_582" = {
-         isa = "PBXSourcesBuildPhase";
-         files = (
-            "OBJ_583",
-            "OBJ_584"
-         );
-      };
-      "OBJ_583" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_153";
-      };
-      "OBJ_584" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_154";
-      };
-      "OBJ_585" = {
-         isa = "PBXFrameworksBuildPhase";
-         files = (
-            "OBJ_586"
-         );
-      };
-      "OBJ_586" = {
-         isa = "PBXBuildFile";
-         fileRef = "Tokamak::Tokamak::Product";
-      };
-      "OBJ_587" = {
-         isa = "PBXTargetDependency";
-         target = "Tokamak::Tokamak";
-      };
-      "OBJ_588" = {
-         isa = "XCConfigurationList";
-         buildConfigurations = (
-            "OBJ_589",
-            "OBJ_590"
-         );
-         defaultConfigurationIsVisible = "0";
-         defaultConfigurationName = "Release";
-      };
-      "OBJ_589" = {
          isa = "XCBuildConfiguration";
          baseConfigurationReference = "OBJ_8";
          buildSettings = {
-            CLANG_ENABLE_MODULES = "YES";
-            EMBEDDED_CONTENT_CONTAINS_SWIFT = "YES";
+            ENABLE_TESTABILITY = "YES";
             FRAMEWORK_SEARCH_PATHS = (
                "$(inherited)",
                "$(PLATFORM_DIR)/Developer/Library/Frameworks"
@@ -3866,12 +3791,11 @@
             HEADER_SEARCH_PATHS = (
                "$(inherited)"
             );
-            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakTests_Info.plist";
+            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakTestRenderer_Info.plist";
             IPHONEOS_DEPLOYMENT_TARGET = "11.0";
             LD_RUNPATH_SEARCH_PATHS = (
                "$(inherited)",
-               "@loader_path/../Frameworks",
-               "@loader_path/Frameworks"
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
             );
             MACOSX_DEPLOYMENT_TARGET = "10.14";
             OTHER_CFLAGS = (
@@ -3883,15 +3807,57 @@
             OTHER_SWIFT_FLAGS = (
                "$(inherited)"
             );
+            PRODUCT_BUNDLE_IDENTIFIER = "TokamakTestRenderer";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SKIP_INSTALL = "YES";
             SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
                "$(inherited)"
             );
             SWIFT_VERSION = "5.0";
-            TARGET_NAME = "TokamakTests";
+            TARGET_NAME = "TokamakTestRenderer";
             TVOS_DEPLOYMENT_TARGET = "9.0";
             WATCHOS_DEPLOYMENT_TARGET = "2.0";
          };
-         name = "Debug";
+         name = "Release";
+      };
+      "OBJ_583" = {
+         isa = "PBXSourcesBuildPhase";
+         files = (
+            "OBJ_584",
+            "OBJ_585"
+         );
+      };
+      "OBJ_584" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_153";
+      };
+      "OBJ_585" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_154";
+      };
+      "OBJ_586" = {
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+            "OBJ_587"
+         );
+      };
+      "OBJ_587" = {
+         isa = "PBXBuildFile";
+         fileRef = "Tokamak::Tokamak::Product";
+      };
+      "OBJ_588" = {
+         isa = "PBXTargetDependency";
+         target = "Tokamak::Tokamak";
+      };
+      "OBJ_589" = {
+         isa = "XCConfigurationList";
+         buildConfigurations = (
+            "OBJ_590",
+            "OBJ_591"
+         );
+         defaultConfigurationIsVisible = "0";
+         defaultConfigurationName = "Release";
       };
       "OBJ_59" = {
          isa = "PBXFileReference";
@@ -3936,52 +3902,88 @@
             TVOS_DEPLOYMENT_TARGET = "9.0";
             WATCHOS_DEPLOYMENT_TARGET = "2.0";
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_591" = {
+         isa = "XCBuildConfiguration";
+         baseConfigurationReference = "OBJ_8";
+         buildSettings = {
+            CLANG_ENABLE_MODULES = "YES";
+            EMBEDDED_CONTENT_CONTAINS_SWIFT = "YES";
+            FRAMEWORK_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
+            );
+            HEADER_SEARCH_PATHS = (
+               "$(inherited)"
+            );
+            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakTests_Info.plist";
+            IPHONEOS_DEPLOYMENT_TARGET = "11.0";
+            LD_RUNPATH_SEARCH_PATHS = (
+               "$(inherited)",
+               "@loader_path/../Frameworks",
+               "@loader_path/Frameworks"
+            );
+            MACOSX_DEPLOYMENT_TARGET = "10.14";
+            OTHER_CFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_LDFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_SWIFT_FLAGS = (
+               "$(inherited)"
+            );
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+               "$(inherited)"
+            );
+            SWIFT_VERSION = "5.0";
+            TARGET_NAME = "TokamakTests";
+            TVOS_DEPLOYMENT_TARGET = "9.0";
+            WATCHOS_DEPLOYMENT_TARGET = "2.0";
+         };
+         name = "Release";
+      };
+      "OBJ_592" = {
          isa = "PBXSourcesBuildPhase";
          files = (
-            "OBJ_592",
             "OBJ_593",
             "OBJ_594",
             "OBJ_595",
-            "OBJ_596"
+            "OBJ_596",
+            "OBJ_597"
          );
-      };
-      "OBJ_592" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_231";
       };
       "OBJ_593" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_232";
+         fileRef = "OBJ_231";
       };
       "OBJ_594" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_233";
+         fileRef = "OBJ_232";
       };
       "OBJ_595" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_234";
+         fileRef = "OBJ_233";
       };
       "OBJ_596" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_235";
+         fileRef = "OBJ_234";
       };
       "OBJ_597" = {
-         isa = "PBXFrameworksBuildPhase";
-         files = (
-            "OBJ_598",
-            "OBJ_599"
-         );
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_235";
       };
       "OBJ_598" = {
-         isa = "PBXBuildFile";
-         fileRef = "Tokamak::TokamakTestRenderer::Product";
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+            "OBJ_599",
+            "OBJ_600"
+         );
       };
       "OBJ_599" = {
          isa = "PBXBuildFile";
-         fileRef = "Tokamak::Tokamak::Product";
+         fileRef = "Tokamak::TokamakTestRenderer::Product";
       };
       "OBJ_6" = {
          isa = "PBXFileReference";
@@ -3995,63 +3997,25 @@
          sourceTree = "<group>";
       };
       "OBJ_600" = {
-         isa = "PBXTargetDependency";
-         target = "Tokamak::TokamakTestRenderer";
+         isa = "PBXBuildFile";
+         fileRef = "Tokamak::Tokamak::Product";
       };
       "OBJ_601" = {
          isa = "PBXTargetDependency";
+         target = "Tokamak::TokamakTestRenderer";
+      };
+      "OBJ_602" = {
+         isa = "PBXTargetDependency";
          target = "Tokamak::Tokamak";
       };
-      "OBJ_603" = {
+      "OBJ_604" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_604",
-            "OBJ_605"
+            "OBJ_605",
+            "OBJ_606"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
-      };
-      "OBJ_604" = {
-         isa = "XCBuildConfiguration";
-         baseConfigurationReference = "OBJ_8";
-         buildSettings = {
-            ENABLE_TESTABILITY = "YES";
-            FRAMEWORK_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
-            );
-            HEADER_SEARCH_PATHS = (
-               "$(inherited)"
-            );
-            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakUIKit_Info.plist";
-            IPHONEOS_DEPLOYMENT_TARGET = "11.0";
-            LD_RUNPATH_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
-            );
-            MACOSX_DEPLOYMENT_TARGET = "10.14";
-            OTHER_CFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_LDFLAGS = (
-               "$(inherited)"
-            );
-            OTHER_SWIFT_FLAGS = (
-               "$(inherited)"
-            );
-            PRODUCT_BUNDLE_IDENTIFIER = "TokamakUIKit";
-            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-            SKIP_INSTALL = "YES";
-            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-               "$(inherited)"
-            );
-            SWIFT_VERSION = "5.0";
-            TARGET_NAME = "TokamakUIKit";
-            TVOS_DEPLOYMENT_TARGET = "9.0";
-            WATCHOS_DEPLOYMENT_TARGET = "2.0";
-         };
-         name = "Debug";
       };
       "OBJ_605" = {
          isa = "XCBuildConfiguration";
@@ -4093,12 +4057,53 @@
             TVOS_DEPLOYMENT_TARGET = "9.0";
             WATCHOS_DEPLOYMENT_TARGET = "2.0";
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_606" = {
+         isa = "XCBuildConfiguration";
+         baseConfigurationReference = "OBJ_8";
+         buildSettings = {
+            ENABLE_TESTABILITY = "YES";
+            FRAMEWORK_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
+            );
+            HEADER_SEARCH_PATHS = (
+               "$(inherited)"
+            );
+            INFOPLIST_FILE = "Tokamak.xcodeproj/TokamakUIKit_Info.plist";
+            IPHONEOS_DEPLOYMENT_TARGET = "11.0";
+            LD_RUNPATH_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
+            );
+            MACOSX_DEPLOYMENT_TARGET = "10.14";
+            OTHER_CFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_LDFLAGS = (
+               "$(inherited)"
+            );
+            OTHER_SWIFT_FLAGS = (
+               "$(inherited)"
+            );
+            PRODUCT_BUNDLE_IDENTIFIER = "TokamakUIKit";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SKIP_INSTALL = "YES";
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+               "$(inherited)"
+            );
+            SWIFT_VERSION = "5.0";
+            TARGET_NAME = "TokamakUIKit";
+            TVOS_DEPLOYMENT_TARGET = "9.0";
+            WATCHOS_DEPLOYMENT_TARGET = "2.0";
+         };
+         name = "Release";
+      };
+      "OBJ_607" = {
          isa = "PBXSourcesBuildPhase";
          files = (
-            "OBJ_607",
             "OBJ_608",
             "OBJ_609",
             "OBJ_610",
@@ -4158,20 +4163,17 @@
             "OBJ_664",
             "OBJ_665",
             "OBJ_666",
-            "OBJ_667"
+            "OBJ_667",
+            "OBJ_668"
          );
-      };
-      "OBJ_607" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_157";
       };
       "OBJ_608" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_158";
+         fileRef = "OBJ_157";
       };
       "OBJ_609" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_159";
+         fileRef = "OBJ_158";
       };
       "OBJ_61" = {
          isa = "PBXFileReference";
@@ -4180,43 +4182,43 @@
       };
       "OBJ_610" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_160";
+         fileRef = "OBJ_159";
       };
       "OBJ_611" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_161";
+         fileRef = "OBJ_160";
       };
       "OBJ_612" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_162";
+         fileRef = "OBJ_161";
       };
       "OBJ_613" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_163";
+         fileRef = "OBJ_162";
       };
       "OBJ_614" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_164";
+         fileRef = "OBJ_163";
       };
       "OBJ_615" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_165";
+         fileRef = "OBJ_164";
       };
       "OBJ_616" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_168";
+         fileRef = "OBJ_165";
       };
       "OBJ_617" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_169";
+         fileRef = "OBJ_168";
       };
       "OBJ_618" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_170";
+         fileRef = "OBJ_169";
       };
       "OBJ_619" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_171";
+         fileRef = "OBJ_170";
       };
       "OBJ_62" = {
          isa = "PBXFileReference";
@@ -4225,43 +4227,43 @@
       };
       "OBJ_620" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_172";
+         fileRef = "OBJ_171";
       };
       "OBJ_621" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_173";
+         fileRef = "OBJ_172";
       };
       "OBJ_622" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_174";
+         fileRef = "OBJ_173";
       };
       "OBJ_623" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_175";
+         fileRef = "OBJ_174";
       };
       "OBJ_624" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_176";
+         fileRef = "OBJ_175";
       };
       "OBJ_625" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_177";
+         fileRef = "OBJ_176";
       };
       "OBJ_626" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_178";
+         fileRef = "OBJ_177";
       };
       "OBJ_627" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_179";
+         fileRef = "OBJ_178";
       };
       "OBJ_628" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_180";
+         fileRef = "OBJ_179";
       };
       "OBJ_629" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_181";
+         fileRef = "OBJ_180";
       };
       "OBJ_63" = {
          isa = "PBXFileReference";
@@ -4270,43 +4272,43 @@
       };
       "OBJ_630" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_182";
+         fileRef = "OBJ_181";
       };
       "OBJ_631" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_183";
+         fileRef = "OBJ_182";
       };
       "OBJ_632" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_184";
+         fileRef = "OBJ_183";
       };
       "OBJ_633" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_185";
+         fileRef = "OBJ_184";
       };
       "OBJ_634" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_186";
+         fileRef = "OBJ_185";
       };
       "OBJ_635" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_187";
+         fileRef = "OBJ_186";
       };
       "OBJ_636" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_188";
+         fileRef = "OBJ_187";
       };
       "OBJ_637" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_190";
+         fileRef = "OBJ_188";
       };
       "OBJ_638" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_192";
+         fileRef = "OBJ_190";
       };
       "OBJ_639" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_193";
+         fileRef = "OBJ_192";
       };
       "OBJ_64" = {
          isa = "PBXFileReference";
@@ -4315,43 +4317,43 @@
       };
       "OBJ_640" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_194";
+         fileRef = "OBJ_193";
       };
       "OBJ_641" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_195";
+         fileRef = "OBJ_194";
       };
       "OBJ_642" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_196";
+         fileRef = "OBJ_195";
       };
       "OBJ_643" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_197";
+         fileRef = "OBJ_196";
       };
       "OBJ_644" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_198";
+         fileRef = "OBJ_197";
       };
       "OBJ_645" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_199";
+         fileRef = "OBJ_198";
       };
       "OBJ_646" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_200";
+         fileRef = "OBJ_199";
       };
       "OBJ_647" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_201";
+         fileRef = "OBJ_200";
       };
       "OBJ_648" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_202";
+         fileRef = "OBJ_201";
       };
       "OBJ_649" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_203";
+         fileRef = "OBJ_202";
       };
       "OBJ_65" = {
          isa = "PBXFileReference";
@@ -4360,43 +4362,43 @@
       };
       "OBJ_650" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_204";
+         fileRef = "OBJ_203";
       };
       "OBJ_651" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_205";
+         fileRef = "OBJ_204";
       };
       "OBJ_652" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_206";
+         fileRef = "OBJ_205";
       };
       "OBJ_653" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_207";
+         fileRef = "OBJ_206";
       };
       "OBJ_654" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_208";
+         fileRef = "OBJ_207";
       };
       "OBJ_655" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_209";
+         fileRef = "OBJ_208";
       };
       "OBJ_656" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_210";
+         fileRef = "OBJ_209";
       };
       "OBJ_657" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_211";
+         fileRef = "OBJ_210";
       };
       "OBJ_658" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_212";
+         fileRef = "OBJ_211";
       };
       "OBJ_659" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_213";
+         fileRef = "OBJ_212";
       };
       "OBJ_66" = {
          isa = "PBXFileReference";
@@ -4405,45 +4407,45 @@
       };
       "OBJ_660" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_214";
+         fileRef = "OBJ_213";
       };
       "OBJ_661" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_215";
+         fileRef = "OBJ_214";
       };
       "OBJ_662" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_217";
+         fileRef = "OBJ_215";
       };
       "OBJ_663" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_218";
+         fileRef = "OBJ_217";
       };
       "OBJ_664" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_219";
+         fileRef = "OBJ_218";
       };
       "OBJ_665" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_220";
+         fileRef = "OBJ_219";
       };
       "OBJ_666" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_221";
+         fileRef = "OBJ_220";
       };
       "OBJ_667" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_222";
+         fileRef = "OBJ_221";
       };
       "OBJ_668" = {
-         isa = "PBXFrameworksBuildPhase";
-         files = (
-            "OBJ_669"
-         );
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_222";
       };
       "OBJ_669" = {
-         isa = "PBXBuildFile";
-         fileRef = "Tokamak::Tokamak::Product";
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+            "OBJ_670"
+         );
       };
       "OBJ_67" = {
          isa = "PBXFileReference";
@@ -4451,31 +4453,35 @@
          sourceTree = "<group>";
       };
       "OBJ_670" = {
+         isa = "PBXBuildFile";
+         fileRef = "Tokamak::Tokamak::Product";
+      };
+      "OBJ_671" = {
          isa = "PBXTargetDependency";
          target = "Tokamak::Tokamak";
       };
-      "OBJ_672" = {
+      "OBJ_673" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_673",
-            "OBJ_674"
+            "OBJ_674",
+            "OBJ_675"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
-      };
-      "OBJ_673" = {
-         isa = "XCBuildConfiguration";
-         buildSettings = {
-         };
-         name = "Debug";
       };
       "OBJ_674" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
          };
-         name = "Release";
+         name = "Debug";
       };
       "OBJ_675" = {
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+         };
+         name = "Release";
+      };
+      "OBJ_676" = {
          isa = "PBXTargetDependency";
          target = "Tokamak::TokamakCLI";
       };
@@ -4719,10 +4725,10 @@
       };
       "SwiftCLI::SwiftCLI" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_320";
+         buildConfigurationList = "OBJ_321";
          buildPhases = (
-            "OBJ_323",
-            "OBJ_345"
+            "OBJ_324",
+            "OBJ_346"
          );
          dependencies = (
          );
@@ -4738,9 +4744,9 @@
       };
       "SwiftCLI::SwiftPMPackageDescription" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_347";
+         buildConfigurationList = "OBJ_348";
          buildPhases = (
-            "OBJ_350"
+            "OBJ_351"
          );
          dependencies = (
          );
@@ -4750,9 +4756,9 @@
       };
       "SwiftSyntax::SwiftPMPackageDescription" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_385";
+         buildConfigurationList = "OBJ_386";
          buildPhases = (
-            "OBJ_388"
+            "OBJ_389"
          );
          dependencies = (
          );
@@ -4762,10 +4768,10 @@
       };
       "SwiftSyntax::SwiftSyntax" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_353";
+         buildConfigurationList = "OBJ_354";
          buildPhases = (
-            "OBJ_356",
-            "OBJ_383"
+            "OBJ_357",
+            "OBJ_384"
          );
          dependencies = (
          );
@@ -4781,9 +4787,9 @@
       };
       "Tokamak::SwiftPMPackageDescription" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_566";
+         buildConfigurationList = "OBJ_567";
          buildPhases = (
-            "OBJ_569"
+            "OBJ_570"
          );
          dependencies = (
          );
@@ -4793,10 +4799,10 @@
       };
       "Tokamak::Tokamak" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_391";
+         buildConfigurationList = "OBJ_392";
          buildPhases = (
-            "OBJ_394",
-            "OBJ_463"
+            "OBJ_395",
+            "OBJ_464"
          );
          dependencies = (
          );
@@ -4812,13 +4818,13 @@
       };
       "Tokamak::TokamakAppKit" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_465";
+         buildConfigurationList = "OBJ_466";
          buildPhases = (
-            "OBJ_468",
-            "OBJ_504"
+            "OBJ_469",
+            "OBJ_505"
          );
          dependencies = (
-            "OBJ_506"
+            "OBJ_507"
          );
          name = "TokamakAppKit";
          productName = "TokamakAppKit";
@@ -4832,15 +4838,15 @@
       };
       "Tokamak::TokamakCLI" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_508";
+         buildConfigurationList = "OBJ_509";
          buildPhases = (
-            "OBJ_511",
-            "OBJ_513"
+            "OBJ_512",
+            "OBJ_514"
          );
          dependencies = (
-            "OBJ_517",
             "OBJ_518",
-            "OBJ_520"
+            "OBJ_519",
+            "OBJ_521"
          );
          name = "TokamakCLI";
          productName = "TokamakCLI";
@@ -4854,14 +4860,14 @@
       };
       "Tokamak::TokamakCLITests" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_522";
+         buildConfigurationList = "OBJ_523";
          buildPhases = (
-            "OBJ_525",
-            "OBJ_530"
+            "OBJ_526",
+            "OBJ_531"
          );
          dependencies = (
-            "OBJ_533",
-            "OBJ_534"
+            "OBJ_534",
+            "OBJ_535"
          );
          name = "TokamakCLITests";
          productName = "TokamakCLITests";
@@ -4875,13 +4881,13 @@
       };
       "Tokamak::TokamakDemo" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_536";
+         buildConfigurationList = "OBJ_537";
          buildPhases = (
-            "OBJ_539",
-            "OBJ_541"
+            "OBJ_540",
+            "OBJ_542"
          );
          dependencies = (
-            "OBJ_543"
+            "OBJ_544"
          );
          name = "TokamakDemo";
          productName = "TokamakDemo";
@@ -4895,13 +4901,13 @@
       };
       "Tokamak::TokamakLint" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_544";
+         buildConfigurationList = "OBJ_545";
          buildPhases = (
-            "OBJ_547",
-            "OBJ_562"
+            "OBJ_548",
+            "OBJ_563"
          );
          dependencies = (
-            "OBJ_564"
+            "OBJ_565"
          );
          name = "TokamakLint";
          productName = "TokamakLint";
@@ -4915,25 +4921,25 @@
       };
       "Tokamak::TokamakPackageTests::ProductTarget" = {
          isa = "PBXAggregateTarget";
-         buildConfigurationList = "OBJ_572";
+         buildConfigurationList = "OBJ_573";
          buildPhases = (
          );
          dependencies = (
-            "OBJ_575",
-            "OBJ_576"
+            "OBJ_576",
+            "OBJ_578"
          );
          name = "TokamakPackageTests";
          productName = "TokamakPackageTests";
       };
       "Tokamak::TokamakTestRenderer" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_579";
+         buildConfigurationList = "OBJ_580";
          buildPhases = (
-            "OBJ_582",
-            "OBJ_585"
+            "OBJ_583",
+            "OBJ_586"
          );
          dependencies = (
-            "OBJ_587"
+            "OBJ_588"
          );
          name = "TokamakTestRenderer";
          productName = "TokamakTestRenderer";
@@ -4947,14 +4953,14 @@
       };
       "Tokamak::TokamakTests" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_588";
+         buildConfigurationList = "OBJ_589";
          buildPhases = (
-            "OBJ_591",
-            "OBJ_597"
+            "OBJ_592",
+            "OBJ_598"
          );
          dependencies = (
-            "OBJ_600",
-            "OBJ_601"
+            "OBJ_601",
+            "OBJ_602"
          );
          name = "TokamakTests";
          productName = "TokamakTests";
@@ -4968,13 +4974,13 @@
       };
       "Tokamak::TokamakUIKit" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_603";
+         buildConfigurationList = "OBJ_604";
          buildPhases = (
-            "OBJ_606",
-            "OBJ_668"
+            "OBJ_607",
+            "OBJ_669"
          );
          dependencies = (
-            "OBJ_670"
+            "OBJ_671"
          );
          name = "TokamakUIKit";
          productName = "TokamakUIKit";
@@ -4988,11 +4994,11 @@
       };
       "Tokamak::tokamak::ProductTarget" = {
          isa = "PBXAggregateTarget";
-         buildConfigurationList = "OBJ_672";
+         buildConfigurationList = "OBJ_673";
          buildPhases = (
          );
          dependencies = (
-            "OBJ_675"
+            "OBJ_676"
          );
          name = "tokamak";
          productName = "tokamak";
