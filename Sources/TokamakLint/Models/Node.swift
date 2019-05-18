@@ -8,7 +8,7 @@
 import Foundation
 import SwiftSyntax
 
-public class Node {
+final class Node {
   var text: String
   private(set) var children = [Node]()
   private(set) weak var parent: Node?
