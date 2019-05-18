@@ -2,7 +2,7 @@
 
 ## React-like framework for native UI written in pure Swift 🛠⚛️📲
 
-[![CI Status](https://img.shields.io/travis/MaxDesiatov/Tokamak/master.svg?style=flat)](https://travis-ci.org/MaxDesiatov/Tokamak)
+[![Build Status](https://dev.azure.com/max0484/max/_apis/build/status/MaxDesiatov.Tokamak?branchName=master)](https://dev.azure.com/max0484/max/_build/latest?definitionId=3&branchName=master)
 [![Coverage](https://img.shields.io/codecov/c/github/MaxDesiatov/Tokamak/master.svg?style=flat)](https://codecov.io/gh/maxdesiatov/Tokamak)
 [![Version](https://img.shields.io/cocoapods/v/Tokamak.svg?style=flat)](https://cocoapods.org/pods/Tokamak)
 [![License](https://img.shields.io/cocoapods/l/Tokamak.svg?style=flat)](https://cocoapods.org/pods/Tokamak)

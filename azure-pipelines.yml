@@ -1,0 +1,21 @@
+trigger:
+  - master
+
+jobs:
+  - job: lint
+    pool:
+      vmImage: "macos-latest"
+    steps:
+      - bash: ./lint.sh
+
+  - job: test
+    pool:
+      vmImage: "macos-latest"
+    steps:
+      - bash: ./test.sh
+        env:
+          IOS_DEVICE: "platform=iOS Simulator,OS=12.2,name=iPhone SE"
+      - bash: ./codecov.sh
+        env:
+          CODECOV_TOKEN: $(codecovToken)
+        condition: succeeded()
