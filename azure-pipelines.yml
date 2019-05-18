@@ -15,5 +15,7 @@ jobs:
       - bash: ./test.sh
         env:
           IOS_DEVICE: "platform=iOS Simulator,OS=12.2,name=iPhone SE"
-      - script: ./codecov.sh
+      - bash: ./codecov.sh
+        env:
+          CODECOV_TOKEN: $(codecovToken)
         condition: succeeded()
