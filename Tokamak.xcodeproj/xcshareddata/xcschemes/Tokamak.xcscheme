@@ -38,6 +38,16 @@
                ReferencedContainer = "container:Tokamak.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Tokamak::TokamakCLITests"
+               BuildableName = "TokamakCLITests.xctest"
+               BlueprintName = "TokamakCLITests"
+               ReferencedContainer = "container:Tokamak.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
@@ -70,6 +80,13 @@
             ReferencedContainer = "container:Tokamak.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "TEST_PATH"
+            value = "$(SRCROOT)/ValidationTests"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
