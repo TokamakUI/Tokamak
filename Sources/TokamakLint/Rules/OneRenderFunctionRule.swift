@@ -18,7 +18,7 @@ struct OneRenderFunctionRule: Rule {
     do {
       let structs = visitor.root.children(with: "struct")
         .compactMap { $0.firstParent(of: SyntaxKind.structDecl.rawValue) }
-        .filter { (structDecl) in
+        .filter { structDecl in
           let hookedProtocols = ["CompositeComponent", "LeafComponent"]
           guard let typeInheritanceClause = structDecl.firstChild(
             of: SyntaxKind.typeInheritanceClause.rawValue
@@ -29,7 +29,7 @@ struct OneRenderFunctionRule: Rule {
             guard let typeNameNode = node.children.first else { return "" }
             return typeNameNode.text
           }
-          guard types.contains(where: { (type) in
+          guard types.contains(where: { type in
             hookedProtocols.contains(type)
           }) else { return false }
           return true
