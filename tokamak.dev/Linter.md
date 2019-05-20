@@ -23,6 +23,13 @@ or
 
 ## Supported Rules
 
-| Rule              | Description                                            |
-| ----------------- | ------------------------------------------------------ |
-| Props conformance | Props should be always conformance Equatable protocol. |
+| Rule                | Short Description                                      |
+| ------------------- | ------------------------------------------------------ |
+| Props conformance   | Props should be always conformance Equatable protocol. |
+| One render function | Hooked component should have only one render function. |
+
+## Rules Description
+
+### One render function
+
+![img](./diagrams/OneRenderFunction.svg)

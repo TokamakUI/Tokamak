@@ -11,7 +11,8 @@ import SwiftSyntax
 extension Array: Error where Element == StyleViolation {}
 
 extension Node {
-  func getRender(at file: String) throws -> Node {
+  func getOneRender(at file: String) throws -> Node {
+    // search for renders in file
     let renders = children(with: "render").filter {
       // check if render type is function
       var memberDeclListItem = $0
