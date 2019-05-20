@@ -42,11 +42,7 @@ struct OneRenderFunctionRule: Rule {
           throw error
         }
       }
-      guard violations.isEmpty else {
-        throw violations
-      }
-    } catch let error as [StyleViolation] {
-      return error
+      return violations
     } catch {
       print(error)
     }
