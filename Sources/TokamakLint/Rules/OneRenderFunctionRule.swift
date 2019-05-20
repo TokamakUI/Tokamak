@@ -25,14 +25,8 @@ struct OneRenderFunctionRule: Rule {
           ) else { return false }
           let types = typeInheritanceClause.children(
             with: SyntaxKind.simpleTypeIdentifier.rawValue
-          ).map { (node) -> String in
-            guard let typeNameNode = node.children.first else { return "" }
-            return typeNameNode.text
-          }
-          guard types.contains(where: { type in
-            hookedProtocols.contains(type)
-          }) else { return false }
-          return true
+          ).compactMap { $0.children.first?.text }
+          return types.contains { hookedProtocols.contains($0) }
         }
 
       guard !structs.isEmpty else { return [] }
