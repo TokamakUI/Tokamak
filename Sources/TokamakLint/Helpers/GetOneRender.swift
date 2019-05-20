@@ -33,24 +33,6 @@ extension Node {
       }
       guard staticModifier.first != nil else { return false }
 
-      // check if render in host component
-      let hostProtocols = ["CompositeComponent", "LeafComponent"]
-      guard let structDecl = memberDeclListItem.firstParent(
-        of: SyntaxKind.structDecl.rawValue
-      ) else { return false }
-      guard let typeInheritanceClause = structDecl.firstChild(
-        of: SyntaxKind.typeInheritanceClause.rawValue
-      ) else { return false }
-      let types = typeInheritanceClause.children(
-        with: SyntaxKind.simpleTypeIdentifier.rawValue
-      ).map { (node) -> String in
-        guard let typeNameNode = node.children.first else { return "" }
-        return typeNameNode.text
-      }
-      guard types.contains(where: { (type) -> Bool in
-        hostProtocols.contains(type)
-      }) else { return false }
-
       // check if render is on first layer of component
       return functionDecl.children.map {
         $0.text

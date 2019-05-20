@@ -16,7 +16,48 @@ struct OneRenderFunctionRule: Rule {
 
   static func validate(visitor: TokenVisitor) -> [StyleViolation] {
     do {
-      _ = try visitor.root.getOneRender(at: visitor.path)
+      let structs = visitor.root.children(with: "struct")
+        .reduce([]) { (acc, structNode) -> [Node] in
+          guard let structDecl = structNode.firstParent(
+            of: SyntaxKind.structDecl.rawValue
+          ) else { return acc }
+          var nextAcc = acc
+          nextAcc.append(structDecl)
+          return nextAcc
+        }
+        .filter { (structDecl) -> Bool in
+          let hostProtocols = ["CompositeComponent", "LeafComponent"]
+          guard let typeInheritanceClause = structDecl.firstChild(
+            of: SyntaxKind.typeInheritanceClause.rawValue
+          ) else { return false }
+          let types = typeInheritanceClause.children(
+            with: SyntaxKind.simpleTypeIdentifier.rawValue
+          ).map { (node) -> String in
+            guard let typeNameNode = node.children.first else { return "" }
+            return typeNameNode.text
+          }
+          guard types.contains(where: { (type) -> Bool in
+            hostProtocols.contains(type)
+          }) else { return false }
+          return true
+        }
+
+      guard structs.count != 0 else { return [] }
+
+      var violations: [StyleViolation] = []
+
+      try structs.forEach { structDecl in
+        do {
+          _ = try structDecl.getOneRender(at: visitor.path)
+        } catch let error as [StyleViolation] {
+          violations.append(contentsOf: error)
+        } catch {
+          throw error
+        }
+      }
+      guard violations.count == 0 else {
+        throw violations
+      }
     } catch let error as [StyleViolation] {
       return error
     } catch {

@@ -38,4 +38,22 @@ final class TokamakLintTests: XCTestCase {
     let result = try RenderGetsHooksRule.validate(path: path)
     XCTAssertEqual(result, [])
   }
+
+  func testTwoComponentsCorrectBroken() throws {
+    let path = "\(try srcRoot())/TwoComponentsCorrectBroken.swift"
+    let oneRenderFunctionRuleresult = try OneRenderFunctionRule.validate(path: path)
+    XCTAssertEqual(oneRenderFunctionRuleresult.count, 2)
+    XCTAssertEqual(oneRenderFunctionRuleresult[0].location.line, 41)
+    XCTAssertEqual(oneRenderFunctionRuleresult[1].location.line, 60)
+  }
+
+  func testTwoComponentsBrokenBroken() throws {
+    let path = "\(try srcRoot())/TwoComponentsBrokenBroken.swift"
+    let oneRenderFunctionRuleresult = try OneRenderFunctionRule.validate(path: path)
+    XCTAssertEqual(oneRenderFunctionRuleresult.count, 4)
+    XCTAssertEqual(oneRenderFunctionRuleresult[0].location.line, 10)
+    XCTAssertEqual(oneRenderFunctionRuleresult[1].location.line, 29)
+    XCTAssertEqual(oneRenderFunctionRuleresult[2].location.line, 60)
+    XCTAssertEqual(oneRenderFunctionRuleresult[3].location.line, 79)
+  }
 }
