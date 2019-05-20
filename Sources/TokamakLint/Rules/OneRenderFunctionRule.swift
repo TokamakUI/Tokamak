@@ -17,16 +17,9 @@ struct OneRenderFunctionRule: Rule {
   static func validate(visitor: TokenVisitor) -> [StyleViolation] {
     do {
       let structs = visitor.root.children(with: "struct")
-        .reduce([]) { (acc, structNode) -> [Node] in
-          guard let structDecl = structNode.firstParent(
-            of: SyntaxKind.structDecl.rawValue
-          ) else { return acc }
-          var nextAcc = acc
-          nextAcc.append(structDecl)
-          return nextAcc
-        }
-        .filter { (structDecl) -> Bool in
-          let hostProtocols = ["CompositeComponent", "LeafComponent"]
+        .compactMap { $0.firstParent(of: SyntaxKind.structDecl.rawValue) }
+        .filter { (structDecl) in
+          let hookedProtocols = ["CompositeComponent", "LeafComponent"]
           guard let typeInheritanceClause = structDecl.firstChild(
             of: SyntaxKind.typeInheritanceClause.rawValue
           ) else { return false }
@@ -36,13 +29,13 @@ struct OneRenderFunctionRule: Rule {
             guard let typeNameNode = node.children.first else { return "" }
             return typeNameNode.text
           }
-          guard types.contains(where: { (type) -> Bool in
-            hostProtocols.contains(type)
+          guard types.contains(where: { (type) in
+            hookedProtocols.contains(type)
           }) else { return false }
           return true
         }
 
-      guard structs.count != 0 else { return [] }
+      guard !structs.isEmpty else { return [] }
 
       var violations: [StyleViolation] = []
 
@@ -55,14 +48,13 @@ struct OneRenderFunctionRule: Rule {
           throw error
         }
       }
-      guard violations.count == 0 else {
+      guard violations.isEmpty else {
         throw violations
       }
     } catch let error as [StyleViolation] {
       return error
     } catch {
       print(error)
-      return []
     }
     return []
   }
