@@ -41,25 +41,25 @@ final class TokamakLintTests: XCTestCase {
 
   func testTwoComponentsCorrectBroken() throws {
     let path = "\(try srcRoot())/TwoComponentsCorrectBroken.swift"
-    let oneRenderFunctionRuleresult = try OneRenderFunctionRule.validate(path: path)
-    XCTAssertEqual(oneRenderFunctionRuleresult.count, 2)
-    XCTAssertEqual(oneRenderFunctionRuleresult[0].location.line, 41)
-    XCTAssertEqual(oneRenderFunctionRuleresult[1].location.line, 60)
+    let oneRenderFunctionRuleResult = try OneRenderFunctionRule.validate(path: path)
+    XCTAssertEqual(oneRenderFunctionRuleResult.count, 2)
+    XCTAssertEqual(oneRenderFunctionRuleResult[0].location.line, 41)
+    XCTAssertEqual(oneRenderFunctionRuleResult[1].location.line, 60)
   }
 
   func testTwoComponentsBrokenBroken() throws {
     let path = "\(try srcRoot())/TwoComponentsBrokenBroken.swift"
-    let oneRenderFunctionRuleresult = try OneRenderFunctionRule.validate(path: path)
-    XCTAssertEqual(oneRenderFunctionRuleresult.count, 4)
-    XCTAssertEqual(oneRenderFunctionRuleresult[0].location.line, 10)
-    XCTAssertEqual(oneRenderFunctionRuleresult[1].location.line, 29)
-    XCTAssertEqual(oneRenderFunctionRuleresult[2].location.line, 60)
-    XCTAssertEqual(oneRenderFunctionRuleresult[3].location.line, 79)
+    let oneRenderFunctionRuleResult = try OneRenderFunctionRule.validate(path: path)
+    XCTAssertEqual(oneRenderFunctionRuleResult.count, 4)
+    XCTAssertEqual(oneRenderFunctionRuleResult[0].location.line, 10)
+    XCTAssertEqual(oneRenderFunctionRuleResult[1].location.line, 29)
+    XCTAssertEqual(oneRenderFunctionRuleResult[2].location.line, 60)
+    XCTAssertEqual(oneRenderFunctionRuleResult[3].location.line, 79)
   }
 
   func testTwoComponentsCorrectCorrect() throws {
     let path = "\(try srcRoot())/TwoComponentsCorrectCorrect.swift"
-    let oneRenderFunctionRuleresult = try OneRenderFunctionRule.validate(path: path)
-    XCTAssertEqual(oneRenderFunctionRuleresult.count, 0)
+    let oneRenderFunctionRuleResult = try OneRenderFunctionRule.validate(path: path)
+    XCTAssertEqual(oneRenderFunctionRuleResult.count, 0)
   }
 }
