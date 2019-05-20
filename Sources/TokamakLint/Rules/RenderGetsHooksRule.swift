@@ -52,7 +52,6 @@ struct RenderGetsHooksRule: Rule {
       return error
     } catch {
       print(error)
-      return []
     }
 
     return []
