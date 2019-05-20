@@ -56,4 +56,10 @@ final class TokamakLintTests: XCTestCase {
     XCTAssertEqual(oneRenderFunctionRuleresult[2].location.line, 60)
     XCTAssertEqual(oneRenderFunctionRuleresult[3].location.line, 79)
   }
+
+  func testTwoComponentsCorrectCorrect() throws {
+    let path = "\(try srcRoot())/TwoComponentsCorrectCorrect.swift"
+    let oneRenderFunctionRuleresult = try OneRenderFunctionRule.validate(path: path)
+    XCTAssertEqual(oneRenderFunctionRuleresult.count, 0)
+  }
 }
