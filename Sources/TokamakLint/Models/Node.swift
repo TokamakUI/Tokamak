@@ -57,6 +57,8 @@ final class Node: Equatable {
     }
   }
 
+  func firstParent(of type: SyntaxKind) -> Node? { return firstParent(of: type.rawValue) }
+
   func firstParent(of type: String) -> Node? {
     var nodeParent = self
 
@@ -69,6 +71,8 @@ final class Node: Equatable {
 
     return nodeParent
   }
+
+  func firstChild(of type: SyntaxKind) -> Node? { return firstChild(of: type.rawValue) }
 
   func firstChild(of type: String) -> Node? {
     guard !children.isEmpty else { return nil }
