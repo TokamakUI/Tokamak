@@ -8,13 +8,20 @@
 import Foundation
 import SwiftSyntax
 
-final class Node {
+final class Node: Equatable {
+  static func ==(lhs: Node, rhs: Node) -> Bool {
+    return lhs.text == rhs.text &&
+      lhs.children == rhs.children &&
+      lhs.parent == rhs.parent &&
+      lhs.range == rhs.range
+  }
+
   var text: String
   private(set) var children = [Node]()
   private(set) weak var parent: Node?
   var range = Range(startRow: 0, startColumn: 0, endRow: 0, endColumn: 0)
 
-  struct Range {
+  struct Range: Equatable {
     var startRow: Int
     var startColumn: Int
     var endRow: Int
