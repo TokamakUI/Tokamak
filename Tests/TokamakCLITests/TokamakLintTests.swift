@@ -22,19 +22,19 @@ final class TokamakLintTests: XCTestCase {
   }
 
   func testOneRenderFunctionRule() throws {
-    let path = "\(try srcRoot())/PositiveTestHooksRule.swift"
+    let path = "\(try srcRoot())/PositiveTestOneRenderFunctionRule.swift"
     let result = try OneRenderFunctionRule.validate(path: path)
     XCTAssertEqual(result, [])
   }
 
   func testNegativeTestHooksRule() throws {
-    let path = "\(try srcRoot())/NegativeTestHooksRule.swift"
+    let path = "\(try srcRoot())/NegativeTestOneRenderFunctionRule.swift"
     let result = try OneRenderFunctionRule.validate(path: path)
     XCTAssertEqual(result, [])
   }
 
   func testRenderGetsHooksRule() throws {
-    let path = "\(try srcRoot())/PositiveTestHooksRule.swift"
+    let path = "\(try srcRoot())/PositiveTestOneRenderFunctionRule.swift"
     let result = try RenderGetsHooksRule.validate(path: path)
     XCTAssertEqual(result, [])
   }
@@ -60,6 +60,12 @@ final class TokamakLintTests: XCTestCase {
   func testTwoComponentsCorrectCorrect() throws {
     let path = "\(try srcRoot())/TwoComponentsCorrectCorrect.swift"
     let oneRenderFunctionRuleResult = try OneRenderFunctionRule.validate(path: path)
+    XCTAssertEqual(oneRenderFunctionRuleResult.count, 0)
+  }
+
+  func testHooksRule() throws {
+    let path = "\(try srcRoot())/NegativeTestHooksRule.swift"
+    let oneRenderFunctionRuleResult = try HooksRule.validate(path: path)
     XCTAssertEqual(oneRenderFunctionRuleResult.count, 0)
   }
 }
