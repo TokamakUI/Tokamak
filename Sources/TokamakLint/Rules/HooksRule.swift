@@ -33,7 +33,7 @@ struct HooksRule: Rule {
     guard !structs.isEmpty else { return [] }
     structs.forEach { structDecl in
       for render in structDecl.children(with: "render") {
-        // search for Hooks argument name in render argument list
+        // search for Hooks argument name in the render argument list
         let renderFuncDecl = render.firstParent(of: .functionDecl)
         let funcSign = renderFuncDecl?.firstChild(of: .functionSignature)
         let funcParameterList = funcSign?
@@ -43,11 +43,11 @@ struct HooksRule: Rule {
         guard let hooksName = hooksParameter?.children.first?.text
         else { return }
 
-        // search for all hooks in code
+        // search for all hooks in the code
         guard let hooks = renderFuncDecl?.children(with: hooksName)
         else { return }
 
-        // check that Hooks.state is on the first layer of render function
+        // check that Hooks.state is on the first layer of the render function
         guard let codeBlockItemList = renderFuncDecl?
           .firstChild(of: .codeBlockItemList)
         else { return }
