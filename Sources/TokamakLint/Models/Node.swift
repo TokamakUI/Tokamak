@@ -11,7 +11,7 @@ import SwiftSyntax
 final class Node: Equatable {
   static func ==(lhs: Node, rhs: Node) -> Bool {
     // Compare only start because TokenVisitor don't visit all syntax node,
-    // TokenVisitor visitPre called on every node, but node care only start
+    // TokenVisitor visitPre called on every node, but node contains only start
     // position
     return lhs.range.startColumn == rhs.range.startColumn &&
       lhs.range.startRow == rhs.range.startRow
