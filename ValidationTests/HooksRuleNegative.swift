@@ -16,7 +16,7 @@ struct HookedLeafComponent: LeafComponent {
     }
 
     // do not use hooks in the nested closure
-    func makeFPGreatAgain() {
+    func createHookedItem() {
       let hookedFunctionState = hooks.state("")
     }
   }
@@ -38,7 +38,7 @@ struct AnotherHookedLeafComponent: LeafComponent {
     let hooked = hooks.state("")
 
     // do not use hooks in the nested closure
-    func makeFPGreatAgain() {
+    func createHookedItem() {
       let hookedFunctionState = hooks.state("")
     }
   }
