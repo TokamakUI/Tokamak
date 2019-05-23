@@ -22,19 +22,19 @@ final class TokamakLintTests: XCTestCase {
   }
 
   func testOneRenderFunctionRule() throws {
-    let path = "\(try srcRoot())/PositiveTestHooksRule.swift"
+    let path = "\(try srcRoot())/PositiveTestOneRenderFunctionRule.swift"
     let result = try OneRenderFunctionRule.validate(path: path)
     XCTAssertEqual(result, [])
   }
 
   func testNegativeTestHooksRule() throws {
-    let path = "\(try srcRoot())/NegativeTestHooksRule.swift"
+    let path = "\(try srcRoot())/NegativeTestOneRenderFunctionRule.swift"
     let result = try OneRenderFunctionRule.validate(path: path)
     XCTAssertEqual(result, [])
   }
 
   func testRenderGetsHooksRule() throws {
-    let path = "\(try srcRoot())/PositiveTestHooksRule.swift"
+    let path = "\(try srcRoot())/PositiveTestOneRenderFunctionRule.swift"
     let result = try RenderGetsHooksRule.validate(path: path)
     XCTAssertEqual(result, [])
   }
@@ -61,5 +61,23 @@ final class TokamakLintTests: XCTestCase {
     let path = "\(try srcRoot())/TwoComponentsCorrectCorrect.swift"
     let oneRenderFunctionRuleResult = try OneRenderFunctionRule.validate(path: path)
     XCTAssertEqual(oneRenderFunctionRuleResult.count, 0)
+  }
+
+  func testHooksRulePositive() throws {
+    let path = "\(try srcRoot())/HooksRulePositive.swift"
+    let oneRenderFunctionRuleResult = try HooksRule.validate(path: path)
+    XCTAssertEqual(oneRenderFunctionRuleResult.count, 0)
+  }
+
+  func testHooksRuleNegative() throws {
+    let path = "\(try srcRoot())/HooksRuleNegative.swift"
+    let oneRenderFunctionRuleResult = try HooksRule.validate(path: path)
+    XCTAssertEqual(oneRenderFunctionRuleResult.count, 6)
+    XCTAssertEqual(oneRenderFunctionRuleResult[0].location.line, 7)
+    XCTAssertEqual(oneRenderFunctionRuleResult[1].location.line, 15)
+    XCTAssertEqual(oneRenderFunctionRuleResult[2].location.line, 20)
+    XCTAssertEqual(oneRenderFunctionRuleResult[3].location.line, 29)
+    XCTAssertEqual(oneRenderFunctionRuleResult[4].location.line, 34)
+    XCTAssertEqual(oneRenderFunctionRuleResult[5].location.line, 42)
   }
 }

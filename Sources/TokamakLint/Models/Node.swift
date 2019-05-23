@@ -8,13 +8,21 @@
 import Foundation
 import SwiftSyntax
 
-final class Node {
+final class Node: Equatable {
+  static func ==(lhs: Node, rhs: Node) -> Bool {
+    // Compare only start because TokenVisitor don't visit all syntax node,
+    // TokenVisitor visitPre called on every node, but node contains only start
+    // position
+    return lhs.range.startColumn == rhs.range.startColumn &&
+      lhs.range.startRow == rhs.range.startRow
+  }
+
   var text: String
   private(set) var children = [Node]()
   private(set) weak var parent: Node?
   var range = Range(startRow: 0, startColumn: 0, endRow: 0, endColumn: 0)
 
-  struct Range {
+  struct Range: Equatable {
     var startRow: Int
     var startColumn: Int
     var endRow: Int
@@ -50,6 +58,8 @@ final class Node {
     }
   }
 
+  func firstParent(of type: SyntaxKind) -> Node? { return firstParent(of: type.rawValue) }
+
   func firstParent(of type: String) -> Node? {
     var nodeParent = self
 
@@ -62,6 +72,8 @@ final class Node {
 
     return nodeParent
   }
+
+  func firstChild(of type: SyntaxKind) -> Node? { return firstChild(of: type.rawValue) }
 
   func firstChild(of type: String) -> Node? {
     guard !children.isEmpty else { return nil }

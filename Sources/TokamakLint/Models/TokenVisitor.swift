@@ -30,6 +30,11 @@ class TokenVisitor: SyntaxVisitor {
 
     let syntaxNode = Node(text: syntax)
 
+    // Need to set node start range in visitPre
+    // because visit will not be called on all Syntax node
+    syntaxNode.range.startRow = node.position.line
+    syntaxNode.range.startColumn = node.position.column
+
     if let current = current {
       current.add(node: syntaxNode)
     } else {
