@@ -10,10 +10,11 @@ import SwiftSyntax
 
 final class Node: Equatable {
   static func ==(lhs: Node, rhs: Node) -> Bool {
-    return lhs.text == rhs.text &&
-      lhs.children == rhs.children &&
-      lhs.parent == rhs.parent &&
-      lhs.range == rhs.range
+    // Compare only start because TokenVisitor don't visit all syntax node,
+    // TokenVisitor visitPre called on every node, but node care only start
+    // position
+    return lhs.range.startColumn == rhs.range.startColumn &&
+      lhs.range.startRow == rhs.range.startRow
   }
 
   var text: String
