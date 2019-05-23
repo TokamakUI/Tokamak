@@ -29,25 +29,19 @@ struct HooksRule: Rule {
           .firstChild(of: .functionParameterList)
         let hooksParameter = funcParameterList?.firstChild(of: "Hooks")?
           .firstParent(of: .functionParameter)
-        guard let hooksName = hooksParameter?.children.first?.text
-        else { return }
-
-        // search for all hooks in the code
-        guard let hooks = renderFuncDecl?.children(with: hooksName)
+        guard let hooksName = hooksParameter?.children.first?.text,
+          let hooks = renderFuncDecl?.children(with: hooksName),
+          let codeBlockItemList = renderFuncDecl?
+          .firstChild(of: .codeBlockItemList)
         else { return }
 
         // check that Hooks.state is on the first layer of the render function
-        guard let codeBlockItemList = renderFuncDecl?
-          .firstChild(of: .codeBlockItemList)
-        else { return }
         hooks.forEach { hook in
           guard let hookMemberAccessExpr = hook
-            .firstParent(of: .memberAccessExpr)
-          else { return }
-          guard let hookCodeBlockItem = hookMemberAccessExpr
-            .firstParent(of: .codeBlockItem)
-          else { return }
-          guard !codeBlockItemList.children.contains(hookCodeBlockItem)
+            .firstParent(of: .memberAccessExpr),
+            let hookCodeBlockItem = hookMemberAccessExpr
+            .firstParent(of: .codeBlockItem),
+            !codeBlockItemList.children.contains(hookCodeBlockItem)
           else { return }
           violations.append(StyleViolation(
             ruleDescription: OneRenderFunctionRule.description,
