@@ -39,17 +39,17 @@ struct HooksRule: Rule {
           let render = try structDecl.getOneRender(at: visitor.path)
 
           // search for Hooks argument name in render argument list
-          let funcDecl = render.firstParent(of: .functionDecl)
-          let funcSign = funcDecl?.firstChild(of: .functionSignature)
+          guard let renderFuncDecl = render.firstParent(of: .functionDecl) else { throw [] }
+          let funcSign = renderFuncDecl.firstChild(of: .functionSignature)
           let funcParameterList = funcSign?.firstChild(of: .functionParameterList)
           let hooksParameter = funcParameterList?.firstChild(of: "Hooks")?.firstParent(of: .functionParameter)
           guard let hooksName = hooksParameter?.children.first?.text else { throw [] }
 
           // search for all hooks in code
-          let hooks = visitor.root.children(with: hooksName)
+          let hooks = renderFuncDecl.children(with: hooksName)
 
           // check that Hooks.state is on the first layer of render function
-          guard let codeBlockItemList = funcDecl?.firstChild(of: .codeBlockItemList) else { throw [] }
+          guard let codeBlockItemList = renderFuncDecl.firstChild(of: .codeBlockItemList) else { throw [] }
 
           throw hooks.compactMap { (hook) -> StyleViolation? in
             guard let hookMemberAccessExpr = hook.firstParent(of: .memberAccessExpr) else { return nil }
