@@ -18,18 +18,7 @@ struct HooksRule: Rule {
     var violations: [StyleViolation] = []
 
     // search for render function
-    let structs = visitor.root.children(with: "struct")
-      .compactMap { $0.firstParent(of: SyntaxKind.structDecl.rawValue) }
-      .filter { structDecl in
-        let hookedProtocols = ["CompositeComponent", "LeafComponent"]
-        guard let typeInheritanceClause = structDecl.firstChild(
-          of: SyntaxKind.typeInheritanceClause.rawValue
-        ) else { return false }
-        let types = typeInheritanceClause.children(
-          with: SyntaxKind.simpleTypeIdentifier.rawValue
-        ).compactMap { $0.children.first?.text }
-        return types.contains { hookedProtocols.contains($0) }
-      }
+    let structs = visitor.root.hookedComponents()
     guard !structs.isEmpty else { return [] }
     structs.forEach { structDecl in
       for render in structDecl.children(with: "render") {
