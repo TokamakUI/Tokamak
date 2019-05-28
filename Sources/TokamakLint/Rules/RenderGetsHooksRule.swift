@@ -17,33 +17,29 @@ struct RenderGetsHooksRule: Rule {
   public static func validate(visitor: TokenVisitor) -> [StyleViolation] {
     var violations: [StyleViolation] = []
 
-    do {
-      // search for render function
-      let structs = visitor.root.components(hookedComponentProtocols)
-        
-      try structs.forEach { _ in
-        let renderFunction = try visitor.root.getOneRender(at: visitor.path)
+    // search for components declaration
+    let structs = visitor.root.components(hookedComponentProtocols)
+    structs.forEach { structDecl in
+
+      // search for render functions
+      for renderFunction in structDecl.children(with: "render") {
+        // search for renderCodeBlock
         guard let codeBlock = renderFunction.firstParent(
-          of: SyntaxKind.codeBlockItem.rawValue
-        ) else {
-          violations.append(StyleViolation(
-            ruleDescription: OneRenderFunctionRule.description,
-            location: Location(
-              file: visitor.path,
-              line: renderFunction.range.startRow,
-              character: renderFunction.range.startColumn
-            )
-          ))
-          return
-        }
-        guard let functionSignature = codeBlock.firstChild(
-          of: SyntaxKind.functionSignature.rawValue
+          of: SyntaxKind.codeBlockItem
         ) else { return }
 
-        let hooksArgument = functionSignature.children(
-          with: SyntaxKind.simpleTypeIdentifier.rawValue
-        ).filter { $0.children.first? .text == "Hooks" }
+        // search for render function Signature
+        guard let functionSignature = codeBlock.firstChild(
+          of: SyntaxKind.functionSignature
+        ) else { return }
 
+        // search for Hooks in render arguments list
+        let hooksArgument = functionSignature.children(
+          with: SyntaxKind.simpleTypeIdentifier
+        ).filter { $0.children.first?.text == "Hooks" }
+
+        // check if render arguments list contains argument conformed
+        // to the Hooks
         guard !hooksArgument.isEmpty else {
           violations.append(StyleViolation(
             ruleDescription: RenderGetsHooksRule.description,
@@ -56,12 +52,8 @@ struct RenderGetsHooksRule: Rule {
           return
         }
       }
-    } catch let error as [StyleViolation] {
-      return error
-    } catch {
-      print(error)
     }
 
-    return []
+    return violations
   }
 }
