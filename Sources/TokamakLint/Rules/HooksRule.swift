@@ -18,7 +18,7 @@ struct HooksRule: Rule {
     var violations: [StyleViolation] = []
 
     // search for render function
-    let structs = visitor.root.hookedComponents
+    let structs = visitor.root.components(hookedComponentProtocols)
     guard !structs.isEmpty else { return [] }
     structs.forEach { structDecl in
       for render in structDecl.children(with: "render") {

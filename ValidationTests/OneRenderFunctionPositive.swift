@@ -9,11 +9,8 @@
 
 import Tokamak
 
-struct TextFieldExample: LeafComponent {
-  typealias Props = Null
-
+struct OneRenderFunctionPositive: PureLeafCOmponent {
   static func render(props: Props, hooks: Hooks) -> AnyNode {
-    let text = hooks.state("")
     let textFieldStyle = Style(
       [
         Height.equal(to: 44),
@@ -36,24 +33,31 @@ struct TextFieldExample: LeafComponent {
         value: text.value,
         valueHandler: Handler(text.set)
       )),
+    ])
+  }
+}
+
+struct OneRenderFunctionPositiveAnotherOne: LeafCOmponent {
+  static func render(props: Props) -> AnyNode {
+    let textFieldStyle = Style(
+      [
+        Height.equal(to: 44),
+        Width.equal(to: .parent),
+      ]
+    )
+
+    return StackView.node(.init(
+      [
+        Leading.equal(to: .safeArea),
+        Trailing.equal(to: .safeArea),
+        Top.equal(to: .safeArea),
+      ],
+      alignment: .top,
+      axis: .vertical
+    ), [
       TextField.node(.init(
         textFieldStyle,
-        isEnabled: false,
-        placeholder: "Disabled",
-        value: text.value,
-        valueHandler: Handler(text.set)
-      )),
-      TextField.node(.init(
-        textFieldStyle,
-        keyboardAppearance: .dark,
-        placeholder: "Dark",
-        value: text.value,
-        valueHandler: Handler(text.set)
-      )),
-      TextField.node(.init(
-        textFieldStyle,
-        isSecureTextEntry: true,
-        placeholder: "Password",
+        placeholder: "Default",
         value: text.value,
         valueHandler: Handler(text.set)
       )),
