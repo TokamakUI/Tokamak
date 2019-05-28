@@ -33,14 +33,8 @@ final class TokamakLintTests: XCTestCase {
     XCTAssertEqual(result.count, 6)
   }
 
-  func testNegativeTestHooksRule() throws {
-    let path = "\(try srcRoot())/NegativeTestOneRenderFunctionRule.swift"
-    let result = try OneRenderFunctionRule.validate(path: path)
-    XCTAssertEqual(result, [])
-  }
-
   func testRenderGetsHooksRule() throws {
-    let path = "\(try srcRoot())/PositiveTestOneRenderFunctionRule.swift"
+    let path = "\(try srcRoot())/OneRenderFunctionPositive.swift"
     let result = try RenderGetsHooksRule.validate(path: path)
     XCTAssertEqual(result, [])
   }

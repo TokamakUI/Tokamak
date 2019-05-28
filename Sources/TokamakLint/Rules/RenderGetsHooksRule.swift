@@ -15,38 +15,49 @@ struct RenderGetsHooksRule: Rule {
   )
 
   public static func validate(visitor: TokenVisitor) -> [StyleViolation] {
+    var violations: [StyleViolation] = []
+
     do {
-      let renderFunction = try visitor.root.getOneRender(at: visitor.path)
-      guard let codeBlock = renderFunction.firstParent(
-        of: SyntaxKind.codeBlockItem.rawValue
-      ) else { return [StyleViolation(
-        ruleDescription: OneRenderFunctionRule.description,
-        location: Location(
-          file: visitor.path,
-          line: renderFunction.range.startRow,
-          character: renderFunction.range.startColumn
-        )
-      )] }
-      guard let functionSignature = codeBlock.firstChild(
-        of: SyntaxKind.functionSignature.rawValue
-      ) else { return [] }
+      // search for render function
+      let structs = visitor.root.components(hookedComponentProtocols)
+      guard !structs.isEmpty else { return [] }
+      try structs.forEach { _ in
+        let renderFunction = try visitor.root.getOneRender(at: visitor.path)
+        guard let codeBlock = renderFunction.firstParent(
+          of: SyntaxKind.codeBlockItem.rawValue
+        ) else {
+          violations.append(StyleViolation(
+            ruleDescription: OneRenderFunctionRule.description,
+            location: Location(
+              file: visitor.path,
+              line: renderFunction.range.startRow,
+              character: renderFunction.range.startColumn
+            )
+          ))
+          return
+        }
+        guard let functionSignature = codeBlock.firstChild(
+          of: SyntaxKind.functionSignature.rawValue
+        ) else { return }
 
-      let hooksArgument = functionSignature.children(
-        with: SyntaxKind.simpleTypeIdentifier.rawValue
-      ).filter {
-        guard let children = $0.children.first else { return false }
-        return children.text == "Hooks"
-      }
+        let hooksArgument = functionSignature.children(
+          with: SyntaxKind.simpleTypeIdentifier.rawValue
+        ).filter {
+          guard let children = $0.children.first else { return false }
+          return children.text == "Hooks"
+        }
 
-      guard !hooksArgument.isEmpty else {
-        return [StyleViolation(
-          ruleDescription: OneRenderFunctionRule.description,
-          location: Location(
-            file: visitor.path,
-            line: renderFunction.range.startRow,
-            character: renderFunction.range.startColumn
-          )
-        )]
+        guard !hooksArgument.isEmpty else {
+          violations.append(StyleViolation(
+            ruleDescription: OneRenderFunctionRule.description,
+            location: Location(
+              file: visitor.path,
+              line: renderFunction.range.startRow,
+              character: renderFunction.range.startColumn
+            )
+          ))
+          return
+        }
       }
     } catch let error as [StyleViolation] {
       return error
