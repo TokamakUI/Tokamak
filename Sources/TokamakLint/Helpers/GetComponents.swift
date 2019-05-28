@@ -8,8 +8,7 @@
 import SwiftSyntax
 
 let hookedComponentProtocols = ["CompositeComponent", "LeafComponent"]
-let componentsProtocols = ["CompositeComponent", "LeafComponent",
-                           "PureLeafComponent", "PureComponent"]
+let componentProtocols = hookedComponentProtocols + ["PureLeafComponent", "PureComponent"]
 
 extension Node {
   /// return Tokamak components that can have hooks in the render
