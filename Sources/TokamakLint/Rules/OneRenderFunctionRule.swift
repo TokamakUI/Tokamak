@@ -16,7 +16,7 @@ struct OneRenderFunctionRule: Rule {
 
   static func validate(visitor: TokenVisitor) -> [StyleViolation] {
     do {
-      let structs = visitor.root.components(componentsProtocols)
+      let structs = visitor.root.components(componentProtocols)
 
       guard !structs.isEmpty else { return [] }
 

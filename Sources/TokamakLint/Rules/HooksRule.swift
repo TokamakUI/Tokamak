@@ -19,7 +19,7 @@ struct HooksRule: Rule {
 
     // search for render function
     let structs = visitor.root.components(hookedComponentProtocols)
-    guard !structs.isEmpty else { return [] }
+    
     structs.forEach { structDecl in
       for render in structDecl.children(with: "render") {
         // search for Hooks argument name in the render argument list
