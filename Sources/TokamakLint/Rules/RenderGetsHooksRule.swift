@@ -20,7 +20,7 @@ struct RenderGetsHooksRule: Rule {
     do {
       // search for render function
       let structs = visitor.root.components(hookedComponentProtocols)
-      guard !structs.isEmpty else { return [] }
+        
       try structs.forEach { _ in
         let renderFunction = try visitor.root.getOneRender(at: visitor.path)
         guard let codeBlock = renderFunction.firstParent(
@@ -42,14 +42,11 @@ struct RenderGetsHooksRule: Rule {
 
         let hooksArgument = functionSignature.children(
           with: SyntaxKind.simpleTypeIdentifier.rawValue
-        ).filter {
-          guard let children = $0.children.first else { return false }
-          return children.text == "Hooks"
-        }
+        ).filter { $0.children.first? .text == "Hooks" }
 
         guard !hooksArgument.isEmpty else {
           violations.append(StyleViolation(
-            ruleDescription: OneRenderFunctionRule.description,
+            ruleDescription: RenderGetsHooksRule.description,
             location: Location(
               file: visitor.path,
               line: renderFunction.range.startRow,
