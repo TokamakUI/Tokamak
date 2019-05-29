@@ -28,7 +28,7 @@ struct RenderGetsHooksRule: Rule {
           of: SyntaxKind.codeBlockItem
         ) else { return }
 
-        // search for render function Signature
+        // search for render function signature
         guard let functionSignature = codeBlock.firstChild(
           of: SyntaxKind.functionSignature
         ) else { return }
@@ -38,8 +38,7 @@ struct RenderGetsHooksRule: Rule {
           with: SyntaxKind.simpleTypeIdentifier
         ).filter { $0.children.first?.text == "Hooks" }
 
-        // check if render arguments list contains argument conformed
-        // to the Hooks
+        // check if render arguments list contains argument of type Hooks
         guard !hooksArgument.isEmpty else {
           violations.append(StyleViolation(
             ruleDescription: RenderGetsHooksRule.description,
