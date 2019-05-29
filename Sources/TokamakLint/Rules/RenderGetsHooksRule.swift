@@ -15,45 +15,44 @@ struct RenderGetsHooksRule: Rule {
   )
 
   public static func validate(visitor: TokenVisitor) -> [StyleViolation] {
-    do {
-      let renderFunction = try visitor.root.getOneRender(at: visitor.path)
-      guard let codeBlock = renderFunction.firstParent(
-        of: SyntaxKind.codeBlockItem.rawValue
-      ) else { return [StyleViolation(
-        ruleDescription: OneRenderFunctionRule.description,
-        location: Location(
-          file: visitor.path,
-          line: renderFunction.range.startRow,
-          character: renderFunction.range.startColumn
-        )
-      )] }
-      guard let functionSignature = codeBlock.firstChild(
-        of: SyntaxKind.functionSignature.rawValue
-      ) else { return [] }
+    var violations: [StyleViolation] = []
 
-      let hooksArgument = functionSignature.children(
-        with: SyntaxKind.simpleTypeIdentifier.rawValue
-      ).filter {
-        guard let children = $0.children.first else { return false }
-        return children.text == "Hooks"
-      }
+    // search for components declaration
+    let structs = visitor.root.components(hookedComponentProtocols)
+    structs.forEach { structDecl in
 
-      guard !hooksArgument.isEmpty else {
-        return [StyleViolation(
-          ruleDescription: OneRenderFunctionRule.description,
-          location: Location(
-            file: visitor.path,
-            line: renderFunction.range.startRow,
-            character: renderFunction.range.startColumn
-          )
-        )]
+      // search for render functions
+      for renderFunction in structDecl.children(with: "render") {
+        // search for renderCodeBlock
+        guard let codeBlock = renderFunction.firstParent(
+          of: SyntaxKind.codeBlockItem
+        ) else { return }
+
+        // search for render function signature
+        guard let functionSignature = codeBlock.firstChild(
+          of: SyntaxKind.functionSignature
+        ) else { return }
+
+        // search for Hooks in render arguments list
+        let hooksArgument = functionSignature.children(
+          with: SyntaxKind.simpleTypeIdentifier
+        ).filter { $0.children.first?.text == "Hooks" }
+
+        // check if render arguments list contains argument of type Hooks
+        guard !hooksArgument.isEmpty else {
+          violations.append(StyleViolation(
+            ruleDescription: RenderGetsHooksRule.description,
+            location: Location(
+              file: visitor.path,
+              line: renderFunction.range.startRow,
+              character: renderFunction.range.startColumn
+            )
+          ))
+          return
+        }
       }
-    } catch let error as [StyleViolation] {
-      return error
-    } catch {
-      print(error)
     }
 
-    return []
+    return violations
   }
 }

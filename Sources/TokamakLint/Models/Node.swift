@@ -38,6 +38,10 @@ final class Node: Equatable {
     children.append(node)
   }
 
+  func children(with type: SyntaxKind) -> [Node] {
+    return children(with: type.rawValue)
+  }
+
   func children(with type: String) -> [Node] {
     guard children.first != nil else { return [] }
     var nodes: [Node] = []
