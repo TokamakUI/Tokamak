@@ -44,7 +44,7 @@ struct HooksRule: Rule {
             !codeBlockItemList.children.contains(hookCodeBlockItem)
           else { return }
           violations.append(StyleViolation(
-            ruleDescription: OneRenderFunctionRule.description,
+            ruleDescription: HooksRule.description,
             location: Location(
               file: visitor.path,
               line: hook.range.startRow,
@@ -81,7 +81,7 @@ struct HooksRule: Rule {
           guard memberCodeBlockItemList.children.contains(safeState) else {
             violations.append(
               StyleViolation(
-                ruleDescription: OneRenderFunctionRule.description,
+                ruleDescription: HooksRule.description,
                 location: Location(
                   file: visitor.path,
                   line: state.range.startRow,
