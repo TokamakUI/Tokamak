@@ -1,5 +1,5 @@
 //
-//  ComponentAsStructRule.swift
+//  ComponentIsStructRule.swift
 //  TokamakLint
 //
 //  Created by Matvii Hodovaniuk on 5/30/19.
@@ -7,9 +7,9 @@
 
 import SwiftSyntax
 
-struct ComponentAsStructRule: Rule {
+struct ComponentIsStructRule: Rule {
   static let description = RuleDescription(
-    type: ComponentAsStructRule.self,
+    type: ComponentIsStructRule.self,
     name: "Component as struct",
     description: "Components can only be declared as structs"
   )
@@ -26,7 +26,7 @@ struct ComponentAsStructRule: Rule {
         guard let componentCodeBlockItem = component.firstParent(of: .codeBlockItem) else { return }
         guard componentCodeBlockItem.children.first?.text == SyntaxKind.structDecl.rawValue else {
           violations.append(StyleViolation(
-            ruleDescription: ComponentAsStructRule.description,
+            ruleDescription: ComponentIsStructRule.description,
             location: Location(
               file: visitor.path,
               line: componentCodeBlockItem.range.startRow,
