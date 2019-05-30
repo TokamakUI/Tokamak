@@ -86,4 +86,16 @@ final class TokamakLintTests: XCTestCase {
       XCTAssertEqual(result[i].location.line, line)
     }
   }
+
+  func testComponentAsStructRulePositive() throws {
+    let path = "\(try srcRoot())/ComponentAsStructPositive.swift"
+    let result = try ComponentAsStructRule.validate(path: path)
+    XCTAssertEqual(result.count, 0)
+  }
+
+  func testComponentAsStructRuleNegative() throws {
+    let path = "\(try srcRoot())/ComponentAsStructNegative.swift"
+    let result = try ComponentAsStructRule.validate(path: path)
+    XCTAssertEqual(result.count, 2)
+  }
 }
