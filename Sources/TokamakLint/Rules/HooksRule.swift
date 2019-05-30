@@ -57,10 +57,9 @@ struct HooksRule: Rule {
 
     // search Hooks extension
     let extensions = visitor.root.children(with: .extensionDecl)
-      .filter { (ext) -> Bool in
+      .filter { ext in
         let simpleTypeIdentifier = ext.firstChild(of: .simpleTypeIdentifier)
-        let name = simpleTypeIdentifier?.children[0].text
-        return name == "Hooks"
+        return simpleTypeIdentifier?.children[0].text == "Hooks"
       }
 
     extensions.forEach { ext in
@@ -70,6 +69,7 @@ struct HooksRule: Rule {
       }
       memberDeclList.children.forEach { memberDeclListItem in
         // search `state` use in memberDeclListItem
+        // FIXME: this should be extended on all possible hooks, not only `state`
         let states = memberDeclListItem.children(with: "state")
 
         // search codeBlockItemList in memberDeclListItem
