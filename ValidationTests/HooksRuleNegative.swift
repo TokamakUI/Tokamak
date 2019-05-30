@@ -22,7 +22,7 @@ struct HookedLeafComponent: LeafComponent {
   }
 }
 
-// don't use Hooks in extesion on non first level
+// don't use Hooks in extension on non first level
 extension Hooks {
   var blah: State<Int> {
     if true {

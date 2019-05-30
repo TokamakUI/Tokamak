@@ -5,7 +5,7 @@ class BeatlesComponents: CompositeComponent {
 
 class LedZeppelinLeaf: PureLeafComponent {
   let doIhaveToGo = false
-  enum whatMakeMe: String {
+  enum WhatMakeMe: String {
     case mad = "the letter you wrote me"
     case sad = "the news that letters told me"
   }
