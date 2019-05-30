@@ -47,43 +47,43 @@ final class TokamakLintTests: XCTestCase {
 
   func testTwoComponentsCorrectBroken() throws {
     let path = "\(try srcRoot())/TwoComponentsCorrectBroken.swift"
-    let oneRenderFunctionRuleResult = try OneRenderFunctionRule.validate(path: path)
-    XCTAssertEqual(oneRenderFunctionRuleResult.count, 2)
-    XCTAssertEqual(oneRenderFunctionRuleResult[0].location.line, 41)
-    XCTAssertEqual(oneRenderFunctionRuleResult[1].location.line, 60)
+    let result = try OneRenderFunctionRule.validate(path: path)
+    XCTAssertEqual(result.count, 2)
+    XCTAssertEqual(result[0].location.line, 41)
+    XCTAssertEqual(result[1].location.line, 60)
   }
 
   func testTwoComponentsBrokenBroken() throws {
     let path = "\(try srcRoot())/TwoComponentsBrokenBroken.swift"
-    let oneRenderFunctionRuleResult = try OneRenderFunctionRule.validate(path: path)
-    XCTAssertEqual(oneRenderFunctionRuleResult.count, 4)
-    XCTAssertEqual(oneRenderFunctionRuleResult[0].location.line, 10)
-    XCTAssertEqual(oneRenderFunctionRuleResult[1].location.line, 29)
-    XCTAssertEqual(oneRenderFunctionRuleResult[2].location.line, 60)
-    XCTAssertEqual(oneRenderFunctionRuleResult[3].location.line, 79)
+    let result = try OneRenderFunctionRule.validate(path: path)
+    XCTAssertEqual(result.count, 4)
+    XCTAssertEqual(result[0].location.line, 10)
+    XCTAssertEqual(result[1].location.line, 29)
+    XCTAssertEqual(result[2].location.line, 60)
+    XCTAssertEqual(result[3].location.line, 79)
   }
 
   func testTwoComponentsCorrectCorrect() throws {
     let path = "\(try srcRoot())/TwoComponentsCorrectCorrect.swift"
-    let oneRenderFunctionRuleResult = try OneRenderFunctionRule.validate(path: path)
-    XCTAssertEqual(oneRenderFunctionRuleResult.count, 0)
+    let result = try OneRenderFunctionRule.validate(path: path)
+    XCTAssertEqual(result.count, 0)
   }
 
   func testHooksRulePositive() throws {
     let path = "\(try srcRoot())/HooksRulePositive.swift"
-    let oneRenderFunctionRuleResult = try HooksRule.validate(path: path)
-    XCTAssertEqual(oneRenderFunctionRuleResult.count, 0)
+    let result = try HooksRule.validate(path: path)
+    XCTAssertEqual(result.count, 0)
   }
 
   func testHooksRuleNegative() throws {
     let path = "\(try srcRoot())/HooksRuleNegative.swift"
-    let oneRenderFunctionRuleResult = try HooksRule.validate(path: path)
-    XCTAssertEqual(oneRenderFunctionRuleResult.count, 6)
-    XCTAssertEqual(oneRenderFunctionRuleResult[0].location.line, 7)
-    XCTAssertEqual(oneRenderFunctionRuleResult[1].location.line, 15)
-    XCTAssertEqual(oneRenderFunctionRuleResult[2].location.line, 20)
-    XCTAssertEqual(oneRenderFunctionRuleResult[3].location.line, 29)
-    XCTAssertEqual(oneRenderFunctionRuleResult[4].location.line, 34)
-    XCTAssertEqual(oneRenderFunctionRuleResult[5].location.line, 42)
+    let result = try HooksRule.validate(path: path)
+    XCTAssertEqual(result.count, 12)
+    let violationsLines = [
+      7, 15, 20, 40, 45, 53, 79, 81, 29, 31, 69, 71,
+    ]
+    for (i, line) in violationsLines.enumerated() {
+      XCTAssertEqual(result[i].location.line, line)
+    }
   }
 }
