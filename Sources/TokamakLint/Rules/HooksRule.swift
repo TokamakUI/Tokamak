@@ -57,7 +57,7 @@ struct HooksRule: Rule {
 
     // search Hooks extension
     let extensions = visitor.root.children(with: .extensionDecl)
-      .filter { (ext) -> Bool in
+      .filter { (ext) in
         let simpleTypeIdentifier = ext.firstChild(of: .simpleTypeIdentifier)
         return simpleTypeIdentifier?.children[0].text == "Hooks"
       }
