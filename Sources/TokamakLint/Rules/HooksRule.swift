@@ -59,8 +59,7 @@ struct HooksRule: Rule {
     let extensions = visitor.root.children(with: .extensionDecl)
       .filter { (ext) -> Bool in
         let simpleTypeIdentifier = ext.firstChild(of: .simpleTypeIdentifier)
-        let name = simpleTypeIdentifier?.children[0].text
-        return name == "Hooks"
+        return simpleTypeIdentifier?.children[0].text == "Hooks"
       }
 
     extensions.forEach { ext in
