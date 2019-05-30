@@ -26,7 +26,7 @@ struct ComponentAsStructRule: Rule {
         guard let componentCodeBlockItem = component.firstParent(of: .codeBlockItem) else { return }
         guard componentCodeBlockItem.children.first?.text == SyntaxKind.structDecl.rawValue else {
           violations.append(StyleViolation(
-            ruleDescription: OneRenderFunctionRule.description,
+            ruleDescription: ComponentAsStructRule.description,
             location: Location(
               file: visitor.path,
               line: componentCodeBlockItem.range.startRow,
