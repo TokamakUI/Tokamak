@@ -69,6 +69,7 @@ struct HooksRule: Rule {
       }
       memberDeclList.children.forEach { memberDeclListItem in
         // search `state` use in memberDeclListItem
+        // FIXME: this should be extended on all possible hooks, not only `state`
         let states = memberDeclListItem.children(with: "state")
 
         // search codeBlockItemList in memberDeclListItem
