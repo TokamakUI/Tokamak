@@ -37,26 +37,26 @@ public struct TokamakLogger: LogHandler {
 
   public var outputs = [Outputs.file]
 
-    public var _path: URL?
+  public var _path: URL?
 
   public var path: URL {
     get {
-        guard let _path = _path else {
-            let fm = FileManager.default
-            guard let url = fm.urls(
-                for: FileManager.SearchPathDirectory.documentDirectory,
-                in: FileManager.SearchPathDomainMask.userDomainMask
-                )
-                .last?.appendingPathComponent("log.txt") else {
-                    return URL(fileURLWithPath: "")
-            }
-            return url
+      guard let _path = _path else {
+        let fm = FileManager.default
+        guard let url = fm.urls(
+          for: FileManager.SearchPathDirectory.documentDirectory,
+          in: FileManager.SearchPathDomainMask.userDomainMask
+        )
+        .last?.appendingPathComponent("log.txt") else {
+          return URL(fileURLWithPath: "")
         }
-        return _path
+        return url
+      }
+      return _path
     }
 
     set {
-        _path = newValue
+      _path = newValue
     }
   }
 
@@ -104,15 +104,15 @@ public struct TokamakLogger: LogHandler {
   func write(_ string: String) {
     let data = string.data(using: String.Encoding.utf8)
     let fm = FileManager.default
-    if !fm.fileExists(atPath: (path.absoluteString)) {
+    if !fm.fileExists(atPath: path.absoluteString) {
       fm.createFile(
-        atPath: (path.absoluteString),
+        atPath: path.absoluteString,
         contents: data, attributes: nil
       )
     } else {
-        var file = FileHandle(forReadingAtPath: (path.absoluteString))
-        _ = String(describing: file?.readDataToEndOfFile())
-        file = FileHandle(forWritingAtPath: (path.absoluteString))
+      var file = FileHandle(forReadingAtPath: path.absoluteString)
+      _ = String(describing: file?.readDataToEndOfFile())
+      file = FileHandle(forWritingAtPath: path.absoluteString)
       if file != nil {
         file?.seek(toFileOffset: 10)
         file?.write(data!)

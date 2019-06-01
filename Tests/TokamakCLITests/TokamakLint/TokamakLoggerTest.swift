@@ -13,11 +13,11 @@ final class TokamakLoggerTests: XCTestCase {
   func testLogToFile() throws {
     let fm = FileManager.default
     guard let url = fm.urls(
-        for: FileManager.SearchPathDirectory.desktopDirectory,
-        in: FileManager.SearchPathDomainMask.userDomainMask
-        )
-        .last?.appendingPathComponent("log.txt")
-        else { return }
+      for: FileManager.SearchPathDirectory.desktopDirectory,
+      in: FileManager.SearchPathDomainMask.userDomainMask
+    )
+    .last?.appendingPathComponent("log.txt")
+    else { return }
 
     var logHandler = TokamakLogger(label: "TokamakCLI Output")
     logHandler.outputs = [.stdout, .file]
