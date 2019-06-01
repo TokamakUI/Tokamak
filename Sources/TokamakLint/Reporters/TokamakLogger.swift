@@ -37,25 +37,50 @@ public struct TokamakLogger: LogHandler {
 
   public var outputs = [Outputs.file]
 
-  public var path: URL? {
-    let fm = FileManager.default
-    return fm.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).last?.appendingPathComponent("log.txt")
+    public var _path: URL?
+
+  public var path: URL {
+    get {
+        guard let _path = _path else {
+            let fm = FileManager.default
+            guard let url = fm.urls(
+                for: FileManager.SearchPathDirectory.documentDirectory,
+                in: FileManager.SearchPathDomainMask.userDomainMask
+                )
+                .last?.appendingPathComponent("log.txt") else {
+                    return URL(fileURLWithPath: "")
+            }
+            return url
+        }
+        return _path
+    }
+
+    set {
+        _path = newValue
+    }
   }
 
   public var logLevel: Logger.Level {
-    // when we get asked for the log level, we check if it was globally overridden or not
+    // when we get asked for the log level, we check if it was
+    // globally overridden or not
     get {
       return _logLevel
     }
-    // we set the log level whenever we're asked (note: this might not have an effect if globally
-    // overridden)
+    // we set the log level whenever we're asked (note: this might not
+    // have an effect if globally overridden)
     set {
       _logLevel = newValue
     }
   }
 
-  public func log(level: Logger.Level, message: Logger.Message, metadata: Logger.Metadata?,
-                  file: String, function: String, line: UInt) {
+  public func log(
+    level: Logger.Level,
+    message: Logger.Message,
+    metadata: Logger.Metadata?,
+    file: String,
+    function: String,
+    line: UInt
+  ) {
     if outputs.contains(Outputs.stdout) {
       print(message.description)
     }
@@ -66,18 +91,28 @@ public struct TokamakLogger: LogHandler {
   }
 
   public func log(level: Logger.Level, message: Logger.Message) {
-    log(level: level, message: message, metadata: .none, file: "", function: "", line: 0)
+    log(
+      level: level,
+      message: message,
+      metadata: .none,
+      file: "",
+      function: "",
+      line: 0
+    )
   }
 
   func write(_ string: String) {
     let data = string.data(using: String.Encoding.utf8)
     let fm = FileManager.default
-    if !fm.fileExists(atPath: (path?.absoluteString)!) {
-      fm.createFile(atPath: (path?.absoluteString)!, contents: data, attributes: nil)
+    if !fm.fileExists(atPath: (path.absoluteString)) {
+      fm.createFile(
+        atPath: (path.absoluteString),
+        contents: data, attributes: nil
+      )
     } else {
-      var file = FileHandle(forReadingAtPath: (path?.absoluteString)!)
-      let databuffer = String(describing: file?.readDataToEndOfFile())
-      file = FileHandle(forWritingAtPath: (path?.absoluteString)!)
+        var file = FileHandle(forReadingAtPath: (path.absoluteString))
+        _ = String(describing: file?.readDataToEndOfFile())
+        file = FileHandle(forWritingAtPath: (path.absoluteString))
       if file != nil {
         file?.seek(toFileOffset: 10)
         file?.write(data!)

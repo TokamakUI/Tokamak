@@ -372,7 +372,7 @@
       };
       "OBJ_146" = {
          isa = "PBXFileReference";
-         path = "LinterLogHandler.swift";
+         path = "TokamakLogger.swift";
          sourceTree = "<group>";
       };
       "OBJ_147" = {
@@ -948,12 +948,12 @@
       };
       "OBJ_228" = {
          isa = "PBXFileReference";
-         path = "LoggerTest.swift";
+         path = "NodeTests.swift";
          sourceTree = "<group>";
       };
       "OBJ_229" = {
          isa = "PBXFileReference";
-         path = "NodeTests.swift";
+         path = "TokamakLoggerTest.swift";
          sourceTree = "<group>";
       };
       "OBJ_23" = {
@@ -1493,17 +1493,17 @@
          isa = "PBXGroup";
          children = (
             "Tokamak::TokamakTests::Product",
-            "Tokamak::TokamakAppKit::Product",
-            "Tokamak::TokamakTestRenderer::Product",
-            "Tokamak::TokamakCLI::Product",
-            "Tokamak::Tokamak::Product",
-            "Tokamak::TokamakDemo::Product",
-            "SwiftSyntax::SwiftSyntax::Product",
             "Tokamak::TokamakCLITests::Product",
-            "SwiftCLI::SwiftCLI::Product",
-            "Tokamak::TokamakLint::Product",
             "Tokamak::TokamakUIKit::Product",
-            "swift-log::Logging::Product"
+            "SwiftSyntax::SwiftSyntax::Product",
+            "swift-log::Logging::Product",
+            "Tokamak::TokamakTestRenderer::Product",
+            "SwiftCLI::SwiftCLI::Product",
+            "Tokamak::TokamakCLI::Product",
+            "Tokamak::TokamakLint::Product",
+            "Tokamak::Tokamak::Product",
+            "Tokamak::TokamakAppKit::Product",
+            "Tokamak::TokamakDemo::Product"
          );
          name = "Products";
          path = "";
