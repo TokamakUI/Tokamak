@@ -39,7 +39,11 @@ public struct TokamakLogger: LogHandler {
 
   public var path: URL? {
     let fm = FileManager.default
-    return fm.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).last?.appendingPathComponent("log.txt")
+    return fm.urls(
+      for: FileManager.SearchPathDirectory.documentDirectory,
+      in: FileManager.SearchPathDomainMask.userDomainMask
+    )
+    .last?.appendingPathComponent("log.txt")
   }
 
   public var logLevel: Logger.Level {
@@ -54,8 +58,14 @@ public struct TokamakLogger: LogHandler {
     }
   }
 
-  public func log(level: Logger.Level, message: Logger.Message, metadata: Logger.Metadata?,
-                  file: String, function: String, line: UInt) {
+  public func log(
+    level: Logger.Level,
+    message: Logger.Message,
+    metadata: Logger.Metadata?,
+    file: String,
+    function: String,
+    line: UInt
+  ) {
     if outputs.contains(Outputs.stdout) {
       print(message.description)
     }
