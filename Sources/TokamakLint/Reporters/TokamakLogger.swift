@@ -1,5 +1,5 @@
 //
-//  LinterLogHandler.swift
+//  TokamakLogger.swift
 //  TokamakLint
 //
 //  Created by Matvii Hodovaniuk on 5/30/19.

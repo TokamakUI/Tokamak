@@ -33,6 +33,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		A6BB978422A2BF68007A0102 /* TokamakLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB978322A2BF68007A0102 /* TokamakLogger.swift */; };
 		A6BFBFEC229D301000F2B06F /* GetComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BFBFEB229D301000F2B06F /* GetComponents.swift */; };
 		A6BFBFEE229FFEFF00F2B06F /* ComponentIsStructRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BFBFED229FFEFF00F2B06F /* ComponentIsStructRule.swift */; };
 		A6E7BC612293D7B20042E787 /* HooksRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E7BC602293D7B20042E787 /* HooksRule.swift */; };
@@ -400,6 +401,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A6BB978322A2BF68007A0102 /* TokamakLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokamakLogger.swift; sourceTree = "<group>"; };
 		A6BFBFEB229D301000F2B06F /* GetComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetComponents.swift; sourceTree = "<group>"; };
 		A6BFBFED229FFEFF00F2B06F /* ComponentIsStructRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentIsStructRule.swift; sourceTree = "<group>"; };
 		A6E7BC602293D7B20042E787 /* HooksRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HooksRule.swift; sourceTree = "<group>"; };
@@ -899,6 +901,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_147 /* XcodeReporter.swift */,
+				A6BB978322A2BF68007A0102 /* TokamakLogger.swift */,
 			);
 			path = Reporters;
 			sourceTree = "<group>";
@@ -1922,6 +1925,7 @@
 				OBJ_550 /* Location.swift in Sources */,
 				OBJ_551 /* Node.swift in Sources */,
 				OBJ_552 /* RuleDescription.swift in Sources */,
+				A6BB978422A2BF68007A0102 /* TokamakLogger.swift in Sources */,
 				A6BFBFEE229FFEFF00F2B06F /* ComponentIsStructRule.swift in Sources */,
 				OBJ_553 /* StyleViolation.swift in Sources */,
 				A6BFBFEC229D301000F2B06F /* GetComponents.swift in Sources */,
