@@ -20,6 +20,7 @@ final class TokamakLoggerTests: XCTestCase {
     else { return }
 
     var logHandler = TokamakLogger(label: "TokamakCLI Output")
+    logHandler.logLevel = .warning
     logHandler.outputs = [.stdout, .file]
     logHandler.path = url
     logHandler.log(level: .warning, message: "Msg")

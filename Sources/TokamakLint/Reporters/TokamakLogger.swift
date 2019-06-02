@@ -20,9 +20,6 @@ public struct Outputs: OptionSet {
 }
 
 public struct TokamakLogger: LogHandler {
-  // this holds the log level if not overridden
-  private var _logLevel: Logger.Level = .info
-
   // metadata storage
   public var metadata: Logger.Metadata = [:]
 
@@ -53,14 +50,7 @@ public struct TokamakLogger: LogHandler {
     }
   }
 
-  public var logLevel: Logger.Level {
-    get {
-      return _logLevel
-    }
-    set {
-      _logLevel = newValue
-    }
-  }
+  public var logLevel: Logger.Level = .info
 
   public func log(
     level: Logger.Level,
