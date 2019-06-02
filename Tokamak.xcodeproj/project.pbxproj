@@ -34,6 +34,7 @@
 
 /* Begin PBXBuildFile section */
 		A6BB978422A2BF68007A0102 /* TokamakLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB978322A2BF68007A0102 /* TokamakLogger.swift */; };
+		A6BB978622A2C3BC007A0102 /* TokamakLoggerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB978522A2C3BC007A0102 /* TokamakLoggerTest.swift */; };
 		A6BFBFEC229D301000F2B06F /* GetComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BFBFEB229D301000F2B06F /* GetComponents.swift */; };
 		A6BFBFEE229FFEFF00F2B06F /* ComponentIsStructRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BFBFED229FFEFF00F2B06F /* ComponentIsStructRule.swift */; };
 		A6E7BC612293D7B20042E787 /* HooksRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E7BC602293D7B20042E787 /* HooksRule.swift */; };
@@ -402,6 +403,7 @@
 
 /* Begin PBXFileReference section */
 		A6BB978322A2BF68007A0102 /* TokamakLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokamakLogger.swift; sourceTree = "<group>"; };
+		A6BB978522A2C3BC007A0102 /* TokamakLoggerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokamakLoggerTest.swift; sourceTree = "<group>"; };
 		A6BFBFEB229D301000F2B06F /* GetComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetComponents.swift; sourceTree = "<group>"; };
 		A6BFBFED229FFEFF00F2B06F /* ComponentIsStructRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentIsStructRule.swift; sourceTree = "<group>"; };
 		A6E7BC602293D7B20042E787 /* HooksRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HooksRule.swift; sourceTree = "<group>"; };
@@ -1096,6 +1098,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_227 /* NodeTests.swift */,
+				A6BB978522A2C3BC007A0102 /* TokamakLoggerTest.swift */,
 			);
 			path = TokamakLint;
 			sourceTree = "<group>";
@@ -1904,6 +1907,7 @@
 			files = (
 				OBJ_527 /* Helpers.swift in Sources */,
 				OBJ_528 /* NodeTests.swift in Sources */,
+				A6BB978622A2C3BC007A0102 /* TokamakLoggerTest.swift in Sources */,
 				OBJ_529 /* TokamakLintTests.swift in Sources */,
 				OBJ_530 /* TokenVisitorTests.swift in Sources */,
 			);
