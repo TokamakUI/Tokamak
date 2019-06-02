@@ -8,11 +8,6 @@
 import Foundation
 import Logging
 
-enum Output {
-  case stdout
-  case file
-}
-
 public struct Outputs: OptionSet {
   public init(rawValue: Outputs.RawValue) {
     self.rawValue = rawValue
@@ -25,8 +20,6 @@ public struct Outputs: OptionSet {
 }
 
 public struct TokamakLogger: LogHandler {
-  private static var overrideLogLevel: Logger.Level?
-
   // this holds the log level if not overridden
   private var _logLevel: Logger.Level = .info
 
@@ -61,13 +54,9 @@ public struct TokamakLogger: LogHandler {
   }
 
   public var logLevel: Logger.Level {
-    // when we get asked for the log level, we check if it was
-    // globally overridden or not
     get {
       return _logLevel
     }
-    // we set the log level whenever we're asked (note: this might not
-    // have an effect if globally overridden)
     set {
       _logLevel = newValue
     }
