@@ -12,17 +12,32 @@ import XCTest
 final class TokamakLoggerTests: XCTestCase {
   func testLogToFile() throws {
     let fm = FileManager.default
+    // create url to test file
     guard let url = fm.urls(
-      for: FileManager.SearchPathDirectory.desktopDirectory,
+      for: FileManager.SearchPathDirectory.documentDirectory,
       in: FileManager.SearchPathDomainMask.userDomainMask
     )
-    .last?.appendingPathComponent("log.txt")
+    .last?.appendingPathComponent("test_log.txt")
     else { return }
 
-    var logHandler = TokamakLogger(label: "TokamakCLI Output")
+    // clear file
+    let text = ""
+    try text.write(toFile: url.path, atomically: false, encoding: .utf8)
+
+    let firstMessage: Logger.Message = "Information message"
+    let secondMessage: Logger.Message = "Warning message"
+    let allMessages = "\(firstMessage)\(secondMessage)"
+
+    let logHandler = try TokamakLogger(label: "TokamakCLI Output", path: url.path)
     logHandler.logLevel = .warning
     logHandler.outputs = [.stdout, .file]
-    logHandler.path = url
-    logHandler.log(level: .warning, message: "Msg")
+
+    logHandler.log(message: firstMessage)
+
+    XCTAssertEqual(try String(contentsOf: url, encoding: .utf8), String(firstMessage.description))
+
+    logHandler.log(message: secondMessage)
+
+    XCTAssertEqual(try String(contentsOf: url, encoding: .utf8), String(allMessages.description))
   }
 }
