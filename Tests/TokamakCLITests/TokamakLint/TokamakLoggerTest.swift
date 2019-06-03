@@ -28,16 +28,28 @@ final class TokamakLoggerTests: XCTestCase {
     let secondMessage: Logger.Message = "Warning message"
     let allMessages = "\(firstMessage)\(secondMessage)"
 
-    let logHandler = try TokamakLogger(label: "TokamakCLI Output", path: url.path)
+    var logHandler = try TokamakLogger(label: "TokamakCLI Output", path: url.path)
     logHandler.logLevel = .warning
     logHandler.outputs = [.stdout, .file]
 
     logHandler.log(message: firstMessage)
 
-    XCTAssertEqual(try String(contentsOf: url, encoding: .utf8), String(firstMessage.description))
+    XCTAssertEqual(
+      String(
+        try String(contentsOf: url, encoding: .utf8)
+          .filter { !"\n".contains($0) }
+      ),
+      String(firstMessage.description)
+    )
 
     logHandler.log(message: secondMessage)
 
-    XCTAssertEqual(try String(contentsOf: url, encoding: .utf8), String(allMessages.description))
+    XCTAssertEqual(
+      String(
+        try String(contentsOf: url, encoding: .utf8)
+          .filter { !"\n".contains($0) }
+      ),
+      String(allMessages.description)
+    )
   }
 }
