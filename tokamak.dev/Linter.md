@@ -21,6 +21,11 @@ or
 - run `swift build --product tokamak` in Tokamak directory
 - run `swift run tokamak lint "{path to lint folder or file}"` in Tokamak directory
 
+### TokamakCLI options
+
+Log file path can be added to command after path to lint content via `-l` or `--log-file` flag as in example:
+`swift run tokamak lint "{path to lint folder or file}" -l "/Users/usr/Documents/lint.log"`
+
 ## Supported Rules
 
 | Rule                | Short Description                                      |
