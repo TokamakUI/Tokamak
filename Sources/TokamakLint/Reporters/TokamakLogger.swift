@@ -12,6 +12,8 @@ public struct LogFileCreationError: Error {
   public init() {}
 }
 
+struct StringConversionToDataError: Error {}
+
 public struct Outputs: OptionSet {
   public init(rawValue: Int) {
     self.rawValue = rawValue
@@ -61,7 +63,11 @@ public struct TokamakLogger: LogHandler {
     }
 
     if outputs.contains(Outputs.file) {
-      write(message.description)
+      do {
+        try write(message.description)
+      } catch {
+        print(error)
+      }
     }
   }
 
@@ -76,10 +82,12 @@ public struct TokamakLogger: LogHandler {
     )
   }
 
-  private func write(_ string: String) {
+  private func write(_ string: String) throws {
     fileHandle?.seekToEndOfFile()
-    fileHandle?.write(string.data(using: .utf8)!)
-    fileHandle?.write("\n".data(using: .utf8)!)
+    guard let data = "\(string)\n".data(using: .utf8) else {
+      throw StringConversionToDataError()
+    }
+    fileHandle?.write(data)
   }
 
   public subscript(metadataKey metadataKey: String) -> Logger.Metadata.Value? {
