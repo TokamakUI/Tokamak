@@ -20,7 +20,6 @@ class LintCommand: Command {
       label: "TokamakCLI Output",
       path: logFilePath.value
     )
-    logHandler.logLevel = .warning
     if logFilePath.value != nil {
       logHandler.outputs.append(.file)
     }

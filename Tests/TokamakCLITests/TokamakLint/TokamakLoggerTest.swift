@@ -29,7 +29,6 @@ final class TokamakLoggerTests: XCTestCase {
     let allMessages = "\(firstMessage)\(secondMessage)"
 
     var logHandler = try TokamakLogger(label: "TokamakCLI Output", path: url.path)
-    logHandler.logLevel = .warning
     logHandler.outputs = [.stdout, .file]
 
     logHandler.log(message: firstMessage)
