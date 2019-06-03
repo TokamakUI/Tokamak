@@ -8,7 +8,7 @@
 import Foundation
 import SwiftSyntax
 
-public func lintFolder(_ path: String) throws {
+public func lintFolder(_ path: String, logHandler: TokamakLogger) throws {
   let resourceKeys: [URLResourceKey] = [.creationDateKey, .isDirectoryKey]
   let baseurl = URL(fileURLWithPath: path)
   guard let enumerator = FileManager
@@ -25,22 +25,29 @@ public func lintFolder(_ path: String) throws {
   }
   let count = enumerator.count
   let enumerated = enumerator.enumerated()
+
   for (i, fileURL) in enumerated {
-    print("Linting ",
-          "\(fileURL.lastPathComponent) ",
-          "(\(i + 1)/\(count))")
+    logHandler.log(
+      message: "Linting \(fileURL.lastPathComponent) (\(i + 1)/\(count))"
+    )
     let errors = try checkFile(fileURL.path)
     if errors.count > 0 {
-      print(XcodeReporter.generateReport(errors))
+      logHandler.log(
+        message: "\(XcodeReporter.generateReport(errors))"
+      )
     }
   }
 }
 
-public func lintFile(_ path: String) throws {
-  print("Linting \(path)")
+public func lintFile(_ path: String, logHandler: TokamakLogger) throws {
+  logHandler.log(
+    message: "Linting \(path)\n"
+  )
   let errors = try checkFile(path)
   if errors.count > 0 {
-    print(XcodeReporter.generateReport(errors))
+    logHandler.log(
+      message: "\(XcodeReporter.generateReport(errors))"
+    )
   }
 }
 

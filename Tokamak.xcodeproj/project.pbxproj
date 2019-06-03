@@ -1274,7 +1274,7 @@
             "OBJ_289"
          );
          name = "SwiftSyntax";
-         path = ".build/checkouts/swift-syntax.git-5145467239634578064/Sources/SwiftSyntax";
+         path = ".build/checkouts/swift-syntax/Sources/SwiftSyntax";
          sourceTree = "SOURCE_ROOT";
       };
       "OBJ_272" = {
@@ -1439,7 +1439,7 @@
          children = (
          );
          name = "lit-test-helper";
-         path = ".build/checkouts/swift-syntax.git-5145467239634578064/Sources/lit-test-helper";
+         path = ".build/checkouts/swift-syntax/Sources/lit-test-helper";
          sourceTree = "SOURCE_ROOT";
       };
       "OBJ_3" = {
@@ -1492,24 +1492,24 @@
          isa = "PBXFileReference";
          explicitFileType = "sourcecode.swift";
          name = "Package.swift";
-         path = "/Users/hmi/Documents/maxDesiatov/Tokamak/.build/checkouts/swift-syntax.git-5145467239634578064/Package.swift";
+         path = "/Users/hmi/Documents/maxDesiatov/Tokamak/.build/checkouts/swift-syntax/Package.swift";
          sourceTree = "<group>";
       };
       "OBJ_301" = {
          isa = "PBXGroup";
          children = (
-            "swift-log::Logging::Product",
-            "Tokamak::TokamakCLITests::Product",
-            "Tokamak::Tokamak::Product",
-            "Tokamak::TokamakDemo::Product",
-            "Tokamak::TokamakCLI::Product",
-            "Tokamak::TokamakAppKit::Product",
-            "Tokamak::TokamakTests::Product",
-            "SwiftCLI::SwiftCLI::Product",
             "SwiftSyntax::SwiftSyntax::Product",
+            "Tokamak::TokamakAppKit::Product",
+            "Tokamak::Tokamak::Product",
+            "Tokamak::TokamakTestRenderer::Product",
+            "Tokamak::TokamakCLI::Product",
+            "SwiftCLI::SwiftCLI::Product",
             "Tokamak::TokamakUIKit::Product",
             "Tokamak::TokamakLint::Product",
-            "Tokamak::TokamakTestRenderer::Product"
+            "Tokamak::TokamakTests::Product",
+            "Tokamak::TokamakCLITests::Product",
+            "swift-log::Logging::Product",
+            "Tokamak::TokamakDemo::Product"
          );
          name = "Products";
          path = "";
@@ -3949,11 +3949,11 @@
       };
       "OBJ_610" = {
          isa = "PBXTargetDependency";
-         target = "Tokamak::TokamakTests";
-      };
-      "OBJ_612" = {
-         isa = "PBXTargetDependency";
          target = "Tokamak::TokamakCLITests";
+      };
+      "OBJ_611" = {
+         isa = "PBXTargetDependency";
+         target = "Tokamak::TokamakTests";
       };
       "OBJ_614" = {
          isa = "XCConfigurationList";
@@ -5216,7 +5216,7 @@
          );
          dependencies = (
             "OBJ_610",
-            "OBJ_612"
+            "OBJ_611"
          );
          name = "TokamakPackageTests";
          productName = "TokamakPackageTests";

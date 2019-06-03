@@ -23,7 +23,7 @@ struct XcodeReporter: Reporter {
       "\(violation.location): warning: ",
       "\(violation.ruleDescription.name) Violation: ",
       violation.reason,
-      " (\(violation.ruleDescription.identifier))",
+      " (\(violation.ruleDescription.identifier))\n",
     ].joined()
   }
 }

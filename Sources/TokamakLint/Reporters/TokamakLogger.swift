@@ -8,41 +8,43 @@
 import Foundation
 import Logging
 
-struct UnexpectedFileHandleError: Error {}
+public struct LogFileCreationError: Error {
+  public init() {}
+}
 
 public struct Outputs: OptionSet {
-  public init(rawValue: Outputs.RawValue) {
+  public init(rawValue: Int) {
     self.rawValue = rawValue
   }
 
   public let rawValue: Int
 
-  static let stdout = Outputs(rawValue: 1)
-  static let file = Outputs(rawValue: 2)
+  public static let stdout = Outputs(rawValue: 1)
+  public static let file = Outputs(rawValue: 2)
 }
 
-public class TokamakLogger: LogHandler {
+public struct TokamakLogger: LogHandler {
   public var metadata: Logger.Metadata = [:]
 
-  public init(label: String, path: String) throws {
+  public init(label: String, path: String?) throws {
     fileManager = FileManager.default
+    if let path = path {
+      if !fileManager.fileExists(atPath: path) {
+        fileManager.createFile(atPath: path, contents: "".data(using: .utf8))
+      }
+      guard let fileHandle = try? FileHandle(
+        forWritingTo: URL(fileURLWithPath: path)
+      )
+      else { throw LogFileCreationError() }
 
-    if !fileManager.fileExists(atPath: path) {
-      fileManager.createFile(atPath: path, contents: "".data(using: .utf8))
+      self.fileHandle = fileHandle
     }
-
-    guard let fileHandle = try? FileHandle(
-      forWritingTo: URL(fileURLWithPath: path)
-    )
-    else { throw UnexpectedFileHandleError() }
-
-    self.fileHandle = fileHandle
   }
 
-  public var outputs = [Outputs.file]
+  public var outputs = [Outputs.stdout]
 
   private var fileManager: FileManager
-  private var fileHandle: FileHandle
+  private var fileHandle: FileHandle?
 
   public var logLevel: Logger.Level = .info
 
@@ -75,8 +77,9 @@ public class TokamakLogger: LogHandler {
   }
 
   private func write(_ string: String) {
-    fileHandle.seekToEndOfFile()
-    fileHandle.write(string.data(using: .utf8)!)
+    fileHandle?.seekToEndOfFile()
+    fileHandle?.write(string.data(using: .utf8)!)
+    fileHandle?.write("\n".data(using: .utf8)!)
   }
 
   public subscript(metadataKey metadataKey: String) -> Logger.Metadata.Value? {
