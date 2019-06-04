@@ -9,8 +9,8 @@ import Foundation
 import Logging
 
 enum TokamakLintError: Error {
-    case logFileCreationFailed
-    case logMessageEncodingFailed
+  case logFileCreationFailed
+  case logMessageEncodingFailed
 }
 
 public struct Outputs: OptionSet {
@@ -43,7 +43,7 @@ public struct TokamakLogHandler: LogHandler {
         forWritingTo: URL(fileURLWithPath: path)
       ) else {
         throw LogFileCreationError()
-    }
+      }
 
       self.fileHandle = fileHandle
       outputs = [.stdout, .file]
