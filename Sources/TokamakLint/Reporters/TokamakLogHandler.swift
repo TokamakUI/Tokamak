@@ -8,11 +8,10 @@
 import Foundation
 import Logging
 
-public struct LogFileCreationError: Error {
-  public init() {}
+enum TokamakLintError: Error {
+    case logFileCreationFailed
+    case logMessageEncodingFailed
 }
-
-struct StringConversionToDataError: Error {}
 
 public struct Outputs: OptionSet {
   public init(rawValue: Int) {
@@ -42,8 +41,9 @@ public struct TokamakLogHandler: LogHandler {
       }
       guard let fileHandle = try? FileHandle(
         forWritingTo: URL(fileURLWithPath: path)
-      )
-      else { throw LogFileCreationError() }
+      ) else {
+        throw LogFileCreationError()
+    }
 
       self.fileHandle = fileHandle
       outputs = [.stdout, .file]
