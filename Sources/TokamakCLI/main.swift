@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Logging
 import SwiftCLI
 import TokamakLint
 
@@ -13,27 +14,40 @@ class LintCommand: Command {
   let name = "lint"
   let shortDescription = "Lint folder or file"
   let path = Parameter()
+  let logFilePath = Key<String>("-l", "--log-file", description: "The log file location")
 
   func execute() throws {
+    // setup logger
+    LoggingSystem.bootstrap {
+      var tokamakLogHandler = TokamakLogHandler(label: $0)
+      do {
+        try tokamakLogHandler.setup(path: self.logFilePath.value)
+      } catch {
+        print(error)
+      }
+      return tokamakLogHandler
+    }
+    let logger = Logger(label: "TokamakCLI Output")
+
     if path.value.contains(".swift") {
       do {
-        try lintFile("\(path.value)")
+        try lintFile("\(path.value)", logger: logger)
       } catch {
-        print("Can't lint file")
-        print(error)
+        logger.info("Can't lint file")
+        logger.info("\(error)")
       }
     } else {
       do {
-        try lintFolder("\(path.value)")
+        try lintFolder("\(path.value)", logger: logger)
       } catch {
-        print("Can't lint folder")
-        print(error)
+        logger.info("Can't lint folder")
+        logger.info("\(error)")
       }
     }
   }
 }
 
-let TokamakCLI = CLI(name: "TokamakCLI", version: "0.1.2", description: "Tokamak CLI tools")
+let tokamakCLI = CLI(name: "TokamakCLI", version: "0.1.2", description: "Tokamak CLI tools")
 
-TokamakCLI.commands = [LintCommand()]
-TokamakCLI.goAndExit()
+tokamakCLI.commands = [LintCommand()]
+tokamakCLI.goAndExit()

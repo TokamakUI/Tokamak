@@ -14,34 +14,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Tokamak::TokamakAppKit"
-               BuildableName = "TokamakAppKit.framework"
-               BlueprintName = "TokamakAppKit"
-               ReferencedContainer = "container:Tokamak.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Tokamak::TokamakCLI"
-               BuildableName = "TokamakCLI"
-               BlueprintName = "TokamakCLI"
-               ReferencedContainer = "container:Tokamak.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "Tokamak::TokamakDemo"
                BuildableName = "TokamakDemo.framework"
                BlueprintName = "TokamakDemo"
@@ -56,9 +28,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Tokamak::TokamakUIKit"
-               BuildableName = "TokamakUIKit.framework"
-               BlueprintName = "TokamakUIKit"
+               BlueprintIdentifier = "Tokamak::TokamakAppKit"
+               BuildableName = "TokamakAppKit.framework"
+               BlueprintName = "TokamakAppKit"
+               ReferencedContainer = "container:Tokamak.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Tokamak::TokamakTestRenderer"
+               BuildableName = "TokamakTestRenderer.framework"
+               BlueprintName = "TokamakTestRenderer"
                ReferencedContainer = "container:Tokamak.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -84,6 +70,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Tokamak::TokamakUIKit"
+               BuildableName = "TokamakUIKit.framework"
+               BlueprintName = "TokamakUIKit"
+               ReferencedContainer = "container:Tokamak.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "Tokamak::TokamakLint"
                BuildableName = "TokamakLint.framework"
                BlueprintName = "TokamakLint"
@@ -98,9 +98,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Tokamak::TokamakTestRenderer"
-               BuildableName = "TokamakTestRenderer.framework"
-               BlueprintName = "TokamakTestRenderer"
+               BlueprintIdentifier = "Tokamak::TokamakCLI"
+               BuildableName = "TokamakCLI"
+               BlueprintName = "TokamakCLI"
                ReferencedContainer = "container:Tokamak.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -116,9 +116,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Tokamak::TokamakTests"
-               BuildableName = "TokamakTests.xctest"
-               BlueprintName = "TokamakTests"
+               BlueprintIdentifier = "Tokamak::TokamakCLITests"
+               BuildableName = "TokamakCLITests.xctest"
+               BlueprintName = "TokamakCLITests"
                ReferencedContainer = "container:Tokamak.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -126,9 +126,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Tokamak::TokamakCLITests"
-               BuildableName = "TokamakCLITests.xctest"
-               BlueprintName = "TokamakCLITests"
+               BlueprintIdentifier = "Tokamak::TokamakTests"
+               BuildableName = "TokamakTests.xctest"
+               BlueprintName = "TokamakTests"
                ReferencedContainer = "container:Tokamak.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -149,9 +149,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Tokamak::TokamakAppKit"
-            BuildableName = "TokamakAppKit.framework"
-            BlueprintName = "TokamakAppKit"
+            BlueprintIdentifier = "Tokamak::TokamakDemo"
+            BuildableName = "TokamakDemo.framework"
+            BlueprintName = "TokamakDemo"
             ReferencedContainer = "container:Tokamak.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

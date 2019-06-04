@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "swift-log",
+        "repositoryURL": "https://github.com/apple/swift-log.git",
+        "state": {
+          "branch": null,
+          "revision": "f4240bf022a69815241a883c03645444b58ac553",
+          "version": "1.1.0"
+        }
+      },
+      {
         "package": "SwiftSyntax",
         "repositoryURL": "https://github.com/apple/swift-syntax.git",
         "state": {

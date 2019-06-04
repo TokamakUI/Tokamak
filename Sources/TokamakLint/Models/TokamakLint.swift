@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import Logging
 import SwiftSyntax
 
-public func lintFolder(_ path: String) throws {
+public func lintFolder(_ path: String, logger: Logger) throws {
   let resourceKeys: [URLResourceKey] = [.creationDateKey, .isDirectoryKey]
   let baseurl = URL(fileURLWithPath: path)
   guard let enumerator = FileManager
@@ -25,22 +26,22 @@ public func lintFolder(_ path: String) throws {
   }
   let count = enumerator.count
   let enumerated = enumerator.enumerated()
+
   for (i, fileURL) in enumerated {
-    print("Linting ",
-          "\(fileURL.lastPathComponent) ",
-          "(\(i + 1)/\(count))")
+    logger.info("Linting \(fileURL.lastPathComponent) (\(i + 1)/\(count))")
     let errors = try checkFile(fileURL.path)
     if errors.count > 0 {
-      print(XcodeReporter.generateReport(errors))
+      logger.info("\(XcodeReporter.generateReport(errors))")
     }
   }
 }
 
-public func lintFile(_ path: String) throws {
-  print("Linting \(path)")
+public func lintFile(_ path: String, logger: Logger) throws {
+  logger.info("Linting \(path)\n")
+
   let errors = try checkFile(path)
   if errors.count > 0 {
-    print(XcodeReporter.generateReport(errors))
+    logger.info("\(XcodeReporter.generateReport(errors))")
   }
 }
 
