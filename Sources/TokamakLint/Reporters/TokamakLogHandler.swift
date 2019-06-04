@@ -42,7 +42,7 @@ public struct TokamakLogHandler: LogHandler {
       guard let fileHandle = try? FileHandle(
         forWritingTo: URL(fileURLWithPath: path)
       ) else {
-        throw LogFileCreationError()
+        throw TokamakLintError.logFileCreationFailed
       }
 
       self.fileHandle = fileHandle
@@ -85,7 +85,7 @@ public struct TokamakLogHandler: LogHandler {
   private func write(_ string: String) throws {
     fileHandle?.seekToEndOfFile()
     guard let data = "\(string)\n".data(using: .utf8) else {
-      throw StringConversionToDataError()
+      throw TokamakLintError.logMessageEncodingFailed
     }
     fileHandle?.write(data)
   }
