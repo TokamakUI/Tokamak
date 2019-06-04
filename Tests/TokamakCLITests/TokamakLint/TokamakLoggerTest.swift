@@ -9,7 +9,7 @@ import Logging
 @testable import TokamakLint
 import XCTest
 
-final class TokamakLoggerTests: XCTestCase {
+final class TokamakLogHandlerTests: XCTestCase {
   func testLogToFile() throws {
     let fm = FileManager.default
     // create url to test file
@@ -28,10 +28,20 @@ final class TokamakLoggerTests: XCTestCase {
     let secondMessage: Logger.Message = "Warning message"
     let allMessages = "\(firstMessage)\(secondMessage)"
 
-    var logHandler = try TokamakLogger(label: "TokamakCLI Output", path: url.path)
-    logHandler.outputs = [.stdout, .file]
+    LoggingSystem.bootstrap {
+      var tokamakLogHandler = TokamakLogHandler(label: $0)
+      do {
+        try tokamakLogHandler.setup(path: url.path)
+      } catch {
+        print(error)
+      }
 
-    logHandler.log(message: firstMessage)
+      tokamakLogHandler.outputs = [.stdout, .file]
+      return tokamakLogHandler
+    }
+    let logger = Logger(label: "TokamakCLI Output")
+
+    logger.info(firstMessage)
 
     XCTAssertEqual(
       String(
@@ -41,7 +51,7 @@ final class TokamakLoggerTests: XCTestCase {
       String(firstMessage.description)
     )
 
-    logHandler.log(message: secondMessage)
+    logger.info(secondMessage)
 
     XCTAssertEqual(
       String(

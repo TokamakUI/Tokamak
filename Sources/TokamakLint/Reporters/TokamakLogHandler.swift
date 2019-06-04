@@ -1,5 +1,5 @@
 //
-//  TokamakLogger.swift
+//  TokamakLogHandler.swift
 //  TokamakLint
 //
 //  Created by Matvii Hodovaniuk on 5/30/19.
@@ -25,14 +25,20 @@ public struct Outputs: OptionSet {
   public static let file = Outputs(rawValue: 2)
 }
 
-public struct TokamakLogger: LogHandler {
+public struct TokamakLogHandler: LogHandler {
   public var metadata: Logger.Metadata = [:]
+  public var outputs = [Outputs.stdout]
+  private var fileManager: FileManager?
+  private var fileHandle: FileHandle?
+  public var logLevel: Logger.Level = .info
 
-  public init(label: String, path: String?) throws {
+  public init(label: String) {}
+
+  public mutating func setup(path: String?) throws {
     fileManager = FileManager.default
     if let path = path {
-      if !fileManager.fileExists(atPath: path) {
-        fileManager.createFile(atPath: path, contents: "".data(using: .utf8))
+      if fileManager?.fileExists(atPath: path) == false {
+        fileManager?.createFile(atPath: path, contents: "".data(using: .utf8))
       }
       guard let fileHandle = try? FileHandle(
         forWritingTo: URL(fileURLWithPath: path)
@@ -40,15 +46,9 @@ public struct TokamakLogger: LogHandler {
       else { throw LogFileCreationError() }
 
       self.fileHandle = fileHandle
+      outputs = [.stdout, .file]
     }
   }
-
-  public var outputs = [Outputs.stdout]
-
-  private var fileManager: FileManager
-  private var fileHandle: FileHandle?
-
-  public var logLevel: Logger.Level = .info
 
   public func log(
     level: Logger.Level,

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Logging
 import SwiftCLI
 import TokamakLint
 
@@ -16,34 +17,31 @@ class LintCommand: Command {
   let logFilePath = Key<String>("-l", "--log-file", description: "The log file location")
 
   func execute() throws {
-    var logHandler = try TokamakLogger(
-      label: "TokamakCLI Output",
-      path: logFilePath.value
-    )
-    if logFilePath.value != nil {
-      logHandler.outputs.append(.file)
+    // setup logger
+    LoggingSystem.bootstrap {
+      var tokamakLogHandler = TokamakLogHandler(label: $0)
+      do {
+        try tokamakLogHandler.setup(path: self.logFilePath.value)
+      } catch {
+        print(error)
+      }
+      return tokamakLogHandler
     }
+    let logger = Logger(label: "TokamakCLI Output")
+
     if path.value.contains(".swift") {
       do {
-        try lintFile("\(path.value)", logHandler: logHandler)
+        try lintFile("\(path.value)", logger: logger)
       } catch {
-        logHandler.log(
-          message: "Can't lint file"
-        )
-        logHandler.log(
-          message: "\(error)"
-        )
+        logger.info("Can't lint file")
+        logger.info("\(error)")
       }
     } else {
       do {
-        try lintFolder("\(path.value)", logHandler: logHandler)
+        try lintFolder("\(path.value)", logger: logger)
       } catch {
-        logHandler.log(
-          message: "Can't lint folder"
-        )
-        logHandler.log(
-          message: "\(error)"
-        )
+        logger.info("Can't lint folder")
+        logger.info("\(error)")
       }
     }
   }
