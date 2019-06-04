@@ -8,7 +8,7 @@
 import Foundation
 import Logging
 
-enum TokamakLintError: Error {
+public enum TokamakLintError: Error {
   case logFileCreationFailed
   case logMessageEncodingFailed
 }
