@@ -18,11 +18,12 @@ code or changing the app's overall architecture.
 
 Tokamak PoC was built at the end of 2018, months before SwiftUI was announced.
 We do think that SwiftUI is the future of development not only for Apple's
-platforms, but for older iOS/macOS versions and potentially other platforms too. 
-Thus, the short-term goal of Tokamak is to make the API more compatible with SwiftUI.
-All contributions that help us in achieving this goal are much appreciated.
-You can consider the current Tokamak API as deprecated, but still usable for
-research and experimentation purposes.
+platforms, but for older iOS/macOS versions and potentially other platforms 
+(not directly maintained by Apple) too. Thus, the short-term goal of Tokamak 
+is to make the API more compatible with SwiftUI. All contributions that help 
+us in achieving this goal are much appreciated. You can consider the current 
+Tokamak API as deprecated, but still usable for research and experimentation 
+purposes.
 
 ### Why yet another React-like library?
 
