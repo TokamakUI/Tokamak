@@ -16,7 +16,7 @@ code or changing the app's overall architecture.
 
 ### Important: SwiftUI compatibility
 
-Tokamak PoC was built at the end of 2018, months before SwiftUI was announced.
+Current Tokamak API was designed and built at the end of 2018, months before SwiftUI was announced.
 We do think that SwiftUI is the future of development not only for Apple's 
 platforms, but potentially other platforms too (Android, WebAssembly, Windows,
 or your platform of choice). Thus, the short-term goal of Tokamak 
