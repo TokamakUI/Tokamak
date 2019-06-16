@@ -96,18 +96,6 @@ rebuilt with it and heard positive feedback on React itself, but we also see
 a lot of complaints about its overreliance on JavaScript. Tokamak makes
 architecture of React with its established patterns available to you in Swift.
 
-_**Important:**_ Tokamak is relatively stable at this point, as in not having
-any blocking or critical bugs that the maintainers are aware of. The core API of
-`Component` and `Hooks` types is frozen, and there's a plenty of [standard
-components](#standard-components) to start building useful apps on iOS. The
-macOS/AppKit renderer has support for only the most basic components and
-improving its feature parity with the iOS renderer is the top priority. If in
-the future there's a breaking change that's absolutely needed, we aim to
-deprecate old APIs in a source-compatible way and will introduce any
-replacements gradually. It's important to note that source breaking
-changes can't always be avoided, but they would be reflected with 
-appropriate version number change and migration guides.
-
 Don't forget to check out [Tokamak community on
 Spectrum](https://spectrum.chat/tokamak) and leave your feedback, comments and
 questions!
