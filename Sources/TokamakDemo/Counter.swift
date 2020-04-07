@@ -28,11 +28,11 @@ public struct Counter: LeafComponent {
       distribution: .fillEqually
     ), [
       Button.node(.init(
-        onPress: Handler { count.set { $0 + 1 } },
+        onPress: Handler { count.wrappedValue += 1 },
         text: "Increment"
       )),
 
-      Label.node(.init(alignment: .center, text: "\(count.value)")),
+      Label.node(.init(alignment: .center, text: "\(count.wrappedValue)")),
     ])
   }
 }

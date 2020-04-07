@@ -10,7 +10,7 @@ typealias Effect = () -> Finalizer
 
 protocol HookedComponent: AnyObject {
   /// State cells of this component indexed by order of `hooks.state` calls
-  var state: [UnsafeMutableRawPointer] { get set }
+  var state: [Any] { get set }
 
   /// Effect cells of this component indexed by order of `hooks.effect` calls
   var effects: [(observed: AnyEquatable?, Effect)] { get set }
@@ -33,7 +33,7 @@ public final class Hooks {
    */
   let queueState: (
     _ index: Int,
-    _ updater: (UnsafeMutableRawPointer) -> ()
+    _ updater: (inout Any) -> ()
   ) -> ()
 
   weak var component: HookedComponent?
@@ -49,7 +49,7 @@ public final class Hooks {
     component: HookedComponent,
     queueState: @escaping (
       _ index: Int,
-      _ updater: (UnsafeMutableRawPointer) -> ()
+      _ updater: (inout Any) -> ()
     ) -> ()
   ) {
     self.component = component
@@ -59,24 +59,20 @@ public final class Hooks {
   /** For a given initial state return a current value of this state
    (initialized from `initial` if current was absent) and its index.
    */
-  func currentState<T>(_ initial: T) -> (current: T, index: Int) {
+  func currentState<T>(_ initial: T) -> (getter: () -> T, index: Int) {
     defer { stateIndex += 1 }
 
     guard let component = component else {
-      assertionFailure("hooks.state should only be called within `render`")
-      return (initial, stateIndex)
+      fatalError("hooks.state should only be called within `render`")
     }
 
-    if component.state.count > stateIndex {
-      let pointer = component.state[stateIndex]
-      return (pointer.assumingMemoryBound(to: T.self).pointee, stateIndex)
-    } else {
-      let pointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
-      pointer.initialize(to: initial)
-
-      component.state.append(UnsafeMutableRawPointer(pointer))
-      return (initial, stateIndex)
+    if component.state.count <= stateIndex {
+      component.state.append(initial)
     }
+
+    let boundIndex = stateIndex
+    // swiftlint:disable:next force_cast
+    return ({ component.state[boundIndex] as! T }, stateIndex)
   }
 
   /** Schedules effect exection with the current reconciler accessed via

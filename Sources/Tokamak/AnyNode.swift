@@ -10,10 +10,10 @@ public struct AnyNode: Equatable {
   public static func ==(lhs: AnyNode, rhs: AnyNode) -> Bool {
     return
 
-      lhs.type == rhs.type &&
-      lhs.children == rhs.children &&
-      lhs.props == rhs.props &&
-      lhs.ref === rhs.ref
+        lhs.type == rhs.type &&
+        lhs.children == rhs.children &&
+        lhs.props == rhs.props &&
+        lhs.ref === rhs.ref
   }
 
   public let props: AnyEquatable

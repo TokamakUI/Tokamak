@@ -17,21 +17,21 @@ struct Counter: LeafComponent {
     let count = hooks.state(props)
     let sliding = hooks.state(0.5 as Float)
 
-    let children = count.value < 45 ? [
+    let children = count.wrappedValue < 45 ? [
       Button.node(.init(
         handlers: [
-          .touchUpInside: Handler { count.set { $0 + 1 } },
+          .touchUpInside: Handler { count.wrappedValue += 1 },
         ],
         text: "Increment"
       )),
 
-      Label.node(.init(text: "\(count.value)")),
+      Label.node(.init(text: "\(count.wrappedValue)")),
 
       Slider.node(Slider.Props(
-        value: sliding.value, valueHandler: Handler(sliding.set)
+        value: sliding.wrappedValue, valueHandler: Handler { sliding.wrappedValue = $0 }
       )),
 
-      Label.node(.init(text: "\(sliding.value)")),
+      Label.node(.init(text: "\(sliding.wrappedValue)")),
     ] : []
 
     return StackView.node(
@@ -50,7 +50,7 @@ final class ReconcilerTests: XCTestCase {
     let renderer = TestRenderer(Counter.node(42))
     let root = renderer.rootTarget
 
-    XCTAssertTrue(root.node.isSubtypeOf(View.self))
+    XCTAssertTrue(root.node.isSubtypeOf(ViewComponent.self))
     XCTAssertEqual(root.subviews.count, 1)
     let stack = root.subviews[0]
     XCTAssertTrue(stack.node.isSubtypeOf(StackView.self))
@@ -79,7 +79,7 @@ final class ReconcilerTests: XCTestCase {
     let e = expectation(description: "rerender")
 
     DispatchQueue.main.async {
-      XCTAssertTrue(root.node.isSubtypeOf(View.self))
+      XCTAssertTrue(root.node.isSubtypeOf(ViewComponent.self))
       XCTAssertEqual(root.subviews.count, 1)
       let newStack = root.subviews[0]
       XCTAssert(stack === newStack)
@@ -120,7 +120,7 @@ final class ReconcilerTests: XCTestCase {
       sliderHandler(0.25)
 
       DispatchQueue.main.async {
-        XCTAssert(root.node.isSubtypeOf(View.self))
+        XCTAssert(root.node.isSubtypeOf(ViewComponent.self))
         XCTAssertEqual(root.subviews.count, 1)
         let newStack = root.subviews[0]
         XCTAssertTrue(stack === newStack)
@@ -144,7 +144,7 @@ final class ReconcilerTests: XCTestCase {
         buttonHandler(())
 
         DispatchQueue.main.async {
-          XCTAssertTrue(root.node.isSubtypeOf(View.self))
+          XCTAssertTrue(root.node.isSubtypeOf(ViewComponent.self))
           XCTAssertEqual(root.subviews.count, 1)
           let newStack = root.subviews[0]
           XCTAssertTrue(stack === newStack)
@@ -206,7 +206,7 @@ final class ReconcilerTests: XCTestCase {
         handler(())
 
         DispatchQueue.main.async {
-          XCTAssertTrue(root.node.isSubtypeOf(View.self))
+          XCTAssertTrue(root.node.isSubtypeOf(ViewComponent.self))
           XCTAssertEqual(root.subviews.count, 1)
           let stack = root.subviews[0]
           XCTAssertTrue(stack.node.isSubtypeOf(StackView.self))

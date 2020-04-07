@@ -4,17 +4,15 @@ trigger:
 jobs:
   - job: lint
     pool:
-      vmImage: "macos-latest"
+      vmImage: "macOS-10.15"
     steps:
       - bash: ./lint.sh
 
   - job: test
     pool:
-      vmImage: "macos-latest"
+      vmImage: "macOS-10.15"
     steps:
       - bash: ./test.sh
-        env:
-          IOS_DEVICE: "platform=iOS Simulator,OS=12.2,name=iPhone SE"
       - bash: ./codecov.sh
         env:
           CODECOV_TOKEN: $(codecovToken)

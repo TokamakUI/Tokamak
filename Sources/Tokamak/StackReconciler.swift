@@ -23,12 +23,12 @@ public final class StackReconciler<R: Renderer> {
     rootComponent.mount(with: self)
   }
 
-  func queue(updater: (UnsafeMutableRawPointer) -> (),
+  func queue(updater: (inout Any) -> (),
              for component: MountedCompositeComponent<R>,
              id: Int) {
     let scheduleReconcile = queuedRerenders.isEmpty
 
-    updater(component.state[id])
+    updater(&component.state[id])
     queuedRerenders.insert(component)
 
     guard scheduleReconcile else { return }
