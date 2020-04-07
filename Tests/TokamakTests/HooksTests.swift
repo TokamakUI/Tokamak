@@ -40,7 +40,7 @@ extension Button: RefComponent {
 }
 
 private extension Hooks {
-  func custom() -> State<Int> {
+  func custom() -> Binding<Int> {
     return state(42)
   }
 }
@@ -57,21 +57,23 @@ struct Test: LeafComponent {
     return StackView.node([
       Button.node(
         .init(
-          onPress: Handler { state1.set { $0 += 1 } },
+          onPress: Handler { state1.wrappedValue += 1 },
           text: "Increment"
         ),
         ref: ref
       ),
-      Label.node(.init(text: "\(state1.value)")),
+      Label.node(.init(text: "\(state1.wrappedValue)")),
       Button.node(.init(
-        onPress: Handler { state2.set { $0 + 1 } },
+        onPress: Handler {
+          state2.wrappedValue += 1
+        },
         text: "Increment"
       )),
-      Label.node(.init(text: "\(state2.value)")),
+      Label.node(.init(text: "\(state2.wrappedValue)")),
       Button.node(
         .init(
           onPress: Handler {
-            state3.set { $0.points.append(Point(x: 42, y: 42)) }
+            state3.wrappedValue.points.append(Point(x: 42, y: 42))
           },
           text: "Increment"
         )

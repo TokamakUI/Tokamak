@@ -47,7 +47,7 @@ public struct NavigationPresenter<T: NavigationRouter>: LeafComponent {
   public static func render(props: Props, hooks: Hooks) -> AnyNode {
     let stack = hooks.state([props.initial])
 
-    let pop = { stack.set { $0.remove(at: $0.count - 1) } }
+    let pop = { () -> () in stack.wrappedValue.remove(at: stack.wrappedValue.count - 1) }
 
     return NavigationController.node(
       .init(
@@ -57,11 +57,11 @@ public struct NavigationPresenter<T: NavigationRouter>: LeafComponent {
         pushAnimated: props.pushAnimated,
         onPop: Handler(pop)
       ),
-      stack.value.map {
+      stack.wrappedValue.map {
         T.route(
           props: props.routerProps,
           route: $0,
-          push: { stack.set(stack.value + [$0]) },
+          push: { stack.wrappedValue += [$0] },
           pop: pop,
           hooks: hooks
         )

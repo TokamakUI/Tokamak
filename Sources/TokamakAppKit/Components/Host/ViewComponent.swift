@@ -14,10 +14,10 @@ final class TokamakView: NSView, Default {
   }
 }
 
-extension View: NSViewComponent {
+extension ViewComponent: NSViewComponent {
   public typealias RefTarget = NSView
 
   static func update(view: ViewBox<TokamakView>,
-                     _ props: View.Props,
+                     _ props: ViewComponent.Props,
                      _: [AnyNode]) {}
 }

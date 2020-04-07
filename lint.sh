@@ -1,7 +1,6 @@
 #!/bin/bash
 
-set -e 
-set -o pipefail
+set -ex
 
 brew update
 brew install swiftformat swiftlint
