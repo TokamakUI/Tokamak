@@ -29,11 +29,13 @@ typealias Updater<T> = (inout T) -> ()
   }
 
   public subscript<Subject>(dynamicMember keyPath: WritableKeyPath<Value, Subject>) -> Binding<Subject> {
-    .init(get: {
-      self.wrappedValue[keyPath: keyPath]
-    }, set: {
-      self.wrappedValue[keyPath: keyPath] = $0
-        })
+    .init(
+      get: {
+        self.wrappedValue[keyPath: keyPath]
+      }, set: {
+        self.wrappedValue[keyPath: keyPath] = $0
+      }
+    )
   }
 }
 
