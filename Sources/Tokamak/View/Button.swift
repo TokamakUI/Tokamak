@@ -15,3 +15,11 @@ public struct Button<Label>: View where Label: View {
     self.action = action
   }
 }
+
+extension Button where Label == Text {
+  public init<S>(_ title: S, action: @escaping () -> ()) where S: StringProtocol {
+    self.init(action: action) {
+      Text(title)
+    }
+  }
+}

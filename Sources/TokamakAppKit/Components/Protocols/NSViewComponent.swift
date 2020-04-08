@@ -30,54 +30,6 @@ protocol NSViewComponent: NSHostComponent {
   ) -> ViewBox<Target>
 }
 
-private func applyStyle<T: NSView, P: StyleProps>(_ target: ViewBox<T>,
-                                                  _ props: P) {
-  guard let style = props.style else {
-    return
-  }
-
-  let view = target.view
-
-  style.allowsEdgeAntialiasing.flatMap {
-    view.layer?.allowsEdgeAntialiasing = $0
-  }
-  style.allowsGroupOpacity.flatMap { view.layer?.allowsGroupOpacity = $0 }
-  style.backgroundColor.flatMap {
-    view.layer?.backgroundColor = NSColor($0).cgColor
-  }
-  style.borderColor.flatMap { view.layer?.borderColor = NSColor($0).cgColor }
-  style.borderWidth.flatMap { view.layer?.borderWidth = CGFloat($0) }
-  style.cornerRadius.flatMap { view.layer?.cornerRadius = CGFloat($0) }
-  style.masksToBounds.flatMap { view.layer?.masksToBounds = $0 }
-  style.isDoubleSided.flatMap { view.layer?.isDoubleSided = $0 }
-  style.opacity.flatMap { view.layer?.opacity = $0 }
-  style.shadowColor.flatMap { view.layer?.shadowColor = NSColor($0).cgColor }
-  style.shadowOpacity.flatMap { view.layer?.shadowOpacity = $0 }
-  style.shadowRadius.flatMap { view.layer?.shadowRadius = CGFloat($0) }
-
-  switch style.layout {
-  case let .frame(frame)?:
-    view.frame = CGRect(frame)
-  case let .constraints(constraints)?:
-    view.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.deactivate(target.constraints)
-    target.constraints = Array(constraints.compactMap {
-      view.constraint($0, next: nil)
-    }.joined())
-    NSLayoutConstraint.activate(target.constraints)
-  case nil:
-    ()
-  }
-
-  style.accessibility.flatMap {
-    view.setAccessibilityLabel($0.label)
-    view.setAccessibilityValue($0.value)
-    view.setAccessibilityIdentifier($0.identifier)
-  }
-
-  style.isHidden.flatMap { view.isHidden = $0 }
-}
-
 extension NSViewComponent where Target == Target.DefaultValue {
   static func box(
     for view: Target,
@@ -99,46 +51,8 @@ extension NSViewComponent where Target == Target.DefaultValue {
     switch parent {
     case let box as ViewBox<TokamakStackView>:
       box.view.addArrangedSubview(target)
-    // no covariance/contravariance in Swift generics require next
-    // few cases to be duplicated :(
     case let box as ViewBox<NSView>:
       box.view.addSubview(target)
-//    case let box as ViewBox<TokamakView>:
-//      box.view.addSubview(target)
-    // FIXME:
-    //    case let box as ViewBox<TokamakScrollView>:
-    //      box.view.addSubview(target)
-    //    case let box as ViewBox<TokamakTableCell>:
-    //      box.view.addSubview(target)
-    //    case let box as ViewBox<TokamakCollectionCell>:
-    //      box.view.addSubview(target)
-    //    case let box as ViewControllerBox<TokamakNavigationController>
-    //      where parent.node.isSubtypeOf(NavigationController.self):
-    //      guard let props = parent.node.props.value
-    //        as? NavigationController.Props else {
-    //        propsAssertionFailure()
-    //        return nil
-    //      }
-    //
-    //      box.containerViewController.pushViewController(
-    //        result.viewController,
-    //        animated: props.pushAnimated
-    //      )
-    //    case let box as ViewControllerBox<NSViewController>
-    //      where parent.node.isSubtypeOf(ModalPresenter.self):
-    //      guard
-    //        let props = parent.node.props.value as? ModalPresenter.Props
-    //      else {
-    //        propsAssertionFailure()
-    //        return nil
-    //      }
-    //
-    //      box.viewController.present(result.viewController,
-    //                                 animated: props.presentAnimated,
-    //                                 completion: nil)
-//    case let box as ViewControllerBox<NSViewController>
-//      where parent.node.isSubtypeOf(NavigationItem.self):
-//      box.viewController.view.addSubview(target)
     default:
       parentAssertionFailure()
     }

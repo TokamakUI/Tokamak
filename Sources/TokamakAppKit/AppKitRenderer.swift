@@ -8,30 +8,6 @@
 import AppKit
 import Tokamak
 
-// FIXME: working around "Couldn't lookup symbols: protocol witness table"
-// compiler bug
-// let _modalPresenterWitnessTableHack: NSHostComponent.Type =
-//   ModalPresenter.self
-// let _stackControllerWitnessTableHack: NSHostComponent.Type =
-//  NavigationController.self
-// let _navigationItemWitnessTableHack: NSHostComponent.Type =
-//  NavigationItem.self
-// let _listViewWitnessTableHack: NSHostComponent.Type =
-//  ListView<HackyProvider>.self
-// let _collectionViewWitnessTableHack: NSHostComponent.Type =
-//    CollectionView<HackyProvider>.self
-
-struct HackyProvider: CellProvider {
-  static func cell(
-    props: Props, item: Int, path: CellPath
-  ) -> AnyNode {
-    Null.node()
-  }
-
-  typealias Props = Null
-  typealias Model = Int
-}
-
 class NSTarget: Target {
   var viewController: NSViewController {
     fatalError("\(#function) should be overriden in NSTarget subclass")

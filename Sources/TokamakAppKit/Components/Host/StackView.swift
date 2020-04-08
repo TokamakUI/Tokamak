@@ -27,32 +27,6 @@ extension NSLayoutConstraint.Attribute {
   }
 }
 
-extension NSUserInterfaceLayoutOrientation {
-  public init(_ axis: StackView.Props.Axis) {
-    switch axis {
-    case .horizontal:
-      self = .horizontal
-    case .vertical:
-      self = .vertical
-    }
-  }
-}
-
-extension NSStackView.Distribution {
-  public init(_ distribution: StackView.Props.Distribution) {
-    switch distribution {
-    case .fill:
-      self = .fill
-    case .fillEqually:
-      self = .fillEqually
-    case .fillProportionally:
-      self = .fillProportionally
-    case .equalSpacing:
-      self = .equalSpacing
-    }
-  }
-}
-
 extension HStack: NSViewComponent {
   typealias Target = TokamakStackView
 

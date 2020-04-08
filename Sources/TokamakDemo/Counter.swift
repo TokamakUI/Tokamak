@@ -9,30 +9,23 @@
 
 import Tokamak
 
-public struct Counter: LeafComponent {
-  public struct Props: Equatable {
-    public let countFrom: Int
+public struct Counter: View {
+  @State public var count: Int
 
-    public init(countFrom: Int) {
-      self.countFrom = countFrom
-    }
+  let limit: Int
+
+  public init(_ count: Int, limit: Int = Int.max) {
+    _count = .init(wrappedValue: count)
+    self.limit = limit
   }
 
-  public static func render(props: Props, hooks: Hooks) -> AnyNode {
-    let count = hooks.state(props.countFrom)
-
-    return StackView.node(.init(
-      Edges.equal(to: .safeArea),
-      alignment: .center,
-      axis: .vertical,
-      distribution: .fillEqually
-    ), [
-      Button.node(.init(
-        onPress: Handler { count.wrappedValue += 1 },
-        text: "Increment"
-      )),
-
-      Label.node(.init(alignment: .center, text: "\(count.wrappedValue)")),
-    ])
+  public var body: some View {
+    count < limit ?
+      AnyView(
+        HStack(alignment: .center) {
+          Button("Increment") { self.count += 1 }
+          Text("\(count)")
+        }
+      ) : AnyView(HStack { EmptyView() })
   }
 }
