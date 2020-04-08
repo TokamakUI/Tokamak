@@ -7,7 +7,7 @@
 
 public struct ScrollOptions: Equatable, Default {
   public static var defaultValue: ScrollOptions {
-    return ScrollOptions()
+    ScrollOptions()
   }
 
   public struct EdgeInsets: Equatable {

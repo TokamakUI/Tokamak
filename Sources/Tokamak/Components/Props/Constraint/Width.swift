@@ -15,7 +15,7 @@ public struct Width: Equatable {
     constant: Double = 0,
     multiplier: Double = 1
   ) -> Constraint {
-    return .width(Width(
+    .width(Width(
       target: .external(target), constant: constant, multiplier: multiplier
     ))
   }
@@ -25,13 +25,13 @@ public struct Width: Equatable {
     constant: Double = 0,
     multiplier: Double = 1
   ) -> Constraint {
-    return .width(Width(
+    .width(Width(
       target: target, constant: constant, multiplier: multiplier
     ))
   }
 
   public static func equal(to constant: Double) -> Constraint {
-    return .width(Width(
+    .width(Width(
       target: .own, constant: constant, multiplier: 0
     ))
   }

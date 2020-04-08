@@ -10,10 +10,10 @@ import Tokamak
 
 extension Trailing: XAxisConstraint {
   var firstAnchor: KeyPath<Constrainable, NSLayoutXAxisAnchor> {
-    return \.trailingAnchor
+    \.trailingAnchor
   }
 
   var secondAnchor: KeyPath<Constrainable, NSLayoutXAxisAnchor> {
-    return \.trailingAnchor
+    \.trailingAnchor
   }
 }

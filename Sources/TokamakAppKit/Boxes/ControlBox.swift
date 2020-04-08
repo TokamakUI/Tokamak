@@ -36,7 +36,7 @@ class ControlBox<T: NSControl & Default>: ViewBox<T> {
   override init(
     _ view: T,
     _ viewController: NSViewController,
-    _ node: AnyNode
+    _ node: AnyView
   ) {
     super.init(view, viewController, node)
 

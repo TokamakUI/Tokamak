@@ -15,7 +15,7 @@ struct NavigationModal: PureLeafComponent {
   }
 
   static func render(props: Props) -> AnyNode {
-    return props.isPresented.value ?
+    props.isPresented.value ?
       ModalPresenter.node(
         NavigationPresenter<ModalRouter>.node(
           .init(
@@ -36,7 +36,7 @@ struct SimpleModal: PureLeafComponent {
   }
 
   static func render(props: Props) -> AnyNode {
-    return props.isPresented.value ? ModalPresenter.node(
+    props.isPresented.value ? ModalPresenter.node(
       Animation.node(
         Null(),
         Button.node(.init(

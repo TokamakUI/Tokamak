@@ -8,12 +8,10 @@
 public struct AnyNode: Equatable {
   // Equatable can't be automatically derived for `type` property?
   public static func ==(lhs: AnyNode, rhs: AnyNode) -> Bool {
-    return
-
-        lhs.type == rhs.type &&
-        lhs.children == rhs.children &&
-        lhs.props == rhs.props &&
-        lhs.ref === rhs.ref
+    lhs.type == rhs.type &&
+      lhs.children == rhs.children &&
+      lhs.props == rhs.props &&
+      lhs.ref === rhs.ref
   }
 
   public let props: AnyEquatable
@@ -22,11 +20,11 @@ public struct AnyNode: Equatable {
   public let ref: AnyObject?
 
   public func isSubtypeOf<T>(_: T.Type) -> Bool {
-    return type.host is T.Type || type.composite is T.Type
+    type.host is T.Type || type.composite is T.Type
   }
 
   public func isSubtypeOf<T, U>(_: T.Type, or: U.Type) -> Bool {
-    return isSubtypeOf(T.self) || isSubtypeOf(U.self)
+    isSubtypeOf(T.self) || isSubtypeOf(U.self)
   }
 
   public func isSubtypeOf<T, U, V>(
@@ -34,13 +32,13 @@ public struct AnyNode: Equatable {
     or _: U.Type,
     or _: V.Type
   ) -> Bool {
-    return isSubtypeOf(T.self) || isSubtypeOf(U.self) || isSubtypeOf(V.self)
+    isSubtypeOf(T.self) || isSubtypeOf(U.self) || isSubtypeOf(V.self)
   }
 }
 
 extension Null {
   public static func node() -> AnyNode {
-    return AnyNode(
+    AnyNode(
       props: AnyEquatable(Null()),
       children: AnyEquatable(Null()),
       type: .null,
@@ -51,53 +49,53 @@ extension Null {
 
 extension Component where Children == Null {
   public static func node(_ props: Props) -> AnyNode {
-    return node(props, Null())
+    node(props, Null())
   }
 }
 
 extension Component where Props == Null, Children == Null {
   public static func node() -> AnyNode {
-    return node(Null(), Null())
+    node(Null(), Null())
   }
 }
 
 extension Component where Props: Default, Props.DefaultValue == Props {
   public static func node(_ children: Children) -> AnyNode {
-    return node(Props.defaultValue, children)
+    node(Props.defaultValue, children)
   }
 }
 
 extension Component where Children == [AnyNode] {
   public static func node(_ props: Props,
                           _ child: AnyNode) -> AnyNode {
-    return node(props, [child])
+    node(props, [child])
   }
 
   public static func node(_ props: Props) -> AnyNode {
-    return node(props, [])
+    node(props, [])
   }
 }
 
 extension Component where Props == Null, Children == [AnyNode] {
   public static func node() -> AnyNode {
-    return node(Null(), [])
+    node(Null(), [])
   }
 }
 
 extension Component where Props: Default, Props.DefaultValue == Props,
   Children == [AnyNode] {
   public static func node(_ child: AnyNode) -> AnyNode {
-    return node(Props.defaultValue, [child])
+    node(Props.defaultValue, [child])
   }
 
   public static func node() -> AnyNode {
-    return node(Props.defaultValue, [])
+    node(Props.defaultValue, [])
   }
 }
 
 extension HostComponent {
   public static func node(_ props: Props, _ children: Children) -> AnyNode {
-    return AnyNode(
+    AnyNode(
       props: AnyEquatable(props),
       children: AnyEquatable(children),
       type: .host(self),
@@ -111,7 +109,7 @@ extension CompositeComponent {
     _ props: Props,
     _ children: Children
   ) -> AnyNode {
-    return AnyNode(
+    AnyNode(
       props: AnyEquatable(props),
       children: AnyEquatable(children),
       type: .composite(self),
@@ -126,7 +124,7 @@ extension RefComponent {
     _ children: Children,
     ref: Ref<RefTarget?>
   ) -> AnyNode {
-    return AnyNode(
+    AnyNode(
       props: AnyEquatable(props),
       children: AnyEquatable(children),
       type: .host(self),
@@ -141,17 +139,17 @@ extension RefComponent where Children == [AnyNode] {
     _ child: AnyNode,
     ref: Ref<RefTarget?>
   ) -> AnyNode {
-    return node(props, [child], ref: ref)
+    node(props, [child], ref: ref)
   }
 
   public static func node(_ props: Props, ref: Ref<RefTarget?>) -> AnyNode {
-    return node(props, [], ref: ref)
+    node(props, [], ref: ref)
   }
 }
 
 extension RefComponent where Children == Null {
   public static func node(_ props: Props, ref: Ref<RefTarget?>) -> AnyNode {
-    return node(props, Null(), ref: ref)
+    node(props, Null(), ref: ref)
   }
 }
 
@@ -160,6 +158,6 @@ extension RefComponent where Props: Default, Props.DefaultValue == Props {
     _ children: Children,
     ref: Ref<RefTarget?>
   ) -> AnyNode {
-    return node(Props.defaultValue, children, ref: ref)
+    node(Props.defaultValue, children, ref: ref)
   }
 }

@@ -10,10 +10,10 @@ import Tokamak
 
 extension FirstBaseline: BaselineConstraint {
   var firstAnchor: KeyPath<NSView, NSLayoutYAxisAnchor> {
-    return \.firstBaselineAnchor
+    \.firstBaselineAnchor
   }
 
   var secondAnchor: KeyPath<NSView, NSLayoutYAxisAnchor> {
-    return \.firstBaselineAnchor
+    \.firstBaselineAnchor
   }
 }

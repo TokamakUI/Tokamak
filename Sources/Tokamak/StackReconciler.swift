@@ -14,7 +14,7 @@ public final class StackReconciler<R: Renderer> {
   private let rootComponent: MountedComponent<R>
   private(set) weak var renderer: R?
 
-  public init(node: AnyNode, target: R.TargetType, renderer: R) {
+  public init(node: AnyView, target: R.TargetType, renderer: R) {
     self.renderer = renderer
     rootTarget = target
 
@@ -46,7 +46,7 @@ public final class StackReconciler<R: Renderer> {
     queuedRerenders.removeAll()
   }
 
-  func render(component: MountedCompositeComponent<R>) -> AnyNode {
+  func render(component: MountedCompositeComponent<R>) -> some View {
     // Avoiding an indirect reference cycle here: this closure can be
     // owned by callbacks owned by node's target, which is strongly referenced
     // by the reconciler.
@@ -57,11 +57,7 @@ public final class StackReconciler<R: Renderer> {
       self?.queue(updater: updater, for: component, id: id)
     }
 
-    let result = component.type.render(
-      props: component.node.props,
-      children: component.node.children,
-      hooks: hooks
-    )
+    let result = component.node.bodyClosure()
 
     DispatchQueue.main.async {
       for i in hooks.scheduledEffects {

@@ -10,17 +10,16 @@ import Tokamak
 
 public extension NSView {
   var wantsUpdateLayer: Bool {
-    return true
+    true
   }
 }
 
-protocol NSViewComponent: NSHostComponent, RefComponent {
+protocol NSViewComponent: NSHostComponent {
   associatedtype Target: NSView & Default
 
   static func update(
     view box: ViewBox<Target>,
-    _ props: Props,
-    _ children: Children
+    _ view: Self
   )
 
   static func box(
@@ -79,15 +78,14 @@ private func applyStyle<T: NSView, P: StyleProps>(_ target: ViewBox<T>,
   style.isHidden.flatMap { view.isHidden = $0 }
 }
 
-extension NSViewComponent where Target == Target.DefaultValue,
-  Props: StyleProps {
+extension NSViewComponent where Target == Target.DefaultValue {
   static func box(
     for view: Target,
     _ viewController: NSViewController,
     _ component: AppKitRenderer.MountedHost,
     _: AppKitRenderer
   ) -> ViewBox<Target> {
-    return ViewBox(view, viewController, component.node)
+    ViewBox(view, viewController, component.node)
   }
 
   static func mountTarget(
@@ -96,24 +94,7 @@ extension NSViewComponent where Target == Target.DefaultValue,
     _ renderer: AppKitRenderer
   ) -> NSTarget? {
     let target = Target.defaultValue
-    let result: ViewBox<Target>
-
-    let parentRequiresViewController = parent.node.isSubtypeOf(
-      ModalPresenter.self,
-      or: NavigationController.self
-    )
-
-    // UIViewController parent target can't present a bare `ViewBox` target,
-    // it needs to be wrapped with `ContainerViewController` first.
-    if parentRequiresViewController {
-      let container = ContainerViewController(contained: target)
-      // trigger `viewDidLoad` on `ContainerViewController` for safe constraints
-      // installation
-      _ = container.view
-      result = box(for: target, container, component, renderer)
-    } else {
-      result = box(for: target, parent.viewController, component, renderer)
-    }
+    let result = box(for: target, parent.viewController, component, renderer)
 
     switch parent {
     case let box as ViewBox<TokamakStackView>:
@@ -122,8 +103,8 @@ extension NSViewComponent where Target == Target.DefaultValue,
     // few cases to be duplicated :(
     case let box as ViewBox<NSView>:
       box.view.addSubview(target)
-    case let box as ViewBox<TokamakView>:
-      box.view.addSubview(target)
+//    case let box as ViewBox<TokamakView>:
+//      box.view.addSubview(target)
     // FIXME:
     //    case let box as ViewBox<TokamakScrollView>:
     //      box.view.addSubview(target)
@@ -155,9 +136,9 @@ extension NSViewComponent where Target == Target.DefaultValue,
     //      box.viewController.present(result.viewController,
     //                                 animated: props.presentAnimated,
     //                                 completion: nil)
-    case let box as ViewControllerBox<NSViewController>
-      where parent.node.isSubtypeOf(NavigationItem.self):
-      box.viewController.view.addSubview(target)
+//    case let box as ViewControllerBox<NSViewController>
+//      where parent.node.isSubtypeOf(NavigationItem.self):
+//      box.viewController.view.addSubview(target)
     default:
       parentAssertionFailure()
     }
@@ -166,26 +147,18 @@ extension NSViewComponent where Target == Target.DefaultValue,
   }
 
   static func update(target: NSTarget,
-                     node: AnyNode) {
+                     node: AnyView) {
     guard let target = target as? ViewBox<Target> else {
-      targetAssertionFailure()
-      return
+      return targetAssertionFailure()
     }
-    guard let children = node.children.value as? Children else {
-      childrenAssertionFailure()
-      return
-    }
-    guard let props = node.props.value as? Props else {
-      propsAssertionFailure()
-      return
+    guard let view = node as? Self else {
+      return hostAssertionFailure()
     }
 
-    applyStyle(target, props)
-
-    update(view: target, props, children)
+    update(view: target, view)
   }
 
-  static func unmount(target: NSTarget, completion: () -> ()) {
+  static func unmount(target: NSTarget, completion: @escaping () -> ()) {
     switch target {
     case let target as ViewBox<Target>:
       target.view.removeFromSuperview()

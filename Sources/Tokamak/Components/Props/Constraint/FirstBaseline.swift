@@ -15,7 +15,7 @@ public struct FirstBaseline: Equatable {
     constant: Double = 0,
     multiplier: Double = 1
   ) -> Constraint {
-    return .firstBaseline(FirstBaseline(
+    .firstBaseline(FirstBaseline(
       target: target, constant: constant, multiplier: multiplier
     ))
   }

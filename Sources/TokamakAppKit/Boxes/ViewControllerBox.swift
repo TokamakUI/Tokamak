@@ -11,16 +11,16 @@ import Tokamak
 class ViewControllerBox<T: NSViewController>: NSTarget {
   let containerViewController: T
 
-  init(_ viewController: T, _ node: AnyNode) {
+  init(_ viewController: T, _ node: AnyView) {
     containerViewController = viewController
     super.init(node: node)
   }
 
   override var viewController: NSViewController {
-    return containerViewController
+    containerViewController
   }
 
   override var refTarget: Any {
-    return containerViewController
+    containerViewController
   }
 }

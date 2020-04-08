@@ -14,7 +14,7 @@ class UniqueReference {}
 
 extension UniqueReference: Equatable {
   public static func ==(lhs: UniqueReference, rhs: UniqueReference) -> Bool {
-    return lhs === rhs
+    lhs === rhs
   }
 }
 
@@ -55,6 +55,6 @@ public struct Unique<T> {
 
 extension Unique: Equatable {
   public static func ==(lhs: Unique<T>, rhs: Unique<T>) -> Bool {
-    return lhs.id == rhs.id
+    lhs.id == rhs.id
   }
 }

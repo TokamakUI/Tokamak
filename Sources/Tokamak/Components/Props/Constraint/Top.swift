@@ -13,7 +13,7 @@ public struct Top: Equatable {
     to target: Constraint.SafeAreaTarget,
     constant: Double = 0
   ) -> Constraint {
-    return .top(Top(
+    .top(Top(
       target: target, constant: constant
     ))
   }
@@ -22,7 +22,7 @@ public struct Top: Equatable {
     to target: Constraint.Target,
     constant: Double = 0
   ) -> Constraint {
-    return .top(Top(
+    .top(Top(
       target: .external(target), constant: constant
     ))
   }

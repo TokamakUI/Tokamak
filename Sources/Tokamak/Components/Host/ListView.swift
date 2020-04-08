@@ -29,7 +29,7 @@ public protocol SectionedModel: RandomAccessCollection
 extension Array: SectionedModel
   where Element: RandomAccessCollection, Element.Index == Int {
   public static func single(section: Element) -> [Element] {
-    return [section]
+    [section]
   }
 }
 

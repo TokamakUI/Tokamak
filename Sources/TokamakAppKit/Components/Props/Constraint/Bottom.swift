@@ -10,10 +10,10 @@ import Tokamak
 
 extension Bottom: YAxisConstraint {
   var firstAnchor: KeyPath<Constrainable, NSLayoutYAxisAnchor> {
-    return \.bottomAnchor
+    \.bottomAnchor
   }
 
   var secondAnchor: KeyPath<Constrainable, NSLayoutYAxisAnchor> {
-    return \.bottomAnchor
+    \.bottomAnchor
   }
 }

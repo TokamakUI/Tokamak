@@ -93,7 +93,7 @@ public extension PureComponent {
     children: Children,
     hooks: Hooks
   ) -> AnyNode {
-    return render(props: props, children: children)
+    render(props: props, children: children)
   }
 }
 
@@ -107,7 +107,7 @@ public extension LeafComponent {
     children _: Children,
     hooks: Hooks
   ) -> AnyNode {
-    return render(props: props, hooks: hooks)
+    render(props: props, hooks: hooks)
   }
 }
 
@@ -117,7 +117,7 @@ public protocol PureLeafComponent: LeafComponent {
 
 public extension PureLeafComponent {
   static func render(props: Props, hooks: Hooks) -> AnyNode {
-    return render(props: props)
+    render(props: props)
   }
 }
 

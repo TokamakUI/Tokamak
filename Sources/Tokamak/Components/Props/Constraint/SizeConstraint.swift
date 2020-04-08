@@ -12,13 +12,13 @@ public enum SizeConstraint: Equatable {
 
 extension Size {
   static func equal(to size: Size) -> SizeConstraint {
-    return .constant(size)
+    .constant(size)
   }
 
   static func equal(
     to target: Constraint.Target,
     multiplier: Double = 1.0
   ) -> SizeConstraint {
-    return .multiplier(target, multiplier)
+    .multiplier(target, multiplier)
   }
 }

@@ -14,14 +14,14 @@ import Tokamak
 /// `NSControl` targets and `NSValueComponent` for `NSControl` components
 /// providing a configurable single value: `NSSlider`,
 /// `NSStepper`, `NSDatePicker`, or `NSSegmentedControl`.
-protocol NSHostComponent: AnyHostComponent {
+protocol NSHostComponent {
   static func mountTarget(
     to parent: NSTarget,
     component: AppKitRenderer.MountedHost,
     _ renderer: AppKitRenderer
   ) -> NSTarget?
 
-  static func update(target: NSTarget, node: AnyNode)
+  static func update(target: NSTarget, node: AnyView)
 
   static func unmount(target: NSTarget, completion: @escaping () -> ())
 }
@@ -31,12 +31,8 @@ extension NSHostComponent {
     typeAssertionFailure("target", function)
   }
 
-  static func childrenAssertionFailure(_ function: String = #function) {
-    typeAssertionFailure("children", function)
-  }
-
-  static func propsAssertionFailure(_ function: String = #function) {
-    typeAssertionFailure("props", function)
+  static func hostAssertionFailure(_ function: String = #function) {
+    typeAssertionFailure("host view", function)
   }
 
   static func parentAssertionFailure(_ function: String = #function) {

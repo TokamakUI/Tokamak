@@ -10,10 +10,10 @@ import Tokamak
 
 extension CenterY: YAxisConstraint {
   var firstAnchor: KeyPath<Constrainable, NSLayoutYAxisAnchor> {
-    return \.centerYAnchor
+    \.centerYAnchor
   }
 
   var secondAnchor: KeyPath<Constrainable, NSLayoutYAxisAnchor> {
-    return \.centerYAnchor
+    \.centerYAnchor
   }
 }

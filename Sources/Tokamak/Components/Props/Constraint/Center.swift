@@ -13,6 +13,6 @@ public struct Center: Equatable {
     to target: Constraint.Target,
     constant: Double = 0
   ) -> Constraint {
-    return .center(Center(target: target, constant: constant))
+    .center(Center(target: target, constant: constant))
   }
 }

@@ -15,7 +15,7 @@ public struct Point: Equatable {
   }
 
   public static var zero: Point {
-    return Point(x: 0, y: 0)
+    Point(x: 0, y: 0)
   }
 }
 
@@ -29,7 +29,7 @@ public struct Size: Equatable {
   }
 
   public static var zero: Size {
-    return Size(width: 0, height: 0)
+    Size(width: 0, height: 0)
   }
 }
 
@@ -43,6 +43,6 @@ public struct Rectangle: Equatable {
   }
 
   public static var zero: Rectangle {
-    return Rectangle(.zero, .zero)
+    Rectangle(.zero, .zero)
   }
 }

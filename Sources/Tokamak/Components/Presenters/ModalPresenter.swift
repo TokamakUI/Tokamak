@@ -8,7 +8,7 @@
 public struct ModalPresenter: HostComponent {
   public struct Props: Equatable, Default {
     public static var defaultValue: Props {
-      return Props()
+      Props()
     }
 
     public enum PresentationStyle {

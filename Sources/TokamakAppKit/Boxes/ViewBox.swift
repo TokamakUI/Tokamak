@@ -14,13 +14,13 @@ class ViewBox<T: NSView>: ViewControllerBox<NSViewController> {
   /// Array of constraints installed from props that configured this view
   var constraints = [NSLayoutConstraint]()
 
-  init(_ view: T, _ viewController: NSViewController, _ node: AnyNode) {
+  init(_ view: T, _ viewController: NSViewController, _ node: AnyView) {
     self.view = view
 
     super.init(viewController, node)
   }
 
   override var refTarget: Any {
-    return view
+    view
   }
 }

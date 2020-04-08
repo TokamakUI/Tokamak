@@ -34,21 +34,11 @@ extension NSTextAlignment {
   }
 }
 
-extension Label: NSViewComponent {
-  public typealias RefTarget = NSTextView
+extension Text: NSViewComponent {
+  typealias Target = TokamakLabel
 
   static func update(view box: ViewBox<TokamakLabel>,
-                     _ props: Label.Props,
-                     _ children: [AnyNode]) {
-    let view = box.view
-    view.alignment = NSTextAlignment(props.alignment)
-    view.textContainer?.maximumNumberOfLines = props.numberOfLines
-    view.textContainer?.lineBreakMode = NSLineBreakMode(props.lineBreakMode)
-    if let textColor = props.textColor {
-      view.textColor = NSColor(textColor)
-    } else {
-      view.textColor = .textColor
-    }
-    view.string = props.text
+                     _ view: Text) {
+    box.view.string = view.content
   }
 }

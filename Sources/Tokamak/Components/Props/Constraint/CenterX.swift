@@ -13,7 +13,7 @@ public struct CenterX: Equatable {
     to target: Constraint.SafeAreaTarget,
     constant: Double = 0
   ) -> Constraint {
-    return .centerX(CenterX(
+    .centerX(CenterX(
       target: target, constant: constant
     ))
   }
@@ -22,7 +22,7 @@ public struct CenterX: Equatable {
     to target: Constraint.Target,
     constant: Double = 0
   ) -> Constraint {
-    return .centerX(CenterX(
+    .centerX(CenterX(
       target: .external(target), constant: constant
     ))
   }

@@ -10,10 +10,10 @@ import Tokamak
 
 extension Right: XAxisConstraint {
   var firstAnchor: KeyPath<Constrainable, NSLayoutXAxisAnchor> {
-    return \.rightAnchor
+    \.rightAnchor
   }
 
   var secondAnchor: KeyPath<Constrainable, NSLayoutXAxisAnchor> {
-    return \.rightAnchor
+    \.rightAnchor
   }
 }

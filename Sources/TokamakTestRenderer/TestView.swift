@@ -17,15 +17,9 @@ public final class TestView: Target {
   /// Parent `TestView` instance that owns this instance as a child
   private weak var parent: TestView?
 
-  /// Return props of view's node downcast to a given type
-  public func props<T>(_: T.Type) -> T? {
-    return node.props.value as? T
-  }
-
   /** Initialize a new test view.
-   - parameter props: host component props to initialize the test view
    */
-  init(_ node: AnyNode,
+  init(_ node: AnyView,
        _ subviews: [TestView] = []) {
     self.subviews = subviews
     super.init(node: node)

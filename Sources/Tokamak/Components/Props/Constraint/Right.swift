@@ -13,7 +13,7 @@ public struct Right: Equatable {
     to target: Constraint.SafeAreaTarget,
     constant: Double = 0
   ) -> Constraint {
-    return .right(Right(
+    .right(Right(
       target: target, constant: constant
     ))
   }
@@ -22,7 +22,7 @@ public struct Right: Equatable {
     to target: Constraint.Target,
     constant: Double = 0
   ) -> Constraint {
-    return .right(Right(
+    .right(Right(
       target: .external(target), constant: constant
     ))
   }

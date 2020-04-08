@@ -78,7 +78,7 @@ public protocol Renderer: AnyObject {
 }
 
 extension Renderer {
-  public func mount(with node: AnyNode, to parent: TargetType) -> Mounted {
+  public func mount(with node: AnyView, to parent: TargetType) -> Mounted {
     let result: Mounted = node.makeMountedComponent(parent)
     if let reconciler = reconciler {
       result.mount(with: reconciler)
@@ -86,7 +86,7 @@ extension Renderer {
     return result
   }
 
-  public func update(component: Mounted, with node: AnyNode) {
+  public func update(component: Mounted, with node: AnyView) {
     component.node = node
     if let reconciler = reconciler {
       component.update(with: reconciler)

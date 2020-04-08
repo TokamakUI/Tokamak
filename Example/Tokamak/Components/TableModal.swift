@@ -14,7 +14,7 @@ struct ListProvider: CellProvider {
   typealias Model = Int
 
   static func cell(props _: Null, item: Int, path _: CellPath) -> AnyNode {
-    return Label.node(.init(
+    Label.node(.init(
       Style(
         [CenterY.equal(to: .parent),
          Height.equal(to: 44),

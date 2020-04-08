@@ -10,10 +10,10 @@ import Tokamak
 
 extension CenterX: XAxisConstraint {
   var firstAnchor: KeyPath<Constrainable, NSLayoutXAxisAnchor> {
-    return \.centerXAnchor
+    \.centerXAnchor
   }
 
   var secondAnchor: KeyPath<Constrainable, NSLayoutXAxisAnchor> {
-    return \.centerXAnchor
+    \.centerXAnchor
   }
 }

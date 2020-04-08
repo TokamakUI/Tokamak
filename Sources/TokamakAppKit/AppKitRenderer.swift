@@ -25,7 +25,7 @@ struct HackyProvider: CellProvider {
   static func cell(
     props: Props, item: Int, path: CellPath
   ) -> AnyNode {
-    return Null.node()
+    Null.node()
   }
 
   typealias Props = Null
@@ -47,7 +47,7 @@ final class AppKitRenderer: Renderer {
   private(set) var reconciler: StackReconciler<AppKitRenderer>?
   private weak var rootViewController: NSViewController!
 
-  init(_ node: AnyNode, rootViewController: NSViewController) {
+  init(_ node: AnyView, rootViewController: NSViewController) {
     self.rootViewController = rootViewController
     reconciler = StackReconciler(
       node: node,
@@ -56,7 +56,7 @@ final class AppKitRenderer: Renderer {
     )
   }
 
-  private func typeAssertionFailure(for type: AnyHostComponent.Type) {
+  private func typeAssertionFailure(for type: Any.Type) {
     assertionFailure("""
       component type \(type) not supported by AppKitRenderer
     """)
@@ -66,8 +66,8 @@ final class AppKitRenderer: Renderer {
     to parent: NSTarget,
     with component: AppKitRenderer.MountedHost
   ) -> NSTarget? {
-    guard let rendererComponent = component.type as? NSHostComponent.Type else {
-      typeAssertionFailure(for: component.type)
+    guard let rendererComponent = component.viewType as? NSHostComponent.Type else {
+      typeAssertionFailure(for: component.viewType)
       return nil
     }
 
@@ -80,19 +80,13 @@ final class AppKitRenderer: Renderer {
     target: NSTarget,
     with component: AppKitRenderer.MountedHost
   ) {
-    guard let rendererComponent = component.type as? NSHostComponent.Type else {
-      typeAssertionFailure(for: component.type)
+    guard let rendererComponent = component.viewType as? NSHostComponent.Type else {
+      typeAssertionFailure(for: component.viewType)
       return
     }
 
     rendererComponent.update(target: target,
                              node: component.node)
-
-    guard
-      let componentType = component.type as? AnyRefComponent.Type,
-      let anyRef = component.node.ref else { return }
-
-    componentType.update(ref: anyRef, with: target.refTarget)
   }
 
   func unmount(
@@ -101,8 +95,8 @@ final class AppKitRenderer: Renderer {
     with component: AppKitRenderer.MountedHost,
     completion: @escaping () -> ()
   ) {
-    guard let rendererComponent = component.type as? NSHostComponent.Type else {
-      typeAssertionFailure(for: component.type)
+    guard let rendererComponent = component.viewType as? NSHostComponent.Type else {
+      typeAssertionFailure(for: component.viewType)
       return
     }
 

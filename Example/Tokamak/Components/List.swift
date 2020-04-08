@@ -15,7 +15,7 @@ private struct Cells: CellProvider {
     item: AppRoute,
     path: CellPath
   ) -> AnyNode {
-    return Label.node(.init(
+    Label.node(.init(
       Style(
         [CenterY.equal(to: .parent),
          Height.equal(to: 44),
@@ -37,7 +37,7 @@ struct List: PureLeafComponent {
   }
 
   static func render(props: Props) -> AnyNode {
-    return ListView<Cells>.node(.init(
+    ListView<Cells>.node(.init(
       Style([
         Edges.equal(to: .parent),
       ]),

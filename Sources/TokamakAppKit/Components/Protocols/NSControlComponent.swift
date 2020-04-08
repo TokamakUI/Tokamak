@@ -9,10 +9,9 @@ import AppKit
 import Tokamak
 
 protocol NSControlComponent: NSViewComponent
-  where Props: ControlProps, Target: NSControl {
+  where Target: NSControl {
   static func update(control box: ControlBox<Target>,
-                     _ props: Props,
-                     _ children: Children)
+                     _ view: Self)
 }
 
 extension NSControlComponent where Target == Target.DefaultValue {
@@ -22,19 +21,16 @@ extension NSControlComponent where Target == Target.DefaultValue {
     _ component: AppKitRenderer.MountedHost,
     _ renderer: AppKitRenderer
   ) -> ViewBox<Target> {
-    return ControlBox(view, viewController, component.node)
+    ControlBox(view, viewController, component.node)
   }
 
   static func update(view box: ViewBox<Target>,
-                     _ props: Props,
-                     _ children: Children) {
+                     _ view: Self) {
     guard let box = box as? ControlBox<Target> else {
       targetAssertionFailure()
       return
     }
 
-    box.view.isEnabled = props.isEnabled
-    box.bind(handlers: props.handlers)
-    update(control: box, props, children)
+    update(control: box, view)
   }
 }

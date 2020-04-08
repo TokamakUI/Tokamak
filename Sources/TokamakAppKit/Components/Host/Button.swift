@@ -24,12 +24,14 @@ extension Button: NSControlComponent {
   public typealias RefTarget = NSButton
 
   static func update(control box: ControlBox<TokamakButton>,
-                     _ props: Button.Props,
-                     _ children: [AnyNode]) {
+                     _ view: Self) {
     let control = box.view
 
-    control.contentTintColor = props.titleColor.flatMap { NSColor($0) }
+    box.bind(handlers: [.touchUpInside: Handler(view.action)])
 
-    control.title = props.text
+    guard let label = view.label as? Text else {
+      return hostAssertionFailure()
+    }
+    control.title = label.content
   }
 }

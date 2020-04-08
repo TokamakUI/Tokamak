@@ -13,7 +13,7 @@ public struct Leading: Equatable {
     to target: Constraint.SafeAreaTarget,
     constant: Double = 0
   ) -> Constraint {
-    return .leading(Leading(
+    .leading(Leading(
       target: target, constant: constant
     ))
   }
@@ -22,7 +22,7 @@ public struct Leading: Equatable {
     to target: Constraint.Target,
     constant: Double = 0
   ) -> Constraint {
-    return .leading(Leading(
+    .leading(Leading(
       target: .external(target), constant: constant
     ))
   }

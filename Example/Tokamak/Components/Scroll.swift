@@ -13,7 +13,7 @@ struct ScrollViewExample: LeafComponent {
   typealias Props = Null
 
   static func render(props: Props, hooks: Hooks) -> AnyNode {
-    return View.node(
+    View.node(
       .init(Style(Edges.equal(to: .safeArea))),
       ScrollView.node(
         .init(Style(Edges.equal(to: .parent))),

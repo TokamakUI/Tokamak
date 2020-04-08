@@ -14,7 +14,7 @@ public struct CenterY: Equatable {
     constant: Double = 0,
     multiplier: Double = 1
   ) -> Constraint {
-    return .centerY(CenterY(
+    .centerY(CenterY(
       target: target, constant: constant
     ))
   }
@@ -23,7 +23,7 @@ public struct CenterY: Equatable {
     to target: Constraint.Target,
     constant: Double = 0
   ) -> Constraint {
-    return .centerY(CenterY(
+    .centerY(CenterY(
       target: .external(target), constant: constant
     ))
   }

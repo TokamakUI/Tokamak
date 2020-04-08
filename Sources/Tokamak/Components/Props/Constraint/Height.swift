@@ -15,7 +15,7 @@ public struct Height: Equatable {
     constant: Double = 0,
     multiplier: Double = 1
   ) -> Constraint {
-    return .height(Height(
+    .height(Height(
       target: .external(target), constant: constant, multiplier: multiplier
     ))
   }
@@ -25,13 +25,13 @@ public struct Height: Equatable {
     constant: Double = 0,
     multiplier: Double = 1
   ) -> Constraint {
-    return .height(Height(
+    .height(Height(
       target: target, constant: constant, multiplier: multiplier
     ))
   }
 
   public static func equal(to constant: Double) -> Constraint {
-    return .height(Height(
+    .height(Height(
       target: .own, constant: constant, multiplier: 0
     ))
   }

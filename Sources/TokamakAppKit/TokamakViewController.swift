@@ -11,12 +11,12 @@ import Tokamak
 open class TokamakViewController: NSViewController {
   private var renderer: AppKitRenderer?
 
-  open var node: AnyNode {
+  open var body: some View {
     assertionFailure(
       "TokamakViewController subclass should override `node` property"
     )
 
-    return Null.node()
+    return EmptyView()
   }
 
   open override func loadView() {
@@ -26,6 +26,6 @@ open class TokamakViewController: NSViewController {
   open override func viewDidLoad() {
     super.viewDidLoad()
 
-    renderer = AppKitRenderer(node, rootViewController: self)
+    renderer = AppKitRenderer(AnyView(body), rootViewController: self)
   }
 }

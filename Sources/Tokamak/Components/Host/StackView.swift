@@ -8,7 +8,7 @@
 public struct StackView: HostComponent {
   public struct Props: Equatable, StyleProps, Default {
     public static var defaultValue: Props {
-      return Props()
+      Props()
     }
 
     public enum Alignment {

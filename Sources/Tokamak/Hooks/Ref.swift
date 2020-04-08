@@ -15,10 +15,10 @@ public final class Ref<T> {
 
 extension Hooks {
   public func ref<T>(type: T.Type) -> Ref<T?> {
-    return ref(Ref(nil))
+    ref(Ref(nil))
   }
 
   public func ref<T>(_ initial: T) -> Ref<T> {
-    return ref(Ref(initial))
+    ref(Ref(initial))
   }
 }

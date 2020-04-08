@@ -10,3 +10,11 @@ public protocol View {
 
   var body: Self.Body { get }
 }
+
+extension Never: View {
+  public typealias Body = Never
+}
+
+public extension View where Body == Never {
+  var body: Never { fatalError() }
+}

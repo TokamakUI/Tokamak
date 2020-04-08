@@ -13,7 +13,7 @@ import TokamakDemo
 
 final class ViewController: TokamakViewController {
   override var node: AnyNode {
-    return View.node(
+    View.node(
       .init(Style([
         Edges.equal(to: .parent),
         Width.equal(to: 200),

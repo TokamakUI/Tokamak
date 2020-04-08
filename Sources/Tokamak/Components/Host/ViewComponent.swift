@@ -10,7 +10,7 @@ public struct ViewComponent: HostComponent {
 
   public struct Props: Equatable, StyleProps, Default {
     public static var defaultValue: Props {
-      return Props()
+      Props()
     }
 
     public let style: Style?

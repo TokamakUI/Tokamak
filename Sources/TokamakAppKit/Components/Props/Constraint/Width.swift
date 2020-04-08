@@ -10,10 +10,10 @@ import Tokamak
 
 extension Width: OwnConstraint {
   var firstAnchor: KeyPath<Constrainable, NSLayoutDimension> {
-    return \.widthAnchor
+    \.widthAnchor
   }
 
   var secondAnchor: KeyPath<Constrainable, NSLayoutDimension> {
-    return \.widthAnchor
+    \.widthAnchor
   }
 }

@@ -10,10 +10,10 @@ import Tokamak
 
 extension Height: OwnConstraint {
   var firstAnchor: KeyPath<Constrainable, NSLayoutDimension> {
-    return \.heightAnchor
+    \.heightAnchor
   }
 
   var secondAnchor: KeyPath<Constrainable, NSLayoutDimension> {
-    return \.heightAnchor
+    \.heightAnchor
   }
 }

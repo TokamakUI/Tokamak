@@ -10,23 +10,19 @@ import Tokamak
 
 final class TokamakStackView: NSStackView, Default {
   static var defaultValue: TokamakStackView {
-    return TokamakStackView()
+    TokamakStackView()
   }
 }
 
 extension NSLayoutConstraint.Attribute {
-  public init?(_ alignment: StackView.Props.Alignment) {
+  public init?(_ alignment: VerticalAlignment) {
     switch alignment {
     case .top:
       self = .top
     case .bottom:
       self = .bottom
-    case .leading:
-      self = .leading
-    case .trailing:
-      self = .trailing
-    case .fill, .center:
-      return nil
+    case .center:
+      self = .centerY
     }
   }
 }
@@ -57,18 +53,17 @@ extension NSStackView.Distribution {
   }
 }
 
-extension StackView: NSViewComponent {
-  public typealias RefTarget = NSStackView
+extension HStack: NSViewComponent {
+  typealias Target = TokamakStackView
 
   static func update(view box: ViewBox<TokamakStackView>,
-                     _ props: StackView.Props,
-                     _: [AnyNode]) {
-    let view = box.view
-    NSLayoutConstraint.Attribute(props.alignment).flatMap {
-      view.alignment = $0
+                     _ view: Self) {
+    NSLayoutConstraint.Attribute(view.alignment).flatMap {
+      box.view.alignment = $0
     }
-    view.orientation = NSUserInterfaceLayoutOrientation(props.axis)
-    view.distribution = NSStackView.Distribution(props.distribution)
-    view.spacing = CGFloat(props.spacing)
+    box.view.orientation = .horizontal
+    if let spacing = view.spacing.flatMap(CoreGraphics.CGFloat.init) {
+      box.view.spacing = spacing
+    }
   }
 }

@@ -11,7 +11,7 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   HookedComponent, Hashable {
   static func ==(lhs: MountedCompositeComponent<R>,
                  rhs: MountedCompositeComponent<R>) -> Bool {
-    return lhs === rhs
+    lhs === rhs
   }
 
   func hash(into hasher: inout Hasher) {
@@ -20,7 +20,6 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
 
   private var mountedChildren = [MountedComponent<R>]()
   private let parentTarget: R.TargetType
-  let type: AnyCompositeComponent.Type
 
   // HookedComponent implementation
 
@@ -32,10 +31,8 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   var effectFinalizers = [Finalizer]()
   var refs = [AnyObject]()
 
-  init(_ node: AnyNode,
-       _ type: AnyCompositeComponent.Type,
+  init(_ node: AnyView,
        _ parentTarget: R.TargetType) {
-    self.type = type
     self.parentTarget = parentTarget
 
     super.init(node)
@@ -75,16 +72,13 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
 
     // some mounted children
     case let (wrapper?, renderedNode):
-      // new node is the same type as existing child, checking props/children
-      if wrapper.node.type == renderedNode.type,
-        wrapper.node.props != renderedNode.props ||
-        wrapper.node.children != renderedNode.children {
-        wrapper.node = renderedNode
+      // new node is the same type as existing child
+      if wrapper.node.type == type(of: renderedNode) {
+        wrapper.node = AnyView(renderedNode)
         wrapper.update(with: reconciler)
-      } else
-      // new node is of different type, complete rerender, i.e. unmount old
-      // wrapper, then mount a new one with new node
-      if wrapper.node.type != renderedNode.type {
+      } else {
+        // new node is of different type, complete rerender, i.e. unmount old
+        // wrapper, then mount a new one with new node
         wrapper.unmount(with: reconciler)
 
         let child: MountedComponent<R> =

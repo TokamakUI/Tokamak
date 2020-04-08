@@ -10,10 +10,10 @@ import Tokamak
 
 extension LastBaseline: BaselineConstraint {
   var firstAnchor: KeyPath<NSView, NSLayoutYAxisAnchor> {
-    return \.lastBaselineAnchor
+    \.lastBaselineAnchor
   }
 
   var secondAnchor: KeyPath<NSView, NSLayoutYAxisAnchor> {
-    return \.lastBaselineAnchor
+    \.lastBaselineAnchor
   }
 }

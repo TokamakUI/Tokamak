@@ -41,7 +41,7 @@ extension Button: RefComponent {
 
 private extension Hooks {
   func custom() -> Binding<Int> {
-    return state(42)
+    state(42)
   }
 }
 

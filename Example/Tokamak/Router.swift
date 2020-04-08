@@ -31,7 +31,7 @@ enum AppRoute: String, CaseIterable {
 }
 
 extension AppRoute: CustomStringConvertible {
-  var description: String { return rawValue.localizedCapitalized }
+  var description: String { rawValue.localizedCapitalized }
 }
 
 struct Router: NavigationRouter {

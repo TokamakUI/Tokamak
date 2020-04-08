@@ -13,21 +13,21 @@ public struct Edges: Equatable {
     to target: Constraint.SafeAreaTarget,
     insets: Insets = .zero
   ) -> Constraint {
-    return .edges(Edges(target: target, insets: insets))
+    .edges(Edges(target: target, insets: insets))
   }
 
   public static func equal(
     to target: Constraint.Target,
     insets: Insets = .zero
   ) -> Constraint {
-    return .edges(Edges(target: .external(target), insets: insets))
+    .edges(Edges(target: .external(target), insets: insets))
   }
 
   public static func equal(
     to target: Constraint.Target,
     inset: Double
   ) -> Constraint {
-    return .edges(Edges(target: .external(target), insets: Insets(
+    .edges(Edges(target: .external(target), insets: Insets(
       top: inset, bottom: inset, left: inset, right: inset
     )))
   }
@@ -36,7 +36,7 @@ public struct Edges: Equatable {
     to target: Constraint.SafeAreaTarget,
     inset: Double
   ) -> Constraint {
-    return .edges(Edges(target: target, insets: Insets(
+    .edges(Edges(target: target, insets: Insets(
       top: inset, bottom: inset, left: inset, right: inset
     )))
   }
