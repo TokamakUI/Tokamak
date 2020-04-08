@@ -49,7 +49,7 @@ extension Color: ExpressibleByIntegerLiteral {
 
 extension Color {
   public init?(hex: String) {
-    let cArray = Array(hex.replacingOccurrences(of: "#", with: ""))
+    let cArray = Array(hex.count > 6 ? String(hex.dropFirst()) : hex)
 
     guard cArray.count == 6 else { return nil }
 
