@@ -3,30 +3,34 @@
 //
 
 protocol ValueStorage {
-  var valueType: Any.Type { get }
-  var binding: Any? { get set }
+  var getter: (() -> Any)? { get set }
+  var setter: ((Any) -> ())? { get set }
+  var anyInitialValue: Any { get }
 }
 
 @propertyWrapper public struct State<Value> {
   private let initialValue: Value
 
-  let valueType: Any.Type
+  var anyInitialValue: Any { initialValue }
+
+  var getter: (() -> Any)?
+  var setter: ((Any) -> ())?
 
   public init(wrappedValue value: Value) {
     initialValue = value
-    valueType = Value.self
   }
 
   public var wrappedValue: Value {
-    get { (binding as? Binding<Value>)?.wrappedValue ?? initialValue }
-    nonmutating set { (binding as? Binding<Value>)?.wrappedValue = newValue }
+    get { getter?() as? Value ?? initialValue }
+    nonmutating set { setter?(newValue) }
   }
 
-  var binding: Any?
-
   public var projectedValue: Binding<Value> {
+    guard let getter = getter, let setter = setter else {
+      fatalError("\(#function) not available outside of `body`")
+    }
     // swiftlint:disable:next force_cast
-    binding as! Binding<Value>
+    return .init(get: { getter() as! Value }, set: { setter($0) })
   }
 }
 

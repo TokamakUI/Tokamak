@@ -60,6 +60,15 @@ public final class StackReconciler<R: Renderer> {
     let states = Mirror(reflecting: component.node.view).children
       .compactMap { $0.value as? ValueStorage }
 
+    for (i, state) in states.enumerated() {
+      if component.state.count == i {
+        component.state.append(state.anyInitialValue)
+      }
+
+//        state.getter = { component.state[i] }
+//        state.setter = { component.state[i] = $0 }
+    }
+
     let result = component.node.bodyClosure()
 
     // clean up `component` reference to enable assertions when hooks are called
