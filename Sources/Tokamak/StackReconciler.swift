@@ -59,17 +59,6 @@ public final class StackReconciler<R: Renderer> {
 
     let result = component.node.bodyClosure()
 
-    DispatchQueue.main.async {
-      for i in hooks.scheduledEffects {
-        if component.effectFinalizers.count > i {
-          component.effectFinalizers[i]?()
-          component.effectFinalizers[i] = component.effects[i].1()
-        } else {
-          component.effectFinalizers.append(component.effects[i].1())
-        }
-      }
-    }
-
     // clean up `component` reference to enable assertions when hooks are called
     // outside of `render`
     hooks.component = nil

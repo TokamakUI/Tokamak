@@ -100,31 +100,4 @@ public final class Hooks {
       scheduledEffects.insert(effectIndex)
     }
   }
-
-  /** For a given initial value return a current ref
-   (initialized from `initial` if current was absent)
-   */
-  func ref<T>(_ initial: Ref<T>) -> Ref<T> {
-    defer { refIndex += 1 }
-
-    guard let component = component else {
-      assertionFailure("hooks.ref should only be called within `render`")
-      return initial
-    }
-
-    if component.refs.count > refIndex {
-      guard let result = component.refs[refIndex] as? Ref<T> else {
-        assertionFailure(
-          """
-          unexpected ref type during rendering, possible Rules of Hooks violation
-          """
-        )
-        return initial
-      }
-      return result
-    } else {
-      component.refs.append(initial)
-      return initial
-    }
-  }
 }

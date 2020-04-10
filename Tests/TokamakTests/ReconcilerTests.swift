@@ -16,7 +16,7 @@ final class ReconcilerTests: XCTestCase {
     let renderer = TestRenderer(Counter(42))
     let root = renderer.rootTarget
 
-    XCTAssertTrue(root.node.view is Counter)
+    XCTAssertTrue(root.node.view is EmptyView)
     XCTAssertEqual(root.subviews.count, 1)
     let stack = root.subviews[0]
     XCTAssertTrue(stack.node.view is HStack<TupleView<(Button<Text>, Text)>>)

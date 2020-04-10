@@ -30,7 +30,19 @@ public class MountedComponent<R: Renderer> {
 extension View {
   func makeMountedComponent<R: Renderer>(_ parentTarget: R.TargetType)
     -> MountedComponent<R> {
-    if Body.self is Never.Type {
+    if let anyView = self as? AnyView {
+      if anyView.type == EmptyView.self {
+        return MountedNull(anyView)
+      } else if anyView.bodyType == Never.self {
+        return MountedHostComponent(anyView, parentTarget)
+      } else {
+        return MountedCompositeComponent(anyView, parentTarget)
+      }
+    }
+
+    if self is EmptyView {
+      return MountedNull(AnyView(self))
+    } else if Body.self is Never.Type {
       return MountedHostComponent(AnyView(self), parentTarget)
     } else {
       return MountedCompositeComponent(AnyView(self), parentTarget)

@@ -15,9 +15,8 @@ public final class TestRenderer: Renderer {
   }
 
   public init<V: View>(_ node: V) {
-    reconciler = StackReconciler(node: node,
-                                 target: TestView(EmptyView()),
-                                 renderer: self)
+    // FIXME: the root target shouldn't be `EmptyView`, but something more sensible, maybe Group?
+    reconciler = StackReconciler(node: node, target: TestView(EmptyView()), renderer: self)
   }
 
   public func mountTarget(
