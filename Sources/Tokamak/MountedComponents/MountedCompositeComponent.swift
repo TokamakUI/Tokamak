@@ -22,14 +22,7 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   private let parentTarget: R.TargetType
 
   // HookedComponent implementation
-
-  /// There's no easy way to downcast elements of `[Any]` to `T`
-  /// and apply `inout` updater without creating copies, working around
-  /// that with pointers.
   var state = [Any]()
-  var effects = [(observed: AnyEquatable?, Effect)]()
-  var effectFinalizers = [Finalizer]()
-  var refs = [AnyObject]()
 
   init(_ node: AnyView,
        _ parentTarget: R.TargetType) {
@@ -41,24 +34,17 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   override func mount(with reconciler: StackReconciler<R>) {
     let renderedNode = reconciler.render(component: self)
 
-    let child: MountedComponent<R> =
-      renderedNode.makeMountedComponent(parentTarget)
+    let child: MountedComponent<R> = renderedNode.makeMountedComponent(parentTarget)
     mountedChildren = [child]
     child.mount(with: reconciler)
   }
 
   override func unmount(with reconciler: StackReconciler<R>) {
     mountedChildren.forEach { $0.unmount(with: reconciler) }
-
-    DispatchQueue.main.async {
-      for f in self.effectFinalizers {
-        f?()
-      }
-    }
   }
 
   override func update(with reconciler: StackReconciler<R>) {
-    // FIXME: for now without fragments mounted composite components have only
+    // FIXME: for now without fragments (groups?) mounted composite components have only
     // a single element in `mountedChildren`, but this will change when
     // fragments are implemented and this switch should be rewritten to compare
     // all elements in `mountedChildren`
