@@ -1,12 +1,9 @@
 # Tokamak
 
-## React-like framework for native UI written in pure Swift 🛠⚛️📲
+## SwiftUI-compatible framework for building browser apps with WebAssembly
 
 [![Build Status](https://dev.azure.com/max0484/max/_apis/build/status/MaxDesiatov.Tokamak?branchName=master)](https://dev.azure.com/max0484/max/_build/latest?definitionId=3&branchName=master)
 [![Coverage](https://img.shields.io/codecov/c/github/MaxDesiatov/Tokamak/master.svg?style=flat)](https://codecov.io/gh/maxdesiatov/Tokamak)
-
-Tokamak provides a declarative, testable and scalable API for building UI
-components for browser apps.
 
 ### Important: SwiftUI compatibility
 
