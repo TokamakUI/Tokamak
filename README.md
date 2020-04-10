@@ -6,18 +6,14 @@
 [![Coverage](https://img.shields.io/codecov/c/github/MaxDesiatov/Tokamak/master.svg?style=flat)](https://codecov.io/gh/maxdesiatov/Tokamak)
 
 Tokamak provides a declarative, testable and scalable API for building UI
-components backed by fully native views. You can use it for your new iOS apps or
-add to existing apps with little effort and without rewriting the rest of the
-code or changing the app's overall architecture.
+components for browser apps.
 
 ### Important: SwiftUI compatibility
 
-Current Tokamak API was designed and built at the end of 2018, months before SwiftUI was announced.
-We do think that SwiftUI is the future of development not only for Apple's
-platforms, but potentially other platforms too (Android, WebAssembly, Windows,
-or your platform of choice). Thus, the short-term goal of Tokamak
-is to make the API more compatible with SwiftUI. All contributions that help
-us in achieving this goal are much appreciated. You can consider the current
+Current Tokamak API was designed and built at the end of 2018, months before 
+SwiftUI was announced. Thus, the short-term goal of Tokamak is to make the
+API more compatible with SwiftUI. All contributions that help us in achieving
+this goal are much appreciated. You can consider the current
 Tokamak API as deprecated, but still usable for research and experimentation
 purposes.
 
@@ -40,8 +36,7 @@ unacceptable behavior to conduct@tokamak.dev.
 
 ## Maintainers
 
-[Max Desiatov](https://desiatov.com), [Matvii
-Hodovaniuk](https://matvii.hodovani.uk)
+[Max Desiatov](https://desiatov.com)
 
 ## License
 
