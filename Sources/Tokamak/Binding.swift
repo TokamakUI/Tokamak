@@ -23,7 +23,7 @@ typealias Updater<T> = (inout T) -> ()
 
   public var projectedValue: Binding<Value> { self }
 
-  init(get: @escaping () -> Value, set: @escaping (Value) -> ()) {
+  public init(get: @escaping () -> Value, set: @escaping (Value) -> ()) {
     self.get = get
     self.set = set
   }

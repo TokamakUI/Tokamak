@@ -57,6 +57,9 @@ public final class StackReconciler<R: Renderer> {
       self?.queue(updater: updater, for: component, id: id)
     }
 
+    let states = Mirror(reflecting: component.node.view).children
+      .compactMap { $0.value as? ValueStorage }
+
     let result = component.node.bodyClosure()
 
     // clean up `component` reference to enable assertions when hooks are called
