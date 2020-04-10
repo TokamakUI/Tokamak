@@ -39,13 +39,6 @@ typealias Updater<T> = (inout T) -> ()
   }
 }
 
-// FIXME: absent in the reference interface
-extension Binding: Equatable where Value: Equatable {
-  public static func ==(lhs: Binding<Value>, rhs: Binding<Value>) -> Bool {
-    lhs.wrappedValue == rhs.wrappedValue
-  }
-}
-
 extension Hooks {
   /** Allows a component to have its own state and to be updated when the state
    changes. Returns a very simple state container, which on initial call of

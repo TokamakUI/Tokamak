@@ -58,8 +58,9 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
 
     // some mounted children
     case let (wrapper?, renderedNode):
+      let renderedNodeType = (renderedNode as? AnyView)?.type ?? type(of: renderedNode)
       // new node is the same type as existing child
-      if wrapper.node.type == type(of: renderedNode) {
+      if wrapper.node.type == renderedNodeType {
         wrapper.node = AnyView(renderedNode)
         wrapper.update(with: reconciler)
       } else {

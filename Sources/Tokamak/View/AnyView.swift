@@ -5,9 +5,10 @@
 public struct AnyView: View {
   let type: Any.Type
   let bodyType: Any.Type
-  let view: Any
+  var view: Any
 
-  let bodyClosure: () -> AnyView
+  // needs to take a fresh version of `view` as an argument, otherwise it captures the old view value
+  let bodyClosure: (Any) -> AnyView
 
   public init<V>(_ view: V) where V: View {
     if let anyView = view as? AnyView {
@@ -19,7 +20,8 @@ public struct AnyView: View {
       type = V.self
       bodyType = V.Body.self
       self.view = view
-      bodyClosure = { AnyView(view.body) }
+      // swiftlint:disable:next force_cast
+      bodyClosure = { AnyView(($0 as! V).body) }
     }
   }
 }

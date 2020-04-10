@@ -6,6 +6,7 @@
 //
 
 import Dispatch
+import Runtime
 
 public final class StackReconciler<R: Renderer> {
   private var queuedRerenders = Set<MountedCompositeComponent<R>>()
@@ -23,9 +24,11 @@ public final class StackReconciler<R: Renderer> {
     rootComponent.mount(with: self)
   }
 
-  func queue(updater: (inout Any) -> (),
-             for component: MountedCompositeComponent<R>,
-             id: Int) {
+  func queueUpdate(
+    for component: MountedCompositeComponent<R>,
+    id: Int,
+    updater: (inout Any) -> ()
+  ) {
     let scheduleReconcile = queuedRerenders.isEmpty
 
     updater(&component.state[id])
@@ -47,33 +50,33 @@ public final class StackReconciler<R: Renderer> {
   }
 
   func render(component: MountedCompositeComponent<R>) -> some View {
-    // Avoiding an indirect reference cycle here: this closure can be
-    // owned by callbacks owned by node's target, which is strongly referenced
-    // by the reconciler.
-    let hooks = Hooks(
-      component: component
-    ) { [weak self, weak component] id, updater in
-      guard let component = component else { return }
-      self?.queue(updater: updater, for: component, id: id)
-    }
+    // swiftlint:disable force_try
+    let info = try! typeInfo(of: component.node.type)
+    let stateProperties = info.properties.filter { $0.type is ValueStorage.Type }
 
-    let states = Mirror(reflecting: component.node.view).children
-      .compactMap { $0.value as? ValueStorage }
+    for (id, stateProperty) in stateProperties.enumerated() {
+      // `ValueStorage` properties were already filtered out, so safe to assume the value's type
+      // swiftlint:disable:next force_cast
+      var state = try! stateProperty.get(from: component.node.view) as! ValueStorage
 
-    for (i, state) in states.enumerated() {
-      if component.state.count == i {
+      if component.state.count == id {
         component.state.append(state.anyInitialValue)
       }
 
-//        state.getter = { component.state[i] }
-//        state.setter = { component.state[i] = $0 }
+      state.getter = { component.state[id] }
+
+      // Avoiding an indirect reference cycle here: this closure can be
+      // owned by callbacks owned by node's target, which is strongly referenced
+      // by the reconciler.
+      state.setter = { [weak self, weak component] newValue in
+        guard let component = component else { return }
+        self?.queueUpdate(for: component, id: id) { $0 = newValue }
+      }
+      try! stateProperty.set(value: state, on: &component.node.view)
     }
+    // swiftlint:enable force_try
 
-    let result = component.node.bodyClosure()
-
-    // clean up `component` reference to enable assertions when hooks are called
-    // outside of `render`
-    hooks.component = nil
+    let result = component.node.bodyClosure(component.node.view)
 
     return result
   }
