@@ -45,7 +45,7 @@ public enum _ConditionalContent<TrueBranch, FalseBranch>: View
 
 extension ViewBuilder {
   public static func buildBlock<C0, C1>(_ c0: C0, _ c1: C1) -> TupleView<(C0, C1)> where C0: View, C1: View {
-    TupleView((c0, c1))
+    TupleView(c0, c1)
   }
 }
 

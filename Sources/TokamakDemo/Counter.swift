@@ -26,6 +26,8 @@ public struct Counter: View {
           Button("Increment") { self.count += 1 }
           Text("\(count)")
         }
-      ) : AnyView(HStack { EmptyView() })
+      ) : AnyView(HStack {
+        EmptyView()
+      })
   }
 }

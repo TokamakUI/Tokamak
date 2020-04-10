@@ -20,3 +20,9 @@ public struct HStack<Content>: View where Content: View {
     self.content = content()
   }
 }
+
+extension HStack: ParentView {
+  var children: [AnyView] {
+    (content as? GroupView)?.children ?? [AnyView(content)]
+  }
+}

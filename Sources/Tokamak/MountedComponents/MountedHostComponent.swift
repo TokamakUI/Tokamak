@@ -40,22 +40,10 @@ public final class MountedHostComponent<R: Renderer>: MountedComponent<R> {
 
     reconciler.renderer?.update(target: target, with: self)
 
-    // FIXME: `update` call to renderer should probably return an array of children
-//    switch node.children.value {
-//    case let nodes as [AnyNode]:
-//      mountedChildren = nodes.map { $0.makeMountedComponent(target) }
-//      mountedChildren.forEach { $0.mount(with: reconciler) }
-//
-//    case let node as AnyNode:
-//      let child: MountedComponent<R> = node.makeMountedComponent(target)
-//      mountedChildren = [child]
-//      child.mount(with: reconciler)
-//
-//    default:
-//      // child type that can't be rendered, but still makes sense
-//      // (e.g. `String`)
-//      ()
-//    }
+    guard !node.children.isEmpty else { return }
+
+    mountedChildren = node.children.map { $0.makeMountedComponent(target) }
+    mountedChildren.forEach { $0.mount(with: reconciler) }
   }
 
   override func unmount(with reconciler: StackReconciler<R>) {

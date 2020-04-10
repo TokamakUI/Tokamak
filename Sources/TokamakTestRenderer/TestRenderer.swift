@@ -15,9 +15,8 @@ public final class TestRenderer: Renderer {
   }
 
   public init<V: View>(_ node: V) {
-    let root = TestView(AnyView(EmptyView()))
-    reconciler = StackReconciler(node: AnyView(node),
-                                 target: root,
+    reconciler = StackReconciler(node: node,
+                                 target: TestView(EmptyView()),
                                  renderer: self)
   }
 

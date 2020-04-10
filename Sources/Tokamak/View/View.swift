@@ -18,3 +18,9 @@ extension Never: View {
 public extension View where Body == Never {
   var body: Never { fatalError() }
 }
+
+protocol ParentView {
+  var children: [AnyView] { get }
+}
+
+protocol GroupView: ParentView {}

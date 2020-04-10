@@ -34,9 +34,6 @@ public protocol Renderer: AnyObject {
    instance.
    - parameter component: Type of the host component that renders to the
    newly created target.
-   - parameter props: Props used to configure the new target.
-   - parameter children: Children of the rendered host component for the new
-   target.
    - returns: The newly created target.
    */
   func mountTarget(
@@ -49,13 +46,6 @@ public protocol Renderer: AnyObject {
    - parameter target: Existing target instance to be updated.
    - parameter component: Type of the host component that renders to the
    updated target.
-   - parameter props: Props used to configure the existing target. This props
-   value can be different from props passed on previous
-   updates or on target creation. The props value is wrapped
-   with `AnyEquatable` for type-erasure purposes.
-   - parameter children: Children used to configure the existing target. These
-   children can be different from children passed on
-   previous updates or on target creation.
    */
   func update(
     target: TargetType,

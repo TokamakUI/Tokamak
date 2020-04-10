@@ -19,8 +19,8 @@ public final class TestView: Target {
 
   /** Initialize a new test view.
    */
-  init(_ node: AnyView,
-       _ subviews: [TestView] = []) {
+  init<V: View>(_ node: V,
+                _ subviews: [TestView] = []) {
     self.subviews = subviews
     super.init(node: node)
   }
