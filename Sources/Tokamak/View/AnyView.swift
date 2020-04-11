@@ -33,8 +33,13 @@ public struct AnyView: View {
 
       bodyType = V.Body.self
       self.view = view
-      // swiftlint:disable:next force_cast
-      bodyClosure = { AnyView(($0 as! V).body) }
+      if view is ViewDeferredToRenderer {
+        // swiftlint:disable:next force_cast
+        bodyClosure = { ($0 as! ViewDeferredToRenderer).deferredBody }
+      } else {
+        // swiftlint:disable:next force_cast
+        bodyClosure = { AnyView(($0 as! V).body) }
+      }
     }
   }
 }

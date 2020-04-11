@@ -23,3 +23,7 @@ protocol ParentView {
 
 /// A `View` type that is not rendered, but "flattened" rendering all its children instead.
 protocol GroupView: ParentView {}
+
+public protocol ViewDeferredToRenderer {
+  var deferredBody: AnyView { get }
+}

@@ -40,6 +40,10 @@ let package = Package(
       dependencies: ["Tokamak"]
     ),
     .target(
+      name: "TokamakDOM",
+      dependencies: ["Tokamak"]
+    ),
+    .target(
       name: "TokamakTestRenderer",
       dependencies: ["Tokamak"]
     ),
