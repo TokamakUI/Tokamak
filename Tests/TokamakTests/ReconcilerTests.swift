@@ -16,14 +16,14 @@ final class ReconcilerTests: XCTestCase {
     let renderer = TestRenderer(Counter(42))
     let root = renderer.rootTarget
 
-    XCTAssertTrue(root.node.view is EmptyView)
+    XCTAssertTrue(root.view.view is EmptyView)
     XCTAssertEqual(root.subviews.count, 1)
     let stack = root.subviews[0]
-    XCTAssertTrue(stack.node.view is HStack<TupleView<(Button<Text>, Text)>>)
+    XCTAssertTrue(stack.view.view is HStack<TupleView<(Button<Text>, Text)>>)
     XCTAssertEqual(stack.subviews.count, 2)
-    XCTAssertTrue(stack.subviews[0].node.view is Button<Text>)
-    XCTAssertTrue(stack.subviews[1].node.view is Text)
-    XCTAssertEqual((stack.subviews[1].node.view as? Text)?.content, "42")
+    XCTAssertTrue(stack.subviews[0].view.view is Button<Text>)
+    XCTAssertTrue(stack.subviews[1].view.view is Text)
+    XCTAssertEqual((stack.subviews[1].view.view as? Text)?.content, "42")
   }
 
   func testUpdate() {
@@ -31,7 +31,7 @@ final class ReconcilerTests: XCTestCase {
     let root = renderer.rootTarget
     let stack = root.subviews[0]
 
-    guard let button = stack.subviews[0].node.view as? Button<Text> else {
+    guard let button = stack.subviews[0].view.view as? Button<Text> else {
       XCTAssert(false, "counter has no button")
       return
     }
@@ -43,16 +43,16 @@ final class ReconcilerTests: XCTestCase {
     let e = expectation(description: "rerender")
 
     DispatchQueue.main.async {
-      XCTAssertTrue(root.node.view is EmptyView)
+      XCTAssertTrue(root.view.view is EmptyView)
       XCTAssertEqual(root.subviews.count, 1)
       let newStack = root.subviews[0]
       XCTAssert(stack === newStack)
-      XCTAssertTrue(stack.node.view is HStack<TupleView<(Button<Text>, Text)>>)
+      XCTAssertTrue(stack.view.view is HStack<TupleView<(Button<Text>, Text)>>)
       XCTAssertEqual(stack.subviews.count, 2)
-      XCTAssertTrue(stack.subviews[0].node.view is Button<Text>)
-      XCTAssertTrue(stack.subviews[1].node.view is Text)
+      XCTAssertTrue(stack.subviews[0].view.view is Button<Text>)
+      XCTAssertTrue(stack.subviews[1].view.view is Text)
       XCTAssertTrue(originalLabel === newStack.subviews[1])
-      XCTAssertEqual((stack.subviews[1].node.view as? Text)?.content, "43")
+      XCTAssertEqual((stack.subviews[1].view.view as? Text)?.content, "43")
 
       e.fulfill()
     }
@@ -65,7 +65,7 @@ final class ReconcilerTests: XCTestCase {
     let root = renderer.rootTarget
     let stack = root.subviews[0]
 
-    guard let button = stack.subviews[0].node.view as? Button<Text> else {
+    guard let button = stack.subviews[0].view.view as? Button<Text> else {
       XCTAssert(false, "counter has no button")
       return
     }
@@ -77,18 +77,18 @@ final class ReconcilerTests: XCTestCase {
     let e = expectation(description: "rerender")
 
     DispatchQueue.main.async {
-      XCTAssertTrue(root.node.view is EmptyView)
+      XCTAssertTrue(root.view.view is EmptyView)
       XCTAssertEqual(root.subviews.count, 1)
       let newStack = root.subviews[0]
       XCTAssert(stack === newStack)
-      XCTAssertTrue(stack.node.view is HStack<TupleView<(Button<Text>, Text)>>)
+      XCTAssertTrue(stack.view.view is HStack<TupleView<(Button<Text>, Text)>>)
       XCTAssertEqual(stack.subviews.count, 2)
-      XCTAssertTrue(stack.subviews[0].node.view is Button<Text>)
-      XCTAssertTrue(stack.subviews[1].node.view is Text)
+      XCTAssertTrue(stack.subviews[0].view.view is Button<Text>)
+      XCTAssertTrue(stack.subviews[1].view.view is Text)
       XCTAssertTrue(originalLabel === newStack.subviews[1])
-      XCTAssertEqual((stack.subviews[1].node.view as? Text)?.content, "43")
+      XCTAssertEqual((stack.subviews[1].view.view as? Text)?.content, "43")
 
-      guard let button = stack.subviews[0].node.view as? Button<Text> else {
+      guard let button = stack.subviews[0].view.view as? Button<Text> else {
         XCTAssert(false, "counter has no button")
         return
       }
@@ -96,16 +96,16 @@ final class ReconcilerTests: XCTestCase {
       button.action()
 
       DispatchQueue.main.async {
-        XCTAssertTrue(root.node.view is EmptyView)
+        XCTAssertTrue(root.view.view is EmptyView)
         XCTAssertEqual(root.subviews.count, 1)
         let newStack = root.subviews[0]
         XCTAssert(stack === newStack)
-        XCTAssertTrue(stack.node.view is HStack<TupleView<(Button<Text>, Text)>>)
+        XCTAssertTrue(stack.view.view is HStack<TupleView<(Button<Text>, Text)>>)
         XCTAssertEqual(stack.subviews.count, 2)
-        XCTAssertTrue(stack.subviews[0].node.view is Button<Text>)
-        XCTAssertTrue(stack.subviews[1].node.view is Text)
+        XCTAssertTrue(stack.subviews[0].view.view is Button<Text>)
+        XCTAssertTrue(stack.subviews[1].view.view is Text)
         XCTAssertTrue(originalLabel === newStack.subviews[1])
-        XCTAssertEqual((stack.subviews[1].node.view as? Text)?.content, "44")
+        XCTAssertEqual((stack.subviews[1].view.view as? Text)?.content, "44")
 
         e.fulfill()
       }
@@ -119,7 +119,7 @@ final class ReconcilerTests: XCTestCase {
     let root = renderer.rootTarget
 
     let stack = root.subviews[0]
-    guard let button = stack.subviews[0].node.view as? Button<Text> else {
+    guard let button = stack.subviews[0].view.view as? Button<Text> else {
       XCTAssert(false, "counter has no button")
       return
     }
@@ -130,7 +130,7 @@ final class ReconcilerTests: XCTestCase {
 
     DispatchQueue.main.async {
       // rerender completed here, schedule another one
-      guard let button = stack.subviews[0].node.view as? Button<Text> else {
+      guard let button = stack.subviews[0].view.view as? Button<Text> else {
         XCTAssert(false, "counter has no button")
         return
       }
@@ -138,7 +138,7 @@ final class ReconcilerTests: XCTestCase {
       button.action()
 
       DispatchQueue.main.async {
-        guard let button = stack.subviews[0].node.view as? Button<Text> else {
+        guard let button = stack.subviews[0].view.view as? Button<Text> else {
           XCTAssert(false, "counter has no button")
           return
         }
@@ -146,11 +146,11 @@ final class ReconcilerTests: XCTestCase {
         button.action()
 
         DispatchQueue.main.async {
-          XCTAssertTrue(root.node.view is EmptyView)
+          XCTAssertTrue(root.view.view is EmptyView)
           XCTAssertEqual(root.subviews.count, 1)
           let newStack = root.subviews[0]
           XCTAssert(stack === newStack)
-          XCTAssertTrue(stack.node.view is HStack<EmptyView>)
+          XCTAssertTrue(stack.view.view is HStack<EmptyView>)
           XCTAssertEqual(stack.subviews.count, 0)
 
           e.fulfill()

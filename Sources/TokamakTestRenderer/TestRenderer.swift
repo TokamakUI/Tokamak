@@ -1,7 +1,4 @@
 //
-//  TestRenderer.swift
-//  TokamakTestRenderer
-//
 //  Created by Max Desiatov on 21/12/2018.
 //
 
@@ -14,16 +11,16 @@ public final class TestRenderer: Renderer {
     reconciler!.rootTarget
   }
 
-  public init<V: View>(_ node: V) {
+  public init<V: View>(_ view: V) {
     // FIXME: the root target shouldn't be `EmptyView`, but something more sensible, maybe Group?
-    reconciler = StackReconciler(node: node, target: TestView(EmptyView()), renderer: self)
+    reconciler = StackReconciler(view: view, target: TestView(EmptyView()), renderer: self)
   }
 
   public func mountTarget(
     to parent: TestView,
-    with component: TestRenderer.MountedHost
+    with mountedHost: TestRenderer.MountedHost
   ) -> TestView? {
-    let result = TestView(component.node)
+    let result = TestView(mountedHost.view)
     parent.add(subview: result)
 
     return result
@@ -31,13 +28,13 @@ public final class TestRenderer: Renderer {
 
   public func update(
     target: TestView,
-    with component: TestRenderer.MountedHost
+    with mountedHost: TestRenderer.MountedHost
   ) {}
 
   public func unmount(
     target: TestView,
     from parent: TestView,
-    with component: TestRenderer.MountedHost,
+    with mountedHost: TestRenderer.MountedHost,
     completion: () -> ()
   ) {
     target.removeFromSuperview()

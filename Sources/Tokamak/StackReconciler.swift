@@ -9,30 +9,30 @@ import Dispatch
 import Runtime
 
 public final class StackReconciler<R: Renderer> {
-  private var queuedRerenders = Set<MountedCompositeComponent<R>>()
+  private var queuedRerenders = Set<MountedCompositeView<R>>()
 
   public let rootTarget: R.TargetType
-  private let rootComponent: MountedComponent<R>
+  private let rootView: MountedView<R>
   private(set) weak var renderer: R?
 
-  public init<V: View>(node: V, target: R.TargetType, renderer: R) {
+  public init<V: View>(view: V, target: R.TargetType, renderer: R) {
     self.renderer = renderer
     rootTarget = target
 
-    rootComponent = node.makeMountedComponent(target)
+    rootView = view.makeMountedView(target)
 
-    rootComponent.mount(with: self)
+    rootView.mount(with: self)
   }
 
   func queueUpdate(
-    for component: MountedCompositeComponent<R>,
+    for mountedView: MountedCompositeView<R>,
     id: Int,
     updater: (inout Any) -> ()
   ) {
     let scheduleReconcile = queuedRerenders.isEmpty
 
-    updater(&component.state[id])
-    queuedRerenders.insert(component)
+    updater(&mountedView.state[id])
+    queuedRerenders.insert(mountedView)
 
     guard scheduleReconcile else { return }
 
@@ -42,41 +42,41 @@ public final class StackReconciler<R: Renderer> {
   }
 
   private func updateStateAndReconcile() {
-    for component in queuedRerenders {
-      component.update(with: self)
+    for mountedView in queuedRerenders {
+      mountedView.update(with: self)
     }
 
     queuedRerenders.removeAll()
   }
 
-  func render(component: MountedCompositeComponent<R>) -> some View {
+  func render(compositeView: MountedCompositeView<R>) -> some View {
     // swiftlint:disable force_try
-    let info = try! typeInfo(of: component.node.type)
+    let info = try! typeInfo(of: compositeView.view.type)
     let stateProperties = info.properties.filter { $0.type is ValueStorage.Type }
 
     for (id, stateProperty) in stateProperties.enumerated() {
       // `ValueStorage` properties were already filtered out, so safe to assume the value's type
       // swiftlint:disable:next force_cast
-      var state = try! stateProperty.get(from: component.node.view) as! ValueStorage
+      var state = try! stateProperty.get(from: compositeView.view.view) as! ValueStorage
 
-      if component.state.count == id {
-        component.state.append(state.anyInitialValue)
+      if compositeView.state.count == id {
+        compositeView.state.append(state.anyInitialValue)
       }
 
-      state.getter = { component.state[id] }
+      state.getter = { compositeView.state[id] }
 
       // Avoiding an indirect reference cycle here: this closure can be
-      // owned by callbacks owned by node's target, which is strongly referenced
+      // owned by callbacks owned by view's target, which is strongly referenced
       // by the reconciler.
-      state.setter = { [weak self, weak component] newValue in
-        guard let component = component else { return }
-        self?.queueUpdate(for: component, id: id) { $0 = newValue }
+      state.setter = { [weak self, weak compositeView] newValue in
+        guard let view = compositeView else { return }
+        self?.queueUpdate(for: view, id: id) { $0 = newValue }
       }
-      try! stateProperty.set(value: state, on: &component.node.view)
+      try! stateProperty.set(value: state, on: &compositeView.view.view)
     }
     // swiftlint:enable force_try
 
-    let result = component.node.bodyClosure(component.node.view)
+    let result = compositeView.view.bodyClosure(compositeView.view.view)
 
     return result
   }

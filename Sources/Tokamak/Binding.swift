@@ -8,9 +8,8 @@
 typealias Updater<T> = (inout T) -> ()
 
 /** Note that `set` functions are not `mutating`, they never update the
- component's state in-place synchronously, but only schedule an update with
- Tokamak at a later time. A call to `render` is only scheduled on the component
- that obtained this state with `hooks.state`.
+ view's state in-place synchronously, but only schedule an update with
+ the renderer at a later time.
  */
 @propertyWrapper public struct Binding<Value> {
   public var wrappedValue: Value {

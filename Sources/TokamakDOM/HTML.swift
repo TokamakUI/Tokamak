@@ -20,15 +20,13 @@ public struct HTML<Content>: View where Content: View {
   }
 }
 
-public struct EmptyHTML: View {
-  let tag: String
-  let attributes: [String: String]
-
+extension HTML where Content == EmptyView {
   public init(
     tag: String,
     attributes: [String: String] = [:]
   ) {
     self.tag = tag
     self.attributes = attributes
+    content = EmptyView()
   }
 }

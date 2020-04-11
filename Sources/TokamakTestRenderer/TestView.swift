@@ -19,10 +19,10 @@ public final class TestView: Target {
 
   /** Initialize a new test view.
    */
-  init<V: View>(_ node: V,
+  init<V: View>(_ view: V,
                 _ subviews: [TestView] = []) {
     self.subviews = subviews
-    super.init(node: node)
+    super.init(view: view)
   }
 
   /** Add a subview to this test view.

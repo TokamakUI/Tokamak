@@ -6,6 +6,6 @@ import Tokamak
 
 extension Button: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    AnyView(EmptyHTML(tag: "button"))
+    AnyView(HTML(tag: "button"))
   }
 }

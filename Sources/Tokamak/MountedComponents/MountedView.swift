@@ -1,17 +1,12 @@
 //
-//  MountedComponent.swift
-//  Tokamak
-//
 //  Created by Max Desiatov on 28/11/2018.
 //
 
-public class MountedComponent<R: Renderer> {
-  public internal(set) var node: AnyView
-  public let viewType: Any.Type
+public class MountedView<R: Renderer> {
+  public internal(set) var view: AnyView
 
-  init(_ node: AnyView) {
-    self.node = node
-    viewType = node.type
+  init(_ view: AnyView) {
+    self.view = view
   }
 
   func mount(with reconciler: StackReconciler<R>) {
@@ -28,15 +23,15 @@ public class MountedComponent<R: Renderer> {
 }
 
 extension View {
-  func makeMountedComponent<R: Renderer>(_ parentTarget: R.TargetType)
-    -> MountedComponent<R> {
+  func makeMountedView<R: Renderer>(_ parentTarget: R.TargetType)
+    -> MountedView<R> {
     let anyView = self as? AnyView ?? AnyView(self)
     if anyView.type == EmptyView.self {
       return MountedNull(anyView)
     } else if anyView.bodyType == Never.self && !(anyView.type is ViewDeferredToRenderer.Type) {
-      return MountedHostComponent(anyView, parentTarget)
+      return MountedHostView(anyView, parentTarget)
     } else {
-      return MountedCompositeComponent(anyView, parentTarget)
+      return MountedCompositeView(anyView, parentTarget)
     }
   }
 }

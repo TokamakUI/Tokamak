@@ -6,9 +6,9 @@
 //
 
 open class Target {
-  public internal(set) var node: AnyView
+  public internal(set) var view: AnyView
 
-  public init<V: View>(node: V) {
-    self.node = AnyView(node)
+  public init<V: View>(view: V) {
+    self.view = AnyView(view)
   }
 }
