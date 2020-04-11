@@ -77,7 +77,7 @@ final class ReconcilerTests: XCTestCase {
     let e = expectation(description: "rerender")
 
     DispatchQueue.main.async {
-      XCTAssertTrue(root.node.view is Counter)
+      XCTAssertTrue(root.node.view is EmptyView)
       XCTAssertEqual(root.subviews.count, 1)
       let newStack = root.subviews[0]
       XCTAssert(stack === newStack)
@@ -96,7 +96,7 @@ final class ReconcilerTests: XCTestCase {
       button.action()
 
       DispatchQueue.main.async {
-        XCTAssertTrue(root.node.view is Counter)
+        XCTAssertTrue(root.node.view is EmptyView)
         XCTAssertEqual(root.subviews.count, 1)
         let newStack = root.subviews[0]
         XCTAssert(stack === newStack)
@@ -146,7 +146,7 @@ final class ReconcilerTests: XCTestCase {
         button.action()
 
         DispatchQueue.main.async {
-          XCTAssertTrue(root.node.view is Counter)
+          XCTAssertTrue(root.node.view is EmptyView)
           XCTAssertEqual(root.subviews.count, 1)
           let newStack = root.subviews[0]
           XCTAssert(stack === newStack)

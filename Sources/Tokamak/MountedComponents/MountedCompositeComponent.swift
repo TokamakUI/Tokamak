@@ -6,6 +6,7 @@
 //
 
 import Dispatch
+import Runtime
 
 final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
   HookedComponent, Hashable {
@@ -59,8 +60,15 @@ final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
     // some mounted children
     case let (wrapper?, renderedNode):
       let renderedNodeType = (renderedNode as? AnyView)?.type ?? type(of: renderedNode)
+
+      // FIXME: no idea if using `mangledName` is reliable, but seems to be the only way to get
+      // a name of a type constructor in runtime. Should definitely check if these are different
+      // across modules, otherwise can cause problems with views with same names in different
+      // modules.
+
       // new node is the same type as existing child
-      if wrapper.node.type == renderedNodeType {
+      // swiftlint:disable:next force_try
+      if try! wrapper.node.typeConstructorName == typeInfo(of: renderedNodeType).mangledName {
         wrapper.node = AnyView(renderedNode)
         wrapper.update(with: reconciler)
       } else {
