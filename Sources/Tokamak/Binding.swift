@@ -38,21 +38,3 @@ typealias Updater<T> = (inout T) -> ()
     )
   }
 }
-
-extension Hooks {
-  /** Allows a component to have its own state and to be updated when the state
-   changes. Returns a very simple state container, which on initial call of
-   render contains `initial` as a value and values passed to `count.set`
-   on subsequent updates:
-   */
-  public func state<T>(_ initial: T) -> Binding<T> {
-    let (get, index) = currentState(initial)
-
-    let queueState = self.queueState
-    return Binding(get: get, set: { newValue in
-      queueState(index) {
-        $0 = newValue
-      }
-    })
-  }
-}

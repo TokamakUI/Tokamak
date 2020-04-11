@@ -8,8 +8,7 @@
 import Dispatch
 import Runtime
 
-final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>,
-  HookedComponent, Hashable {
+final class MountedCompositeComponent<R: Renderer>: MountedComponent<R>, Hashable {
   static func ==(lhs: MountedCompositeComponent<R>,
                  rhs: MountedCompositeComponent<R>) -> Bool {
     lhs === rhs
