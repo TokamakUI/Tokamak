@@ -13,7 +13,7 @@ class ScrollDelegate: NSObject, UIScrollViewDelegate {
   var view: UIView?
 
   func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-    return view
+    view
   }
 }
 

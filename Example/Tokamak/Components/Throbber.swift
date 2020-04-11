@@ -13,17 +13,16 @@ struct ThrobberExample: PureLeafComponent {
   typealias Props = Null
 
   static func render(props: Null) -> AnyNode {
-    return
-      View.node(
-        .init(Style(
-          Edges.equal(to: .parent),
-          backgroundColor: .black
-        )),
-        Throbber.node(.init(
-          Style(Edges.equal(to: .parent)),
-          isAnimating: true,
-          variety: .whiteLarge
-        ))
-      )
+    View.node(
+      .init(Style(
+        Edges.equal(to: .parent),
+        backgroundColor: .black
+      )),
+      Throbber.node(.init(
+        Style(Edges.equal(to: .parent)),
+        isAnimating: true,
+        variety: .whiteLarge
+      ))
+    )
   }
 }

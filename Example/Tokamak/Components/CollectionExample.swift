@@ -30,7 +30,7 @@ enum ElementaryParticles: String, CaseIterable {
 }
 
 extension ElementaryParticles: CustomStringConvertible {
-  var description: String { return rawValue.localizedCapitalized }
+  var description: String { rawValue.localizedCapitalized }
 }
 
 private struct Cells: CellProvider {
@@ -39,7 +39,7 @@ private struct Cells: CellProvider {
     item: ElementaryParticles,
     path: CellPath
   ) -> AnyNode {
-    return Label.node(.init(
+    Label.node(.init(
       Style(
         [CenterY.equal(to: .parent),
          Height.equal(to: 44),
@@ -59,7 +59,7 @@ struct CollectionExample: PureLeafComponent {
   typealias Props = Null
 
   static func render(props: Props) -> AnyNode {
-    return CollectionView<Cells>.node(.init(
+    CollectionView<Cells>.node(.init(
       Style(
         Edges.equal(to: .parent, inset: 20),
         backgroundColor: .white

@@ -11,14 +11,12 @@ public final class TestRenderer: Renderer {
   public private(set) var reconciler: StackReconciler<TestRenderer>?
 
   public var rootTarget: TestView {
-    return reconciler!.rootTarget
+    reconciler!.rootTarget
   }
 
-  public init(_ node: AnyNode) {
-    let root = TestView(ViewComponent.node())
-    reconciler = StackReconciler(node: node,
-                                 target: root,
-                                 renderer: self)
+  public init<V: View>(_ node: V) {
+    // FIXME: the root target shouldn't be `EmptyView`, but something more sensible, maybe Group?
+    reconciler = StackReconciler(node: node, target: TestView(EmptyView()), renderer: self)
   }
 
   public func mountTarget(
@@ -34,13 +32,7 @@ public final class TestRenderer: Renderer {
   public func update(
     target: TestView,
     with component: TestRenderer.MountedHost
-  ) {
-    guard
-      let componentType = component.type as? AnyRefComponent.Type,
-      let anyRef = component.node.ref else { return }
-
-    componentType.update(ref: anyRef, with: target)
-  }
+  ) {}
 
   public func unmount(
     target: TestView,

@@ -26,6 +26,6 @@ public struct AnyEquatable: Equatable {
   }
 
   public static func ==(lhs: AnyEquatable, rhs: AnyEquatable) -> Bool {
-    return lhs.equals(rhs.value) || rhs.equals(lhs.value)
+    lhs.equals(rhs.value) || rhs.equals(lhs.value)
   }
 }

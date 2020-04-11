@@ -6,10 +6,12 @@
 //
 
 public class MountedComponent<R: Renderer> {
-  public internal(set) var node: AnyNode
+  public internal(set) var node: AnyView
+  public let viewType: Any.Type
 
-  init(_ node: AnyNode) {
+  init(_ node: AnyView) {
     self.node = node
+    viewType = node.type
   }
 
   func mount(with reconciler: StackReconciler<R>) {
@@ -25,16 +27,25 @@ public class MountedComponent<R: Renderer> {
   }
 }
 
-extension AnyNode {
+extension View {
   func makeMountedComponent<R: Renderer>(_ parentTarget: R.TargetType)
     -> MountedComponent<R> {
-    switch type {
-    case let .host(type):
-      return MountedHostComponent(self, type, parentTarget)
-    case let .composite(type):
-      return MountedCompositeComponent(self, type, parentTarget)
-    case .null:
-      return MountedNull(self)
+    if let anyView = self as? AnyView {
+      if anyView.type == EmptyView.self {
+        return MountedNull(anyView)
+      } else if anyView.bodyType == Never.self {
+        return MountedHostComponent(anyView, parentTarget)
+      } else {
+        return MountedCompositeComponent(anyView, parentTarget)
+      }
+    }
+
+    if self is EmptyView {
+      return MountedNull(AnyView(self))
+    } else if Body.self is Never.Type {
+      return MountedHostComponent(AnyView(self), parentTarget)
+    } else {
+      return MountedCompositeComponent(AnyView(self), parentTarget)
     }
   }
 }

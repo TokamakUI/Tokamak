@@ -5,91 +5,54 @@
 //  Created by Max Desiatov on 07/12/2018.
 //
 
+import TokamakDemo
 import TokamakTestRenderer
 import XCTest
 
 @testable import Tokamak
 
-struct Counter: LeafComponent {
-  typealias Props = Int
-
-  static func render(props: Int, hooks: Hooks) -> AnyNode {
-    let count = hooks.state(props)
-    let sliding = hooks.state(0.5 as Float)
-
-    let children = count.wrappedValue < 45 ? [
-      Button.node(.init(
-        handlers: [
-          .touchUpInside: Handler { count.wrappedValue += 1 },
-        ],
-        text: "Increment"
-      )),
-
-      Label.node(.init(text: "\(count.wrappedValue)")),
-
-      Slider.node(Slider.Props(
-        value: sliding.wrappedValue, valueHandler: Handler { sliding.wrappedValue = $0 }
-      )),
-
-      Label.node(.init(text: "\(sliding.wrappedValue)")),
-    ] : []
-
-    return StackView.node(
-      .init(
-        Edges.equal(to: .parent),
-        axis: .vertical,
-        distribution: .fillEqually
-      ),
-      children
-    )
-  }
-}
-
 final class ReconcilerTests: XCTestCase {
   func testMount() {
-    let renderer = TestRenderer(Counter.node(42))
+    let renderer = TestRenderer(Counter(42))
     let root = renderer.rootTarget
 
-    XCTAssertTrue(root.node.isSubtypeOf(ViewComponent.self))
+    XCTAssertTrue(root.node.view is EmptyView)
     XCTAssertEqual(root.subviews.count, 1)
     let stack = root.subviews[0]
-    XCTAssertTrue(stack.node.isSubtypeOf(StackView.self))
-    XCTAssertTrue(type(of: stack.node.props.value) == StackView.Props.self)
-    XCTAssertEqual(stack.subviews.count, 4)
-    XCTAssertTrue(stack.subviews[0].node.isSubtypeOf(Button.self))
-    XCTAssertTrue(stack.subviews[1].node.isSubtypeOf(Label.self))
-    XCTAssertEqual(stack.subviews[1].props(Label.Props.self)?.text, "42")
+    XCTAssertTrue(stack.node.view is HStack<TupleView<(Button<Text>, Text)>>)
+    XCTAssertEqual(stack.subviews.count, 2)
+    XCTAssertTrue(stack.subviews[0].node.view is Button<Text>)
+    XCTAssertTrue(stack.subviews[1].node.view is Text)
+    XCTAssertEqual((stack.subviews[1].node.view as? Text)?.content, "42")
   }
 
   func testUpdate() {
-    let renderer = TestRenderer(Counter.node(42))
+    let renderer = TestRenderer(Counter(42))
     let root = renderer.rootTarget
     let stack = root.subviews[0]
 
-    guard let buttonProps = stack.subviews[0].props(Button.Props.self),
-      let buttonHandler = buttonProps.handlers[.touchUpInside]?.value else {
-      XCTAssert(false, "components have no handlers")
+    guard let button = stack.subviews[0].node.view as? Button<Text> else {
+      XCTAssert(false, "counter has no button")
       return
     }
 
     let originalLabel = stack.subviews[1]
 
-    buttonHandler(())
+    button.action()
 
     let e = expectation(description: "rerender")
 
     DispatchQueue.main.async {
-      XCTAssertTrue(root.node.isSubtypeOf(ViewComponent.self))
+      XCTAssertTrue(root.node.view is EmptyView)
       XCTAssertEqual(root.subviews.count, 1)
       let newStack = root.subviews[0]
       XCTAssert(stack === newStack)
-      XCTAssertTrue(newStack.node.isSubtypeOf(StackView.self))
-      XCTAssertNotNil(newStack.props(StackView.Props.self))
-      XCTAssertEqual(newStack.subviews.count, 4)
-      XCTAssertTrue(newStack.subviews[0].node.isSubtypeOf(Button.self))
-      XCTAssertTrue(newStack.subviews[1].node.isSubtypeOf(Label.self))
+      XCTAssertTrue(stack.node.view is HStack<TupleView<(Button<Text>, Text)>>)
+      XCTAssertEqual(stack.subviews.count, 2)
+      XCTAssertTrue(stack.subviews[0].node.view is Button<Text>)
+      XCTAssertTrue(stack.subviews[1].node.view is Text)
       XCTAssertTrue(originalLabel === newStack.subviews[1])
-      XCTAssertEqual(newStack.subviews[1].props(Label.Props.self)?.text, "43")
+      XCTAssertEqual((stack.subviews[1].node.view as? Text)?.content, "43")
 
       e.fulfill()
     }
@@ -98,68 +61,53 @@ final class ReconcilerTests: XCTestCase {
   }
 
   func testDoubleUpdate() {
-    let renderer = TestRenderer(Counter.node(42))
+    let renderer = TestRenderer(Counter(42))
     let root = renderer.rootTarget
     let stack = root.subviews[0]
 
-    guard let buttonProps = stack.subviews[0].props(Button.Props.self),
-      let sliderProps = stack.subviews[2].props(Slider.Props.self),
-      let buttonHandler = buttonProps.handlers[.touchUpInside]?.value,
-      let sliderHandler = sliderProps.valueHandler?.value else {
-      XCTAssert(false, "components have no handlers")
+    guard let button = stack.subviews[0].node.view as? Button<Text> else {
+      XCTAssert(false, "counter has no button")
       return
     }
 
     let originalLabel = stack.subviews[1]
 
-    buttonHandler(())
+    button.action()
 
     let e = expectation(description: "rerender")
 
     DispatchQueue.main.async {
-      sliderHandler(0.25)
+      XCTAssertTrue(root.node.view is EmptyView)
+      XCTAssertEqual(root.subviews.count, 1)
+      let newStack = root.subviews[0]
+      XCTAssert(stack === newStack)
+      XCTAssertTrue(stack.node.view is HStack<TupleView<(Button<Text>, Text)>>)
+      XCTAssertEqual(stack.subviews.count, 2)
+      XCTAssertTrue(stack.subviews[0].node.view is Button<Text>)
+      XCTAssertTrue(stack.subviews[1].node.view is Text)
+      XCTAssertTrue(originalLabel === newStack.subviews[1])
+      XCTAssertEqual((stack.subviews[1].node.view as? Text)?.content, "43")
+
+      guard let button = stack.subviews[0].node.view as? Button<Text> else {
+        XCTAssert(false, "counter has no button")
+        return
+      }
+
+      button.action()
 
       DispatchQueue.main.async {
-        XCTAssert(root.node.isSubtypeOf(ViewComponent.self))
+        XCTAssertTrue(root.node.view is EmptyView)
         XCTAssertEqual(root.subviews.count, 1)
         let newStack = root.subviews[0]
-        XCTAssertTrue(stack === newStack)
-        XCTAssertTrue(newStack.node.isSubtypeOf(StackView.self))
-        XCTAssertNotNil(newStack.props(StackView.Props.self))
-        XCTAssertEqual(newStack.subviews.count, 4)
-        XCTAssertTrue(newStack.subviews[0].node.isSubtypeOf(Button.self))
-        XCTAssertTrue(newStack.subviews[1].node.isSubtypeOf(Label.self))
+        XCTAssert(stack === newStack)
+        XCTAssertTrue(stack.node.view is HStack<TupleView<(Button<Text>, Text)>>)
+        XCTAssertEqual(stack.subviews.count, 2)
+        XCTAssertTrue(stack.subviews[0].node.view is Button<Text>)
+        XCTAssertTrue(stack.subviews[1].node.view is Text)
         XCTAssertTrue(originalLabel === newStack.subviews[1])
+        XCTAssertEqual((stack.subviews[1].node.view as? Text)?.content, "44")
 
-        guard let sliderProps = newStack.subviews[2].props(Slider.Props.self),
-          let buttonProps = newStack.subviews[0].props(Button.Props.self),
-          let buttonHandler = buttonProps.handlers[.touchUpInside]?.value else {
-          XCTAssert(false, "components have wrong props")
-          return
-        }
-
-        XCTAssertEqual(sliderProps.value, 0.25)
-        XCTAssertEqual(newStack.subviews[1].props(Label.Props.self)?.text, "43")
-
-        buttonHandler(())
-
-        DispatchQueue.main.async {
-          XCTAssertTrue(root.node.isSubtypeOf(ViewComponent.self))
-          XCTAssertEqual(root.subviews.count, 1)
-          let newStack = root.subviews[0]
-          XCTAssertTrue(stack === newStack)
-          XCTAssertTrue(newStack.node.isSubtypeOf(StackView.self))
-          XCTAssertNotNil(newStack.props(StackView.Props.self))
-          XCTAssertEqual(newStack.subviews.count, 4)
-          XCTAssertTrue(newStack.subviews[0].node.isSubtypeOf(Button.self))
-          XCTAssertTrue(newStack.subviews[1].node.isSubtypeOf(Label.self))
-          XCTAssertTrue(originalLabel === newStack.subviews[1])
-
-          XCTAssertEqual(sliderProps.value, 0.25)
-          XCTAssertEqual(newStack.subviews[1].props(Label.Props.self)?.text,
-                         "44")
-          e.fulfill()
-        }
+        e.fulfill()
       }
     }
 
@@ -167,51 +115,42 @@ final class ReconcilerTests: XCTestCase {
   }
 
   func testUnmount() {
-    let renderer = TestRenderer(Counter.node(42))
+    let renderer = TestRenderer(Counter(42, limit: 45))
     let root = renderer.rootTarget
 
     let stack = root.subviews[0]
-    guard let props = stack.subviews[0].props(Button.Props.self) else {
-      XCTAssert(false, "button component has wrong props types")
+    guard let button = stack.subviews[0].node.view as? Button<Text> else {
+      XCTAssert(false, "counter has no button")
       return
     }
 
-    guard let handler = props.handlers[.touchUpInside]?.value else {
-      XCTAssert(false, "button component has no handler")
-      return
-    }
-
-    handler(())
+    button.action()
 
     let e = expectation(description: "rerender")
 
     DispatchQueue.main.async {
       // rerender completed here, schedule another one
-      guard let props = root.subviews[0].subviews[0].node
-        .props.value as? Button.Props,
-        let handler = props.handlers[.touchUpInside]?.value else {
-        XCTAssert(false, "button component has no handler")
+      guard let button = stack.subviews[0].node.view as? Button<Text> else {
+        XCTAssert(false, "counter has no button")
         return
       }
 
-      handler(())
+      button.action()
 
       DispatchQueue.main.async {
-        guard let props = stack.subviews[0].props(Button.Props.self),
-          let handler = props.handlers[.touchUpInside]?.value else {
-          XCTAssert(false, "button component has no handler")
+        guard let button = stack.subviews[0].node.view as? Button<Text> else {
+          XCTAssert(false, "counter has no button")
           return
         }
 
-        handler(())
+        button.action()
 
         DispatchQueue.main.async {
-          XCTAssertTrue(root.node.isSubtypeOf(ViewComponent.self))
+          XCTAssertTrue(root.node.view is EmptyView)
           XCTAssertEqual(root.subviews.count, 1)
-          let stack = root.subviews[0]
-          XCTAssertTrue(stack.node.isSubtypeOf(StackView.self))
-          XCTAssertTrue(type(of: stack.node.props.value) ==
-            StackView.Props.self)
+          let newStack = root.subviews[0]
+          XCTAssert(stack === newStack)
+          XCTAssertTrue(stack.node.view is HStack<EmptyView>)
           XCTAssertEqual(stack.subviews.count, 0)
 
           e.fulfill()
@@ -221,11 +160,4 @@ final class ReconcilerTests: XCTestCase {
 
     wait(for: [e], timeout: 1)
   }
-
-  static var allTests = [
-    ("testMount", testMount),
-    ("testUpdate", testUpdate),
-    ("testDoubleUpdate", testDoubleUpdate),
-    ("testUnmount", testUnmount),
-  ]
 }

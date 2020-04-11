@@ -13,7 +13,7 @@ import UIKit
 
 final class ViewController: TokamakViewController {
   override var node: AnyNode {
-    return NavigationPresenter<Router>.node(.init(initial: .list))
+    NavigationPresenter<Router>.node(.init(initial: .list))
   }
 }
 

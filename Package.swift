@@ -17,10 +17,6 @@ let package = Package(
       targets: ["Tokamak"]
     ),
     .library(
-      name: "TokamakAppKit",
-      targets: ["TokamakAppKit"]
-    ),
-    .library(
       name: "TokamakTestRenderer",
       targets: ["TokamakTestRenderer"]
     ),
@@ -28,6 +24,7 @@ let package = Package(
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     // .package(url: /* package url */, from: "1.0.0"),
+    .package(url: "https://github.com/wickwirew/Runtime.git", .branch("master")),
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define
@@ -36,14 +33,10 @@ let package = Package(
     // in packages which this package depends on.
     .target(
       name: "Tokamak",
-      dependencies: []
+      dependencies: ["Runtime"]
     ),
     .target(
       name: "TokamakDemo",
-      dependencies: ["Tokamak"]
-    ),
-    .target(
-      name: "TokamakAppKit",
       dependencies: ["Tokamak"]
     ),
     .target(
@@ -52,7 +45,7 @@ let package = Package(
     ),
     .testTarget(
       name: "TokamakTests",
-      dependencies: ["TokamakTestRenderer"]
+      dependencies: ["TokamakDemo", "TokamakTestRenderer"]
     ),
   ]
 )
