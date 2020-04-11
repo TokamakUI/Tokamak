@@ -9,12 +9,15 @@ public enum VerticalAlignment: Equatable {
 }
 
 public struct HStack<Content>: View where Content: View {
-  // FIXME: should be internal
-  public let alignment: VerticalAlignment
-  public let spacing: CGFloat?
-  public let content: Content
+  let alignment: VerticalAlignment
+  let spacing: CGFloat?
+  let content: Content
 
-  public init(alignment: VerticalAlignment = .center, spacing: CGFloat? = nil, @ViewBuilder content: () -> Content) {
+  public init(
+    alignment: VerticalAlignment = .center,
+    spacing: CGFloat? = nil,
+    @ViewBuilder content: () -> Content
+  ) {
     self.alignment = alignment
     self.spacing = spacing
     self.content = content()

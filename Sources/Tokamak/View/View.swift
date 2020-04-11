@@ -1,7 +1,4 @@
 //
-//  View.swift
-//
-//
 //  Created by Max Desiatov on 07/04/2020.
 //
 
