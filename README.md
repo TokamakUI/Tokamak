@@ -14,6 +14,11 @@ this goal are much appreciated. You can consider the current
 Tokamak API as deprecated, but still usable for research and experimentation
 purposes.
 
+The WebAssembly/DOM renderer built for [SwiftWasm](https://swiftwasm.org)
+is not ready yet. The reconciler and the test renderer already expose a
+SwiftUI API, but we're currently blocked by [a few SwiftWasm 
+issues](https://github.com/swiftwasm/swift/issues/597).
+
 ## Acknowledgments
 
 * Thanks to the [Swift community](https://swift.org/community/) for
