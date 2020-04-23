@@ -7,13 +7,6 @@
 
 ### Important: SwiftUI compatibility
 
-Current Tokamak API was designed and built at the end of 2018, months before 
-SwiftUI was announced. Thus, the short-term goal of Tokamak is to make the
-API more compatible with SwiftUI. All contributions that help us in achieving
-this goal are much appreciated. You can consider the current
-Tokamak API as deprecated, but still usable for research and experimentation
-purposes.
-
 The WebAssembly/DOM renderer built for [SwiftWasm](https://swiftwasm.org)
 is not ready yet. The reconciler and the test renderer already expose a
 SwiftUI API, but the actual DOM renderer is currently blocked by [a few SwiftWasm 
