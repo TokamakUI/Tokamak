@@ -6,8 +6,8 @@ import Dispatch
 import Runtime
 
 final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {
-  static func ==(lhs: MountedCompositeView<R>,
-                 rhs: MountedCompositeView<R>) -> Bool {
+  static func == (lhs: MountedCompositeView<R>,
+                  rhs: MountedCompositeView<R>) -> Bool {
     lhs === rhs
   }
 
