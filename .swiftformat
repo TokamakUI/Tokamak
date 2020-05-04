@@ -3,7 +3,7 @@
 --trimwhitespace always
 --ranges nospace
 --empty tuple
---operatorfunc nospace
+--nospaceoperators
 --ifdef noindent
 --stripunusedargs closure-only
 --disable andOperator
