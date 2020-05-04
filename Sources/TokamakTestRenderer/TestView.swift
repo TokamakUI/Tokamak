@@ -17,8 +17,7 @@ public final class TestView: Target {
   /// Parent `TestView` instance that owns this instance as a child
   private weak var parent: TestView?
 
-  /** Initialize a new test view.
-   */
+  /** Initialize a new test view. */
   init<V: View>(_ view: V,
                 _ subviews: [TestView] = []) {
     self.subviews = subviews

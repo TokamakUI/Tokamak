@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "Runtime",
-        "repositoryURL": "https://github.com/wickwirew/Runtime.git",
+        "repositoryURL": "https://github.com/MaxDesiatov/Runtime.git",
         "state": {
-          "branch": "master",
-          "revision": "0a059a96c49b4e8bca085476bc8dc2061921c5b6",
+          "branch": "wasi-build",
+          "revision": "4ac000b019460c5eb5b9d7a8d7aaa1cb24076bf6",
           "version": null
         }
       }
