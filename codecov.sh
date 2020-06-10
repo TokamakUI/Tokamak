@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -e 
-set -o pipefail
+set -ex
 
 bash <(curl -s https://codecov.io/bash)
