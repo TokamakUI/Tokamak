@@ -21,7 +21,7 @@ public final class TestView: Target {
   init<V: View>(_ view: V,
                 _ subviews: [TestView] = []) {
     self.subviews = subviews
-    super.init(view: view)
+    super.init(view)
   }
 
   /** Add a subview to this test view.

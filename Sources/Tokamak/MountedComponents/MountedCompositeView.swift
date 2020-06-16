@@ -2,7 +2,6 @@
 //  Created by Max Desiatov on 03/12/2018.
 //
 
-import Dispatch
 import Runtime
 
 final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {

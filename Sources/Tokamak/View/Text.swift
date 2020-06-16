@@ -3,8 +3,7 @@
 //
 
 public struct Text: View {
-  // FIXME: should be internal
-  public let content: String
+  let content: String
 
   public init(verbatim content: String) {
     self.content = content
@@ -13,4 +12,8 @@ public struct Text: View {
   public init<S>(_ content: S) where S: StringProtocol {
     self.content = String(content)
   }
+}
+
+public func textContent(_ text: Text) -> String {
+  text.content
 }

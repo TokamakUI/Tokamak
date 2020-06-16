@@ -12,6 +12,11 @@
       "label": "swift test",
       "type": "shell",
       "command": "swift test"
+    },
+    {
+      "label": "carton dev",
+      "type": "shell",
+      "command": "carton dev --product TokamakDemo"
     }
   ]
 }

@@ -4,7 +4,9 @@
 
 public struct Button<Label>: View where Label: View {
   let label: Label
-  let action: () -> ()
+
+  // FIXME: this should be internal
+  public let action: () -> ()
 
   public init(action: @escaping () -> (), @ViewBuilder label: () -> Label) {
     self.label = label()
@@ -18,4 +20,14 @@ extension Button where Label == Text {
       Text(title)
     }
   }
+}
+
+extension Button: ParentView {
+  public var children: [AnyView] {
+    (label as? GroupView)?.children ?? [AnyView(label)]
+  }
+}
+
+public func buttonLabel(_ button: Button<Text>) -> String {
+  button.label.content
 }

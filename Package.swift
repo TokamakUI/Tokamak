@@ -12,9 +12,13 @@ let package = Package(
   products: [
     // Products define the executables and libraries produced by a package,
     // and make them visible to other packages.
+    .executable(
+      name: "TokamakDemo",
+      targets: ["TokamakDemo"]
+    ),
     .library(
-      name: "Tokamak",
-      targets: ["Tokamak"]
+      name: "TokamakDOM",
+      targets: ["TokamakDOM"]
     ),
     .library(
       name: "TokamakTestRenderer",
@@ -24,6 +28,7 @@ let package = Package(
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     // .package(url: /* package url */, from: "1.0.0"),
+    .package(url: "https://github.com/MaxDesiatov/JavaScriptKit.git", .revision("1edcf70")),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", .branch("wasi-build")),
   ],
   targets: [
@@ -37,11 +42,11 @@ let package = Package(
     ),
     .target(
       name: "TokamakDemo",
-      dependencies: ["Tokamak"]
+      dependencies: ["JavaScriptKit", "Tokamak", "TokamakDOM"]
     ),
     .target(
       name: "TokamakDOM",
-      dependencies: ["Tokamak"]
+      dependencies: ["JavaScriptKit", "Tokamak"]
     ),
     .target(
       name: "TokamakTestRenderer",

@@ -8,7 +8,7 @@
 open class Target {
   public internal(set) var view: AnyView
 
-  public init<V: View>(view: V) {
+  public init<V: View>(_ view: V) {
     self.view = AnyView(view)
   }
 }

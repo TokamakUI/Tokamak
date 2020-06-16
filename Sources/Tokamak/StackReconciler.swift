@@ -5,7 +5,6 @@
 //  Created by Max Desiatov on 28/11/2018.
 //
 
-import Dispatch
 import Runtime
 
 public final class StackReconciler<R: Renderer> {
@@ -14,9 +13,16 @@ public final class StackReconciler<R: Renderer> {
   public let rootTarget: R.TargetType
   private let rootView: MountedView<R>
   private(set) weak var renderer: R?
+  private let scheduler: (@escaping () -> ()) -> ()
 
-  public init<V: View>(view: V, target: R.TargetType, renderer: R) {
+  public init<V: View>(
+    view: V,
+    target: R.TargetType,
+    renderer: R,
+    scheduler: @escaping (@escaping () -> ()) -> ()
+  ) {
     self.renderer = renderer
+    self.scheduler = scheduler
     rootTarget = target
 
     rootView = view.makeMountedView(target)
@@ -36,9 +42,7 @@ public final class StackReconciler<R: Renderer> {
 
     guard scheduleReconcile else { return }
 
-    DispatchQueue.main.async {
-      self.updateStateAndReconcile()
-    }
+    scheduler { [weak self] in self?.updateStateAndReconcile() }
   }
 
   private func updateStateAndReconcile() {

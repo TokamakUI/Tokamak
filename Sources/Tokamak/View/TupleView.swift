@@ -5,7 +5,7 @@
 public struct TupleView<T>: View {
   public let value: T
 
-  let children: [AnyView]
+  public let children: [AnyView]
 
   public init(_ value: T) {
     self.value = value

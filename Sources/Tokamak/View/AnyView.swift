@@ -44,8 +44,14 @@ public struct AnyView: View {
   }
 }
 
+public func mapAnyView<T, V>(_ anyView: AnyView, transform: (V) -> T) -> T? {
+  guard let view = anyView.view as? V else { return nil }
+
+  return transform(view)
+}
+
 extension AnyView: ParentView {
-  var children: [AnyView] {
+  public var children: [AnyView] {
     (view as? ParentView)?.children ?? []
   }
 }

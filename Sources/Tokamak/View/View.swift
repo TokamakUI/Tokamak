@@ -17,7 +17,7 @@ public extension View where Body == Never {
 }
 
 /// A `View` type that renders with subviews, usually specified in the `Content` type argument
-protocol ParentView {
+public protocol ParentView {
   var children: [AnyView] { get }
 }
 

@@ -2,11 +2,20 @@
   "object": {
     "pins": [
       {
+        "package": "JavaScriptKit",
+        "repositoryURL": "https://github.com/MaxDesiatov/JavaScriptKit.git",
+        "state": {
+          "branch": "1edcf70",
+          "revision": "1edcf707dcb06f50e980c6cac542f226361dc124",
+          "version": null
+        }
+      },
+      {
         "package": "Runtime",
         "repositoryURL": "https://github.com/MaxDesiatov/Runtime.git",
         "state": {
           "branch": "wasi-build",
-          "revision": "4ac000b019460c5eb5b9d7a8d7aaa1cb24076bf6",
+          "revision": "a617ead8a125a97e69d6100e4d27922006e82e0a",
           "version": null
         }
       }

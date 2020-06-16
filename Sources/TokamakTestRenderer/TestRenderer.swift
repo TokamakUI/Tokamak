@@ -2,6 +2,7 @@
 //  Created by Max Desiatov on 21/12/2018.
 //
 
+import Dispatch
 import Tokamak
 
 public final class TestRenderer: Renderer {
@@ -13,7 +14,9 @@ public final class TestRenderer: Renderer {
 
   public init<V: View>(_ view: V) {
     // FIXME: the root target shouldn't be `EmptyView`, but something more sensible, maybe Group?
-    reconciler = StackReconciler(view: view, target: TestView(EmptyView()), renderer: self)
+    reconciler = StackReconciler(view: view, target: TestView(EmptyView()), renderer: self) {
+      DispatchQueue.main.async(execute: $0)
+    }
   }
 
   public func mountTarget(
