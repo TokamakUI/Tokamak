@@ -2,9 +2,9 @@ name: Build and test
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 jobs:
   macos_build:
