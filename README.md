@@ -3,7 +3,6 @@
 ## SwiftUI-compatible framework for building browser apps with WebAssembly
 
 [![Build Status](https://dev.azure.com/max0484/max/_apis/build/status/MaxDesiatov.Tokamak?branchName=main)](https://dev.azure.com/max0484/max/_build/latest?definitionId=3&branchName=main)
-[![Coverage](https://img.shields.io/codecov/c/github/MaxDesiatov/Tokamak/main.svg?style=flat)](https://codecov.io/gh/maxdesiatov/Tokamak)
 
 At the moment Tokamak implements a very basic subset of SwiftUI. Its DOM renderer supports 
 a few view types, namely `Button`, `Text`, `HStack`, and the `@State` property wrapper. The long-term 
