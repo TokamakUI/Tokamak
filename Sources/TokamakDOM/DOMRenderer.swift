@@ -14,6 +14,8 @@ public final class DOMNode: Target {
   }
 }
 
+let log = JSObjectRef.global.console.object!.log.function!
+
 public final class DOMRenderer: Renderer {
   public private(set) var reconciler: StackReconciler<DOMRenderer>?
 
@@ -28,9 +30,9 @@ public final class DOMRenderer: Renderer {
   }
 
   public func mountTarget(to parent: DOMNode, with host: MountedHost) -> DOMNode? {
-    guard let (html, listeners) = mapAnyView(
+    guard let (outerHTML, listeners) = mapAnyView(
       host.view,
-      transform: { (html: AnyHTML) in (html.description, html.listeners) }
+      transform: { (html: AnyHTML) in (html.outerHTML, html.listeners) }
     ) else {
       // handle cases like `TupleView`
       if mapAnyView(host.view, transform: { (view: ParentView) in view }) != nil {
@@ -40,7 +42,7 @@ public final class DOMRenderer: Renderer {
       return nil
     }
 
-    _ = parent.ref.insertAdjacentHTML!("beforeend", JSValue(stringLiteral: html))
+    _ = parent.ref.insertAdjacentHTML!("beforeend", JSValue(stringLiteral: outerHTML))
 
     guard
       let children = parent.ref.childNodes.object,
@@ -60,13 +62,12 @@ public final class DOMRenderer: Renderer {
   }
 
   public func update(target: DOMNode, with host: MountedHost) {
-    guard let (html, listeners) = mapAnyView(
+    guard let html = mapAnyView(
       host.view,
-      transform: { (html: AnyHTML) in (html.description, html.listeners) }
+      transform: { (html: AnyHTML) in html }
     ) else { return }
 
-    target.ref.innerHTML = .string(html.description)
-    // FIXME: handle listeners here
+    html.update(dom: target.ref)
   }
 
   public func unmount(

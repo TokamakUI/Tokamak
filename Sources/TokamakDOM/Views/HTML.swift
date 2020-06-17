@@ -7,8 +7,28 @@ import Tokamak
 
 public typealias Listener = (JSObjectRef) -> ()
 
-protocol AnyHTML: CustomStringConvertible {
+protocol AnyHTML {
+  var innerHTML: String? { get }
+  var tag: String { get }
+  var attributes: [String: String] { get }
   var listeners: [String: Listener] { get }
+}
+
+extension AnyHTML {
+  public var outerHTML: String {
+    """
+    <\(tag)\(attributes.isEmpty ? "" : " ")\
+    \(attributes.map { #"\#($0)="\#($1)""# }.joined(separator: " "))>\
+    \(innerHTML ?? "")\
+    </\(tag)>
+    """
+  }
+
+  func update(dom: JSObjectRef) {
+    // FIXME: handle attributes and listeners here
+    guard let innerHTML = innerHTML else { return }
+    dom.innerHTML = .string(innerHTML)
+  }
 }
 
 public struct HTML<Content>: View, AnyHTML where Content: View {
@@ -29,9 +49,7 @@ public struct HTML<Content>: View, AnyHTML where Content: View {
     self.content = content()
   }
 
-  public var description: String {
-    "<\(tag) \(attributes.map { #"\#($0)="\#($1)""# }.joined(separator: " "))></\(tag)>"
-  }
+  var innerHTML: String? { nil }
 }
 
 extension HTML where Content == EmptyView {

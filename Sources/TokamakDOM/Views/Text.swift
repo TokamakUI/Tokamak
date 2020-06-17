@@ -12,12 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import JavaScriptKit
 import Tokamak
 
 public typealias Text = Tokamak.Text
 
 extension Text: AnyHTML {
-  public var description: String { textContent(self) }
-
+  public var innerHTML: String? { textContent(self) }
+  var tag: String { "span" }
+  var attributes: [String: String] { [:] }
   var listeners: [String: Listener] { [:] }
 }

@@ -33,8 +33,6 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
 
     self.target = target
 
-    reconciler.renderer?.update(target: target, with: self)
-
     guard !view.children.isEmpty else { return }
 
     mountedChildren = view.children.map { $0.makeMountedView(target) }
@@ -57,8 +55,7 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
     guard let target = target else { return }
 
     target.view = view
-    reconciler.renderer?.update(target: target,
-                                with: self)
+    reconciler.renderer?.update(target: target, with: self)
 
     var childrenViews = view.children
 
