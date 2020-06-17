@@ -5,10 +5,20 @@
 [![Build Status](https://dev.azure.com/max0484/max/_apis/build/status/MaxDesiatov.Tokamak?branchName=main)](https://dev.azure.com/max0484/max/_build/latest?definitionId=3&branchName=main)
 [![Coverage](https://img.shields.io/codecov/c/github/MaxDesiatov/Tokamak/main.svg?style=flat)](https://codecov.io/gh/maxdesiatov/Tokamak)
 
-The WebAssembly/DOM renderer built for [SwiftWasm](https://swiftwasm.org)
-is not ready yet. The reconciler and the test renderer already expose a
-SwiftUI API, but the actual DOM renderer is currently blocked by [a few SwiftWasm
-issues](https://github.com/swiftwasm/swift/issues/597).
+At the moment Tokamak implements a very basic subset of SwiftUI. Its DOM renderer supports 
+a few view types, namely `Button`, `Text`, `HStack`, and the `@State` property wrapper. The long-term 
+goal of Tokamak is to implement as much of SwiftUI API as possible and to provide a few helpful additions 
+that simplify HTML and CSS interactions.
+
+## Getting started
+
+Tokamak relies on [`carton`](https://carton.dev) as a primary build tool. Please follow
+[installation instructions](https://github.com/swiftwasm/carton#requirements) for `carton` first.
+
+After `carton` is successfully installed, type `carton dev --product TokamakDemo` in the
+root directory of the cloned Tokamak repository. This will build the demo project and its
+dependencies and launch a development HTTP server. You can then open [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
+in your browser to interact with the demo.
 
 ## Acknowledgments
 
