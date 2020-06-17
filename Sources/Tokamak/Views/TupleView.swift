@@ -5,6 +5,7 @@
 public struct TupleView<T>: View {
   public let value: T
 
+  // FIXME: should not be public
   public let children: [AnyView]
 
   public init(_ value: T) {

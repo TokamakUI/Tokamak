@@ -11,7 +11,7 @@ public enum VerticalAlignment: Equatable {
 public struct HStack<Content>: View where Content: View {
   let alignment: VerticalAlignment
   let spacing: CGFloat?
-  let content: Content
+  public let content: Content
 
   public init(
     alignment: VerticalAlignment = .center,

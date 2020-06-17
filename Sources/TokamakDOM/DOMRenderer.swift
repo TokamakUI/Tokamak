@@ -19,7 +19,7 @@ public final class DOMRenderer: Renderer {
 
   public init<V: View>(_ view: V, _ ref: JSObjectRef) {
     reconciler = StackReconciler(view: view, target: DOMNode(view, ref), renderer: self) { closure in
-      let fn = JSFunctionRef.from { _ in
+      let fn = JSClosure { _ in
         closure()
         return .undefined
       }
@@ -31,29 +31,43 @@ public final class DOMRenderer: Renderer {
     guard let (html, listeners) = mapAnyView(
       host.view,
       transform: { (html: AnyHTML) in (html.description, html.listeners) }
-    )
-    else { return nil }
+    ) else {
+      // handle cases like `TupleView`
+      if mapAnyView(host.view, transform: { (view: ParentView) in view }) != nil {
+        return parent
+      }
 
-    parent.ref.innerHTML = JSValue(stringLiteral: html)
+      return nil
+    }
+
+    _ = parent.ref.insertAdjacentHTML!("beforeend", JSValue(stringLiteral: html))
 
     guard
       let children = parent.ref.childNodes.object,
       let length = children.length.number,
       length > 0,
-      let firstChild = children[0].object
+      let lastChild = children[Int(length) - 1].object
     else { return nil }
 
     for (event, listener) in listeners {
-      _ = firstChild.addEventListener!(event, JSFunctionRef.from {
+      _ = lastChild.addEventListener!(event, JSClosure {
         listener($0[0].object!)
         return .undefined
       })
     }
 
-    return DOMNode(host.view, firstChild)
+    return DOMNode(host.view, lastChild)
   }
 
-  public func update(target: DOMNode, with view: MountedHost) {}
+  public func update(target: DOMNode, with host: MountedHost) {
+    guard let (html, listeners) = mapAnyView(
+      host.view,
+      transform: { (html: AnyHTML) in (html.description, html.listeners) }
+    ) else { return }
+
+    target.ref.innerHTML = .string(html.description)
+    // FIXME: handle listeners here
+  }
 
   public func unmount(
     target: DOMNode,

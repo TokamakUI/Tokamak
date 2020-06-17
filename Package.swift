@@ -28,7 +28,7 @@ let package = Package(
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     // .package(url: /* package url */, from: "1.0.0"),
-    .package(url: "https://github.com/MaxDesiatov/JavaScriptKit.git", .revision("1edcf70")),
+    .package(url: "https://github.com/kateinoigakukun/JavaScriptKit.git", .revision("cba6775")),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", .branch("wasi-build")),
   ],
   targets: [
