@@ -29,13 +29,7 @@ import TokamakDOM
 
 public struct Counter: View {
   @State public var count: Int
-
   let limit: Int
-
-  public init(_ count: Int, limit: Int = Int.max) {
-    _count = .init(wrappedValue: count)
-    self.limit = limit
-  }
 
   public var body: some View {
     count < limit ?
@@ -62,7 +56,7 @@ import TokamakDOM
 let document = JSObjectRef.global.document.object!
 
 let divElement = document.createElement!("div").object!
-let renderer = DOMRenderer(Counter(5), divElement)
+let renderer = DOMRenderer(Counter(count: 5, limit: 15), divElement)
 
 let body = document.body.object!
 _ = body.appendChild!(divElement)
