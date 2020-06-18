@@ -45,7 +45,7 @@ public struct Counter: View {
           Text("\(count)")
         }
       ) : AnyView(HStack {
-        EmptyView()
+        Text("Limit exceeded")
       })
   }
 }
