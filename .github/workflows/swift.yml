@@ -14,4 +14,4 @@ jobs:
       - uses: actions/checkout@v2
       - uses: swiftwasm/swiftwasm-action@master
         with:
-          swift-action: build --triple wasm32-unknown-wasi --product TokamakDemo
+          shell-action: swift build --triple wasm32-unknown-wasi --product TokamakDemo
