@@ -38,9 +38,9 @@ public struct Counter: View {
           Button("Increment") { count += 1 }
           Text("\(count)")
         }
-      ) : AnyView(HStack {
+      ) : AnyView(
         Text("Limit exceeded")
-      })
+      )
   }
 }
 ```
