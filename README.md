@@ -35,7 +35,7 @@ public struct Counter: View {
     count < limit ?
       AnyView(
         VStack(alignment: .center) {
-          Button("Increment") { self.count += 1 }
+          Button("Increment") { count += 1 }
           Text("\(count)")
         }
       ) : AnyView(HStack {
