@@ -7,24 +7,11 @@ on:
     branches: [main]
 
 jobs:
-  macos_build:
-    runs-on: macos-10.15
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build
-        shell: bash
-        run: |
-          set -x
-          ./test.sh
-          ./codecov.sh
-
   linux_build:
     runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
-      - name: Test on Ubuntu with Swift 5.2
-        uses: Didstopia/SwiftAction@v1.0.2
+      - uses: swiftwasm/swiftwasm-action@master
         with:
-          swift-action: test --enable-test-discovery
+          swift-action: build --triple wasm32-unknown-wasi --product TokamakDemo
