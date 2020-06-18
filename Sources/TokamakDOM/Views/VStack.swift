@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Tokamak contributors
+// Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,31 +11,28 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Max Desiatov on 14/02/2019.
-//
 
-import TokamakDOM
+import Tokamak
 
-public struct Counter: View {
-  @State public var count: Int
+public typealias VStack = Tokamak.VStack
 
-  let limit: Int
-
-  public init(_ count: Int, limit: Int = Int.max) {
-    _count = .init(wrappedValue: count)
-    self.limit = limit
+extension HorizontalAlignment {
+  var cssValue: String {
+    switch self {
+    case .leading:
+      return "flex-start"
+    case .center:
+      return "center"
+    case .trailing:
+      return "flex-end"
+    }
   }
+}
 
-  public var body: some View {
-    count < limit ?
-      AnyView(
-        VStack(alignment: .center) {
-          Button("Increment") { self.count += 1 }
-          Text("\(count)")
-        }
-      ) : AnyView(HStack {
-        EmptyView()
-      })
+extension VStack: ViewDeferredToRenderer {
+  public var deferredBody: AnyView {
+    AnyView(HTML(tag: "div", attributes: [
+      "style": "display: flex; flex-direction: column; align-items: \(alignment.cssValue);",
+    ]) { content })
   }
 }
