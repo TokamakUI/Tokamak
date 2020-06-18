@@ -4,10 +4,10 @@
 
 ![CI status](https://github.com/swiftwasm/Tokamak/workflows/CI/badge.svg?branch=main)
 
-At the moment Tokamak implements a very basic subset of SwiftUI. Its DOM renderer supports 
-a few view types, namely `Button`, `Text`, `HStack`, and the `@State` property wrapper. The long-term 
-goal of Tokamak is to implement as much of SwiftUI API as possible and to provide a few helpful additions 
-that simplify HTML and CSS interactions.
+At the moment Tokamak implements a very basic subset of SwiftUI. Its DOM renderer supports
+a few view types, namely `Button`, `Text`, `HStack`/`VStack`, and the `@State` property wrapper.
+The long-term goal of Tokamak is to implement as much of SwiftUI API as possible and to provide
+a few helpful additions that simplify HTML and CSS interactions.
 
 ## Getting started
 
@@ -18,6 +18,55 @@ After `carton` is successfully installed, type `carton dev --product TokamakDemo
 root directory of the cloned Tokamak repository. This will build the demo project and its
 dependencies and launch a development HTTP server. You can then open [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
 in your browser to interact with the demo.
+
+### Example code
+
+Tokamak API attempts to resemble SwiftUI API as much as possible. The main difference is
+that you add `import TokamakDOM` instead of `import SwiftUI` in your files:
+
+```swift
+import TokamakDOM
+
+public struct Counter: View {
+  @State public var count: Int
+
+  let limit: Int
+
+  public init(_ count: Int, limit: Int = Int.max) {
+    _count = .init(wrappedValue: count)
+    self.limit = limit
+  }
+
+  public var body: some View {
+    count < limit ?
+      AnyView(
+        VStack(alignment: .center) {
+          Button("Increment") { self.count += 1 }
+          Text("\(count)")
+        }
+      ) : AnyView(HStack {
+        EmptyView()
+      })
+  }
+}
+```
+
+You can then render your view in any DOM node captured with
+[JavaScriptKit](https://github.com/kateinoigakukun/JavaScriptKit/), just
+pass it as an argument to the `DOMRenderer` initializer together with your view:
+
+```swift
+import JavaScriptKit
+import TokamakDOM
+
+let document = JSObjectRef.global.document.object!
+
+let divElement = document.createElement!("div").object!
+let renderer = DOMRenderer(Counter(5), divElement)
+
+let body = document.body.object!
+_ = body.appendChild!(divElement)
+```
 
 ## Acknowledgments
 
