@@ -75,7 +75,7 @@ _ = body.appendChild!(divElement)
 ## Contributing
 
 This project adheres to the [Contributor Covenant Code of
-Conduct](https://github.com/MaxDesiatov/Tokamak/blob/main/CODE_OF_CONDUCT.md).
+Conduct](https://github.com/swiftwasm/Tokamak/blob/main/CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code. Please report
 unacceptable behavior to conduct@tokamak.dev.
 
@@ -86,5 +86,5 @@ unacceptable behavior to conduct@tokamak.dev.
 ## License
 
 Tokamak is available under the Apache 2.0 license. See the
-[LICENSE](https://github.com/MaxDesiatov/Tokamak/blob/main/LICENSE) file for
+[LICENSE](https://github.com/swiftwasm/Tokamak/blob/main/LICENSE) file for
 more info.
