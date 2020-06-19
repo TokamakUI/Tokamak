@@ -66,6 +66,6 @@ public protocol Renderer: AnyObject {
     target: TargetType,
     from parent: TargetType,
     with host: MountedHost,
-    unmountChildren: @escaping () -> ()
+    completion: @escaping () -> ()
   )
 }

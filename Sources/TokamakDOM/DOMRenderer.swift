@@ -90,10 +90,11 @@ public final class DOMRenderer: Renderer {
     target: DOMNode,
     from parent: DOMNode,
     with host: MountedHost,
-    unmountChildren: @escaping () -> ()
+    completion: @escaping () -> ()
   ) {
-    // with DOM you have to unmount children first
-    unmountChildren()
+    defer {
+      completion()
+    }
 
     guard mapAnyView(
       host.view,

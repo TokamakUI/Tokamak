@@ -34,12 +34,12 @@ public struct Counter: View {
   public var body: some View {
     count < limit ?
       AnyView(
-        VStack(alignment: .center) {
+        VStack {
           Button("Increment") { count += 1 }
           Text("\(count)")
         }
       ) : AnyView(
-        Text("Limit exceeded")
+        VStack { Text("Limit exceeded") } }
       )
   }
 }
