@@ -32,7 +32,10 @@ let log = JSObjectRef.global.console.object!.log.function!
 public final class DOMRenderer: Renderer {
   public private(set) var reconciler: StackReconciler<DOMRenderer>?
 
+  private let rootRef: JSObjectRef
+
   public init<V: View>(_ view: V, _ ref: JSObjectRef) {
+    rootRef = ref
     reconciler = StackReconciler(view: view, target: DOMNode(view, ref), renderer: self) { closure in
       let fn = JSClosure { _ in
         closure()
@@ -86,7 +89,16 @@ public final class DOMRenderer: Renderer {
   public func unmount(
     target: DOMNode,
     from parent: DOMNode,
-    with view: MountedHost,
+    with host: MountedHost,
     completion: @escaping () -> ()
-  ) {}
+  ) {
+    guard mapAnyView(
+      host.view,
+      transform: { (html: AnyHTML) in html }
+    ) != nil else { return }
+
+    _ = parent.ref.removeChild!(target.ref)
+
+    completion()
+  }
 }

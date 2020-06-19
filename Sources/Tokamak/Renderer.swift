@@ -43,7 +43,7 @@ public protocol Renderer: AnyObject {
    */
   func mountTarget(
     to parent: TargetType,
-    with view: MountedHost
+    with host: MountedHost
   ) -> TargetType?
 
   /** Function called by a reconciler when an existing target instance should be
@@ -53,7 +53,7 @@ public protocol Renderer: AnyObject {
    */
   func update(
     target: TargetType,
-    with view: MountedHost
+    with host: MountedHost
   )
 
   /** Function called by a reconciler when an existing target instance should be
@@ -65,7 +65,7 @@ public protocol Renderer: AnyObject {
   func unmount(
     target: TargetType,
     from parent: TargetType,
-    with view: MountedHost,
+    with host: MountedHost,
     completion: @escaping () -> ()
   )
 }

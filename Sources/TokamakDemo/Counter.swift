@@ -22,20 +22,15 @@ public struct Counter: View {
 
   let limit: Int
 
-  public init(_ count: Int, limit: Int = Int.max) {
-    _count = .init(wrappedValue: count)
-    self.limit = limit
-  }
-
   public var body: some View {
     count < limit ?
       AnyView(
         VStack(alignment: .center) {
-          Button("Increment") { self.count += 1 }
+          Button("Increment") { count += 1 }
           Text("\(count)")
         }
-      ) : AnyView(HStack {
-        EmptyView()
-      })
+      ) : AnyView(
+        VStack { Text("Limit exceeded") }
+      )
   }
 }
