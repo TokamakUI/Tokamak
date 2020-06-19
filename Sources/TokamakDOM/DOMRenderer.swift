@@ -90,15 +90,18 @@ public final class DOMRenderer: Renderer {
     target: DOMNode,
     from parent: DOMNode,
     with host: MountedHost,
-    completion: @escaping () -> ()
+    unmountChildren: @escaping () -> ()
   ) {
+    // with DOM you have to unmount children first
+    unmountChildren()
+
     guard mapAnyView(
       host.view,
       transform: { (html: AnyHTML) in html }
-    ) != nil else { return }
+    ) != nil else {
+      return
+    }
 
     _ = parent.ref.removeChild!(target.ref)
-
-    completion()
   }
 }
