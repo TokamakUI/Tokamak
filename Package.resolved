@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "JavaScriptKit",
-        "repositoryURL": "https://github.com/MaxDesiatov/JavaScriptKit.git",
+        "repositoryURL": "https://github.com/kateinoigakukun/JavaScriptKit.git",
         "state": {
-          "branch": "d670953",
-          "revision": "d6709533a9b1d62a6a995605190e4d1078cafd6f",
+          "branch": "47f2bb1",
+          "revision": "47f2bb16576ba386a2c7c69c97b0fd44f470126f",
           "version": null
         }
       },
