@@ -31,7 +31,7 @@ extension HorizontalAlignment {
 
 extension VStack: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    AnyView(HTML(tag: "div", attributes: [
+    AnyView(HTML("div", [
       "style": "display: flex; flex-direction: column; align-items: \(alignment.cssValue);",
     ]) { content })
   }

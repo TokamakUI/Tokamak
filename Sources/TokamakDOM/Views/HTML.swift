@@ -56,8 +56,8 @@ public struct HTML<Content>: View, AnyHTML where Content: View {
   let content: Content
 
   public init(
-    tag: String,
-    attributes: [String: String] = [:],
+    _ tag: String,
+    _ attributes: [String: String] = [:],
     listeners: [String: Listener] = [:],
     @ViewBuilder content: () -> Content
   ) {
@@ -72,8 +72,8 @@ public struct HTML<Content>: View, AnyHTML where Content: View {
 
 extension HTML where Content == EmptyView {
   public init(
-    tag: String,
-    attributes: [String: String] = [:],
+    _ tag: String,
+    _ attributes: [String: String] = [:],
     listeners: [String: Listener] = [:]
   ) {
     self.tag = tag

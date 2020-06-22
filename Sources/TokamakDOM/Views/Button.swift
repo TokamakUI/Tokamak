@@ -21,9 +21,8 @@ public typealias Button = Tokamak.Button
 
 extension Button: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
-    AnyView(HTML(
-      tag: "button",
-      listeners: ["click": { _ in action() }]
-    ) { Text(buttonLabel(self)) })
+    AnyView(HTML("button", listeners: ["click": { _ in action() }]) {
+      Text(buttonLabel(self))
+    })
   }
 }

@@ -18,8 +18,6 @@ public typealias HStack = Tokamak.HStack
 
 extension HStack: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    AnyView(HTML(tag: "div") {
-      content
-    })
+    AnyView(HTML("div") { content })
   }
 }
