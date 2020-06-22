@@ -17,12 +17,12 @@ let package = Package(
       targets: ["TokamakDemo"]
     ),
     .library(
-      name: "TokamakDOM",
-      targets: ["TokamakDOM"]
+      name: "TokamakHTML",
+      targets: ["TokamakHTML"]
     ),
     .library(
-      name: "TokamakTestRenderer",
-      targets: ["TokamakTestRenderer"]
+      name: "TokamakDOM",
+      targets: ["TokamakDOM"]
     ),
   ],
   dependencies: [
@@ -46,7 +46,11 @@ let package = Package(
     ),
     .target(
       name: "TokamakDOM",
-      dependencies: ["JavaScriptKit", "Tokamak"]
+      dependencies: ["JavaScriptKit", "Tokamak", "TokamakHTML"]
+    ),
+    .target(
+      name: "TokamakHTML",
+      dependencies: ["Tokamak"]
     ),
     .target(
       name: "TokamakTestRenderer",

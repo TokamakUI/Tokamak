@@ -17,6 +17,7 @@
 
 import JavaScriptKit
 import Tokamak
+@_exported import TokamakHTML
 
 public final class DOMNode: Target {
   let ref: JSObjectRef
@@ -27,7 +28,13 @@ public final class DOMNode: Target {
   }
 }
 
-let log = JSObjectRef.global.console.object!.log.function!
+extension AnyHTML {
+  func update(dom: JSObjectRef) {
+    // FIXME: handle attributes and listeners here
+    guard let innerHTML = innerHTML else { return }
+    dom.innerHTML = .string(innerHTML)
+  }
+}
 
 public final class DOMRenderer: Renderer {
   public private(set) var reconciler: StackReconciler<DOMRenderer>?

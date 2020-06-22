@@ -19,7 +19,7 @@ public typealias Text = Tokamak.Text
 
 extension Text: AnyHTML {
   public var innerHTML: String? { textContent(self) }
-  var tag: String { "span" }
-  var attributes: [String: String] { [:] }
-  var listeners: [String: Listener] { [:] }
+  public var tag: String { "span" }
+  public var attributes: [String: String] { [:] }
+  public var listeners: [String: Listener] { [:] }
 }
