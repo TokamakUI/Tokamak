@@ -17,8 +17,14 @@ import TokamakDOM
 
 let document = JSObjectRef.global.document.object!
 
-let divElement = document.createElement!("div").object!
-let renderer = DOMRenderer(Counter(count: 5, limit: 7), divElement)
+let style = #"""
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+"""#
+_ = document.head.object!.insertAdjacentHTML!("beforeend", JSValue(stringLiteral: style))
 
-let body = document.body.object!
-_ = body.appendChild!(divElement)
+let div = document.createElement!("div").object!
+let renderer = DOMRenderer(Counter(count: 5, limit: 7), div)
+
+_ = document.body.object!.appendChild!(div)
