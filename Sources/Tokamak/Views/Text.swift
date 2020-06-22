@@ -25,6 +25,10 @@ public struct Text: View {
   public init<S>(_ content: S) where S: StringProtocol {
     self.content = String(content)
   }
+
+  public var body: Never {
+    neverBody("Text")
+  }
 }
 
 public func textContent(_ text: Text) -> String {

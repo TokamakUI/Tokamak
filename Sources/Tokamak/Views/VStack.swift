@@ -32,6 +32,10 @@ public struct VStack<Content>: View where Content: View {
     self.spacing = spacing
     self.content = content()
   }
+
+  public var body: Never {
+    neverBody("VStack")
+  }
 }
 
 extension VStack: ParentView {

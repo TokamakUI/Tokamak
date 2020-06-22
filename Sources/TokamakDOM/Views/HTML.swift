@@ -68,6 +68,10 @@ public struct HTML<Content>: View, AnyHTML where Content: View {
   }
 
   var innerHTML: String? { nil }
+
+  public var body: Never {
+    neverBody("HTML")
+  }
 }
 
 extension HTML where Content == EmptyView {

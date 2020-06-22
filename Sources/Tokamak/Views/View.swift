@@ -22,11 +22,9 @@ public protocol View {
 }
 
 extension Never: View {
-  public typealias Body = Never
-}
-
-public extension View where Body == Never {
-  var body: Never { fatalError() }
+  public var body: Never {
+    neverBody("Never")
+  }
 }
 
 /// A `View` type that renders with subviews, usually specified in the `Content` type argument
@@ -39,4 +37,9 @@ protocol GroupView: ParentView {}
 
 public protocol ViewDeferredToRenderer {
   var deferredBody: AnyView { get }
+}
+
+/// Calls `fatalError` with an explanation that a given `type` is a primitive `View`
+public func neverBody(_ type: String) -> Never {
+  fatalError("\(type) is a primitive `View`, you're not supposed to access its `body`.")
 }

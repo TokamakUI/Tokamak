@@ -25,6 +25,10 @@ public struct Button<Label>: View where Label: View {
     self.label = label()
     self.action = action
   }
+
+  public var body: Never {
+    neverBody("Text")
+  }
 }
 
 extension Button where Label == Text {

@@ -17,6 +17,10 @@
 
 public struct EmptyView: View {
   @inlinable public init() {}
+
+  public var body: Never {
+    neverBody("EmptyView")
+  }
 }
 
 // swiftlint:disable:next type_name
@@ -24,6 +28,10 @@ public enum _ConditionalContent<TrueBranch, FalseBranch>: View
   where TrueBranch: View, FalseBranch: View {
   case trueBranch(TrueBranch)
   case falseBranch(FalseBranch)
+
+  public var body: Never {
+    neverBody("_ConditionalContent")
+  }
 }
 
 @_functionBuilder public struct ViewBuilder {

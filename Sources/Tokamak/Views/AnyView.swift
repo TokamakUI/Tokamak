@@ -55,6 +55,10 @@ public struct AnyView: View {
       }
     }
   }
+
+  public var body: Never {
+    neverBody("AnyView")
+  }
 }
 
 public func mapAnyView<T, V>(_ anyView: AnyView, transform: (V) -> T) -> T? {

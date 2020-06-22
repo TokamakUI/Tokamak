@@ -16,6 +16,10 @@
 //
 
 public struct TupleView<T>: View {
+  public var body: Never {
+    neverBody("TupleView")
+  }
+
   public let value: T
 
   // FIXME: should not be public
