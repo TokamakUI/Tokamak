@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Tokamak
+import TokamakCore
 
-public typealias VStack = Tokamak.VStack
+public typealias VStack = TokamakCore.VStack
 
 extension HorizontalAlignment {
   var cssValue: String {

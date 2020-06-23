@@ -19,7 +19,7 @@ import TokamakDemo
 import TokamakTestRenderer
 import XCTest
 
-@testable import Tokamak
+@testable import TokamakCore
 
 final class ReconcilerTests: XCTestCase {
   func testMount() {

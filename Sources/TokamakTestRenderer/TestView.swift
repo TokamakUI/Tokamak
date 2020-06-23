@@ -15,7 +15,7 @@
 //  Created by Max Desiatov on 18/12/2018.
 //
 
-import Tokamak
+import TokamakCore
 
 /// A class that `TestRenderer` uses as a target.
 /// When rendering to a `TestView` instance it is possible

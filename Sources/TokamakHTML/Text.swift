@@ -11,18 +11,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Max Desiatov on 11/04/2020.
-//
 
+import JavaScriptKit
 import TokamakCore
 
-public typealias Button = TokamakCore.Button
+public typealias Text = Tokamak.Text
 
-extension Button: ViewDeferredToRenderer where Label == Text {
-  public var deferredBody: AnyView {
-    AnyView(HTML("button", listeners: ["click": { _ in action() }]) {
-      Text(buttonLabel(self))
-    })
-  }
+extension Text: AnyHTML {
+  public var innerHTML: String? { textContent(self) }
+  public var tag: String { "span" }
+  public var attributes: [String: String] { [:] }
+  public var listeners: [String: Listener] { [:] }
 }

@@ -37,20 +37,20 @@ let package = Package(
     // Targets can depend on other targets in this package, and on products
     // in packages which this package depends on.
     .target(
-      name: "Tokamak",
+      name: "TokamakCore",
       dependencies: ["Runtime"]
     ),
     .target(
       name: "TokamakDemo",
-      dependencies: ["JavaScriptKit", "Tokamak", "TokamakDOM"]
+      dependencies: ["JavaScriptKit", "TokamakCore", "TokamakDOM"]
     ),
     .target(
       name: "TokamakDOM",
-      dependencies: ["JavaScriptKit", "Tokamak"]
+      dependencies: ["JavaScriptKit", "TokamakCore"]
     ),
     .target(
       name: "TokamakTestRenderer",
-      dependencies: ["Tokamak"]
+      dependencies: ["TokamakCore"]
     ),
     .testTarget(
       name: "TokamakTests",

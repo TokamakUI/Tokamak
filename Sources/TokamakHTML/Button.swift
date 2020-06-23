@@ -17,7 +17,7 @@
 
 import TokamakCore
 
-public typealias Button = TokamakCore.Button
+public typealias Button = Tokamak.Button
 
 extension Button: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {

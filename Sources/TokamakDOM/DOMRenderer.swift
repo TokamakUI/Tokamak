@@ -16,7 +16,7 @@
 //
 
 import JavaScriptKit
-import Tokamak
+import TokamakCore
 
 public final class DOMNode: Target {
   let ref: JSObjectRef

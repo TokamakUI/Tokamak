@@ -16,7 +16,7 @@
 //
 
 import Dispatch
-import Tokamak
+import TokamakCore
 
 public final class TestRenderer: Renderer {
   public private(set) var reconciler: StackReconciler<TestRenderer>?

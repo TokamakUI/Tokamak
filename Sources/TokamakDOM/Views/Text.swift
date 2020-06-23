@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import JavaScriptKit
-import Tokamak
+import TokamakCore
 
-public typealias Text = Tokamak.Text
+public typealias Text = TokamakCore.Text
 
 extension Text: AnyHTML {
   public var innerHTML: String? { textContent(self) }
