@@ -87,16 +87,14 @@ sometimes you need to inject arbitrary scripts or styles, which can be done thro
 DOM access:
 
 ```swift
-let script = #"""
+_ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
-"""#
-let style = #"""
+"""#)
+_ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-"""#
-_ = document.head.object!.insertAdjacentHTML!("beforeend", JSValue(stringLiteral: style))
-_ = document.head.object!.insertAdjacentHTML!("beforeend", JSValue(stringLiteral: script))
+"""#)
 ```
 
 This way both [Semantic UI](https://semantic-ui.com/) styles and [moment.js](https://momentjs.com/)
