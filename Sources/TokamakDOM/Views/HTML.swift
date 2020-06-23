@@ -25,7 +25,7 @@ public typealias AnyView = Tokamak.AnyView
 public typealias EmptyView = Tokamak.EmptyView
 public typealias State = Tokamak.State
 
-public protocol AnyHTML {
+protocol AnyHTML {
   var innerHTML: String? { get }
   var tag: String { get }
   var attributes: [String: String] { get }
@@ -41,13 +41,19 @@ extension AnyHTML {
     </\(tag)>
     """
   }
+
+  func update(dom: JSObjectRef) {
+    // FIXME: handle attributes and listeners here
+    guard let innerHTML = innerHTML else { return }
+    dom.innerHTML = .string(innerHTML)
+  }
 }
 
 public struct HTML<Content>: View, AnyHTML where Content: View {
-  public let tag: String
-  public let attributes: [String: String]
-  public let listeners: [String: Listener]
-  public let content: Content
+  let tag: String
+  let attributes: [String: String]
+  let listeners: [String: Listener]
+  let content: Content
 
   public init(
     _ tag: String,
@@ -61,7 +67,7 @@ public struct HTML<Content>: View, AnyHTML where Content: View {
     self.content = content()
   }
 
-  public var innerHTML: String? { nil }
+  var innerHTML: String? { nil }
 
   public var body: Never {
     neverBody("HTML")
