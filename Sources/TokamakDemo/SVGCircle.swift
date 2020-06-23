@@ -12,25 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import JavaScriptKit
 import TokamakDOM
 
-let document = JSObjectRef.global.document.object!
-
-let style = #"""
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-"""#
-_ = document.head.object!.insertAdjacentHTML!("beforeend", JSValue(stringLiteral: style))
-
-let div = document.createElement!("div").object!
-let renderer = DOMRenderer(
-  VStack {
-    Counter(count: 5, limit: 7)
-    SVGCircle()
-  },
-  div
-)
-
-_ = document.body.object!.appendChild!(div)
+struct SVGCircle: View {
+  var body: some View {
+    HTML("svg", ["width": "100", "height": "100"]) {
+      HTML("circle", [
+        "cx": "50", "cy": "50", "r": "40",
+        "stroke": "green", "stroke-width": "4", "fill": "yellow",
+      ])
+    }
+  }
+}

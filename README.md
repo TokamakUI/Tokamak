@@ -5,9 +5,10 @@
 ![CI status](https://github.com/swiftwasm/Tokamak/workflows/CI/badge.svg?branch=main)
 
 At the moment Tokamak implements a very basic subset of SwiftUI. Its DOM renderer supports
-a few view types, namely `Button`, `Text`, `HStack`/`VStack`, and the `@State` property wrapper.
-The long-term goal of Tokamak is to implement as much of SwiftUI API as possible and to provide
-a few helpful additions that simplify HTML and CSS interactions.
+a few view types, namely `Button`, `Text`, `HStack`/`VStack`, the `@State` property wrapper
+and a new `HTML` view for constructing arbitrary HTML. The long-term goal of Tokamak is to implement
+as much of SwiftUI API as possible and to provide a few more helpful additions that simplify HTML
+and CSS interactions.
 
 ## Getting started
 
@@ -16,8 +17,8 @@ Tokamak relies on [`carton`](https://carton.dev) as a primary build tool. Please
 
 After `carton` is successfully installed, type `carton dev --product TokamakDemo` in the
 root directory of the cloned Tokamak repository. This will build the demo project and its
-dependencies and launch a development HTTP server. You can then open [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
-in your browser to interact with the demo.
+dependencies and launch a development HTTP server. You can then open
+[http://127.0.0.1:8080/](http://127.0.0.1:8080/) in your browser to interact with the demo.
 
 ### Example code
 
@@ -27,11 +28,11 @@ that you add `import TokamakDOM` instead of `import SwiftUI` in your files:
 ```swift
 import TokamakDOM
 
-public struct Counter: View {
+struct Counter: View {
   @State public var count: Int
   let limit: Int
 
-  public var body: some View {
+  var body: some View {
     count < limit ?
       AnyView(
         VStack {
@@ -61,6 +62,46 @@ let renderer = DOMRenderer(Counter(count: 5, limit: 15), divElement)
 let body = document.body.object!
 _ = body.appendChild!(divElement)
 ```
+
+### Arbitrary HTML
+
+With the `HTML` view you can also render any HTML you want, including inline SVG:
+
+```swift
+struct SVGCircle: View {
+  var body: some View {
+    HTML("svg", ["width": "100", "height": "100"]) {
+      HTML("circle", [
+        "cx": "50", "cy": "50", "r": "40",
+        "stroke": "green", "stroke-width": "4", "fill": "yellow",
+      ])
+    }
+  }
+}
+```
+
+### Arbitrary styles and scripts
+
+While `JavaScriptKit` is a great option for occasional interactions with JavaScript,
+sometimes you need to inject arbitrary scripts or styles, which can be done through direct
+DOM access:
+
+```swift
+let script = #"""
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+"""#
+let style = #"""
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+"""#
+_ = document.head.object!.insertAdjacentHTML!("beforeend", JSValue(stringLiteral: style))
+_ = document.head.object!.insertAdjacentHTML!("beforeend", JSValue(stringLiteral: script))
+```
+
+This way both [Semantic UI](https://semantic-ui.com/) styles and [moment.js](https://momentjs.com/)
+localized date formatting (or any arbitrary style/script/font added that way) are available in your
+app.
 
 ## Acknowledgments
 
