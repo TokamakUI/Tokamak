@@ -29,7 +29,7 @@ that you add `import TokamakDOM` instead of `import SwiftUI` in your files:
 import TokamakDOM
 
 struct Counter: View {
-  @State public var count: Int
+  @State var count: Int
   let limit: Int
 
   var body: some View {
