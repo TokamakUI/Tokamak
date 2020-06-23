@@ -20,10 +20,6 @@ let package = Package(
       name: "TokamakDOM",
       targets: ["TokamakDOM"]
     ),
-    .library(
-      name: "TokamakTestRenderer",
-      targets: ["TokamakTestRenderer"]
-    ),
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
