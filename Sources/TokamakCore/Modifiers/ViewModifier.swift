@@ -12,28 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import JavaScriptKit
-import TokamakDOM
+public protocol ViewModifier {
+    typealias Content = _ViewModifier_Content<Self>
+    associatedtype Body : View
+    func body(content: Content) -> Self.Body
+}
 
-let document = JSObjectRef.global.document.object!
-
-_ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-"""#)
-
-let div = document.createElement!("div").object!
-let renderer = DOMRenderer(
-  VStack {
-    Counter(count: 5, limit: 7)
-    ZStack {
-      Text("I'm on bottom")
-      Text("I'm on top")
+public struct _ViewModifier_Content<Modifier> : View where Modifier : ViewModifier {
+    public let modifier: Modifier
+    public let view: AnyView
+    
+    public var body: Never {
+        neverBody("_ViewModifier_Content")
     }
-    SVGCircle()
-  },
-  div
-)
+}
 
-_ = document.body.object!.appendChild!(div)
+public extension View {
+    func modifier<Modifier>(_ modifier: Modifier) -> Modifier.Body where Modifier: ViewModifier {
+        modifier.body(content: .init(modifier: modifier, view: AnyView(self)))
+    }
+}

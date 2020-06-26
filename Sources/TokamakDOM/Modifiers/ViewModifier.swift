@@ -12,28 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import JavaScriptKit
-import TokamakDOM
+import TokamakCore
 
-let document = JSObjectRef.global.document.object!
+public protocol ViewModifier : TokamakCore.ViewModifier {
+  func attributes() -> [String:String]
+}
 
-_ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-"""#)
-
-let div = document.createElement!("div").object!
-let renderer = DOMRenderer(
-  VStack {
-    Counter(count: 5, limit: 7)
-    ZStack {
-      Text("I'm on bottom")
-      Text("I'm on top")
-    }
-    SVGCircle()
-  },
-  div
-)
-
-_ = document.body.object!.appendChild!(div)
+extension ZIndexModifier : ViewModifier {
+  public func attributes() -> [String : String] {
+    ["style": "z-index: \(index);"]
+  }
+}

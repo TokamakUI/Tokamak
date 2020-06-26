@@ -12,28 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import JavaScriptKit
-import TokamakDOM
+import TokamakCore
+import Runtime
 
-let document = JSObjectRef.global.document.object!
+public typealias _ViewModifier_Content = TokamakCore._ViewModifier_Content
 
-_ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-"""#)
-
-let div = document.createElement!("div").object!
-let renderer = DOMRenderer(
-  VStack {
-    Counter(count: 5, limit: 7)
-    ZStack {
-      Text("I'm on bottom")
-      Text("I'm on top")
-    }
-    SVGCircle()
-  },
-  div
-)
-
-_ = document.body.object!.appendChild!(div)
+extension _ViewModifier_Content: ViewDeferredToRenderer where Modifier: ViewModifier {
+  public var deferredBody: AnyView {
+    AnyView(HTML("div", modifier.attributes()) {
+      view
+    })
+  }
+}

@@ -12,28 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import JavaScriptKit
-import TokamakDOM
-
-let document = JSObjectRef.global.document.object!
-
-_ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-"""#)
-
-let div = document.createElement!("div").object!
-let renderer = DOMRenderer(
-  VStack {
-    Counter(count: 5, limit: 7)
-    ZStack {
-      Text("I'm on bottom")
-      Text("I'm on top")
+public struct ZIndexModifier : ViewModifier {
+    public let index: Double
+    
+    public func body(content: Content) -> some View {
+        content
     }
-    SVGCircle()
-  },
-  div
-)
+}
 
-_ = document.body.object!.appendChild!(div)
+public extension View {
+    /// Controls the display order of overlapping views.
+    /// - Parameters:
+    ///     - value: A relative front-to-back ordering for this view; the default is 0.
+    func zIndex(_ value: Double = 0) -> some View {
+        self
+            .modifier(ZIndexModifier(index: value))
+    }
+}
