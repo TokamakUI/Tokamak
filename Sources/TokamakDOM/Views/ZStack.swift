@@ -29,7 +29,7 @@ extension VerticalAlignment {
   }
 }
 
-struct _ZStack_ContentGridItem : ViewModifier {
+struct _ZStack_ContentGridItem : ViewModifier, DOMViewModifier {
   func attributes() -> [String : String] {
     ["style": "grid-area: a;"]
   }

@@ -14,11 +14,13 @@
 
 import TokamakCore
 
-public protocol ViewModifier : TokamakCore.ViewModifier {
+public typealias ViewModifier = TokamakCore.ViewModifier
+
+public protocol DOMViewModifier {
   func attributes() -> [String:String]
 }
 
-extension ZIndexModifier : ViewModifier {
+extension ZIndexModifier : DOMViewModifier {
   public func attributes() -> [String : String] {
     ["style": "z-index: \(index);"]
   }
