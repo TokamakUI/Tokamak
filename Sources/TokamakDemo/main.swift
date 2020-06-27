@@ -39,6 +39,7 @@ let renderer = DOMRenderer(
         .zIndex(1)
       Text("I'm on top")
     }
+    ForEachDemo()
     Text("This is the inital text")
       .modifier(CustomModifier())
     SVGCircle()
