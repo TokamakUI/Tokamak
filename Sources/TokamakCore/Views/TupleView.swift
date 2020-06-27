@@ -30,6 +30,11 @@ public struct TupleView<T>: View {
     children = []
   }
 
+  public init(_ value: T, children: [AnyView]) {
+    self.value = value
+    self.children = children
+  }
+
   init<T1: View, T2: View>(_ v1: T1, _ v2: T2) where T == (T1, T2) {
     value = (v1, v2)
     children = [AnyView(v1), AnyView(v2)]
