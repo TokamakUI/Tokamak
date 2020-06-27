@@ -31,6 +31,11 @@ let renderer = DOMRenderer(
       Text("I'm on bottom")
       Text("I'm on top")
     }
+    VStack {
+      ForEach(0..<100) {
+        Text("\($0)")
+      }
+    }
     SVGCircle()
   },
   div
