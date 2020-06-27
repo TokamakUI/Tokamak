@@ -16,7 +16,7 @@
 public struct Alignment: Equatable {
   public var horizontal: HorizontalAlignment
   public var vertical: VerticalAlignment
-  
+
   public init(
     horizontal: HorizontalAlignment,
     vertical: VerticalAlignment
@@ -24,16 +24,16 @@ public struct Alignment: Equatable {
     self.horizontal = horizontal
     self.vertical = vertical
   }
-  
-  public static let topLeading     = Self.init(horizontal: .leading, vertical: .top)
-  public static let top            = Self.init(horizontal: .center, vertical: .top)
-  public static let topTrailing    = Self.init(horizontal: .trailing, vertical: .top)
-  public static let leading        = Self.init(horizontal: .leading, vertical: .center)
-  public static let center         = Self.init(horizontal: .center, vertical: .center)
-  public static let trailing       = Self.init(horizontal: .trailing, vertical: .center)
-  public static let bottomLeading  = Self.init(horizontal: .leading, vertical: .bottom)
-  public static let bottom         = Self.init(horizontal: .center, vertical: .bottom)
-  public static let bottomTrailing = Self.init(horizontal: .trailing, vertical: .bottom)
+
+  public static let topLeading = Self(horizontal: .leading, vertical: .top)
+  public static let top = Self(horizontal: .center, vertical: .top)
+  public static let topTrailing = Self(horizontal: .trailing, vertical: .top)
+  public static let leading = Self(horizontal: .leading, vertical: .center)
+  public static let center = Self(horizontal: .center, vertical: .center)
+  public static let trailing = Self(horizontal: .trailing, vertical: .center)
+  public static let bottomLeading = Self(horizontal: .leading, vertical: .bottom)
+  public static let bottom = Self(horizontal: .center, vertical: .bottom)
+  public static let bottomTrailing = Self(horizontal: .trailing, vertical: .bottom)
 }
 
 /// A view that overlays its children, aligning them in both axes.

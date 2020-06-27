@@ -23,7 +23,7 @@ _ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
   href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
 """#)
 
-struct CustomModifier : ViewModifier {
+struct CustomModifier: ViewModifier {
   func body(content: Content) -> some View {
     Text("Whole new body!")
   }
@@ -35,6 +35,8 @@ let renderer = DOMRenderer(
     Counter(count: 5, limit: 7)
     ZStack {
       Text("I'm on bottom")
+      Text("I'm forced to the top")
+        .zIndex(1)
       Text("I'm on top")
     }
     Text("This is the inital text")

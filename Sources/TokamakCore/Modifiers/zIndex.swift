@@ -12,20 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public struct ZIndexModifier : ViewModifier {
-    public let index: Double
-    
-    public func body(content: Content) -> some View {
-        content
-    }
+public struct _ZIndexModifier: ViewModifier {
+  public let index: Double
+
+  public func body(content: Content) -> some View {
+    content
+  }
 }
 
 public extension View {
-    /// Controls the display order of overlapping views.
-    /// - Parameters:
-    ///     - value: A relative front-to-back ordering for this view; the default is 0.
-    func zIndex(_ value: Double = 0) -> some View {
-        self
-            .modifier(ZIndexModifier(index: value))
-    }
+  /// Controls the display order of overlapping views.
+  /// - Parameters:
+  ///     - value: A relative front-to-back ordering for this view; the default is 0.
+  func zIndex(_ value: Double = 0) -> some View {
+    modifier(_ZIndexModifier(index: value))
+  }
 }

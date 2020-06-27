@@ -29,11 +29,9 @@ extension VerticalAlignment {
   }
 }
 
-struct _ZStack_ContentGridItem : ViewModifier, DOMViewModifier {
-  func attributes() -> [String : String] {
-    ["style": "grid-area: a;"]
-  }
-  
+struct _ZStack_ContentGridItem: ViewModifier, DOMViewModifier {
+  let attributes = ["style": "grid-area: a;"]
+
   func body(content: Content) -> some View {
     content
   }
@@ -42,7 +40,13 @@ struct _ZStack_ContentGridItem : ViewModifier, DOMViewModifier {
 extension ZStack: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     AnyView(HTML("div", [
-      "style": "display: grid; grid-template-columns: 1fr; width: fit-content; justify-items: \(alignment.horizontal.cssValue); align-items: \(alignment.vertical.cssValue)"
+      "style": """
+      display: grid;
+      grid-template-columns: 1fr;
+      width: fit-content;
+      justify-items: \(alignment.horizontal.cssValue);
+      align-items: \(alignment.vertical.cssValue)
+      """,
     ]) {
       TupleView(children, children: children.map { AnyView($0.modifier(_ZStack_ContentGridItem())) })
     })

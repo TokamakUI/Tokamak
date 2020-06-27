@@ -15,13 +15,27 @@
 import TokamakCore
 
 public typealias ViewModifier = TokamakCore.ViewModifier
+public typealias ModifiedContent = TokamakCore.ModifiedContent
 
 public protocol DOMViewModifier {
-  func attributes() -> [String:String]
+  var attributes: [String: String] { get }
 }
 
-extension ZIndexModifier : DOMViewModifier {
-  public func attributes() -> [String : String] {
+extension ModifiedContent: DOMViewModifier where Content: DOMViewModifier, Modifier: DOMViewModifier {
+  // Merge attributes
+  public var attributes: [String: String] {
+    var attr = content.attributes
+    for (key, val) in modifier.attributes {
+      if let prev = attr[key] {
+        attr[key] = prev + val
+      }
+    }
+    return attr
+  }
+}
+
+extension _ZIndexModifier: DOMViewModifier {
+  public var attributes: [String: String] {
     ["style": "z-index: \(index);"]
   }
 }
