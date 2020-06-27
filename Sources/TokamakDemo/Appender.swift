@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2019-2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,29 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import JavaScriptKit
 import TokamakDOM
 
-let document = JSObjectRef.global.document.object!
+public struct Appender: View {
+  @State public var items: [Int] = []
 
-_ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-"""#)
+  public var body: some View {
+    VStack {
+        Button(action: {
+            items.append((items.last ?? 0) + 1)
+        }) {
+            Text("Add item")
+        }
 
-let div = document.createElement!("div").object!
-let renderer = DOMRenderer(
-  VStack {
-    Counter(count: 0, limit: 7)
-    ZStack {
-      Text("I'm on bottom")
-      Text("I'm on top")
+        ForEach(items, id: \.self) {
+            Text("Item: \($0)")
+        }
     }
-    Appender()
-    SVGCircle()
-  },
-  div
-)
-
-_ = document.body.object!.appendChild!(div)
+  }
+}
