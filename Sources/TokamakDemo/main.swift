@@ -41,6 +41,7 @@ let renderer = DOMRenderer(
     }
     Text("This is the inital text")
       .modifier(CustomModifier())
+    
     SVGCircle()
   },
   div

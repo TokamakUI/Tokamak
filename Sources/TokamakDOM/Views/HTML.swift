@@ -92,3 +92,18 @@ extension HTML: ParentView {
     [AnyView(content)]
   }
 }
+
+protocol StylesConvertible {
+  var styles: [String: String] { get }
+  var inlineStyles: String { get }
+}
+
+extension StylesConvertible {
+  var inlineStyles: String {
+    var out = ""
+    for (style, value) in styles {
+      out += "\(style): \(value); "
+    }
+    return styles.map { "\($0.0): \($0.1);" }.joined(separator: " ")
+  }
+}
