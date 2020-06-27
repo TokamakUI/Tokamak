@@ -41,13 +41,13 @@ public extension ForEach where Data.Element: Identifiable, ID == Data.Element.ID
   }
 }
 
-public extension ForEach where Data == Array<Int>, ID == Int {
+public extension ForEach where Data == [Int], ID == Int {
   init(
     _ data: Range<Int>,
     @ViewBuilder content: @escaping (Data.Element) -> Content
   ) {
     self.data = Array(data)
-    self.id = \.self
+    id = \.self
     self.content = content
   }
 }
@@ -58,4 +58,4 @@ extension ForEach: ParentView {
   }
 }
 
-extension ForEach: GroupView { }
+extension ForEach: GroupView {}

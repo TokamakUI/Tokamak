@@ -29,7 +29,7 @@ public struct TupleView<T>: View {
     self.value = value
     children = []
   }
-  
+
   public init(_ value: T, children: [AnyView]) {
     self.value = value
     self.children = children

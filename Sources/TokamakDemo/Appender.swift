@@ -19,15 +19,15 @@ public struct Appender: View {
 
   public var body: some View {
     VStack {
-        Button(action: {
-            items.append((items.last ?? 0) + 1)
+      Button(action: {
+        items.append((items.last ?? 0) + 1)
         }) {
-            Text("Add item")
-        }
+        Text("Add item")
+      }
 
-        ForEach(items, id: \.self) {
-            Text("Item: \($0)")
-        }
+      ForEach(items, id: \.self) {
+        Text("Item: \($0)")
+      }
     }
   }
 }

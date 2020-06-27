@@ -13,22 +13,22 @@
 // limitations under the License.
 
 public protocol ViewModifier {
-    typealias Content = _ViewModifier_Content<Self>
-    associatedtype Body : View
-    func body(content: Content) -> Self.Body
+  typealias Content = _ViewModifier_Content<Self>
+  associatedtype Body: View
+  func body(content: Content) -> Self.Body
 }
 
-public struct _ViewModifier_Content<Modifier> : View where Modifier : ViewModifier {
-    public let modifier: Modifier
-    public let view: AnyView
-    
-    public var body: Never {
-        neverBody("_ViewModifier_Content")
-    }
+public struct _ViewModifier_Content<Modifier>: View where Modifier: ViewModifier {
+  public let modifier: Modifier
+  public let view: AnyView
+
+  public var body: Never {
+    neverBody("_ViewModifier_Content")
+  }
 }
 
 public extension View {
-    func modifier<Modifier>(_ modifier: Modifier) -> Modifier.Body where Modifier: ViewModifier {
-        modifier.body(content: .init(modifier: modifier, view: AnyView(self)))
-    }
+  func modifier<Modifier>(_ modifier: Modifier) -> Modifier.Body where Modifier: ViewModifier {
+    modifier.body(content: .init(modifier: modifier, view: AnyView(self)))
+  }
 }

@@ -12,15 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
 import Runtime
+import TokamakCore
 
 public typealias _ViewModifier_Content = TokamakCore._ViewModifier_Content
 
-extension _ViewModifier_Content: ViewDeferredToRenderer where Modifier: ViewModifier {
+extension _ViewModifier_Content: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    AnyView(HTML("div", modifier.attributes()) {
-      view
-    })
+    if let domModifier = modifier as? DOMViewModifier {
+      return AnyView(HTML("div", domModifier.attributes) {
+        view
+      })
+    } else {
+      return AnyView(HTML("div") {
+        view
+      })
+    }
   }
 }
