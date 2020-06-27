@@ -32,14 +32,14 @@ struct CustomModifier: ViewModifier {
 let div = document.createElement!("div").object!
 let renderer = DOMRenderer(
   VStack {
-    Counter(count: 0, limit: 7)
+    Counter(count: 5, limit: 7)
     ZStack {
       Text("I'm on bottom")
       Text("I'm forced to the top")
         .zIndex(1)
       Text("I'm on top")
     }
-    Appender()
+    ForEachDemo()
     Text("This is the inital text")
       .modifier(CustomModifier())
     SVGCircle()

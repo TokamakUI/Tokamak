@@ -14,7 +14,7 @@
 
 import TokamakDOM
 
-public struct Appender: View {
+public struct ForEachDemo: View {
   @State public var items: [Int] = []
 
   public var body: some View {
