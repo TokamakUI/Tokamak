@@ -5,7 +5,7 @@
 ![CI status](https://github.com/swiftwasm/Tokamak/workflows/CI/badge.svg?branch=main)
 
 At the moment Tokamak implements a very basic subset of SwiftUI. Its DOM renderer supports
-a few view types, namely `Button`, `Text`, `HStack`/`VStack`/`ZStack`, the `@State` property wrapper
+a few view types, namely `Button`, `Text` (and related `ViewModifiers`), `HStack`/`VStack`/`ZStack`, the `@State` property wrapper
 and a new `HTML` view for constructing arbitrary HTML. The long-term goal of Tokamak is to implement
 as much of SwiftUI API as possible and to provide a few more helpful additions that simplify HTML
 and CSS interactions.

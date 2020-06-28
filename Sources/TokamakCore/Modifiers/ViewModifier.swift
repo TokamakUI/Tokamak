@@ -32,3 +32,9 @@ public extension View {
     modifier.body(content: .init(modifier: modifier, view: AnyView(self)))
   }
 }
+
+extension ViewModifier where Body == Never {
+  public func body(content: Content) -> Body {
+    fatalError("\(self) is a primitive `ViewModifier`, you're not supposed to run `body(content:)`")
+  }
+}
