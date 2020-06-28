@@ -110,12 +110,12 @@ extension Font {
   public static let footnote: Self = .system(size: 13)
   public static let caption: Self = .system(size: 12)
   public static let caption2: Font = .system(size: 11)
-  
+
   public static func system(_ style: TextStyle, design: Design = .default) -> Self {
     .system(size: style.font._size, weight: style.font._weight, design: design)
   }
-  
-  public enum TextStyle : Hashable, CaseIterable {
+
+  public enum TextStyle: Hashable, CaseIterable {
     case largeTitle
     case title
     case title2
@@ -127,7 +127,7 @@ extension Font {
     case footnote
     case caption
     case caption2
-    
+
     var font: Font {
       switch self {
       case .largeTitle: return .largeTitle

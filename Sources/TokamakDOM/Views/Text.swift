@@ -23,45 +23,45 @@ extension Font.Design: CustomStringConvertible {
     switch self {
     case .default:
       return #"""
-              system,
-              -apple-system,
-              '.SFNSText-Regular',
-              'San Francisco',
-              'Roboto',
-              'Segoe UI',
-              'Helvetica Neue',
-              'Lucida Grande',
-              sans-serif
-              """#
+      system,
+      -apple-system,
+      '.SFNSText-Regular',
+      'San Francisco',
+      'Roboto',
+      'Segoe UI',
+      'Helvetica Neue',
+      'Lucida Grande',
+      sans-serif
+      """#
     case .monospaced:
       return #"""
-              Consolas,
-              'Andale Mono WT',
-              'Andale Mono',
-              'Lucida Console',
-              'Lucida Sans Typewriter',
-              'DejaVu Sans Mono',
-              'Bitstream Vera Sans Mono',
-              'Liberation Mono',
-              'Nimbus Mono L',
-              Monaco,
-              'Courier New',
-              Courier,
-              monospace
-              """#
+      Consolas,
+      'Andale Mono WT',
+      'Andale Mono',
+      'Lucida Console',
+      'Lucida Sans Typewriter',
+      'DejaVu Sans Mono',
+      'Bitstream Vera Sans Mono',
+      'Liberation Mono',
+      'Nimbus Mono L',
+      Monaco,
+      'Courier New',
+      Courier,
+      monospace
+      """#
     case .rounded: // Not supported due to browsers not having a rounded font builtin
       return Self.default.description
     case .serif:
       return #"""
-              Cambria,
-              'Hoefler Text',
-              Utopia,
-              'Liberation Serif',
-              'Nimbus Roman No9 L Regular',
-              Times,
-              'Times New Roman',
-              serif
-              """#
+      Cambria,
+      'Hoefler Text',
+      Utopia,
+      'Liberation Serif',
+      'Nimbus Roman No9 L Regular',
+      Times,
+      'Times New Roman',
+      serif
+      """#
     }
   }
 }
@@ -128,8 +128,8 @@ extension Text: AnyHTML {
     let hasStrikethrough = strikethrough?.0 ?? false
     let hasUnderline = underline?.0 ?? false
     let textDecoration = !hasStrikethrough && !hasUnderline ?
-                         "none" :
-                         "\(hasStrikethrough ? "line-through" : "") \(hasUnderline ? "underline" : "")"
+      "none" :
+      "\(hasStrikethrough ? "line-through" : "") \(hasUnderline ? "underline" : "")"
     return [
       "style": """
       \(font?.styles.filter {
