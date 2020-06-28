@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public struct _FrameLayout : ViewModifier {
+public struct _FrameLayout: ViewModifier {
   public let width: CGFloat?
   public let height: CGFloat?
   public let alignment: Alignment
-  
+
   init(width: CGFloat?, height: CGFloat?, alignment: Alignment) {
     self.width = width
     self.height = height
     self.alignment = alignment
   }
-  
+
   public func body(content: Content) -> some View {
     content
   }

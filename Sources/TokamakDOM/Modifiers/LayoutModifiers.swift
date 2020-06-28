@@ -14,7 +14,7 @@
 
 import TokamakCore
 
-fileprivate extension DOMViewModifier {
+private extension DOMViewModifier {
   func unwrapToStyle<T>(_ key: KeyPath<Self, T?>, property: String) -> String {
     if let val = self[keyPath: key] {
       return "\(property): \(val)px;"
@@ -27,32 +27,32 @@ fileprivate extension DOMViewModifier {
 extension _FrameLayout: DOMViewModifier {
   public var attributes: [String: String] {
     ["style": """
-              \(unwrapToStyle(\.width, property: "width"))
-              \(unwrapToStyle(\.height, property: "height"))
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              """]
+    \(unwrapToStyle(\.width, property: "width"))
+    \(unwrapToStyle(\.height, property: "height"))
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    """]
   }
 }
 
 extension _FlexFrameLayout: DOMViewModifier {
   public var attributes: [String: String] {
     ["style": """
-              \(unwrapToStyle(\.minWidth, property: "min-width"))
-              \(unwrapToStyle(\.idealWidth, property: "width"))
-              \(unwrapToStyle(\.maxWidth, property: "max-width"))
-              \(unwrapToStyle(\.minHeight, property: "min-height"))
-              \(unwrapToStyle(\.idealHeight, property: "height"))
-              \(unwrapToStyle(\.maxHeight, property: "max-height"))
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              """]
+    \(unwrapToStyle(\.minWidth, property: "min-width"))
+    \(unwrapToStyle(\.idealWidth, property: "width"))
+    \(unwrapToStyle(\.maxWidth, property: "max-width"))
+    \(unwrapToStyle(\.minHeight, property: "min-height"))
+    \(unwrapToStyle(\.idealHeight, property: "height"))
+    \(unwrapToStyle(\.maxHeight, property: "max-height"))
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    """]
   }
 }
 
-fileprivate extension Edge {
+private extension Edge {
   var cssValue: String {
     switch self {
     case .top: return "top"
@@ -63,7 +63,7 @@ fileprivate extension Edge {
   }
 }
 
-fileprivate extension EdgeInsets {
+private extension EdgeInsets {
   func inset(for edge: Edge) -> CGFloat {
     switch edge {
     case .top: return top
@@ -84,8 +84,7 @@ extension _PaddingLayout: DOMViewModifier {
       }
     }
     return ["style": padding
-                      .map { "padding-\($0.0): \($0.1);" }
-                      .joined(separator: " ")
-           ]
+      .map { "padding-\($0.0): \($0.1);" }
+      .joined(separator: " ")]
   }
 }

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public struct _FlexFrameLayout : ViewModifier {
+public struct _FlexFrameLayout: ViewModifier {
   public let minWidth: CGFloat?
   public let idealWidth: CGFloat?
   public let maxWidth: CGFloat?
@@ -20,7 +20,7 @@ public struct _FlexFrameLayout : ViewModifier {
   public let idealHeight: CGFloat?
   public let maxHeight: CGFloat?
   public let alignment: Alignment
-  
+
   init(minWidth: CGFloat? = nil, idealWidth: CGFloat? = nil, maxWidth: CGFloat? = nil, minHeight: CGFloat? = nil, idealHeight: CGFloat? = nil, maxHeight: CGFloat? = nil, alignment: Alignment) {
     self.minWidth = minWidth
     self.idealWidth = idealWidth
@@ -30,7 +30,7 @@ public struct _FlexFrameLayout : ViewModifier {
     self.maxHeight = maxHeight
     self.alignment = alignment
   }
-  
+
   public func body(content: Content) -> some View {
     content
   }
@@ -38,28 +38,27 @@ public struct _FlexFrameLayout : ViewModifier {
 
 extension View {
   public func frame(minWidth: CGFloat? = nil, idealWidth: CGFloat? = nil, maxWidth: CGFloat? = nil, minHeight: CGFloat? = nil, idealHeight: CGFloat? = nil, maxHeight: CGFloat? = nil, alignment: Alignment = .center) -> some View {
-        func areInNondecreasingOrder(
-            _ min: CGFloat?, _ ideal: CGFloat?, _ max: CGFloat?
-        ) -> Bool {
-            let min = min ?? -.infinity
-            let ideal = ideal ?? min
-            let max = max ?? ideal
-            return min <= ideal && ideal <= max
-        }
-
-        if !areInNondecreasingOrder(minWidth, idealWidth, maxWidth)
-            || !areInNondecreasingOrder(minHeight, idealHeight, maxHeight)
-        {
-            fatalError("Contradictory frame constraints specified.")
-        }
-
-        return modifier(
-            _FlexFrameLayout(
-                minWidth: minWidth,
-                idealWidth: idealWidth, maxWidth: maxWidth,
-                minHeight: minHeight,
-                idealHeight: idealHeight, maxHeight: maxHeight,
-                alignment: alignment))
+    func areInNondecreasingOrder(
+      _ min: CGFloat?, _ ideal: CGFloat?, _ max: CGFloat?
+    ) -> Bool {
+      let min = min ?? -.infinity
+      let ideal = ideal ?? min
+      let max = max ?? ideal
+      return min <= ideal && ideal <= max
     }
-  
+
+    if !areInNondecreasingOrder(minWidth, idealWidth, maxWidth)
+      || !areInNondecreasingOrder(minHeight, idealHeight, maxHeight) {
+      fatalError("Contradictory frame constraints specified.")
+    }
+
+    return modifier(
+      _FlexFrameLayout(
+        minWidth: minWidth,
+        idealWidth: idealWidth, maxWidth: maxWidth,
+        minHeight: minHeight,
+        idealHeight: idealHeight, maxHeight: maxHeight,
+        alignment: alignment
+      ))
+  }
 }

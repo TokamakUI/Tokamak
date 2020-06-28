@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public enum Edge : Int8, CaseIterable {
+public enum Edge: Int8, CaseIterable {
   case top, leading, bottom, trailing
-  
-  public struct Set : OptionSet {
+
+  public struct Set: OptionSet {
     public let rawValue: Int8
-    
+
     public init(rawValue: Int8) {
       self.rawValue = rawValue
     }
-    
-    public static let top: Edge.Set = .init(rawValue: 1 >> 0)
-    public static let leading: Edge.Set = .init(rawValue: 1 >> 1)
-    public static let bottom: Edge.Set = .init(rawValue: 1 >> 2)
-    public static let trailing: Edge.Set = .init(rawValue: 1 >> 3)
-    
+
+    public static let top: Edge.Set = .init(rawValue: 1 << 0)
+    public static let leading: Edge.Set = .init(rawValue: 1 << 1)
+    public static let bottom: Edge.Set = .init(rawValue: 1 << 2)
+    public static let trailing: Edge.Set = .init(rawValue: 1 << 3)
+
     public static let all: Edge.Set = [.top, .leading, .bottom, .trailing]
     public static let horizontal: Edge.Set = [.leading, .trailing]
     public static let vertical: Edge.Set = [.top, .bottom]
-    
+
     public init(_ e: Edge) {
       switch e {
       case .top: self = .top
@@ -42,26 +42,26 @@ public enum Edge : Int8, CaseIterable {
   }
 }
 
-public struct EdgeInsets : Equatable {
+public struct EdgeInsets: Equatable {
   public var top: CGFloat
   public var leading: CGFloat
   public var bottom: CGFloat
   public var trailing: CGFloat
-  
+
   public init(top: CGFloat,
-                         leading: CGFloat,
-                         bottom: CGFloat,
-                         trailing: CGFloat) {
+              leading: CGFloat,
+              bottom: CGFloat,
+              trailing: CGFloat) {
     self.top = top
     self.leading = leading
     self.bottom = bottom
     self.trailing = trailing
   }
-  
+
   public init() {
     self.init(top: 0, leading: 0, bottom: 0, trailing: 0)
   }
-  
+
   public init(_all: CGFloat) {
     self.init(top: _all, leading: _all, bottom: _all, trailing: _all)
   }

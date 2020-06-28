@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public struct _PaddingLayout : ViewModifier {
+public struct _PaddingLayout: ViewModifier {
   public var edges: Edge.Set
   public var insets: EdgeInsets?
-  
+
   public init(edges: Edge.Set = .all, insets: EdgeInsets?) {
     self.edges = edges
     self.insets = insets
   }
-  
+
   public func body(content: Content) -> some View {
     content
   }
@@ -30,12 +30,12 @@ extension View {
   public func padding(_ insets: EdgeInsets) -> some View {
     modifier(_PaddingLayout(insets: insets))
   }
-  
+
   public func padding(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> some View {
     let insets = length.map { EdgeInsets(_all: $0) }
     return modifier(_PaddingLayout(edges: edges, insets: insets))
   }
-  
+
   public func padding(_ length: CGFloat) -> some View {
     padding(.all, length)
   }
