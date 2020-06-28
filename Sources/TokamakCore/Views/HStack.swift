@@ -22,8 +22,8 @@ public enum VerticalAlignment: Equatable {
 }
 
 public struct HStack<Content>: View where Content: View {
-  let alignment: VerticalAlignment
-  let spacing: CGFloat?
+  public let alignment: VerticalAlignment
+  public let spacing: CGFloat?
   public let content: Content
 
   public init(

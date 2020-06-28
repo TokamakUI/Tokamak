@@ -32,7 +32,7 @@ struct CustomModifier: ViewModifier {
 let div = document.createElement!("div").object!
 let renderer = DOMRenderer(
   VStack {
-    Counter(count: 5, limit: 7)
+    Counter(count: 5, limit: 15)
     ZStack {
       Text("I'm on bottom")
       Text("I'm forced to the top")
