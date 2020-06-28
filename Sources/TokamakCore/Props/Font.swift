@@ -97,6 +97,54 @@ extension Font {
   }
 }
 
+extension Font {
+  public static let largeTitle: Self = .system(size: 34)
+  public static let title: Self = .system(size: 28)
+  public static let title2: Self = .system(size: 22)
+  public static let title3: Self = .system(size: 20)
+  public static let headline: Font = .system(size: 17, weight: .semibold, design: .default)
+  public static let subheadline: Self = .system(size: 15)
+  public static let body: Self = .system(size: 17)
+  public static let callout: Self = .system(size: 16)
+  public static let footnote: Self = .system(size: 13)
+  public static let caption: Self = .system(size: 12)
+  public static let caption2: Font = .system(size: 11)
+  
+  public static func system(_ style: TextStyle, design: Design = .default) -> Self {
+    .system(size: style.font._size, weight: style.font._weight, design: design)
+  }
+  
+  public enum TextStyle : Hashable, CaseIterable {
+    case largeTitle
+    case title
+    case title2
+    case title3
+    case headline
+    case subheadline
+    case body
+    case callout
+    case footnote
+    case caption
+    case caption2
+    
+    var font: Font {
+      switch self {
+      case .largeTitle: return .largeTitle
+      case .title: return .title
+      case .title2: return .title2
+      case .title3: return .title3
+      case .headline: return .headline
+      case .subheadline: return .subheadline
+      case .body: return .body
+      case .callout: return .callout
+      case .footnote: return .footnote
+      case .caption: return .caption
+      case .caption2: return .caption2
+      }
+    }
+  }
+}
+
 struct FontKey: EnvironmentKey {
   static let defaultValue: Font? = nil
 }

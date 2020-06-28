@@ -104,7 +104,7 @@ extension Text: AnyHTML {
           return true
         }
       }.inlineStyles ?? "")
-      \(font == nil ? "font-family: \(Font.Design.default.description)" : "")
+      \(font == nil ? "font-family: \(Font.Design.default.description);" : "")
       color: \(color?.description ?? "inherit");
       font-style: \(italic ? "italic" : "normal");
       font-weight: \(weight?.value ?? font?._weight.value ?? 400);
