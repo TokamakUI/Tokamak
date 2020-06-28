@@ -20,10 +20,31 @@ import TokamakCore
 
 public final class DOMNode: Target {
   let ref: JSObjectRef
+  private var listeners: [String: JSClosure]
 
-  init<V: View>(_ view: V, _ ref: JSObjectRef) {
+  init<V: View>(_ view: V, _ ref: JSObjectRef, _ listeners: [String: Listener] = [:]) {
     self.ref = ref
+    self.listeners = [:]
     super.init(view)
+    reinstall(listeners)
+  }
+
+  /// Removes all existing event listeners on this DOM node and install new ones from
+  /// the `listeners` argument
+  func reinstall(_ listeners: [String: Listener]) {
+    for (event, jsClosure) in self.listeners {
+      _ = ref.removeEventListener!(event, jsClosure)
+    }
+    self.listeners = [:]
+
+    for (event, listener) in listeners {
+      let jsClosure = JSClosure {
+        listener($0[0].object!)
+        return .undefined
+      }
+      _ = ref.addEventListener!(event, jsClosure)
+      self.listeners[event] = jsClosure
+    }
   }
 }
 
@@ -36,7 +57,11 @@ public final class DOMRenderer: Renderer {
 
   public init<V: View>(_ view: V, _ ref: JSObjectRef) {
     rootRef = ref
-    reconciler = StackReconciler(view: view, target: DOMNode(view, ref), renderer: self) { closure in
+    reconciler = StackReconciler(
+      view: view,
+      target: DOMNode(view, ref),
+      renderer: self
+    ) { closure in
       let fn = JSClosure { _ in
         closure()
         return .undefined
@@ -67,14 +92,7 @@ public final class DOMRenderer: Renderer {
       let lastChild = children[Int(length) - 1].object
     else { return nil }
 
-    for (event, listener) in listeners {
-      _ = lastChild.addEventListener!(event, JSClosure {
-        listener($0[0].object!)
-        return .undefined
-      })
-    }
-
-    return DOMNode(host.view, lastChild)
+    return DOMNode(host.view, lastChild, listeners)
   }
 
   public func update(target: DOMNode, with host: MountedHost) {
@@ -83,7 +101,7 @@ public final class DOMRenderer: Renderer {
       transform: { (html: AnyHTML) in html }
     ) else { return }
 
-    html.update(dom: target.ref)
+    html.update(dom: target)
   }
 
   public func unmount(
