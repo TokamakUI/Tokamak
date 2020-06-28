@@ -22,13 +22,46 @@ extension Font.Design: CustomStringConvertible {
   public var description: String {
     switch self {
     case .default:
-      return "system, -apple-system, \".SFNSText-Regular\", \"San Francisco\", \"Roboto\", \"Segoe UI\", \"Helvetica Neue\", \"Lucida Grande\", sans-serif"
+      return #"""
+              system,
+              -apple-system,
+              '.SFNSText-Regular',
+              'San Francisco',
+              'Roboto',
+              'Segoe UI',
+              'Helvetica Neue',
+              'Lucida Grande',
+              sans-serif
+              """#
     case .monospaced:
-      return "Consolas, \"Andale Mono WT\", \"Andale Mono\", \"Lucida Console\", \"Lucida Sans Typewriter\", \"DejaVu Sans Mono\", \"Bitstream Vera Sans Mono\", \"Liberation Mono\", \"Nimbus Mono L\", Monaco, \"Courier New\", Courier, monospace"
+      return #"""
+              Consolas,
+              'Andale Mono WT',
+              'Andale Mono',
+              'Lucida Console',
+              'Lucida Sans Typewriter',
+              'DejaVu Sans Mono',
+              'Bitstream Vera Sans Mono',
+              'Liberation Mono',
+              'Nimbus Mono L',
+              Monaco,
+              'Courier New',
+              Courier,
+              monospace
+              """#
     case .rounded: // Not supported due to browsers not having a rounded font builtin
       return Self.default.description
     case .serif:
-      return "Cambria, \"Hoefler Text\", Utopia, \"Liberation Serif\", \"Nimbus Roman No9 L Regular\", Times, \"Times New Roman\", serif"
+      return #"""
+              Cambria,
+              'Hoefler Text',
+              Utopia,
+              'Liberation Serif',
+              'Nimbus Roman No9 L Regular',
+              Times,
+              'Times New Roman',
+              serif
+              """#
     }
   }
 }
@@ -50,7 +83,7 @@ extension Font: StylesConvertible {
   var styles: [String: String] {
     [
       "font-family": _name == _FontNames.system.rawValue ? _design.description : _name,
-      "font-weight": "\(_bold ? 700 : _weight.value)",
+      "font-weight": "\(_bold ? Font.Weight.bold.value : _weight.value)",
       "font-style": _italic ? "italic" : "normal",
       "font-size": "\(_size)",
       "line-height": _leading.description,
@@ -94,7 +127,9 @@ extension Text: AnyHTML {
     }
     let hasStrikethrough = strikethrough?.0 ?? false
     let hasUnderline = underline?.0 ?? false
-    let textDecoration = "\(!hasStrikethrough && !hasUnderline ? "none" : "")\(hasStrikethrough ? "line-through" : "") \(hasUnderline ? "underline" : "")"
+    let textDecoration = !hasStrikethrough && !hasUnderline ?
+                         "none" :
+                         "\(hasStrikethrough ? "line-through" : "") \(hasUnderline ? "underline" : "")"
     return [
       "style": """
       \(font?.styles.filter {
@@ -112,9 +147,7 @@ extension Text: AnyHTML {
       vertical-align: \(baseline == nil ? "baseline" : "\(baseline!)em");
       text-decoration: \(textDecoration);
       text-decoration-color: \(strikethrough?.1?.description ?? underline?.1?.description ?? "inherit")
-      """
-      .split(separator: "\"")
-      .joined(separator: "'"),
+      """,
     ]
   }
 

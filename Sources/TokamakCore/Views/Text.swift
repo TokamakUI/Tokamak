@@ -28,7 +28,6 @@ public struct Text: View {
     case tracking(CGFloat)
     case baseline(CGFloat)
     case rounded
-//    case anyTextModifier(AnyTextModifier)
     case strikethrough(Bool, Color?) // Note: Not in SwiftUI
     case underline(Bool, Color?) // Note: Not in SwiftUI
   }
