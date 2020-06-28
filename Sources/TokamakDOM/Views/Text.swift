@@ -52,7 +52,7 @@ extension Font: StylesConvertible {
       "font-family": _name == _FontNames.system.rawValue ? _design.description : _name,
       "font-weight": "\(_bold ? 700 : _weight.value)",
       "font-style": _italic ? "italic" : "normal",
-      "size": "\(_size)",
+      "font-size": "\(_size)",
       "line-height": _leading.description,
       "font-variant": _smallCaps ? "small-caps" : "normal",
     ]
@@ -103,7 +103,8 @@ extension Text: AnyHTML {
         } else {
           return true
         }
-              }.inlineStyles ?? "")
+      }.inlineStyles ?? "")
+      \(font == nil ? "font-family: \(Font.Design.default.description)" : "")
       color: \(color?.description ?? "inherit");
       font-style: \(italic ? "italic" : "normal");
       font-weight: \(weight?.value ?? font?._weight.value ?? 400);
