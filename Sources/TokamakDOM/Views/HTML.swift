@@ -42,10 +42,21 @@ extension AnyHTML {
     """
   }
 
-  func update(dom: JSObjectRef) {
-    // FIXME: handle attributes and listeners here
+  func update(dom: DOMNode) {
+    // FIXME: is there a sensible way to diff attributes and listeners to avoid
+    // crossing the JavaScript bridge and touching DOM if not needed?
+
+    // @carson-katri: For diffing, could you build a Set from the keys and values of the dictionary,
+    // then use the standard lib to get the difference?
+
+    for (attribute, value) in attributes {
+      _ = dom.ref[dynamicMember: attribute] = JSValue(stringLiteral: value)
+    }
+
+    dom.reinstall(listeners)
+
     guard let innerHTML = innerHTML else { return }
-    dom.innerHTML = .string(innerHTML)
+    dom.ref.innerHTML = .string(innerHTML)
   }
 }
 
@@ -80,10 +91,7 @@ extension HTML where Content == EmptyView {
     _ attributes: [String: String] = [:],
     listeners: [String: Listener] = [:]
   ) {
-    self.tag = tag
-    self.attributes = attributes
-    self.listeners = listeners
-    content = EmptyView()
+    self = HTML(tag, attributes) { EmptyView() }
   }
 }
 
