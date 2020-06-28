@@ -16,8 +16,23 @@ import TokamakCore
 
 public typealias HStack = TokamakCore.HStack
 
+extension VerticalAlignment {
+  var cssValue: String {
+    switch self {
+    case .top:
+      return "start"
+    case .center:
+      return "center"
+    case .bottom:
+      return "end"
+    }
+  }
+}
+
 extension HStack: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    AnyView(HTML("div") { content })
+    AnyView(HTML("div", [
+      "style": "display: flex; flex-direction: row; align-items: \(alignment.cssValue);",
+    ]) { content })
   }
 }

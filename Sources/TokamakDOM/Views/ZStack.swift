@@ -16,19 +16,6 @@ import TokamakCore
 
 public typealias ZStack = TokamakCore.ZStack
 
-extension VerticalAlignment {
-  var cssValue: String {
-    switch self {
-    case .top:
-      return "start"
-    case .center:
-      return "center"
-    case .bottom:
-      return "end"
-    }
-  }
-}
-
 struct _ZStack_ContentGridItem: ViewModifier, DOMViewModifier {
   let attributes = ["style": "grid-area: a;"]
 
