@@ -12,15 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakDOM
+public struct _FrameLayout : ViewModifier {
+  public let width: CGFloat?
+  public let height: CGFloat?
+  public let alignment: Alignment
+  
+  init(width: CGFloat?, height: CGFloat?, alignment: Alignment) {
+    self.width = width
+    self.height = height
+    self.alignment = alignment
+  }
+  
+  public func body(content: Content) -> some View {
+    content
+  }
+}
 
-struct SVGCircle: View {
-  var body: some View {
-    HTML("svg", ["width": "100%", "height": "100%"]) {
-      HTML("circle", [
-        "cx": "50%", "cy": "50%", "r": "40%",
-        "stroke": "green", "stroke-width": "4", "fill": "yellow",
-      ])
-    }
+extension View {
+  public func frame(width: CGFloat? = nil, height: CGFloat? = nil, alignment: Alignment = .center) -> some View {
+    modifier(_FrameLayout(width: width, height: height, alignment: alignment))
   }
 }
