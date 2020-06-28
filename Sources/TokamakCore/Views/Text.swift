@@ -66,19 +66,7 @@ public extension Text {
     .init(content: content, modifiers: _modifiers + [.weight(weight)])
   }
   func bold() -> Text {
-    let modifier = _modifiers.last {
-      switch $0 {
-      case .font(_): return true
-      default: return false
-      }
-    }
-    var prevFont: Font? = .system(size: 13)
-    switch modifier {
-    case .font(let font):
-      prevFont = font
-    default: break
-    }
-    return .init(content: content, modifiers: _modifiers + [.font(prevFont?.bold())])
+    .init(content: content, modifiers: _modifiers + [.weight(.bold)])
   }
   func italic() -> Text {
     .init(content: content, modifiers: _modifiers + [.italic])

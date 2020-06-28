@@ -22,13 +22,13 @@ extension Font.Design : CustomStringConvertible {
   public var description: String {
     switch self {
     case .default:
-      return #"system, -apple-system, ".SFNSText-Regular", "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", sans-serif"#
+      return "system, -apple-system, \".SFNSText-Regular\", \"San Francisco\", \"Roboto\", \"Segoe UI\", \"Helvetica Neue\", \"Lucida Grande\", sans-serif"
     case .monospaced:
-      return #"Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace"#
+      return "Consolas, \"Andale Mono WT\", \"Andale Mono\", \"Lucida Console\", \"Lucida Sans Typewriter\", \"DejaVu Sans Mono\", \"Bitstream Vera Sans Mono\", \"Liberation Mono\", \"Nimbus Mono L\", Monaco, \"Courier New\", Courier, monospace"
     case .rounded: // Not supported due to browsers not having a rounded font builtin
       return Self.default.description
     case .serif:
-      return #"Cambria, "Hoefler Text", Utopia, "Liberation Serif", "Nimbus Roman No9 L Regular", Times, "Times New Roman", serif"#
+      return "Cambria, \"Hoefler Text\", Utopia, \"Liberation Serif\", \"Nimbus Roman No9 L Regular\", Times, \"Times New Roman\", serif"
     }
   }
 }
@@ -56,12 +56,6 @@ extension Font : StylesConvertible {
       "line-height": _leading.description,
       "font-variant": _smallCaps ? "small-caps" : "normal"
     ]
-  }
-}
-
-extension Color : CustomStringConvertible {
-  public var description: String {
-    "rgb(\(red), \(green), \(blue), \(alpha))"
   }
 }
 
@@ -98,20 +92,28 @@ extension Text: AnyHTML {
           underline = (active, color)
         }
     }
-    let textDecoration = strikethrough == nil && underline == nil ? "none" : """
-    \((strikethrough?.0 ?? false) ? "line-through" : "") \((strikethrough?.0 ?? false) ? "underline" : "")
-    """
+    let hasStrikethrough = strikethrough?.0 ?? false
+    let hasUnderline = underline?.0 ?? false
+    let textDecoration = "\(!hasStrikethrough && !hasUnderline ? "none" : "")\(hasStrikethrough ? "line-through" : "") \(hasUnderline ? "underline" : "")"
     return [
       "style": """
-              \(font?.inlineStyles ?? "")
+              \(font?.styles.filter {
+                if weight != nil {
+                  return $0.key != "font-weight"
+                } else {
+                  return true
+                }
+              }.inlineStyles ?? "")
               color: \(color?.description ?? "inherit");
               font-style: \(italic ? "italic" : "normal");
-              font-weight: \(weight?.value ?? 400);
+              font-weight: \(weight?.value ?? font?._weight.value ?? 400);
               letter-spacing: \(kerning);
-              vertical-align: \(baseline == nil ? "normal" : "\(baseline!)em");
+              vertical-align: \(baseline == nil ? "baseline" : "\(baseline!)em");
               text-decoration: \(textDecoration);
               text-decoration-color: \(strikethrough?.1?.description ?? underline?.1?.description ?? "inherit")
               """
+        .split(separator: "\"")
+        .joined(separator: "'")
     ]
   }
   var listeners: [String: Listener] { [:] }
