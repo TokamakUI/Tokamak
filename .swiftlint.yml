@@ -1,19 +1,19 @@
 disabled_rules:
-- trailing_comma
-- identifier_name
-- void_return
-- operator_whitespace
-- nesting
-- cyclomatic_complexity
+  - trailing_comma
+  - identifier_name
+  - void_return
+  - operator_whitespace
+  - nesting
+  - cyclomatic_complexity
+  - multiple_closures_with_trailing_closure
 
 line_length:
-- 80
-- 100
-- ignores_comments
-
+  - 80
+  - 100
+  - ignores_comments
 
 function_body_length:
-- 50
+  - 50
 
 included:
   - Sources
