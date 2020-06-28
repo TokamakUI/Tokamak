@@ -43,31 +43,31 @@ let renderer = DOMRenderer(
     Text("This is the inital text")
       .modifier(CustomModifier())
     Text("I'm all fancy")
-        .font(.system(size: 16, weight: .regular, design: .serif))
-        .italic()
+      .font(.system(size: 16, weight: .regular, design: .serif))
+      .italic()
     HStack {
-        ForEach([
-            Font.Weight.ultraLight,
-            .thin,
-            .light,
-            .regular,
-            .semibold,
-            .bold,
-            .heavy,
-            .black
-        ], id: \.self) { weight in
-            Text("a")
-                .fontWeight(weight)
-        }
+      ForEach([
+        Font.Weight.ultraLight,
+        .thin,
+        .light,
+        .regular,
+        .semibold,
+        .bold,
+        .heavy,
+        .black,
+      ], id: \.self) { weight in
+        Text("a")
+          .fontWeight(weight)
+      }
     }
     Text("This is super important")
-        .bold()
-        .underline(true, color: .red)
+      .bold()
+      .underline(true, color: .red)
     Text("This was super important")
-        .bold()
-        .strikethrough(true, color: .red)
+      .bold()
+      .strikethrough(true, color: .red)
     Text("THICK TEXT")
-        .kerning(0.5)
+      .kerning(0.5)
     SVGCircle()
   },
   div

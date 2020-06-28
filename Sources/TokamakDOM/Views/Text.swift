@@ -17,7 +17,7 @@ import TokamakCore
 
 public typealias Text = TokamakCore.Text
 
-extension Font.Design : CustomStringConvertible {
+extension Font.Design: CustomStringConvertible {
   /// Some default font stacks for the various designs
   public var description: String {
     switch self {
@@ -33,7 +33,7 @@ extension Font.Design : CustomStringConvertible {
   }
 }
 
-extension Font.Leading : CustomStringConvertible {
+extension Font.Leading: CustomStringConvertible {
   public var description: String {
     switch self {
     case .standard:
@@ -46,15 +46,15 @@ extension Font.Leading : CustomStringConvertible {
   }
 }
 
-extension Font : StylesConvertible {
-  var styles: [String : String] {
+extension Font: StylesConvertible {
+  var styles: [String: String] {
     [
       "font-family": _name == _FontNames.system.rawValue ? _design.description : _name,
       "font-weight": "\(_bold ? 700 : _weight.value)",
       "font-style": _italic ? "italic" : "normal",
       "size": "\(_size)",
       "line-height": _leading.description,
-      "font-variant": _smallCaps ? "small-caps" : "normal"
+      "font-variant": _smallCaps ? "small-caps" : "normal",
     ]
   }
 }
@@ -72,49 +72,50 @@ extension Text: AnyHTML {
     var strikethrough: (Bool, Color?)?
     var underline: (Bool, Color?)?
     for modifier in _modifiers {
-        switch modifier {
-        case .color(let _color):
-          color = _color
-        case .font(let _font):
-          font = _font
-        case .italic:
-          italic = true
-        case .weight(let _weight):
-          weight = _weight
-        case .kerning(let _kerning), .tracking(let _kerning):
-          kerning = "\(_kerning)em"
-        case .baseline(let _baseline):
-          baseline = _baseline
-        case .rounded: break
-        case .strikethrough(let active, let color):
-          strikethrough = (active, color)
-        case .underline(let active, let color):
-          underline = (active, color)
-        }
+      switch modifier {
+      case let .color(_color):
+        color = _color
+      case let .font(_font):
+        font = _font
+      case .italic:
+        italic = true
+      case let .weight(_weight):
+        weight = _weight
+      case let .kerning(_kerning), let .tracking(_kerning):
+        kerning = "\(_kerning)em"
+      case let .baseline(_baseline):
+        baseline = _baseline
+      case .rounded: break
+      case let .strikethrough(active, color):
+        strikethrough = (active, color)
+      case let .underline(active, color):
+        underline = (active, color)
+      }
     }
     let hasStrikethrough = strikethrough?.0 ?? false
     let hasUnderline = underline?.0 ?? false
     let textDecoration = "\(!hasStrikethrough && !hasUnderline ? "none" : "")\(hasStrikethrough ? "line-through" : "") \(hasUnderline ? "underline" : "")"
     return [
       "style": """
-              \(font?.styles.filter {
-                if weight != nil {
-                  return $0.key != "font-weight"
-                } else {
-                  return true
-                }
+      \(font?.styles.filter {
+        if weight != nil {
+          return $0.key != "font-weight"
+        } else {
+          return true
+        }
               }.inlineStyles ?? "")
-              color: \(color?.description ?? "inherit");
-              font-style: \(italic ? "italic" : "normal");
-              font-weight: \(weight?.value ?? font?._weight.value ?? 400);
-              letter-spacing: \(kerning);
-              vertical-align: \(baseline == nil ? "baseline" : "\(baseline!)em");
-              text-decoration: \(textDecoration);
-              text-decoration-color: \(strikethrough?.1?.description ?? underline?.1?.description ?? "inherit")
-              """
-        .split(separator: "\"")
-        .joined(separator: "'")
+      color: \(color?.description ?? "inherit");
+      font-style: \(italic ? "italic" : "normal");
+      font-weight: \(weight?.value ?? font?._weight.value ?? 400);
+      letter-spacing: \(kerning);
+      vertical-align: \(baseline == nil ? "baseline" : "\(baseline!)em");
+      text-decoration: \(textDecoration);
+      text-decoration-color: \(strikethrough?.1?.description ?? underline?.1?.description ?? "inherit")
+      """
+      .split(separator: "\"")
+      .joined(separator: "'"),
     ]
   }
+
   var listeners: [String: Listener] { [:] }
 }

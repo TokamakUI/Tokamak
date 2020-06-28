@@ -34,7 +34,7 @@ public extension View {
 }
 
 extension ViewModifier where Body == Never {
-    public func body(content: Content) -> Body {
-        fatalError("\(self) is a primitive `ViewModifier`, you're not supposed to run `body(content:)`")
-    }
+  public func body(content: Content) -> Body {
+    fatalError("\(self) is a primitive `ViewModifier`, you're not supposed to run `body(content:)`")
+  }
 }

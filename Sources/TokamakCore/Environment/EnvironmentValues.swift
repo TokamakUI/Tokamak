@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public struct EnvironmentValues : CustomStringConvertible {
+public struct EnvironmentValues: CustomStringConvertible {
   public var description: String {
     String(describing: values)
   }
-  
-  private var values: [ObjectIdentifier:Any] = [:]
-  
+
+  private var values: [ObjectIdentifier: Any] = [:]
+
   public init() {}
-  
-  public subscript<K>(key: K.Type) -> K.Value where K : EnvironmentKey {
+
+  public subscript<K>(key: K.Type) -> K.Value where K: EnvironmentKey {
     get {
       if let val = values[ObjectIdentifier(key)] as? K.Value {
         return val

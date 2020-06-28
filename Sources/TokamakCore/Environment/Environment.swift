@@ -17,20 +17,19 @@
     case keyPath(KeyPath<EnvironmentValues, Value>)
     case value(Value)
   }
-  
+
   var content: Environment<Value>.Content
   public init(_ keyPath: KeyPath<EnvironmentValues, Value>) {
     content = .keyPath(keyPath)
   }
+
   public var wrappedValue: Value {
-    get {
-        switch content {
-        case let .value(value):
-            return value
-        case let .keyPath(keyPath):
-            // not bound to a view, return the default value.
-            return EnvironmentValues()[keyPath : keyPath]
-        }
+    switch content {
+    case let .value(value):
+      return value
+    case let .keyPath(keyPath):
+      // not bound to a view, return the default value.
+      return EnvironmentValues()[keyPath: keyPath]
     }
   }
 }

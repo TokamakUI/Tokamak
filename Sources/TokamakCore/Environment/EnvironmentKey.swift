@@ -17,12 +17,12 @@ public protocol EnvironmentKey {
   static var defaultValue: Self.Value { get }
 }
 
-public struct _EnvironmentKeyWritingModifier<Value> : ViewModifier {
+public struct _EnvironmentKeyWritingModifier<Value>: ViewModifier {
   public typealias Body = Never
-  
+
   public let keyPath: WritableKeyPath<EnvironmentValues, Value>
   public let value: Value
-  
+
   public init(keyPath: WritableKeyPath<EnvironmentValues, Value>, value: Value) {
     self.keyPath = keyPath
     self.value = value
