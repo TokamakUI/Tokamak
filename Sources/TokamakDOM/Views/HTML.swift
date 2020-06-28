@@ -91,7 +91,7 @@ extension HTML where Content == EmptyView {
     _ attributes: [String: String] = [:],
     listeners: [String: Listener] = [:]
   ) {
-    self = HTML(tag, attributes) { EmptyView() }
+    self = HTML(tag, attributes, listeners: listeners) { EmptyView() }
   }
 }
 
