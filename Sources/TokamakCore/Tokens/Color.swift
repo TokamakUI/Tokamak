@@ -77,3 +77,10 @@ extension Color {
     space = .sRGB
   }
 }
+
+extension Color: ShapeStyle {}
+extension Color: View {
+  public var body: _ShapeView<Rectangle, Self> {
+    _ShapeView(shape: Rectangle(), style: self)
+  }
+}
