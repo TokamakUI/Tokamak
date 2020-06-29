@@ -19,6 +19,8 @@ struct TextFieldDemo: View {
   @State var text = ""
   @State var numCommits = 0
   @State var isFocused = false
+  @State var password = ""
+  @State var committedPassword = ""
   var emptyString = Binding(get: { "" }, set: { _ in })
   var body: some View {
     VStack {
@@ -33,6 +35,15 @@ struct TextFieldDemo: View {
       )
       Text("Commits: \(numCommits)")
       Text("Text: “\(text)”")
+
+      HStack {
+        SecureField(
+          "Password",
+          text: $password,
+          onCommit: { committedPassword = password }
+        )
+        Text("Your password is \(committedPassword)")
+      }
     }
   }
 }
