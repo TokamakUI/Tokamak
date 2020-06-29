@@ -33,6 +33,7 @@ let div = document.createElement!("div").object!
 let renderer = DOMRenderer(
   VStack {
     Counter(count: 5, limit: 15)
+      .padding()
       .background(Color(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0))
       .border(Color.red, width: 3)
     ZStack {
