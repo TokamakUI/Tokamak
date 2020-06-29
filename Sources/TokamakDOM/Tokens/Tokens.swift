@@ -22,3 +22,8 @@ extension Color: CustomStringConvertible {
     "rgb(\(red * 255), \(green * 255), \(blue * 255), \(alpha * 255))"
   }
 }
+
+public typealias CGRect = TokamakCore.CGRect
+public typealias CGPoint = TokamakCore.CGPoint
+public typealias CGSize = TokamakCore.CGSize
+public typealias CGAffineTransform = TokamakCore.CGAffineTransform

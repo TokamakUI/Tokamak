@@ -283,3 +283,9 @@ extension Path {
     applying(transform.translatedBy(x: dx, y: dy))
   }
 }
+
+extension Path: Shape {
+  public func path(in rect: CGRect) -> Path {
+    self
+  }
+}

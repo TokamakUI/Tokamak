@@ -73,7 +73,10 @@ extension Path: ViewDeferredToRenderer {
   }
 
   public var deferredBody: AnyView {
-    AnyView(HTML("svg", ["style": "width: \(max(0, size.width)); height: \(max(0, size.height));"]) {
+    AnyView(HTML("svg", ["style": """
+    width: \(max(0, size.width));
+    height: \(max(0, size.height));
+    """]) {
       svgFrom(storage: storage)
     })
   }

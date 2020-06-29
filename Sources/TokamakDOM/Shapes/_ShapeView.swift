@@ -19,7 +19,12 @@ import TokamakCore
 
 extension _ShapeView: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    shape.path(in: .zero).deferredBody
+    let path = shape.path(in: .zero).deferredBody
+    if let fillColor = style as? Color {
+      return AnyView(HTML("div", ["style": "fill: \(fillColor.description)"]) { path })
+    } else {
+      return path
+    }
   }
 }
 
