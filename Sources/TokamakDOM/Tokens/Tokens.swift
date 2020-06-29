@@ -12,14 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import JavaScriptKit
 import TokamakCore
 
-public typealias Text = Tokamak.Text
+public typealias Font = TokamakCore.Font
 
-extension Text: AnyHTML {
-  public var innerHTML: String? { textContent(self) }
-  public var tag: String { "span" }
-  public var attributes: [String: String] { [:] }
-  public var listeners: [String: Listener] { [:] }
+extension Color: CustomStringConvertible {
+  public var description: String {
+    "rgb(\(red * 255), \(green * 255), \(blue * 255), \(alpha * 255))"
+  }
 }

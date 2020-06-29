@@ -11,18 +11,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Max Desiatov on 11/04/2020.
-//
 
-import TokamakCore
+@propertyWrapper public struct Environment<Value> {
+  enum Content {
+    case keyPath(KeyPath<EnvironmentValues, Value>)
+    case value(Value)
+  }
 
-public typealias Button = Tokamak.Button
+  var content: Environment<Value>.Content
+  public init(_ keyPath: KeyPath<EnvironmentValues, Value>) {
+    content = .keyPath(keyPath)
+  }
 
-extension Button: ViewDeferredToRenderer where Label == Text {
-  public var deferredBody: AnyView {
-    AnyView(HTML("button", listeners: ["click": { _ in action() }]) {
-      Text(buttonLabel(self))
-    })
+  public var wrappedValue: Value {
+    switch content {
+    case let .value(value):
+      return value
+    case let .keyPath(keyPath):
+      // not bound to a view, return the default value.
+      return EnvironmentValues()[keyPath: keyPath]
+    }
   }
 }
