@@ -39,6 +39,13 @@ extension TextField where Label == Text {
     editingChangedAction = onEditingChanged
     commitAction = onCommit
   }
+
+  // Currently missing feature: use a Formatter to control the value of the TextField
+  // public init<S, T>(
+  //     _ title: S, value: Binding<T>, formatter: Formatter,
+  //     onEditingChanged: @escaping (Bool) -> Void = { _ in },
+  //     onCommit: @escaping () -> Void = {}
+  // ) where S : StringProtocol
 }
 
 public func textFieldLabel(_ textField: TextField<Text>) -> String {
