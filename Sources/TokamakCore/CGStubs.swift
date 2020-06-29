@@ -15,6 +15,8 @@
 //  Created by Max Desiatov on 08/04/2020.
 //
 
+import Glibc
+
 public typealias CGFloat = Double
 public struct CGPoint: Equatable {
   public let x: CGFloat
@@ -109,9 +111,7 @@ public struct CGAffineTransform: Equatable {
   ///   - angle: The angle, in radians, by which this matrix rotates the coordinate system axes.
   ///            A positive value specifies clockwise rotation and a negative value specifies counterclockwise rotation.
   public init(rotationAngle angle: CGFloat) {
-    // FIXME: How do we use sin/cos in Wasm?
-    //        With Darwin: self.init(a: cos(angle), b: sin(angle), c: -sin(angle), d: cos(angle), tx: 0, ty: 0)
-    self = Self.identity
+    self.init(a: cos(angle), b: sin(angle), c: -sin(angle), d: cos(angle), tx: 0, ty: 0)
   }
 
   /// Returns an affine transformation matrix constructed from scaling values you provide.
@@ -176,9 +176,7 @@ public struct CGAffineTransform: Equatable {
   /// - Parameters:
   ///   - angle: The angle, in radians, by which to rotate the affine transform. A positive value specifies clockwise rotation and a negative value specifies counterclockwise rotation.
   public func rotated(by angle: CGFloat) -> Self {
-    // FIXME: How do we use sin/cos in Wasm?
-    //        With Darwin: self.init(a: cos(angle), b: sin(angle), c: -sin(angle), d: cos(angle), tx: 0, ty: 0)
-    self
+    Self(a: cos(angle), b: sin(angle), c: -sin(angle), d: cos(angle), tx: 0, ty: 0)
   }
 
   /// Returns an affine transformation matrix constructed by translating an existing affine transform.

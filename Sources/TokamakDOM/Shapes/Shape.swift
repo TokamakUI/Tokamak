@@ -17,27 +17,14 @@
 
 import TokamakCore
 
-// This isn't identical to the SwiftUI API, but is a simple overload to support HTML `border`.
-// fileprivate struct _BorderModifier : ViewModifier, DOMViewModifier {
-//    let color: Color
-//    let width: CGFloat
-//
-//    var attributes: [String : String] {
-//        ["style": "border-color: \(color.description); border-width: \(width); border-style: solid;"]
-//    }
-//
-//    func body(content: Content) -> some View {
-//        content
-//    }
-// }
-// extension View {
-//    public func border(_ content: S, width: CGFloat = 1) -> some View {
-//        modifier(_BorderModifier(color: content, width: width))
-//    }
-// }
-
-// extension _OverlayModifier : DOMViewModifier where Overlay == _StrokedShape<Rectangle._Inset> {
-//  public var attributes: [String : String] {
-//    ["style": "border: 1px solid red"]
-//  }
-// }
+// Border modifier
+extension _OverlayModifier: DOMViewModifier where Overlay == _ShapeView<_StrokedShape<TokamakCore.Rectangle._Inset>, Color> {
+  public var attributes: [String: String] {
+    let style = overlay.shape.style.dashPhase == 0 ? "solid" : "dashed"
+    return ["style": """
+    border-style: \(style);
+    border-width: \(overlay.shape.style.lineWidth);
+    border-color: \(overlay.style.description);
+    """]
+  }
+}

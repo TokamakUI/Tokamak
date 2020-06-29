@@ -70,7 +70,7 @@ public struct Path: Equatable, LosslessStringConvertible {
               cornerSize: CGSize,
               style: RoundedCornerStyle = .circular) {
     storage = .roundedRect(FixedRoundedRect(rect: rect,
-                                            cornerRadius: cornerSize.width,
+                                            cornerSize: cornerSize,
                                             style: style))
     // FIXME: This currently doesn't support an actualy CGSize. I'm not sure how that works or what it does.
   }
@@ -79,7 +79,7 @@ public struct Path: Equatable, LosslessStringConvertible {
               cornerRadius: CGFloat,
               style: RoundedCornerStyle = .circular) {
     storage = .roundedRect(FixedRoundedRect(rect: rect,
-                                            cornerRadius: cornerRadius,
+                                            cornerSize: CGSize(width: cornerRadius, height: cornerRadius),
                                             style: style))
   }
 
@@ -94,7 +94,7 @@ public struct Path: Equatable, LosslessStringConvertible {
   }
 
   public init?(_ string: String) {
-    // Somehow make this from a string?
+    // FIXME: Somehow make this from a string?
     self.init()
   }
 
@@ -140,7 +140,7 @@ public struct Path: Equatable, LosslessStringConvertible {
 
 public struct FixedRoundedRect: Equatable {
   public let rect: CGRect
-  public let cornerRadius: CGFloat
+  public let cornerSize: CGSize
   public let style: RoundedCornerStyle
 }
 

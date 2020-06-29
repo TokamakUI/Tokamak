@@ -20,6 +20,7 @@ import TokamakCore
 public typealias Path = TokamakCore.Path
 
 extension Path: ViewDeferredToRenderer {
+  // TODO: Support transformations, subpaths, and read through elements to create a path
   func svgFrom(storage: Storage,
                strokeStyle: StrokeStyle = .init(lineWidth: 0,
                                                 lineCap: .butt,
@@ -46,8 +47,8 @@ extension Path: ViewDeferredToRenderer {
       return AnyView(HTML("rect", [
         "width": "\(roundedRect.rect.size.width)",
         "height": "\(roundedRect.rect.size.height)",
-        "rx": "\(roundedRect.cornerRadius)",
-        "rx": "\(roundedRect.cornerRadius)",
+        "rx": "\(roundedRect.cornerSize.width)",
+        "ry": "\(roundedRect.style == .continuous ? roundedRect.cornerSize.width : roundedRect.cornerSize.height)",
       ]
         .merging(stroke, uniquingKeysWith: uniqueKeys)))
     case let .stroked(stroked):
