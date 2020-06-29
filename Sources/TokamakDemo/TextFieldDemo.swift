@@ -12,17 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import TokamakCore
 import TokamakDOM
 
 struct TextFieldDemo: View {
   @State var text = ""
   @State var numCommits = 0
+  @State var isFocused = false
+  var emptyString = Binding(get: { "" }, set: { _ in })
   var body: some View {
     VStack {
       HStack {
         TextField("Basic text field", text: $text)
-        TextField(text, text: $text, onCommit: { numCommits += 1 })
+        TextField("Press enter to commit", text: $text, onCommit: { numCommits += 1 })
       }
+      TextField(
+        isFocused ? "Focused" : "Not focused",
+        text: emptyString,
+        onEditingChanged: { editing in isFocused = editing }
+      )
       Text("Commits: \(numCommits)")
       Text("Text: “\(text)”")
     }

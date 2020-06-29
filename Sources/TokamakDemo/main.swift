@@ -60,14 +60,16 @@ let renderer = DOMRenderer(
           .fontWeight(weight)
       }
     }
-    Text("This is super important")
-      .bold()
-      .underline(true, color: .red)
-    Text("This was super important")
-      .bold()
-      .strikethrough(true, color: .red)
-    Text("THICK TEXT")
-      .kerning(0.5)
+    VStack {
+      Text("This is super important")
+        .bold()
+        .underline(true, color: .red)
+      Text("This was super important")
+        .bold()
+        .strikethrough(true, color: .red)
+      Text("THICK TEXT")
+        .kerning(0.5)
+    }
     SVGCircle()
     TextFieldDemo()
   },
