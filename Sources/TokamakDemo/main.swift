@@ -29,63 +29,47 @@ struct CustomModifier: ViewModifier {
   }
 }
 
-struct Debug: View {
-  @State private var selectedItem: Int = 0
-  var body: some View {
-    HStack {
-      ForEach(0..<10) { item in
-        Button(action: { selectedItem = item }) {
-          Text("\(item)")
-        }
-      }
-      Text("\(selectedItem)")
-    }
-  }
-}
-
 let div = document.createElement!("div").object!
 let renderer = DOMRenderer(
   VStack {
-//    Counter(count: 5, limit: 15)
-//    ZStack {
-//      Text("I'm on bottom")
-//      Text("I'm forced to the top")
-//        .zIndex(1)
-//      Text("I'm on top")
-//    }
-//    ForEachDemo()
-//    Text("This is the inital text")
-//      .modifier(CustomModifier())
-//    Text("I'm all fancy")
-//      .font(.system(size: 16, weight: .regular, design: .serif))
-//      .italic()
-//    HStack {
-//      ForEach([
-//        Font.Weight.ultraLight,
-//        .thin,
-//        .light,
-//        .regular,
-//        .semibold,
-//        .bold,
-//        .heavy,
-//        .black,
-//      ], id: \.self) { weight in
-//        Text("a")
-//          .fontWeight(weight)
-//      }
-//    }
-//    Text("This is super important")
-//      .bold()
-//      .underline(true, color: .red)
-//    Text("This was super important")
-//      .bold()
-//      .strikethrough(true, color: .red)
-//    Text("THICK TEXT")
-//      .kerning(0.5)
-    Text("Hello, world!")
-      .foregroundColor(.white)
-      .background(Color.blue)
-    Debug()
+    Counter(count: 5, limit: 15)
+      .background(Color(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0))
+      .border(Color.red, width: 3)
+    ZStack {
+      Text("I'm on bottom")
+      Text("I'm forced to the top")
+        .zIndex(1)
+      Text("I'm on top")
+    }
+    ForEachDemo()
+    Text("This is the inital text")
+      .modifier(CustomModifier())
+    Text("I'm all fancy")
+      .font(.system(size: 16, weight: .regular, design: .serif))
+      .italic()
+    HStack {
+      ForEach([
+        Font.Weight.ultraLight,
+        .thin,
+        .light,
+        .regular,
+        .semibold,
+        .bold,
+        .heavy,
+        .black,
+      ], id: \.self) { weight in
+        Text("a")
+          .fontWeight(weight)
+      }
+    }
+    Text("This is super important")
+      .bold()
+      .underline(true, color: .red)
+    Text("This was super important")
+      .bold()
+      .strikethrough(true, color: .red)
+    Text("THICK TEXT")
+      .kerning(0.5)
     SVGCircle()
   },
   div

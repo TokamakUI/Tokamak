@@ -17,13 +17,13 @@
 
 extension InsettableShape {
   public func strokeBorder<S>(_ content: S, style: StrokeStyle, antialiased: Bool = true) -> some View where S: ShapeStyle {
-    inset(by: style.lineWidth * 0.5)
+    inset(by: style.lineWidth / 2)
       .stroke(style: style)
       .fill(content, style: FillStyle(antialiased: antialiased))
   }
 
   @inlinable public func strokeBorder(style: StrokeStyle, antialiased: Bool = true) -> some View {
-    inset(by: style.lineWidth * 0.5)
+    inset(by: style.lineWidth / 2)
       .stroke(style: style)
       .fill(style: FillStyle(antialiased: antialiased))
   }

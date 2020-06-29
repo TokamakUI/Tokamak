@@ -21,10 +21,12 @@ public typealias Path = TokamakCore.Path
 
 extension Path: ViewDeferredToRenderer {
   func svgFrom(storage: Storage,
-               strokeStyle: StrokeStyle = .init(lineWidth: 0, lineCap: .butt, lineJoin: .miter, miterLimit: 0, dash: [], dashPhase: 0)) -> AnyView {
-    // These are a bit less "reactive" than the other types, since we want them to fill the SVG container.
-    // Since we don't have direct access to drawing or the sizes of parent components like SwifTUI does,
-    // we can't really use the values if we want to keep using Shape for things like background
+               strokeStyle: StrokeStyle = .init(lineWidth: 0,
+                                                lineCap: .butt,
+                                                lineJoin: .miter,
+                                                miterLimit: 0,
+                                                dash: [],
+                                                dashPhase: 0)) -> AnyView {
     let stroke = [
       "stroke-width": "\(strokeStyle.lineWidth)",
       "stroke": "black", // TODO: Use the environment variable "foregroundColor"
@@ -34,8 +36,8 @@ extension Path: ViewDeferredToRenderer {
     case .empty:
       return AnyView(EmptyView())
     case let .rect(rect):
-      return AnyView(AnyView(HTML("rect", ["width": "\(rect.size.width)",
-                                           "height": "\(rect.size.height)"]
+      return AnyView(AnyView(HTML("rect", ["width": "\(max(0, rect.size.width))",
+                                           "height": "\(max(0, rect.size.height))"]
           .merging(stroke, uniquingKeysWith: uniqueKeys))))
     case .ellipse:
       return AnyView(HTML("ellipse", ["cx": "50%", "cy": "50%", "rx": "50%", "ry": "50%"]
@@ -55,9 +57,24 @@ extension Path: ViewDeferredToRenderer {
     }
   }
 
+  var size: CGSize {
+    switch storage {
+    case .empty:
+      return .zero
+    case let .rect(rect), let .ellipse(rect):
+      return rect.size
+    case let .roundedRect(rect):
+      return rect.rect.size
+    case let .stroked(path):
+      return path.path.size
+    case let .trimmed(path):
+      return path.path.size
+    }
+  }
+
   public var deferredBody: AnyView {
-    AnyView(HTML("svg", ["style": "width: 100%; height: 100%;"]) {
+    AnyView(HTML("svg", ["style": "width: \(max(0, size.width)); height: \(max(0, size.height));"]) {
       svgFrom(storage: storage)
-        })
+    })
   }
 }

@@ -45,3 +45,15 @@ extension _BackgroundModifier: DOMViewModifier where Background == Color {
     ["style": "background-color: \(background.description)"]
   }
 }
+
+// Border modifier
+extension _OverlayModifier: DOMViewModifier where Overlay == _ShapeView<_StrokedShape<TokamakCore.Rectangle._Inset>, Color> {
+  public var attributes: [String: String] {
+    let style = overlay.shape.style.dashPhase == 0 ? "solid" : "dashed"
+    return ["style": """
+    border-style: \(style);
+    border-width: \(overlay.shape.style.lineWidth);
+    border-color: \(overlay.style.description);
+    """]
+  }
+}
