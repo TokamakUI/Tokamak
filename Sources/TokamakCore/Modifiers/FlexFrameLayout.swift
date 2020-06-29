@@ -21,7 +21,13 @@ public struct _FlexFrameLayout: ViewModifier {
   public let maxHeight: CGFloat?
   public let alignment: Alignment
 
-  init(minWidth: CGFloat? = nil, idealWidth: CGFloat? = nil, maxWidth: CGFloat? = nil, minHeight: CGFloat? = nil, idealHeight: CGFloat? = nil, maxHeight: CGFloat? = nil, alignment: Alignment) {
+  init(minWidth: CGFloat? = nil,
+       idealWidth: CGFloat? = nil,
+       maxWidth: CGFloat? = nil,
+       minHeight: CGFloat? = nil,
+       idealHeight: CGFloat? = nil,
+       maxHeight: CGFloat? = nil,
+       alignment: Alignment) {
     self.minWidth = minWidth
     self.idealWidth = idealWidth
     self.maxWidth = maxWidth
@@ -37,7 +43,13 @@ public struct _FlexFrameLayout: ViewModifier {
 }
 
 extension View {
-  public func frame(minWidth: CGFloat? = nil, idealWidth: CGFloat? = nil, maxWidth: CGFloat? = nil, minHeight: CGFloat? = nil, idealHeight: CGFloat? = nil, maxHeight: CGFloat? = nil, alignment: Alignment = .center) -> some View {
+  public func frame(minWidth: CGFloat? = nil,
+                    idealWidth: CGFloat? = nil,
+                    maxWidth: CGFloat? = nil,
+                    minHeight: CGFloat? = nil,
+                    idealHeight: CGFloat? = nil,
+                    maxHeight: CGFloat? = nil,
+                    alignment: Alignment = .center) -> some View {
     func areInNondecreasingOrder(
       _ min: CGFloat?, _ ideal: CGFloat?, _ max: CGFloat?
     ) -> Bool {
