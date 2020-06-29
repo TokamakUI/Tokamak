@@ -40,7 +40,7 @@ extension TextField where Label == Text {
     commitAction = onCommit
   }
 
-  // Currently missing feature: use a Formatter to control the value of the TextField
+  // FIXME: implement this method, which uses a Formatter to control the value of the TextField
   // public init<S, T>(
   //     _ title: S, value: Binding<T>, formatter: Formatter,
   //     onEditingChanged: @escaping (Bool) -> Void = { _ in },
