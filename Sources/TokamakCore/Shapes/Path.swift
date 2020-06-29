@@ -72,7 +72,6 @@ public struct Path: Equatable, LosslessStringConvertible {
     storage = .roundedRect(FixedRoundedRect(rect: rect,
                                             cornerSize: cornerSize,
                                             style: style))
-    // FIXME: This currently doesn't support an actualy CGSize. I'm not sure how that works or what it does.
   }
 
   public init(roundedRect rect: CGRect,
@@ -98,7 +97,7 @@ public struct Path: Equatable, LosslessStringConvertible {
     self.init()
   }
 
-  // We don't have CGPath
+  // FIXME: We don't have CGPath
   //  public var cgPath: CGPath {
   //
   //  }
@@ -133,7 +132,7 @@ public struct Path: Equatable, LosslessStringConvertible {
     Self(storage: .trimmed(TrimmedPath(path: self, from: from, to: to)))
   }
 
-  //  In SwiftUI, but we don't have CGPath...
+  //  FIXME: In SwiftUI, but we don't have CGPath...
   //  public init(_ path: CGPath)
   //  public init(_ path: CGMutablePath)
 }
