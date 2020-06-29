@@ -25,6 +25,19 @@ extension _OverlayModifier: DOMViewModifier where Overlay == _ShapeView<_Stroked
     border-style: \(style);
     border-width: \(overlay.shape.style.lineWidth);
     border-color: \(overlay.style.description);
+    border-radius: inherit;
     """]
+  }
+}
+
+// TODO: Implement arbitrary clip paths with CSS `clip-path`
+extension _ClipEffect: DOMViewModifier {
+  public var attributes: [String: String] {
+    if let roundedRect = shape as? RoundedRectangle {
+      return ["style": "border-radius: \(roundedRect.cornerSize.width)px; overflow: hidden;"]
+    } else if shape is Circle {
+      return ["style": "clip-path: circle(50%);"]
+    }
+    return [:]
   }
 }
