@@ -39,6 +39,7 @@ let renderer = DOMRenderer(
         .zIndex(1)
       Text("I'm on top")
     }
+    .padding(20)
     ForEachDemo()
     Text("This is the inital text")
       .modifier(CustomModifier())
@@ -71,6 +72,7 @@ let renderer = DOMRenderer(
         .kerning(0.5)
     }
     SVGCircle()
+      .frame(width: 25, height: 25)
     TextFieldDemo()
   },
   div
