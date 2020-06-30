@@ -11,19 +11,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 6/29/20.
+//
 
 import TokamakCore
 
-public typealias Font = TokamakCore.Font
-public typealias Color = TokamakCore.Color
-
-extension Color: CustomStringConvertible {
-  public var description: String {
-    "rgb(\(red * 255), \(green * 255), \(blue * 255), \(alpha * 255))"
+extension _ShapeView: ViewDeferredToRenderer {
+  public var deferredBody: AnyView {
+    let path = shape.path(in: .zero).deferredBody
+    if let fillColor = style as? Color {
+      return AnyView(HTML("div", ["style": "fill: \(fillColor.description)"]) { path })
+    } else {
+      return path
+    }
   }
 }
 
-public typealias CGRect = TokamakCore.CGRect
-public typealias CGPoint = TokamakCore.CGPoint
-public typealias CGSize = TokamakCore.CGSize
-public typealias CGAffineTransform = TokamakCore.CGAffineTransform
+public typealias Rectangle = TokamakCore.Rectangle
+public typealias RoundedRectangle = TokamakCore.RoundedRectangle
+public typealias Ellipse = TokamakCore.Ellipse
+public typealias Circle = TokamakCore.Circle
+public typealias Capsule = TokamakCore.Capsule
