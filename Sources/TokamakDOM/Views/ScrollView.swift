@@ -31,13 +31,15 @@ extension ScrollView: ViewDeferredToRenderer, SpacerContainer {
   public var deferredBody: AnyView {
     let scrollX = axes.contains(.horizontal)
     let scrollY = axes.contains(.vertical)
-    return AnyView(HTML("div", ["style": """
+    return AnyView(HTML("div", [
+      "style": """
       \(scrollX ? "overflow-x: auto; width: 100%;" : "overflow-x: hidden;")
       \(scrollY ? "overflow-y: auto; height: 100%;" : "overflow-y: hidden;")
       \(fillCrossAxis && scrollX ? "height: 100%;" : "")
       \(fillCrossAxis && scrollY ? "width: 100%;" : "")
       """,
-                                "class": !showsIndicators ? "_tokamak-scrollview-hideindicators" : ""]) {
+      "class": !showsIndicators ? "_tokamak-scrollview-hideindicators" : "",
+    ]) {
       content
     })
   }
