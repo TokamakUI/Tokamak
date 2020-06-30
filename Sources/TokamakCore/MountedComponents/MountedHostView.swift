@@ -85,7 +85,9 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
 
     // if no existing children then mount all new children
     case (true, false):
-      mountedChildren = childrenViews.map { $0.makeMountedView(target, withEnvironment: environmentValues) }
+      mountedChildren = childrenViews.map {
+        $0.makeMountedView(target, withEnvironment: environmentValues)
+      }
       mountedChildren.forEach { $0.mount(with: reconciler) }
 
     // if both arrays have items then reconcile by types and keys

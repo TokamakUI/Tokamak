@@ -94,7 +94,9 @@ public final class StackReconciler<R: Renderer> {
       .genericTypes
       .filter({ $0 is EnvironmentModifier.Type }).count > 0 {
       // Apply Environment changes:
-      if let modifier = try? viewInfo.property(named: "modifier").get(from: compositeView.view.view) as? EnvironmentModifier {
+      if let modifier = try? viewInfo
+        .property(named: "modifier")
+        .get(from: compositeView.view.view) as? EnvironmentModifier {
         modifier._modifyEnvironment(&compositeView.environmentValues)
       }
     }

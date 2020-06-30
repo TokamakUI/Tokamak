@@ -44,7 +44,8 @@ final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {
   override func mount(with reconciler: StackReconciler<R>) {
     let childBody = reconciler.render(compositeView: self)
 
-    let child: MountedView<R> = childBody.makeMountedView(parentTarget, withEnvironment: environmentValues)
+    let child: MountedView<R> = childBody.makeMountedView(parentTarget,
+                                                          withEnvironment: environmentValues)
     mountedChildren = [child]
     child.mount(with: reconciler)
   }
@@ -61,7 +62,8 @@ final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {
     switch (mountedChildren.last, reconciler.render(compositeView: self)) {
     // no mounted children, but children available now
     case let (nil, childBody):
-      let child: MountedView<R> = childBody.makeMountedView(parentTarget, withEnvironment: environmentValues)
+      let child: MountedView<R> = childBody.makeMountedView(parentTarget,
+                                                            withEnvironment: environmentValues)
       mountedChildren = [child]
       child.mount(with: reconciler)
 
@@ -84,7 +86,8 @@ final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {
         // wrapper, then mount a new one with the new `childBody`
         wrapper.unmount(with: reconciler)
 
-        let child: MountedView<R> = childBody.makeMountedView(parentTarget, withEnvironment: environmentValues)
+        let child: MountedView<R> = childBody.makeMountedView(parentTarget,
+                                                              withEnvironment: environmentValues)
         mountedChildren = [child]
         child.mount(with: reconciler)
       }
