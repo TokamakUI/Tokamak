@@ -28,7 +28,6 @@ protocol SpacerContainer: ParentView {
 extension SpacerContainer {
   var hasSpacer: Bool {
     children
-//      .filter { mapAnyView($0) { (v: Spacer) in v } != nil }
       .compactMap {
         mapAnyView($0) { (v: Spacer) in
           v
