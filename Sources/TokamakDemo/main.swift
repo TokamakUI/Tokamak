@@ -46,6 +46,8 @@ let renderer = DOMRenderer(
       .frame(width: 25, height: 25)
     TextFieldDemo()
     SpacerDemo()
+    Spacer()
+    Text("Forced to bottom.")
   },
   div
 )

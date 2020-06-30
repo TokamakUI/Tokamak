@@ -29,10 +29,10 @@ extension SpacerContainer {
   var hasSpacer: Bool {
     children
 //      .filter { mapAnyView($0) { (v: Spacer) in v } != nil }
-      .filter {
+      .compactMap {
         mapAnyView($0) { (v: Spacer) in
           v
-        } != nil
+        }
       }
       .count > 0 ||
       children.compactMap {
@@ -40,8 +40,7 @@ extension SpacerContainer {
           v
         }
       }
-      .filter { $0.axis == axis }
-      .filter(\.hasSpacer)
+      .filter { $0.axis == axis && $0.hasSpacer }
       .count > 0
   }
 
@@ -53,9 +52,7 @@ extension SpacerContainer {
       .compactMap {
         mapAnyView($0, transform: { (v: SpacerContainer) in v })
       }
-      .filter { $0.axis != axis }
-      .map(\.hasSpacer)
-      .filter { $0 }
+      .filter { $0.axis != axis && $0.hasSpacer }
       .count > 0
   }
 }

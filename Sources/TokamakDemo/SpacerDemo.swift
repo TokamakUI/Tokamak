@@ -19,14 +19,10 @@ import TokamakDOM
 
 struct SpacerDemo: View {
   var body: some View {
-    VStack {
-      HStack {
-        Text("Left side.")
-        Spacer()
-        Text("Right side.")
-      }
+    HStack {
+      Text("Left side.")
       Spacer()
-      Text("Forced to bottom.")
+      Text("Right side.")
     }
   }
 }
