@@ -17,11 +17,11 @@ import TokamakDOM
 
 let document = JSObjectRef.global.document.object!
 
-_ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-"""#)
+// _ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
+// <link
+//  rel="stylesheet"
+//  href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+// """#)
 
 struct CustomModifier: ViewModifier {
   func body(content: Content) -> some View {
