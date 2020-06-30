@@ -11,35 +11,27 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Jed Fox on 06/28/2020.
+//
 
 import TokamakCore
 
-public typealias HStack = TokamakCore.HStack
+public typealias SecureField = TokamakCore.SecureField
 
-extension VerticalAlignment {
-  var cssValue: String {
-    switch self {
-    case .top:
-      return "start"
-    case .center:
-      return "center"
-    case .bottom:
-      return "end"
-    }
-  }
-}
-
-extension HStack: ViewDeferredToRenderer, SpacerContainer {
-  var axis: SpacerContainerAxis { .horizontal }
-
+extension SecureField: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
-    AnyView(HTML("div", [
-      "style": """
-      display: flex; flex-direction: row; align-items: \(alignment.cssValue);
-      \(hasSpacer ? "width: 100%;" : "")
-      \(fillCrossAxis ? "height: 100%;" : "")
-      """,
-      "class": "_tokamak-stack",
-    ]) { content })
+    AnyView(HTML("input", [
+      "type": "password",
+      "value": textBinding.wrappedValue,
+      "placeholder": secureFieldLabel(self),
+    ], listeners: [
+      "keypress": { event in if event.key == "Enter" { commitAction() } },
+      "input": { event in
+          if let newValue = event.target.object?.value.string {
+            textBinding.wrappedValue = newValue
+          }
+        },
+    ]))
   }
 }

@@ -31,49 +31,31 @@ struct CustomModifier: ViewModifier {
 
 let div = document.createElement!("div").object!
 let renderer = DOMRenderer(
-  VStack {
-    Counter(count: 5, limit: 15)
-      .padding()
-      .background(Color(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0))
-      .border(Color.red, width: 3)
-    ZStack {
-      Text("I'm on bottom")
-      Text("I'm forced to the top")
-        .zIndex(1)
-      Text("I'm on top")
-    }
-    .padding(20)
-    ForEachDemo()
-    Text("This is the inital text")
-      .modifier(CustomModifier())
-    Text("I'm all fancy")
-      .font(.system(size: 16, weight: .regular, design: .serif))
-      .italic()
+  ScrollView(showsIndicators: false) {
     HStack {
-      ForEach([
-        Font.Weight.ultraLight,
-        .thin,
-        .light,
-        .regular,
-        .semibold,
-        .bold,
-        .heavy,
-        .black,
-      ], id: \.self) { weight in
-        Text("a")
-          .fontWeight(weight)
-      }
+      Spacer()
     }
-    Text("This is super important")
-      .bold()
-      .underline(true, color: .red)
-    Text("This was super important")
-      .bold()
-      .strikethrough(true, color: .red)
-    Text("THICK TEXT")
-      .kerning(0.5)
-    SVGCircle()
-      .frame(width: 25, height: 25)
+    VStack {
+      Counter(count: 5, limit: 15)
+        .padding()
+        .background(Color(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0))
+        .border(Color.red, width: 3)
+      ZStack {
+        Text("I'm on bottom")
+        Text("I'm forced to the top")
+          .zIndex(1)
+        Text("I'm on top")
+      }
+      .padding(20)
+      ForEachDemo()
+      TextDemo()
+      SVGCircle()
+        .frame(width: 25, height: 25)
+      TextFieldDemo()
+      SpacerDemo()
+      Spacer()
+      Text("Forced to bottom.")
+    }
   },
   div
 )

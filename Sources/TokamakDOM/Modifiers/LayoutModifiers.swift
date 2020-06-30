@@ -32,6 +32,8 @@ extension _FrameLayout: DOMViewModifier {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex-grow: 0;
+    flex-shrink: 0;
     """]
   }
 }
@@ -48,6 +50,8 @@ extension _FlexFrameLayout: DOMViewModifier {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex-grow: 0;
+    flex-shrink: 0;
     """]
   }
 }
