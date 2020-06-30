@@ -21,7 +21,8 @@ public protocol DOMViewModifier {
   var attributes: [String: String] { get }
 }
 
-extension ModifiedContent: DOMViewModifier where Content: DOMViewModifier, Modifier: DOMViewModifier {
+extension ModifiedContent: DOMViewModifier
+  where Content: DOMViewModifier, Modifier: DOMViewModifier {
   // Merge attributes
   public var attributes: [String: String] {
     var attr = content.attributes
