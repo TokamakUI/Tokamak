@@ -146,7 +146,8 @@ extension Text: AnyHTML {
       letter-spacing: \(kerning);
       vertical-align: \(baseline == nil ? "baseline" : "\(baseline!)em");
       text-decoration: \(textDecoration);
-      text-decoration-color: \(strikethrough?.1?.description ?? underline?.1?.description ?? "inherit")
+      text-decoration-color: \(strikethrough?.1?.description ?? underline?.1?.description
+        ?? "inherit")
       """,
     ]
   }
