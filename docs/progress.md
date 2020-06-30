@@ -19,7 +19,7 @@ Table columns:
 | --- | ---------------------------------------------------------------------------- | :-: |
 | 🚧  | [Text](https://developer.apple.com/documentation/swiftui/text)               |     |
 | 🚧  | [TextField](https://developer.apple.com/documentation/swiftui/textfield)     |     |
-|     | [SecureField](https://developer.apple.com/documentation/swiftui/securefield) |
+| 🚧  | [SecureField](https://developer.apple.com/documentation/swiftui/securefield) |
 |     | [TextEditor](https://developer.apple.com/documentation/swiftui/texteditor)   |  β  |
 
 ### Images
