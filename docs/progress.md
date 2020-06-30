@@ -126,7 +126,7 @@ Table columns:
 
 |     |                                                                                  |     |
 | --- | -------------------------------------------------------------------------------- | :-: |
-|     | [EmptyView](https://developer.apple.com/documentation/swiftui/emptyview)         |     |
+| ✅  | [EmptyView](https://developer.apple.com/documentation/swiftui/emptyview)         |     |
 |     | [EquatableView](https://developer.apple.com/documentation/swiftui/equatableview) |     |
 
 ### Infrequently Used Views
