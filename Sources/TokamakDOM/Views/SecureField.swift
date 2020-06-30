@@ -21,15 +21,16 @@ public typealias SecureField = TokamakCore.SecureField
 
 extension SecureField: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
-    AnyView(HTML("input", [
+    let proxy = _SecureFieldProxy(self)
+    return AnyView(HTML("input", [
       "type": "password",
-      "value": textBinding.wrappedValue,
-      "placeholder": _SecureFieldProxy(self).label.content,
+      "value": proxy.textBinding.wrappedValue,
+      "placeholder": proxy.label.content,
     ], listeners: [
-      "keypress": { event in if event.key == "Enter" { commitAction() } },
+      "keypress": { event in if event.key == "Enter" { proxy.onCommit() } },
       "input": { event in
           if let newValue = event.target.object?.value.string {
-            textBinding.wrappedValue = newValue
+            proxy.textBinding.wrappedValue = newValue
           }
         },
     ]))

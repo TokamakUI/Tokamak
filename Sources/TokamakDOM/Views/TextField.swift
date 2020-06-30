@@ -21,17 +21,19 @@ public typealias TextField = TokamakCore.TextField
 
 extension TextField: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
-    AnyView(HTML("input", [
+    let proxy = _TextFieldProxy(self)
+
+    return AnyView(HTML("input", [
       "type": "text",
-      "value": textBinding.wrappedValue,
-      "placeholder": _TextFieldProxy(self).label.content,
+      "value": proxy.textBinding.wrappedValue,
+      "placeholder": proxy.label.content,
     ], listeners: [
-      "focus": { _ in editingChangedAction(true) },
-      "blur": { _ in editingChangedAction(false) },
-      "keypress": { event in if event.key == "Enter" { commitAction() } },
+      "focus": { _ in proxy.onEditingChanged(true) },
+      "blur": { _ in proxy.onEditingChanged(false) },
+      "keypress": { event in if event.key == "Enter" { proxy.onCommit() } },
       "input": { event in
           if let newValue = event.target.object?.value.string {
-            textBinding.wrappedValue = newValue
+            proxy.textBinding.wrappedValue = newValue
           }
         },
     ]))

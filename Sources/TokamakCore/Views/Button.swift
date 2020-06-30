@@ -18,8 +18,7 @@
 public struct Button<Label>: View where Label: View {
   let label: Label
 
-  // FIXME: this should be internal
-  public let action: () -> ()
+  let action: () -> ()
 
   public init(action: @escaping () -> (), @ViewBuilder label: () -> Label) {
     self.label = label()
@@ -52,4 +51,5 @@ public struct _ButtonProxy {
   public init(_ subject: Button<Text>) { self.subject = subject }
 
   public var label: _TextProxy { _TextProxy(subject.label) }
+  public var action: () -> () { subject.action }
 }
