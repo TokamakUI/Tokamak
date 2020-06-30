@@ -93,7 +93,7 @@ extension Font: StylesConvertible {
 }
 
 extension Text: AnyHTML {
-  public var innerHTML: String? { textContent(self) }
+  public var innerHTML: String? { _TextProxy(self).content }
   var tag: String { "span" }
   var attributes: [String: String] {
     var font: Font?

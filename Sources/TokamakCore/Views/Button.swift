@@ -45,6 +45,11 @@ extension Button: ParentView {
   }
 }
 
-public func buttonLabel(_ button: Button<Text>) -> String {
-  button.label.content
+/// This is a helper class that works around absence of "package private" access control in Swift
+public struct _ButtonProxy {
+  public let subject: Button<Text>
+
+  public init(_ subject: Button<Text>) { self.subject = subject }
+
+  public var label: _TextProxy { _TextProxy(subject.label) }
 }

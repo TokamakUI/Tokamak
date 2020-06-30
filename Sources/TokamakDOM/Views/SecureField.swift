@@ -24,7 +24,7 @@ extension SecureField: ViewDeferredToRenderer where Label == Text {
     AnyView(HTML("input", [
       "type": "password",
       "value": textBinding.wrappedValue,
-      "placeholder": secureFieldLabel(self),
+      "placeholder": _SecureFieldProxy(self).label.content,
     ], listeners: [
       "keypress": { event in if event.key == "Enter" { commitAction() } },
       "input": { event in

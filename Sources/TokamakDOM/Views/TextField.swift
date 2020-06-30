@@ -24,7 +24,7 @@ extension TextField: ViewDeferredToRenderer where Label == Text {
     AnyView(HTML("input", [
       "type": "text",
       "value": textBinding.wrappedValue,
-      "placeholder": textFieldLabel(self),
+      "placeholder": _TextFieldProxy(self).label.content,
     ], listeners: [
       "focus": { _ in editingChangedAction(true) },
       "blur": { _ in editingChangedAction(false) },

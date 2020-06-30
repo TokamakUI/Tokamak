@@ -48,6 +48,11 @@ extension TextField where Label == Text {
   // ) where S : StringProtocol
 }
 
-public func textFieldLabel(_ textField: TextField<Text>) -> String {
-  textField.label.content
+/// This is a helper class that works around absence of "package private" access control in Swift
+public struct _TextFieldProxy {
+  public let subject: TextField<Text>
+
+  public init(_ subject: TextField<Text>) { self.subject = subject }
+
+  public var label: _TextProxy { _TextProxy(subject.label) }
 }

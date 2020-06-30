@@ -38,6 +38,11 @@ extension SecureField where Label == Text {
   }
 }
 
-public func secureFieldLabel(_ secureField: SecureField<Text>) -> String {
-  secureField.label.content
+/// This is a helper class that works around absence of "package private" access control in Swift
+public struct _SecureFieldProxy {
+  public let subject: SecureField<Text>
+
+  public init(_ subject: SecureField<Text>) { self.subject = subject }
+
+  public var label: _TextProxy { _TextProxy(subject.label) }
 }
