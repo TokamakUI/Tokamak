@@ -142,7 +142,7 @@ Table columns:
 
 |     |                                                                                            |     |
 | --- | ------------------------------------------------------------------------------------------ | :-: |
-| 🚧  | [Rectangle]https://developer.apple.com/documentation/swiftui/rectangle)                    |     |
+| 🚧  | [Rectangle](https://developer.apple.com/documentation/swiftui/rectangle)                    |     |
 | 🚧  | [RoundedRectangle](https://developer.apple.com/documentation/swiftui/roundedrectangle)     |     |
 | 🚧  | [Ellipse](https://developer.apple.com/documentation/swiftui/ellipse)                       |     |
 | 🚧  | [Circle](https://developer.apple.com/documentation/swiftui/circle)                         |     |
