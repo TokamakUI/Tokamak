@@ -17,11 +17,9 @@
 
 public struct TextField<Label>: View where Label: View {
   let label: Label
-
-  // FIXME: this should be internal
-  public let textBinding: Binding<String>
-  public let editingChangedAction: (Bool) -> ()
-  public let commitAction: () -> ()
+  let textBinding: Binding<String>
+  let onEditingChanged: (Bool) -> ()
+  let onCommit: () -> ()
 
   public var body: Never {
     neverBody("TextField")
@@ -36,8 +34,8 @@ extension TextField where Label == Text {
   ) where S: StringProtocol {
     label = Text(title)
     textBinding = text.projectedValue
-    editingChangedAction = onEditingChanged
-    commitAction = onCommit
+    self.onEditingChanged = onEditingChanged
+    self.onCommit = onCommit
   }
 
   // FIXME: implement this method, which uses a Formatter to control the value of the TextField
@@ -48,6 +46,14 @@ extension TextField where Label == Text {
   // ) where S : StringProtocol
 }
 
-public func textFieldLabel(_ textField: TextField<Text>) -> String {
-  textField.label.content
+/// This is a helper class that works around absence of "package private" access control in Swift
+public struct _TextFieldProxy {
+  public let subject: TextField<Text>
+
+  public init(_ subject: TextField<Text>) { self.subject = subject }
+
+  public var label: _TextProxy { _TextProxy(subject.label) }
+  public var textBinding: Binding<String> { subject.textBinding }
+  public var onCommit: () -> () { subject.onCommit }
+  public var onEditingChanged: (Bool) -> () { subject.onEditingChanged }
 }

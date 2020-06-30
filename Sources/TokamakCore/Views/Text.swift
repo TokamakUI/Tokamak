@@ -50,8 +50,13 @@ public struct Text: View {
   }
 }
 
-public func textContent(_ text: Text) -> String {
-  text.content
+/// This is a helper class that works around absence of "package private" access control in Swift
+public struct _TextProxy {
+  public let subject: Text
+
+  public init(_ subject: Text) { self.subject = subject }
+
+  public var content: String { subject.content }
 }
 
 public extension Text {
