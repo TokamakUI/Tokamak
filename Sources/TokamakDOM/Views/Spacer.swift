@@ -28,7 +28,20 @@ protocol SpacerContainer: ParentView {
 extension SpacerContainer {
   var hasSpacer: Bool {
     children
-      .filter { mapAnyView($0) { (v: Spacer) in v } != nil }
+//      .filter { mapAnyView($0) { (v: Spacer) in v } != nil }
+      .filter {
+        mapAnyView($0) { (v: Spacer) in
+          v
+        } != nil
+      }
+      .count > 0 ||
+      children.compactMap {
+        mapAnyView($0) { (v: SpacerContainer) in
+          v
+        }
+      }
+      .filter { $0.axis == axis }
+      .filter(\.hasSpacer)
       .count > 0
   }
 
