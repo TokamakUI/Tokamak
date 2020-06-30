@@ -16,6 +16,10 @@ let tokamakStyles = """
 ._tokamak-stack > * {
   flex-shrink: 0;
 }
+._tokamak-scrollview-hideindicators {
+  scrollbar-color: transparent;
+  scrollbar-width: 0;
+}
 ._tokamak-scrollview-hideindicators::-webkit-scrollbar {
   width: 0;
   height: 0;

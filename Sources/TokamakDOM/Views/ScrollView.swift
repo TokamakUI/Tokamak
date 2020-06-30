@@ -31,12 +31,9 @@ extension ScrollView: ViewDeferredToRenderer, SpacerContainer {
   public var deferredBody: AnyView {
     let scrollX = axes.contains(.horizontal)
     let scrollY = axes.contains(.vertical)
-    // FIXME: I can only hide the scrollbars on Firefox
-    // Safari/Chrome require a `::-webkit-scrollbar` selector, which can't be done with inline styles
     return AnyView(HTML("div", ["style": """
       \(scrollX ? "overflow-x: auto; width: 100%;" : "overflow-x: hidden;")
       \(scrollY ? "overflow-y: auto; height: 100%;" : "overflow-y: hidden;")
-      \(!showsIndicators ? "scrollbar-color: transparent;" : "")
       \(fillCrossAxis && scrollX ? "height: 100%;" : "")
       \(fillCrossAxis && scrollY ? "width: 100%;" : "")
       """,
