@@ -110,7 +110,7 @@ Table columns:
 
 |     |                                                                      |     |
 | --- | -------------------------------------------------------------------- | :-: |
-|     | [Spacer](https://developer.apple.com/documentation/swiftui/spacer)   |     |
+| ✅ | [Spacer](https://developer.apple.com/documentation/swiftui/spacer)   |     |
 |     | [Divider](https://developer.apple.com/documentation/swiftui/divider) |     |
 
 ### Architectural Views
