@@ -41,39 +41,11 @@ let renderer = DOMRenderer(
     }
     .padding(20)
     ForEachDemo()
-    Text("This is the inital text")
-      .modifier(CustomModifier())
-    Text("I'm all fancy")
-      .font(.system(size: 16, weight: .regular, design: .serif))
-      .italic()
-    HStack {
-      ForEach([
-        Font.Weight.ultraLight,
-        .thin,
-        .light,
-        .regular,
-        .semibold,
-        .bold,
-        .heavy,
-        .black,
-      ], id: \.self) { weight in
-        Text("a")
-          .fontWeight(weight)
-      }
-    }
-    VStack {
-      Text("This is super important")
-        .bold()
-        .underline(true, color: .red)
-      Text("This was super important")
-        .bold()
-        .strikethrough(true, color: .red)
-      Text("THICK TEXT")
-        .kerning(0.5)
-    }
+    TextDemo()
     SVGCircle()
       .frame(width: 25, height: 25)
     TextFieldDemo()
+    SpacerDemo()
   },
   div
 )

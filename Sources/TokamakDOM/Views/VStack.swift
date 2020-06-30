@@ -29,10 +29,16 @@ extension HorizontalAlignment {
   }
 }
 
-extension VStack: ViewDeferredToRenderer {
+extension VStack: ViewDeferredToRenderer, SpacerContainer {
+  var axis: SpacerContainerAxis { .vertical }
+
   public var deferredBody: AnyView {
     AnyView(HTML("div", [
-      "style": "display: flex; flex-direction: column; align-items: \(alignment.cssValue);",
+      "style": """
+      display: flex; flex-direction: column; align-items: \(alignment.cssValue);
+      \(hasSpacer ? "height: 100%;" : "")
+      \(fillCrossAxis ? "width: 100%;" : "")
+      """,
     ]) { content })
   }
 }
