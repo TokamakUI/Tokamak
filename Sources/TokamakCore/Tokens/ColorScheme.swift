@@ -22,7 +22,7 @@ struct ColorSchemeKey: EnvironmentKey {
 }
 
 public extension EnvironmentValues {
-  var colorScheme: ColorScheme? {
+  var colorScheme: ColorScheme {
     get {
       self[ColorSchemeKey.self]
     }
