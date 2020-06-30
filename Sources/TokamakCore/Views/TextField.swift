@@ -22,6 +22,7 @@ public struct TextField<Label>: View where Label: View {
   public let textBinding: Binding<String>
   public let editingChangedAction: (Bool) -> ()
   public let commitAction: () -> ()
+  public var _textFieldStyle: TextFieldStyle = DefaultTextFieldStyle()
 
   public var body: Never {
     neverBody("TextField")
@@ -35,9 +36,21 @@ extension TextField where Label == Text {
     onCommit: @escaping () -> () = {}
   ) where S: StringProtocol {
     label = Text(title)
-    textBinding = text.projectedValue
+    textBinding = text
     editingChangedAction = onEditingChanged
     commitAction = onCommit
+  }
+
+  // FIXME: this should be internal
+  public init(
+    _from textField: TextField,
+    textFieldStyle: TextFieldStyle
+  ) {
+    label = textField.label
+    textBinding = textField.textBinding
+    editingChangedAction = textField.editingChangedAction
+    commitAction = textField.commitAction
+    _textFieldStyle = textFieldStyle
   }
 
   // FIXME: implement this method, which uses a Formatter to control the value of the TextField

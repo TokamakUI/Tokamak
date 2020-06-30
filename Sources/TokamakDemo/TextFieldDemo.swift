@@ -32,9 +32,11 @@ struct TextFieldDemo: View {
         isFocused ? "Focused" : "Not focused",
         text: emptyString,
         onEditingChanged: { editing in isFocused = editing }
-      )
+      ).textFieldStyle(RoundedBorderTextFieldStyle())
       Text("Commits: \(numCommits)")
       Text("Text: “\(text)”")
+
+      TextField("Plain style", text: $text).textFieldStyle(PlainTextFieldStyle())
 
       HStack {
         SecureField(

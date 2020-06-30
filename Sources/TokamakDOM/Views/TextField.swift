@@ -22,9 +22,10 @@ public typealias TextField = TokamakCore.TextField
 extension TextField: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
     AnyView(HTML("input", [
-      "type": "text",
+      "type": _textFieldStyle.type,
       "value": textBinding.wrappedValue,
       "placeholder": textFieldLabel(self),
+      "style": _textFieldStyle.style,
     ], listeners: [
       "focus": { _ in editingChangedAction(true) },
       "blur": { _ in editingChangedAction(false) },
