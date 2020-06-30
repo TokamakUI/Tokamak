@@ -58,20 +58,7 @@ public struct SquareBorderTextFieldStyle: TextFieldStyle {
   """
 }
 
-public struct _TextFieldStyle: ViewModifier {
-  public var style: TextFieldStyle
-
-  public init(style: TextFieldStyle) {
-    self.style = style
-  }
-
-  public func body(content: Content) -> some View {
-    content
-  }
-}
-
 extension TextField where Label == Text {
-  // FIXME: should be internal
   public func textFieldStyle(_ style: TextFieldStyle) -> Self {
     TextField(_from: self, textFieldStyle: style)
   }
