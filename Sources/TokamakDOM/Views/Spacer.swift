@@ -49,7 +49,7 @@ extension SpacerContainer {
   var fillCrossAxis: Bool {
     children
       .compactMap {
-        mapAnyView($0, transform: { (v: SpacerContainer) in v })
+        mapAnyView($0) { (v: SpacerContainer) in v }
       }
       .filter { $0.axis != axis && $0.hasSpacer }
       .count > 0
