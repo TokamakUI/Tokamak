@@ -31,7 +31,7 @@ struct CustomModifier: ViewModifier {
 
 let div = document.createElement!("div").object!
 let renderer = DOMRenderer(
-  ScrollView {
+  ScrollView(showsIndicators: false) {
     HStack {
       Spacer()
     }

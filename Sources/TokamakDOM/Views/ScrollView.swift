@@ -34,12 +34,13 @@ extension ScrollView: ViewDeferredToRenderer, SpacerContainer {
     // FIXME: I can only hide the scrollbars on Firefox
     // Safari/Chrome require a `::-webkit-scrollbar` selector, which can't be done with inline styles
     return AnyView(HTML("div", ["style": """
-    \(scrollX ? "overflow-x: auto; width: 100%;" : "overflow-x: hidden;")
-    \(scrollY ? "overflow-y: auto; height: 100%;" : "overflow-y: hidden;")
-    \(!showsIndicators ? "scrollbar-color: transparent;" : "")
-    \(fillCrossAxis && scrollX ? "height: 100%;" : "")
-    \(fillCrossAxis && scrollY ? "width: 100%;" : "")
-    """]) {
+      \(scrollX ? "overflow-x: auto; width: 100%;" : "overflow-x: hidden;")
+      \(scrollY ? "overflow-y: auto; height: 100%;" : "overflow-y: hidden;")
+      \(!showsIndicators ? "scrollbar-color: transparent;" : "")
+      \(fillCrossAxis && scrollX ? "height: 100%;" : "")
+      \(fillCrossAxis && scrollY ? "width: 100%;" : "")
+      """,
+                                "class": !showsIndicators ? "_tokamak-scrollview-hideindicators" : ""]) {
       content
     })
   }

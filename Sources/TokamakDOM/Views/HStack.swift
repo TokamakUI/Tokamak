@@ -39,6 +39,7 @@ extension HStack: ViewDeferredToRenderer, SpacerContainer {
       \(hasSpacer ? "width: 100%;" : "")
       \(fillCrossAxis ? "height: 100%;" : "")
       """,
+      "class": "_tokamak-stack",
     ]) { content })
   }
 }
