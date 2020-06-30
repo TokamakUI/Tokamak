@@ -19,4 +19,4 @@ jobs:
       - name: Danger Swift
         uses: maxdesiatov/danger-swift@swiftlint-docker
         env:
-          DANGER_GITHUB_API_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
