@@ -39,13 +39,13 @@ public struct TupleView<T>: View {
     _children = [AnyView(v1), AnyView(v2)]
   }
 
+  // swiftlint:disable large_tuple
   init<T1: View, T2: View, T3: View>(_ v1: T1, _ v2: T2, _ v3: T3) where T == (T1, T2, T3) {
     value = (v1, v2, v3)
     _children = [AnyView(v1), AnyView(v2), AnyView(v3)]
   }
 
   // swiftlint:disable line_length
-  // swiftlint:disable large_tuple
   init<T1: View, T2: View, T3: View, T4: View>(_ v1: T1, _ v2: T2, _ v3: T3, _ v4: T4) where T == (T1, T2, T3, T4) {
     value = (v1, v2, v3, v4)
     _children = [AnyView(v1), AnyView(v2), AnyView(v3), AnyView(v4)]
