@@ -12,17 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Max Desiatov on 11/04/2020.
+//  Created by Carson Katri on 06/29/2020.
 //
 
-import TokamakCore
+public struct ScrollView<Content>: View where Content: View {
+  public let content: Content
+  public let axes: Axis.Set
+  public let showsIndicators: Bool
 
-public typealias Button = TokamakCore.Button
+  public init(_ axes: Axis.Set = .vertical, showsIndicators: Bool = true, @ViewBuilder content: () -> Content) {
+    self.axes = axes
+    self.showsIndicators = showsIndicators
+    self.content = content()
+  }
 
-extension Button: ViewDeferredToRenderer where Label == Text {
-  public var deferredBody: AnyView {
-    AnyView(HTML("button", listeners: ["click": { _ in _ButtonProxy(self).action() }]) {
-      _ButtonProxy(self).label.subject
-    })
+  public var body: Never {
+    neverBody("ScrollView")
+  }
+}
+
+extension ScrollView: ParentView {
+  public var children: [AnyView] {
+    (content as? GroupView)?.children ?? [AnyView(content)]
   }
 }

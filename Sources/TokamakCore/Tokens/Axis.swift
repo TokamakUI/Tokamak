@@ -11,19 +11,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 06/29/2020.
+//
 
-import TokamakCore
+public enum Axis: Int8, CaseIterable {
+  case horizontal
+  case vertical
 
-public typealias Font = TokamakCore.Font
-public typealias Color = TokamakCore.Color
+  public struct Set: OptionSet {
+    public let rawValue: Int8
+    public init(rawValue: Int8) {
+      self.rawValue = rawValue
+    }
 
-extension Color: CustomStringConvertible {
-  public var description: String {
-    "rgb(\(red * 255), \(green * 255), \(blue * 255), \(alpha * 255))"
+    public static let horizontal: Axis.Set = .init(rawValue: 1 << 0)
+    public static let vertical: Axis.Set = .init(rawValue: 1 << 1)
   }
 }
-
-public typealias CGRect = TokamakCore.CGRect
-public typealias CGPoint = TokamakCore.CGPoint
-public typealias CGSize = TokamakCore.CGSize
-public typealias CGAffineTransform = TokamakCore.CGAffineTransform

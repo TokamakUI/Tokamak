@@ -17,12 +17,10 @@
 
 public struct TextField<Label>: View where Label: View {
   let label: Label
-
-  // FIXME: this should be internal
-  public let textBinding: Binding<String>
-  public let editingChangedAction: (Bool) -> ()
-  public let commitAction: () -> ()
-  public var _textFieldStyle: TextFieldStyle = DefaultTextFieldStyle()
+  let textBinding: Binding<String>
+  let onEditingChanged: (Bool) -> ()
+  let onCommit: () -> ()
+  let textFieldStyle: TextFieldStyle
 
   public var body: Never {
     neverBody("TextField")
@@ -37,20 +35,20 @@ extension TextField where Label == Text {
   ) where S: StringProtocol {
     label = Text(title)
     textBinding = text
-    editingChangedAction = onEditingChanged
-    commitAction = onCommit
+    self.onEditingChanged = onEditingChanged
+    self.onCommit = onCommit
+    textFieldStyle = DefaultTextFieldStyle()
   }
 
-  // FIXME: this should be internal
-  public init(
+  init(
     _from textField: TextField,
     textFieldStyle: TextFieldStyle
   ) {
     label = textField.label
     textBinding = textField.textBinding
-    editingChangedAction = textField.editingChangedAction
-    commitAction = textField.commitAction
-    _textFieldStyle = textFieldStyle
+    onEditingChanged = textField.onEditingChanged
+    onCommit = textField.onCommit
+    self.textFieldStyle = textFieldStyle
   }
 
   // FIXME: implement this method, which uses a Formatter to control the value of the TextField
@@ -61,6 +59,19 @@ extension TextField where Label == Text {
   // ) where S : StringProtocol
 }
 
-public func textFieldLabel(_ textField: TextField<Text>) -> String {
-  textField.label.content
+/// This is a helper class that works around absence of "package private" access control in Swift
+public struct _TextFieldProxy {
+  public let subject: TextField<Text>
+
+  public init(_ subject: TextField<Text>) { self.subject = subject }
+
+  public func with(style: TextFieldStyle) -> Self {
+    _TextFieldProxy(TextField(_from: subject, textFieldStyle: style))
+  }
+
+  public var label: _TextProxy { _TextProxy(subject.label) }
+  public var textBinding: Binding<String> { subject.textBinding }
+  public var onCommit: () -> () { subject.onCommit }
+  public var onEditingChanged: (Bool) -> () { subject.onEditingChanged }
+  public var textFieldStyle: TextFieldStyle { subject.textFieldStyle }
 }

@@ -12,17 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Max Desiatov on 11/04/2020.
+//  Created by Carson Katri on 6/29/20.
 //
 
-import TokamakCore
+public struct Ellipse: Shape {
+  public func path(in rect: CGRect) -> Path {
+    .init(ellipseIn: rect)
+  }
 
-public typealias Button = TokamakCore.Button
+  public init() {}
+}
 
-extension Button: ViewDeferredToRenderer where Label == Text {
-  public var deferredBody: AnyView {
-    AnyView(HTML("button", listeners: ["click": { _ in _ButtonProxy(self).action() }]) {
-      _ButtonProxy(self).label.subject
-    })
+public struct Circle: Shape {
+  public func path(in rect: CGRect) -> Path {
+    .init(ellipseIn: rect)
+  }
+
+  public init() {}
+}
+
+public struct Capsule: Shape {
+  public var style: RoundedCornerStyle
+
+  public init(style: RoundedCornerStyle = .circular) {
+    self.style = style
+  }
+
+  public func path(in r: CGRect) -> Path {
+    .init(roundedRect: r,
+          cornerRadius: min(r.size.width, r.size.height) / 2,
+          style: style)
   }
 }

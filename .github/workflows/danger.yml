@@ -18,5 +18,6 @@ jobs:
 
       - name: Danger Swift
         uses: maxdesiatov/danger-swift@swiftlint-docker
+        if: github.event.pull_request.head.repo.full_name == github.repository
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}

@@ -39,6 +39,7 @@ extension VStack: ViewDeferredToRenderer, SpacerContainer {
       \(hasSpacer ? "height: 100%;" : "")
       \(fillCrossAxis ? "width: 100%;" : "")
       """,
+      "class": "_tokamak-stack",
     ]) { content })
   }
 }

@@ -19,7 +19,7 @@ import TokamakCore
 
 public typealias TextField = TokamakCore.TextField
 
-private func css(for style: TextFieldStyle) -> String {
+func css(for style: TextFieldStyle) -> String {
   if style is PlainTextFieldStyle {
     return """
       background: transparent;
@@ -32,18 +32,20 @@ private func css(for style: TextFieldStyle) -> String {
 
 extension TextField: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
-    AnyView(HTML("input", [
-      "type": _textFieldStyle is RoundedBorderTextFieldStyle ? "search" : "text",
-      "value": textBinding.wrappedValue,
-      "placeholder": textFieldLabel(self),
-      "style": css(for: _textFieldStyle),
+    let proxy = _TextFieldProxy(self)
+
+    return AnyView(HTML("input", [
+      "type": proxy.textFieldStyle is RoundedBorderTextFieldStyle ? "search" : "text",
+      "value": proxy.textBinding.wrappedValue,
+      "placeholder": proxy.label.content,
+      "style": css(for: proxy.textFieldStyle),
     ], listeners: [
-      "focus": { _ in editingChangedAction(true) },
-      "blur": { _ in editingChangedAction(false) },
-      "keypress": { event in if event.key == "Enter" { commitAction() } },
+      "focus": { _ in proxy.onEditingChanged(true) },
+      "blur": { _ in proxy.onEditingChanged(false) },
+      "keypress": { event in if event.key == "Enter" { proxy.onCommit() } },
       "input": { event in
           if let newValue = event.target.object?.value.string {
-            textBinding.wrappedValue = newValue
+            proxy.textBinding.wrappedValue = newValue
           }
         },
     ]))

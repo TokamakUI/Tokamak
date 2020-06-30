@@ -31,23 +31,31 @@ struct CustomModifier: ViewModifier {
 
 let div = document.createElement!("div").object!
 let renderer = DOMRenderer(
-  VStack {
-    Counter(count: 5, limit: 15)
-    ZStack {
-      Text("I'm on bottom")
-      Text("I'm forced to the top")
-        .zIndex(1)
-      Text("I'm on top")
+  ScrollView(showsIndicators: false) {
+    HStack {
+      Spacer()
     }
-    .padding(20)
-    ForEachDemo()
-    TextDemo()
-    SVGCircle()
-      .frame(width: 25, height: 25)
-    TextFieldDemo()
-    SpacerDemo()
-    Spacer()
-    Text("Forced to bottom.")
+    VStack {
+      Counter(count: 5, limit: 15)
+        .padding()
+        .background(Color(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0))
+        .border(Color.red, width: 3)
+      ZStack {
+        Text("I'm on bottom")
+        Text("I'm forced to the top")
+          .zIndex(1)
+        Text("I'm on top")
+      }
+      .padding(20)
+      ForEachDemo()
+      TextDemo()
+      SVGCircle()
+        .frame(width: 25, height: 25)
+      TextFieldDemo()
+      SpacerDemo()
+      Spacer()
+      Text("Forced to bottom.")
+    }
   },
   div
 )

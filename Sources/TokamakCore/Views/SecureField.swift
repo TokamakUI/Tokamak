@@ -17,10 +17,8 @@
 
 public struct SecureField<Label>: View where Label: View {
   let label: Label
-
-  // FIXME: this should be internal
-  public let textBinding: Binding<String>
-  public let commitAction: () -> ()
+  let textBinding: Binding<String>
+  let onCommit: () -> ()
 
   public var body: Never {
     neverBody("SecureField")
@@ -34,10 +32,17 @@ extension SecureField where Label == Text {
   ) where S: StringProtocol {
     label = Text(title)
     textBinding = text.projectedValue
-    commitAction = onCommit
+    self.onCommit = onCommit
   }
 }
 
-public func secureFieldLabel(_ secureField: SecureField<Text>) -> String {
-  secureField.label.content
+/// This is a helper class that works around absence of "package private" access control in Swift
+public struct _SecureFieldProxy {
+  public let subject: SecureField<Text>
+
+  public init(_ subject: SecureField<Text>) { self.subject = subject }
+
+  public var label: _TextProxy { _TextProxy(subject.label) }
+  public var textBinding: Binding<String> { subject.textBinding }
+  public var onCommit: () -> () { subject.onCommit }
 }

@@ -12,18 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
-
-public typealias Font = TokamakCore.Font
-public typealias Color = TokamakCore.Color
-
-extension Color: CustomStringConvertible {
-  public var description: String {
-    "rgb(\(red * 255), \(green * 255), \(blue * 255), \(alpha * 255))"
-  }
+let tokamakStyles = """
+._tokamak-stack > * {
+  flex-shrink: 0;
 }
-
-public typealias CGRect = TokamakCore.CGRect
-public typealias CGPoint = TokamakCore.CGPoint
-public typealias CGSize = TokamakCore.CGSize
-public typealias CGAffineTransform = TokamakCore.CGAffineTransform
+._tokamak-scrollview-hideindicators {
+  scrollbar-color: transparent;
+  scrollbar-width: 0;
+}
+._tokamak-scrollview-hideindicators::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+"""

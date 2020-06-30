@@ -93,7 +93,7 @@ extension Font: StylesConvertible {
 }
 
 extension Text: AnyHTML {
-  public var innerHTML: String? { textContent(self) }
+  public var innerHTML: String? { _TextProxy(self).content }
   var tag: String { "span" }
   var attributes: [String: String] {
     var font: Font?
@@ -146,7 +146,8 @@ extension Text: AnyHTML {
       letter-spacing: \(kerning);
       vertical-align: \(baseline == nil ? "baseline" : "\(baseline!)em");
       text-decoration: \(textDecoration);
-      text-decoration-color: \(strikethrough?.1?.description ?? underline?.1?.description ?? "inherit")
+      text-decoration-color: \(strikethrough?.1?.description ?? underline?.1?.description
+        ?? "inherit")
       """,
     ]
   }

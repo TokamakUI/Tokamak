@@ -39,3 +39,9 @@ extension _ZIndexModifier: DOMViewModifier {
     ["style": "z-index: \(index);"]
   }
 }
+
+extension _BackgroundModifier: DOMViewModifier where Background == Color {
+  public var attributes: [String: String] {
+    ["style": "background-color: \(background.description)"]
+  }
+}
