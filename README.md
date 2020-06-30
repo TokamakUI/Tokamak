@@ -1,4 +1,4 @@
-# Tokamak
+![Tokamak logo](/docs/logo-header.png)
 
 ## SwiftUI-compatible framework for building browser apps with WebAssembly
 
@@ -11,13 +11,12 @@ as much of SwiftUI API as possible and to provide a few more helpful additions t
 and CSS interactions.
 
 If there's some SwiftUI API that's missing but you'd like to use it, please review the existing
-[issues](https://github.com/swiftwasm/Tokamak/issues) and [PRs](https://github.com/swiftwasm/Tokamak/pulls) 
-to get more details about the current status, or [create a new issue](https://github.com/swiftwasm/Tokamak/issues/new) 
+[issues](https://github.com/swiftwasm/Tokamak/issues) and [PRs](https://github.com/swiftwasm/Tokamak/pulls)
+to get more details about the current status, or [create a new issue](https://github.com/swiftwasm/Tokamak/issues/new)
 to let us prioritize the development based on the demand. We also try to make the development of
-views and modifiers easier (with the help from the `HTML` view, see [the example 
+views and modifiers easier (with the help from the `HTML` view, see [the example
 below](https://github.com/swiftwasm/Tokamak#arbitrary-html)), so pull requests are very welcome! Don't
 forget to check [the "Contributing" section](https://github.com/swiftwasm/Tokamak#contributing) first.
-
 
 ## Getting started
 
