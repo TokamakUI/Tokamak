@@ -19,13 +19,24 @@ import TokamakCore
 
 public typealias TextField = TokamakCore.TextField
 
+private func css(for style: TextFieldStyle) -> String {
+  if style is PlainTextFieldStyle {
+    return """
+      background: transparent;
+      border: none;
+    """
+  } else {
+    return ""
+  }
+}
+
 extension TextField: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
     AnyView(HTML("input", [
-      "type": _textFieldStyle.type,
+      "type": _textFieldStyle is RoundedBorderTextFieldStyle ? "search" : "text",
       "value": textBinding.wrappedValue,
       "placeholder": textFieldLabel(self),
-      "style": _textFieldStyle.style,
+      "style": css(for: _textFieldStyle),
     ], listeners: [
       "focus": { _ in editingChangedAction(true) },
       "blur": { _ in editingChangedAction(false) },

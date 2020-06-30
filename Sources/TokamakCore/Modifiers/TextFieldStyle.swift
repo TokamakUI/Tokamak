@@ -16,46 +16,23 @@
 //
 
 public protocol TextFieldStyle {
-  // FIXME: Should properties be internal?
-  var type: String { get }
-  var style: String { get }
   init()
 }
 
 public struct DefaultTextFieldStyle: TextFieldStyle {
   public init() {}
-  public let type = "text"
-  public let style = """
-      -webkit-appearance: textfield;
-      appearance: textfield;
-  """
 }
 
 public struct PlainTextFieldStyle: TextFieldStyle {
   public init() {}
-  public let type = "text"
-  public let style = """
-      background: transparent;
-      border: none;
-  """
 }
 
 public struct RoundedBorderTextFieldStyle: TextFieldStyle {
   public init() {}
-  public let type = "search"
-  public let style = """
-      -webkit-appearance: searchfield;
-      appearance: searchfield;
-  """
 }
 
 public struct SquareBorderTextFieldStyle: TextFieldStyle {
   public init() {}
-  public let type = "text"
-  public let style = """
-      -webkit-appearance: textfield;
-      appearance: textfield;
-  """
 }
 
 extension TextField where Label == Text {
