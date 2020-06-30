@@ -1,4 +1,4 @@
-![Tokamak logo](/docs/logo-header.png)
+<img alt="Tokamak logo" src="docs/logo-header.png" width="520px"/>
 
 ## SwiftUI-compatible framework for building browser apps with WebAssembly
 
