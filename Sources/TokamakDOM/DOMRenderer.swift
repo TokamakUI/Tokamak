@@ -49,6 +49,8 @@ public final class DOMNode: Target {
 }
 
 let log = JSObjectRef.global.console.object!.log.function!
+let document = JSObjectRef.global.document.object!
+let head = document.head.object!
 
 public final class DOMRenderer: Renderer {
   public private(set) var reconciler: StackReconciler<DOMRenderer>?
@@ -57,7 +59,12 @@ public final class DOMRenderer: Renderer {
 
   public init<V: View>(_ view: V, _ ref: JSObjectRef) {
     rootRef = ref
-    rootRef.style = "display: flex; width: 100%; height: 100%; justify-content: center; align-items: center;"
+    rootRef.style = "display: flex; width: 100%; height: 100%; justify-content: center; align-items: center; overflow: hidden;"
+
+    let rootStyle = document.createElement!("style").object!
+    rootStyle.innerHTML = .string(tokamakStyles)
+    _ = head.appendChild!(rootStyle)
+
     reconciler = StackReconciler(
       view: view,
       target: DOMNode(view, ref),

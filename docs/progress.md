@@ -85,7 +85,7 @@ Table columns:
 | --- | ------------------------------------------------------------------------------------------ | :-: |
 |     | [List](https://developer.apple.com/documentation/swiftui/list)                             |     |
 | 🚧  | [ForEach](https://developer.apple.com/documentation/swiftui/foreach)                       |     |
-|     | [ScrollView](https://developer.apple.com/documentation/swiftui/scrollview)                 |     |
+| 🚧  | [ScrollView](https://developer.apple.com/documentation/swiftui/scrollview)                 |     |
 |     | [ScrollViewReader](https://developer.apple.com/documentation/swiftui/scrollviewreader)     |  β  |
 |     | [ScrollViewProxy](https://developer.apple.com/documentation/swiftui/scrollviewproxy)       |  β  |
 |     | [DynamicViewContent](https://developer.apple.com/documentation/swiftui/dynamicviewcontent) |  β  |
