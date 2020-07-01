@@ -34,7 +34,11 @@ Tokamak API attempts to resemble SwiftUI API as much as possible. The main diffe
 that you add `import TokamakDOM` instead of `import SwiftUI` in your files:
 
 ```swift
+#if os(WASI)
 import TokamakDOM
+#else
+import SwiftUI
+#endif
 
 struct Counter: View {
   @State var count: Int
@@ -48,7 +52,7 @@ struct Counter: View {
           Text("\(count)")
         }
       ) : AnyView(
-        VStack { Text("Limit exceeded") } }
+        VStack { Text("Limit exceeded") }
       )
   }
 }
