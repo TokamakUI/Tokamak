@@ -130,12 +130,11 @@ via `public typealias`.
 3. If a function or a type have `public` on them only by necessity to make them available in `TokamakDOM`,
 but unavailable to users (or not intended for public use), underscore is needed to indicate that.
 
-This is all caused by the lack of "package private" access control in Swift, and we do need separate 
-modules to allow for separate renderers for different platforms. The benefit is that users can pick and
-choose what they want to use, i.e. purely static websites would use only `TokamakHTML`, single-page apps
-would use `TokamakDOM`, maybe in conjuction with `TokamakHTML` for pre-rendering. As we'd like to try to
-implement a native renderer for Android at some point, probably in a separate `TokamakAndroid` module, 
-Android apps would use `TokamakAndroid` with no need to be aware of any of the web modules.
+The benefit of separate modules is that they allow us to provide separate renderers for different platforms.
+Users can pick and choose what they want to use, e.g. purely static websites would use only `TokamakHTML`, 
+single-page apps would use `TokamakDOM`, maybe in conjuction with `TokamakHTML` for pre-rendering. As we'd
+like to try to implement a native renderer for Android at some point, probably in a separate `TokamakAndroid`
+module, Android apps would use `TokamakAndroid` with no need to be aware of any of the web modules.
 
 ### Sponsorship
 
