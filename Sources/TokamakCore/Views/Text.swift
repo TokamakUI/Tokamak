@@ -28,7 +28,7 @@
 ///         .foregroundColor(.blue)
 ///         .bold()
 ///         .italic()
-///         .underline(true, .red)
+///         .underline(true, color: .red)
 public struct Text: View {
   let content: String
   public let _modifiers: [_Modifier]
