@@ -18,11 +18,13 @@
 import TokamakDOM
 
 struct EnvironmentDemo: View {
+  @Environment(\.colorScheme) var scheme: ColorScheme
+
   @Environment(\.font) var font: Font?
 
   var body: some View {
     if let font = font {
-      return Text("\(font)")
+      return Text("ColorScheme is \(scheme), font is \(font)")
     } else {
       return Text("`font` environment not set.")
     }

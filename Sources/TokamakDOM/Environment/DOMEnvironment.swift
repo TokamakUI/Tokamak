@@ -12,28 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public enum ColorScheme: CaseIterable {
-  case dark
-  case light
-}
+import TokamakCore
 
-struct ColorSchemeKey: EnvironmentKey {
-  static let defaultValue: ColorScheme = .light
-}
+struct DOMEnvironment<V: View>: View {
+  @State var scheme: ColorScheme
 
-public extension EnvironmentValues {
-  var colorScheme: ColorScheme {
-    get {
-      self[ColorSchemeKey.self]
-    }
-    set {
-      self[ColorSchemeKey.self] = newValue
-    }
-  }
-}
+  let content: V
 
-public extension View {
-  func colorScheme(_ colorScheme: ColorScheme) -> some View {
-    environment(\.colorScheme, colorScheme)
+  var body: some View {
+    content.colorScheme(scheme)
   }
 }

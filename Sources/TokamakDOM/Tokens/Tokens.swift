@@ -16,6 +16,7 @@ import TokamakCore
 
 public typealias Font = TokamakCore.Font
 public typealias Color = TokamakCore.Color
+public typealias ColorScheme = TokamakCore.ColorScheme
 
 extension Color: CustomStringConvertible {
   public var description: String {

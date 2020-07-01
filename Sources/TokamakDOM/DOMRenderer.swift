@@ -65,9 +65,11 @@ public final class DOMRenderer: Renderer {
     rootStyle.innerHTML = .string(tokamakStyles)
     _ = head.appendChild!(rootStyle)
 
+    var environmentView = DOMEnvironment(scheme: .light, content: view)
+
     reconciler = StackReconciler(
-      view: view,
-      target: DOMNode(view, ref),
+      view: environmentView,
+      target: DOMNode(environmentView, ref),
       renderer: self
     ) { closure in
       let fn = JSClosure { _ in
