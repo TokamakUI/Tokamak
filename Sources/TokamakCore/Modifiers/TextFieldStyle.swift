@@ -15,9 +15,7 @@
 //  Created by Jed Fox on 06/30/2020.
 //
 
-public protocol TextFieldStyle {
-  init()
-}
+public protocol TextFieldStyle {}
 
 public struct DefaultTextFieldStyle: TextFieldStyle {
   public init() {}
