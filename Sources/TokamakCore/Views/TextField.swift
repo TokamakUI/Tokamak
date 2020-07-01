@@ -20,6 +20,7 @@ public struct TextField<Label>: View where Label: View {
   let textBinding: Binding<String>
   let onEditingChanged: (Bool) -> ()
   let onCommit: () -> ()
+  @Environment(\.textFieldStyle) var style: TextFieldStyle
 
   public var body: Never {
     neverBody("TextField")
@@ -33,7 +34,7 @@ extension TextField where Label == Text {
     onCommit: @escaping () -> () = {}
   ) where S: StringProtocol {
     label = Text(title)
-    textBinding = text.projectedValue
+    textBinding = text
     self.onEditingChanged = onEditingChanged
     self.onCommit = onCommit
   }
@@ -56,4 +57,5 @@ public struct _TextFieldProxy {
   public var textBinding: Binding<String> { subject.textBinding }
   public var onCommit: () -> () { subject.onCommit }
   public var onEditingChanged: (Bool) -> () { subject.onEditingChanged }
+  public var textFieldStyle: TextFieldStyle { subject.style }
 }
