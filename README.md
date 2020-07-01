@@ -190,8 +190,9 @@ unacceptable behavior to conduct@tokamak.dev.
 
 - Thanks to the [Swift community](https://swift.org/community/) for
   building one of the best programming languages available!
-- Thanks to [SwiftWebUI](https://github.com/SwiftWebUI/SwiftWebUI),
-  [Render](https://github.com/alexdrone/Render),
+- Thanks to [SwiftWebUI](https://github.com/SwiftWebUI/SwiftWebUI) for reverse-engineering
+  some of the bits of SwiftUI and kickstarting the front-end Swift ecosystem for the web.
+- Thanks to [Render](https://github.com/alexdrone/Render),
   [ReSwift](https://github.com/ReSwift/ReSwift), [Katana
   UI](https://github.com/BendingSpoons/katana-ui-swift) and
   [Komponents](https://github.com/freshOS/Komponents) for inspiration!
