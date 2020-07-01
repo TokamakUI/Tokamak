@@ -14,6 +14,12 @@
 
 import TokamakDOM
 
+struct CustomModifier: ViewModifier {
+  func body(content: Content) -> some View {
+    Text("Whole new body!")
+  }
+}
+
 struct TextDemo: View {
   var body: some View {
     VStack {
