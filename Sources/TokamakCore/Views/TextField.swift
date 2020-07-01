@@ -18,7 +18,6 @@
 /// A control that displays an editable text interface.
 ///
 /// Available when `Label` conforms to `View`
-/// The
 ///
 ///     @State private var username: String = ""
 ///     var body: some View {
