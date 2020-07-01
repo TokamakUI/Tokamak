@@ -34,7 +34,7 @@ final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {
   var environmentValues: EnvironmentValues
 
   init(_ view: AnyView, _ parentTarget: R.TargetType,
-       environmentValues: EnvironmentValues) {
+       _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
     self.environmentValues = environmentValues
 
@@ -45,7 +45,7 @@ final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {
     let childBody = reconciler.render(compositeView: self)
 
     let child: MountedView<R> = childBody.makeMountedView(parentTarget,
-                                                          withEnvironment: environmentValues)
+                                                          environmentValues)
     mountedChildren = [child]
     child.mount(with: reconciler)
   }
@@ -63,7 +63,7 @@ final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {
     // no mounted children, but children available now
     case let (nil, childBody):
       let child: MountedView<R> = childBody.makeMountedView(parentTarget,
-                                                            withEnvironment: environmentValues)
+                                                            environmentValues)
       mountedChildren = [child]
       child.mount(with: reconciler)
 
@@ -87,7 +87,7 @@ final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {
         wrapper.unmount(with: reconciler)
 
         let child: MountedView<R> = childBody.makeMountedView(parentTarget,
-                                                              withEnvironment: environmentValues)
+                                                              environmentValues)
         mountedChildren = [child]
         child.mount(with: reconciler)
       }

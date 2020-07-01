@@ -22,8 +22,6 @@ protocol EnvironmentModifier {
 }
 
 public struct _EnvironmentKeyWritingModifier<Value>: ViewModifier, EnvironmentModifier {
-//  public typealias Body = Never
-
   public let keyPath: WritableKeyPath<EnvironmentValues, Value>
   public let value: Value
 

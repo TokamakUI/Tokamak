@@ -35,7 +35,7 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
 
   init(_ view: AnyView,
        _ parentTarget: R.TargetType,
-       environmentValues: EnvironmentValues) {
+       _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
     self.environmentValues = environmentValues
 
@@ -52,7 +52,9 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
 
     guard !view.children.isEmpty else { return }
 
-    mountedChildren = view.children.map { $0.makeMountedView(target, withEnvironment: environmentValues) }
+    mountedChildren = view.children.map {
+      $0.makeMountedView(target, environmentValues)
+    }
     mountedChildren.forEach { $0.mount(with: reconciler) }
   }
 
@@ -86,7 +88,7 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
     // if no existing children then mount all new children
     case (true, false):
       mountedChildren = childrenViews.map {
-        $0.makeMountedView(target, withEnvironment: environmentValues)
+        $0.makeMountedView(target, environmentValues)
       }
       mountedChildren.forEach { $0.mount(with: reconciler) }
 
@@ -105,7 +107,7 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
           newChild = child
         } else {
           child.unmount(with: reconciler)
-          newChild = firstChild.makeMountedView(target, withEnvironment: environmentValues)
+          newChild = firstChild.makeMountedView(target, environmentValues)
           newChild.mount(with: reconciler)
         }
         newChildren.append(newChild)
@@ -124,7 +126,7 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
         // mount remaining views
         for firstChild in childrenViews {
           let newChild: MountedView<R> =
-            firstChild.makeMountedView(target, withEnvironment: environmentValues)
+            firstChild.makeMountedView(target, environmentValues)
           newChild.mount(with: reconciler)
           newChildren.append(newChild)
         }

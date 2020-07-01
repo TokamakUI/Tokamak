@@ -35,7 +35,7 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootView = view.makeMountedView(target, withEnvironment: EnvironmentValues())
+    rootView = view.makeMountedView(target, EnvironmentValues())
 
     rootView.mount(with: self)
   }
@@ -104,10 +104,11 @@ public final class StackReconciler<R: Renderer> {
     // Inject @Environment values
     // In the future we can also inject @EnvironmentObject values
     for prop in viewInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-      // swiftlint:disable:next force_cast
+      // swiftlint:disable force_cast
       var wrapper = try! prop.get(from: compositeView.view.view) as! EnvironmentReader
       wrapper.setContent(from: compositeView.environmentValues)
-      try? prop.set(value: wrapper, on: &compositeView.view.view)
+      try! prop.set(value: wrapper, on: &compositeView.view.view)
+      // swiftlint:enable force_cast
     }
     // swiftlint:enable force_try
 
