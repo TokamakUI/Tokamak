@@ -20,7 +20,7 @@ public struct TextField<Label>: View where Label: View {
   let textBinding: Binding<String>
   let onEditingChanged: (Bool) -> ()
   let onCommit: () -> ()
-  let textFieldStyle: TextFieldStyle
+  @Environment(\.textFieldStyle🔒) var style: TextFieldStyle
 
   public var body: Never {
     neverBody("TextField")
@@ -37,18 +37,6 @@ extension TextField where Label == Text {
     textBinding = text
     self.onEditingChanged = onEditingChanged
     self.onCommit = onCommit
-    textFieldStyle = DefaultTextFieldStyle()
-  }
-
-  init(
-    from textField: TextField,
-    with style: TextFieldStyle
-  ) {
-    label = textField.label
-    textBinding = textField.textBinding
-    onEditingChanged = textField.onEditingChanged
-    onCommit = textField.onCommit
-    textFieldStyle = style
   }
 
   // FIXME: implement this method, which uses a Formatter to control the value of the TextField
@@ -69,5 +57,5 @@ public struct _TextFieldProxy {
   public var textBinding: Binding<String> { subject.textBinding }
   public var onCommit: () -> () { subject.onCommit }
   public var onEditingChanged: (Bool) -> () { subject.onEditingChanged }
-  public var textFieldStyle: TextFieldStyle { subject.textFieldStyle }
+  public var textFieldStyle: TextFieldStyle { subject.style }
 }

@@ -35,8 +35,23 @@ public struct SquareBorderTextFieldStyle: TextFieldStyle {
   public init() {}
 }
 
-extension TextField where Label == Text {
-  public func textFieldStyle(_ style: TextFieldStyle) -> Self {
-    TextField(from: self, with: style)
+enum TextFieldStyleKey: EnvironmentKey {
+  static var defaultValue: TextFieldStyle = DefaultTextFieldStyle()
+}
+
+extension EnvironmentValues {
+  var textFieldStyle🔒: TextFieldStyle {
+    get {
+      self[TextFieldStyleKey.self]
+    }
+    set {
+      self[TextFieldStyleKey.self] = newValue
+    }
+  }
+}
+
+extension View {
+  public func textFieldStyle(_ style: TextFieldStyle) -> some View {
+    environment(\.textFieldStyle🔒, style)
   }
 }
