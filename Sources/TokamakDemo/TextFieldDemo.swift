@@ -21,6 +21,10 @@ struct TextFieldDemo: View {
   @State var isFocused = false
   @State var password = ""
   @State var committedPassword = ""
+  // Uncomment this line and build to verify the
+  // textFieldStyle environment variable is inaccessible
+  // @Environment(\.textFieldStyle) var textFieldStyle: TextFieldStyle
+
   var emptyString = Binding(get: { "" }, set: { _ in })
   var body: some View {
     VStack {
@@ -32,9 +36,18 @@ struct TextFieldDemo: View {
         isFocused ? "Focused" : "Not focused",
         text: emptyString,
         onEditingChanged: { editing in isFocused = editing }
-      )
+      ).textFieldStyle(RoundedBorderTextFieldStyle())
       Text("Commits: \(numCommits)")
       Text("Text: “\(text)”")
+
+      TextField("Plain style", text: $text).textFieldStyle(PlainTextFieldStyle())
+
+      HStack {
+        TextField("Rounded style, inherited", text: $text)
+        VStack {
+          TextField("Plain style, overridden", text: $text)
+        }.textFieldStyle(PlainTextFieldStyle())
+      }.textFieldStyle(RoundedBorderTextFieldStyle())
 
       HStack {
         SecureField(
