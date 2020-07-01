@@ -22,8 +22,8 @@ struct TextFieldDemo: View {
   @State var password = ""
   @State var committedPassword = ""
   // Uncomment this line and build to verify the
-  // textFieldStyle🔒 environment variable is inaccessible
-  // @Environment(\.textFieldStyle🔒) var textFieldStyle: TextFieldStyle
+  // textFieldStyle environment variable is inaccessible
+  // @Environment(\.textFieldStyle) var textFieldStyle: TextFieldStyle
 
   var emptyString = Binding(get: { "" }, set: { _ in })
   var body: some View {

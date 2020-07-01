@@ -38,7 +38,7 @@ enum TextFieldStyleKey: EnvironmentKey {
 }
 
 extension EnvironmentValues {
-  var textFieldStyle🔒: TextFieldStyle {
+  var textFieldStyle: TextFieldStyle {
     get {
       self[TextFieldStyleKey.self]
     }
@@ -50,6 +50,6 @@ extension EnvironmentValues {
 
 extension View {
   public func textFieldStyle(_ style: TextFieldStyle) -> some View {
-    environment(\.textFieldStyle🔒, style)
+    environment(\.textFieldStyle, style)
   }
 }

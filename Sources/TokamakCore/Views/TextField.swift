@@ -20,7 +20,7 @@ public struct TextField<Label>: View where Label: View {
   let textBinding: Binding<String>
   let onEditingChanged: (Bool) -> ()
   let onCommit: () -> ()
-  @Environment(\.textFieldStyle🔒) var style: TextFieldStyle
+  @Environment(\.textFieldStyle) var style: TextFieldStyle
 
   public var body: Never {
     neverBody("TextField")
