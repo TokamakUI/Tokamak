@@ -165,7 +165,7 @@ unacceptable behavior to conduct@tokamak.dev.
 ## Maintainers
 
 [Carson Katri](https://github.com/carson-katri),
-[Jed Fox](https://github.com/j-f1), [Max Desiatov](https://desiatov.com).
+[Jed Fox](https://jedfox.com), [Max Desiatov](https://desiatov.com).
 
 ## License
 
