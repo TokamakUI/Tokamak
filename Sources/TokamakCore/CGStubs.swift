@@ -15,7 +15,7 @@
 //  Created by Max Desiatov on 08/04/2020.
 //
 
-#if canImport(Glibc)
+#if os(WASI)
 import Glibc
 #else
 import Foundation
