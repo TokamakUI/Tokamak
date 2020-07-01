@@ -14,18 +14,28 @@
 
 public protocol EnvironmentKey {
   associatedtype Value
-  static var defaultValue: Self.Value { get }
+  static var defaultValue: Value { get }
 }
 
-public struct _EnvironmentKeyWritingModifier<Value>: ViewModifier {
-  public typealias Body = Never
+protocol EnvironmentModifier {
+  func modifyEnvironment(_ values: inout EnvironmentValues)
+}
 
+public struct _EnvironmentKeyWritingModifier<Value>: ViewModifier, EnvironmentModifier {
   public let keyPath: WritableKeyPath<EnvironmentValues, Value>
   public let value: Value
 
   public init(keyPath: WritableKeyPath<EnvironmentValues, Value>, value: Value) {
     self.keyPath = keyPath
     self.value = value
+  }
+
+  public func body(content: Content) -> some View {
+    content
+  }
+
+  func modifyEnvironment(_ values: inout EnvironmentValues) {
+    values[keyPath: keyPath] = value
   }
 }
 

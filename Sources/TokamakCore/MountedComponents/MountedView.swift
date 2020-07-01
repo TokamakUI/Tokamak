@@ -36,15 +36,16 @@ public class MountedView<R: Renderer> {
 }
 
 extension View {
-  func makeMountedView<R: Renderer>(_ parentTarget: R.TargetType)
+  func makeMountedView<R: Renderer>(_ parentTarget: R.TargetType,
+                                    _ environmentValues: EnvironmentValues)
     -> MountedView<R> {
     let anyView = self as? AnyView ?? AnyView(self)
     if anyView.type == EmptyView.self {
       return MountedNull(anyView)
     } else if anyView.bodyType == Never.self && !(anyView.type is ViewDeferredToRenderer.Type) {
-      return MountedHostView(anyView, parentTarget)
+      return MountedHostView(anyView, parentTarget, environmentValues)
     } else {
-      return MountedCompositeView(anyView, parentTarget)
+      return MountedCompositeView(anyView, parentTarget, environmentValues)
     }
   }
 }
