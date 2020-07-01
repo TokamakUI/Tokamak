@@ -1,4 +1,4 @@
-# Tokamak
+<img alt="Tokamak logo" src="docs/logo-header.png" width="640px"/>
 
 ## SwiftUI-compatible framework for building browser apps with WebAssembly
 
@@ -11,13 +11,12 @@ as much of SwiftUI API as possible and to provide a few more helpful additions t
 and CSS interactions.
 
 If there's some SwiftUI API that's missing but you'd like to use it, please review the existing
-[issues](https://github.com/swiftwasm/Tokamak/issues) and [PRs](https://github.com/swiftwasm/Tokamak/pulls) 
-to get more details about the current status, or [create a new issue](https://github.com/swiftwasm/Tokamak/issues/new) 
+[issues](https://github.com/swiftwasm/Tokamak/issues) and [PRs](https://github.com/swiftwasm/Tokamak/pulls)
+to get more details about the current status, or [create a new issue](https://github.com/swiftwasm/Tokamak/issues/new)
 to let us prioritize the development based on the demand. We also try to make the development of
-views and modifiers easier (with the help from the `HTML` view, see [the example 
+views and modifiers easier (with the help from the `HTML` view, see [the example
 below](https://github.com/swiftwasm/Tokamak#arbitrary-html)), so pull requests are very welcome! Don't
 forget to check [the "Contributing" section](https://github.com/swiftwasm/Tokamak#contributing) first.
-
 
 ## Getting started
 
@@ -35,7 +34,11 @@ Tokamak API attempts to resemble SwiftUI API as much as possible. The main diffe
 that you add `import TokamakDOM` instead of `import SwiftUI` in your files:
 
 ```swift
+#if os(WASI)
 import TokamakDOM
+#else
+import SwiftUI
+#endif
 
 struct Counter: View {
   @State var count: Int
@@ -49,7 +52,7 @@ struct Counter: View {
           Text("\(count)")
         }
       ) : AnyView(
-        VStack { Text("Limit exceeded") } }
+        VStack { Text("Limit exceeded") }
       )
   }
 }
@@ -110,17 +113,32 @@ This way both [Semantic UI](https://semantic-ui.com/) styles and [moment.js](htt
 localized date formatting (or any arbitrary style/script/font added that way) are available in your
 app.
 
-## Acknowledgments
-
-- Thanks to the [Swift community](https://swift.org/community/) for
-  building one of the best programming languages available!
-- Thanks to [SwiftWebUI](https://github.com/SwiftWebUI/SwiftWebUI),
-  [Render](https://github.com/alexdrone/Render),
-  [ReSwift](https://github.com/ReSwift/ReSwift), [Katana
-  UI](https://github.com/BendingSpoons/katana-ui-swift) and
-  [Komponents](https://github.com/freshOS/Komponents) for inspiration!
-
 ## Contributing
+
+### Modular structure
+
+Tokamak is built with modularity in mind, providing a cross-platform `TokamakCore` module and
+separate modules for platform-specific renderers. Currently, the only available renderer module
+is `TokamakDOM`, but we intend to provide other renderers in the future, such as `TokamakHTML`
+for static websites and server-side rendering. Tokamak users only need to import a renderer module
+they would like to use, while `TokamakCore` is hidden as an "internal" `Tokamak` package target.
+Unfortunately, Swift does not allow us to specify that certain symbols in `TokamakCore` are private 
+to a package, but they need to stay `public` for renderer modules to get access to them. Thus, the
+current workaround is to mark those symbols with underscores in their names to indicate this. It
+can be formulated as these "rules":
+
+1. If a symbol is restricted to a module and has no `public` access control, no need for an underscore.
+2. If a symbol is part of a public renderer module API (e.g. `TokamakDOM`), no need for an underscore, 
+users may use those symbols directly, and it is re-exported from `TokamakCore` by the renderer module 
+via `public typealias`.
+3. If a function or a type have `public` on them only by necessity to make them available in `TokamakDOM`,
+but unavailable to users (or not intended for public use), underscore is needed to indicate that.
+
+The benefit of separate modules is that they allow us to provide separate renderers for different platforms.
+Users can pick and choose what they want to use, e.g. purely static websites would use only `TokamakHTML`, 
+single-page apps would use `TokamakDOM`, maybe in conjuction with `TokamakHTML` for pre-rendering. As we'd
+like to try to implement a native renderer for Android at some point, probably in a separate `TokamakAndroid`
+module, Android apps would use `TokamakAndroid` with no need to be aware of any of the web modules.
 
 ### Sponsorship
 
@@ -165,7 +183,18 @@ unacceptable behavior to conduct@tokamak.dev.
 
 ## Maintainers
 
-[Max Desiatov](https://desiatov.com), [Carson Katri](https://github.com/carson-katri).
+[Carson Katri](https://github.com/carson-katri),
+[Jed Fox](https://jedfox.com), [Max Desiatov](https://desiatov.com).
+
+## Acknowledgments
+
+- Thanks to the [Swift community](https://swift.org/community/) for
+  building one of the best programming languages available!
+- Thanks to [SwiftWebUI](https://github.com/SwiftWebUI/SwiftWebUI),
+  [Render](https://github.com/alexdrone/Render),
+  [ReSwift](https://github.com/ReSwift/ReSwift), [Katana
+  UI](https://github.com/BendingSpoons/katana-ui-swift) and
+  [Komponents](https://github.com/freshOS/Komponents) for inspiration!
 
 ## License
 

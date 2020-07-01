@@ -49,6 +49,8 @@ let renderer = DOMRenderer(
       SpacerDemo()
       Spacer()
       Text("Forced to bottom.")
+      EnvironmentDemo()
+        .font(.system(size: 21))
     }
   },
   div

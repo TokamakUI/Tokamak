@@ -35,7 +35,7 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootView = view.makeMountedView(target)
+    rootView = view.makeMountedView(target, EnvironmentValues())
 
     rootView.mount(with: self)
   }
@@ -87,6 +87,28 @@ public final class StackReconciler<R: Renderer> {
         self?.queueUpdate(for: view, id: id) { $0 = newValue }
       }
       try! stateProperty.set(value: state, on: &compositeView.view.view)
+    }
+
+    let viewInfo = try! typeInfo(of: compositeView.view.type)
+    if viewInfo
+      .genericTypes
+      .filter({ $0 is EnvironmentModifier.Type }).count > 0 {
+      // Apply Environment changes:
+      if let modifier = try? viewInfo
+        .property(named: "modifier")
+        .get(from: compositeView.view.view) as? EnvironmentModifier {
+        modifier.modifyEnvironment(&compositeView.environmentValues)
+      }
+    }
+
+    // Inject @Environment values
+    // In the future we can also inject @EnvironmentObject values
+    for prop in viewInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
+      // swiftlint:disable force_cast
+      var wrapper = try! prop.get(from: compositeView.view.view) as! EnvironmentReader
+      wrapper.setContent(from: compositeView.environmentValues)
+      try! prop.set(value: wrapper, on: &compositeView.view.view)
+      // swiftlint:enable force_cast
     }
     // swiftlint:enable force_try
 
