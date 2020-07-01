@@ -12,29 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Max Desiatov on 14/02/2019.
+//  Created by Jed Fox on 07/01/2020.
 //
 
-#if canImport(SwiftUI)
 import SwiftUI
-#else
-import TokamakDOM
-#endif
+import UIKit
 
-public struct Counter: View {
-  @State public var count: Int
+// so we only need one Info.plist
+public class NSApplication: UIApplication {}
 
-  let limit: Int
-
-  public var body: some View {
-    count < limit ?
-      AnyView(
-        VStack {
-          Button("Increment") { count += 1 }
-          Text("\(count)")
-        }
-      ) : AnyView(
-        VStack { Text("Limit exceeded") }
-      )
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+  let window = UIWindow()
+  func application(_ application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+    window.rootViewController = UIHostingController(rootView: TokamakDemoView())
+    window.makeKeyAndVisible()
+    return true
   }
 }

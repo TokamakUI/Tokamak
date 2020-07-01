@@ -12,29 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Max Desiatov on 14/02/2019.
+//  Created by Jed Fox on 07/01/2020.
 //
 
-#if canImport(SwiftUI)
+import Cocoa
 import SwiftUI
-#else
-import TokamakDOM
-#endif
 
-public struct Counter: View {
-  @State public var count: Int
+@NSApplicationMain
+class AppDelegate: NSObject, NSApplicationDelegate {
+  var window: NSWindow!
 
-  let limit: Int
-
-  public var body: some View {
-    count < limit ?
-      AnyView(
-        VStack {
-          Button("Increment") { count += 1 }
-          Text("\(count)")
-        }
-      ) : AnyView(
-        VStack { Text("Limit exceeded") }
-      )
+  func applicationDidFinishLaunching(_ aNotification: Notification) {
+    window = NSWindow(
+      contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
+      styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+      backing: .buffered, defer: false
+    )
+    window.isReleasedWhenClosed = false
+    window.center()
+    window.contentView = NSHostingView(rootView: TokamakDemoView())
+    window.makeKeyAndOrderFront(nil)
   }
 }

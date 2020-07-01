@@ -15,7 +15,11 @@
 //  Created by Jed Fox on 07/01/2020.
 //
 
+#if canImport(SwiftUI)
+import SwiftUI
+#else
 import TokamakDOM
+#endif
 
 struct TokamakDemoView: View {
   var body: some View {
@@ -26,7 +30,7 @@ struct TokamakDemoView: View {
       VStack {
         Counter(count: 5, limit: 15)
           .padding()
-          .background(Color(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0))
+          .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
           .border(Color.red, width: 3)
         ZStack {
           Text("I'm on bottom")
@@ -37,8 +41,10 @@ struct TokamakDemoView: View {
         .padding(20)
         ForEachDemo()
         TextDemo()
+        #if canImport(TokamakDOM)
         SVGCircle()
           .frame(width: 25, height: 25)
+        #endif
         TextFieldDemo()
         SpacerDemo()
         Spacer()
