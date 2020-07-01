@@ -24,8 +24,10 @@ public class NSApplication: UIApplication {}
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
   let window = UIWindow()
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+  func application(
+    _: UIApplication,
+    didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
+  ) -> Bool {
     window.rootViewController = UIHostingController(rootView: TokamakDemoView())
     window.makeKeyAndVisible()
     return true
