@@ -15,7 +15,11 @@
 //  Created by Max Desiatov on 08/04/2020.
 //
 
+#if canImport(Glibc)
 import Glibc
+#else
+import Foundation
+#endif
 
 public typealias CGFloat = Double
 public struct CGPoint: Equatable {
