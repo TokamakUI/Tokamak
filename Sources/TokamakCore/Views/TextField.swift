@@ -20,14 +20,14 @@
 /// Available when `Label` conforms to `View`
 /// The
 ///
-///     @State private var username: String
+///     @State private var username: String = ""
 ///     var body: some View {
 ///       TextField("Username", text: $username)
 ///     }
 ///
 /// You can also set callbacks for when the text is changed, or the enter key is pressed:
 ///
-///     @State private var username: String
+///     @State private var username: String = ""
 ///     var body: some View {
 ///       TextField("Username", text: $username,onEditingChanged: { _ in
 ///         print("Username set to \(username)")
