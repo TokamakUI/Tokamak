@@ -41,14 +41,14 @@ extension TextField where Label == Text {
   }
 
   init(
-    _from textField: TextField,
-    textFieldStyle: TextFieldStyle
+    from textField: TextField,
+    with style: TextFieldStyle
   ) {
     label = textField.label
     textBinding = textField.textBinding
     onEditingChanged = textField.onEditingChanged
     onCommit = textField.onCommit
-    self.textFieldStyle = textFieldStyle
+    textFieldStyle = style
   }
 
   // FIXME: implement this method, which uses a Formatter to control the value of the TextField
@@ -64,10 +64,6 @@ public struct _TextFieldProxy {
   public let subject: TextField<Text>
 
   public init(_ subject: TextField<Text>) { self.subject = subject }
-
-  public func with(style: TextFieldStyle) -> Self {
-    _TextFieldProxy(TextField(_from: subject, textFieldStyle: style))
-  }
 
   public var label: _TextProxy { _TextProxy(subject.label) }
   public var textBinding: Binding<String> { subject.textBinding }

@@ -37,6 +37,6 @@ public struct SquareBorderTextFieldStyle: TextFieldStyle {
 
 extension TextField where Label == Text {
   public func textFieldStyle(_ style: TextFieldStyle) -> Self {
-    _TextFieldProxy(self).with(style: style).subject
+    TextField(from: self, with: style)
   }
 }
