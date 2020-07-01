@@ -31,9 +31,13 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
   /// Target of this host view supplied by a renderer after mounting has completed.
   private var target: R.TargetType?
 
+  private let environmentValues: EnvironmentValues
+
   init(_ view: AnyView,
-       _ parentTarget: R.TargetType) {
+       _ parentTarget: R.TargetType,
+       _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
+    self.environmentValues = environmentValues
 
     super.init(view)
   }
@@ -48,7 +52,9 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
 
     guard !view.children.isEmpty else { return }
 
-    mountedChildren = view.children.map { $0.makeMountedView(target) }
+    mountedChildren = view.children.map {
+      $0.makeMountedView(target, environmentValues)
+    }
     mountedChildren.forEach { $0.mount(with: reconciler) }
   }
 
@@ -81,7 +87,9 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
 
     // if no existing children then mount all new children
     case (true, false):
-      mountedChildren = childrenViews.map { $0.makeMountedView(target) }
+      mountedChildren = childrenViews.map {
+        $0.makeMountedView(target, environmentValues)
+      }
       mountedChildren.forEach { $0.mount(with: reconciler) }
 
     // if both arrays have items then reconcile by types and keys
@@ -99,7 +107,7 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
           newChild = child
         } else {
           child.unmount(with: reconciler)
-          newChild = firstChild.makeMountedView(target)
+          newChild = firstChild.makeMountedView(target, environmentValues)
           newChild.mount(with: reconciler)
         }
         newChildren.append(newChild)
@@ -118,7 +126,7 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
         // mount remaining views
         for firstChild in childrenViews {
           let newChild: MountedView<R> =
-            firstChild.makeMountedView(target)
+            firstChild.makeMountedView(target, environmentValues)
           newChild.mount(with: reconciler)
           newChildren.append(newChild)
         }

@@ -12,15 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@propertyWrapper public struct Environment<Value> {
+protocol EnvironmentReader {
+  mutating func setContent(from values: EnvironmentValues)
+}
+
+@propertyWrapper public struct Environment<Value>: EnvironmentReader {
   enum Content {
     case keyPath(KeyPath<EnvironmentValues, Value>)
     case value(Value)
   }
 
   var content: Environment<Value>.Content
+  let keyPath: KeyPath<EnvironmentValues, Value>
   public init(_ keyPath: KeyPath<EnvironmentValues, Value>) {
     content = .keyPath(keyPath)
+    self.keyPath = keyPath
+  }
+
+  mutating func setContent(from values: EnvironmentValues) {
+    content = .value(values[keyPath: keyPath])
   }
 
   public var wrappedValue: Value {
