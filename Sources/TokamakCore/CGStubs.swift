@@ -15,10 +15,10 @@
 //  Created by Max Desiatov on 08/04/2020.
 //
 
-#if os(WASI)
+#if canImport(Glibc)
 import Glibc
-#else
-import Foundation
+#elseif canImport(Darwin)
+import Darwin
 #endif
 
 public typealias CGFloat = Double
