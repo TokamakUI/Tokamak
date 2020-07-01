@@ -52,7 +52,8 @@ let renderer = DOMRenderer(
       NavigationLink("TextField", destination: TextFieldDemo())
       NavigationLink("Spacer", destination: SpacerDemo())
       NavigationLink("Environment", destination: EnvironmentDemo().font(.system(size: 21)))
-    }
+      Spacer()
+    }.padding()
   },
   div
 )

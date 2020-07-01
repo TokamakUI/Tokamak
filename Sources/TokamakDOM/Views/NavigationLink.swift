@@ -18,8 +18,9 @@ public typealias NavigationLink = TokamakCore.NavigationLink
 
 extension NavigationLink: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    AnyView(HTML("div", listeners: [
-      "click": { _ in },
-    ]) { _NavigationLinkProxy(self).label })
+    let proxy = _NavigationLinkProxy(self)
+    return AnyView(
+      HTML("div", listeners: ["click": { _ in proxy.activate() }]) { proxy.label }
+    )
   }
 }

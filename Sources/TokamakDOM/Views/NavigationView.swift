@@ -25,7 +25,7 @@ extension NavigationView: ViewDeferredToRenderer {
       width: 100%; height: 100%;
       """,
     ]) {
-      _NavigationViewProxy(self).content
+      _NavigationViewProxy(self).body
     })
   }
 }

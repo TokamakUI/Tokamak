@@ -19,6 +19,8 @@ public struct NavigationLink<Label, Destination>: View where Label: View, Destin
   let destination: Destination
   let label: Label
 
+  @Environment(_navigationDestinationKey) var navigationContext
+
   public init(destination: Destination, @ViewBuilder label: () -> Label) {
     self.destination = destination
     self.label = label()
@@ -70,4 +72,8 @@ public struct _NavigationLinkProxy<Label, Destination> where Label: View, Destin
   public init(_ subject: NavigationLink<Label, Destination>) { self.subject = subject }
 
   public var label: Label { subject.label }
+
+  public func activate() {
+    subject.navigationContext!.wrappedValue = AnyView(subject.destination)
+  }
 }

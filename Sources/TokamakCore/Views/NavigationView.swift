@@ -18,6 +18,13 @@
 public struct NavigationView<Content>: View where Content: View {
   let content: Content
 
+  @State var destination = AnyView(VStack {
+    HStack { Spacer() }
+    Spacer()
+    Text("No Selection")
+    Spacer()
+  })
+
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()
   }
@@ -34,4 +41,27 @@ public struct _NavigationViewProxy<Content: View> {
   public init(_ subject: NavigationView<Content>) { self.subject = subject }
 
   public var content: Content { subject.content }
+  public var body: some View {
+    HStack {
+      content
+      subject.destination
+    }.environment(\.navigationDestination, subject.$destination)
+  }
 }
+
+struct NavigationDestinationKey: EnvironmentKey {
+  public static let defaultValue: Binding<AnyView>? = nil
+}
+
+extension EnvironmentValues {
+  var navigationDestination: Binding<AnyView>? {
+    get {
+      self[NavigationDestinationKey.self]
+    }
+    set {
+      self[NavigationDestinationKey.self] = newValue
+    }
+  }
+}
+
+public let _navigationDestinationKey = \EnvironmentValues.navigationDestination
