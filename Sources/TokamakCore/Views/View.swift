@@ -35,6 +35,11 @@ public protocol ParentView {
 /// A `View` type that is not rendered, but "flattened" rendering all its children instead.
 protocol GroupView: ParentView {}
 
+/** The distinction between "host" (truly primitive) and "composite" (that have meaningful body)
+ views is made in the reconciler in `TokamakCore` based on their `body` type, host views have body
+ type `Never`. `ViewDeferredToRenderer` allows renderers to override that per-platform and render
+ host views as composite by providing their own `deferredBody` implementation.
+*/
 public protocol ViewDeferredToRenderer {
   var deferredBody: AnyView { get }
 }
