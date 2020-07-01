@@ -18,39 +18,12 @@
 public struct NavigationView<Content>: View where Content: View {
   let content: Content
 
-  @State public var selectedId: Double?
-
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()
   }
 
   public var body: Never {
     neverBody("NavigationView")
-  }
-}
-
-public struct NavigationLink<Label, Destination>: View where Label: View, Destination: View {
-  let destination: Destination
-  let label: Label
-
-  public init(destination: Destination, @ViewBuilder label: () -> Label) {
-    self.destination = destination
-    self.label = label()
-  }
-
-  /// Creates an instance that presents `destination` when active.
-  // public init(destination: Destination, isActive: Binding<Bool>, @ViewBuilder label: () -> Label)
-
-  /// Creates an instance that presents `destination` when `selection` is set
-  /// to `tag`.
-//   public init<V>(
-//    destination: Destination,
-//    tag: V, selection: Binding<V?>,
-//    @ViewBuilder label: () -> Label
-//   ) where V : Hashable
-
-  public var body: Never {
-    neverBody("NavigationLink")
   }
 }
 
@@ -77,14 +50,11 @@ extension NavigationLink where Label == Text {
 //  ) where S : StringProtocol, V : Hashable
 }
 
-public func navigationViewContent<Content>(
-  _ navigationView: NavigationView<Content>
-) -> Content {
-  navigationView.content
-}
+/// This is a helper class that works around absence of "package private" access control in Swift
+public struct _NavigationViewProxy<Content: View> {
+  public let subject: NavigationView<Content>
 
-public func navigationLinkContent<Label, Destination>(
-  _ navigationLink: NavigationLink<Label, Destination>
-) -> Label {
-  navigationLink.label
+  public init(_ subject: NavigationView<Content>) { self.subject = subject }
+
+  public var content: Content { subject.content }
 }

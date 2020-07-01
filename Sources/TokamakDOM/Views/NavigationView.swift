@@ -16,7 +16,6 @@ import JavaScriptKit
 import TokamakCore
 
 public typealias NavigationView = TokamakCore.NavigationView
-public typealias NavigationLink = TokamakCore.NavigationLink
 
 extension NavigationView: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
@@ -25,32 +24,8 @@ extension NavigationView: ViewDeferredToRenderer {
       display: flex; flex-direction: row; align-items: stretch;
       width: 100%; height: 100%;
       """,
-    ], listeners: [
-      "navlink:click": { event in
-          if let id = event.detail.object?.id.number {
-            selectedId = id
-          }
-        },
     ]) {
-      Text("\(selectedId)")
-      navigationViewContent(self)
+      _NavigationViewProxy(self).content
     })
-  }
-}
-
-extension NavigationLink: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    AnyView(HTML("div", listeners: [
-      "click": { event in
-        if let customEvent = JSObjectRef.global.CustomEvent.function?.new(
-          "navlink:click", [
-            "bubbles": true,
-            "detail": ["id": 42],
-          ]
-        ), let dispatch = event.target.object?.dispatchEvent.function {
-          _ = dispatch.apply(this: event.target.object!, arguments: customEvent)
-        }
-      },
-    ]) { navigationLinkContent(self) })
   }
 }
