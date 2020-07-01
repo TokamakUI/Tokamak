@@ -40,6 +40,29 @@ public struct NavigationLink<Label, Destination>: View where Label: View, Destin
   }
 }
 
+extension NavigationLink where Label == Text {
+  /// Creates an instance that presents `destination`, with a `Text` label
+  /// generated from a title string.
+  public init<S>(_ title: S, destination: Destination) where S: StringProtocol {
+    self.destination = destination
+    label = Text(title)
+  }
+
+  /// Creates an instance that presents `destination` when active, with a
+  /// `Text` label generated from a title string.
+  //   public init<S>(
+  //    _ title: S, destination: Destination,
+  //    isActive: Binding<Bool>
+  //   ) where S : StringProtocol
+
+  /// Creates an instance that presents `destination` when `selection` is set
+  /// to `tag`, with a `Text` label generated from a title string.
+  //  public init<S, V>(
+  //    _ title: S, destination: Destination,
+  //    tag: V, selection: Binding<V?>
+  //  ) where S : StringProtocol, V : Hashable
+}
+
 /// This is a helper class that works around absence of "package private" access control in Swift
 public struct _NavigationLinkProxy<Label, Destination> where Label: View, Destination: View {
   public let subject: NavigationLink<Label, Destination>
