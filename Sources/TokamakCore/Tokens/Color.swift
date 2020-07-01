@@ -36,7 +36,7 @@ public struct Color: Equatable {
     self.green = green
     self.blue = blue
     self.opacity = opacity
-    space = space
+    space = colorSpace
   }
 
   public static var white = Color(red: 1.0, green: 1.0, blue: 1.0, opacity: 1.0)
