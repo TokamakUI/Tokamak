@@ -21,6 +21,10 @@ struct EnvironmentDemo: View {
   @Environment(\.font) var font: Font?
 
   var body: some View {
-    Text("\(font)")
+    if let font = font {
+      return Text("\(font)")
+    } else {
+      return Text("`font` environment not set.")
+    }
   }
 }

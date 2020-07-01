@@ -18,7 +18,7 @@ public protocol EnvironmentKey {
 }
 
 protocol EnvironmentModifier {
-  func _modifyEnvironment(_ values: inout EnvironmentValues)
+  func modifyEnvironment(_ values: inout EnvironmentValues)
 }
 
 public struct _EnvironmentKeyWritingModifier<Value>: ViewModifier, EnvironmentModifier {
@@ -34,7 +34,7 @@ public struct _EnvironmentKeyWritingModifier<Value>: ViewModifier, EnvironmentMo
     content
   }
 
-  func _modifyEnvironment(_ values: inout EnvironmentValues) {
+  func modifyEnvironment(_ values: inout EnvironmentValues) {
     values[keyPath: keyPath] = value
   }
 }

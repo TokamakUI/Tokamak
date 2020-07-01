@@ -97,7 +97,7 @@ public final class StackReconciler<R: Renderer> {
       if let modifier = try? viewInfo
         .property(named: "modifier")
         .get(from: compositeView.view.view) as? EnvironmentModifier {
-        modifier._modifyEnvironment(&compositeView.environmentValues)
+        modifier.modifyEnvironment(&compositeView.environmentValues)
       }
     }
 
