@@ -20,15 +20,15 @@
 /// You can choose a font using the `font(_:)` view modifier.
 ///
 ///     Text("Hello World")
-///         .font(.title)
+///       .font(.title)
 ///
 /// There are a variety of modifiers available to fully customize the type:
 ///
 ///     Text("Hello World")
-///         .foregroundColor(.blue)
-///         .bold()
-///         .italic()
-///         .underline(true, color: .red)
+///       .foregroundColor(.blue)
+///       .bold()
+///       .italic()
+///       .underline(true, color: .red)
 public struct Text: View {
   let content: String
   let modifiers: [_Modifier]
