@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Tokamak contributors
+// Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if canImport(SwiftUI)
-import SwiftUI
-#else
-import TokamakDOM
-#endif
+public struct Group<Content> {
+  let content: Content
+}
 
-public struct ForEachDemo: View {
-  @State public var maxItem = 0
+extension Group: View where Content: View {
+  public init(@ViewBuilder content: () -> Content) {
+    self.content = content()
+  }
 
-  public var body: some View {
-    VStack {
-      Button(action: { maxItem += 1 }) {
-        Text("Add item")
-      }
-
-      ForEach(0..<maxItem) {
-        Text("Item: \($0)")
-      }
-    }
+  public var body: Never {
+    neverBody("Group")
   }
 }
+
+extension Group: ParentView where Content: View {
+  public var children: [AnyView] { (content as? ParentView)?.children ?? [AnyView(content)] }
+}
+
+extension Group: GroupView where Content: View {}

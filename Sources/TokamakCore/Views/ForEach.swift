@@ -64,12 +64,12 @@ public extension ForEach where Data.Element: Identifiable, ID == Data.Element.ID
   }
 }
 
-public extension ForEach where Data == [Int], ID == Int {
+public extension ForEach where Data == Range<Int>, ID == Int {
   init(
     _ data: Range<Int>,
     @ViewBuilder content: @escaping (Data.Element) -> Content
   ) {
-    self.data = Array(data)
+    self.data = data
     id = \.self
     self.content = content
   }

@@ -95,7 +95,7 @@ Table columns:
 |     |                                                                        |     |
 | --- | ---------------------------------------------------------------------- | :-: |
 |     | [Form](https://developer.apple.com/documentation/swiftui/form)         |     |
-|     | [Group](https://developer.apple.com/documentation/swiftui/group)       |     |
+| ✅  | [Group](https://developer.apple.com/documentation/swiftui/group)       |     |
 |     | [GroupBox](https://developer.apple.com/documentation/swiftui/groupbox) |     |
 |     | [Section](https://developer.apple.com/documentation/swiftui/section)   |     |
 
@@ -133,7 +133,7 @@ Table columns:
 
 |     |                                                                          |     |
 | --- | ------------------------------------------------------------------------ | :-: |
-| 🚧  | [AnyView](https://developer.apple.com/documentation/swiftui/anyview)     |     |
+| ✅  | [AnyView](https://developer.apple.com/documentation/swiftui/anyview)     |     |
 | ✅  | [TupleView](https://developer.apple.com/documentation/swiftui/tupleview) |     |
 
 ## Shapes, Paths, and Styles
