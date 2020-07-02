@@ -50,7 +50,7 @@ struct TokamakDemoView: View {
         Spacer()
         Text("Forced to bottom.")
         EnvironmentDemo()
-          .font(.system(size: 21))
+          .font(.system(size: 8))
       }
     }
   }

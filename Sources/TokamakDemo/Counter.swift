@@ -33,6 +33,8 @@ public struct Counter: View {
           Button("Increment") { count += 1 }
           Text("\(count)")
         }
+        .onAppear { print("Counter.VStack onAppear") }
+        .onDisappear { print("Counter.VStack onDisappear") }
       ) : AnyView(
         VStack { Text("Limit exceeded") }
       )

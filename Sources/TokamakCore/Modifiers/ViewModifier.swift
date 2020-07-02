@@ -28,8 +28,8 @@ public struct _ViewModifier_Content<Modifier>: View where Modifier: ViewModifier
 }
 
 public extension View {
-  func modifier<Modifier>(_ modifier: Modifier) -> Modifier.Body where Modifier: ViewModifier {
-    modifier.body(content: .init(modifier: modifier, view: AnyView(self)))
+  func modifier<Modifier>(_ modifier: Modifier) -> ModifiedContent<Self, Modifier> {
+    .init(content: self, modifier: modifier)
   }
 }
 

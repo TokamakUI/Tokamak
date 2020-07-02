@@ -17,7 +17,9 @@
 
 public struct Text: View {
   let content: String
-  public let _modifiers: [_Modifier]
+  let modifiers: [_Modifier]
+
+  @Environment(\.font) var font: Font?
 
   public enum _Modifier: Equatable {
     case color(Color?)
@@ -34,7 +36,7 @@ public struct Text: View {
 
   init(content: String, modifiers: [_Modifier] = []) {
     self.content = content
-    _modifiers = modifiers
+    self.modifiers = modifiers
   }
 
   public init(verbatim content: String) {
@@ -57,46 +59,51 @@ public struct _TextProxy {
   public init(_ subject: Text) { self.subject = subject }
 
   public var content: String { subject.content }
+  public var modifiers: [Text._Modifier] {
+    [
+      .font(subject.font),
+    ] + subject.modifiers
+  }
 }
 
 public extension Text {
   func foregroundColor(_ color: Color?) -> Text {
-    .init(content: content, modifiers: _modifiers + [.color(color)])
+    .init(content: content, modifiers: modifiers + [.color(color)])
   }
 
   func font(_ font: Font?) -> Text {
-    .init(content: content, modifiers: _modifiers + [.font(font)])
+    .init(content: content, modifiers: modifiers + [.font(font)])
   }
 
   func fontWeight(_ weight: Font.Weight?) -> Text {
-    .init(content: content, modifiers: _modifiers + [.weight(weight)])
+    .init(content: content, modifiers: modifiers + [.weight(weight)])
   }
 
   func bold() -> Text {
-    .init(content: content, modifiers: _modifiers + [.weight(.bold)])
+    .init(content: content, modifiers: modifiers + [.weight(.bold)])
   }
 
   func italic() -> Text {
-    .init(content: content, modifiers: _modifiers + [.italic])
+    .init(content: content, modifiers: modifiers + [.italic])
   }
 
   func strikethrough(_ active: Bool = true, color: Color? = nil) -> Text {
-    .init(content: content, modifiers: _modifiers + [.strikethrough(active, color)])
+    .init(content: content, modifiers: modifiers + [.strikethrough(active, color)])
   }
 
   func underline(_ active: Bool = true, color: Color? = nil) -> Text {
-    .init(content: content, modifiers: _modifiers + [.underline(active, color)])
+    .init(content: content, modifiers: modifiers + [.underline(active, color)])
   }
 
   func kerning(_ kerning: CGFloat) -> Text {
-    .init(content: content, modifiers: _modifiers + [.kerning(kerning)])
+    .init(content: content, modifiers: modifiers + [.kerning(kerning)])
   }
 
   func tracking(_ tracking: CGFloat) -> Text {
-    .init(content: content, modifiers: _modifiers + [.tracking(tracking)])
+    .init(content: content, modifiers: modifiers + [.tracking(tracking)])
   }
 
   func baselineOffset(_ baselineOffset: CGFloat) -> Text {
-    .init(content: content, modifiers: _modifiers + [.baseline(baselineOffset)])
+    .init(content: content, modifiers: modifiers + [.baseline(baselineOffset)])
   }
 }
