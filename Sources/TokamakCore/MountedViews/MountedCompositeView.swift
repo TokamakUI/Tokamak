@@ -44,6 +44,10 @@ final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {
   override func mount(with reconciler: StackReconciler<R>) {
     let childBody = reconciler.render(compositeView: self)
 
+    if let appearanceAction = view.view as? AppearanceActionProtocol {
+      appearanceAction.appear?()
+    }
+
     let child: MountedView<R> = childBody.makeMountedView(parentTarget,
                                                           environmentValues)
     mountedChildren = [child]
@@ -52,6 +56,10 @@ final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {
 
   override func unmount(with reconciler: StackReconciler<R>) {
     mountedChildren.forEach { $0.unmount(with: reconciler) }
+
+    if let appearanceAction = view.view as? AppearanceActionProtocol {
+      appearanceAction.disappear?()
+    }
   }
 
   override func update(with reconciler: StackReconciler<R>) {
