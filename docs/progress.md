@@ -133,7 +133,7 @@ Table columns:
 
 |     |                                                                          |     |
 | --- | ------------------------------------------------------------------------ | :-: |
-| 🚧  | [AnyView](https://developer.apple.com/documentation/swiftui/anyview)     |     |
+| ✅  | [AnyView](https://developer.apple.com/documentation/swiftui/anyview)     |     |
 | ✅  | [TupleView](https://developer.apple.com/documentation/swiftui/tupleview) |     |
 
 ## Shapes, Paths, and Styles
