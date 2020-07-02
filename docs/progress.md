@@ -44,7 +44,7 @@ Table columns:
 |     |                                                                              |     |
 | --- | ---------------------------------------------------------------------------- | :-: |
 |     | [Toggle](https://developer.apple.com/documentation/swiftui/toggle)           |     |
-|     | [Picker](https://developer.apple.com/documentation/swiftui/picker)           |     |
+| 🚧  | [Picker](https://developer.apple.com/documentation/swiftui/picker)           |     |
 |     | [DatePicker](https://developer.apple.com/documentation/swiftui/datepicker)   |     |
 |     | [Slider](https://developer.apple.com/documentation/swiftui/slider)           |     |
 |     | [Stepper](https://developer.apple.com/documentation/swiftui/stepper)         |     |
@@ -110,7 +110,7 @@ Table columns:
 
 |     |                                                                      |     |
 | --- | -------------------------------------------------------------------- | :-: |
-| ✅ | [Spacer](https://developer.apple.com/documentation/swiftui/spacer)   |     |
+| ✅  | [Spacer](https://developer.apple.com/documentation/swiftui/spacer)   |     |
 |     | [Divider](https://developer.apple.com/documentation/swiftui/divider) |     |
 
 ### Architectural Views
@@ -140,22 +140,22 @@ Table columns:
 
 ### Shapes
 
-|     |                                                                                            |     |
-| --- | ------------------------------------------------------------------------------------------ | :-: |
-| 🚧  | [Rectangle](https://developer.apple.com/documentation/swiftui/rectangle)                    |     |
-| 🚧  | [RoundedRectangle](https://developer.apple.com/documentation/swiftui/roundedrectangle)     |     |
-| 🚧  | [Ellipse](https://developer.apple.com/documentation/swiftui/ellipse)                       |     |
-| 🚧  | [Circle](https://developer.apple.com/documentation/swiftui/circle)                         |     |
-| 🚧  | [Capsule](https://developer.apple.com/documentation/swiftui/capsule)                       |     |
+|     |                                                                                        |     |
+| --- | -------------------------------------------------------------------------------------- | :-: |
+| 🚧  | [Rectangle](https://developer.apple.com/documentation/swiftui/rectangle)               |     |
+| 🚧  | [RoundedRectangle](https://developer.apple.com/documentation/swiftui/roundedrectangle) |     |
+| 🚧  | [Ellipse](https://developer.apple.com/documentation/swiftui/ellipse)                   |     |
+| 🚧  | [Circle](https://developer.apple.com/documentation/swiftui/circle)                     |     |
+| 🚧  | [Capsule](https://developer.apple.com/documentation/swiftui/capsule)                   |     |
 
 ### Paths
 
-|     |                                                                                            |     |
-| --- | ------------------------------------------------------------------------------------------ | :-: |
-| 🚧  | [Path](https://developer.apple.com/documentation/swiftui/path)                             |     |
+|     |                                                                |     |
+| --- | -------------------------------------------------------------- | :-: |
+| 🚧  | [Path](https://developer.apple.com/documentation/swiftui/path) |     |
 
 ### Styles
 
-|     |                                                                                            |     |
-| --- | ------------------------------------------------------------------------------------------ | :-: |
-| 🚧  | [Color](https://developer.apple.com/documentation/swiftui/color)                           |     |
+|     |                                                                  |     |
+| --- | ---------------------------------------------------------------- | :-: |
+| 🚧  | [Color](https://developer.apple.com/documentation/swiftui/color) |     |
