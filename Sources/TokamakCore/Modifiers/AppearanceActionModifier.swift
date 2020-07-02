@@ -17,6 +17,7 @@ protocol AppearanceActionProtocol {
   var disappear: (() -> ())? { get }
 }
 
+/// Underscore is present in the name for SwiftUI compatibility.
 struct _AppearanceActionModifier: ViewModifier {
   var appear: (() -> ())?
   var disappear: (() -> ())?
