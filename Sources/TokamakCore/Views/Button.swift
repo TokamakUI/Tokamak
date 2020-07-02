@@ -19,7 +19,8 @@
 ///
 /// Available when `Label` conforms to `View`.
 ///
-/// A button is created using a `Label` an action (a method or closure) to be called on click.
+/// A button is created using a `Label`; the `action` initializer argument (a method or closure)
+/// is to be called on click.
 ///
 ///     @State private var counter: Int = 0
 ///     var body: some View {
