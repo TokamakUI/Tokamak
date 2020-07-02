@@ -31,7 +31,7 @@
 ///
 ///     @State private var password: String = ""
 ///     var body: some View {
-///       SecureField("Password", text: $username, onCommit: {
+///       SecureField("Password", text: $password, onCommit: {
 ///         print("Set password")
 ///       })
 ///     }
