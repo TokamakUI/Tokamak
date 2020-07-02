@@ -12,16 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public struct _PickerLabel<Label: View>: View {
-  let label: Label
+public struct _PickerContainer<Label: View, SelectionValue: Hashable, Content: View>: View {
+  public let selection: Binding<SelectionValue>
+  public let label: Label
+  public let content: Content
+  @Environment(\.pickerStyle) public var style: PickerStyle
+
+  public init(
+    selection: Binding<SelectionValue>,
+    label: Label,
+    @ViewBuilder content: () -> Content
+  ) {
+    self.selection = selection
+    self.label = label
+    self.content = content()
+  }
 
   public var body: Never {
     neverBody("_PickerLabel")
   }
 }
 
-public struct _PickerElement: View {
-  let content: AnyView
+public struct _PickerElement<SelectionValue>: View {
+  public let value: SelectionValue?
+  public let content: AnyView
+  @Environment(\.pickerStyle) public var style: PickerStyle
 
   public var body: Never {
     neverBody("_PickerElement")
@@ -32,7 +47,6 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
   let selection: Binding<SelectionValue>
   let label: Label
   let content: Content
-  @Environment(\.pickerStyle) var style: PickerStyle
 
   public init(
     selection: Binding<SelectionValue>,
@@ -46,13 +60,22 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
 
   public var body: some View {
     let children = self.children
-    // Need to implement a special behavior here. If one of the children is `ForEach`
-    // and its `Data.Element` type is the same as `SelectionValue` type, then we can
-    // update the binding.
-    Group {
-      _PickerLabel(label: label)
+
+    return _PickerContainer(selection: selection, label: label) {
+      // Need to implement a special behavior here. If one of the children is `ForEach`
+      // and its `Data.Element` type is the same as `SelectionValue` type, then we can
+      // update the binding.
       ForEach(0..<children.count) {
-        _PickerElement(content: children[$0])
+        if let forEach = children[$0] as? ForEachProtocol,
+          forEach.elementType == SelectionValue.self {
+          let nestedChildren = forEach.children
+
+          ForEach(0..<nestedChildren.count) {
+            _PickerElement(value: forEach.element(at: $0), content: nestedChildren[$0])
+          }
+        } else {
+          _PickerElement<SelectionValue>(value: nil, content: children[$0])
+        }
       }
     }
   }

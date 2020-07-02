@@ -21,16 +21,30 @@ public typealias SegmentedPickerStyle = TokamakCore.SegmentedPickerStyle
 public typealias WheelPickerStyle = TokamakCore.WheelPickerStyle
 public typealias DefaultPickerStyle = TokamakCore.DefaultPickerStyle
 
-extension _PopUpButtonPicker: ViewDeferredToRenderer where Label == Text {
+extension _PickerContainer: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    AnyView(HTML("select") {
-      content
+    AnyView(HTML("label") {
+      label
+
+      HTML("select", listeners: ["change": { _ in }]) {
+        content
+      }
     })
   }
 }
 
-extension _DefaultPicker: ViewDeferredToRenderer {
+extension _PickerElement: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    AnyView(_PopUpButtonPicker<Label, SelectionValue, Content>(content: content))
+    let attributes: [String: String]
+    if let value = value {
+      // FIXME: should match against IDs and map those IDs to values via a dictionary
+      attributes = ["value": "\(value)"]
+    } else {
+      attributes = [:]
+    }
+
+    return AnyView(HTML("option", attributes) {
+      content
+    })
   }
 }

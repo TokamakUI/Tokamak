@@ -13,8 +13,9 @@
 // limitations under the License.
 
 /// A protocol that allows matching against type-erased `ForEach` at run time.
-protocol ForEachProtocol {
+protocol ForEachProtocol: GroupView {
   var elementType: Any.Type { get }
+  func element(at: Int) -> Any
 }
 
 /// A structure that computes `View`s from a collection of identified data.
@@ -51,8 +52,9 @@ public struct ForEach<Data, ID, Content>: View
   }
 }
 
-extension ForEach: ForEachProtocol {
+extension ForEach: ForEachProtocol where Data.Index == Int {
   var elementType: Any.Type { Data.Element.self }
+  func element(at index: Int) -> Any { data[index] }
 }
 
 public extension ForEach where Data.Element: Identifiable, ID == Data.Element.ID {
