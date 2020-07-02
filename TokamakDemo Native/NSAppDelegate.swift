@@ -11,25 +11,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Jed Fox on 07/01/2020.
+//
 
-#if canImport(SwiftUI)
+import Cocoa
 import SwiftUI
-#else
-import TokamakDOM
-#endif
 
-public struct ForEachDemo: View {
-  @State public var items: [Int] = []
+@NSApplicationMain
+class AppDelegate: NSObject, NSApplicationDelegate {
+  var window: NSWindow!
 
-  public var body: some View {
-    VStack {
-      Button(action: { items.append((items.last ?? 0) + 1) }) {
-        Text("Add item")
-      }
-
-      ForEach(items, id: \.self) {
-        Text("Item: \($0)")
-      }
-    }
+  func applicationDidFinishLaunching(_ aNotification: Notification) {
+    window = NSWindow(
+      contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
+      styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+      backing: .buffered, defer: false
+    )
+    window.isReleasedWhenClosed = false
+    window.center()
+    window.contentView = NSHostingView(rootView: TokamakDemoView())
+    window.makeKeyAndOrderFront(nil)
   }
 }

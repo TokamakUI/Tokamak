@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2019-2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,19 +11,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Jed Fox on 07/01/2020.
+//
 
-import TokamakCore
+import SwiftUI
+import UIKit
 
-public typealias Font = TokamakCore.Font
-public typealias Color = TokamakCore.Color
+// so we only need one Info.plist
+public class NSApplication: UIApplication {}
 
-extension Color: CustomStringConvertible {
-  public var description: String {
-    "rgb(\(red * 255), \(green * 255), \(blue * 255), \(opacity * 255))"
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+  let window = UIWindow()
+  func application(
+    _: UIApplication,
+    didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
+  ) -> Bool {
+    window.rootViewController = UIHostingController(rootView: TokamakDemoView())
+    window.makeKeyAndVisible()
+    return true
   }
 }
-
-public typealias CGRect = TokamakCore.CGRect
-public typealias CGPoint = TokamakCore.CGPoint
-public typealias CGSize = TokamakCore.CGSize
-public typealias CGAffineTransform = TokamakCore.CGAffineTransform
