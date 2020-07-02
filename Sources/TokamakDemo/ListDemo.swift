@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2019-2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,24 +11,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 7/2/20.
+//
 
-let tokamakStyles = """
-._tokamak-stack > * {
-  flex-shrink: 0;
+#if canImport(SwiftUI)
+import SwiftUI
+#else
+import TokamakDOM
+#endif
+
+public struct ListDemo: View {
+  public var body: some View {
+    List(0..<5) {
+      Text("\($0)")
+    }
+  }
 }
-._tokamak-scrollview-hideindicators {
-  scrollbar-color: transparent;
-  scrollbar-width: 0;
-}
-._tokamak-scrollview-hideindicators::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-._tokamak-list {
-  list-style: none;
-  overflow-y: scroll;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-}
-"""

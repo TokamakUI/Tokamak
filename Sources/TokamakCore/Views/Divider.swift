@@ -11,24 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 7/2/20.
+//
 
-let tokamakStyles = """
-._tokamak-stack > * {
-  flex-shrink: 0;
+/// A horizontal line for separating content.
+public struct Divider: View {
+  public init() {}
+  public var body: Never {
+    neverBody("Divider")
+  }
 }
-._tokamak-scrollview-hideindicators {
-  scrollbar-color: transparent;
-  scrollbar-width: 0;
-}
-._tokamak-scrollview-hideindicators::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-._tokamak-list {
-  list-style: none;
-  overflow-y: scroll;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-}
-"""

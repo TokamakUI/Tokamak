@@ -47,10 +47,9 @@ struct TokamakDemoView: View {
         #endif
         TextFieldDemo()
         SpacerDemo()
-        Spacer()
-        Text("Forced to bottom.")
         EnvironmentDemo()
           .font(.system(size: 8))
+        ListDemo()
       }
     }
   }
