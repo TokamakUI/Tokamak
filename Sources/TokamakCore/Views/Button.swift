@@ -15,6 +15,25 @@
 //  Created by Max Desiatov on 02/12/2018.
 //
 
+/// A control that performs an action when triggered.
+///
+/// Available when `Label` conforms to `View`.
+///
+/// A button is created using a `Label` an action (a method or closure) to be called on click.
+///
+///     @State private var counter: Int = 0
+///     var body: some View {
+///         Button(action: { counter += 1 }) {
+///             Text("\(counter)")
+///         }
+///     }
+///
+/// When your label is `Text`, you can create the button by directly passing a `String`:
+///
+///     @State private var counter: Int = 0
+///     var body: some View {
+///         Button("\(counter)", action: { counter += 1 })
+///     }
 public struct Button<Label>: View where Label: View {
   let label: Label
 
