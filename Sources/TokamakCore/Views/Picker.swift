@@ -12,55 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public struct _RadioGroupPicker<Label: View, SelectionValue: Hashable, Content: View>: View {
-  public let content: Content
+public struct _PickerLabel<Label: View>: View {
+  let label: Label
 
   public var body: Never {
-    neverBody("_RadioGroupPicker")
+    neverBody("_PickerLabel")
   }
 }
 
-public struct _PopUpButtonPicker<Label: View, SelectionValue: Hashable, Content: View>: View {
-  public let content: Content
-
-  public init(content: Content) {
-    self.content = content
-  }
+public struct _PickerElement: View {
+  let content: AnyView
 
   public var body: Never {
-    neverBody("_PopUpButtonPicker")
-  }
-}
-
-public struct _SegmentedPicker<Label: View, SelectionValue: Hashable, Content: View>: View {
-  public let content: Content
-
-  public init(content: Content) {
-    self.content = content
-  }
-
-  public var body: Never {
-    neverBody("_SegmentedPicker")
-  }
-}
-
-public struct _WheelPicker<Label: View, SelectionValue: Hashable, Content: View>: View {
-  public let content: Content
-
-  public init(content: Content) {
-    self.content = content
-  }
-
-  public var body: Never {
-    neverBody("_WheelPicker")
-  }
-}
-
-public struct _DefaultPicker<Label: View, SelectionValue: Hashable, Content: View>: View {
-  public let content: Content
-
-  public var body: Never {
-    neverBody("_DefaultPicker")
+    neverBody("_PickerElement")
   }
 }
 
@@ -81,16 +45,15 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
   }
 
   public var body: some View {
+    let children = self.children
     // Need to implement a special behavior here. If one of the children is `ForEach`
     // and its `Data.Element` type is the same as `SelectionValue` type, then we can
     // update the binding.
-    switch style {
-    case is PopUpButtonPickerStyle:
-      return AnyView(_PopUpButtonPicker<Label, SelectionValue, Content>(content: content))
-    case is RadioGroupPickerStyle:
-      return AnyView(_RadioGroupPicker<Label, SelectionValue, Content>(content: content))
-    default:
-      return AnyView(_DefaultPicker<Label, SelectionValue, Content>(content: content))
+    Group {
+      _PickerLabel(label: label)
+      ForEach(0..<children.count) {
+        _PickerElement(content: children[$0])
+      }
     }
   }
 }
