@@ -11,11 +11,11 @@
                 <application id="hnw-xV-0zn" sceneMemberID="viewController">
                     <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
                         <items>
-                            <menuItem title="Tokamak Native" id="1Xt-HY-uBw">
+                            <menuItem title="TokamakDemo Native" id="1Xt-HY-uBw">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Tokamak Native" systemMenu="apple" id="uQy-DD-JDr">
+                                <menu key="submenu" title="TokamakDemo Native" systemMenu="apple" id="uQy-DD-JDr">
                                     <items>
-                                        <menuItem title="Quit Tokamak Native" keyEquivalent="q" id="4sb-4s-VLi">
+                                        <menuItem title="Quit TokamakDemo Native" keyEquivalent="q" id="4sb-4s-VLi">
                                             <connections>
                                                 <action selector="terminate:" target="Ady-hI-5gd" id="Te7-pn-YzF"/>
                                             </connections>

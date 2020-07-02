@@ -28,8 +28,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		85ED184A24AD379A0085DFA0 /* Tokamak Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tokamak Native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		85ED185224AD379A0085DFA0 /* Tokamak Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tokamak Native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		85ED184A24AD379A0085DFA0 /* TokamakDemo Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TokamakDemo Native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		85ED185224AD379A0085DFA0 /* TokamakDemo Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TokamakDemo Native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		85ED186924AD38F20085DFA0 /* UIAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAppDelegate.swift; sourceTree = "<group>"; };
 		85ED188724AD3CC30085DFA0 /* macOS.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = macOS.storyboard; sourceTree = "<group>"; };
 		85ED188B24AD3CF10085DFA0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -80,8 +80,8 @@
 		85ED184B24AD379A0085DFA0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				85ED184A24AD379A0085DFA0 /* Tokamak Native.app */,
-				85ED185224AD379A0085DFA0 /* Tokamak Native.app */,
+				85ED184A24AD379A0085DFA0 /* TokamakDemo Native.app */,
+				85ED185224AD379A0085DFA0 /* TokamakDemo Native.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -118,7 +118,7 @@
 			);
 			name = iOS;
 			productName = iOS;
-			productReference = 85ED184A24AD379A0085DFA0 /* Tokamak Native.app */;
+			productReference = 85ED184A24AD379A0085DFA0 /* TokamakDemo Native.app */;
 			productType = "com.apple.product-type.application";
 		};
 		85ED185124AD379A0085DFA0 /* macOS */ = {
@@ -135,7 +135,7 @@
 			);
 			name = macOS;
 			productName = macOS;
-			productReference = 85ED185224AD379A0085DFA0 /* Tokamak Native.app */;
+			productReference = 85ED185224AD379A0085DFA0 /* TokamakDemo Native.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -157,7 +157,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 85ED184124AD37970085DFA0 /* Build configuration list for PBXProject "Tokamak Native" */;
+			buildConfigurationList = 85ED184124AD37970085DFA0 /* Build configuration list for PBXProject "TokamakDemo Native" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -356,7 +356,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_NAME = "Tokamak Native";
+				PRODUCT_NAME = "TokamakDemo Native";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -378,7 +378,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_NAME = "Tokamak Native";
+				PRODUCT_NAME = "TokamakDemo Native";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -403,7 +403,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_NAME = "Tokamak Native";
+				PRODUCT_NAME = "TokamakDemo Native";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -427,7 +427,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_NAME = "Tokamak Native";
+				PRODUCT_NAME = "TokamakDemo Native";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
@@ -436,7 +436,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		85ED184124AD37970085DFA0 /* Build configuration list for PBXProject "Tokamak Native" */ = {
+		85ED184124AD37970085DFA0 /* Build configuration list for PBXProject "TokamakDemo Native" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				85ED185C24AD379B0085DFA0 /* Debug */,
