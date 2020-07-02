@@ -19,7 +19,7 @@ public typealias Color = TokamakCore.Color
 
 extension Color: CustomStringConvertible {
   public var description: String {
-    "rgb(\(red * 255), \(green * 255), \(blue * 255), \(alpha * 255))"
+    "rgb(\(red * 255), \(green * 255), \(blue * 255), \(opacity * 255))"
   }
 }
 

@@ -15,7 +15,11 @@
 //  Created by Max Desiatov on 14/02/2019.
 //
 
+#if canImport(SwiftUI)
+import SwiftUI
+#else
 import TokamakDOM
+#endif
 
 public struct Counter: View {
   @State public var count: Int
@@ -29,6 +33,8 @@ public struct Counter: View {
           Button("Increment") { count += 1 }
           Text("\(count)")
         }
+        .onAppear { print("Counter.VStack onAppear") }
+        .onDisappear { print("Counter.VStack onDisappear") }
       ) : AnyView(
         VStack { Text("Limit exceeded") }
       )

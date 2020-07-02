@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2019-2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,16 +11,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Jed Fox on 07/01/2020.
+//
 
-import TokamakDOM
+import SwiftUI
+import UIKit
 
-struct SVGCircle: View {
-  var body: some View {
-    HTML("svg", ["width": "100%", "height": "100%"]) {
-      HTML("circle", [
-        "cx": "50%", "cy": "50%", "r": "40%",
-        "stroke": "green", "stroke-width": "4", "fill": "yellow",
-      ])
-    }.frame(width: 25, height: 25)
+// so we only need one Info.plist
+public class NSApplication: UIApplication {}
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+  let window = UIWindow()
+  func application(
+    _: UIApplication,
+    didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
+  ) -> Bool {
+    window.rootViewController = UIHostingController(rootView: TokamakDemoView())
+    window.makeKeyAndVisible()
+    return true
   }
 }

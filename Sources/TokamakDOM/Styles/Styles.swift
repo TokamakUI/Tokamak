@@ -11,16 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Jed Fox on 06/30/2020.
+//
 
-import TokamakDOM
+import TokamakCore
 
-struct SVGCircle: View {
-  var body: some View {
-    HTML("svg", ["width": "100%", "height": "100%"]) {
-      HTML("circle", [
-        "cx": "50%", "cy": "50%", "r": "40%",
-        "stroke": "green", "stroke-width": "4", "fill": "yellow",
-      ])
-    }.frame(width: 25, height: 25)
-  }
-}
+public typealias DefaultTextFieldStyle = TokamakCore.DefaultTextFieldStyle
+public typealias PlainTextFieldStyle = TokamakCore.PlainTextFieldStyle
+public typealias RoundedBorderTextFieldStyle = TokamakCore.RoundedBorderTextFieldStyle
+public typealias SquareBorderTextFieldStyle = TokamakCore.SquareBorderTextFieldStyle

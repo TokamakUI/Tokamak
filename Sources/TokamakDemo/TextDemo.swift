@@ -12,7 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if canImport(SwiftUI)
+import SwiftUI
+#else
 import TokamakDOM
+#endif
+
+struct CustomModifier: ViewModifier {
+  func body(content: Content) -> some View {
+    Text("Whole new body!")
+  }
+}
 
 struct TextDemo: View {
   var body: some View {

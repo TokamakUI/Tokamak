@@ -104,7 +104,7 @@ extension Text: AnyHTML {
     var baseline: CGFloat?
     var strikethrough: (Bool, Color?)?
     var underline: (Bool, Color?)?
-    for modifier in _modifiers {
+    for modifier in _TextProxy(self).modifiers {
       switch modifier {
       case let .color(_color):
         color = _color

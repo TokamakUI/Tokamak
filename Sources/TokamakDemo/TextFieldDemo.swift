@@ -12,8 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if canImport(SwiftUI)
+import SwiftUI
+#else
 import TokamakCore
 import TokamakDOM
+#endif
 
 struct TextFieldDemo: View {
   @State var text = ""

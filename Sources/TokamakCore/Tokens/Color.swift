@@ -24,26 +24,26 @@ public struct Color: Equatable {
   public let red: Double
   public let green: Double
   public let blue: Double
-  public let alpha: Double
+  public let opacity: Double
   public let space: Space
 
-  public init(red: Double,
+  public init(_ colorSpace: Space = .sRGB,
+              red: Double,
               green: Double,
               blue: Double,
-              alpha: Double,
-              space: Space = .sRGB) {
+              opacity: Double) {
     self.red = red
     self.green = green
     self.blue = blue
-    self.alpha = alpha
-    self.space = space
+    self.opacity = opacity
+    space = colorSpace
   }
 
-  public static var white = Color(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  public static var black = Color(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
-  public static var red = Color(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
-  public static var green = Color(red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
-  public static var blue = Color(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+  public static var white = Color(red: 1.0, green: 1.0, blue: 1.0, opacity: 1.0)
+  public static var black = Color(red: 0.0, green: 0.0, blue: 0.0, opacity: 1.0)
+  public static var red = Color(red: 1.0, green: 0.0, blue: 0.0, opacity: 1.0)
+  public static var green = Color(red: 0.0, green: 1.0, blue: 0.0, opacity: 1.0)
+  public static var blue = Color(red: 0.0, green: 0.0, blue: 1.0, opacity: 1.0)
 }
 
 extension Color: ExpressibleByIntegerLiteral {
@@ -52,7 +52,7 @@ extension Color: ExpressibleByIntegerLiteral {
     red = Double((bitMask & 0xFF0000) >> 16) / 255
     green = Double((bitMask & 0x00FF00) >> 8) / 255
     blue = Double(bitMask & 0x0000FF) / 255
-    alpha = 1
+    opacity = 1
     space = .sRGB
   }
 }
@@ -73,7 +73,7 @@ extension Color {
     self.red = Double(red) / 255
     self.green = Double(green) / 255
     self.blue = Double(blue) / 255
-    alpha = 1
+    opacity = 1
     space = .sRGB
   }
 }

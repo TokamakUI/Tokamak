@@ -15,14 +15,18 @@
 //  Created by Carson Katri on 6/30/20.
 //
 
+#if canImport(SwiftUI)
+import SwiftUI
+#else
 import TokamakDOM
+#endif
 
 struct EnvironmentDemo: View {
   @Environment(\.font) var font: Font?
 
   var body: some View {
     if let font = font {
-      return Text("\(font)")
+      return Text("\(String(describing: font))")
     } else {
       return Text("`font` environment not set.")
     }
