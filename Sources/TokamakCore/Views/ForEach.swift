@@ -12,7 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public struct ForEach<Data, ID, Content>: View where Data: RandomAccessCollection, ID: Hashable, Content: View {
+/// A structure that computes `View`s from a collection of identified data.
+///
+/// Available when `Data` conforms to `RandomAccessCollection`,
+/// `ID` conforms to `Hashable`, and `Content` conforms to `View`.
+///
+/// The children computed by `ForEach` are directly passed to the encapsulating `View`.
+/// Similar to `TupleView` and `Group`.
+///
+///     HStack {
+///       ForEach(0..<5) {
+///         Text("\($0)")
+///       }
+///     }
+public struct ForEach<Data, ID, Content>: View
+  where Data: RandomAccessCollection, ID: Hashable, Content: View {
   let data: Data
   let id: KeyPath<Data.Element, ID>
   public let content: (Data.Element) -> Content

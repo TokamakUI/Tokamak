@@ -15,6 +15,9 @@
 //  Created by Max Desiatov on 08/04/2020.
 //
 
+/// A `View` created from a `Tuple` of `View` values.
+///
+/// Mainly for use with `@ViewBuilder`.
 public struct TupleView<T>: View {
   public var body: Never {
     neverBody("TupleView")

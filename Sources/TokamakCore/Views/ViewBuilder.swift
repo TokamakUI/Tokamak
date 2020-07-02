@@ -15,6 +15,7 @@
 //  Created by Max Desiatov on 08/04/2020.
 //
 
+/// A `View` with no effect on rendering.
 public struct EmptyView: View {
   @inlinable public init() {}
 

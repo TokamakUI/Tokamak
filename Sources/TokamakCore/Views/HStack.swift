@@ -15,12 +15,19 @@
 //  Created by Max Desiatov on 08/04/2020.
 //
 
+/// An alignment position along the vertical axis.
 public enum VerticalAlignment: Equatable {
   case top
   case center
   case bottom
 }
 
+/// A view that arranges its children in a horizontal line.
+///
+///     HStack {
+///       Text("Hello")
+///       Text("World")
+///     }
 public struct HStack<Content>: View where Content: View {
   public let alignment: VerticalAlignment
   public let spacing: CGFloat?
