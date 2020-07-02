@@ -18,6 +18,10 @@ public struct PopUpButtonPickerStyle: PickerStyle {}
 
 public struct RadioGroupPickerStyle: PickerStyle {}
 
+public struct SegmentedPickerStyle: PickerStyle {}
+
+public struct WheelPickerStyle: PickerStyle {}
+
 public struct DefaultPickerStyle: PickerStyle {}
 
 enum PickerStyleKey: EnvironmentKey {

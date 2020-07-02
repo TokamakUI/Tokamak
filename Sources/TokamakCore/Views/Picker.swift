@@ -16,7 +16,7 @@ public struct _RadioGroupPicker<Label: View, SelectionValue: Hashable, Content: 
   public let content: Content
 
   public var body: Never {
-    neverBody("RadioGroupPicker")
+    neverBody("_RadioGroupPicker")
   }
 }
 
@@ -28,7 +28,31 @@ public struct _PopUpButtonPicker<Label: View, SelectionValue: Hashable, Content:
   }
 
   public var body: Never {
-    neverBody("PopUpButtonPicker")
+    neverBody("_PopUpButtonPicker")
+  }
+}
+
+public struct _SegmentedPicker<Label: View, SelectionValue: Hashable, Content: View>: View {
+  public let content: Content
+
+  public init(content: Content) {
+    self.content = content
+  }
+
+  public var body: Never {
+    neverBody("_SegmentedPicker")
+  }
+}
+
+public struct _WheelPicker<Label: View, SelectionValue: Hashable, Content: View>: View {
+  public let content: Content
+
+  public init(content: Content) {
+    self.content = content
+  }
+
+  public var body: Never {
+    neverBody("_WheelPicker")
   }
 }
 
@@ -36,7 +60,7 @@ public struct _DefaultPicker<Label: View, SelectionValue: Hashable, Content: Vie
   public let content: Content
 
   public var body: Never {
-    neverBody("DefaultPicker")
+    neverBody("_DefaultPicker")
   }
 }
 

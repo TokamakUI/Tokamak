@@ -15,6 +15,11 @@
 import TokamakCore
 
 public typealias Picker = TokamakCore.Picker
+public typealias PopUpButtonPickerStyle = TokamakCore.PopUpButtonPickerStyle
+public typealias RadioGroupPickerStyle = TokamakCore.RadioGroupPickerStyle
+public typealias SegmentedPickerStyle = TokamakCore.SegmentedPickerStyle
+public typealias WheelPickerStyle = TokamakCore.WheelPickerStyle
+public typealias DefaultPickerStyle = TokamakCore.DefaultPickerStyle
 
 extension _PopUpButtonPicker: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
