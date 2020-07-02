@@ -37,10 +37,10 @@ extension ModifiedContent: AppearanceActionProtocol
 
 extension View {
   public func onAppear(perform action: (() -> Swift.Void)? = nil) -> some View {
-    modifier(_AppearanceActionModifier(appear: action, disappear: nil))
+    modifier(_AppearanceActionModifier(appear: action))
   }
 
   public func onDisappear(perform action: (() -> Swift.Void)? = nil) -> some View {
-    modifier(_AppearanceActionModifier(appear: nil, disappear: action))
+    modifier(_AppearanceActionModifier(disappear: action))
   }
 }
