@@ -17,6 +17,7 @@
 
 import Runtime
 
+/// A type-erased view.
 public struct AnyView: View {
   let type: Any.Type
   let typeConstructorName: String
