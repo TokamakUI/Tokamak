@@ -22,8 +22,8 @@ public enum HorizontalAlignment: Equatable {
 /// A view that arranges its children in a vertical line.
 ///
 ///     VStack {
-///         Text("Hello")
-///         Text("World")
+///       Text("Hello")
+///       Text("World")
 ///     }
 public struct VStack<Content>: View where Content: View {
   public let alignment: HorizontalAlignment

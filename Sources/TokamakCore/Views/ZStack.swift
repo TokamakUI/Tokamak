@@ -37,6 +37,12 @@ public struct Alignment: Equatable {
 }
 
 /// A view that overlays its children, aligning them in both axes.
+///
+///     ZStack {
+///       Text("Bottom")
+///       Text("Top")
+///     }
+///
 public struct ZStack<Content>: View where Content: View {
   public let alignment: Alignment
   public let spacing: CGFloat?
