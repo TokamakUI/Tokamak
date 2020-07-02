@@ -15,6 +15,13 @@
 //  Created by Carson Katri on 06/29/2020.
 //
 
+/// A `View` that fills the major axis of its parent stack.
+///
+///     HStack {
+///       Text("Hello")
+///       Spacer()
+///       Text("World")
+///     }
 public struct Spacer: View {
   public var minLength: CGFloat?
 

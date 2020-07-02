@@ -20,9 +20,9 @@
 /// Similar to `TupleView` and `Group`.
 ///
 ///     HStack {
-///         ForEach(0..<5) {
-///             Text("\($0)")
-///         }
+///       ForEach(0..<5) {
+///         Text("\($0)")
+///       }
 ///     }
 public struct ForEach<Data, ID, Content>: View where Data: RandomAccessCollection, ID: Hashable, Content: View {
   let data: Data
