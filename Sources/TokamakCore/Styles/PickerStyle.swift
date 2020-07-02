@@ -12,20 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
+public protocol PickerStyle {}
 
-public typealias Picker = TokamakCore.Picker
+public struct PopUpButtonPickerStyle: PickerStyle {}
 
-extension _PopUpButtonPicker: ViewDeferredToRenderer where Label == Text {
-  public var deferredBody: AnyView {
-    AnyView(HTML("select") {
-      content
-    })
+public struct RadioGroupPickerStyle: PickerStyle {}
+
+public struct DefaultPickerStyle: PickerStyle {}
+
+enum PickerStyleKey: EnvironmentKey {
+  static var defaultValue: PickerStyle = DefaultPickerStyle()
+}
+
+extension EnvironmentValues {
+  var pickerStyle: PickerStyle {
+    get {
+      self[PickerStyleKey.self]
+    }
+    set {
+      self[PickerStyleKey.self] = newValue
+    }
   }
 }
 
-extension _DefaultPicker: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    AnyView(_PopUpButtonPicker<Label, SelectionValue, Content>(content: content))
+extension View {
+  public func pickerStyle(_ style: PickerStyle) -> some View {
+    environment(\.pickerStyle, style)
   }
 }

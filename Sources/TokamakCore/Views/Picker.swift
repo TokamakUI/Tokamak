@@ -12,10 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+public struct _RadioGroupPicker<Label: View, SelectionValue: Hashable, Content: View>: View {
+  public let content: Content
+
+  public var body: Never {
+    neverBody("RadioGroupPicker")
+  }
+}
+
+public struct _PopUpButtonPicker<Label: View, SelectionValue: Hashable, Content: View>: View {
+  public let content: Content
+
+  public init(content: Content) {
+    self.content = content
+  }
+
+  public var body: Never {
+    neverBody("PopUpButtonPicker")
+  }
+}
+
+public struct _DefaultPicker<Label: View, SelectionValue: Hashable, Content: View>: View {
+  public let content: Content
+
+  public var body: Never {
+    neverBody("DefaultPicker")
+  }
+}
+
 public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View {
   let selection: Binding<SelectionValue>
   let label: Label
   let content: Content
+  @Environment(\.pickerStyle) var style: PickerStyle
 
   public init(
     selection: Binding<SelectionValue>,
@@ -27,8 +56,15 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
     self.content = content()
   }
 
-  public var body: Never {
-    neverBody("Picker")
+  public var body: some View {
+    switch style {
+    case is PopUpButtonPickerStyle:
+      return AnyView(_PopUpButtonPicker<Label, SelectionValue, Content>(content: content))
+    case is RadioGroupPickerStyle:
+      return AnyView(_RadioGroupPicker<Label, SelectionValue, Content>(content: content))
+    default:
+      return AnyView(_DefaultPicker<Label, SelectionValue, Content>(content: content))
+    }
   }
 }
 
@@ -44,13 +80,8 @@ extension Picker where Label == Text {
   }
 }
 
-/// This is a helper class that works around absence of "package private" access control in Swift
-public struct _PickerProxy<Label: View, SelectionValue: Hashable, Content: View> {
-  public let subject: Picker<Label, SelectionValue, Content>
-
-  public init(_ subject: Picker<Label, SelectionValue, Content>) { self.subject = subject }
-
-  public var selection: Binding<SelectionValue> { subject.selection }
-  public var label: Label { subject.label }
-  public var content: Content { subject.content }
+extension Picker: ParentView {
+  public var children: [AnyView] {
+    (content as? GroupView)?.children ?? [AnyView(content)]
+  }
 }
