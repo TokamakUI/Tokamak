@@ -12,14 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import JavaScriptKit
 import TokamakCore
+
+/// This is effectively a singleton, but a mounted `DOMEnvironment` is assumed to be a singleton
+/// too. It can't be declared as a property of `DOMEnvironment` as you can't modify it from within
+/// `body` callbacks.
+private var colorSchemeListener: JSClosure?
 
 struct DOMEnvironment<V: View>: View {
   @State var scheme: ColorScheme
 
   let content: V
 
+  private let matchMedia =
+    JSObjectRef.global.window.object!.matchMedia!("(prefers-color-scheme: dark)").object!
+
   var body: some View {
-    content.colorScheme(scheme)
+    content
+      .colorScheme(scheme)
+      .onAppear {
+        colorSchemeListener = JSClosure {
+          scheme = $0[0].object!.matches.boolean == true ? .dark : .light
+          return .undefined
+        }
+        _ = matchMedia.addEventListener!("change", colorSchemeListener!)
+      }.onDisappear {
+        _ = matchMedia.removeEventListener!("change", colorSchemeListener!)
+      }
   }
 }

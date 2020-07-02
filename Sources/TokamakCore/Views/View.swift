@@ -39,7 +39,7 @@ protocol GroupView: ParentView {}
  views is made in the reconciler in `TokamakCore` based on their `body` type, host views have body
  type `Never`. `ViewDeferredToRenderer` allows renderers to override that per-platform and render
  host views as composite by providing their own `deferredBody` implementation.
-*/
+ */
 public protocol ViewDeferredToRenderer {
   var deferredBody: AnyView { get }
 }

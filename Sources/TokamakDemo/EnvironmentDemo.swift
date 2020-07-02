@@ -26,7 +26,7 @@ struct EnvironmentDemo: View {
     if let font = font {
       return Text("ColorScheme is \(scheme), font is \(font)")
     } else {
-      return Text("`font` environment not set.")
+      return Text("ColorScheme is \(scheme), `font` environment not set.")
     }
   }
 }
