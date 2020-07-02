@@ -33,7 +33,7 @@ Table columns:
 |     |                                                                                                  |     |
 | --- | ------------------------------------------------------------------------------------------------ | :-: |
 | 🚧  | [Button](https://developer.apple.com/documentation/swiftui/button)                               |     |
-|     | [NavigationLink](https://developer.apple.com/documentation/swiftui/navigationlink)               |     |
+| 🚧  | [NavigationLink](https://developer.apple.com/documentation/swiftui/navigationlink)               |     |
 |     | [EditButton](https://developer.apple.com/documentation/swiftui/editbutton)                       |     |
 |     | [PasteButton](https://developer.apple.com/documentation/swiftui/pastebutton)                     |     |
 |     | [SignInWithAppleButton](https://developer.apple.com/documentation/swiftui/signinwithapplebutton) |  β  |
@@ -117,7 +117,7 @@ Table columns:
 
 |     |                                                                                    |     |
 | --- | ---------------------------------------------------------------------------------- | :-: |
-|     | [NavigationView](https://developer.apple.com/documentation/swiftui/navigationview) |     |
+| 🚧  | [NavigationView](https://developer.apple.com/documentation/swiftui/navigationview) |     |
 |     | [TabView](https://developer.apple.com/documentation/swiftui/tabview)               |     |
 |     | [HSplitView](https://developer.apple.com/documentation/swiftui/hsplitview)         |     |
 |     | [VSplitView](https://developer.apple.com/documentation/swiftui/vsplitview)         |     |
