@@ -15,17 +15,15 @@
 import Runtime
 import TokamakCore
 
-public typealias _ViewModifier_Content = TokamakCore._ViewModifier_Content
-
-extension _ViewModifier_Content: ViewDeferredToRenderer {
+extension ModifiedContent: ViewDeferredToRenderer where Content: View {
   public var deferredBody: AnyView {
     if let domModifier = modifier as? DOMViewModifier {
       return AnyView(HTML("div", domModifier.attributes) {
-        view
+        content
       })
     } else {
       return AnyView(HTML("div") {
-        view
+        content
       })
     }
   }
