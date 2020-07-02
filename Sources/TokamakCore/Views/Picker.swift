@@ -81,6 +81,9 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
   }
 
   public var body: some View {
+    // Need to implement a special behavior here. If one of the children is `ForEach`
+    // and its `Data.Element` type is the same as `SelectionValue` type, then we can
+    // update the binding.
     switch style {
     case is PopUpButtonPickerStyle:
       return AnyView(_PopUpButtonPicker<Label, SelectionValue, Content>(content: content))
