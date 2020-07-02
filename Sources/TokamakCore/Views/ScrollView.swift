@@ -15,6 +15,26 @@
 //  Created by Carson Katri on 06/29/2020.
 //
 
+/// A scrollable view along a given axis.
+///
+/// By default, your app will overflow without the ability to scroll. Embed it in a `ScrollView`
+/// to enable scrolling.
+///
+///     ScrollView {
+///         ForEach(0..<10) {
+///             Text("\($0)")
+///         }
+///     }
+///
+/// By default, the view will only expand to fit its children. To make it fill its parent along the cross-axis, insert
+/// a stack with a `Spacer`:
+///
+///     ScrollView {
+///         HStack { Spacer() } // Use VStack for a horizontal ScrollView
+///         ForEach(0..<10) {
+///             Text("\($0)")
+///         }
+///     }
 public struct ScrollView<Content>: View where Content: View {
   public let content: Content
   public let axes: Axis.Set
