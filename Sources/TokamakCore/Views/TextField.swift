@@ -28,10 +28,10 @@
 ///
 ///     @State private var username: String = ""
 ///     var body: some View {
-///       TextField("Username", text: $username,onEditingChanged: { _ in
+///       TextField("Username", text: $username, onEditingChanged: { _ in
 ///         print("Username set to \(username)")
 ///       }, onCommit: {
-///         print("Set password")
+///         print("Set username")
 ///       })
 ///     }
 public struct TextField<Label>: View where Label: View {
