@@ -20,7 +20,7 @@ extension NavigationLink: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     let proxy = _NavigationLinkProxy(self)
     return AnyView(
-      HTML("div", listeners: ["click": { _ in proxy.activate() }]) { proxy.label }
+      HTML("a", ["href": "javascript:void%200"], listeners: ["click": { _ in proxy.activate() }]) { proxy.label }
     )
   }
 }
