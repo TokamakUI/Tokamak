@@ -11,19 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Jed Fox on 06/30/2020.
+//
 
 import TokamakCore
 
-public typealias Font = TokamakCore.Font
-public typealias Color = TokamakCore.Color
-
-extension Color: CustomStringConvertible {
-  public var description: String {
-    "rgb(\(red * 255), \(green * 255), \(blue * 255), \(opacity * 255))"
-  }
-}
-
-public typealias CGRect = TokamakCore.CGRect
-public typealias CGPoint = TokamakCore.CGPoint
-public typealias CGSize = TokamakCore.CGSize
-public typealias CGAffineTransform = TokamakCore.CGAffineTransform
+public typealias DefaultTextFieldStyle = TokamakCore.DefaultTextFieldStyle
+public typealias PlainTextFieldStyle = TokamakCore.PlainTextFieldStyle
+public typealias RoundedBorderTextFieldStyle = TokamakCore.RoundedBorderTextFieldStyle
+public typealias SquareBorderTextFieldStyle = TokamakCore.SquareBorderTextFieldStyle

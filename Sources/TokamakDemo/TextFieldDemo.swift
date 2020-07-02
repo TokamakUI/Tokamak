@@ -15,6 +15,7 @@
 #if canImport(SwiftUI)
 import SwiftUI
 #else
+import TokamakCore
 import TokamakDOM
 #endif
 
