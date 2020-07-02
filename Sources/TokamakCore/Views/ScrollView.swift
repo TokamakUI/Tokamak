@@ -26,8 +26,8 @@
 ///       }
 ///     }
 ///
-/// By default, the view will only expand to fit its children. To make it fill its parent along the cross-axis, insert
-/// a stack with a `Spacer`:
+/// By default, the view will only expand to fit its children.
+/// To make it fill its parent along the cross-axis, insert a stack with a `Spacer`:
 ///
 ///     ScrollView {
 ///       HStack { Spacer() } // Use VStack for a horizontal ScrollView
@@ -40,7 +40,9 @@ public struct ScrollView<Content>: View where Content: View {
   public let axes: Axis.Set
   public let showsIndicators: Bool
 
-  public init(_ axes: Axis.Set = .vertical, showsIndicators: Bool = true, @ViewBuilder content: () -> Content) {
+  public init(_ axes: Axis.Set = .vertical,
+              showsIndicators: Bool = true,
+              @ViewBuilder content: () -> Content) {
     self.axes = axes
     self.showsIndicators = showsIndicators
     self.content = content()
