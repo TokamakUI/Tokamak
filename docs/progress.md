@@ -26,7 +26,7 @@ Table columns:
 
 |     |                                                                  |     |
 | --- | ---------------------------------------------------------------- | :-: |
-|     | [Image](https://developer.apple.com/documentation/swiftui/image) |     |
+| 🚧  | [Image](https://developer.apple.com/documentation/swiftui/image) |     |
 
 ### Buttons
 
