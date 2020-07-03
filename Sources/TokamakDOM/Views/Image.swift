@@ -71,7 +71,14 @@ struct _HTMLImage: View {
   public var body: some View {
     let lookup = proxy.isSystem ? systemImages : images
     if let src = lookup[proxy.imageName] {
-      return AnyView(HTML("img", ["src": src, "style": "max-width: 100%; max-height: 100%"]))
+      var attributes = [
+        "src": src,
+        "style": "max-width: 100%; max-height: 100%",
+      ]
+      if let label = proxy.label {
+        attributes["alt"] = label
+      }
+      return AnyView(HTML("img", attributes))
     } else {
       return AnyView(Text("Invalid image name \(proxy.imageName). Options are \(lookup)"))
     }
