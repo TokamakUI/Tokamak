@@ -190,15 +190,26 @@ unacceptable behavior to conduct@tokamak.dev.
 
 - Thanks to the [Swift community](https://swift.org/community/) for
   building one of the best programming languages available!
+- Thanks to everyone who developed [React](https://reactjs.org/) with its [reconciler/renderer 
+  architecture](https://reactjs.org/docs/codebase-overview.html#renderers) that inspired Tokamak
+  in the first place.
+- Thanks to the designers of [the SwiftUI API](https://developer.apple.com/documentation/swiftui)
+  who showed us how to write UI apps in Swift declaratively (arguably even in a better way than React did).
 - Thanks to [SwiftWebUI](https://github.com/SwiftWebUI/SwiftWebUI) for reverse-engineering
   some of the bits of SwiftUI and kickstarting the front-end Swift ecosystem for the web.
 - Thanks to [Render](https://github.com/alexdrone/Render),
   [ReSwift](https://github.com/ReSwift/ReSwift), [Katana
   UI](https://github.com/BendingSpoons/katana-ui-swift) and
   [Komponents](https://github.com/freshOS/Komponents) for inspiration!
+  
+SwiftUI is a trademark owned by Apple Inc. Software maintained as a part of Tokamak project is not 
+affiliated with Apple Inc.
 
 ## License
 
-Tokamak is available under the Apache 2.0 license. See the
-[LICENSE](https://github.com/swiftwasm/Tokamak/blob/main/LICENSE) file for
+Tokamak is available under the Apache 2.0 license. 
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the [LICENSE](https://github.com/swiftwasm/Tokamak/blob/main/LICENSE) file for
 more info.
