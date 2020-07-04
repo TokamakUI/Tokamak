@@ -22,7 +22,10 @@ public typealias OutlineGroup = TokamakCore.OutlineGroup
 
 extension DisclosureGroup: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    AnyView(HTML("div", ["class": "_tokamak-disclosuregroup"]) {
+    AnyView(HTML("div", [
+      "class": "_tokamak-disclosuregroup",
+      "role": "tree",
+    ]) {
       HTML("div",
            ["class": "_tokamak-disclosuregroup-label"],
            listeners: [
@@ -37,7 +40,11 @@ extension DisclosureGroup: ViewDeferredToRenderer {
           _DisclosureGroupProxy(self).label
         }
       }
-      HTML("div", ["class": "_tokamak-disclosuregroup-content"]) { () -> AnyView in
+      HTML("div", [
+        "class": "_tokamak-disclosuregroup-content",
+        "role": "treeitem",
+        "aria-expanded": (isExpandedBinding?.wrappedValue ?? isExpanded) ? "true" : "false",
+      ]) { () -> AnyView in
         if isExpandedBinding?.wrappedValue ?? isExpanded {
           return AnyView(_DisclosureGroupProxy(self).content())
         } else {
