@@ -50,6 +50,7 @@ struct TokamakDemoView: View {
         EnvironmentDemo()
           .font(.system(size: 8))
         ListDemo()
+        OutlineGroupDemo()
       }
     }
   }
