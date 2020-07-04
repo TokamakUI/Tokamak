@@ -12,12 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/// An alignment position along the horizontal axis.
 public enum HorizontalAlignment: Equatable {
   case leading
   case center
   case trailing
 }
 
+/// A view that arranges its children in a vertical line.
+///
+///     VStack {
+///       Text("Hello")
+///       Text("World")
+///     }
 public struct VStack<Content>: View where Content: View {
   public let alignment: HorizontalAlignment
   public let spacing: CGFloat?

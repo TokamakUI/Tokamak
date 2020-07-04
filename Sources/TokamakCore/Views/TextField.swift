@@ -15,6 +15,25 @@
 //  Created by Jed Fox on 06/28/2020.
 //
 
+/// A control that displays an editable text interface.
+///
+/// Available when `Label` conforms to `View`
+///
+///     @State private var username: String = ""
+///     var body: some View {
+///       TextField("Username", text: $username)
+///     }
+///
+/// You can also set callbacks for when the text is changed, or the enter key is pressed:
+///
+///     @State private var username: String = ""
+///     var body: some View {
+///       TextField("Username", text: $username, onEditingChanged: { _ in
+///         print("Username set to \(username)")
+///       }, onCommit: {
+///         print("Set username")
+///       })
+///     }
 public struct TextField<Label>: View where Label: View {
   let label: Label
   let textBinding: Binding<String>

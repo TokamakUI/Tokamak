@@ -95,7 +95,7 @@ Table columns:
 |     |                                                                        |     |
 | --- | ---------------------------------------------------------------------- | :-: |
 |     | [Form](https://developer.apple.com/documentation/swiftui/form)         |     |
-|     | [Group](https://developer.apple.com/documentation/swiftui/group)       |     |
+| ✅  | [Group](https://developer.apple.com/documentation/swiftui/group)       |     |
 |     | [GroupBox](https://developer.apple.com/documentation/swiftui/groupbox) |     |
 |     | [Section](https://developer.apple.com/documentation/swiftui/section)   |     |
 
@@ -110,7 +110,7 @@ Table columns:
 
 |     |                                                                      |     |
 | --- | -------------------------------------------------------------------- | :-: |
-| ✅ | [Spacer](https://developer.apple.com/documentation/swiftui/spacer)   |     |
+| ✅  | [Spacer](https://developer.apple.com/documentation/swiftui/spacer)   |     |
 |     | [Divider](https://developer.apple.com/documentation/swiftui/divider) |     |
 
 ### Architectural Views
@@ -133,29 +133,29 @@ Table columns:
 
 |     |                                                                          |     |
 | --- | ------------------------------------------------------------------------ | :-: |
-| 🚧  | [AnyView](https://developer.apple.com/documentation/swiftui/anyview)     |     |
+| ✅  | [AnyView](https://developer.apple.com/documentation/swiftui/anyview)     |     |
 | ✅  | [TupleView](https://developer.apple.com/documentation/swiftui/tupleview) |     |
 
 ## Shapes, Paths, and Styles
 
 ### Shapes
 
-|     |                                                                                            |     |
-| --- | ------------------------------------------------------------------------------------------ | :-: |
-| 🚧  | [Rectangle](https://developer.apple.com/documentation/swiftui/rectangle)                    |     |
-| 🚧  | [RoundedRectangle](https://developer.apple.com/documentation/swiftui/roundedrectangle)     |     |
-| 🚧  | [Ellipse](https://developer.apple.com/documentation/swiftui/ellipse)                       |     |
-| 🚧  | [Circle](https://developer.apple.com/documentation/swiftui/circle)                         |     |
-| 🚧  | [Capsule](https://developer.apple.com/documentation/swiftui/capsule)                       |     |
+|     |                                                                                        |     |
+| --- | -------------------------------------------------------------------------------------- | :-: |
+| 🚧  | [Rectangle](https://developer.apple.com/documentation/swiftui/rectangle)               |     |
+| 🚧  | [RoundedRectangle](https://developer.apple.com/documentation/swiftui/roundedrectangle) |     |
+| 🚧  | [Ellipse](https://developer.apple.com/documentation/swiftui/ellipse)                   |     |
+| 🚧  | [Circle](https://developer.apple.com/documentation/swiftui/circle)                     |     |
+| 🚧  | [Capsule](https://developer.apple.com/documentation/swiftui/capsule)                   |     |
 
 ### Paths
 
-|     |                                                                                            |     |
-| --- | ------------------------------------------------------------------------------------------ | :-: |
-| 🚧  | [Path](https://developer.apple.com/documentation/swiftui/path)                             |     |
+|     |                                                                |     |
+| --- | -------------------------------------------------------------- | :-: |
+| 🚧  | [Path](https://developer.apple.com/documentation/swiftui/path) |     |
 
 ### Styles
 
-|     |                                                                                            |     |
-| --- | ------------------------------------------------------------------------------------------ | :-: |
-| 🚧  | [Color](https://developer.apple.com/documentation/swiftui/color)                           |     |
+|     |                                                                  |     |
+| --- | ---------------------------------------------------------------- | :-: |
+| 🚧  | [Color](https://developer.apple.com/documentation/swiftui/color) |     |

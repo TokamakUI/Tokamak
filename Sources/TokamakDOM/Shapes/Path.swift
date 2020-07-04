@@ -50,7 +50,7 @@ extension Path: ViewDeferredToRenderer {
         "rx": "\(roundedRect.cornerSize.width)",
         "ry": "\(roundedRect.style == .continuous ? roundedRect.cornerSize.width : roundedRect.cornerSize.height)",
       ]
-        .merging(stroke, uniquingKeysWith: uniqueKeys)))
+      .merging(stroke, uniquingKeysWith: uniqueKeys)))
     case let .stroked(stroked):
       return stroked.path.svgFrom(storage: stroked.path.storage, strokeStyle: stroked.style)
     case let .trimmed(trimmed):

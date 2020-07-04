@@ -11,25 +11,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Carson Katri on 06/29/2020.
-//
 
-/// A `View` that fills the major axis of its parent stack.
-///
-///     HStack {
-///       Text("Hello")
-///       Spacer()
-///       Text("World")
-///     }
-public struct Spacer: View {
-  public var minLength: CGFloat?
+public struct Group<Content> {
+  let content: Content
+}
 
-  public init(minLength: CGFloat? = nil) {
-    self.minLength = minLength
+extension Group: View where Content: View {
+  public init(@ViewBuilder content: () -> Content) {
+    self.content = content()
   }
 
   public var body: Never {
-    neverBody("Spacer")
+    neverBody("Group")
   }
 }
+
+extension Group: ParentView where Content: View {
+  public var children: [AnyView] { (content as? ParentView)?.children ?? [AnyView(content)] }
+}
+
+extension Group: GroupView where Content: View {}

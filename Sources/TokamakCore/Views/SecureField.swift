@@ -15,6 +15,26 @@
 //  Created by Jed Fox on 06/28/2020.
 //
 
+/// A control that displays a secure editable text interface.
+///
+/// `SecureField` is similar to `TextField`, but specifically designed for entering secure
+/// text, such as passwords.
+///
+/// Available when `Label` conforms to `View`
+///
+///     @State private var password: String = ""
+///     var body: some View {
+///       SecureField("Password", text: $password)
+///     }
+///
+/// You can also set a callback for when the enter key is pressed:
+///
+///     @State private var password: String = ""
+///     var body: some View {
+///       SecureField("Password", text: $password, onCommit: {
+///         print("Set password")
+///       })
+///     }
 public struct SecureField<Label>: View where Label: View {
   let label: Label
   let textBinding: Binding<String>

@@ -11,25 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Carson Katri on 06/29/2020.
-//
 
-/// A `View` that fills the major axis of its parent stack.
-///
-///     HStack {
-///       Text("Hello")
-///       Spacer()
-///       Text("World")
-///     }
-public struct Spacer: View {
-  public var minLength: CGFloat?
+import TokamakCore
 
-  public init(minLength: CGFloat? = nil) {
-    self.minLength = minLength
-  }
-
-  public var body: Never {
-    neverBody("Spacer")
-  }
-}
+public typealias Group = TokamakCore.Group

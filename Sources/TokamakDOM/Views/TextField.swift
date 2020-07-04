@@ -44,10 +44,10 @@ extension TextField: ViewDeferredToRenderer where Label == Text {
       "blur": { _ in proxy.onEditingChanged(false) },
       "keypress": { event in if event.key == "Enter" { proxy.onCommit() } },
       "input": { event in
-          if let newValue = event.target.object?.value.string {
-            proxy.textBinding.wrappedValue = newValue
-          }
-        },
+        if let newValue = event.target.object?.value.string {
+          proxy.textBinding.wrappedValue = newValue
+        }
+      },
     ]))
   }
 }
