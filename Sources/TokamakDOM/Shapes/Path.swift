@@ -44,7 +44,9 @@ extension Path: ViewDeferredToRenderer {
       return AnyView(HTML("ellipse", ["cx": "50%", "cy": "50%", "rx": "50%", "ry": "50%"]
           .merging(stroke, uniquingKeysWith: uniqueKeys)))
     case let .roundedRect(roundedRect):
-      let ry = roundedRect.style == .continuous ? roundedRect.cornerSize.width : roundedRect.cornerSize.height
+      let ry = roundedRect.style == .continuous
+        ? roundedRect.cornerSize.width
+        : roundedRect.cornerSize.height
       return AnyView(HTML("rect", [
         "width": "\(roundedRect.rect.size.width)",
         "height": "\(roundedRect.rect.size.height)",
