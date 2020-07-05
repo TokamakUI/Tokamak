@@ -39,16 +39,16 @@ public protocol ToggleStyle {
 public struct AnyToggleStyle: ToggleStyle {
   public typealias Body = AnyView
 
-  private var bodyBuild: (ToggleStyleConfiguration) -> AnyView
+  private let bodyClosure: (ToggleStyleConfiguration) -> AnyView
 
   public init<S: ToggleStyle>(_ style: S) {
-    bodyBuild = { configuration in
+    bodyClosure = { configuration in
       AnyView(style.makeBody(configuration: configuration))
     }
   }
 
   public func makeBody(configuration: ToggleStyleConfiguration) -> AnyView {
-    bodyBuild(configuration)
+    bodyClosure(configuration)
   }
 }
 
