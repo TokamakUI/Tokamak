@@ -35,11 +35,15 @@ let tokamakStyles = """
 ._tokamak-disclosuregroup-label {
   cursor: pointer;
 }
-._tokamak-disclosuregroup-chevron {
+._tokamak-disclosuregroup-chevron-container {
   width: .25em;
   height: .25em;
+  padding: 10px;
   display: inline-block;
-  margin: 5px;
+}
+._tokamak-disclosuregroup-chevron {
+  width: 100%;
+  height: 100%;
   transform: rotate(45deg);
   border-right: solid 2px rgba(0, 0, 0, 0.25);
   border-top: solid 2px rgba(0, 0, 0, 0.25);

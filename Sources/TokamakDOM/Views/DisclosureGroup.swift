@@ -22,19 +22,21 @@ public typealias OutlineGroup = TokamakCore.OutlineGroup
 
 extension DisclosureGroup: ViewDeferredToRenderer {
   var chevron: some View {
-    HTML("div", ["class": "_tokamak-disclosuregroup-chevron"])
-      .rotationEffect((isExpandedBinding?.wrappedValue ?? isExpanded) ? .degrees(90) : .degrees(0))
-  }
-
-  var label: some View {
     HTML("div",
-         ["class": "_tokamak-disclosuregroup-label"],
+         ["class": "_tokamak-disclosuregroup-chevron-container"],
          listeners: [
            "click": { _ in
              self.isExpanded.toggle()
              self.isExpandedBinding?.wrappedValue.toggle()
            },
-         ]) { () -> AnyView in
+         ]) {
+      HTML("div", ["class": "_tokamak-disclosuregroup-chevron"])
+        .rotationEffect((isExpandedBinding?.wrappedValue ?? isExpanded) ? .degrees(90) : .degrees(0))
+    }
+  }
+
+  var label: some View {
+    HTML("div", ["class": "_tokamak-disclosuregroup-label"]) { () -> AnyView in
       switch _DisclosureGroupProxy(self).style {
       case is _ListOutlineGroupStyle:
         return AnyView(HStack {
@@ -69,9 +71,20 @@ extension DisclosureGroup: ViewDeferredToRenderer {
     AnyView(HTML("div", [
       "class": "_tokamak-disclosuregroup",
       "role": "tree",
-    ]) {
-      label
-      content
+    ]) { () -> AnyView in
+      switch _DisclosureGroupProxy(self).style {
+      case is _ListOutlineGroupStyle:
+        return AnyView(VStack(alignment: .leading) {
+          label
+          Divider()
+          content
+        })
+      default:
+        return AnyView(VStack(alignment: .leading) {
+          label
+          content
+        })
+      }
     })
   }
 }
