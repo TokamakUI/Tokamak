@@ -29,13 +29,14 @@ public final class StackReconciler<R: Renderer> {
     view: V,
     target: R.TargetType,
     renderer: R,
+    environment: EnvironmentValues,
     scheduler: @escaping (@escaping () -> ()) -> ()
   ) {
     self.renderer = renderer
     self.scheduler = scheduler
     rootTarget = target
 
-    rootView = view.makeMountedView(target, EnvironmentValues())
+    rootView = view.makeMountedView(target, environment)
 
     rootView.mount(with: self)
   }
