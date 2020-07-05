@@ -18,10 +18,16 @@ public typealias Divider = TokamakCore.Divider
 
 extension Divider: AnyHTML {
   var innerHTML: String? { nil }
-  var tag: String { "div" }
+  var tag: String { "hr" }
   var attributes: [String: String] {
     [
-      "style": "width: 100%; height: 1px; border-bottom: 1px solid rgba(0, 0, 0, 0.2);",
+      "style": """
+      width: 100%; height: 0; margin: 0;
+      border-top: none;
+      border-right: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+      border-left: none;
+      """,
     ]
   }
 
