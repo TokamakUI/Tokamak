@@ -83,7 +83,7 @@ Table columns:
 
 |     |                                                                                            |     |
 | --- | ------------------------------------------------------------------------------------------ | :-: |
-|     | [List](https://developer.apple.com/documentation/swiftui/list)                             |     |
+| 🚧  | [List](https://developer.apple.com/documentation/swiftui/list)                             |     |
 | 🚧  | [ForEach](https://developer.apple.com/documentation/swiftui/foreach)                       |     |
 | 🚧  | [ScrollView](https://developer.apple.com/documentation/swiftui/scrollview)                 |     |
 |     | [ScrollViewReader](https://developer.apple.com/documentation/swiftui/scrollviewreader)     |  β  |
@@ -97,14 +97,14 @@ Table columns:
 |     | [Form](https://developer.apple.com/documentation/swiftui/form)         |     |
 | ✅  | [Group](https://developer.apple.com/documentation/swiftui/group)       |     |
 |     | [GroupBox](https://developer.apple.com/documentation/swiftui/groupbox) |     |
-|     | [Section](https://developer.apple.com/documentation/swiftui/section)   |     |
+| 🚧 | [Section](https://developer.apple.com/documentation/swiftui/section)   |     |
 
 ### Hierarchical Views
 
 |     |                                                                                      |     |
 | --- | ------------------------------------------------------------------------------------ | :-: |
-|     | [OutlineGroup](https://developer.apple.com/documentation/swiftui/outlinegroup)       |  β  |
-|     | [DisclosureGroup](https://developer.apple.com/documentation/swiftui/disclosuregroup) |  β  |
+|🚧| [OutlineGroup](https://developer.apple.com/documentation/swiftui/outlinegroup)       |  β  |
+|🚧| [DisclosureGroup](https://developer.apple.com/documentation/swiftui/disclosuregroup) |  β  |
 
 ### Spacers and Dividers
 
