@@ -68,12 +68,12 @@ public struct List<SelectionValue, Content>: View
             }
           }))
         }
-        return _ListRow.buildItems(sections) { view -> AnyView in
+        return _ListRow.buildItems(sections) { (view, isLast) -> AnyView in
           if let section = view.view as? SectionView {
             return AnyView(section.listRow(style)
               .environment(\._outlineGroupStyle, _ListOutlineGroupStyle()))
           } else {
-            return AnyView(_ListRow.listRow(view, style))
+            return AnyView(_ListRow.listRow(view, style, isLast: isLast))
           }
         }
       } else {
@@ -107,24 +107,32 @@ public struct List<SelectionValue, Content>: View
 
 struct _ListRow {
   static func buildItems<RowView>(_ children: [AnyView],
-                                  @ViewBuilder rowView: @escaping (AnyView) -> RowView) -> AnyView
+                                  @ViewBuilder rowView: @escaping (AnyView, Bool) -> RowView) -> AnyView
     where RowView: View {
-    AnyView(ForEach(Array(children.enumerated()), id: \.offset) { _, view in
+    AnyView(ForEach(Array(children.enumerated()), id: \.offset) { offset, view in
       VStack(alignment: .leading) {
         HStack {
           Spacer()
         }
-        AnyView(rowView(view))
+        AnyView(rowView(view, offset == children.count - 1))
       }
     })
   }
 
+  static func divider(_ isLast: Bool) -> AnyView {
+    if isLast {
+      return AnyView(EmptyView())
+    } else {
+      return AnyView(Divider())
+    }
+  }
+
   @ViewBuilder
-  static func listRow<V: View>(_ view: V, _ style: ListStyle) -> some View {
+  static func listRow<V: View>(_ view: V, _ style: ListStyle, isLast: Bool) -> some View {
     view.padding(style is InsetListStyle || style is InsetGroupedListStyle ?
       [.leading, .trailing, .top, .bottom] :
       [.trailing, .top, .bottom])
-    Divider()
+    divider(isLast)
   }
 }
 
