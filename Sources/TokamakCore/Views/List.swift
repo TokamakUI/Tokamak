@@ -37,27 +37,50 @@ public struct List<SelectionValue, Content>: View
     self.content = content()
   }
 
-  func buildItems<RowView>(_ container: ParentView,
-                           @ViewBuilder rowView: @escaping (AnyView) -> RowView) -> AnyView
-    where RowView: View {
-    AnyView(ForEach(Array(container.children.enumerated()), id: \.offset) { _, view in
-      VStack(alignment: .leading) {
-        HStack {
-          Spacer()
-        }
-        AnyView(rowView(view))
-      }
-    })
-  }
-
   var listStack: some View {
+    /*
+     .background(Color.white)
+     .cornerRadius(style is InsetGroupedListStyle ? 10 : 0)
+     .padding(style is InsetGroupedListStyle ? .all : .top)
+     .environment(\._outlineGroupStyle, _ListOutlineGroupStyle())
+     */
     VStack(alignment: .leading) { () -> AnyView in
       if let contentContainer = content as? ParentView {
-        return buildItems(contentContainer) { view in
-          view.padding(style is InsetListStyle || style is InsetGroupedListStyle ?
-            [.leading, .trailing, .top, .bottom] :
-            [.trailing, .top, .bottom])
-          Divider()
+        var sections = [AnyView]()
+        var currentSection = [AnyView]()
+        for child in contentContainer.children {
+          if child.view is SectionView {
+            if currentSection.count > 0 {
+              sections.append(AnyView(Section {
+                ForEach(Array(currentSection.enumerated()), id: \.offset) { _, view in
+                  view
+                }
+              }))
+              currentSection = []
+            }
+            sections.append(child)
+          } else {
+            if child.children.count > 0 {
+              currentSection.append(contentsOf: child.children)
+            } else {
+              currentSection.append(child)
+            }
+          }
+        }
+        if currentSection.count > 0 {
+          sections.append(AnyView(Section {
+            ForEach(Array(currentSection.enumerated()), id: \.offset) { _, view in
+              view
+            }
+          }))
+        }
+        return _ListRow.buildItems(sections) { view -> AnyView in
+          if let section = view.view as? SectionView {
+            return AnyView(section.listRow(style)
+              .environment(\._outlineGroupStyle, _ListOutlineGroupStyle()))
+          } else {
+            return AnyView(_ListRow.listRow(view, style))
+          }
         }
       } else {
         return AnyView(content)
@@ -72,10 +95,6 @@ public struct List<SelectionValue, Content>: View
           Spacer()
         }
         listStack
-          .background(Color.white)
-          .cornerRadius(style is InsetGroupedListStyle ? 10 : 0)
-          .padding(style is InsetGroupedListStyle ? .all : .top)
-          .environment(\._outlineGroupStyle, _ListOutlineGroupStyle())
       }
       .padding(.top, 20)
       .background(Color(0xEEEEEE))
@@ -89,6 +108,29 @@ public struct List<SelectionValue, Content>: View
           .environment(\._outlineGroupStyle, _ListOutlineGroupStyle())
       })
     }
+  }
+}
+
+struct _ListRow {
+  static func buildItems<RowView>(_ children: [AnyView],
+                                  @ViewBuilder rowView: @escaping (AnyView) -> RowView) -> AnyView
+    where RowView: View {
+    AnyView(ForEach(Array(children.enumerated()), id: \.offset) { _, view in
+      VStack(alignment: .leading) {
+        HStack {
+          Spacer()
+        }
+        AnyView(rowView(view))
+      }
+    })
+  }
+
+  @ViewBuilder
+  static func listRow<V: View>(_ view: V, _ style: ListStyle) -> some View {
+    view.padding(style is InsetListStyle || style is InsetGroupedListStyle ?
+      [.leading, .trailing, .top, .bottom] :
+      [.trailing, .top, .bottom])
+    Divider()
   }
 }
 

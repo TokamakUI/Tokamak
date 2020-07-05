@@ -15,3 +15,4 @@
 import TokamakCore
 
 public typealias List = TokamakCore.List
+public typealias Section = TokamakCore.Section

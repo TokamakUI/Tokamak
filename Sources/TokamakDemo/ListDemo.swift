@@ -34,14 +34,20 @@ public struct ListDemo: View {
   ]
 
   public var body: some View {
-//    List(fs, children: \.children) { folder in
-//      HStack {
-//        Text(folder.children == nil ? "" : "🗂")
-//        Text(folder.name)
-//      }
-//    }
-    List(0..<10) {
-      Text("Item: \($0 + 1)")
+    List {
+      ForEach(0..<3) {
+        Text("Outside Section: \($0 + 1)")
+      }
+      Section(header: Text("1-10"), footer: Text("End of section")) {
+        ForEach(0..<10) {
+          Text("Item: \($0 + 1)")
+        }
+      }
+      Section(header: Text("11-20")) {
+        ForEach(10..<20) {
+          Text("Item: \($0 + 1)")
+        }
+      }
     }
     .listStyle(InsetGroupedListStyle())
   }
