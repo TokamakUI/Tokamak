@@ -25,7 +25,9 @@ public struct Toggle<Label>: View where Label: View {
   }
 
   public var body: AnyView {
-    toggleStyle.makeBody(configuration: ToggleStyleConfiguration(label: AnyView(label), isOn: $isOn))
+    toggleStyle.makeBody(
+      configuration: ToggleStyleConfiguration(label: AnyView(label), isOn: $isOn)
+    )
   }
 }
 

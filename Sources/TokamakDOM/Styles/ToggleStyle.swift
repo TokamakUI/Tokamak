@@ -24,7 +24,7 @@ public struct DefaultToggleStyle: ToggleStyle {
 }
 
 public struct CheckboxToggleStyle: ToggleStyle {
-  public func makeBody(configuration: ToggleStyleConfiguration) -> HTML<TupleView<(HTML<EmptyView>, AnyView)>> {
+  public func makeBody(configuration: ToggleStyleConfiguration) -> some View {
     var attrs = ["type": "checkbox"]
     if configuration.isOn {
       attrs["checked"] = "checked"
@@ -43,6 +43,6 @@ public struct CheckboxToggleStyle: ToggleStyle {
 
 // FIXME: implement
 // public struct SwitchToggleStyle: ToggleStyle {
-//    public func makeBody(configuration: ToggleStyleConfiguration) -> HTML<TupleView<(HTML<EmptyView>, AnyView)>> {
+//    public func makeBody(configuration: ToggleStyleConfiguration) -> some View {
 //    }
 // }

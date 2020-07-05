@@ -14,7 +14,9 @@
 //
 //  Created by Jed Fox on 07/04/2020.
 //
+// swiftlint:disable line_length
 //  Adapted from https://github.com/SwiftWebUI/SwiftWebUI/blob/16b84d46/Sources/SwiftWebUI/Views/Forms/Toggle.swift
+// swiftlint:enable line_length
 //
 
 // NOTE: ToggleStyleConfiguration.label is supposed to be a special Never View.
@@ -51,7 +53,9 @@ public struct AnyToggleStyle: ToggleStyle {
 }
 
 public enum ToggleStyleKey: EnvironmentKey {
-  public static var defaultValue: AnyToggleStyle { fatalError("\(self) must have a renderer-provided default value") }
+  public static var defaultValue: AnyToggleStyle {
+    fatalError("\(self) must have a renderer-provided default value")
+  }
 }
 
 extension EnvironmentValues {
