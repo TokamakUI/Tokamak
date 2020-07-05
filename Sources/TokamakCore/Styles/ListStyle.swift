@@ -38,7 +38,7 @@ public struct InsetGroupedListStyle: ListStyle {
 }
 
 enum ListStyleKey: EnvironmentKey {
-  static var defaultValue: ListStyle = DefaultListStyle()
+  static let defaultValue: ListStyle = DefaultListStyle()
 }
 
 extension EnvironmentValues {

@@ -26,7 +26,7 @@ public struct _ListOutlineGroupStyle: _OutlineGroupStyle {
 }
 
 enum _OutlineGroupStyleKey: EnvironmentKey {
-  static var defaultValue: _OutlineGroupStyle = _DefaultOutlineGroupStyle()
+  static let defaultValue: _OutlineGroupStyle = _DefaultOutlineGroupStyle()
 }
 
 extension EnvironmentValues {
