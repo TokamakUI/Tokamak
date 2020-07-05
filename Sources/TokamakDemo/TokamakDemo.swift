@@ -28,17 +28,19 @@ struct TokamakDemoView: View {
         Spacer()
       }
       VStack {
-        Counter(count: 5, limit: 15)
-          .padding()
-          .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
-          .border(Color.red, width: 3)
-        ZStack {
-          Text("I'm on bottom")
-          Text("I'm forced to the top")
-            .zIndex(1)
-          Text("I'm on top")
+        Group {
+          Counter(count: 5, limit: 15)
+            .padding()
+            .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
+            .border(Color.red, width: 3)
+          ZStack {
+            Text("I'm on bottom")
+            Text("I'm forced to the top")
+              .zIndex(1)
+            Text("I'm on top")
+          }
+          .padding(20)
         }
-        .padding(20)
         ForEachDemo()
         TextDemo()
         #if canImport(TokamakDOM)
