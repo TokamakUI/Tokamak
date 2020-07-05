@@ -21,36 +21,57 @@ public typealias DisclosureGroup = TokamakCore.DisclosureGroup
 public typealias OutlineGroup = TokamakCore.OutlineGroup
 
 extension DisclosureGroup: ViewDeferredToRenderer {
+  var chevron: some View {
+    HTML("div", ["class": "_tokamak-disclosuregroup-chevron"])
+      .rotationEffect((isExpandedBinding?.wrappedValue ?? isExpanded) ? .degrees(90) : .degrees(0))
+  }
+
+  var label: some View {
+    HTML("div",
+         ["class": "_tokamak-disclosuregroup-label"],
+         listeners: [
+           "click": { _ in
+             self.isExpanded.toggle()
+             self.isExpandedBinding?.wrappedValue.toggle()
+           },
+         ]) { () -> AnyView in
+      switch _DisclosureGroupProxy(self).style {
+      case is _ListOutlineGroupStyle:
+        return AnyView(HStack {
+          _DisclosureGroupProxy(self).label
+          Spacer()
+          chevron
+        })
+      default:
+        return AnyView(HStack {
+          chevron
+          _DisclosureGroupProxy(self).label
+        })
+      }
+    }
+  }
+
+  var content: some View {
+    HTML("div", [
+      "class": "_tokamak-disclosuregroup-content",
+      "role": "treeitem",
+      "aria-expanded": (isExpandedBinding?.wrappedValue ?? isExpanded) ? "true" : "false",
+    ]) { () -> AnyView in
+      if isExpandedBinding?.wrappedValue ?? isExpanded {
+        return AnyView(_DisclosureGroupProxy(self).content())
+      } else {
+        return AnyView(EmptyView())
+      }
+    }
+  }
+
   public var deferredBody: AnyView {
     AnyView(HTML("div", [
       "class": "_tokamak-disclosuregroup",
       "role": "tree",
     ]) {
-      HTML("div",
-           ["class": "_tokamak-disclosuregroup-label"],
-           listeners: [
-             "click": { _ in
-               self.isExpanded.toggle()
-               self.isExpandedBinding?.wrappedValue.toggle()
-             },
-           ]) {
-        HStack {
-          HTML("div", ["class": "_tokamak-disclosuregroup-chevron"])
-            .rotationEffect((isExpandedBinding?.wrappedValue ?? isExpanded) ? .degrees(90) : .degrees(0))
-          _DisclosureGroupProxy(self).label
-        }
-      }
-      HTML("div", [
-        "class": "_tokamak-disclosuregroup-content",
-        "role": "treeitem",
-        "aria-expanded": (isExpandedBinding?.wrappedValue ?? isExpanded) ? "true" : "false",
-      ]) { () -> AnyView in
-        if isExpandedBinding?.wrappedValue ?? isExpanded {
-          return AnyView(_DisclosureGroupProxy(self).content())
-        } else {
-          return AnyView(EmptyView())
-        }
-      }
+      label
+      content
     })
   }
 }

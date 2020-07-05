@@ -15,7 +15,8 @@
 //  Created by Carson Katri on 7/3/20.
 //
 
-public struct OutlineGroup<Data, ID, Parent, Leaf, Subgroup> where Data: RandomAccessCollection, ID: Hashable {
+public struct OutlineGroup<Data, ID, Parent, Leaf, Subgroup>
+  where Data: RandomAccessCollection, ID: Hashable {
   enum Root {
     case collection(Data)
     case single(Data.Element)
@@ -34,7 +35,8 @@ extension OutlineGroup where ID == Data.Element.ID,
   Data.Element: Identifiable {
   public init<DataElement>(_ root: DataElement,
                            children: KeyPath<DataElement, Data?>,
-                           @ViewBuilder content: @escaping (DataElement) -> Leaf) where ID == DataElement.ID, DataElement: Identifiable, DataElement == Data.Element {
+                           @ViewBuilder content: @escaping (DataElement) -> Leaf)
+    where ID == DataElement.ID, DataElement: Identifiable, DataElement == Data.Element {
     self.init(root,
               id: \.id,
               children: children,
@@ -84,15 +86,17 @@ extension OutlineGroup: View where Parent: View, Leaf: View, Subgroup: View {
   public var body: some View {
     switch root {
     case let .collection(data):
-      return AnyView(ForEach(data, id: id) { elem -> AnyView in
-        if let subgroup = elem[keyPath: children] {
-          return AnyView(DisclosureGroup(content: {
-            OutlineGroup(root: .collection(subgroup), children: children, id: id, content: content)
-          }) {
-            content(elem)
-          })
-        } else {
-          return AnyView(content(elem))
+      return AnyView(ForEach(data, id: id) { elem in
+        OutlineSubgroupChildren { () -> AnyView in
+          if let subgroup = elem[keyPath: children] {
+            return AnyView(DisclosureGroup(content: {
+              OutlineGroup(root: .collection(subgroup), children: children, id: id, content: content)
+            }) {
+              content(elem)
+            })
+          } else {
+            return AnyView(content(elem))
+          }
         }
       })
     case let .single(root):
@@ -110,7 +114,9 @@ extension OutlineGroup: View where Parent: View, Leaf: View, Subgroup: View {
 }
 
 public struct OutlineSubgroupChildren: View {
-  public var body: Never {
-    neverBody("OutlineSubgroupChildren")
+  let children: () -> AnyView
+
+  public var body: some View {
+    children()
   }
 }

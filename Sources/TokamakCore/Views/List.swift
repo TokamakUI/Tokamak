@@ -35,8 +35,29 @@ public struct List<SelectionValue, Content>: View
     self.content = content()
   }
 
-  public var body: Never {
-    neverBody("List")
+  public var body: some View {
+    ScrollView {
+      HStack {
+        Spacer()
+      }
+      VStack(alignment: .leading) { () -> AnyView in
+        if let contentContainer = content as? ParentView {
+          return AnyView(ForEach(Array(contentContainer.children.enumerated()), id: \.offset) { _, view in
+            VStack(alignment: .leading) {
+              HStack {
+                Spacer()
+              }
+              view
+                .padding([.top, .bottom, .trailing])
+              Divider()
+            }
+          })
+        } else {
+          return AnyView(content)
+        }
+      }
+      .environment(\._outlineGroupStyle, _ListOutlineGroupStyle())
+    }
   }
 }
 
@@ -144,56 +165,87 @@ extension List {
 
   // - MARK: OutlineGroup initializers
 
-  // FIXME: Implement OutlineGroup
-//  public init<Data, RowContent>(_ data: Data,
-//                                children: KeyPath<Data.Element, Data?>,
-//                                selection: Binding<Set<SelectionValue>>?,
-//                                @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
-//  where Content == OutlineGroup<Data,
-//                                Data.Element.ID,
-//                                HStack<RowContent>,
-//                                HStack<RowContent>,
-//                                DisclosureGroup<HStack<RowContent>, OutlineSubgroupChildren>>,
-//        Data : RandomAccessCollection,
-//        RowContent : View,
-//        Data.Element : Identifiable
+  public init<Data, RowContent>(_ data: Data,
+                                children: KeyPath<Data.Element, Data?>,
+                                selection: Binding<Set<SelectionValue>>?,
+                                @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
+    where Content == OutlineGroup<Data,
+                                  Data.Element.ID,
+                                  HStack<RowContent>,
+                                  HStack<RowContent>,
+                                  DisclosureGroup<HStack<RowContent>, OutlineSubgroupChildren>>,
+    Data: RandomAccessCollection,
+    RowContent: View,
+    Data.Element: Identifiable {
+    self.init(selection: selection) {
+      OutlineGroup(data, children: children) { row in
+        HStack {
+          rowContent(row)
+        }
+      }
+    }
+  }
 
-//  public init<Data, ID, RowContent>(_ data: Data,
-//                                    id: KeyPath<Data.Element, ID>,
-//                                    children: KeyPath<Data.Element, Data?>,
-//                                    selection: Binding<Set<SelectionValue>>?,
-//                                    @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
-//  where Content == OutlineGroup<Data,
-//                                ID,
-//                                HStack<RowContent>,
-//                                HStack<RowContent>,
-//                                DisclosureGroup<HStack<RowContent>, OutlineSubgroupChildren>>,
-//        Data : RandomAccessCollection,
-//        ID : Hashable,
-//        RowContent : View
+  public init<Data, ID, RowContent>(_ data: Data,
+                                    id: KeyPath<Data.Element, ID>,
+                                    children: KeyPath<Data.Element, Data?>,
+                                    selection: Binding<Set<SelectionValue>>?,
+                                    @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
+    where Content == OutlineGroup<Data,
+                                  ID,
+                                  HStack<RowContent>,
+                                  HStack<RowContent>,
+                                  DisclosureGroup<HStack<RowContent>, OutlineSubgroupChildren>>,
+    Data: RandomAccessCollection,
+    ID: Hashable,
+    RowContent: View {
+    self.init(selection: selection) {
+      OutlineGroup(data, id: id, children: children) { row in
+        HStack {
+          rowContent(row)
+        }
+      }
+    }
+  }
 
-//  public init<Data, RowContent>(_ data: Data,
-//                                children: KeyPath<Data.Element, Data?>,
-//                                selection: Binding<SelectionValue?>?,
-//                                @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
-//  where Content == OutlineGroup<Data,
-//                                Data.Element.ID,
-//                                HStack<RowContent>,
-//                                HStack<RowContent>,
-//                                DisclosureGroup<HStack<RowContent>, OutlineSubgroupChildren>>,
-//        Data : RandomAccessCollection, RowContent : View, Data.Element : Identifiable
+  public init<Data, RowContent>(_ data: Data,
+                                children: KeyPath<Data.Element, Data?>,
+                                selection: Binding<SelectionValue?>?,
+                                @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
+    where Content == OutlineGroup<Data,
+                                  Data.Element.ID,
+                                  HStack<RowContent>,
+                                  HStack<RowContent>,
+                                  DisclosureGroup<HStack<RowContent>, OutlineSubgroupChildren>>,
+    Data: RandomAccessCollection, RowContent: View, Data.Element: Identifiable {
+    self.init(selection: selection) {
+      OutlineGroup(data, children: children) { row in
+        HStack {
+          rowContent(row)
+        }
+      }
+    }
+  }
 
-//  public init<Data, ID, RowContent>(_ data: Data,
-//                                    id: KeyPath<Data.Element, ID>,
-//                                    children: KeyPath<Data.Element, Data?>,
-//                                    selection: Binding<SelectionValue?>?,
-//                                    @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
-//  where Content == OutlineGroup<Data,
-//                                ID,
-//                                HStack<RowContent>,
-//                                HStack<RowContent>,
-//                                DisclosureGroup<HStack<RowContent>, OutlineSubgroupChildren>>,
-//        Data : RandomAccessCollection, ID : Hashable, RowContent : View
+  public init<Data, ID, RowContent>(_ data: Data,
+                                    id: KeyPath<Data.Element, ID>,
+                                    children: KeyPath<Data.Element, Data?>,
+                                    selection: Binding<SelectionValue?>?,
+                                    @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
+    where Content == OutlineGroup<Data,
+                                  ID,
+                                  HStack<RowContent>,
+                                  HStack<RowContent>,
+                                  DisclosureGroup<HStack<RowContent>, OutlineSubgroupChildren>>,
+    Data: RandomAccessCollection, ID: Hashable, RowContent: View {
+    self.init(selection: selection) {
+      OutlineGroup(data, id: id, children: children) { row in
+        HStack {
+          rowContent(row)
+        }
+      }
+    }
+  }
 }
 
 extension List where SelectionValue == Never {
@@ -214,26 +266,42 @@ extension List where SelectionValue == Never {
     }
   }
 
-  // FIXME: Implement OutlineGroup
-//  public init<Data, RowContent>(_ data: Data,
-//                                children: KeyPath<Data.Element, Data?>,
-//                                @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
-//  where Content == OutlineGroup<Data,
-//                                Data.Element.ID,
-//                                HStack<RowContent>,
-//                                HStack<RowContent>,
-//                                DisclosureGroup<HStack<RowContent>, OutlineSubgroupChildren>>,
-//        Data : RandomAccessCollection, RowContent : View, Data.Element : Identifiable
-//  public init<Data, ID, RowContent>(_ data: Data,
-//                                    id: KeyPath<Data.Element, ID>,
-//                                    children: KeyPath<Data.Element, Data?>,
-//                                    @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
-//  where Content == OutlineGroup<Data,
-//                                ID,
-//                                HStack<RowContent>,
-//                                HStack<RowContent>,
-//                                DisclosureGroup<HStack<RowContent>, OutlineSubgroupChildren>>,
-//        Data : RandomAccessCollection, ID : Hashable, RowContent : View
+  public init<Data, RowContent>(_ data: Data,
+                                children: KeyPath<Data.Element, Data?>,
+                                @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
+    where Content == OutlineGroup<Data,
+                                  Data.Element.ID,
+                                  HStack<RowContent>,
+                                  HStack<RowContent>,
+                                  DisclosureGroup<HStack<RowContent>, OutlineSubgroupChildren>>,
+    Data: RandomAccessCollection, RowContent: View, Data.Element: Identifiable {
+    self.init {
+      OutlineGroup(data, children: children) { row in
+        HStack {
+          rowContent(row)
+        }
+      }
+    }
+  }
+
+  public init<Data, ID, RowContent>(_ data: Data,
+                                    id: KeyPath<Data.Element, ID>,
+                                    children: KeyPath<Data.Element, Data?>,
+                                    @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
+    where Content == OutlineGroup<Data,
+                                  ID,
+                                  HStack<RowContent>,
+                                  HStack<RowContent>,
+                                  DisclosureGroup<HStack<RowContent>, OutlineSubgroupChildren>>,
+    Data: RandomAccessCollection, ID: Hashable, RowContent: View {
+    self.init {
+      OutlineGroup(data, id: id, children: children) { row in
+        HStack {
+          rowContent(row)
+        }
+      }
+    }
+  }
 
   public init<Data, ID, RowContent>(_ data: Data,
                                     id: KeyPath<Data.Element, ID>,

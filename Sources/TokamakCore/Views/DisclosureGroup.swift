@@ -20,6 +20,8 @@ public struct DisclosureGroup<Label, Content>: View
   @State public var isExpanded: Bool = false
   public var isExpandedBinding: Binding<Bool>?
 
+  @Environment(\._outlineGroupStyle) var style: _OutlineGroupStyle
+
   let label: Label
   let content: () -> Content
 
@@ -44,8 +46,11 @@ public struct DisclosureGroup<Label, Content>: View
 
 extension DisclosureGroup where Label == Text {
   // FIXME: Implement LocalizedStringKey
-//  public init(_ titleKey: LocalizedStringKey, @ViewBuilder content: @escaping () -> Content)
-//  public init(_ titleKey: SwiftUI.LocalizedStringKey, isExpanded: SwiftUI.Binding<Swift.Bool>, @SwiftUI.ViewBuilder content: @escaping () -> Content)
+//  public init(_ titleKey: LocalizedStringKey,
+//              @ViewBuilder content: @escaping () -> Content)
+//  public init(_ titleKey: SwiftUI.LocalizedStringKey,
+//              isExpanded: SwiftUI.Binding<Swift.Bool>,
+//              @SwiftUI.ViewBuilder content: @escaping () -> Content)
 
   @_disfavoredOverload public init<S>(_ label: S,
                                       @ViewBuilder content: @escaping () -> Content)
@@ -69,4 +74,5 @@ public struct _DisclosureGroupProxy<Label, Content>
 
   public var label: Label { subject.label }
   public var content: () -> Content { subject.content }
+  public var style: _OutlineGroupStyle { subject.style }
 }

@@ -15,26 +15,3 @@
 import TokamakCore
 
 public typealias List = TokamakCore.List
-
-extension List: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    AnyView(HTML("ul", [
-      "class": "_tokamak-list",
-    ]) { () -> AnyView in
-      let content = _ListProxy(self).content
-      if let parentView = content as? ParentView {
-        print(parentView.children.count)
-        return AnyView(ForEach(Array(parentView.children.enumerated()), id: \.offset) { _, view in
-          HTML("li") {
-            VStack {
-              view
-              Divider()
-            }
-          }
-        })
-      } else {
-        return AnyView(content)
-      }
-    })
-  }
-}
