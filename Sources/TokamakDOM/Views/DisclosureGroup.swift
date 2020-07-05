@@ -31,7 +31,9 @@ extension DisclosureGroup: ViewDeferredToRenderer {
            },
          ]) {
       HTML("div", ["class": "_tokamak-disclosuregroup-chevron"])
-        .rotationEffect((isExpandedBinding?.wrappedValue ?? isExpanded) ? .degrees(90) : .degrees(0))
+        .rotationEffect((isExpandedBinding?.wrappedValue ?? isExpanded) ?
+          .degrees(90) :
+          .degrees(0))
     }
   }
 

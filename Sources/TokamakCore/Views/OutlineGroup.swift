@@ -90,7 +90,10 @@ extension OutlineGroup: View where Parent: View, Leaf: View, Subgroup: View {
         OutlineSubgroupChildren { () -> AnyView in
           if let subgroup = elem[keyPath: children] {
             return AnyView(DisclosureGroup(content: {
-              OutlineGroup(root: .collection(subgroup), children: children, id: id, content: content)
+              OutlineGroup(root: .collection(subgroup),
+                           children: children,
+                           id: id,
+                           content: content)
             }) {
               content(elem)
             })

@@ -18,6 +18,7 @@ import TokamakDOM
 let document = JSObjectRef.global.document.object!
 
 let div = document.createElement!("div").object!
-let renderer = DOMRenderer(TokamakDemoView(), div)
+// let renderer = DOMRenderer(TokamakDemoView(), div)
+let renderer = DOMRenderer(ListDemo(), div)
 
 _ = document.body.object!.appendChild!(div)
