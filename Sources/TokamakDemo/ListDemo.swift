@@ -34,11 +34,15 @@ public struct ListDemo: View {
   ]
 
   public var body: some View {
-    List(fs, children: \.children) { folder in
-      HStack {
-        Text(folder.children == nil ? "" : "🗂")
-        Text(folder.name)
-      }
+//    List(fs, children: \.children) { folder in
+//      HStack {
+//        Text(folder.children == nil ? "" : "🗂")
+//        Text(folder.name)
+//      }
+//    }
+    List(0..<10) {
+      Text("Item: \($0 + 1)")
     }
+    .listStyle(InsetGroupedListStyle())
   }
 }

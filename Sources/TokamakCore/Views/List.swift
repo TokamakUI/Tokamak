@@ -25,6 +25,8 @@ public struct List<SelectionValue, Content>: View
   var selection: _Selection
   let content: Content
 
+  @Environment(\.listStyle) var style: ListStyle
+
   public init(selection: Binding<Set<SelectionValue>>?, @ViewBuilder content: () -> Content) {
     self.selection = .many(selection)
     self.content = content()
@@ -35,28 +37,57 @@ public struct List<SelectionValue, Content>: View
     self.content = content()
   }
 
-  public var body: some View {
-    ScrollView {
-      HStack {
-        Spacer()
-      }
-      VStack(alignment: .leading) { () -> AnyView in
-        if let contentContainer = content as? ParentView {
-          return AnyView(ForEach(Array(contentContainer.children.enumerated()), id: \.offset) { _, view in
-            VStack(alignment: .leading) {
-              HStack {
-                Spacer()
-              }
-              view
-                .padding([.top, .bottom, .trailing])
-              Divider()
-            }
-          })
-        } else {
-          return AnyView(content)
+  func buildItems<RowView>(_ container: ParentView,
+                           @ViewBuilder rowView: @escaping (AnyView) -> RowView) -> AnyView
+    where RowView: View {
+    AnyView(ForEach(Array(container.children.enumerated()), id: \.offset) { _, view in
+      VStack(alignment: .leading) {
+        HStack {
+          Spacer()
         }
+        AnyView(rowView(view))
       }
-      .environment(\._outlineGroupStyle, _ListOutlineGroupStyle())
+    })
+  }
+
+  var listStack: some View {
+    VStack(alignment: .leading) { () -> AnyView in
+      if let contentContainer = content as? ParentView {
+        return buildItems(contentContainer) { view in
+          view.padding(style is InsetListStyle || style is InsetGroupedListStyle ?
+            [.leading, .trailing, .top, .bottom] :
+            [.trailing, .top, .bottom])
+          Divider()
+        }
+      } else {
+        return AnyView(content)
+      }
+    }
+  }
+
+  public var body: some View {
+    if style is GroupedListStyle || style is InsetGroupedListStyle {
+      return AnyView(ScrollView {
+        HStack {
+          Spacer()
+        }
+        listStack
+          .background(Color.white)
+          .cornerRadius(style is InsetGroupedListStyle ? 10 : 0)
+          .padding(style is InsetGroupedListStyle ? .all : .top)
+          .environment(\._outlineGroupStyle, _ListOutlineGroupStyle())
+      }
+      .padding(.top, 20)
+      .background(Color(0xEEEEEE))
+      )
+    } else {
+      return AnyView(ScrollView {
+        HStack {
+          Spacer()
+        }
+        listStack
+          .environment(\._outlineGroupStyle, _ListOutlineGroupStyle())
+      })
     }
   }
 }
