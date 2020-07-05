@@ -38,12 +38,6 @@ public struct List<SelectionValue, Content>: View
   }
 
   var listStack: some View {
-    /*
-     .background(Color.white)
-     .cornerRadius(style is InsetGroupedListStyle ? 10 : 0)
-     .padding(style is InsetGroupedListStyle ? .all : .top)
-     .environment(\._outlineGroupStyle, _ListOutlineGroupStyle())
-     */
     VStack(alignment: .leading) { () -> AnyView in
       if let contentContainer = content as? ParentView {
         var sections = [AnyView]()
