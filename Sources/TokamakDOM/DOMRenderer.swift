@@ -66,6 +66,7 @@ public final class DOMRenderer: Renderer {
     _ = head.appendChild!(rootStyle)
 
     var environment = EnvironmentValues()
+    environment[ToggleStyleKey] = AnyToggleStyle(DefaultToggleStyle())
 
     reconciler = StackReconciler(
       view: view,

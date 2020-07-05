@@ -42,7 +42,10 @@ struct TokamakDemoView: View {
           .padding(20)
         }
         ForEachDemo()
-        TextDemo()
+        Group {
+          TextDemo()
+          ToggleDemo()
+        }
         #if canImport(TokamakDOM)
         SVGCircle()
           .frame(width: 25, height: 25)
