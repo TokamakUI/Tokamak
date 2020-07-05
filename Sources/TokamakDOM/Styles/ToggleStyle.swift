@@ -41,8 +41,9 @@ public struct CheckboxToggleStyle: ToggleStyle {
   }
 }
 
-// FIXME: implement
-// public struct SwitchToggleStyle: ToggleStyle {
-//    public func makeBody(configuration: ToggleStyleConfiguration) -> some View {
-//    }
-// }
+// FIXME: implement properly
+public struct SwitchToggleStyle: ToggleStyle {
+  public func makeBody(configuration: Configuration) -> some View {
+    CheckboxToggleStyle().makeBody(configuration: configuration)
+  }
+}

@@ -19,6 +19,7 @@ public struct Toggle<Label>: View where Label: View {
   @Binding var isOn: Bool
   var label: Label
   @Environment(\.toggleStyle) var toggleStyle: AnyToggleStyle
+
   public init(isOn: Binding<Bool>, label: () -> Label) {
     _isOn = isOn
     self.label = label()
@@ -36,6 +37,13 @@ extension Toggle where Label == Text {
     self.init(isOn: isOn) {
       Text(title)
     }
+  }
+}
+
+extension Toggle where Label == AnyView {
+  public init(_ configuration: ToggleStyleConfiguration) {
+    label = configuration.label
+    _isOn = configuration.$isOn
   }
 }
 
