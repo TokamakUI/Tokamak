@@ -25,13 +25,33 @@ public struct EmptyView: View {
 }
 
 // swiftlint:disable:next type_name
-public enum _ConditionalContent<TrueBranch, FalseBranch>: View
-  where TrueBranch: View, FalseBranch: View {
-  case trueBranch(TrueBranch)
-  case falseBranch(FalseBranch)
+public struct _ConditionalContent<TrueContent, FalseContent>: View
+  where TrueContent: View, FalseContent: View {
+  enum Storage {
+    case trueContent(TrueContent)
+    case falseContent(FalseContent)
+  }
 
-  public var body: Never {
-    neverBody("_ConditionalContent")
+  let storage: Storage
+
+  @ViewBuilder
+  public var body: some View {
+    switch storage {
+    case let .trueContent(view):
+      view
+    case let .falseContent(view):
+      view
+    }
+  }
+}
+
+extension Optional: View where Wrapped: View {
+  public var body: AnyView {
+    if let view = self {
+      return AnyView(view)
+    } else {
+      return AnyView(EmptyView())
+    }
   }
 }
 
@@ -51,13 +71,13 @@ public enum _ConditionalContent<TrueBranch, FalseBranch>: View
   public static func buildEither<TrueContent, FalseContent>(
     first: TrueContent
   ) -> _ConditionalContent<TrueContent, FalseContent> where TrueContent: View, FalseContent: View {
-    .trueBranch(first)
+    .init(storage: .trueContent(first))
   }
 
   public static func buildEither<TrueContent, FalseContent>(
     second: FalseContent
   ) -> _ConditionalContent<TrueContent, FalseContent> where TrueContent: View, FalseContent: View {
-    .falseBranch(second)
+    .init(storage: .falseContent(second))
   }
 }
 
