@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		85CBD5DF24B3BF090066468A /* ToggleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CBD5DE24B3BF090066468A /* ToggleDemo.swift */; };
-		85CBD5E024B3BF090066468A /* ToggleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CBD5DE24B3BF090066468A /* ToggleDemo.swift */; };
+		854A1A9124B3E3630027BC32 /* ToggleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CBD5DE24B3BF090066468A /* ToggleDemo.swift */; };
 		85ED186A24AD38F20085DFA0 /* UIAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED186924AD38F20085DFA0 /* UIAppDelegate.swift */; };
 		85ED188A24AD3CD60085DFA0 /* macOS.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85ED188724AD3CC30085DFA0 /* macOS.storyboard */; };
 		85ED188C24AD3CF10085DFA0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85ED188B24AD3CF10085DFA0 /* LaunchScreen.storyboard */; };
@@ -220,7 +219,7 @@
 				85ED18A924AD425E0085DFA0 /* TokamakDemo.swift in Sources */,
 				85ED18AD24AD425E0085DFA0 /* TextFieldDemo.swift in Sources */,
 				85ED18A724AD425E0085DFA0 /* ForEachDemo.swift in Sources */,
-				85CBD5DF24B3BF090066468A /* ToggleDemo.swift in Sources */,
+				854A1A9124B3E3630027BC32 /* ToggleDemo.swift in Sources */,
 				85ED18A524AD425E0085DFA0 /* TextDemo.swift in Sources */,
 				85ED18AB24AD425E0085DFA0 /* Counter.swift in Sources */,
 			);
@@ -238,7 +237,7 @@
 				85ED18B624AD42D70085DFA0 /* NSAppDelegate.swift in Sources */,
 				85ED18AC24AD425E0085DFA0 /* Counter.swift in Sources */,
 				85ED18A824AD425E0085DFA0 /* ForEachDemo.swift in Sources */,
-				85CBD5E024B3BF090066468A /* ToggleDemo.swift in Sources */,
+				854A1A9224B3E3650027BC32 /* ToggleDemo.swift in Sources */,
 				85ED18AE24AD425E0085DFA0 /* TextFieldDemo.swift in Sources */,
 				85ED18A624AD425E0085DFA0 /* TextDemo.swift in Sources */,
 			);
