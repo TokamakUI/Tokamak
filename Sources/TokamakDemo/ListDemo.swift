@@ -48,6 +48,6 @@ public struct ListDemo: View {
           Text("Item: \($0 + 1)")
         }
       }
-    }
+    }.frame(width: 400, height: 300)
   }
 }

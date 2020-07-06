@@ -23,7 +23,7 @@ import TokamakDOM
 
 struct TokamakDemoView: View {
   var body: some View {
-    ScrollView(showsIndicators: false) {
+    ScrollView(showsIndicators: true) {
       HStack {
         Spacer()
       }
@@ -59,7 +59,7 @@ struct TokamakDemoView: View {
         #else
         ListDemo()
         #endif
-        if #available(OSX 10.16, *) {
+        if #available(OSX 10.16, iOS 14.0, *) {
           OutlineGroupDemo()
         }
       }
