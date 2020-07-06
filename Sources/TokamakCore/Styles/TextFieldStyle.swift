@@ -34,7 +34,7 @@ public struct SquareBorderTextFieldStyle: TextFieldStyle {
 }
 
 enum TextFieldStyleKey: EnvironmentKey {
-  static var defaultValue: TextFieldStyle = DefaultTextFieldStyle()
+  static let defaultValue: TextFieldStyle = DefaultTextFieldStyle()
 }
 
 extension EnvironmentValues {
