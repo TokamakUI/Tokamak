@@ -24,4 +24,33 @@ let tokamakStyles = """
   width: 0;
   height: 0;
 }
+._tokamak-list {
+  list-style: none;
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+._tokamak-disclosuregroup-label {
+  cursor: pointer;
+}
+._tokamak-disclosuregroup-chevron-container {
+  width: .25em;
+  height: .25em;
+  padding: 10px;
+  display: inline-block;
+}
+._tokamak-disclosuregroup-chevron {
+  width: 100%;
+  height: 100%;
+  transform: rotate(45deg);
+  border-right: solid 2px rgba(0, 0, 0, 0.25);
+  border-top: solid 2px rgba(0, 0, 0, 0.25);
+}
+._tokamak-disclosuregroup-content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1em;
+}
 """
