@@ -15,3 +15,13 @@ jobs:
       - uses: swiftwasm/swiftwasm-action@master
         with:
           shell-action: swift build --triple wasm32-unknown-wasi --product TokamakDemo
+
+  macos_demo_build:
+    runs-on: macos-10.15
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build macOS installable archive
+        run: |
+          sudo xcode-select --switch /Applications/Xcode_12_beta.app/Contents/Developer/
+          xcodebuild -scheme macOS
