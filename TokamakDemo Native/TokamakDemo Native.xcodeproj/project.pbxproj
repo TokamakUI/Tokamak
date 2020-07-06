@@ -25,6 +25,10 @@
 		85ED18AF24AD425E0085DFA0 /* EnvironmentDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED18A024AD425E0085DFA0 /* EnvironmentDemo.swift */; };
 		85ED18B024AD425E0085DFA0 /* EnvironmentDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED18A024AD425E0085DFA0 /* EnvironmentDemo.swift */; };
 		85ED18B624AD42D70085DFA0 /* NSAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED189424AD41B90085DFA0 /* NSAppDelegate.swift */; };
+		D1B4229024B3B9BB00682F74 /* ListDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4228E24B3B9BB00682F74 /* ListDemo.swift */; };
+		D1B4229124B3B9BB00682F74 /* ListDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4228E24B3B9BB00682F74 /* ListDemo.swift */; };
+		D1B4229224B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */; };
+		D1B4229324B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +47,8 @@
 		85ED18A024AD425E0085DFA0 /* EnvironmentDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentDemo.swift; sourceTree = "<group>"; };
 		85ED18BD24AD46340085DFA0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85ED18BF24AD464B0085DFA0 /* iOS Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iOS Info.plist"; sourceTree = "<group>"; };
+		D1B4228E24B3B9BB00682F74 /* ListDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDemo.swift; sourceTree = "<group>"; };
+		D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutlineGroupDemo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +95,8 @@
 		85ED189924AD425E0085DFA0 /* TokamakDemo */ = {
 			isa = PBXGroup;
 			children = (
+				D1B4228E24B3B9BB00682F74 /* ListDemo.swift */,
+				D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */,
 				85ED189A24AD425E0085DFA0 /* SpacerDemo.swift */,
 				85ED189B24AD425E0085DFA0 /* TextDemo.swift */,
 				85ED189C24AD425E0085DFA0 /* ForEachDemo.swift */,
@@ -201,8 +209,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				85ED186A24AD38F20085DFA0 /* UIAppDelegate.swift in Sources */,
+				D1B4229224B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */,
 				85ED18AF24AD425E0085DFA0 /* EnvironmentDemo.swift in Sources */,
 				85ED18A324AD425E0085DFA0 /* SpacerDemo.swift in Sources */,
+				D1B4229024B3B9BB00682F74 /* ListDemo.swift in Sources */,
 				85ED18A924AD425E0085DFA0 /* TokamakDemo.swift in Sources */,
 				85ED18AD24AD425E0085DFA0 /* TextFieldDemo.swift in Sources */,
 				85ED18A724AD425E0085DFA0 /* ForEachDemo.swift in Sources */,
@@ -216,8 +226,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				85ED18AA24AD425E0085DFA0 /* TokamakDemo.swift in Sources */,
+				D1B4229324B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */,
 				85ED18A424AD425E0085DFA0 /* SpacerDemo.swift in Sources */,
 				85ED18B024AD425E0085DFA0 /* EnvironmentDemo.swift in Sources */,
+				D1B4229124B3B9BB00682F74 /* ListDemo.swift in Sources */,
 				85ED18B624AD42D70085DFA0 /* NSAppDelegate.swift in Sources */,
 				85ED18AC24AD425E0085DFA0 /* Counter.swift in Sources */,
 				85ED18A824AD425E0085DFA0 /* ForEachDemo.swift in Sources */,

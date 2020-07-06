@@ -49,6 +49,5 @@ public struct ListDemo: View {
         }
       }
     }
-    .listStyle(InsetGroupedListStyle())
   }
 }
