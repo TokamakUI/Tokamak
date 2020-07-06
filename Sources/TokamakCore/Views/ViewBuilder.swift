@@ -45,6 +45,8 @@ public struct _ConditionalContent<TrueContent, FalseContent>: View
   }
 }
 
+// FIXME: Remove type erasure when https://github.com/swiftwasm/swift/issues/1379
+// is resolved
 extension Optional: View where Wrapped: View {
   public var body: AnyView {
     if let view = self {
