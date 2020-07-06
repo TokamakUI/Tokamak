@@ -52,10 +52,16 @@ struct TokamakDemoView: View {
         #endif
         TextFieldDemo()
         SpacerDemo()
-        Spacer()
-        Text("Forced to bottom.")
         EnvironmentDemo()
           .font(.system(size: 8))
+        #if canImport(TokamakDOM)
+        ListDemo().listStyle(InsetGroupedListStyle())
+        #else
+        ListDemo()
+        #endif
+        if #available(OSX 10.16, *) {
+          OutlineGroupDemo()
+        }
       }
     }
   }

@@ -24,9 +24,13 @@ public struct ModifiedContent<Content, Modifier> {
   }
 }
 
-extension ModifiedContent: View where Content: View, Modifier: ViewModifier {
+extension ModifiedContent: View, ParentView where Content: View, Modifier: ViewModifier {
   public var body: Body {
     neverBody("ModifiedContent<View, ViewModifier>")
+  }
+
+  public var children: [AnyView] {
+    [AnyView(content)]
   }
 }
 
