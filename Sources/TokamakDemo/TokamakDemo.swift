@@ -51,8 +51,14 @@ struct TokamakDemoView: View {
         SpacerDemo()
         EnvironmentDemo()
           .font(.system(size: 8))
+        #if canImport(TokamakDOM)
+        ListDemo().listStyle(InsetGroupedListStyle())
+        #else
         ListDemo()
-        OutlineGroupDemo()
+        #endif
+        if #available(OSX 10.16, *) {
+          OutlineGroupDemo()
+        }
       }
     }
   }

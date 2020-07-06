@@ -15,7 +15,11 @@
 //  Created by Carson Katri on 7/3/20.
 //
 
+#if canImport(SwiftUI)
+import SwiftUI
+#else
 import TokamakDOM
+#endif
 
 struct File: Identifiable {
   let id: Int
@@ -23,6 +27,7 @@ struct File: Identifiable {
   let children: [File]?
 }
 
+@available(OSX 10.16, *)
 struct OutlineGroupDemo: View {
   let fs: [File] = [
     .init(id: 0, name: "Users", children: [
