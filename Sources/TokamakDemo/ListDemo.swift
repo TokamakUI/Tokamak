@@ -11,6 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 7/2/20.
+//
 
 #if canImport(SwiftUI)
 import SwiftUI
@@ -18,17 +21,32 @@ import SwiftUI
 import TokamakDOM
 #endif
 
-public struct ForEachDemo: View {
-  @State public var maxItem = 0
+public struct ListDemo: View {
+  let fs: [File] = [
+    .init(id: 0, name: "Users", children: [
+      .init(id: 1, name: "carson", children: [
+        .init(id: 2, name: "home", children: [
+          .init(id: 3, name: "Documents", children: nil),
+          .init(id: 4, name: "Desktop", children: nil),
+        ]),
+      ]),
+    ]),
+  ]
 
   public var body: some View {
-    VStack {
-      Button(action: { maxItem += 1 }) {
-        Text("Add item")
+    List {
+      ForEach(0..<3) {
+        Text("Outside Section: \($0 + 1)")
       }
-
-      ForEach(0..<maxItem, id: \.self) {
-        Text("Item: \($0)")
+      Section(header: Text("1-10"), footer: Text("End of section")) {
+        ForEach(0..<10) {
+          Text("Item: \($0 + 1)")
+        }
+      }
+      Section(header: Text("11-20")) {
+        ForEach(10..<20) {
+          Text("Item: \($0 + 1)")
+        }
       }
     }
   }

@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Tokamak contributors
+// Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if canImport(SwiftUI)
-import SwiftUI
-#else
-import TokamakDOM
-#endif
+import TokamakCore
 
-public struct ForEachDemo: View {
-  @State public var maxItem = 0
+public typealias Divider = TokamakCore.Divider
 
-  public var body: some View {
-    VStack {
-      Button(action: { maxItem += 1 }) {
-        Text("Add item")
-      }
-
-      ForEach(0..<maxItem, id: \.self) {
-        Text("Item: \($0)")
-      }
-    }
+extension Divider: AnyHTML {
+  var innerHTML: String? { nil }
+  var tag: String { "hr" }
+  var attributes: [String: String] {
+    [
+      "style": """
+      width: 100%; height: 0; margin: 0;
+      border-top: none;
+      border-right: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+      border-left: none;
+      """,
+    ]
   }
+
+  var listeners: [String: Listener] { [:] }
 }

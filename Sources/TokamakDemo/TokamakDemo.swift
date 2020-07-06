@@ -26,26 +26,40 @@ struct TokamakDemoView: View {
     NavigationView {
       VStack(alignment: .leading, spacing: 16) {
         Spacer()
-        NavigationLink("Counter", destination:
-          Counter(count: 5, limit: 15)
-            .padding()
-            .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
-            .border(Color.red, width: 3))
+        Group {
+          NavigationLink("Counter", destination:
+            Counter(count: 5, limit: 15)
+              .padding()
+              .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
+              .border(Color.red, width: 3))
 
-        NavigationLink("ZStack", destination: ZStack {
-          Text("I'm on bottom")
-          Text("I'm forced to the top")
-            .zIndex(1)
-          Text("I'm on top")
-        }.padding(20))
-        NavigationLink("ForEach", destination: ForEachDemo())
-        NavigationLink("Text", destination: TextDemo())
-        #if canImport(TokamakDOM)
-        NavigationLink("SVG", destination: SVGCircle())
+          NavigationLink("ZStack", destination: ZStack {
+            Text("I'm on bottom")
+            Text("I'm forced to the top")
+              .zIndex(1)
+            Text("I'm on top")
+          }.padding(20))
+          NavigationLink("ForEach", destination: ForEachDemo())
+          NavigationLink("Text", destination: TextDemo())
+          #if canImport(TokamakDOM)
+          NavigationLink("SVG", destination: SVGCircle())
+          #endif
+          NavigationLink("TextField", destination: TextFieldDemo())
+          NavigationLink("Spacer", destination: SpacerDemo())
+          NavigationLink("Environment", destination: EnvironmentDemo().font(.system(size: 8)))
+        }
+        #if !os(macOS)
+        if #available(iOS 14.0, *) {
+          NavigationLink("List", destination: ListDemo().listStyle(InsetGroupedListStyle()))
+        } else {
+          NavigationLink("List", destination: ListDemo())
+        }
+        #else
+        NavigationLink("List", destination: ListDemo())
         #endif
-        NavigationLink("TextField", destination: TextFieldDemo())
-        NavigationLink("Spacer", destination: SpacerDemo())
-        NavigationLink("Environment", destination: EnvironmentDemo().font(.system(size: 8)))
+        if #available(OSX 10.16, iOS 14.0, *) {
+          NavigationLink("OutlineGroup", destination: OutlineGroupDemo())
+        }
         Spacer()
       }.padding()
     }

@@ -12,44 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Jed Fox on 06/30/2020.
+//  Created by Carson Katri on 7/4/20.
 //
 
-public protocol TextFieldStyle {}
+public protocol _OutlineGroupStyle {}
 
-public struct DefaultTextFieldStyle: TextFieldStyle {
+public struct _DefaultOutlineGroupStyle: _OutlineGroupStyle {
   public init() {}
 }
 
-public struct PlainTextFieldStyle: TextFieldStyle {
+public struct _ListOutlineGroupStyle: _OutlineGroupStyle {
   public init() {}
 }
 
-public struct RoundedBorderTextFieldStyle: TextFieldStyle {
-  public init() {}
-}
-
-public struct SquareBorderTextFieldStyle: TextFieldStyle {
-  public init() {}
-}
-
-enum TextFieldStyleKey: EnvironmentKey {
-  static let defaultValue: TextFieldStyle = DefaultTextFieldStyle()
+enum _OutlineGroupStyleKey: EnvironmentKey {
+  static let defaultValue: _OutlineGroupStyle = _DefaultOutlineGroupStyle()
 }
 
 extension EnvironmentValues {
-  var textFieldStyle: TextFieldStyle {
+  var _outlineGroupStyle: _OutlineGroupStyle {
     get {
-      self[TextFieldStyleKey.self]
+      self[_OutlineGroupStyleKey.self]
     }
     set {
-      self[TextFieldStyleKey.self] = newValue
+      self[_OutlineGroupStyleKey.self] = newValue
     }
   }
 }
 
 extension View {
-  public func textFieldStyle(_ style: TextFieldStyle) -> some View {
-    environment(\.textFieldStyle, style)
+  func outlineGroupStyle(_ style: _OutlineGroupStyle) -> some View {
+    environment(\._outlineGroupStyle, style)
   }
 }

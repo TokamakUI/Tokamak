@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Tokamak contributors
+// Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,25 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 7/3/20.
+//
 
-#if canImport(SwiftUI)
-import SwiftUI
-#else
-import TokamakDOM
-#endif
+import TokamakCore
 
-public struct ForEachDemo: View {
-  @State public var maxItem = 0
-
-  public var body: some View {
-    VStack {
-      Button(action: { maxItem += 1 }) {
-        Text("Add item")
-      }
-
-      ForEach(0..<maxItem, id: \.self) {
-        Text("Item: \($0)")
-      }
-    }
+extension _RotationEffect: DOMViewModifier {
+  public var attributes: [String: String] {
+    ["style": "transform: rotate(\(angle.degrees)deg)"]
   }
 }
