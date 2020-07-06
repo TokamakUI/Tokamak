@@ -16,10 +16,39 @@
 //
 
 public protocol ListStyle {}
-
-public struct DefaultListStyle: ListStyle {
-  public init() {}
+/// A protocol implemented on the renderer to create platform-specific list styles.
+public protocol ListStyleDeferredToRenderer {
+  func listBody<ListBody>(_ content: ListBody) -> AnyView where ListBody: View
+  func listRow<Row>(_ row: Row) -> AnyView where Row: View
+  func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View
+  func sectionBody<SectionBody>(_ section: SectionBody) -> AnyView where SectionBody: View
+  func sectionFooter<Footer>(_ footer: Footer) -> AnyView where Footer: View
 }
+
+public extension ListStyleDeferredToRenderer {
+  func listBody<ListBody>(_ content: ListBody) -> AnyView where ListBody: View {
+    AnyView(content)
+  }
+
+  func listRow<Row>(_ row: Row) -> AnyView where Row: View {
+    AnyView(row
+      .padding([.trailing, .top, .bottom]))
+  }
+
+  func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
+    AnyView(header)
+  }
+
+  func sectionBody<SectionBody>(_ section: SectionBody) -> AnyView where SectionBody: View {
+    AnyView(section)
+  }
+
+  func sectionFooter<Footer>(_ footer: Footer) -> AnyView where Footer: View {
+    AnyView(footer)
+  }
+}
+
+public typealias DefaultListStyle = PlainListStyle
 
 public struct PlainListStyle: ListStyle {
   public init() {}

@@ -41,53 +41,47 @@ extension Section: View, SectionView where Parent: View, Content: View, Footer: 
 
   func sectionContent(_ style: ListStyle) -> AnyView {
     if let contentContainer = content as? ParentView {
-      return AnyView(_ListRow.buildItems(contentContainer.children) { view, isLast in
+      let rows = _ListRow.buildItems(contentContainer.children) { view, isLast in
         _ListRow.listRow(view, style, isLast: isLast)
-      })
+      }
+      if let style = style as? ListStyleDeferredToRenderer {
+        return style.sectionBody(rows)
+      } else {
+        return AnyView(rows)
+      }
+    } else if let style = style as? ListStyleDeferredToRenderer {
+      return style.sectionBody(content)
     } else {
       return AnyView(content)
     }
   }
 
-  func plainFooterView(_ style: ListStyle) -> AnyView {
+  func footerView(_ style: ListStyle) -> AnyView {
     if footer is EmptyView {
       return AnyView(EmptyView())
+    } else if let style = style as? ListStyleDeferredToRenderer {
+      return style.sectionFooter(footer)
     } else {
       return AnyView(_ListRow.listRow(footer, style, isLast: true))
     }
   }
 
-  var plainHeaderView: AnyView {
+  func headerView(_ style: ListStyle) -> AnyView {
     if header is EmptyView {
       return AnyView(EmptyView())
+    } else if let style = style as? ListStyleDeferredToRenderer {
+      return style.sectionHeader(header)
     } else {
-      return AnyView(header
-        .padding(.vertical, 5)
-        .background(Color(0xBBBBBB)))
+      return AnyView(header)
     }
   }
 
   func listRow(_ style: ListStyle) -> AnyView {
-    if style is GroupedListStyle || style is InsetGroupedListStyle {
-      return AnyView(VStack(alignment: .leading) {
-        header
-          .font(.caption)
-          .padding(.leading, 20)
-        sectionContent(style)
-          .background(Color.white)
-          .cornerRadius(style is InsetGroupedListStyle ? 10 : 0)
-          .padding(style is InsetGroupedListStyle ? .all : .top)
-        footer
-          .font(.caption)
-          .padding(.leading, 20)
-      })
-    } else {
-      return AnyView(VStack(alignment: .leading) {
-        plainHeaderView
-        sectionContent(style)
-        plainFooterView(style)
-      })
-    }
+    AnyView(VStack(alignment: .leading) {
+      headerView(style)
+      sectionContent(style)
+      footerView(style)
+    })
   }
 }
 

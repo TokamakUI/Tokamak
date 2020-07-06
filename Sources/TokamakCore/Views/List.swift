@@ -22,7 +22,7 @@ public struct List<SelectionValue, Content>: View
     case many(Binding<Set<SelectionValue>>?)
   }
 
-  var selection: _Selection
+  let selection: _Selection
   let content: Content
 
   @Environment(\.listStyle) var style: ListStyle
@@ -70,8 +70,7 @@ public struct List<SelectionValue, Content>: View
         }
         return AnyView(_ListRow.buildItems(sections) { (view, isLast) -> AnyView in
           if let section = view.view as? SectionView {
-            return AnyView(section.listRow(style)
-              .environment(\._outlineGroupStyle, _ListOutlineGroupStyle()))
+            return AnyView(section.listRow(style))
           } else {
             return AnyView(_ListRow.listRow(view, style, isLast: isLast))
           }
@@ -83,16 +82,14 @@ public struct List<SelectionValue, Content>: View
   }
 
   public var body: some View {
-    if style is GroupedListStyle || style is InsetGroupedListStyle {
-      return AnyView(ScrollView {
+    if let style = style as? ListStyleDeferredToRenderer {
+      return style.listBody(ScrollView {
         HStack {
           Spacer()
         }
         listStack
-      }
-      .padding(.top, 20)
-      .background(Color(0xEEEEEE))
-      )
+          .environment(\._outlineGroupStyle, _ListOutlineGroupStyle())
+      })
     } else {
       return AnyView(ScrollView {
         HStack {
@@ -105,7 +102,7 @@ public struct List<SelectionValue, Content>: View
   }
 }
 
-struct _ListRow {
+public struct _ListRow {
   static func buildItems<RowView>(_ children: [AnyView],
                                   @ViewBuilder rowView: @escaping (AnyView, Bool) -> RowView)
     -> some View where RowView: View {
@@ -120,10 +117,9 @@ struct _ListRow {
   }
 
   @ViewBuilder
-  static func listRow<V: View>(_ view: V, _ style: ListStyle, isLast: Bool) -> some View {
-    view.padding(style is InsetListStyle || style is InsetGroupedListStyle ?
-      [.leading, .trailing, .top, .bottom] :
-      [.trailing, .top, .bottom])
+  public static func listRow<V: View>(_ view: V, _ style: ListStyle, isLast: Bool) -> some View {
+    (style as? ListStyleDeferredToRenderer)?.listRow(view) ??
+      AnyView(view.padding([.trailing, .top, .bottom]))
     if !isLast {
       Divider()
     }

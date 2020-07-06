@@ -26,12 +26,11 @@ extension DisclosureGroup: ViewDeferredToRenderer {
          ["class": "_tokamak-disclosuregroup-chevron-container"],
          listeners: [
            "click": { _ in
-             self.isExpanded.toggle()
-             self.isExpandedBinding?.wrappedValue.toggle()
+             _DisclosureGroupProxy(self).toggleIsExpanded()
            },
          ]) {
       HTML("div", ["class": "_tokamak-disclosuregroup-chevron"])
-        .rotationEffect((isExpandedBinding?.wrappedValue ?? isExpanded) ?
+        .rotationEffect(_DisclosureGroupProxy(self).isExpanded ?
           .degrees(90) :
           .degrees(0))
     }
@@ -59,9 +58,9 @@ extension DisclosureGroup: ViewDeferredToRenderer {
     HTML("div", [
       "class": "_tokamak-disclosuregroup-content",
       "role": "treeitem",
-      "aria-expanded": (isExpandedBinding?.wrappedValue ?? isExpanded) ? "true" : "false",
+      "aria-expanded": _DisclosureGroupProxy(self).isExpanded ? "true" : "false",
     ]) { () -> AnyView in
-      if isExpandedBinding?.wrappedValue ?? isExpanded {
+      if _DisclosureGroupProxy(self).isExpanded {
         return AnyView(_DisclosureGroupProxy(self).content())
       } else {
         return AnyView(EmptyView())

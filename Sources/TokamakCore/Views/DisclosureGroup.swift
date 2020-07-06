@@ -17,8 +17,8 @@
 
 public struct DisclosureGroup<Label, Content>: View
   where Label: View, Content: View {
-  @State public var isExpanded: Bool = false
-  public var isExpandedBinding: Binding<Bool>?
+  @State var isExpanded: Bool = false
+  let isExpandedBinding: Binding<Bool>?
 
   @Environment(\._outlineGroupStyle) var style: _OutlineGroupStyle
 
@@ -27,6 +27,7 @@ public struct DisclosureGroup<Label, Content>: View
 
   public init(@ViewBuilder content: @escaping () -> Content,
               @ViewBuilder label: () -> Label) {
+    isExpandedBinding = nil
     self.label = label()
     self.content = content
   }
@@ -75,4 +76,12 @@ public struct _DisclosureGroupProxy<Label, Content>
   public var label: Label { subject.label }
   public var content: () -> Content { subject.content }
   public var style: _OutlineGroupStyle { subject.style }
+  public var isExpanded: Bool {
+    subject.isExpandedBinding?.wrappedValue ?? subject.isExpanded
+  }
+
+  public func toggleIsExpanded() {
+    subject.isExpandedBinding?.wrappedValue.toggle()
+    subject.isExpanded.toggle()
+  }
 }
