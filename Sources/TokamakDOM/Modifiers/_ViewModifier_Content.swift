@@ -15,16 +15,43 @@
 import Runtime
 import TokamakCore
 
+private protocol AnyModifiedContent {
+  var anyContent: AnyView { get }
+  var anyModifier: DOMViewModifier { get }
+}
+
+extension ModifiedContent: AnyModifiedContent where Modifier: DOMViewModifier, Content: View {
+  var anyContent: AnyView {
+    AnyView(content)
+  }
+
+  var anyModifier: DOMViewModifier {
+    modifier
+  }
+}
+
 extension ModifiedContent: ViewDeferredToRenderer where Content: View {
   public var deferredBody: AnyView {
     if let domModifier = modifier as? DOMViewModifier {
-      return AnyView(HTML("div", domModifier.attributes) {
-        content
-      })
+      if let adjacentModifier = content as? AnyModifiedContent,
+        !(adjacentModifier.anyModifier.isOrderDependent || domModifier.isOrderDependent) {
+        // Flatten non-order-dependent modifiers
+        var attr = domModifier.attributes
+        for (key, val) in adjacentModifier.anyModifier.attributes {
+          if let prev = attr[key] {
+            attr[key] = prev + val
+          }
+        }
+        return AnyView(HTML("div", attr) {
+          adjacentModifier.anyContent
+        })
+      } else {
+        return AnyView(HTML("div", domModifier.attributes) {
+          content
+        })
+      }
     } else {
-      return AnyView(HTML("div") {
-        content
-      })
+      return AnyView(content)
     }
   }
 }
