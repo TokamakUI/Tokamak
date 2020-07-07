@@ -17,4 +17,9 @@ extension View {
   public func navigationBarTitle<S>(_ title: S) -> some View where S: StringProtocol {
     self
   }
+
+  // FIXME: Implement
+  public func navigationTitle<S>(_ title: S) -> some View where S: StringProtocol {
+    self
+  }
 }
