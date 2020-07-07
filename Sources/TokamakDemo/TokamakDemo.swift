@@ -21,17 +21,25 @@ import SwiftUI
 import TokamakDOM
 #endif
 
+func title<V>(_ view: V, title: String) -> AnyView where V: View {
+  if #available(OSX 10.16, iOS 14.0, *) {
+    return AnyView(view.navigationTitle(title))
+  } else {
+    #if !os(macOS)
+    return AnyView(view.navigationBarTitle(title))
+    #else
+    return AnyView(view)
+    #endif
+  }
+}
+
 struct NavItem: Identifiable {
   var id: String
   var destination: AnyView
 
   init<V>(_ id: String, destination: V) where V: View {
     self.id = id
-    self.destination = AnyView(
-      destination
-        .frame(minWidth: 300)
-        .navigationBarTitle(id)
-    )
+    self.destination = title(destination.frame(minWidth: 300), title: id)
   }
 }
 
@@ -88,11 +96,13 @@ var links: [NavItem] {
 struct TokamakDemoView: View {
   var body: some View {
     NavigationView { () -> AnyView in
-      let list = List(links) { link in
-        NavigationLink(link.id, destination: link.destination)
-      }
-      .frame(minHeight: 300)
-      .navigationBarTitle("Demos")
+      let list = title(
+        List(links) { link in
+          NavigationLink(link.id, destination: link.destination)
+        }
+        .frame(minHeight: 300),
+        title: "Demos"
+      )
       #if os(WASI)
       return AnyView(list)
       #else
