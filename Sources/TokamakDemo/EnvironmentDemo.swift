@@ -18,17 +18,33 @@
 #if canImport(SwiftUI)
 import SwiftUI
 #else
+import OpenCombine
 import TokamakDOM
 #endif
 
+class TestEnvironment: ObservableObject {
+  var envTest = "Hello, world!" {
+    willSet {
+      print(newValue)
+      objectWillChange.send()
+    }
+  }
+
+  let objectWillChange = ObservableObjectPublisher()
+
+  init() {}
+}
+
 struct EnvironmentDemo: View {
   @Environment(\.font) var font: Font?
+  @EnvironmentObject var testEnv: TestEnvironment
 
   var body: some View {
-    if let font = font {
-      return Text("\(String(describing: font))")
-    } else {
-      return Text("`font` environment not set.")
+    VStack {
+      Text(font == nil ? "`font` environment not set." : "\(String(describing: font!))")
+      Button(testEnv.envTest) {
+        testEnv.envTest = "EnvironmentObject modified."
+      }
     }
   }
 }

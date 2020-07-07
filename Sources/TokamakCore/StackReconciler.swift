@@ -67,6 +67,8 @@ public final class StackReconciler<R: Renderer> {
     // swiftlint:disable force_try
     let info = try! typeInfo(of: compositeView.view.type)
     let stateProperties = info.properties.filter { $0.type is ValueStorage.Type }
+    let environmentObjects = info.properties.filter { $0.type is EnvironmentReader.Type }
+    print(environmentObjects)
 
     for (id, stateProperty) in stateProperties.enumerated() {
       // `ValueStorage` properties were already filtered out, so safe to assume the value's type

@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "OpenCombine",
+        "repositoryURL": "https://github.com/MaxDesiatov/OpenCombine.git",
+        "state": {
+          "branch": "wasi",
+          "revision": "4fed049b0ab7095d4d26247ef958d3f6e361c569",
+          "version": null
+        }
+      },
+      {
         "package": "Runtime",
         "repositoryURL": "https://github.com/MaxDesiatov/Runtime.git",
         "state": {

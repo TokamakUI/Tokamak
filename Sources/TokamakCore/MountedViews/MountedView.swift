@@ -68,6 +68,17 @@ extension View {
         try! prop.set(value: wrapper, on: &extractedView)
         // swiftlint:enable force_cast
       }
+
+      // Setup onEnvironmentChanged for all @EnvironmentObject
+      for prop in viewInfo.properties.filter({ $0.type is EnvironmentWriter.Type }) {
+        // swiftlint:disable force_cast
+        let wrapper = try! prop.get(from: any.view) as! EnvironmentWriter
+        wrapper.subscribe {
+          print("Environment changed (received on reconciler)")
+        }
+        // swiftlint:enable force_cast
+      }
+
       // Set the extractedView back on the AnyView after modification
       let anyViewInfo = try! typeInfo(of: AnyView.self)
       try! anyViewInfo.property(named: "view").set(value: extractedView, on: &injectableView)

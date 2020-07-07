@@ -22,7 +22,7 @@ protocol EnvironmentReader {
     case value(Value)
   }
 
-  var content: Environment<Value>.Content
+  var content: Content
   let keyPath: KeyPath<EnvironmentValues, Value>
   public init(_ keyPath: KeyPath<EnvironmentValues, Value>) {
     content = .keyPath(keyPath)

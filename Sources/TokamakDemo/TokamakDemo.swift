@@ -61,5 +61,6 @@ struct TokamakDemoView: View {
         }
       }
     }
+    .environmentObject(TestEnvironment())
   }
 }
