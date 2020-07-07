@@ -22,7 +22,7 @@ import TokamakDOM
 public struct ToggleDemo: View {
   @State var checked = false
 
-  var body: some View {
+  public var body: some View {
     VStack {
       Toggle("Check me!", isOn: $checked)
       Toggle(isOn: Binding(get: { true }, set: { _ in })) {
