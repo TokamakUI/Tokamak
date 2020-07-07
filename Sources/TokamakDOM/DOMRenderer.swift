@@ -48,6 +48,25 @@ public final class DOMNode: Target {
   }
 }
 
+private extension AnyView {
+  var axes: [SpacerContainerAxis] {
+    var axes = [SpacerContainerAxis]()
+    if let spacerContainer = mapAnyView(self, transform: { (v: SpacerContainer) in v }) {
+      if spacerContainer.hasSpacer {
+        axes.append(spacerContainer.axis)
+      }
+      if spacerContainer.fillCrossAxis {
+        axes.append(spacerContainer.axis == .horizontal ? .vertical : .horizontal)
+      }
+    }
+    return axes
+  }
+
+  var fillAxes: [SpacerContainerAxis] {
+    children.flatMap(\.fillAxes) + axes
+  }
+}
+
 let log = JSObjectRef.global.console.object!.log.function!
 let document = JSObjectRef.global.document.object!
 let head = document.head.object!
@@ -60,8 +79,12 @@ public final class DOMRenderer: Renderer {
   public init<V: View>(_ view: V, _ ref: JSObjectRef) {
     rootRef = ref
     rootRef.style = """
-    display: flex; width: 100%; height: 100%;
-    justify-content: center; align-items: center; overflow: hidden;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
     """
 
     let rootStyle = document.createElement!("style").object!
@@ -106,6 +129,14 @@ public final class DOMRenderer: Renderer {
       length > 0,
       let lastChild = children[Int(length) - 1].object
     else { return nil }
+
+    let fillAxes = host.view.fillAxes
+    if fillAxes.contains(.horizontal) {
+      lastChild.style.object!.width = "100%"
+    }
+    if fillAxes.contains(.vertical) {
+      lastChild.style.object!.height = "100%"
+    }
 
     return DOMNode(host.view, lastChild, listeners)
   }
