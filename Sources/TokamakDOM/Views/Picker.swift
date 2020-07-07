@@ -26,25 +26,26 @@ extension _PickerContainer: ViewDeferredToRenderer {
     AnyView(HTML("label") {
       label
 
-      HTML("select", listeners: ["change": { _ in }]) {
-        content
+      HTML("select", listeners: ["change": { print($0) }]) { () -> AnyView in
+        print("content is \(content)")
+        // return AnyView(EmptyView())
+        return AnyView(content)
       }
     })
   }
 }
 
-extension _PickerElement: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    let attributes: [String: String]
-    if let value = value {
-      // FIXME: should match against IDs and map those IDs to values via a dictionary
-      attributes = ["value": "\(value)"]
-    } else {
-      attributes = [:]
-    }
+// extension _PickerElement: ViewDeferredToRenderer {
+//   public var deferredBody: AnyView {
+//     let attributes: [String: String]
+//     if let value = valueIndex {
+//       attributes = ["value": "\(value)"]
+//     } else {
+//       attributes = [:]
+//     }
 
-    return AnyView(HTML("option", attributes) {
-      content
-    })
-  }
-}
+//     return AnyView(HTML("option", attributes) {
+//       content
+//     })
+//   }
+// }

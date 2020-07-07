@@ -79,6 +79,7 @@ public extension ForEach where Data == Range<Int>, ID == Int {
 
 extension ForEach: ParentView {
   public var children: [AnyView] {
+    // data.map { print($0); let result = AnyView(content($0)); print(result); return result }
     data.map { AnyView(content($0)) }
   }
 }

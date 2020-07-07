@@ -29,10 +29,10 @@ extension SecureField: ViewDeferredToRenderer where Label == Text {
     ], listeners: [
       "keypress": { event in if event.key == "Enter" { proxy.onCommit() } },
       "input": { event in
-          if let newValue = event.target.object?.value.string {
-            proxy.textBinding.wrappedValue = newValue
-          }
-        },
+        if let newValue = event.target.object?.value.string {
+          proxy.textBinding.wrappedValue = newValue
+        }
+      },
     ]))
   }
 }
