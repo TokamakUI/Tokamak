@@ -32,6 +32,7 @@ extension _OverlayModifier: DOMViewModifier where Overlay == _ShapeView<_Stroked
 
 // TODO: Implement arbitrary clip paths with CSS `clip-path`
 extension _ClipEffect: DOMViewModifier {
+  public var orderDependent: Bool { true }
   public var attributes: [String: String] {
     if let roundedRect = shape as? RoundedRectangle {
       return ["style": "border-radius: \(roundedRect.cornerSize.width)px; overflow: hidden;"]
