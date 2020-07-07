@@ -78,7 +78,14 @@ public final class DOMRenderer: Renderer {
 
   public init<V: View>(_ view: V, _ ref: JSObjectRef) {
     rootRef = ref
-    rootRef.style = "display: flex; width: 100%; height: 100%; justify-content: center; align-items: center; overflow: hidden;"
+    rootRef.style = """
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    """
 
     let rootStyle = document.createElement!("style").object!
     rootStyle.innerHTML = .string(tokamakStyles)

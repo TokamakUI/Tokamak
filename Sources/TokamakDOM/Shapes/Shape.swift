@@ -18,7 +18,8 @@
 import TokamakCore
 
 // Border modifier
-extension _OverlayModifier: DOMViewModifier where Overlay == _ShapeView<_StrokedShape<TokamakCore.Rectangle._Inset>, Color> {
+extension _OverlayModifier: DOMViewModifier
+  where Overlay == _ShapeView<_StrokedShape<TokamakCore.Rectangle._Inset>, Color> {
   public var attributes: [String: String] {
     let style = overlay.shape.style.dashPhase == 0 ? "solid" : "dashed"
     return ["style": """
@@ -32,7 +33,7 @@ extension _OverlayModifier: DOMViewModifier where Overlay == _ShapeView<_Stroked
 
 // TODO: Implement arbitrary clip paths with CSS `clip-path`
 extension _ClipEffect: DOMViewModifier {
-  public var orderDependent: Bool { true }
+  public var isOrderDependent: Bool { true }
   public var attributes: [String: String] {
     if let roundedRect = shape as? RoundedRectangle {
       return ["style": "border-radius: \(roundedRect.cornerSize.width)px; overflow: hidden;"]

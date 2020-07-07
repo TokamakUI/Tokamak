@@ -20,11 +20,11 @@ public typealias ModifiedContent = TokamakCore.ModifiedContent
 public protocol DOMViewModifier {
   var attributes: [String: String] { get }
   /// Can the modifier be flattened?
-  var orderDependent: Bool { get }
+  var isOrderDependent: Bool { get }
 }
 
 extension DOMViewModifier {
-  public var orderDependent: Bool { false }
+  public var isOrderDependent: Bool { false }
 }
 
 extension ModifiedContent: DOMViewModifier
@@ -48,7 +48,7 @@ extension _ZIndexModifier: DOMViewModifier {
 }
 
 extension _BackgroundModifier: DOMViewModifier where Background == Color {
-  public var orderDependent: Bool { true }
+  public var isOrderDependent: Bool { true }
   public var attributes: [String: String] {
     ["style": "background-color: \(background.description)"]
   }

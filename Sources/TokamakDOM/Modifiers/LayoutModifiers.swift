@@ -79,7 +79,7 @@ private extension EdgeInsets {
 }
 
 extension _PaddingLayout: DOMViewModifier {
-  public var orderDependent: Bool { true }
+  public var isOrderDependent: Bool { true }
   public var attributes: [String: String] {
     var padding = [(String, CGFloat)]()
     let insets = self.insets ?? .init(_all: 10)
