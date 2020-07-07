@@ -19,7 +19,7 @@ import TokamakCore
 import TokamakDOM
 #endif
 
-struct ToggleDemo: View {
+public struct ToggleDemo: View {
   @State var checked = false
 
   var body: some View {
