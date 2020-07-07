@@ -74,3 +74,12 @@ extension AnyView: ParentView {
     (view as? ParentView)?.children ?? []
   }
 }
+
+public struct _AnyViewProxy {
+  public var subject: AnyView
+
+  public init(_ subject: AnyView) { self.subject = subject }
+
+  public var type: Any.Type { subject.type }
+  public var view: Any { subject.view }
+}
