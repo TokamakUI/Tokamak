@@ -21,17 +21,23 @@ import SwiftUI
 import TokamakDOM
 #endif
 
-public struct Counter: View {
-  @State public var count: Int
+final class Count: ObservableObject {
+  @Published var value: Int
+
+  init(value: Int) { self.value = value }
+}
+
+struct Counter: View {
+  @ObservedObject var count: Count
 
   let limit: Int
 
   public var body: some View {
-    count < limit ?
+    count.value < limit ?
       AnyView(
         VStack {
-          Button("Increment") { count += 1 }
-          Text("\(count)")
+          Button("Increment") { count.value += 1 }
+          Text("\(count.value)")
         }
         .onAppear { print("Counter.VStack onAppear") }
         .onDisappear { print("Counter.VStack onDisappear") }

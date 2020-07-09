@@ -40,7 +40,7 @@ public final class StackReconciler<R: Renderer> {
     rootView.mount(with: self)
   }
 
-  func queueUpdate(
+  private func queueStateUpdate(
     for mountedView: MountedCompositeView<R>,
     id: Int,
     updater: (inout Any) -> ()
@@ -84,7 +84,7 @@ public final class StackReconciler<R: Renderer> {
       // by the reconciler.
       state.setter = { [weak self, weak compositeView] newValue in
         guard let view = compositeView else { return }
-        self?.queueUpdate(for: view, id: id) { $0 = newValue }
+        self?.queueStateUpdate(for: view, id: id) { $0 = newValue }
       }
       try! stateProperty.set(value: state, on: &compositeView.view.view)
     }
