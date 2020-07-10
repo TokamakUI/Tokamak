@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if canImport(SwiftUI)
+import SwiftUI
+#else
 import TokamakDOM
+#endif
 
 struct Star: Shape {
   func path(in rect: CGRect) -> Path {
@@ -32,7 +36,7 @@ struct PathDemo: View {
   var body: some View {
     VStack {
       Star()
-        .fill(Color(0xFFD000))
+        .fill(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1))
       Path { path in
         path.addRect(.init(origin: .zero, size: .init(width: 20, height: 20)))
         path.addEllipse(in: .init(origin: .init(x: 25, y: 0),
@@ -46,7 +50,7 @@ struct PathDemo: View {
                     endAngle: .degrees(180),
                     clockwise: true)
       }
-      .stroke(Color(0xFFD000), lineWidth: 4)
+      .stroke(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1), lineWidth: 4)
       .padding(.vertical)
     }
   }
