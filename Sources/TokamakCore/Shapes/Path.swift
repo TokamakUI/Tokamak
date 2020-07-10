@@ -15,14 +15,31 @@
 //  Created by Carson Katri on 06/28/2020.
 //
 
+#if canImport(Darwin)
+import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
+
 /// The outline of a 2D shape.
 public struct Path: Equatable, LosslessStringConvertible {
   public var description: String {
-    """
-    \(storage)
-    \(elements)
-    \(transform)
-    """
+    var pathString = [String]()
+    for element in elements {
+      switch element {
+      case let .move(to: pos):
+        pathString.append("\(pos.x) \(pos.y) m")
+      case let .line(to: pos):
+        pathString.append("\(pos.x) \(pos.y) l")
+      case let .curve(to: pos, control1: c1, control2: c2):
+        pathString.append("\(c1.x) \(c1.y) \(c2.x) \(c2.y) \(pos.x) \(pos.y) c")
+      case let .quadCurve(to: pos, control: c):
+        pathString.append("\(c.x) \(c.y) \(pos.x) \(pos.y) q")
+      case .closeSubpath:
+        pathString.append("h")
+      }
+    }
+    return pathString.joined(separator: " ")
   }
 
   public enum Storage: Equatable {
@@ -48,8 +65,8 @@ public struct Path: Equatable, LosslessStringConvertible {
   public var transform: CGAffineTransform = .identity
 
   public struct _SubPath: Equatable {
-    let path: Path
-    let transform: CGAffineTransform
+    public let path: Path
+    public let transform: CGAffineTransform
   }
 
   public var subpaths: [_SubPath] = []
@@ -248,13 +265,35 @@ extension Path {
     // I don't know how to do this without sin/cos
   }
 
+  // There's a great article on bezier curves here:
+  // https://pomax.github.io/bezierinfo
+  // FIXME: Apply transform
   public mutating func addArc(center: CGPoint,
                               radius: CGFloat,
                               startAngle: Angle,
                               endAngle: Angle,
                               clockwise: Bool,
                               transform: CGAffineTransform = .identity) {
-    // I don't know how to do this without sin/cos
+    let startPoint = CGPoint(x: radius * cos(startAngle.radians),
+                             y: radius * sin(startAngle.radians))
+    let endPoint = CGPoint(x: radius * cos(endAngle.radians),
+                           y: radius * sin(endAngle.radians))
+    let angle = abs(startAngle.radians - endAngle.radians)
+    let l = (4 / 3) * tan(angle / 4)
+    let c1 = CGPoint(x: radius - center.x, y: (l * radius) - center.y)
+    let c2 = CGPoint(x: ((cos(angle) + l * sin(angle)) * radius) - center.x,
+                     y: ((sin(angle) - l * cos(angle)) * radius) - center.y)
+    let sc = cos(startAngle.radians)
+    let ss = sin(startAngle.radians)
+    elements.append(contentsOf: [
+      .move(to: startPoint),
+      .curve(to: endPoint,
+             control1: .init(x: (c1.x * sc) - (c1.y * ss),
+                             y: (c1.x * ss) + (c1.y * sc)),
+             control1: .init(x: (c2.x * sc) - (c2.y * ss),
+                             y: (c2.x * ss) + (c2.y * sc))),
+    ])
+    print(elements)
   }
 
   public mutating func addArc(tangent1End p1: CGPoint,
