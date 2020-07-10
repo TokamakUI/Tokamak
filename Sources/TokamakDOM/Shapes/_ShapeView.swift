@@ -34,8 +34,6 @@ extension _StrokedShape: ShapeAttributes {
 extension _ShapeView: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     let path = shape.path(in: .zero).deferredBody
-    print(self)
-    print(style)
     if let shapeAttributes = shape as? ShapeAttributes {
       return AnyView(HTML("div", shapeAttributes.attributes(style)) { path })
     } else if let color = style as? Color {

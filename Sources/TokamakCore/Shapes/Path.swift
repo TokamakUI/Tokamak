@@ -95,7 +95,8 @@ public struct Path: Equatable, LosslessStringConvertible {
               cornerRadius: CGFloat,
               style: RoundedCornerStyle = .circular) {
     storage = .roundedRect(FixedRoundedRect(rect: rect,
-                                            cornerSize: CGSize(width: cornerRadius, height: cornerRadius),
+                                            cornerSize: CGSize(width: cornerRadius,
+                                                               height: cornerRadius),
                                             style: style))
   }
 
@@ -232,21 +233,56 @@ extension Path {
   }
 
   public mutating func addRect(_ rect: CGRect, transform: CGAffineTransform = .identity) {
-    subpaths.append(.init(path: .init(rect), transform: transform))
+    move(to: rect.origin)
+    addLine(to: CGPoint(x: rect.size.width, y: 0)
+      .offset(by: rect.origin))
+    addLine(to: CGPoint(x: rect.size.width, y: rect.size.height)
+      .offset(by: rect.origin))
+    addLine(to: CGPoint(x: 0, y: rect.size.height)
+      .offset(by: rect.origin))
+    closeSubpath()
   }
 
   public mutating func addRoundedRect(in rect: CGRect,
                                       cornerSize: CGSize,
                                       style: RoundedCornerStyle = .circular,
                                       transform: CGAffineTransform = .identity) {
-    subpaths.append(.init(path: .init(roundedRect: rect,
-                                      cornerSize: cornerSize,
-                                      style: style),
-                          transform: transform))
+    move(to: CGPoint(x: rect.size.width, y: rect.size.height / 2)
+      .offset(by: rect.origin))
+    addLine(to: CGPoint(x: rect.size.width, y: rect.size.height - cornerSize.height)
+      .offset(by: rect.origin))
+    addQuadCurve(to: CGPoint(x: rect.size.width - cornerSize.width, y: rect.size.height)
+      .offset(by: rect.origin),
+                 control: CGPoint(x: rect.size.width, y: rect.size.height)
+        .offset(by: rect.origin))
+    addLine(to: CGPoint(x: cornerSize.width, y: rect.size.height)
+      .offset(by: rect.origin))
+    addQuadCurve(to: CGPoint(x: 0, y: rect.size.height - cornerSize.height)
+      .offset(by: rect.origin),
+                 control: CGPoint(x: 0, y: rect.size.height)
+        .offset(by: rect.origin))
+    addLine(to: CGPoint(x: 0, y: cornerSize.height)
+      .offset(by: rect.origin))
+    addQuadCurve(to: CGPoint(x: cornerSize.width, y: 0)
+      .offset(by: rect.origin),
+                 control: CGPoint.zero
+        .offset(by: rect.origin))
+    addLine(to: CGPoint(x: rect.size.width - cornerSize.width, y: 0)
+      .offset(by: rect.origin))
+    addQuadCurve(to: CGPoint(x: rect.size.width, y: cornerSize.height)
+      .offset(by: rect.origin),
+                 control: CGPoint(x: rect.size.width, y: 0)
+        .offset(by: rect.origin))
+    closeSubpath()
   }
 
   public mutating func addEllipse(in rect: CGRect, transform: CGAffineTransform = .identity) {
-    subpaths.append(.init(path: .init(ellipseIn: rect), transform: transform))
+    subpaths.append(.init(path: .init(ellipseIn: .init(origin: rect.origin
+          .offset(by: .init(x: rect.size.width / 2,
+                            y: rect.size.height / 2)),
+                                                       size: .init(width: rect.size.width / 2,
+                                                                   height: rect.size.height / 2))),
+                          transform: transform))
   }
 
   public mutating func addRects(_ rects: [CGRect], transform: CGAffineTransform = .identity) {
@@ -262,57 +298,79 @@ extension Path {
                                       startAngle: Angle,
                                       delta: Angle,
                                       transform: CGAffineTransform = .identity) {
-    // I don't know how to do this without sin/cos
+    addArc(center: center,
+           radius: radius,
+           startAngle: startAngle,
+           endAngle: startAngle + delta,
+           clockwise: false)
   }
 
   // There's a great article on bezier curves here:
   // https://pomax.github.io/bezierinfo
-  // FIXME: Apply transform
+  // FIXME: Handle negative delta
   public mutating func addArc(center: CGPoint,
                               radius: CGFloat,
                               startAngle: Angle,
                               endAngle: Angle,
                               clockwise: Bool,
                               transform: CGAffineTransform = .identity) {
-    let startPoint = CGPoint(x: radius * cos(startAngle.radians),
-                             y: radius * sin(startAngle.radians))
-    let endPoint = CGPoint(x: radius * cos(endAngle.radians),
-                           y: radius * sin(endAngle.radians))
-    let angle = abs(startAngle.radians - endAngle.radians)
-    let l = (4 / 3) * tan(angle / 4)
-    let c1 = CGPoint(x: radius - center.x, y: (l * radius) - center.y)
-    let c2 = CGPoint(x: ((cos(angle) + l * sin(angle)) * radius) - center.x,
-                     y: ((sin(angle) - l * cos(angle)) * radius) - center.y)
-    let sc = cos(startAngle.radians)
-    let ss = sin(startAngle.radians)
-    let c1s = CGPoint(x: (c1.x * sc) - (c1.y * ss),
-                      y: (c1.x * ss) + (c1.y * sc))
-    let c2s = CGPoint(x: (c2.x * sc) - (c2.y * ss),
-                      y: (c2.x * ss) + (c2.y * sc))
-    elements.append(contentsOf: [
-      .move(to: startPoint),
-      .curve(
-        to: endPoint,
-        control1: c1s,
-        control1: c2s
-      ),
-    ])
-    print(elements)
+    if clockwise {
+      addArc(center: center,
+             radius: radius,
+             startAngle: endAngle,
+             endAngle: endAngle + (.radians(.pi * 2) - endAngle) + startAngle,
+             clockwise: false)
+    } else {
+      let angle = abs(startAngle.radians - endAngle.radians)
+      if angle > .pi / 2 {
+        // Split the angle into 90º chunks
+        let chunk1 = Angle.radians(startAngle.radians + (.pi / 2))
+        addArc(center: center,
+               radius: radius,
+               startAngle: startAngle,
+               endAngle: chunk1,
+               clockwise: clockwise)
+        addArc(center: center,
+               radius: radius,
+               startAngle: chunk1,
+               endAngle: endAngle,
+               clockwise: clockwise)
+      } else {
+        let startPoint = CGPoint(x: radius + center.x,
+                                 y: center.y)
+        let endPoint = CGPoint(x: (radius * cos(angle)) + center.x,
+                               y: (radius * sin(angle)) + center.y)
+        let l = (4 / 3) * tan(angle / 4)
+        let c1 = CGPoint(x: radius + center.x, y: (l * radius) + center.y)
+        let c2 = CGPoint(x: ((cos(angle) + l * sin(angle)) * radius) + center.x,
+                         y: ((sin(angle) - l * cos(angle)) * radius) + center.y)
+
+        move(to: startPoint.rotate(startAngle, around: center))
+        addCurve(to: endPoint.rotate(startAngle, around: center),
+                 control1: c1.rotate(startAngle, around: center),
+                 control2: c2.rotate(startAngle, around: center))
+      }
+    }
   }
 
+  // FIXME: How does this arc method work?
   public mutating func addArc(tangent1End p1: CGPoint,
                               tangent2End p2: CGPoint,
                               radius: CGFloat,
-                              transform: CGAffineTransform = .identity) {
-    // I don't know how to do this without sin/cos
-  }
+                              transform: CGAffineTransform = .identity) {}
 
   public mutating func addPath(_ path: Path, transform: CGAffineTransform = .identity) {
     subpaths.append(.init(path: path, transform: transform))
   }
 
   public var currentPoint: CGPoint? {
-    nil
+    switch elements.last {
+    case let .move(to: point): return point
+    case let .line(to: point): return point
+    case let .curve(to: point, control1: _, control2: _): return point
+    case let .quadCurve(to: point, control: _): return point
+    default: return nil
+    }
   }
 
   public func applying(_ transform: CGAffineTransform) -> Path {

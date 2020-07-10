@@ -14,37 +14,40 @@
 
 import TokamakDOM
 
+struct Star: Shape {
+  func path(in rect: CGRect) -> Path {
+    Path { path in
+      path.move(to: .init(x: 40, y: 0))
+      path.addLine(to: .init(x: 20, y: 76))
+      path.addLine(to: .init(x: 80, y: 30.4))
+      path.addLine(to: .init(x: 0, y: 30.4))
+      path.addLine(to: .init(x: 64, y: 76))
+      path.addLine(to: .init(x: 40, y: 0))
+      print(path)
+    }
+  }
+}
+
 struct PathDemo: View {
   var body: some View {
-    Path { path in
-//      path.move(to: .init(x: 20, y: 0))
-//      path.addLine(to: .init(x: 10, y: 38))
-//      path.addLine(to: .init(x: 40, y: 15.2))
-//      path.addLine(to: .init(x: 0, y: 15.2))
-//      path.addLine(to: .init(x: 32, y: 38))
-//      path.addLine(to: .init(x: 20, y: 0))
-//      path.addRect(.init(.init(x: 5, y: 5), .init(width: 10, height: 10)))
-//      path.addEllipse(in: .init(.init(x: 35, y: 5), .init(width: 5, height: 5)))
-//      path.addRoundedRect(in: .init(.init(x: 5, y: 33), .init(width: 10, height: 10)),
-//                          cornerSize: .init(width: 2, height: 2))
-//      path.move(to: .init(x: 35, y: 33))
-//      path.addArc(center: .init(x: 40, y: 38),
-//                  radius: 5,
-//                  startAngle: .degrees(90),
-//                  endAngle: .degrees(180),
-//                  clockwise: false)
-      path.addArc(center: .init(x: 50, y: 50),
-                  radius: 50,
-                  startAngle: .degrees(90),
-                  endAngle: .degrees(180),
-                  clockwise: false)
+    VStack {
+      Star()
+        .fill(Color(0xFFD000))
+      Path { path in
+        path.addRect(.init(origin: .zero, size: .init(width: 20, height: 20)))
+        path.addEllipse(in: .init(origin: .init(x: 25, y: 0),
+                                  size: .init(width: 20, height: 20)))
+        path.addRoundedRect(in: .init(origin: .init(x: 50, y: 0),
+                                      size: .init(width: 20, height: 20)),
+                            cornerSize: .init(width: 4, height: 4))
+        path.addArc(center: .init(x: 85, y: 10),
+                    radius: 10,
+                    startAngle: .degrees(90),
+                    endAngle: .degrees(180),
+                    clockwise: true)
+      }
+      .stroke(Color(0xFFD000), lineWidth: 4)
+      .padding(.vertical)
     }
-    .stroke(Color(0xFFD000))
-//    HTML("svg", ["width": "100%", "height": "100%"]) {
-//      HTML("circle", [
-//        "cx": "50%", "cy": "50%", "r": "40%",
-//        "stroke": "green", "stroke-width": "4", "fill": "yellow",
-//      ])
-//    }
   }
 }

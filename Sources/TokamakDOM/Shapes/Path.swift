@@ -53,12 +53,15 @@ extension Path: ViewDeferredToRenderer {
         "width": "\(roundedRect.rect.size.width)",
         "height": "\(roundedRect.rect.size.height)",
         "rx": "\(roundedRect.cornerSize.width)",
-        "ry": "\(roundedRect.style == .continuous ? roundedRect.cornerSize.width : roundedRect.cornerSize.height)",
-        "x": "\(roundedRect.rect.origin.x - (roundedRect.rect.size.width / 2))",
-        "y": "\(roundedRect.rect.origin.y - (roundedRect.rect.size.height / 2))",
+        "ry": """
+        \(roundedRect.style == .continuous ?
+          roundedRect.cornerSize.width :
+          roundedRect.cornerSize.height)
+        """,
+        "x": "\(roundedRect.rect.origin.x)",
+        "y": "\(roundedRect.rect.origin.y)",
       ].merging(stroke, uniquingKeysWith: uniqueKeys)))
     case let .stroked(stroked):
-      print(stroked)
       return AnyView(stroked.path.svgBody(strokeStyle: stroked.style))
     case let .trimmed(trimmed):
       return trimmed.path.svgFrom(storage: trimmed.path.storage, strokeStyle: strokeStyle) // TODO: Trim the path
@@ -161,7 +164,8 @@ extension Path: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     AnyView(HTML("svg", ["style": """
     width: \(max(0, size.width));
-    height: \(max(0, size.height))");
+    height: \(max(0, size.height));
+    overflow: visible;
     """]) {
       svgBody()
     })
