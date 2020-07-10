@@ -285,13 +285,17 @@ extension Path {
                      y: ((sin(angle) - l * cos(angle)) * radius) - center.y)
     let sc = cos(startAngle.radians)
     let ss = sin(startAngle.radians)
+    let c1s = CGPoint(x: (c1.x * sc) - (c1.y * ss),
+                      y: (c1.x * ss) + (c1.y * sc))
+    let c2s = CGPoint(x: (c2.x * sc) - (c2.y * ss),
+                      y: (c2.x * ss) + (c2.y * sc))
     elements.append(contentsOf: [
       .move(to: startPoint),
-      .curve(to: endPoint,
-             control1: .init(x: (c1.x * sc) - (c1.y * ss),
-                             y: (c1.x * ss) + (c1.y * sc)),
-             control1: .init(x: (c2.x * sc) - (c2.y * ss),
-                             y: (c2.x * ss) + (c2.y * sc))),
+      .curve(
+        to: endPoint,
+        control1: c1s,
+        control1: c2s
+      ),
     ])
     print(elements)
   }
