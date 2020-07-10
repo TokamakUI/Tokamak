@@ -64,7 +64,8 @@ extension Path: ViewDeferredToRenderer {
     case let .stroked(stroked):
       return AnyView(stroked.path.svgBody(strokeStyle: stroked.style))
     case let .trimmed(trimmed):
-      return trimmed.path.svgFrom(storage: trimmed.path.storage, strokeStyle: strokeStyle) // TODO: Trim the path
+      return trimmed.path.svgFrom(storage: trimmed.path.storage,
+                                  strokeStyle: strokeStyle) // TODO: Trim the path
     }
   }
 
