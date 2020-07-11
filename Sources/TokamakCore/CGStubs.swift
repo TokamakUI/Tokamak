@@ -34,6 +34,18 @@ public struct CGPoint: Equatable {
   public static var zero: Self {
     .init(x: 0, y: 0)
   }
+
+  func rotate(_ angle: Angle, around origin: Self) -> Self {
+    let cosAngle = cos(angle.radians)
+    let sinAngle = sin(angle.radians)
+    return .init(x: cosAngle * (x - origin.x) - sinAngle * (y - origin.y) + origin.x,
+                 y: sinAngle * (x - origin.x) + cosAngle * (y - origin.y) + origin.y)
+  }
+
+  func offset(by offset: Self) -> Self {
+    .init(x: x + offset.x,
+          y: y + offset.y)
+  }
 }
 
 public struct CGSize: Equatable {
@@ -54,13 +66,13 @@ public struct CGRect: Equatable {
   public let origin: CGPoint
   public let size: CGSize
 
-  public init(_ origin: CGPoint, _ size: CGSize) {
+  public init(origin: CGPoint, size: CGSize) {
     self.origin = origin
     self.size = size
   }
 
   public static var zero: Self {
-    .init(.zero, .zero)
+    .init(origin: .zero, size: .zero)
   }
 }
 
@@ -113,7 +125,8 @@ public struct CGAffineTransform: Equatable {
   /// Returns an affine transformation matrix constructed from a rotation value you provide.
   /// - Parameters:
   ///   - angle: The angle, in radians, by which this matrix rotates the coordinate system axes.
-  ///            A positive value specifies clockwise rotation and a negative value specifies counterclockwise rotation.
+  ///            A positive value specifies clockwise rotation and anegative value specifies
+  ///            counterclockwise rotation.
   public init(rotationAngle angle: CGFloat) {
     self.init(a: cos(angle), b: sin(angle), c: -sin(angle), d: cos(angle), tx: 0, ty: 0)
   }
@@ -146,7 +159,8 @@ public struct CGAffineTransform: Equatable {
             y: (b * point.x) + (d * point.y) + ty)
   }
 
-  /// Returns an affine transformation matrix constructed by combining two existing affine transforms.
+  /// Returns an affine transformation matrix constructed by combining two existing affine
+  /// transforms.
   /// - Parameters:
   ///   - t2: The affine transform to concatenate to this affine transform.
   /// - Returns: A new affine transformation matrix. That is, `t’ = t1*t2`.
@@ -178,12 +192,15 @@ public struct CGAffineTransform: Equatable {
 
   /// Returns an affine transformation matrix constructed by rotating an existing affine transform.
   /// - Parameters:
-  ///   - angle: The angle, in radians, by which to rotate the affine transform. A positive value specifies clockwise rotation and a negative value specifies counterclockwise rotation.
+  ///   - angle: The angle, in radians, by which to rotate the affine transform.
+  ///   A positive value specifies clockwise rotation and a negative value specifies
+  ///   counterclockwise rotation.
   public func rotated(by angle: CGFloat) -> Self {
     Self(a: cos(angle), b: sin(angle), c: -sin(angle), d: cos(angle), tx: 0, ty: 0)
   }
 
-  /// Returns an affine transformation matrix constructed by translating an existing affine transform.
+  /// Returns an affine transformation matrix constructed by translating an existing
+  /// affine transform.
   /// - Parameters:
   ///   - tx: The value by which to move x values with the affine transform.
   ///   - ty: The value by which to move y values with the affine transform.

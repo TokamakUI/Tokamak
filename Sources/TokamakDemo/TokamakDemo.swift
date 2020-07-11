@@ -43,10 +43,7 @@ struct TokamakDemoView: View {
         }
         ForEachDemo()
         TextDemo()
-        #if canImport(TokamakDOM)
-        SVGCircle()
-          .frame(width: 25, height: 25)
-        #endif
+        PathDemo()
         TextFieldDemo()
         SpacerDemo()
         EnvironmentDemo()
