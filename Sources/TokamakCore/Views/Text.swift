@@ -30,10 +30,15 @@
 ///       .italic()
 ///       .underline(true, color: .red)
 public struct Text: View {
-  let content: String
+  let storage: _Storage
   let modifiers: [_Modifier]
 
   @Environment(\.font) var font: Font?
+
+  public enum _Storage {
+    case verbatim(String)
+    case segmentedText([Text])
+  }
 
   public enum _Modifier: Equatable {
     case color(Color?)
@@ -48,17 +53,24 @@ public struct Text: View {
     case underline(Bool, Color?) // Note: Not in SwiftUI
   }
 
-  init(content: String, modifiers: [_Modifier] = []) {
-    self.content = content
+  init(storage: _Storage, modifiers: [_Modifier] = []) {
+    if case let .segmentedText(segments) = storage {
+      self.storage = .segmentedText(segments.map {
+        Self(storage: $0.storage,
+             modifiers: modifiers + $0.modifiers)
+      })
+    } else {
+      self.storage = storage
+    }
     self.modifiers = modifiers
   }
 
   public init(verbatim content: String) {
-    self.init(content: content)
+    self.init(storage: .verbatim(content))
   }
 
   public init<S>(_ content: S) where S: StringProtocol {
-    self.init(content: String(content))
+    self.init(storage: .verbatim(String(content)))
   }
 
   public var body: Never {
@@ -72,7 +84,18 @@ public struct _TextProxy {
 
   public init(_ subject: Text) { self.subject = subject }
 
-  public var content: String { subject.content }
+  public var storage: Text._Storage { subject.storage }
+  public var rawText: String {
+    switch subject.storage {
+    case let .segmentedText(segments):
+      return segments
+        .map { Self($0).rawText }
+        .reduce("", +)
+    case let .verbatim(text):
+      return text
+    }
+  }
+
   public var modifiers: [Text._Modifier] {
     [
       .font(subject.font),
@@ -82,42 +105,48 @@ public struct _TextProxy {
 
 public extension Text {
   func foregroundColor(_ color: Color?) -> Text {
-    .init(content: content, modifiers: modifiers + [.color(color)])
+    .init(storage: storage, modifiers: modifiers + [.color(color)])
   }
 
   func font(_ font: Font?) -> Text {
-    .init(content: content, modifiers: modifiers + [.font(font)])
+    .init(storage: storage, modifiers: modifiers + [.font(font)])
   }
 
   func fontWeight(_ weight: Font.Weight?) -> Text {
-    .init(content: content, modifiers: modifiers + [.weight(weight)])
+    .init(storage: storage, modifiers: modifiers + [.weight(weight)])
   }
 
   func bold() -> Text {
-    .init(content: content, modifiers: modifiers + [.weight(.bold)])
+    .init(storage: storage, modifiers: modifiers + [.weight(.bold)])
   }
 
   func italic() -> Text {
-    .init(content: content, modifiers: modifiers + [.italic])
+    .init(storage: storage, modifiers: modifiers + [.italic])
   }
 
   func strikethrough(_ active: Bool = true, color: Color? = nil) -> Text {
-    .init(content: content, modifiers: modifiers + [.strikethrough(active, color)])
+    .init(storage: storage, modifiers: modifiers + [.strikethrough(active, color)])
   }
 
   func underline(_ active: Bool = true, color: Color? = nil) -> Text {
-    .init(content: content, modifiers: modifiers + [.underline(active, color)])
+    .init(storage: storage, modifiers: modifiers + [.underline(active, color)])
   }
 
   func kerning(_ kerning: CGFloat) -> Text {
-    .init(content: content, modifiers: modifiers + [.kerning(kerning)])
+    .init(storage: storage, modifiers: modifiers + [.kerning(kerning)])
   }
 
   func tracking(_ tracking: CGFloat) -> Text {
-    .init(content: content, modifiers: modifiers + [.tracking(tracking)])
+    .init(storage: storage, modifiers: modifiers + [.tracking(tracking)])
   }
 
   func baselineOffset(_ baselineOffset: CGFloat) -> Text {
-    .init(content: content, modifiers: modifiers + [.baseline(baselineOffset)])
+    .init(storage: storage, modifiers: modifiers + [.baseline(baselineOffset)])
+  }
+}
+
+extension Text {
+  public static func _concatenating(lhs: Self, rhs: Self) -> Self {
+    .init(storage: .segmentedText([lhs, rhs]))
   }
 }
