@@ -56,6 +56,8 @@ struct TokamakDemoView: View {
         if #available(OSX 10.16, *) {
           OutlineGroupDemo()
         }
+        ColorDemo()
+          .padding()
       }
     }
   }
