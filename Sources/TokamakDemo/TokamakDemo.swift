@@ -56,12 +56,12 @@ struct TokamakDemoView: View {
           #else
           ListDemo()
           #endif
-          if #available(OSX 10.16, *) {
+          if #available(OSX 10.16, iOS 14.0, *) {
             OutlineGroupDemo()
           }
           ColorDemo()
             .padding()
-          if #available(OSX 10.16, *) {
+          if #available(OSX 10.16, iOS 14.0, *) {
             GridDemo()
           }
         }

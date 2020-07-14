@@ -21,7 +21,7 @@ import SwiftUI
 import TokamakDOM
 #endif
 
-@available(OSX 10.16, *)
+@available(OSX 10.16, iOS 14.0, *)
 public struct GridDemo: View {
   public var body: some View {
     Group {
