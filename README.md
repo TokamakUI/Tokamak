@@ -18,6 +18,9 @@ views and modifiers easier (with the help from the `HTML` view, see [the example
 below](https://github.com/swiftwasm/Tokamak#arbitrary-html)), so pull requests are very welcome! Don't
 forget to check [the "Contributing" section](https://github.com/swiftwasm/Tokamak#contributing) first.
 
+If you'd like to participate in the growing [SwiftWasm](https://swiftwasm.org) community, you're also very
+welcome to join the `#webassembly` channel in [the SwiftPM Slack](https://swift-package-manager.herokuapp.com/).
+
 ## Getting started
 
 Tokamak relies on [`carton`](https://carton.dev) as a primary build tool. Please follow
