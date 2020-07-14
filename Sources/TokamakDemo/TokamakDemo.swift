@@ -41,23 +41,30 @@ struct TokamakDemoView: View {
           }
           .padding(20)
         }
-        ForEachDemo()
-        TextDemo()
-        PathDemo()
-        TextFieldDemo()
-        SpacerDemo()
-        EnvironmentDemo()
-          .font(.system(size: 8))
-        #if canImport(TokamakDOM)
-        ListDemo().listStyle(InsetGroupedListStyle())
-        #else
-        ListDemo()
-        #endif
-        if #available(OSX 10.16, *) {
-          OutlineGroupDemo()
+        Group {
+          ForEachDemo()
+          TextDemo()
+          PathDemo()
+          TextFieldDemo()
+          SpacerDemo()
+          EnvironmentDemo()
+            .font(.system(size: 8))
         }
-        ColorDemo()
-          .padding()
+        Group {
+          #if canImport(TokamakDOM)
+          ListDemo().listStyle(InsetGroupedListStyle())
+          #else
+          ListDemo()
+          #endif
+          if #available(OSX 10.16, iOS 14.0, *) {
+            OutlineGroupDemo()
+          }
+          ColorDemo()
+            .padding()
+          if #available(OSX 10.16, iOS 14.0, *) {
+            GridDemo()
+          }
+        }
       }
     }
   }
