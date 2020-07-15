@@ -205,8 +205,8 @@ unacceptable behavior to conduct@tokamak.dev.
   UI](https://github.com/BendingSpoons/katana-ui-swift) and
   [Komponents](https://github.com/freshOS/Komponents) for inspiration!
   
-SwiftUI is a trademark owned by Apple Inc. Software maintained as a part of Tokamak project is not 
-affiliated with Apple Inc.
+SwiftUI is a trademark owned by Apple Inc. Software maintained as a part of the Tokamak project 
+is not affiliated with Apple Inc.
 
 ## License
 
