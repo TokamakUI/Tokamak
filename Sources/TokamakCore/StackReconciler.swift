@@ -40,17 +40,19 @@ public final class StackReconciler<R: Renderer> {
     rootView.mount(with: self)
   }
 
-  func queueUpdate(
+  private func queueStateUpdate(
     for mountedView: MountedCompositeView<R>,
     id: Int,
     updater: (inout Any) -> ()
   ) {
-    let scheduleReconcile = queuedRerenders.isEmpty
-
     updater(&mountedView.state[id])
     queuedRerenders.insert(mountedView)
 
-    guard scheduleReconcile else { return }
+    scheduleReconcile()
+  }
+
+  private func scheduleReconcile() {
+    guard queuedRerenders.isEmpty else { return }
 
     scheduler { [weak self] in self?.updateStateAndReconcile() }
   }
@@ -63,22 +65,21 @@ public final class StackReconciler<R: Renderer> {
     queuedRerenders.removeAll()
   }
 
-  func render(compositeView: MountedCompositeView<R>) -> some View {
+  private func setupState(
+    id: Int,
+    for property: PropertyInfo,
+    of compositeView: MountedCompositeView<R>
+  ) {
     // swiftlint:disable force_try
-    let info = try! typeInfo(of: compositeView.view.type)
-    let stateProperties = info.properties.filter { $0.type is ValueStorage.Type }
-    let environmentObjects = info.properties.filter { $0.type is EnvironmentReader.Type }
-    print(environmentObjects)
+    // `ValueStorage` property already filtered out, so safe to assume the value's type
+    // swiftlint:disable:next force_cast
+    var state = try! property.get(from: compositeView.view.view) as! ValueStorage
 
-    for (id, stateProperty) in stateProperties.enumerated() {
-      // `ValueStorage` properties were already filtered out, so safe to assume the value's type
-      // swiftlint:disable:next force_cast
-      var state = try! stateProperty.get(from: compositeView.view.view) as! ValueStorage
+    if compositeView.state.count == id {
+      compositeView.state.append(state.anyInitialValue)
+    }
 
-      if compositeView.state.count == id {
-        compositeView.state.append(state.anyInitialValue)
-      }
-
+    if state.getter == nil || state.setter == nil {
       state.getter = { compositeView.state[id] }
 
       // Avoiding an indirect reference cycle here: this closure can be
@@ -86,9 +87,33 @@ public final class StackReconciler<R: Renderer> {
       // by the reconciler.
       state.setter = { [weak self, weak compositeView] newValue in
         guard let view = compositeView else { return }
-        self?.queueUpdate(for: view, id: id) { $0 = newValue }
+        self?.queueStateUpdate(for: view, id: id) { $0 = newValue }
       }
-      try! stateProperty.set(value: state, on: &compositeView.view.view)
+    }
+    try! property.set(value: state, on: &compositeView.view.view)
+  }
+
+  func setupSubscription(for property: PropertyInfo, of compositeView: MountedCompositeView<R>) {
+    // `ObservedProperty` property already filtered out, so safe to assume the value's type
+    // swiftlint:disable:next force_cast
+    let observed = try! property.get(from: compositeView.view.view) as! ObservedProperty
+
+    observed.objectWillChange.sink { [weak self] _ in
+      self?.scheduleReconcile()
+    }.store(in: &compositeView.subscriptions)
+  }
+
+  func render(compositeView: MountedCompositeView<R>) -> some View {
+    let info = try! typeInfo(of: compositeView.view.type)
+
+    let needsSubscriptions = compositeView.subscriptions.isEmpty
+
+    for (id, property) in info.properties.enumerated() {
+      if property.type is ValueStorage.Type {
+        setupState(id: id, for: property, of: compositeView)
+      } else if needsSubscriptions && property.type is ObservedProperty.Type {
+        setupSubscription(for: property, of: compositeView)
+      }
     }
 
     let result = compositeView.view.bodyClosure(compositeView.view.view)

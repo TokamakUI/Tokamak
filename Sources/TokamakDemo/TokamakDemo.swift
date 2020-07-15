@@ -29,7 +29,7 @@ struct TokamakDemoView: View {
       }
       VStack {
         Group {
-          Counter(count: 5, limit: 15)
+          Counter(count: Count(value: 5), limit: 15)
             .padding()
             .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
             .border(Color.red, width: 3)

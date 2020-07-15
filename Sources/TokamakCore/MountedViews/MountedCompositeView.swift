@@ -15,6 +15,7 @@
 //  Created by Max Desiatov on 03/12/2018.
 //
 
+import OpenCombine
 import Runtime
 
 final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {
@@ -31,6 +32,7 @@ final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {
   private let parentTarget: R.TargetType
 
   var state = [Any]()
+  var subscriptions = [AnyCancellable]()
   var environmentValues: EnvironmentValues
 
   init(_ view: AnyView, _ parentTarget: R.TargetType,

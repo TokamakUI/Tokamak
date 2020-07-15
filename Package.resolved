@@ -14,8 +14,8 @@
         "package": "OpenCombine",
         "repositoryURL": "https://github.com/MaxDesiatov/OpenCombine.git",
         "state": {
-          "branch": "wasi",
-          "revision": "4fed049b0ab7095d4d26247ef958d3f6e361c569",
+          "branch": "observable-object",
+          "revision": "d017dcbe96f7d8e5e204fc3d40b834987d38925b",
           "version": null
         }
       },
