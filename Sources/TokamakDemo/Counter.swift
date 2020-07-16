@@ -33,7 +33,7 @@ struct Counter: View {
   let limit: Int
 
   public var body: some View {
-    if count < limit {
+    if count.value < limit {
       VStack {
         Button("Increment") { count.value += 1 }
         Text("\(count.value)")
