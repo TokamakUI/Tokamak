@@ -16,14 +16,14 @@
 //
 
 public struct NavigationView<Content>: View where Content: View {
-  let content: Content
-
   @State var destination = AnyView(VStack {
     HStack { Spacer() }
     Spacer()
     Text("No Selection")
     Spacer()
   })
+
+  let content: Content
 
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()
