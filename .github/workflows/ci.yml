@@ -26,5 +26,6 @@ jobs:
         run: |
           set -ex
           sudo xcode-select --switch /Applications/Xcode_12_beta.app/Contents/Developer/
+          xcodebuild -version
           cd "TokamakDemo Native"
           xcodebuild -scheme macOS
