@@ -40,12 +40,6 @@ public struct ColorDemo: View {
     case rgb, hsb
   }
 
-  @State private var colorForm: ColorForm = .hsb
-
-  @State private var v0: String = "0.9"
-  @State private var v1: String = "1"
-  @State private var v2: String = "0.5"
-
   let colors: [Color] = [
     .clear,
     .black,
@@ -61,6 +55,12 @@ public struct ColorDemo: View {
     .primary,
     .secondary,
   ]
+
+  @State private var colorForm: ColorForm = .hsb
+
+  @State private var v0: String = "0.9"
+  @State private var v1: String = "1"
+  @State private var v2: String = "0.5"
 
   public var body: some View {
     ScrollView {

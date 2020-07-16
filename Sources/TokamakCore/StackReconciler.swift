@@ -112,9 +112,11 @@ public final class StackReconciler<R: Renderer> {
 
     let needsSubscriptions = compositeView.subscriptions.isEmpty
 
-    for (id, property) in info.properties.enumerated() {
+    var stateIdx = 0
+    for property in info.properties {
       if property.type is ValueStorage.Type {
-        setupState(id: id, for: property, of: compositeView)
+        setupState(id: stateIdx, for: property, of: compositeView)
+        stateIdx += 1
       } else if needsSubscriptions && property.type is ObservedProperty.Type {
         setupSubscription(for: property, of: compositeView)
       }
