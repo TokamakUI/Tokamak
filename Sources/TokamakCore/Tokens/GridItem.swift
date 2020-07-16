@@ -12,30 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Max Desiatov on 14/02/2019.
+//  Created by Carson Katri on 7/13/20.
 //
 
-#if canImport(SwiftUI)
-import SwiftUI
-#else
-import TokamakDOM
-#endif
+public struct GridItem {
+  public enum Size {
+    case fixed(CGFloat)
+    case flexible(minimum: CGFloat = 10, maximum: CGFloat = .infinity)
+    case adaptive(minimum: CGFloat, maximum: CGFloat = .infinity)
+  }
 
-public struct Counter: View {
-  @State public var count: Int
+  public var size: GridItem.Size
+  public var spacing: CGFloat
+  public var alignment: Alignment
 
-  let limit: Int
-
-  public var body: some View {
-    if count < limit {
-      VStack {
-        Button("Increment") { count += 1 }
-        Text("\(count)")
-      }
-      .onAppear { print("Counter.VStack onAppear") }
-      .onDisappear { print("Counter.VStack onDisappear") }
-    } else {
-      VStack { Text("Limit exceeded") }
-    }
+  public init(_ size: GridItem.Size = .flexible(),
+              spacing: CGFloat? = nil,
+              alignment: Alignment? = nil) {
+    self.size = size
+    self.spacing = spacing ?? 4
+    self.alignment = alignment ?? .center
   }
 }

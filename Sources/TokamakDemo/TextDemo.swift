@@ -57,6 +57,8 @@ struct TextDemo: View {
         Text("THICK TEXT")
           .kerning(0.5)
       }
+      (Text("This text has been ") + Text("concatenated").bold())
+        .italic()
     }
   }
 }
