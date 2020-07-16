@@ -48,4 +48,8 @@ typealias Updater<T> = (inout T) -> ()
       }
     )
   }
+
+  static func constant(_ value: Value) -> Self {
+    .init(get: { value }, set: { _ in })
+  }
 }

@@ -18,6 +18,9 @@ views and modifiers easier (with the help from the `HTML` view, see [the example
 below](https://github.com/swiftwasm/Tokamak#arbitrary-html)), so pull requests are very welcome! Don't
 forget to check [the "Contributing" section](https://github.com/swiftwasm/Tokamak#contributing) first.
 
+If you'd like to participate in the growing [SwiftWasm](https://swiftwasm.org) community, you're also very
+welcome to join the `#webassembly` channel in [the SwiftPM Slack](https://swift-package-manager.herokuapp.com/).
+
 ## Getting started
 
 Tokamak relies on [`carton`](https://carton.dev) as a primary build tool. Please follow
@@ -202,8 +205,8 @@ unacceptable behavior to conduct@tokamak.dev.
   UI](https://github.com/BendingSpoons/katana-ui-swift) and
   [Komponents](https://github.com/freshOS/Komponents) for inspiration!
   
-SwiftUI is a trademark owned by Apple Inc. Software maintained as a part of Tokamak project is not 
-affiliated with Apple Inc.
+SwiftUI is a trademark owned by Apple Inc. Software maintained as a part of the Tokamak project 
+is not affiliated with Apple Inc.
 
 ## License
 

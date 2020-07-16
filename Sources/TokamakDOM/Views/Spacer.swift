@@ -20,12 +20,13 @@ enum SpacerContainerAxis {
   case horizontal, vertical
 }
 
-protocol SpacerContainer: ParentView {
+protocol SpacerContainer {
   var hasSpacer: Bool { get }
   var axis: SpacerContainerAxis { get }
+  var fillCrossAxis: Bool { get }
 }
 
-extension SpacerContainer {
+extension SpacerContainer where Self: ParentView {
   var hasSpacer: Bool {
     children
       .compactMap {

@@ -52,9 +52,9 @@ extension Rectangle: InsettableShape {
     }
 
     public func path(in rect: CGRect) -> Path {
-      .init(CGRect(rect.origin,
-                   CGSize(width: rect.size.width - (amount / 2),
-                          height: rect.size.height - (amount / 2))))
+      .init(CGRect(origin: rect.origin,
+                   size: CGSize(width: rect.size.width - (amount / 2),
+                                height: rect.size.height - (amount / 2))))
     }
 
     public func inset(by amount: CGFloat) -> Rectangle._Inset {
