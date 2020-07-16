@@ -23,16 +23,18 @@ import TokamakDOM
 #endif
 
 class TestEnvironment: ObservableObject {
-  var envTest = "Hello, world!" {
-    willSet {
-      print(newValue)
-      objectWillChange.send()
+  @Published var envTest = "Hello, world!"
+  init() {}
+}
+
+struct EnvironmentObjectDemo: View {
+  @EnvironmentObject var testEnv: TestEnvironment
+
+  var body: some View {
+    Button(testEnv.envTest) {
+      testEnv.envTest = "EnvironmentObject modified."
     }
   }
-
-  let objectWillChange = ObservableObjectPublisher()
-
-  init() {}
 }
 
 struct EnvironmentDemo: View {
@@ -42,9 +44,8 @@ struct EnvironmentDemo: View {
   var body: some View {
     VStack {
       Text(font == nil ? "`font` environment not set." : "\(String(describing: font!))")
-      Button(testEnv.envTest) {
-        testEnv.envTest = "EnvironmentObject modified."
-      }
+      Text(testEnv.envTest)
+      EnvironmentObjectDemo()
     }
   }
 }

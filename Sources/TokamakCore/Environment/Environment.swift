@@ -12,6 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/// A protocol that allows the conforming type to access values from the `EnvironmentValues`.
+/// (e.g. `Environment` and `EnvironmentObject`)
+///
+/// `EnvironmentValues` are injected in 2 places:
+/// 1. `View.makeMountedView`
+/// 2. `MountedHostView.update` when reconciling
+///
 protocol EnvironmentReader {
   mutating func setContent(from values: EnvironmentValues)
 }

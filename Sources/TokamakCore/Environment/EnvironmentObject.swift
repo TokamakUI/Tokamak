@@ -17,19 +17,21 @@
 
 import OpenCombine
 
-protocol EnvironmentWriter {
-  func subscribe(_ closure: @escaping () -> ())
-}
-
-@propertyWrapper public struct EnvironmentObject<ObjectType>: EnvironmentReader, EnvironmentWriter where ObjectType: ObservableObject {
+@propertyWrapper public struct EnvironmentObject<ObjectType>: ObservedProperty,
+  EnvironmentReader
+  where ObjectType: ObservableObject {
   @dynamicMemberLookup public struct Wrapper {
     internal let root: ObjectType
-    public subscript<Subject>(dynamicMember keyPath: ReferenceWritableKeyPath<ObjectType, Subject>) -> Binding<Subject> {
-      Binding {
-        root[keyPath: keyPath]
-      } set: {
-        root[keyPath: keyPath] = $0
-      }
+    public subscript<Subject>(
+      dynamicMember keyPath: ReferenceWritableKeyPath<ObjectType, Subject>
+    ) -> Binding<Subject> {
+      .init(
+        get: {
+          self.root[keyPath: keyPath]
+        }, set: {
+          self.root[keyPath: keyPath] = $0
+        }
+      )
     }
   }
 
@@ -40,13 +42,6 @@ protocol EnvironmentWriter {
     _store = values[ObjectIdentifier(ObjectType.self)]
   }
 
-  func subscribe(_ closure: @escaping () -> ()) {
-    _ = _store?.objectWillChange.sink { _ in
-      print("EnvironmentObject changed!")
-      closure()
-    }
-  }
-
   public var wrappedValue: ObjectType {
     guard let store = _store else { error() }
     return store
@@ -55,6 +50,10 @@ protocol EnvironmentWriter {
   public var projectedValue: Wrapper {
     guard let store = _store else { error() }
     return Wrapper(root: store)
+  }
+
+  var objectWillChange: AnyPublisher<(), Never> {
+    wrappedValue.objectWillChange.map { _ in }.eraseToAnyPublisher()
   }
 
   func error() -> Never {
