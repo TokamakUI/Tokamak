@@ -46,13 +46,14 @@ public final class StackReconciler<R: Renderer> {
     updater: (inout Any) -> ()
   ) {
     updater(&mountedView.state[id])
-    queuedRerenders.insert(mountedView)
-
-    scheduleReconcile()
+    queueUpdate(for: mountedView)
   }
 
-  private func scheduleReconcile() {
-    guard queuedRerenders.isEmpty else { return }
+  func queueUpdate(for mountedView: MountedCompositeView<R>) {
+    let shouldSchedule = queuedRerenders.isEmpty
+    queuedRerenders.insert(mountedView)
+
+    guard shouldSchedule else { return }
 
     scheduler { [weak self] in self?.updateStateAndReconcile() }
   }
@@ -99,7 +100,7 @@ public final class StackReconciler<R: Renderer> {
     let observed = try! property.get(from: compositeView.view.view) as! ObservedProperty
 
     observed.objectWillChange.sink { [weak self] _ in
-      self?.scheduleReconcile()
+      self?.queueUpdate(for: compositeView)
     }.store(in: &compositeView.subscriptions)
   }
 
