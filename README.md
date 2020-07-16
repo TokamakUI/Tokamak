@@ -18,6 +18,9 @@ views and modifiers easier (with the help from the `HTML` view, see [the example
 below](https://github.com/swiftwasm/Tokamak#arbitrary-html)), so pull requests are very welcome! Don't
 forget to check [the "Contributing" section](https://github.com/swiftwasm/Tokamak#contributing) first.
 
+If you'd like to participate in the growing [SwiftWasm](https://swiftwasm.org) community, you're also very
+welcome to join the `#webassembly` channel in [the SwiftPM Slack](https://swift-package-manager.herokuapp.com/).
+
 ## Getting started
 
 Tokamak relies on [`carton`](https://carton.dev) as a primary build tool. Please follow
@@ -45,15 +48,16 @@ struct Counter: View {
   let limit: Int
 
   var body: some View {
-    count < limit ?
-      AnyView(
-        VStack {
-          Button("Increment") { count += 1 }
-          Text("\(count)")
-        }
-      ) : AnyView(
-        VStack { Text("Limit exceeded") }
-      )
+    if count < limit {
+      VStack {
+        Button("Increment") { count += 1 }
+        Text("\(count)")
+      }
+      .onAppear { print("Counter.VStack onAppear") }
+      .onDisappear { print("Counter.VStack onDisappear") }
+    } else {
+      VStack { Text("Limit exceeded") }
+    }
   }
 }
 ```
@@ -122,20 +126,20 @@ separate modules for platform-specific renderers. Currently, the only available 
 is `TokamakDOM`, but we intend to provide other renderers in the future, such as `TokamakHTML`
 for static websites and server-side rendering. Tokamak users only need to import a renderer module
 they would like to use, while `TokamakCore` is hidden as an "internal" `Tokamak` package target.
-Unfortunately, Swift does not allow us to specify that certain symbols in `TokamakCore` are private 
+Unfortunately, Swift does not allow us to specify that certain symbols in `TokamakCore` are private
 to a package, but they need to stay `public` for renderer modules to get access to them. Thus, the
 current workaround is to mark those symbols with underscores in their names to indicate this. It
 can be formulated as these "rules":
 
 1. If a symbol is restricted to a module and has no `public` access control, no need for an underscore.
-2. If a symbol is part of a public renderer module API (e.g. `TokamakDOM`), no need for an underscore, 
-users may use those symbols directly, and it is re-exported from `TokamakCore` by the renderer module 
+2. If a symbol is part of a public renderer module API (e.g. `TokamakDOM`), no need for an underscore,
+users may use those symbols directly, and it is re-exported from `TokamakCore` by the renderer module
 via `public typealias`.
 3. If a function or a type have `public` on them only by necessity to make them available in `TokamakDOM`,
 but unavailable to users (or not intended for public use), underscore is needed to indicate that.
 
 The benefit of separate modules is that they allow us to provide separate renderers for different platforms.
-Users can pick and choose what they want to use, e.g. purely static websites would use only `TokamakHTML`, 
+Users can pick and choose what they want to use, e.g. purely static websites would use only `TokamakHTML`,
 single-page apps would use `TokamakDOM`, maybe in conjuction with `TokamakHTML` for pre-rendering. As we'd
 like to try to implement a native renderer for Android at some point, probably in a separate `TokamakAndroid`
 module, Android apps would use `TokamakAndroid` with no need to be aware of any of the web modules.
@@ -190,7 +194,7 @@ unacceptable behavior to conduct@tokamak.dev.
 
 - Thanks to the [Swift community](https://swift.org/community/) for
   building one of the best programming languages available!
-- Thanks to everyone who developed [React](https://reactjs.org/) with its [reconciler/renderer 
+- Thanks to everyone who developed [React](https://reactjs.org/) with its [reconciler/renderer
   architecture](https://reactjs.org/docs/codebase-overview.html#renderers) that inspired Tokamak
   in the first place.
 - Thanks to the designers of [the SwiftUI API](https://developer.apple.com/documentation/swiftui)
@@ -201,13 +205,13 @@ unacceptable behavior to conduct@tokamak.dev.
   [ReSwift](https://github.com/ReSwift/ReSwift), [Katana
   UI](https://github.com/BendingSpoons/katana-ui-swift) and
   [Komponents](https://github.com/freshOS/Komponents) for inspiration!
-  
-SwiftUI is a trademark owned by Apple Inc. Software maintained as a part of Tokamak project is not 
-affiliated with Apple Inc.
+
+SwiftUI is a trademark owned by Apple Inc. Software maintained as a part of the Tokamak project
+is not affiliated with Apple Inc.
 
 ## License
 
-Tokamak is available under the Apache 2.0 license. 
+Tokamak is available under the Apache 2.0 license.
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.

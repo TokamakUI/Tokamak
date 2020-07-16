@@ -34,25 +34,28 @@ public struct _ConditionalContent<TrueContent, FalseContent>: View
 
   let storage: Storage
 
-  @ViewBuilder
-  public var body: some View {
+  public var body: Never {
+    neverBody("_ConditionContent")
+  }
+}
+
+extension _ConditionalContent: GroupView {
+  public var children: [AnyView] {
     switch storage {
     case let .trueContent(view):
-      view
+      return [AnyView(view)]
     case let .falseContent(view):
-      view
+      return [AnyView(view)]
     }
   }
 }
 
-// FIXME: Remove type erasure when https://github.com/swiftwasm/swift/issues/1379
-// is resolved
 extension Optional: View where Wrapped: View {
-  public var body: AnyView {
+  public var body: some View {
     if let view = self {
-      return AnyView(view)
+      view
     } else {
-      return AnyView(EmptyView())
+      EmptyView()
     }
   }
 }

@@ -35,27 +35,25 @@ func title<V>(_ view: V, title: String) -> AnyView where V: View {
 
 struct NavItem: Identifiable {
   var id: String
-  var destination: AnyView
+  var destination: AnyView?
 
   init<V>(_ id: String, destination: V) where V: View {
     self.id = id
     self.destination = title(destination.frame(minWidth: 300), title: id)
   }
-}
 
-var outlineGroupDemo: AnyView {
-  if #available(OSX 10.16, iOS 14.0, *) {
-    return AnyView(OutlineGroupDemo())
-  } else {
-    return AnyView(Text("OutlineGroup Unavailable"))
+  init(unavailiable id: String) {
+    self.id = id
   }
 }
 
-#if canImport(TokamakDOM)
-var svgDemo = SVGCircle()
-#else
-var svgDemo = Text("SVG is unavailable")
-#endif
+var outlineGroupDemo: NavItem {
+  if #available(OSX 10.16, iOS 14.0, *) {
+    return NavItem("OutlineGroup", destination: OutlineGroupDemo())
+  } else {
+    return NavItem(unavailiable: "OutlineGroup")
+  }
+}
 
 #if !os(macOS)
 var listDemo: AnyView {
@@ -69,10 +67,18 @@ var listDemo: AnyView {
 var listDemo = ListDemo()
 #endif
 
+var gridDemo: NavItem {
+  if #available(OSX 10.16, iOS 14.0, *) {
+    return NavItem("Grid", destination: GridDemo())
+  } else {
+    return NavItem(unavailiable: "Grid")
+  }
+}
+
 var links: [NavItem] {
   [
     NavItem("Counter", destination:
-      Counter(count: 5, limit: 15)
+      Counter(count: Count(value: 5), limit: 15)
         .padding()
         .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
         .border(Color.red, width: 3)),
@@ -84,12 +90,14 @@ var links: [NavItem] {
     }.padding(20)),
     NavItem("ForEach", destination: ForEachDemo()),
     NavItem("Text", destination: TextDemo()),
-    NavItem("SVG", destination: svgDemo),
+    NavItem("Path", destination: PathDemo()),
     NavItem("TextField", destination: TextFieldDemo()),
     NavItem("Spacer", destination: SpacerDemo()),
     NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8))),
     NavItem("List", destination: listDemo),
-    NavItem("OutlineGroup", destination: outlineGroupDemo),
+    outlineGroupDemo,
+    NavItem("Color", destination: ColorDemo()),
+    gridDemo,
   ]
 }
 
@@ -98,7 +106,15 @@ struct TokamakDemoView: View {
     NavigationView { () -> AnyView in
       let list = title(
         List(links) { link in
-          NavigationLink(link.id, destination: link.destination)
+          if let dest = link.destination {
+            NavigationLink(link.id, destination: dest)
+          } else {
+            HStack {
+              Text(link.id)
+              Spacer()
+              Text("unavailable").opacity(0.5)
+            }
+          }
         }
         .frame(minHeight: 300),
         title: "Demos"
