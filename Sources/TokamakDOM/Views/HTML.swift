@@ -24,6 +24,9 @@ public typealias View = TokamakCore.View
 public typealias AnyView = TokamakCore.AnyView
 public typealias EmptyView = TokamakCore.EmptyView
 public typealias State = TokamakCore.State
+public typealias ObservableObject = TokamakCore.ObservableObject
+public typealias Published = TokamakCore.Published
+public typealias ObservedObject = TokamakCore.ObservedObject
 
 protocol AnyHTML {
   var innerHTML: String? { get }
