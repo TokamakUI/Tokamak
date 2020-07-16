@@ -42,7 +42,6 @@ struct TokamakDemoView: View {
           .padding(20)
         }
         Group {
-          PickerDemo()
           ForEachDemo()
           TextDemo()
           PathDemo()
@@ -50,6 +49,7 @@ struct TokamakDemoView: View {
           SpacerDemo()
           EnvironmentDemo()
             .font(.system(size: 8))
+          PickerDemo()
         }
         Group {
           #if canImport(TokamakDOM)
