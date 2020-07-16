@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Max Desiatov on 14/02/2019.
+//  Created by Carson Katri on 7/13/20.
 //
 
 #if canImport(SwiftUI)
@@ -21,27 +21,36 @@ import SwiftUI
 import TokamakDOM
 #endif
 
-final class Count: ObservableObject {
-  @Published var value: Int
-
-  init(value: Int) { self.value = value }
-}
-
-struct Counter: View {
-  @ObservedObject var count: Count
-
-  let limit: Int
-
+@available(OSX 10.16, iOS 14.0, *)
+public struct GridDemo: View {
   public var body: some View {
-    if count.value < limit {
+    Group {
       VStack {
-        Button("Increment") { count.value += 1 }
-        Text("\(count.value)")
+        Text("Adaptive LazyVGrid")
+        LazyVGrid(columns: [
+          GridItem(.adaptive(minimum: 50)),
+        ]) {
+          ForEach(0..<50) {
+            Text("\($0 + 1)")
+              .padding()
+              .background(Color.red)
+          }
+        }
       }
-      .onAppear { print("Counter.VStack onAppear") }
-      .onDisappear { print("Counter.VStack onDisappear") }
-    } else {
-      VStack { Text("Limit exceeded") }
+      VStack {
+        Text("Simple LazyHGrid")
+        LazyHGrid(rows: [
+          GridItem(.fixed(50)),
+          GridItem(.fixed(50)),
+          GridItem(.fixed(50)),
+        ]) {
+          ForEach(0..<45) {
+            Text("\($0 + 1)")
+              .padding()
+              .background(Color.blue)
+          }
+        }
+      }
     }
   }
 }

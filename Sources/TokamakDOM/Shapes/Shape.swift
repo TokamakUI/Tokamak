@@ -17,6 +17,8 @@
 
 import TokamakCore
 
+public typealias Shape = TokamakCore.Shape
+
 // Border modifier
 extension _OverlayModifier: DOMViewModifier
   where Overlay == _ShapeView<_StrokedShape<TokamakCore.Rectangle._Inset>, Color> {

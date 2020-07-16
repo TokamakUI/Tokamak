@@ -75,9 +75,9 @@ Table columns:
 
 |     |                                                                          |     |
 | --- | ------------------------------------------------------------------------ | :-: |
-|     | [LazyHGrid](https://developer.apple.com/documentation/swiftui/lazyhgrid) |  β  |
-|     | [LazyVGrid](https://developer.apple.com/documentation/swiftui/lazyvgrid) |  β  |
-|     | [GridItem](https://developer.apple.com/documentation/swiftui/griditem)   |  β  |
+|🚧| [LazyHGrid](https://developer.apple.com/documentation/swiftui/lazyhgrid) |  β  |
+|🚧| [LazyVGrid](https://developer.apple.com/documentation/swiftui/lazyvgrid) |  β  |
+|🚧| [GridItem](https://developer.apple.com/documentation/swiftui/griditem)   |  β  |
 
 ### Lists and Scroll Views
 

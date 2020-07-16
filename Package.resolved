@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/MaxDesiatov/OpenCombine.git",
         "state": {
           "branch": "observable-object",
-          "revision": "d017dcbe96f7d8e5e204fc3d40b834987d38925b",
+          "revision": "3c3a181acad7ab44a64d7c41140eb843222bb2aa",
           "version": null
         }
       },
@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/MaxDesiatov/Runtime.git",
         "state": {
           "branch": "wasi-build",
-          "revision": "a617ead8a125a97e69d6100e4d27922006e82e0a",
+          "revision": "a9309b4822d6dd0e4a8e92351ee9e3d210e19b4e",
           "version": null
         }
       }

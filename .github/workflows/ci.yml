@@ -26,5 +26,7 @@ jobs:
         run: |
           set -ex
           sudo xcode-select --switch /Applications/Xcode_12_beta.app/Contents/Developer/
+          xcodebuild -version
           cd "TokamakDemo Native"
-          xcodebuild -scheme macOS
+          xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
+            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
