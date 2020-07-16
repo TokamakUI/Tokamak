@@ -37,7 +37,7 @@ extension TextField: ViewDeferredToRenderer where Label == Text {
     return AnyView(HTML("input", [
       "type": proxy.textFieldStyle is RoundedBorderTextFieldStyle ? "search" : "text",
       "value": proxy.textBinding.wrappedValue,
-      "placeholder": proxy.label.content,
+      "placeholder": proxy.label.rawText,
       "style": css(for: proxy.textFieldStyle),
     ], listeners: [
       "focus": { _ in proxy.onEditingChanged(true) },
