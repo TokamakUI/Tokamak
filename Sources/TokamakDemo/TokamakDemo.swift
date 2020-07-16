@@ -109,11 +109,15 @@ struct TokamakDemoView: View {
           if let dest = link.destination {
             NavigationLink(link.id, destination: dest)
           } else {
+            #if os(WASI)
+            Text(link.id)
+            #else
             HStack {
               Text(link.id)
               Spacer()
               Text("unavailable").opacity(0.5)
             }
+            #endif
           }
         }
         .frame(minHeight: 300),

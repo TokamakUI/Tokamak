@@ -14,7 +14,6 @@
 //
 //  Created by Carson Katri on 6/29/20.
 //
-
 import TokamakCore
 
 public typealias Path = TokamakCore.Path
@@ -49,9 +48,6 @@ extension Path: ViewDeferredToRenderer {
                                       "ry": "\(rect.size.height)"]
           .merging(stroke, uniquingKeysWith: uniqueKeys)))
     case let .roundedRect(roundedRect):
-      let ry = roundedRect.style == .continuous
-        ? roundedRect.cornerSize.width
-        : roundedRect.cornerSize.height
       return AnyView(HTML("rect", [
         "width": "\(roundedRect.rect.size.width)",
         "height": "\(roundedRect.rect.size.height)",
@@ -64,6 +60,9 @@ extension Path: ViewDeferredToRenderer {
         "x": "\(roundedRect.rect.origin.x)",
         "y": "\(roundedRect.rect.origin.y)",
       ].merging(stroke, uniquingKeysWith: uniqueKeys)))
+    case let .stroked(stroked):
+      return AnyView(stroked.path.svgBody(strokeStyle: stroked.style))
+    case let .trimmed(trimmed):
       return trimmed.path.svgFrom(storage: trimmed.path.storage,
                                   strokeStyle: strokeStyle) // TODO: Trim the path
     }

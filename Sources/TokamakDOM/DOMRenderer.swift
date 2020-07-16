@@ -18,6 +18,8 @@
 import JavaScriptKit
 import TokamakCore
 
+public typealias ViewBuilder = TokamakCore.ViewBuilder
+
 public final class DOMNode: Target {
   let ref: JSObjectRef
   private var listeners: [String: JSClosure]
