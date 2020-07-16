@@ -13,7 +13,7 @@
 // limitations under the License.
 
 public struct _PickerContainer<Label: View, SelectionValue: Hashable, Content: View>: View {
-  public let selection: Binding<SelectionValue>
+  @Binding public var selection: SelectionValue
   public let label: Label
   public let content: Content
   @Environment(\.pickerStyle) public var style: PickerStyle
@@ -23,7 +23,7 @@ public struct _PickerContainer<Label: View, SelectionValue: Hashable, Content: V
     label: Label,
     @ViewBuilder content: () -> Content
   ) {
-    self.selection = selection
+    _selection = selection
     self.label = label
     self.content = content()
   }
@@ -47,7 +47,6 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
   let selection: Binding<SelectionValue>
   let label: Label
   let content: Content
-  // let values: [SelectionValue:]
 
   public init(
     selection: Binding<SelectionValue>,
@@ -63,27 +62,24 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
     let children = self.children
 
     return _PickerContainer(selection: selection, label: label) {
-      // EmptyView()
       // Need to implement a special behavior here. If one of the children is `ForEach`
       // and its `Data.Element` type is the same as `SelectionValue` type, then we can
       // update the binding.
-      ForEach(0..<children.count) { index -> _ConditionalContent<AnyView, AnyView> in
-        print("index is \(index), children.count is \(children.count)")
-        // if let forEach = children[index] as? ForEachProtocol,
-        //   forEach.elementType == SelectionValue.self {
-        //   let nestedChildren = forEach.children
+      ForEach(0..<children.count) { index -> AnyView in
+        // print(children[index].type as? ForEachProtocol.Type)
+        if let forEach = mapAnyView(children[index], transform: { (v: ForEachProtocol) in v }),
+          forEach.elementType == SelectionValue.self {
+          print("ForEachProtocol")
+          print(SelectionValue.self)
+          print("elementType is \(forEach.elementType)")
+          let nestedChildren = forEach.children
 
-        //   print("true branch")
-        //   return .trueBranch(AnyView(EmptyView()))
-        //   // return .trueBranch(AnyView(ForEach(0..<nestedChildren.count) { nestedIndex -> _PickerElement in
-        //   //   print(nestedIndex)
-        //   //   return _PickerElement(valueIndex: nestedIndex, content: nestedChildren[nestedIndex])
-        //   // }))
-        // } else {
-        // print("false branch")
-        return .falseBranch(AnyView(EmptyView()))
-        // return .falseBranch(AnyView(_PickerElement(valueIndex: nil, content: children[index])))
-        // }
+          return AnyView(ForEach(0..<nestedChildren.count) { nestedIndex in
+            _PickerElement(valueIndex: nestedIndex, content: nestedChildren[nestedIndex])
+          })
+        } else {
+          return AnyView(_PickerElement(valueIndex: nil, content: children[index]))
+        }
       }
     }
   }

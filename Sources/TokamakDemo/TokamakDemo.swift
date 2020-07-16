@@ -21,25 +21,6 @@ import SwiftUI
 import TokamakDOM
 #endif
 
-struct CheeseStrength: View {
-  var strengths = ["Mild", "Medium", "Mature"]
-
-  @State private var selectedStrength = 0
-
-  var body: some View {
-    VStack {
-      Text("\(selectedStrength)")
-      Picker(selection: $selectedStrength, label: Text("Strength")) {
-        // EmptyView()
-        Text("Foo")
-        ForEach(strengths, id: \.self) {
-          Text($0)
-        }
-      }
-    }
-  }
-}
-
 struct TokamakDemoView: View {
   var body: some View {
     ScrollView(showsIndicators: false) {
@@ -61,6 +42,7 @@ struct TokamakDemoView: View {
           .padding(20)
         }
         Group {
+          PickerDemo()
           ForEachDemo()
           TextDemo()
           PathDemo()

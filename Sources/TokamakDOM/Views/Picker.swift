@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import JavaScriptKit
 import TokamakCore
 
 public typealias Picker = TokamakCore.Picker
@@ -25,27 +26,31 @@ extension _PickerContainer: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     AnyView(HTML("label") {
       label
-
-      HTML("select", listeners: ["change": { print($0) }]) { () -> AnyView in
-        print("content is \(content)")
-        // return AnyView(EmptyView())
-        return AnyView(content)
+      Text(" ")
+      HTML("select", listeners: ["change": {
+        guard
+          let valueString = $0.target.object!.value.string,
+          let value = Int(valueString) as? SelectionValue
+        else { return }
+        selection = value
+      }]) {
+        content
       }
     })
   }
 }
 
-// extension _PickerElement: ViewDeferredToRenderer {
-//   public var deferredBody: AnyView {
-//     let attributes: [String: String]
-//     if let value = valueIndex {
-//       attributes = ["value": "\(value)"]
-//     } else {
-//       attributes = [:]
-//     }
+extension _PickerElement: ViewDeferredToRenderer {
+  public var deferredBody: AnyView {
+    let attributes: [String: String]
+    if let value = valueIndex {
+      attributes = ["value": "\(value)"]
+    } else {
+      attributes = [:]
+    }
 
-//     return AnyView(HTML("option", attributes) {
-//       content
-//     })
-//   }
-// }
+    return AnyView(HTML("option", attributes) {
+      content
+    })
+  }
+}
