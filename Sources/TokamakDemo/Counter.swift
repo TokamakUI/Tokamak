@@ -33,16 +33,15 @@ struct Counter: View {
   let limit: Int
 
   public var body: some View {
-    count.value < limit ?
-      AnyView(
-        VStack {
-          Button("Increment") { count.value += 1 }
-          Text("\(count.value)")
-        }
-        .onAppear { print("Counter.VStack onAppear") }
-        .onDisappear { print("Counter.VStack onDisappear") }
-      ) : AnyView(
-        VStack { Text("Limit exceeded") }
-      )
+    if count < limit {
+      VStack {
+        Button("Increment") { count.value += 1 }
+        Text("\(count.value)")
+      }
+      .onAppear { print("Counter.VStack onAppear") }
+      .onDisappear { print("Counter.VStack onDisappear") }
+    } else {
+      VStack { Text("Limit exceeded") }
+    }
   }
 }
