@@ -49,7 +49,7 @@ public final class StackReconciler<R: Renderer> {
     queueUpdate(for: mountedView)
   }
 
-  func queueUpdate(for mountedView: MountedCompositeView<R>) {
+  private func queueUpdate(for mountedView: MountedCompositeView<R>) {
     let shouldSchedule = queuedRerenders.isEmpty
     queuedRerenders.insert(mountedView)
 
@@ -94,7 +94,10 @@ public final class StackReconciler<R: Renderer> {
     try! property.set(value: state, on: &compositeView.view.view)
   }
 
-  func setupSubscription(for property: PropertyInfo, of compositeView: MountedCompositeView<R>) {
+  private func setupSubscription(
+    for property: PropertyInfo,
+    of compositeView: MountedCompositeView<R>
+  ) {
     // `ObservedProperty` property already filtered out, so safe to assume the value's type
     // swiftlint:disable:next force_cast
     let observed = try! property.get(from: compositeView.view.view) as! ObservedProperty
