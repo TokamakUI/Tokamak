@@ -66,7 +66,6 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
       // and its `Data.Element` type is the same as `SelectionValue` type, then we can
       // update the binding.
       ForEach(0..<children.count) { index in
-        // print(children[index].type as? ForEachProtocol.Type)
         if let forEach = mapAnyView(children[index], transform: { (v: ForEachProtocol) in v }),
           forEach.elementType == SelectionValue.self {
           let nestedChildren = forEach.children
