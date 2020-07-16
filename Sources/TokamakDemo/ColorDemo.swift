@@ -63,28 +63,30 @@ public struct ColorDemo: View {
   ]
 
   public var body: some View {
-    VStack {
-      Button("Input \(colorForm.rawValue.uppercased())") {
-        colorForm = colorForm == .rgb ? .hsb : .rgb
-      }
-      TextField(colorForm == .rgb ? "Red" : "Hue", text: $v0)
-      TextField(colorForm == .rgb ? "Green" : "Saturation", text: $v1)
-      TextField(colorForm == .rgb ? "Blue" : "Brightness", text: $v2)
-      Text("\(v0) \(v1) \(v2)")
-        .bold()
-        .padding()
-        .background(color)
-      Text("Accent Color: \(Color.accentColor.description)")
-        .bold()
-        .padding()
-        .background(Color.accentColor)
-      ForEach(colors, id: \.self) {
-        Text($0.description)
-          .font(.caption)
+    ScrollView {
+      VStack {
+        Button("Input \(colorForm.rawValue.uppercased())") {
+          colorForm = colorForm == .rgb ? .hsb : .rgb
+        }
+        TextField(colorForm == .rgb ? "Red" : "Hue", text: $v0)
+        TextField(colorForm == .rgb ? "Green" : "Saturation", text: $v1)
+        TextField(colorForm == .rgb ? "Blue" : "Brightness", text: $v2)
+        Text("\(v0) \(v1) \(v2)")
           .bold()
           .padding()
-          .background($0)
-      }
+          .background(color)
+        Text("Accent Color: \(Color.accentColor.description)")
+          .bold()
+          .padding()
+          .background(Color.accentColor)
+        ForEach(colors, id: \.self) {
+          Text($0.description)
+            .font(.caption)
+            .bold()
+            .padding()
+            .background($0)
+        }
+      }.padding(.horizontal)
     }
   }
 }
