@@ -26,6 +26,7 @@ let package = Package(
     // .package(url: /* package url */, from: "1.0.0"),
     .package(url: "https://github.com/kateinoigakukun/JavaScriptKit.git", .revision("47f2bb1")),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", .branch("wasi-build")),
+    .package(url: "https://github.com/MaxDesiatov/OpenCombine.git", .branch("observable-object")),
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define
@@ -34,7 +35,7 @@ let package = Package(
     // in packages which this package depends on.
     .target(
       name: "TokamakCore",
-      dependencies: ["Runtime"]
+      dependencies: ["OpenCombine", "Runtime"]
     ),
     .target(
       name: "TokamakDemo",

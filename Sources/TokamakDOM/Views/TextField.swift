@@ -22,8 +22,8 @@ public typealias TextField = TokamakCore.TextField
 func css(for style: TextFieldStyle) -> String {
   if style is PlainTextFieldStyle {
     return """
-      background: transparent;
-      border: none;
+    background: transparent;
+    border: none;
     """
   } else {
     return ""
@@ -37,7 +37,7 @@ extension TextField: ViewDeferredToRenderer where Label == Text {
     return AnyView(HTML("input", [
       "type": proxy.textFieldStyle is RoundedBorderTextFieldStyle ? "search" : "text",
       "value": proxy.textBinding.wrappedValue,
-      "placeholder": proxy.label.content,
+      "placeholder": proxy.label.rawText,
       "style": css(for: proxy.textFieldStyle),
     ], listeners: [
       "focus": { _ in proxy.onEditingChanged(true) },

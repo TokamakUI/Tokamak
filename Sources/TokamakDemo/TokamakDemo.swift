@@ -29,7 +29,7 @@ struct TokamakDemoView: View {
       }
       VStack {
         Group {
-          Counter(count: 5, limit: 15)
+          Counter(count: Count(value: 5), limit: 15)
             .padding()
             .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
             .border(Color.red, width: 3)
@@ -41,28 +41,34 @@ struct TokamakDemoView: View {
           }
           .padding(20)
         }
-        ForEachDemo()
         Group {
+          ForEachDemo()
           TextDemo()
           ToggleDemo()
+          PathDemo()
+          TextFieldDemo()
+          SpacerDemo()
+          EnvironmentDemo()
+            .font(.system(size: 8))
+          PickerDemo()
         }
-        #if canImport(TokamakDOM)
-        SVGCircle()
-          .frame(width: 25, height: 25)
-        #endif
-        TextFieldDemo()
-        SpacerDemo()
-        EnvironmentDemo()
-          .font(.system(size: 8))
-        #if canImport(TokamakDOM)
-        ListDemo().listStyle(InsetGroupedListStyle())
-        #else
-        ListDemo()
-        #endif
-        if #available(OSX 10.16, iOS 14.0, *) {
-          OutlineGroupDemo()
+        Group {
+          #if canImport(TokamakDOM)
+          ListDemo().listStyle(InsetGroupedListStyle())
+          #else
+          ListDemo()
+          #endif
+          if #available(OSX 10.16, iOS 14.0, *) {
+            OutlineGroupDemo()
+          }
+          ColorDemo()
+            .padding()
+          if #available(OSX 10.16, iOS 14.0, *) {
+            GridDemo()
+          }
         }
       }
     }
+    .environmentObject(TestEnvironment())
   }
 }

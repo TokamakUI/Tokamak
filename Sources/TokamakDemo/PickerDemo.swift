@@ -12,15 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if canImport(SwiftUI)
+import SwiftUI
+#else
 import TokamakDOM
+#endif
 
-struct SVGCircle: View {
+struct PickerDemo: View {
+  var textStyles = Font.TextStyle.allCases
+
+  @State private var selection = 0
+
   var body: some View {
-    HTML("svg", ["width": "100%", "height": "100%"]) {
-      HTML("circle", [
-        "cx": "50%", "cy": "50%", "r": "40%",
-        "stroke": "green", "stroke-width": "4", "fill": "yellow",
-      ])
+    Picker(selection: $selection, label: Text("Text style")
+      .font(.system(textStyles[selection]))) {
+      Text("Pick a text style...")
+      ForEach(0..<textStyles.count) {
+        Text(String(describing: textStyles[$0]))
+      }
     }
   }
 }

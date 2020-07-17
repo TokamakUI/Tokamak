@@ -44,36 +44,37 @@ extension View {
     // Find Environment changes
     var modifiedEnv = environmentValues
     var injectableView = self
-    if let any = injectableView as? AnyView {
-      // swiftlint:disable force_try
-      // Extract the view from the AnyView for modification
-      var extractedView = any.view
-      let viewInfo = try! typeInfo(of: any.type)
-      if viewInfo
-        .genericTypes
-        .filter({ $0 is EnvironmentModifier.Type }).count > 0 {
-        // Apply Environment changes:
-        if let modifier = try? viewInfo
-          .property(named: "modifier")
-          .get(from: any.view) as? EnvironmentModifier {
-          modifier.modifyEnvironment(&modifiedEnv)
-        }
+    let any = (injectableView as? AnyView) ?? AnyView(injectableView)
+    // swiftlint:disable force_try
+    // Extract the view from the AnyView for modification
+    var extractedView = any.view
+    let viewInfo = try! typeInfo(of: any.type)
+    if viewInfo
+      .genericTypes
+      .filter({ $0 is EnvironmentModifier.Type }).count > 0 {
+      // Apply Environment changes:
+      if let modifier = try? viewInfo
+        .property(named: "modifier")
+        .get(from: any.view) as? EnvironmentModifier {
+        modifier.modifyEnvironment(&modifiedEnv)
       }
-      // Inject @Environment values
-      // In the future we can also inject @EnvironmentObject values
-      for prop in viewInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-        // swiftlint:disable force_cast
-        var wrapper = try! prop.get(from: any.view) as! EnvironmentReader
-        wrapper.setContent(from: modifiedEnv)
-        try! prop.set(value: wrapper, on: &extractedView)
-        // swiftlint:enable force_cast
-      }
-      // Set the extractedView back on the AnyView after modification
-      let anyViewInfo = try! typeInfo(of: AnyView.self)
-      try! anyViewInfo.property(named: "view").set(value: extractedView, on: &injectableView)
-      // swiftlint:enable force_try
     }
 
+    // Inject @Environment values
+    for prop in viewInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
+      // swiftlint:disable force_cast
+      var wrapper = try! prop.get(from: any.view) as! EnvironmentReader
+      wrapper.setContent(from: modifiedEnv)
+      try! prop.set(value: wrapper, on: &extractedView)
+      // swiftlint:enable force_cast
+    }
+
+    // Set the extractedView back on the AnyView after modification
+    let anyViewInfo = try! typeInfo(of: AnyView.self)
+    try! anyViewInfo.property(named: "view").set(value: extractedView, on: &injectableView)
+    // swiftlint:enable force_try
+
+    // Make MountedView
     let anyView = injectableView as? AnyView ?? AnyView(injectableView)
     if anyView.type == EmptyView.self {
       return MountedNull(anyView)

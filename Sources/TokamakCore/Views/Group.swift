@@ -14,13 +14,12 @@
 
 public struct Group<Content> {
   let content: Content
-}
-
-extension Group: View where Content: View {
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()
   }
+}
 
+extension Group: View where Content: View {
   public var body: Never {
     neverBody("Group")
   }

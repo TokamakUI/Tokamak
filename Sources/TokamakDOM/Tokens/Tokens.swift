@@ -27,3 +27,22 @@ public typealias CGRect = TokamakCore.CGRect
 public typealias CGPoint = TokamakCore.CGPoint
 public typealias CGSize = TokamakCore.CGSize
 public typealias CGAffineTransform = TokamakCore.CGAffineTransform
+
+public typealias GridItem = TokamakCore.GridItem
+
+extension GridItem: CustomStringConvertible {
+  public var description: String {
+    switch size {
+    case let .adaptive(minimum: min, maximum: max):
+      let min = min == .infinity ? "1fr" : "\(min)px"
+      let max = max == .infinity ? "1fr" : "\(max)px"
+      return "repeat(auto-fill, minmax(\(min), \(max)))"
+    case let .fixed(size):
+      return "\(size)px"
+    case let .flexible(minimum: min, maximum: max):
+      let min = min == .infinity ? "1fr" : min.description
+      let max = max == .infinity ? "1fr" : max.description
+      return "minmax(\(min), \(max))"
+    }
+  }
+}

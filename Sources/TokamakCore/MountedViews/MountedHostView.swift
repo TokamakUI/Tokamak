@@ -15,6 +15,8 @@
 //  Created by Max Desiatov on 03/12/2018.
 //
 
+import Runtime
+
 /* A representation of a `View`, which has a `body` of type `Never`, stored in the tree of mounted
  views by `StackReconciler`.
  */
@@ -103,6 +105,17 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
         let newChild: MountedView<R>
         if firstChild.typeConstructorName == mountedChildren[0].view.typeConstructorName {
           child.view = firstChild
+          // Inject Environment
+          // swiftlint:disable force_try
+          let viewInfo = try! typeInfo(of: child.view.type)
+          for prop in viewInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
+            // swiftlint:disable force_cast
+            var wrapper = try! prop.get(from: child.view.view) as! EnvironmentReader
+            wrapper.setContent(from: environmentValues)
+            try! prop.set(value: wrapper, on: &child.view.view)
+            // swiftlint:enable force_cast
+          }
+          // swiftlint:enable force_try
           child.update(with: reconciler)
           newChild = child
         } else {

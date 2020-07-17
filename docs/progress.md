@@ -44,7 +44,7 @@ Table columns:
 |     |                                                                              |     |
 | --- | ---------------------------------------------------------------------------- | :-: |
 | 🚧  | [Toggle](https://developer.apple.com/documentation/swiftui/toggle)           |     |
-|     | [Picker](https://developer.apple.com/documentation/swiftui/picker)           |     |
+| 🚧  | [Picker](https://developer.apple.com/documentation/swiftui/picker)           |     |
 |     | [DatePicker](https://developer.apple.com/documentation/swiftui/datepicker)   |     |
 |     | [Slider](https://developer.apple.com/documentation/swiftui/slider)           |     |
 |     | [Stepper](https://developer.apple.com/documentation/swiftui/stepper)         |     |
@@ -75,9 +75,9 @@ Table columns:
 
 |     |                                                                          |     |
 | --- | ------------------------------------------------------------------------ | :-: |
-|     | [LazyHGrid](https://developer.apple.com/documentation/swiftui/lazyhgrid) |  β  |
-|     | [LazyVGrid](https://developer.apple.com/documentation/swiftui/lazyvgrid) |  β  |
-|     | [GridItem](https://developer.apple.com/documentation/swiftui/griditem)   |  β  |
+|🚧| [LazyHGrid](https://developer.apple.com/documentation/swiftui/lazyhgrid) |  β  |
+|🚧| [LazyVGrid](https://developer.apple.com/documentation/swiftui/lazyvgrid) |  β  |
+|🚧| [GridItem](https://developer.apple.com/documentation/swiftui/griditem)   |  β  |
 
 ### Lists and Scroll Views
 
