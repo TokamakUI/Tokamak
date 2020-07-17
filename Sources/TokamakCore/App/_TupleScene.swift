@@ -11,17 +11,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 7/16/20.
+//
 
-import TokamakDOM
+struct _TupleScene<T>: Scene {
+  let value: T
 
-struct TokamakDemoApp: App {
-  var body: some Scene {
-    WindowGroup {
-      TokamakDemoView()
-    }
+  init(_ value: T) {
+    self.value = value
+  }
+
+  public func _makeView() -> Never {
+    neverBody("_TupleScene.Content")
   }
 }
-
-// If @main was supported for executable Swift Packages,
-// this would match SwiftUI 100%
-TokamakDemoApp.main()

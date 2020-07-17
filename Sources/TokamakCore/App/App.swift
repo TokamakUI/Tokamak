@@ -11,17 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 7/16/20.
+//
 
-import TokamakDOM
-
-struct TokamakDemoApp: App {
-  var body: some Scene {
-    WindowGroup {
-      TokamakDemoView()
-    }
-  }
+/// The renderer is responsible for implementing the `main` function
+public protocol App {
+  associatedtype Body: Scene
+  @SceneBuilder var body: Body { get }
+  static func main()
+  init()
 }
-
-// If @main was supported for executable Swift Packages,
-// this would match SwiftUI 100%
-TokamakDemoApp.main()

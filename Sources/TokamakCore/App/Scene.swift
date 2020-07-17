@@ -11,17 +11,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 7/16/20.
+//
 
-import TokamakDOM
-
-struct TokamakDemoApp: App {
-  var body: some Scene {
-    WindowGroup {
-      TokamakDemoView()
-    }
-  }
+public protocol Scene {
+//  associatedtype Body: Scene
+//
+//  @SceneBuilder var body: Self.Body { get }
+  associatedtype Content: View
+  func _makeView() -> Content
 }
 
-// If @main was supported for executable Swift Packages,
-// this would match SwiftUI 100%
-TokamakDemoApp.main()
+// FIXME: I can't just do this for some reason?
+//
+//    error: failed to produce diagnostic for expression; please file a bug report
+//
+// for now Scenes can't be composed
+// extension Never: Scene {}
