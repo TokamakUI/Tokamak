@@ -22,8 +22,8 @@ public typealias TextField = TokamakCore.TextField
 func css(for style: TextFieldStyle) -> String {
   if style is PlainTextFieldStyle {
     return """
-      background: transparent;
-      border: none;
+    background: transparent;
+    border: none;
     """
   } else {
     return ""

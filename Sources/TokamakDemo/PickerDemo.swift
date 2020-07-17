@@ -12,21 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public struct Group<Content> {
-  let content: Content
-  public init(@ViewBuilder content: () -> Content) {
-    self.content = content()
+#if canImport(SwiftUI)
+import SwiftUI
+#else
+import TokamakDOM
+#endif
+
+struct PickerDemo: View {
+  var textStyles = Font.TextStyle.allCases
+
+  @State private var selection = 0
+
+  var body: some View {
+    Picker(selection: $selection, label: Text("Text style")
+      .font(.system(textStyles[selection]))) {
+      Text("Pick a text style...")
+      ForEach(0..<textStyles.count) {
+        Text(String(describing: textStyles[$0]))
+      }
+    }
   }
 }
-
-extension Group: View where Content: View {
-  public var body: Never {
-    neverBody("Group")
-  }
-}
-
-extension Group: ParentView where Content: View {
-  public var children: [AnyView] { (content as? ParentView)?.children ?? [AnyView(content)] }
-}
-
-extension Group: GroupView where Content: View {}
