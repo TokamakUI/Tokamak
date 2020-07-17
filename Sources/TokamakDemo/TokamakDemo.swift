@@ -94,6 +94,7 @@ var links: [NavItem] {
     NavItem("TextField", destination: TextFieldDemo()),
     NavItem("Spacer", destination: SpacerDemo()),
     NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8))),
+    NavItem("Picker", destination: PickerDemo()),
     NavItem("List", destination: listDemo),
     outlineGroupDemo,
     NavItem("Color", destination: ColorDemo()),
@@ -133,5 +134,6 @@ struct TokamakDemoView: View {
       }
       #endif
     }
+    .environmentObject(TestEnvironment())
   }
 }

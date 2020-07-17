@@ -18,3 +18,4 @@
 import TokamakCore
 
 public typealias Environment = TokamakCore.Environment
+public typealias EnvironmentObject = TokamakCore.EnvironmentObject
