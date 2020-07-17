@@ -34,14 +34,12 @@ dependencies and launch a development HTTP server. You can then open
 ### Example code
 
 Tokamak API attempts to resemble SwiftUI API as much as possible. The main difference is
-that you add `import TokamakDOM` instead of `import SwiftUI` in your files:
+that you use `import TokamakShim` instead of `import SwiftUI` in your files. The former makes
+your views compatible with Apple platforms, as well as platforms supported by Tokamak (currently
+only WebAssembly/[WASI](https://wasi.dev/) with more coming in the future):
 
 ```swift
-#if os(WASI)
-import TokamakDOM
-#else
-import SwiftUI
-#endif
+import TokamakShim
 
 struct Counter: View {
   @State var count: Int
@@ -133,10 +131,10 @@ can be formulated as these "rules":
 
 1. If a symbol is restricted to a module and has no `public` access control, no need for an underscore.
 2. If a symbol is part of a public renderer module API (e.g. `TokamakDOM`), no need for an underscore,
-users may use those symbols directly, and it is re-exported from `TokamakCore` by the renderer module
-via `public typealias`.
+   users may use those symbols directly, and it is re-exported from `TokamakCore` by the renderer module
+   via `public typealias`.
 3. If a function or a type have `public` on them only by necessity to make them available in `TokamakDOM`,
-but unavailable to users (or not intended for public use), underscore is needed to indicate that.
+   but unavailable to users (or not intended for public use), underscore is needed to indicate that.
 
 The benefit of separate modules is that they allow us to provide separate renderers for different platforms.
 Users can pick and choose what they want to use, e.g. purely static websites would use only `TokamakHTML`,

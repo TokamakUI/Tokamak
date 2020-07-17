@@ -15,11 +15,7 @@
 //  Created by Max Desiatov on 14/02/2019.
 //
 
-#if canImport(SwiftUI)
-import SwiftUI
-#else
-import TokamakDOM
-#endif
+import TokamakShim
 
 final class Count: ObservableObject {
   @Published var value: Int

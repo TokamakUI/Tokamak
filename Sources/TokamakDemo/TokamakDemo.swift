@@ -15,11 +15,7 @@
 //  Created by Jed Fox on 07/01/2020.
 //
 
-#if canImport(SwiftUI)
-import SwiftUI
-#else
-import TokamakDOM
-#endif
+import TokamakShim
 
 struct TokamakDemoView: View {
   var body: some View {
