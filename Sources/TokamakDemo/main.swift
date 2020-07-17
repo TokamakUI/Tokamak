@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import JavaScriptKit
-import OpenCombine
 import TokamakDOM
 
 let document = JSObjectRef.global.document.object!

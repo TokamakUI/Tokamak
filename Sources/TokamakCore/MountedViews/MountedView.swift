@@ -61,7 +61,6 @@ extension View {
     }
 
     // Inject @Environment values
-    // In the future we can also inject @EnvironmentObject values
     for prop in viewInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
       // swiftlint:disable force_cast
       var wrapper = try! prop.get(from: any.view) as! EnvironmentReader
