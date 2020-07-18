@@ -91,9 +91,15 @@ public final class DOMRenderer: Renderer {
     rootStyle.innerHTML = .string(tokamakStyles)
     _ = head.appendChild!(rootStyle)
 
+    // Establish default settings
+    var rootEnvironment = EnvironmentValues()
+    rootEnvironment[keyPath: \._defaultAppStorage] = LocalStorage.standard
+    _DefaultSceneStorageProvider.default = BrowserTabStorage.standard
+
     reconciler = StackReconciler(
       view: view,
       target: DOMNode(view, ref),
+      environment: rootEnvironment,
       renderer: self
     ) { closure in
       let fn = JSClosure { _ in

@@ -23,6 +23,7 @@ import TokamakDOM
 
 struct AppStorageDemo: View {
   @AppStorage("count") var count: Int = 0
+//  @SceneStorage("count") var count: Int = 0
 
   public var body: some View {
     VStack {

@@ -17,25 +17,23 @@
 
 import OpenCombine
 
-public enum _AppStorageValue {
-  case bool(Bool)
-  case int(Int)
-  case double(Double)
-  case string(String)
-}
-
 public protocol _AppStorageProvider {
-  func store(key: String, value: _AppStorageValue)
-  func read(key: String) -> _AppStorageValue?
+  func store(key: String, value: String)
+  func read(key: String) -> String?
   static var standard: _AppStorageProvider { get }
 }
 
 @propertyWrapper public struct AppStorage<Value>: ObservedProperty {
-  let provider: _AppStorageProvider
+  let provider: _AppStorageProvider?
+  @Environment(\._defaultAppStorage) var defaultProvider: _AppStorageProvider?
+  var unwrappedProvider: _AppStorageProvider {
+    provider ?? defaultProvider!
+  }
+
   let key: String
   let defaultValue: Value
-  let wrapValue: (Value) -> _AppStorageValue
-  let unwrapValue: (_AppStorageValue?) -> Value?
+  let wrapValue: (Value) -> String
+  let unwrapValue: (String) -> Value?
 
   let publisher = ObservableObjectPublisher()
   var objectWillChange: AnyPublisher<(), Never> {
@@ -44,11 +42,14 @@ public protocol _AppStorageProvider {
 
   public var wrappedValue: Value {
     get {
-      unwrapValue(provider.read(key: key)) ?? defaultValue
+      if let stringValue = unwrappedProvider.read(key: key) {
+        return unwrapValue(stringValue) ?? defaultValue
+      }
+      return defaultValue
     }
     nonmutating set {
       publisher.send()
-      provider.store(key: key, value: wrapValue(newValue))
+      unwrappedProvider.store(key: key, value: wrapValue(newValue))
     }
   }
 
@@ -62,63 +63,134 @@ public protocol _AppStorageProvider {
 }
 
 extension AppStorage {
-  public init<Store: _AppStorageProvider>(wrappedValue: Value, _ key: String, store: Store? = nil) where Value == Bool {
+  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == Bool {
     defaultValue = wrappedValue
     self.key = key
-    provider = store ?? Store.standard
-    wrapValue = { .bool($0) }
+    provider = store
+    wrapValue = { String($0) }
+    unwrapValue = { Bool($0) }
+  }
+
+  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == Int {
+    defaultValue = wrappedValue
+    self.key = key
+    provider = store
+    wrapValue = { String($0) }
+    unwrapValue = { Int($0) }
+  }
+
+  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == Double {
+    defaultValue = wrappedValue
+    self.key = key
+    provider = store
+    wrapValue = { String($0) }
+    unwrapValue = { Double($0) }
+  }
+
+  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == String {
+    defaultValue = wrappedValue
+    self.key = key
+    provider = store
+    wrapValue = { $0 }
+    unwrapValue = { $0 }
+  }
+
+  public init(wrappedValue: Value,
+              _ key: String,
+              store: _AppStorageProvider? = nil)
+    where Value: RawRepresentable, Value.RawValue == Int {
+    defaultValue = wrappedValue
+    self.key = key
+    provider = store
+    wrapValue = { String($0.rawValue) }
     unwrapValue = {
-      if case let .bool(bool) = $0 {
-        return bool
-      } else {
+      guard let rawValue = Int($0) else {
         return nil
       }
+      return Value(rawValue: rawValue)
     }
   }
 
-  public init<Store: _AppStorageProvider>(wrappedValue: Value, _ key: String, store: Store? = nil) where Value == Int {
+  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil)
+    where Value: RawRepresentable, Value.RawValue == String {
     defaultValue = wrappedValue
     self.key = key
-    provider = store ?? Store.standard
-    wrapValue = { .int($0) }
-    unwrapValue = {
-      if case let .int(int) = $0 {
-        return int
-      } else {
-        return nil
-      }
-    }
+    provider = store
+    wrapValue = { $0.rawValue }
+    unwrapValue = { Value(rawValue: $0) }
   }
-
-//  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == Double
-//  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == String
-//  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value : RawRepresentable, Value.RawValue == Int
-//  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value : RawRepresentable, Value.RawValue == String
 }
 
-// extension AppStorage where Value : Swift.ExpressibleByNilLiteral {
-//  public init(_ key: Swift.String, store: Foundation.UserDefaults? = nil) where Value == Swift.Bool?
-//  public init(_ key: Swift.String, store: Foundation.UserDefaults? = nil) where Value == Swift.Int?
-//  public init(_ key: Swift.String, store: Foundation.UserDefaults? = nil) where Value == Swift.Double?
-//  public init(_ key: Swift.String, store: Foundation.UserDefaults? = nil) where Value == Swift.String?
-//  public init(_ key: Swift.String, store: Foundation.UserDefaults? = nil) where Value == Foundation.URL?
-//  public init(_ key: Swift.String, store: Foundation.UserDefaults? = nil) where Value == Foundation.Data?
-// }
-// @available(iOS 14.0, OSX 10.16, tvOS 14.0, watchOS 7.0, *)
-// extension View {
-//  public func defaultAppStorage(_ store: Foundation.UserDefaults) -> some SwiftUI.View
-//
-// }
-// @available(iOS 14.0, OSX 10.16, tvOS 14.0, watchOS 7.0, *)
-// extension Scene {
-//  public func defaultAppStorage(_ store: Foundation.UserDefaults) -> some SwiftUI.Scene
-//
-// }
-// @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-// extension EnvironmentValues {
-//  @usableFromInline
-//  internal var defaultAppStorageDefaults: Foundation.UserDefaults {
-//    get
-//    set
-//  }
-// }
+extension AppStorage where Value: ExpressibleByNilLiteral {
+  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == Bool? {
+    defaultValue = wrappedValue
+    self.key = key
+    provider = store
+    wrapValue = {
+      if let val = $0 {
+        return String(val)
+      } else {
+        return ""
+      }
+    }
+    unwrapValue = { Bool($0) }
+  }
+
+  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == Int? {
+    defaultValue = wrappedValue
+    self.key = key
+    provider = store
+    wrapValue = {
+      if let val = $0 {
+        return String(val)
+      } else {
+        return ""
+      }
+    }
+    unwrapValue = { Int($0) }
+  }
+
+  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == Double? {
+    defaultValue = wrappedValue
+    self.key = key
+    provider = store
+    wrapValue = {
+      if let val = $0 {
+        return String(val)
+      } else {
+        return ""
+      }
+    }
+    unwrapValue = { Double($0) }
+  }
+
+  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == String? {
+    defaultValue = wrappedValue
+    self.key = key
+    provider = store
+    wrapValue = { $0 ?? "" }
+    unwrapValue = { $0 }
+  }
+}
+
+/// The renderer is responsible for making sure a default is set at the root of the App.
+struct DefaultAppStorageEnvironmentKey: EnvironmentKey {
+  static let defaultValue: _AppStorageProvider? = nil
+}
+
+extension EnvironmentValues {
+  public var _defaultAppStorage: _AppStorageProvider? {
+    get {
+      self[DefaultAppStorageEnvironmentKey.self]
+    }
+    set {
+      self[DefaultAppStorageEnvironmentKey.self] = newValue
+    }
+  }
+}
+
+extension View {
+  public func defaultAppStorage(_ store: _AppStorageProvider) -> some View {
+    environment(\._defaultAppStorage, store)
+  }
+}

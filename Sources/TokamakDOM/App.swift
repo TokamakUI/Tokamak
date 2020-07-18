@@ -16,6 +16,7 @@
 //
 
 import JavaScriptKit
+import OpenCombine
 import TokamakCore
 
 public typealias App = TokamakCore.App
@@ -37,18 +38,43 @@ extension App {
 
 public typealias AppStorage = TokamakCore.AppStorage
 public struct LocalStorage: _AppStorageProvider {
-  static let localStorage = JSObjectRef.global.localStorage.object!
+  let localStorage = JSObjectRef.global.localStorage.object!
 
-  public func store(key: String, value: _AppStorageValue) {
-    print("Store \(value) for \(key)")
+  public func store(key: String, value: String) {
+    _ = localStorage.setItem!(key, value)
   }
 
-  public func read(key: String) -> _AppStorageValue? {
-    print("Read \(key)")
-    return nil
+  public func read(key: String) -> String? {
+    localStorage.getItem!(key).string
   }
 
   public static var standard: _AppStorageProvider {
     LocalStorage()
+  }
+}
+
+public typealias SceneStorage = TokamakCore.SceneStorage
+public struct BrowserTabStorage: _SceneStorageProvider {
+  static var storage = Storage()
+  public var objectWillChange: ObservableObjectPublisher {
+    Self.storage.objectWillChange
+  }
+
+  class Storage: ObservableObject {
+    @Published var pairs: [String: String] = [:]
+  }
+
+  public func store(key: String, value: String) {
+    Self.storage.pairs[key] = value
+    print(Self.storage)
+  }
+
+  public func read(key: String) -> String? {
+    print("Retrieving: \(Self.storage.pairs[key])")
+    return Self.storage.pairs[key]
+  }
+
+  public static var standard: _SceneStorageProvider {
+    BrowserTabStorage()
   }
 }

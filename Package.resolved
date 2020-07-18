@@ -5,8 +5,8 @@
         "package": "JavaScriptKit",
         "repositoryURL": "https://github.com/kateinoigakukun/JavaScriptKit.git",
         "state": {
-          "branch": "47f2bb1",
-          "revision": "47f2bb16576ba386a2c7c69c97b0fd44f470126f",
+          "branch": "fix-heap-system",
+          "revision": "166912c392bfef23020753f29ea225d3e97b9d2f",
           "version": null
         }
       },

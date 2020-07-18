@@ -17,7 +17,8 @@ import TokamakDOM
 struct TokamakDemoApp: App {
   var body: some Scene {
     WindowGroup {
-      TokamakDemoView()
+//      TokamakDemoView()
+      AppStorageDemo()
     }
   }
 }

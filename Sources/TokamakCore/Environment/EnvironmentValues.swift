@@ -33,3 +33,21 @@ public struct EnvironmentValues: CustomStringConvertible {
     }
   }
 }
+
+struct _EnvironmentValuesWritingModifier: ViewModifier, EnvironmentModifier {
+  let environmentValues: EnvironmentValues
+
+  func body(content: Content) -> some View {
+    content
+  }
+
+  func modifyEnvironment(_ values: inout EnvironmentValues) {
+    values = environmentValues
+  }
+}
+
+extension View {
+  public func environmentValues(_ values: EnvironmentValues) -> some View {
+    modifier(_EnvironmentValuesWritingModifier(environmentValues: values))
+  }
+}

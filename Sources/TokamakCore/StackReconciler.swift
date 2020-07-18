@@ -28,6 +28,7 @@ public final class StackReconciler<R: Renderer> {
   public init<V: View>(
     view: V,
     target: R.TargetType,
+    environment: EnvironmentValues,
     renderer: R,
     scheduler: @escaping (@escaping () -> ()) -> ()
   ) {
@@ -35,7 +36,7 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootView = view.makeMountedView(target, EnvironmentValues())
+    rootView = view.makeMountedView(target, environment)
 
     rootView.mount(with: self)
   }
