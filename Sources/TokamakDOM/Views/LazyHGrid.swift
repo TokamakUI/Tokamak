@@ -17,8 +17,6 @@
 
 import TokamakCore
 
-public typealias LazyHGrid = TokamakCore.LazyHGrid
-
 extension LazyHGrid: SpacerContainer {
   var axis: SpacerContainerAxis { .horizontal }
   var hasSpacer: Bool { false }

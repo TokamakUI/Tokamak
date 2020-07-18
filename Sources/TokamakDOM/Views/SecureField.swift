@@ -17,8 +17,6 @@
 
 import TokamakCore
 
-public typealias SecureField = TokamakCore.SecureField
-
 extension SecureField: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
     let proxy = _SecureFieldProxy(self)

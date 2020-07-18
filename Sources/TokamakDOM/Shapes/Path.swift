@@ -17,8 +17,6 @@
 
 import TokamakCore
 
-public typealias Path = TokamakCore.Path
-
 extension Path: ViewDeferredToRenderer {
   // TODO: Support transformations
   func svgFrom(storage: Storage,

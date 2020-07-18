@@ -14,8 +14,6 @@
 
 import TokamakCore
 
-public typealias ZStack = TokamakCore.ZStack
-
 struct _ZStack_ContentGridItem: ViewModifier, DOMViewModifier {
   let attributes = ["style": "grid-area: a;"]
 
