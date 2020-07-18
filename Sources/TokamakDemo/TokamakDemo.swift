@@ -49,6 +49,7 @@ struct TokamakDemoView: View {
           SpacerDemo()
           EnvironmentDemo()
             .font(.system(size: 8))
+          PickerDemo()
         }
         Group {
           #if canImport(TokamakDOM)
@@ -67,5 +68,6 @@ struct TokamakDemoView: View {
         }
       }
     }
+    .environmentObject(TestEnvironment())
   }
 }

@@ -27,7 +27,6 @@ struct Star: Shape {
       path.addLine(to: .init(x: 0, y: 30.4))
       path.addLine(to: .init(x: 64, y: 76))
       path.addLine(to: .init(x: 40, y: 0))
-      print(path)
     }
   }
 }

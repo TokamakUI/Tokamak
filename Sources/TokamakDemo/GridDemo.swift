@@ -39,15 +39,17 @@ public struct GridDemo: View {
       }
       VStack {
         Text("Simple LazyHGrid")
-        LazyHGrid(rows: [
-          GridItem(.fixed(50)),
-          GridItem(.fixed(50)),
-          GridItem(.fixed(50)),
-        ]) {
-          ForEach(0..<45) {
-            Text("\($0 + 1)")
-              .padding()
-              .background(Color.blue)
+        ScrollView(.horizontal) {
+          LazyHGrid(rows: [
+            GridItem(.fixed(50)),
+            GridItem(.fixed(50)),
+            GridItem(.fixed(50)),
+          ]) {
+            ForEach(0..<45) {
+              Text("\($0 + 1)")
+                .padding()
+                .background(Color.blue)
+            }
           }
         }
       }
