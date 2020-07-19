@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Tokamak contributors
+// Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,20 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakShim
-
-public struct ForEachDemo: View {
-  @State public var maxItem = 0
-
-  public var body: some View {
-    VStack {
-      Button(action: { maxItem += 1 }) {
-        Text("Add item")
-      }
-
-      ForEach(0..<maxItem) {
-        Text("Item: \($0)")
-      }
-    }
-  }
-}
+#if canImport(SwiftUI)
+@_exported import SwiftUI
+#elseif os(WASI)
+@_exported import TokamakDOM
+#endif

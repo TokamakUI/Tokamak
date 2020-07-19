@@ -22,6 +22,7 @@ import TokamakCore
 public typealias Environment = TokamakCore.Environment
 public typealias EnvironmentObject = TokamakCore.EnvironmentObject
 
+public typealias Binding = TokamakCore.Binding
 public typealias ObservableObject = TokamakCore.ObservableObject
 public typealias ObservedObject = TokamakCore.ObservedObject
 public typealias Published = TokamakCore.Published

@@ -1,4 +1,4 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.3
 // The swift-tools-version declares the minimum version of Swift required to
 // build this package.
 
@@ -8,6 +8,7 @@ let package = Package(
   name: "Tokamak",
   platforms: [
     .macOS(.v10_15),
+    .iOS(.v13),
   ],
   products: [
     // Products define the executables and libraries produced by a package,
@@ -19,6 +20,10 @@ let package = Package(
     .library(
       name: "TokamakDOM",
       targets: ["TokamakDOM"]
+    ),
+    .library(
+      name: "TokamakShim",
+      targets: ["TokamakShim"]
     ),
   ],
   dependencies: [
@@ -39,11 +44,15 @@ let package = Package(
     ),
     .target(
       name: "TokamakDemo",
-      dependencies: ["JavaScriptKit", "TokamakCore", "TokamakDOM"]
+      dependencies: ["JavaScriptKit", "TokamakShim"]
     ),
     .target(
       name: "TokamakDOM",
       dependencies: ["JavaScriptKit", "TokamakCore"]
+    ),
+    .target(
+      name: "TokamakShim",
+      dependencies: [.target(name: "TokamakDOM", condition: .when(platforms: [.wasi]))]
     ),
     .target(
       name: "TokamakTestRenderer",
