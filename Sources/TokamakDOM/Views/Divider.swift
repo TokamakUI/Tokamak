@@ -14,8 +14,6 @@
 
 import TokamakCore
 
-public typealias Divider = TokamakCore.Divider
-
 extension Divider: AnyHTML {
   var innerHTML: String? { nil }
   var tag: String { "hr" }

@@ -14,8 +14,6 @@
 
 import TokamakCore
 
-public typealias HStack = TokamakCore.HStack
-
 extension VerticalAlignment {
   var cssValue: String {
     switch self {

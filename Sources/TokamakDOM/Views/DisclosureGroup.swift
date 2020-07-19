@@ -17,9 +17,6 @@
 
 import TokamakCore
 
-public typealias DisclosureGroup = TokamakCore.DisclosureGroup
-public typealias OutlineGroup = TokamakCore.OutlineGroup
-
 extension DisclosureGroup: ViewDeferredToRenderer {
   var chevron: some View {
     HTML("div",
