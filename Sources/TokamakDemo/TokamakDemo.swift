@@ -17,16 +17,18 @@
 
 import TokamakShim
 
-func title<V>(_ view: V, title: String) -> AnyView where V: View {
+@ViewBuilder
+func title<V>(_ view: V, title: String) -> some View where V: View {
   if #available(OSX 10.16, iOS 14.0, *) {
-    return AnyView(view.navigationTitle(title))
+    view.navigationTitle(title)
   } else {
     #if !os(macOS)
-    return AnyView(view.navigationBarTitle(title))
+    view.navigationBarTitle(title)
     #else
-    return AnyView(view)
+    view
     #endif
   }
+}
 }
 
 struct NavItem: Identifiable {
@@ -35,7 +37,7 @@ struct NavItem: Identifiable {
 
   init<V>(_ id: String, destination: V) where V: View {
     self.id = id
-    self.destination = title(destination.frame(minWidth: 300), title: id)
+    self.destination = AnyView(title(destination.frame(minWidth: 300), title: id))
   }
 
   init(unavailiable id: String) {
@@ -52,11 +54,12 @@ var outlineGroupDemo: NavItem {
 }
 
 #if !os(macOS)
-var listDemo: AnyView {
+@ViewBuilder
+var listDemo: some View {
   if #available(iOS 14.0, *) {
-    return AnyView(ListDemo().listStyle(InsetGroupedListStyle()))
+    ListDemo().listStyle(InsetGroupedListStyle())
   } else {
-    return AnyView(ListDemo())
+    ListDemo()
   }
 }
 #else
