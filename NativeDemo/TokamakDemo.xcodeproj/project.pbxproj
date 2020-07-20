@@ -265,7 +265,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 85ED184124AD37970085DFA0 /* Build configuration list for PBXProject "TokamakDemo Native" */;
+			buildConfigurationList = 85ED184124AD37970085DFA0 /* Build configuration list for PBXProject "TokamakDemo" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -422,6 +422,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -476,6 +477,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jedfox.Tokamak-Native";
@@ -544,9 +546,9 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_NAME = "TokamakDemo Native";
 				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
@@ -568,9 +570,9 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_NAME = "TokamakDemo Native";
 				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -584,6 +586,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -598,6 +601,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -607,7 +611,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		85ED184124AD37970085DFA0 /* Build configuration list for PBXProject "TokamakDemo Native" */ = {
+		85ED184124AD37970085DFA0 /* Build configuration list for PBXProject "TokamakDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				85ED185C24AD379B0085DFA0 /* Debug */,
