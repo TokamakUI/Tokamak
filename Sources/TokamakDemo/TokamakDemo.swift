@@ -19,7 +19,7 @@ import TokamakShim
 
 struct TokamakDemoView: View {
   var body: some View {
-    ScrollView(showsIndicators: false) {
+    ScrollView(showsIndicators: true) {
       HStack {
         Spacer()
       }
@@ -40,6 +40,7 @@ struct TokamakDemoView: View {
         Group {
           ForEachDemo()
           TextDemo()
+          ToggleDemo()
           PathDemo()
           TextFieldDemo()
           SpacerDemo()

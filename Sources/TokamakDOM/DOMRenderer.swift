@@ -91,10 +91,14 @@ public final class DOMRenderer: Renderer {
     rootStyle.innerHTML = .string(tokamakStyles)
     _ = head.appendChild!(rootStyle)
 
+    var environment = EnvironmentValues()
+    environment[ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
+
     reconciler = StackReconciler(
       view: view,
       target: DOMNode(view, ref),
-      renderer: self
+      renderer: self,
+      environment: environment
     ) { closure in
       let fn = JSClosure { _ in
         closure()

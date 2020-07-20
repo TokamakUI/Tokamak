@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Tokamak contributors
+// Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,27 +11,22 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Carson Katri on 7/2/20.
-//
 
-import TokamakShim
+#if canImport(SwiftUI)
+import SwiftUI
+#else
+import TokamakCore
+import TokamakDOM
+#endif
 
-public struct ListDemo: View {
+public struct ToggleDemo: View {
+  @State var checked = false
+
   public var body: some View {
-    List {
-      ForEach(0..<3) {
-        Text("Outside Section: \($0 + 1)")
-      }
-      Section(header: Text("1-10"), footer: Text("End of section")) {
-        ForEach(0..<10) {
-          Text("Item: \($0 + 1)")
-        }
-      }
-      Section(header: Text("11-20")) {
-        ForEach(10..<20) {
-          Text("Item: \($0 + 1)")
-        }
+    VStack {
+      Toggle("Check me!", isOn: $checked)
+      Toggle(isOn: Binding(get: { true }, set: { _ in })) {
+        Text("I’m always checked!").foregroundColor(.red).italic()
       }
     }
   }
