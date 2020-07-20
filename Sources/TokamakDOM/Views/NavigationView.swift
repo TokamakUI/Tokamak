@@ -15,8 +15,6 @@
 import JavaScriptKit
 import TokamakCore
 
-public typealias NavigationView = TokamakCore.NavigationView
-
 extension NavigationView: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     AnyView(HTML("div", [

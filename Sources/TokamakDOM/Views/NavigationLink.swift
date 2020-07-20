@@ -14,8 +14,6 @@
 
 import TokamakCore
 
-public typealias NavigationLink = TokamakCore.NavigationLink
-
 extension NavigationLink: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     let proxy = _NavigationLinkProxy(self)
