@@ -20,27 +20,81 @@ import OpenCombine
 import TokamakCore
 
 public typealias App = TokamakCore.App
-public typealias Scene = TokamakCore.Scene
-public typealias WindowGroup = TokamakCore.WindowGroup
+
+public typealias ScenePhase = TokamakCore.ScenePhase
+
+private enum ScenePhaseObserver {
+  static var publisher = CurrentValueSubject<ScenePhase, Never>(.active)
+
+  static func observe() {
+    let document = JSObjectRef.global.document.object!
+    _ = document.addEventListener!("visibilitychange", JSClosure { _ in
+      let visibilityState = document.visibilityState.string
+      if visibilityState == "visible" {
+        publisher.send(.active)
+      } else if visibilityState == "hidden" {
+        publisher.send(.background)
+      }
+      return .undefined
+    })
+  }
+}
 
 extension App {
-  public static func main() {
+  /// The default implementation of `launch` for a `TokamakDOM` app.
+  ///
+  /// Creates a host `div` node and appends it to the body.
+  ///
+  /// The body is styled with `margin: 0;` to match the `SwiftUI` layout
+  /// system as closely as possible
+  ///
+  public static func _launch(_ app: Self,
+                             _ rootEnvironment: EnvironmentValues) {
     let document = JSObjectRef.global.document.object!
     let body = document.body.object!
+    let head = document.head.object!
     body.style = "margin: 0;"
+    let rootStyle = document.createElement!("style").object!
+    rootStyle.id = "_tokamak-app-style"
+    rootStyle.innerHTML = .string(tokamakStyles)
+    _ = head.appendChild!(rootStyle)
 
-    let hostDiv = document.createElement!("div").object!
-    let renderer = DOMRenderer(Self().body._makeView(), hostDiv)
+    let div = document.createElement!("div").object!
+    _ = Unmanaged.passRetained(DOMRenderer(app, div, rootEnvironment))
 
-    _ = body.appendChild!(hostDiv)
+    _ = body.appendChild!(div)
+
+    ScenePhaseObserver.observe()
+  }
+
+  public static func _setTitle(_ title: String) {
+    let titleTag = document.createElement!("title").object!
+    titleTag.id = "_tokamak-app-title"
+    titleTag.innerHTML = .string(title)
+    _ = head.appendChild!(titleTag)
+  }
+
+  public var _phasePublisher: CurrentValueSubject<ScenePhase, Never> {
+    ScenePhaseObserver.publisher
   }
 }
 
 public typealias AppStorage = TokamakCore.AppStorage
-public struct LocalStorage: _AppStorageProvider {
+public class LocalStorage: _AppStorageProvider {
   let localStorage = JSObjectRef.global.localStorage.object!
 
+  init() {
+    _ = JSObjectRef.global.window.object!.addEventListener!("storage", JSClosure { _ in
+      self.publisher.send()
+      return .undefined
+    })
+    subscription = Self.rootPublisher.sink { _ in
+      self.publisher.send()
+    }
+  }
+
   public func store(key: String, value: String) {
+    Self.rootPublisher.send()
     _ = localStorage.setItem!(key, value)
   }
 
@@ -51,30 +105,36 @@ public struct LocalStorage: _AppStorageProvider {
   public static var standard: _AppStorageProvider {
     LocalStorage()
   }
+
+  var subscription: AnyCancellable?
+  static let rootPublisher = ObservableObjectPublisher()
+  public let publisher = ObservableObjectPublisher()
 }
 
 public typealias SceneStorage = TokamakCore.SceneStorage
-public struct BrowserTabStorage: _SceneStorageProvider {
-  static var storage = Storage()
-  public var objectWillChange: ObservableObjectPublisher {
-    Self.storage.objectWillChange
-  }
+public class SessionStorage: _SceneStorageProvider {
+  let sessionStorage = JSObjectRef.global.sessionStorage.object!
 
-  class Storage: ObservableObject {
-    @Published var pairs: [String: String] = [:]
+  init() {
+    subscription = Self.rootPublisher.sink { _ in
+      self.publisher.send()
+    }
   }
 
   public func store(key: String, value: String) {
-    Self.storage.pairs[key] = value
-    print(Self.storage)
+    Self.rootPublisher.send()
+    _ = sessionStorage.setItem!(key, value)
   }
 
   public func read(key: String) -> String? {
-    print("Retrieving: \(Self.storage.pairs[key])")
-    return Self.storage.pairs[key]
+    sessionStorage.getItem!(key).string
   }
 
   public static var standard: _SceneStorageProvider {
-    BrowserTabStorage()
+    SessionStorage()
   }
+
+  var subscription: AnyCancellable?
+  static let rootPublisher = ObservableObjectPublisher()
+  public let publisher = ObservableObjectPublisher()
 }

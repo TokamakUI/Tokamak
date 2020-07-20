@@ -15,10 +15,11 @@
 //  Created by Carson Katri on 7/16/20.
 //
 
-public struct WindowGroup<Content>: Scene where Content: View {
-  let id: String
-  let title: Text?
-  let content: Content
+public struct WindowGroup<Content>: Scene, TitledScene, ViewContainingScene where Content: View {
+  public let id: String
+  public let title: Text?
+  public let content: Content
+  var anyContent: AnyView { AnyView(content) }
 
   public init(id: String, @ViewBuilder content: () -> Content) {
     self.id = id
@@ -64,8 +65,8 @@ public struct WindowGroup<Content>: Scene where Content: View {
     self.content = content()
   }
 
-  public func _makeView() -> Content {
-    content
+  public var body: Never {
+    neverScene("WindowGroup")
   }
 
   // TODO: Implement LocalizedStringKey

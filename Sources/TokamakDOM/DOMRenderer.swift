@@ -29,6 +29,13 @@ public final class DOMNode: Target {
     reinstall(listeners)
   }
 
+  init<A: App>(_ app: A, _ ref: JSObjectRef, _ listeners: [String: Listener] = [:]) {
+    self.ref = ref
+    self.listeners = [:]
+    super.init(app)
+    reinstall(listeners)
+  }
+
   /// Removes all existing event listeners on this DOM node and install new ones from
   /// the `listeners` argument
   func reinstall(_ listeners: [String: Listener]) {
@@ -76,7 +83,9 @@ public final class DOMRenderer: Renderer {
 
   private let rootRef: JSObjectRef
 
-  public init<V: View>(_ view: V, _ ref: JSObjectRef) {
+  public init<V: View>(_ view: V,
+                       _ ref: JSObjectRef,
+                       _ rootEnvironment: EnvironmentValues? = nil) {
     rootRef = ref
     rootRef.style = """
     display: flex;
@@ -92,13 +101,49 @@ public final class DOMRenderer: Renderer {
     _ = head.appendChild!(rootStyle)
 
     // Establish default settings
-    var rootEnvironment = EnvironmentValues()
+    var rootEnvironment = rootEnvironment ?? EnvironmentValues()
     rootEnvironment[keyPath: \._defaultAppStorage] = LocalStorage.standard
-    _DefaultSceneStorageProvider.default = BrowserTabStorage.standard
+    _DefaultSceneStorageProvider.default = SessionStorage.standard
 
     reconciler = StackReconciler(
       view: view,
       target: DOMNode(view, ref),
+      environment: rootEnvironment,
+      renderer: self
+    ) { closure in
+      let fn = JSClosure { _ in
+        closure()
+        return .undefined
+      }
+      _ = JSObjectRef.global.setTimeout!(fn, 0)
+    }
+  }
+
+  init<A: App>(_ app: A,
+               _ ref: JSObjectRef,
+               _ rootEnvironment: EnvironmentValues? = nil) {
+    rootRef = ref
+    rootRef.style = """
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    """
+
+    let rootStyle = document.createElement!("style").object!
+    rootStyle.innerHTML = .string(tokamakStyles)
+    _ = head.appendChild!(rootStyle)
+
+    // Establish default settings
+    var rootEnvironment = rootEnvironment ?? EnvironmentValues()
+    rootEnvironment[keyPath: \._defaultAppStorage] = LocalStorage.standard
+    _DefaultSceneStorageProvider.default = SessionStorage.standard
+
+    reconciler = StackReconciler(
+      app: app,
+      target: DOMNode(app, ref),
       environment: rootEnvironment,
       renderer: self
     ) { closure in

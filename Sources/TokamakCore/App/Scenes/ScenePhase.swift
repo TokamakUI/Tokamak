@@ -12,20 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 7/16/20.
+//  Created by Carson Katri on 7/19/20.
 //
 
-public protocol Scene {
-//  associatedtype Body: Scene
-//
-//  @SceneBuilder var body: Self.Body { get }
-  associatedtype Content: View
-  func _makeView() -> Content
+public enum ScenePhase: Comparable {
+  case active
+  case inactive
+  case background
 }
 
-// FIXME: I can't just do this for some reason?
-//
-//    error: failed to produce diagnostic for expression; please file a bug report
-//
-// for now Scenes can't be composed
-// extension Never: Scene {}
+struct ScenePhaseKey: EnvironmentKey {
+  static let defaultValue: ScenePhase = .active
+}
+
+extension EnvironmentValues {
+  public var scenePhase: ScenePhase {
+    get {
+      self[ScenePhaseKey.self]
+    }
+    set {
+      self[ScenePhaseKey.self] = newValue
+    }
+  }
+}

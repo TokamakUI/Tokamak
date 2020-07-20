@@ -12,19 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 7/16/20.
+//  Created by Carson Katri on 7/17/20.
 //
 
-struct _TupleScene<T>: Scene, GroupScene {
-  let value: T
-  var children: [AnyScene]
-
-  init(_ value: T, children: [AnyScene]) {
-    self.value = value
-    self.children = children
-  }
-
-  var body: Never {
-    neverScene("_TupleScene")
-  }
-}
+// FIXME: Match SwiftUI implementation
+protocol DynamicProperty {}

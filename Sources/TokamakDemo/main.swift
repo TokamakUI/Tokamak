@@ -12,17 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakDOM
+// import JavaScriptKit
+// import TokamakDOM
+//
+// let document = JSObjectRef.global.document.object!
+// let body = document.body.object!
+// body.style = "margin: 0;"
+//
+// let div = document.createElement!("div").object!
+// let renderer = DOMRenderer(TokamakDemoView(), div)
+//
+// _ = body.appendChild!(div)
 
+#if os(WASI)
+import TokamakDOM
+#else
+import SwiftUI
+#endif
+
+@available(OSX 10.16, *)
 struct TokamakDemoApp: App {
+  @Environment(\.scenePhase) private var scenePhase
+
   var body: some Scene {
-    WindowGroup {
-//      TokamakDemoView()
-      AppStorageDemo()
+    print(scenePhase)
+    return WindowGroup("Tokamak Demo") {
+      TokamakDemoView()
     }
   }
 }
 
 // If @main was supported for executable Swift Packages,
 // this would match SwiftUI 100%
-TokamakDemoApp.main()
+if #available(OSX 10.16, *) {
+  TokamakDemoApp.main()
+}

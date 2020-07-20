@@ -20,8 +20,8 @@ import OpenCombine
 public protocol _SceneStorageProvider {
   func store(key: String, value: String)
   func read(key: String) -> String?
-  var objectWillChange: ObservableObjectPublisher { get }
   static var standard: _SceneStorageProvider { get }
+  var publisher: ObservableObjectPublisher { get }
 }
 
 /// The renderer must specify a default `_SceneStorageProvider` before any `SceneStorage`
@@ -37,19 +37,17 @@ public enum _DefaultSceneStorageProvider {
   let unwrapValue: (String) -> Value?
 
   var objectWillChange: AnyPublisher<(), Never> {
-    _DefaultSceneStorageProvider.default.objectWillChange.map { _ in }.eraseToAnyPublisher()
+    _DefaultSceneStorageProvider.default.publisher.eraseToAnyPublisher()
   }
 
   public var wrappedValue: Value {
     get {
       if let stringValue = _DefaultSceneStorageProvider.default.read(key: key) {
-        print(stringValue)
         return unwrapValue(stringValue) ?? defaultValue
       }
       return defaultValue
     }
     nonmutating set {
-      _DefaultSceneStorageProvider.default.objectWillChange.send()
       _DefaultSceneStorageProvider.default.store(key: key, value: wrapValue(newValue))
     }
   }

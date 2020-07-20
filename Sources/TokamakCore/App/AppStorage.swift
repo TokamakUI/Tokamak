@@ -21,6 +21,7 @@ public protocol _AppStorageProvider {
   func store(key: String, value: String)
   func read(key: String) -> String?
   static var standard: _AppStorageProvider { get }
+  var publisher: ObservableObjectPublisher { get }
 }
 
 @propertyWrapper public struct AppStorage<Value>: ObservedProperty {
@@ -35,9 +36,8 @@ public protocol _AppStorageProvider {
   let wrapValue: (Value) -> String
   let unwrapValue: (String) -> Value?
 
-  let publisher = ObservableObjectPublisher()
   var objectWillChange: AnyPublisher<(), Never> {
-    publisher.eraseToAnyPublisher()
+    unwrappedProvider.publisher.eraseToAnyPublisher()
   }
 
   public var wrappedValue: Value {
@@ -48,7 +48,6 @@ public protocol _AppStorageProvider {
       return defaultValue
     }
     nonmutating set {
-      publisher.send()
       unwrappedProvider.store(key: key, value: wrapValue(newValue))
     }
   }
@@ -61,6 +60,8 @@ public protocol _AppStorageProvider {
     }
   }
 }
+
+extension AppStorage: DynamicProperty {}
 
 extension AppStorage {
   public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == Bool {

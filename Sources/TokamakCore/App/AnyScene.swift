@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 7/16/20.
+//  Created by Carson Katri on 7/19/20.
 //
 
-struct _TupleScene<T>: Scene, GroupScene {
-  let value: T
-  var children: [AnyScene]
+public struct AnyScene: Scene {
+  let scene: Any
+  let sceneType: Any.Type
 
-  init(_ value: T, children: [AnyScene]) {
-    self.value = value
-    self.children = children
+  init<S: Scene>(_ scene: S) {
+    self.scene = scene
+    sceneType = S.self
   }
 
-  var body: Never {
-    neverScene("_TupleScene")
+  public var body: Never {
+    neverScene("AnyScene")
   }
 }

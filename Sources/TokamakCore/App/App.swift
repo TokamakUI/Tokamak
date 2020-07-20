@@ -15,10 +15,33 @@
 //  Created by Carson Katri on 7/16/20.
 //
 
-/// The renderer is responsible for implementing the `main` function
-public protocol App {
+import OpenCombine
+import Runtime
+
+/// Provides the ability to set the title of the Scene.
+public protocol TitledApp {
+  static func _setTitle(_ title: String)
+}
+
+/// The renderer is responsible for implementing certain functionality.
+public protocol App: TitledApp {
   associatedtype Body: Scene
-  @SceneBuilder var body: Body { get }
+  var body: Body { get }
+
+  /// Implemented by the renderer to mount the `App`
+  static func _launch(_ app: Self,
+                      _ rootEnvironment: EnvironmentValues)
+  /// Implemented by the renderer to update the `App` on `ScenePhase` changes
+  var _phasePublisher: CurrentValueSubject<ScenePhase, Never> { get }
+
   static func main()
+
   init()
+}
+
+extension App {
+  public static func main() {
+    let app = Self()
+    _launch(app, EnvironmentValues())
+  }
 }

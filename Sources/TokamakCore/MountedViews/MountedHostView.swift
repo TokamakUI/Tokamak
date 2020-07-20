@@ -20,8 +20,8 @@ import Runtime
 /* A representation of a `View`, which has a `body` of type `Never`, stored in the tree of mounted
  views by `StackReconciler`.
  */
-public final class MountedHostView<R: Renderer>: MountedView<R> {
-  private var mountedChildren = [MountedView<R>]()
+public final class MountedHostView<R: Renderer>: MountedElement<R> {
+  private var mountedChildren = [MountedElement<R>]()
 
   /** Target of a closest ancestor host view. As a parent of this view
    might not be a host view, but a composite view, we need to pass
@@ -96,25 +96,37 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
 
     // if both arrays have items then reconcile by types and keys
     case (false, false):
-      var newChildren = [MountedView<R>]()
+      var newChildren = [MountedElement<R>]()
 
       // iterate through every `mountedChildren` element and compare with
       // a corresponding `childrenViews` element, remount if type differs, otherwise
       // run simple update
       while let child = mountedChildren.first, let firstChild = childrenViews.first {
-        let newChild: MountedView<R>
+        let newChild: MountedElement<R>
         if firstChild.typeConstructorName == mountedChildren[0].view.typeConstructorName {
           child.view = firstChild
           // Inject Environment
           // swiftlint:disable force_try
           let viewInfo = try! typeInfo(of: child.view.type)
+          // swiftlint:disable force_cast
+          // `DynamicProperty`s can have `@Environment` properties contained in them,
+          // so we have to inject into them as well.
+          for dynamicProp in viewInfo.properties.filter({ $0.type is DynamicProperty.Type }) {
+            let propInfo = try! typeInfo(of: dynamicProp.type)
+            var propWrapper = try! dynamicProp.get(from: child.view.view) as! DynamicProperty
+            for prop in propInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
+              var wrapper = try! prop.get(from: propWrapper) as! EnvironmentReader
+              wrapper.setContent(from: environmentValues)
+              try! prop.set(value: wrapper, on: &propWrapper)
+            }
+            try! dynamicProp.set(value: propWrapper, on: &child.view.view)
+          }
           for prop in viewInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-            // swiftlint:disable force_cast
             var wrapper = try! prop.get(from: child.view.view) as! EnvironmentReader
             wrapper.setContent(from: environmentValues)
             try! prop.set(value: wrapper, on: &child.view.view)
-            // swiftlint:enable force_cast
           }
+          // swiftlint:enable force_cast
           // swiftlint:enable force_try
           child.update(with: reconciler)
           newChild = child
@@ -138,7 +150,7 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
         // more views left than children were mounted,
         // mount remaining views
         for firstChild in childrenViews {
-          let newChild: MountedView<R> =
+          let newChild: MountedElement<R> =
             firstChild.makeMountedView(target, environmentValues)
           newChild.mount(with: reconciler)
           newChildren.append(newChild)

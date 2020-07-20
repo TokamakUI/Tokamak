@@ -15,13 +15,14 @@
 //  Created by Max Desiatov on 28/11/2018.
 //
 
+import OpenCombine
 import Runtime
 
 public final class StackReconciler<R: Renderer> {
-  private var queuedRerenders = Set<MountedCompositeView<R>>()
+  private var queuedRerenders = Set<MountedCompositeElement<R>>()
 
   public let rootTarget: R.TargetType
-  private let rootView: MountedView<R>
+  private let rootElement: MountedElement<R>
   private(set) weak var renderer: R?
   private let scheduler: (@escaping () -> ()) -> ()
 
@@ -36,23 +37,47 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootView = view.makeMountedView(target, environment)
+    rootElement = view.makeMountedView(target, environment)
 
-    rootView.mount(with: self)
+    rootElement.mount(with: self)
+  }
+
+  public init<A: App>(
+    app: A,
+    target: R.TargetType,
+    environment: EnvironmentValues,
+    renderer: R,
+    scheduler: @escaping (@escaping () -> ()) -> ()
+  ) {
+    self.renderer = renderer
+    self.scheduler = scheduler
+    rootTarget = target
+
+    rootElement = app.makeMountedApp(target, environment)
+
+    rootElement.mount(with: self)
+    if let mountedApp = rootElement as? MountedApp<R> {
+      app._phasePublisher.sink { [weak self] phase in
+        if mountedApp.environmentValues[keyPath: \.scenePhase] != phase {
+          mountedApp.environmentValues[keyPath: \.scenePhase] = phase
+          self?.queueUpdate(for: mountedApp)
+        }
+      }.store(in: &mountedApp.subscriptions)
+    }
   }
 
   private func queueStateUpdate(
-    for mountedView: MountedCompositeView<R>,
+    for mountedElement: MountedCompositeElement<R>,
     id: Int,
     updater: (inout Any) -> ()
   ) {
-    updater(&mountedView.state[id])
-    queueUpdate(for: mountedView)
+    updater(&mountedElement.state[id])
+    queueUpdate(for: mountedElement)
   }
 
-  private func queueUpdate(for mountedView: MountedCompositeView<R>) {
+  private func queueUpdate(for mountedElement: MountedCompositeElement<R>) {
     let shouldSchedule = queuedRerenders.isEmpty
-    queuedRerenders.insert(mountedView)
+    queuedRerenders.insert(mountedElement)
 
     guard shouldSchedule else { return }
 
@@ -70,61 +95,71 @@ public final class StackReconciler<R: Renderer> {
   private func setupState(
     id: Int,
     for property: PropertyInfo,
-    of compositeView: MountedCompositeView<R>
+    of compositeElement: MountedCompositeElement<R>,
+    body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>
   ) {
     // swiftlint:disable force_try
     // `ValueStorage` property already filtered out, so safe to assume the value's type
     // swiftlint:disable:next force_cast
-    var state = try! property.get(from: compositeView.view.view) as! ValueStorage
+    var state = try! property.get(from: compositeElement[keyPath: bodyKeypath]) as! ValueStorage
 
-    if compositeView.state.count == id {
-      compositeView.state.append(state.anyInitialValue)
+    if compositeElement.state.count == id {
+      compositeElement.state.append(state.anyInitialValue)
     }
 
     if state.getter == nil || state.setter == nil {
-      state.getter = { compositeView.state[id] }
+      state.getter = { compositeElement.state[id] }
 
       // Avoiding an indirect reference cycle here: this closure can be
       // owned by callbacks owned by view's target, which is strongly referenced
       // by the reconciler.
-      state.setter = { [weak self, weak compositeView] newValue in
-        guard let view = compositeView else { return }
-        self?.queueStateUpdate(for: view, id: id) { $0 = newValue }
+      state.setter = { [weak self, weak compositeElement] newValue in
+        guard let element = compositeElement else { return }
+        self?.queueStateUpdate(for: element, id: id) { $0 = newValue }
       }
     }
-    try! property.set(value: state, on: &compositeView.view.view)
+    try! property.set(value: state, on: &compositeElement[keyPath: bodyKeypath])
   }
 
   private func setupSubscription(
     for property: PropertyInfo,
-    of compositeView: MountedCompositeView<R>
+    of compositeElement: MountedCompositeElement<R>,
+    body bodyKeypath: KeyPath<MountedCompositeElement<R>, Any>
   ) {
     // `ObservedProperty` property already filtered out, so safe to assume the value's type
     // swiftlint:disable:next force_cast
-    let observed = try! property.get(from: compositeView.view.view) as! ObservedProperty
+    let observed = try! property.get(from: compositeElement[keyPath: bodyKeypath]) as! ObservedProperty
 
     observed.objectWillChange.sink { [weak self] _ in
-      self?.queueUpdate(for: compositeView)
-    }.store(in: &compositeView.subscriptions)
+      self?.queueUpdate(for: compositeElement)
+    }.store(in: &compositeElement.subscriptions)
   }
 
-  func render(compositeView: MountedCompositeView<R>) -> some View {
-    let info = try! typeInfo(of: compositeView.view.type)
+  func render<T>(compositeElement: MountedCompositeElement<R>,
+                 body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
+                 result: KeyPath<MountedCompositeElement<R>, (Any) -> T>) -> T {
+    let info = try! typeInfo(of: compositeElement.elementType)
 
-    let needsSubscriptions = compositeView.subscriptions.isEmpty
+    let needsSubscriptions = compositeElement.subscriptions.isEmpty
 
     var stateIdx = 0
     for property in info.properties {
       if property.type is ValueStorage.Type {
-        setupState(id: stateIdx, for: property, of: compositeView)
+        setupState(id: stateIdx, for: property, of: compositeElement, body: bodyKeypath)
         stateIdx += 1
       } else if needsSubscriptions && property.type is ObservedProperty.Type {
-        setupSubscription(for: property, of: compositeView)
+        setupSubscription(for: property, of: compositeElement, body: bodyKeypath)
       }
     }
 
-    let result = compositeView.view.bodyClosure(compositeView.view.view)
+    return compositeElement[keyPath: result](compositeElement[keyPath: bodyKeypath])
+  }
 
-    return result
+  func render(compositeView: MountedCompositeView<R>) -> some View {
+    render(compositeElement: compositeView, body: \.view.view, result: \.view.bodyClosure)
+  }
+
+  func render(mountedApp: MountedApp<R>) -> some Scene {
+    render(compositeElement: mountedApp, body: \.app.app, result: \.app.bodyClosure)
   }
 }

@@ -22,7 +22,7 @@
  the renderer about updates in the view tree.
  */
 public protocol Renderer: AnyObject {
-  typealias Mounted = MountedView<Self>
+  typealias Mounted = MountedElement<Self>
   typealias MountedHost = MountedHostView<Self>
 
   /** Views are rendered to platform-specific targets with a renderer.

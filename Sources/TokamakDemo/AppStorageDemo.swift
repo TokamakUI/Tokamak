@@ -21,14 +21,27 @@ import SwiftUI
 import TokamakDOM
 #endif
 
+@available(OSX 11.0, iOS 14.0, *)
+struct AppStorageButtons: View {
+  @AppStorage("count") var count: Int = 0
+  @SceneStorage("count") var sceneCount: Int = 0
+
+  var body: some View {
+    Button("Increment AppStorage") { count += 1 }
+    Button("Increment SceneStorage") { sceneCount += 1 }
+  }
+}
+
+@available(OSX 11.0, iOS 14.0, *)
 struct AppStorageDemo: View {
   @AppStorage("count") var count: Int = 0
-//  @SceneStorage("count") var count: Int = 0
+  @SceneStorage("count") var sceneCount: Int = 0
 
   public var body: some View {
     VStack {
-      Button("Increment AppStorage") { count += 1 }
-      Text("\(count)")
+      AppStorageButtons()
+      Text("AppStorage: \(count)")
+      Text("SceneStorage: \(sceneCount)")
     }
   }
 }
