@@ -18,17 +18,6 @@
 import TokamakShim
 
 public struct ListDemo: View {
-  let fs: [File] = [
-    .init(id: 0, name: "Users", children: [
-      .init(id: 1, name: "carson", children: [
-        .init(id: 2, name: "home", children: [
-          .init(id: 3, name: "Documents", children: nil),
-          .init(id: 4, name: "Desktop", children: nil),
-        ]),
-      ]),
-    ]),
-  ]
-
   public var body: some View {
     List {
       ForEach(0..<3) {
@@ -44,6 +33,6 @@ public struct ListDemo: View {
           Text("Item: \($0 + 1)")
         }
       }
-    }.frame(width: 400, height: 300)
+    }
   }
 }
