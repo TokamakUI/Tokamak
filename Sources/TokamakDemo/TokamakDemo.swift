@@ -108,7 +108,11 @@ struct TokamakDemoView: View {
       let list = title(
         List(links) { link in
           if let dest = link.destination {
-            NavigationLink(link.id, destination: dest)
+            NavigationLink(link.id, destination: HStack {
+              Spacer()
+              dest
+              Spacer()
+            })
           } else {
             #if os(WASI)
             Text(link.id)
