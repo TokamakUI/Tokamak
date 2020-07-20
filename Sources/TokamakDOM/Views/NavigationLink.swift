@@ -23,6 +23,8 @@ extension NavigationLink: ViewDeferredToRenderer {
       HTML("a", [
         "href": "javascript:void%200",
       ], listeners: [
+        // FIXME: Focus destination or something so assistive
+        // technology knows where to look when clicking the link.
         "click": { _ in proxy.activate() },
       ]) { proxy.label }
     )
