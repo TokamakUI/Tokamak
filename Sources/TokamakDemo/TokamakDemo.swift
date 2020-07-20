@@ -29,7 +29,6 @@ func title<V>(_ view: V, title: String) -> some View where V: View {
     #endif
   }
 }
-}
 
 struct NavItem: Identifiable {
   var id: String
