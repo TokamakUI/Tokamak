@@ -17,8 +17,6 @@
 
 import TokamakCore
 
-public typealias ScrollView = TokamakCore.ScrollView
-
 extension ScrollView: ViewDeferredToRenderer, SpacerContainer {
   var axis: SpacerContainerAxis {
     if axes.contains(.horizontal) {

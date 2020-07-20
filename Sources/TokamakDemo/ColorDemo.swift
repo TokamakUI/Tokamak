@@ -15,11 +15,7 @@
 //  Created by Carson Katri on 7/12/20.
 //
 
-#if canImport(SwiftUI)
-import SwiftUI
-#else
-import TokamakDOM
-#endif
+import TokamakShim
 
 public struct ColorDemo: View {
   var color: Color {

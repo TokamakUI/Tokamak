@@ -43,9 +43,3 @@ extension _ShapeView: ViewDeferredToRenderer {
     }
   }
 }
-
-public typealias Rectangle = TokamakCore.Rectangle
-public typealias RoundedRectangle = TokamakCore.RoundedRectangle
-public typealias Ellipse = TokamakCore.Ellipse
-public typealias Circle = TokamakCore.Circle
-public typealias Capsule = TokamakCore.Capsule

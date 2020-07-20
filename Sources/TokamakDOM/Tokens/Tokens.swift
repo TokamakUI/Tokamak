@@ -14,21 +14,11 @@
 
 import TokamakCore
 
-public typealias Font = TokamakCore.Font
-public typealias Color = TokamakCore.Color
-
 extension Color: CustomStringConvertible {
   public var description: String {
     "rgb(\(red * 255), \(green * 255), \(blue * 255), \(opacity * 255))"
   }
 }
-
-public typealias CGRect = TokamakCore.CGRect
-public typealias CGPoint = TokamakCore.CGPoint
-public typealias CGSize = TokamakCore.CGSize
-public typealias CGAffineTransform = TokamakCore.CGAffineTransform
-
-public typealias GridItem = TokamakCore.GridItem
 
 extension GridItem: CustomStringConvertible {
   public var description: String {

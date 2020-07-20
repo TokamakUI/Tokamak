@@ -15,11 +15,7 @@
 //  Created by Jed Fox on 07/01/2020.
 //
 
-#if canImport(SwiftUI)
-import SwiftUI
-#else
-import TokamakDOM
-#endif
+import TokamakShim
 
 func title<V>(_ view: V, title: String) -> AnyView where V: View {
   if #available(OSX 10.16, iOS 14.0, *) {

@@ -15,11 +15,7 @@
 //  Created by Carson Katri on 7/3/20.
 //
 
-#if canImport(SwiftUI)
-import SwiftUI
-#else
-import TokamakDOM
-#endif
+import TokamakShim
 
 struct File: Identifiable {
   let id: Int

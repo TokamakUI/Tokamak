@@ -14,8 +14,6 @@
 
 import TokamakCore
 
-public typealias ZStack = TokamakCore.ZStack
-
 struct _ZStack_ContentGridItem: ViewModifier, DOMViewModifier {
   let attributes = ["style": "grid-area: a;"]
 
@@ -35,7 +33,10 @@ extension ZStack: ViewDeferredToRenderer {
       align-items: \(alignment.vertical.cssValue)
       """,
     ]) {
-      TupleView(children, children: children.map { AnyView($0.modifier(_ZStack_ContentGridItem())) })
+      TupleView(
+        children,
+        children: children.map { AnyView($0.modifier(_ZStack_ContentGridItem())) }
+      )
     })
   }
 }
