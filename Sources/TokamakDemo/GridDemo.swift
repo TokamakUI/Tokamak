@@ -15,11 +15,7 @@
 //  Created by Carson Katri on 7/13/20.
 //
 
-#if canImport(SwiftUI)
-import SwiftUI
-#else
-import TokamakDOM
-#endif
+import TokamakShim
 
 @available(OSX 10.16, iOS 14.0, *)
 public struct GridDemo: View {

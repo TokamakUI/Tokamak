@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
-
-public typealias Group = TokamakCore.Group
+#if canImport(SwiftUI)
+@_exported import SwiftUI
+#elseif os(WASI)
+@_exported import TokamakDOM
+#endif

@@ -14,9 +14,6 @@
 
 import TokamakCore
 
-public typealias List = TokamakCore.List
-public typealias Section = TokamakCore.Section
-
 extension PlainListStyle: ListStyleDeferredToRenderer {
   public func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
     AnyView(header

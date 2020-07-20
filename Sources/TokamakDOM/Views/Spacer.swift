@@ -14,8 +14,6 @@
 
 import TokamakCore
 
-public typealias Spacer = TokamakCore.Spacer
-
 enum SpacerContainerAxis {
   case horizontal, vertical
 }

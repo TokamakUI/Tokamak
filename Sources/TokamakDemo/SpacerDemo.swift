@@ -15,11 +15,7 @@
 //  Created by Carson Katri on 6/29/20.
 //
 
-#if canImport(SwiftUI)
-import SwiftUI
-#else
-import TokamakDOM
-#endif
+import TokamakShim
 
 struct SpacerDemo: View {
   var body: some View {
