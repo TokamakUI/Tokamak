@@ -11,7 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Jed Fox on 06/30/2020.
+//
 
 import TokamakCore
 
-public typealias Group = TokamakCore.Group
+public typealias DefaultListStyle = TokamakCore.DefaultListStyle
+public typealias PlainListStyle = TokamakCore.PlainListStyle
+public typealias InsetListStyle = TokamakCore.InsetListStyle
+public typealias GroupedListStyle = TokamakCore.GroupedListStyle
+public typealias InsetGroupedListStyle = TokamakCore.InsetGroupedListStyle

@@ -15,12 +15,7 @@
 //  Created by Carson Katri on 6/30/20.
 //
 
-#if canImport(SwiftUI)
-import SwiftUI
-#else
-import OpenCombine
-import TokamakDOM
-#endif
+import TokamakShim
 
 class TestEnvironment: ObservableObject {
   @Published var envTest = "Hello, world!"

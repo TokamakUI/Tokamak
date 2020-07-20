@@ -15,16 +15,6 @@
 import JavaScriptKit
 import TokamakCore
 
-public typealias Text = TokamakCore.Text
-
-// FIXME: I would put this inside TokamakCore, but for
-// some reason it doesn't get exported with the typealias
-extension Text {
-  public static func + (lhs: Self, rhs: Self) -> Self {
-    _concatenating(lhs: lhs, rhs: rhs)
-  }
-}
-
 extension Font.Design: CustomStringConvertible {
   /// Some default font stacks for the various designs
   public var description: String {

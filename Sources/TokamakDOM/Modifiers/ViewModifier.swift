@@ -14,9 +14,6 @@
 
 import TokamakCore
 
-public typealias ViewModifier = TokamakCore.ViewModifier
-public typealias ModifiedContent = TokamakCore.ModifiedContent
-
 public protocol DOMViewModifier {
   var attributes: [String: String] { get }
   /// Can the modifier be flattened?

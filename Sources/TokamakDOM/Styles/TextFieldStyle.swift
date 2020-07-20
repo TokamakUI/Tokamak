@@ -21,9 +21,3 @@ public typealias DefaultTextFieldStyle = TokamakCore.DefaultTextFieldStyle
 public typealias PlainTextFieldStyle = TokamakCore.PlainTextFieldStyle
 public typealias RoundedBorderTextFieldStyle = TokamakCore.RoundedBorderTextFieldStyle
 public typealias SquareBorderTextFieldStyle = TokamakCore.SquareBorderTextFieldStyle
-
-public typealias DefaultListStyle = TokamakCore.DefaultListStyle
-public typealias PlainListStyle = TokamakCore.PlainListStyle
-public typealias InsetListStyle = TokamakCore.InsetListStyle
-public typealias GroupedListStyle = TokamakCore.GroupedListStyle
-public typealias InsetGroupedListStyle = TokamakCore.InsetGroupedListStyle

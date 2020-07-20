@@ -17,8 +17,6 @@
 
 import TokamakCore
 
-public typealias TextField = TokamakCore.TextField
-
 func css(for style: TextFieldStyle) -> String {
   if style is PlainTextFieldStyle {
     return """
