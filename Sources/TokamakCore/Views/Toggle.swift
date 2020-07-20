@@ -18,7 +18,7 @@
 public struct Toggle<Label>: View where Label: View {
   @Binding var isOn: Bool
   var label: Label
-  @Environment(\.toggleStyle) var toggleStyle: AnyToggleStyle
+  @Environment(\.toggleStyle) var toggleStyle: _AnyToggleStyle
 
   public init(isOn: Binding<Bool>, label: () -> Label) {
     _isOn = isOn

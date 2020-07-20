@@ -36,7 +36,7 @@ public protocol ToggleStyle {
   typealias Configuration = ToggleStyleConfiguration
 }
 
-public struct AnyToggleStyle: ToggleStyle {
+public struct _AnyToggleStyle: ToggleStyle {
   public typealias Body = AnyView
 
   private let bodyClosure: (ToggleStyleConfiguration) -> AnyView
@@ -53,13 +53,13 @@ public struct AnyToggleStyle: ToggleStyle {
 }
 
 public enum ToggleStyleKey: EnvironmentKey {
-  public static var defaultValue: AnyToggleStyle {
+  public static var defaultValue: _AnyToggleStyle {
     fatalError("\(self) must have a renderer-provided default value")
   }
 }
 
 extension EnvironmentValues {
-  var toggleStyle: AnyToggleStyle {
+  var toggleStyle: _AnyToggleStyle {
     get {
       self[ToggleStyleKey.self]
     }
@@ -71,6 +71,6 @@ extension EnvironmentValues {
 
 extension View {
   public func toggleStyle<S>(_ style: S) -> some View where S: ToggleStyle {
-    environment(\.toggleStyle, AnyToggleStyle(style))
+    environment(\.toggleStyle, _AnyToggleStyle(style))
   }
 }
