@@ -160,8 +160,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
       mountedChildren = newChildren
 
     // both arrays are empty, nothing to reconcile
-    case (true, true):
-      ()
+    case (true, true): ()
     }
   }
 }

@@ -38,6 +38,8 @@ public extension Scene {
 
 extension _SceneModifier where Body == Never {
   public func body(content: SceneContent) -> Body {
-    fatalError("\(self) is a primitive `_SceneModifier`, you're not supposed to run `body(content:)`")
+    fatalError("""
+    \(self) is a primitive `_SceneModifier`, you're not supposed to run `body(content:)`
+    """)
   }
 }

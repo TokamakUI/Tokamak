@@ -127,8 +127,11 @@ public final class StackReconciler<R: Renderer> {
     body bodyKeypath: KeyPath<MountedCompositeElement<R>, Any>
   ) {
     // `ObservedProperty` property already filtered out, so safe to assume the value's type
-    // swiftlint:disable:next force_cast
-    let observed = try! property.get(from: compositeElement[keyPath: bodyKeypath]) as! ObservedProperty
+    // swiftlint:disable force_cast
+    let observed = try! property.get(
+      from: compositeElement[keyPath: bodyKeypath]
+    ) as! ObservedProperty
+    // swiftlint:enable force_cast
 
     observed.objectWillChange.sink { [weak self] _ in
       self?.queueUpdate(for: compositeElement)
