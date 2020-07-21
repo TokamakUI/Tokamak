@@ -20,7 +20,7 @@ import TokamakCore
 
 public typealias Listener = (JSObjectRef) -> ()
 
-protocol AnyHTML {
+public protocol AnyHTML {
   var innerHTML: String? { get }
   var tag: String { get }
   var attributes: [String: String] { get }
@@ -56,9 +56,9 @@ extension AnyHTML {
 }
 
 public struct HTML<Content>: View, AnyHTML where Content: View {
-  let tag: String
-  let attributes: [String: String]
-  let listeners: [String: Listener]
+  public let tag: String
+  public let attributes: [String: String]
+  public let listeners: [String: Listener]
   let content: Content
 
   public init(
@@ -73,7 +73,7 @@ public struct HTML<Content>: View, AnyHTML where Content: View {
     self.content = content()
   }
 
-  var innerHTML: String? { nil }
+  public var innerHTML: String? { nil }
 
   public var body: Never {
     neverBody("HTML")

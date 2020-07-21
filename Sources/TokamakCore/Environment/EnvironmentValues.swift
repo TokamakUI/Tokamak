@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if os(WASI)
 import OpenCombine
+#else
+import Combine
+#endif
 
 public struct EnvironmentValues: CustomStringConvertible {
   public var description: String {

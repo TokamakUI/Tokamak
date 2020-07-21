@@ -21,6 +21,8 @@ public struct DefaultToggleStyle: ToggleStyle {
   public func makeBody(configuration: Configuration) -> some View {
     CheckboxToggleStyle().makeBody(configuration: configuration)
   }
+
+  public init() {}
 }
 
 public struct CheckboxToggleStyle: ToggleStyle {

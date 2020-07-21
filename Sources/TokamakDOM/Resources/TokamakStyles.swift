@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-let tokamakStyles = """
+public let tokamakStyles = """
 ._tokamak-stack > * {
   flex-shrink: 0;
 }

@@ -15,7 +15,11 @@
 //  Created by Carson Katri on 7/7/20.
 //
 
+#if os(WASI)
 import OpenCombine
+#else
+import Combine
+#endif
 
 @propertyWrapper public struct EnvironmentObject<ObjectType>: ObservedProperty,
   EnvironmentReader

@@ -12,10 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if os(WASI)
 import OpenCombine
-
 public typealias ObservableObject = OpenCombine.ObservableObject
 public typealias Published = OpenCombine.Published
+#else
+import Combine
+public typealias ObservableObject = Combine.ObservableObject
+public typealias Published = Combine.Published
+#endif
 
 protocol ObservedProperty {
   var objectWillChange: AnyPublisher<(), Never> { get }

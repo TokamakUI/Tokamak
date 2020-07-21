@@ -102,8 +102,8 @@ extension Text: AnyHTML {
     }
   }
 
-  var tag: String { "span" }
-  var attributes: [String: String] {
+  public var tag: String { "span" }
+  public var attributes: [String: String] {
     var font: Font?
     var color: Color?
     var italic: Bool = false
@@ -160,5 +160,5 @@ extension Text: AnyHTML {
     ]
   }
 
-  var listeners: [String: Listener] { [:] }
+  public var listeners: [String: Listener] { [:] }
 }

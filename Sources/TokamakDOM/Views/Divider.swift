@@ -15,9 +15,9 @@
 import TokamakCore
 
 extension Divider: AnyHTML {
-  var innerHTML: String? { nil }
-  var tag: String { "hr" }
-  var attributes: [String: String] {
+  public var innerHTML: String? { nil }
+  public var tag: String { "hr" }
+  public var attributes: [String: String] {
     [
       "style": """
       width: 100%; height: 0; margin: 0;
@@ -29,5 +29,5 @@ extension Divider: AnyHTML {
     ]
   }
 
-  var listeners: [String: Listener] { [:] }
+  public var listeners: [String: Listener] { [:] }
 }

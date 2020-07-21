@@ -25,6 +25,14 @@ let package = Package(
       name: "TokamakShim",
       targets: ["TokamakShim"]
     ),
+    .library(
+      name: "TokamakStatic",
+      targets: ["TokamakStatic"]
+    ),
+    .executable(
+      name: "TokamakStaticDemo",
+      targets: ["TokamakStaticDemo"]
+    ),
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
@@ -40,7 +48,10 @@ let package = Package(
     // in packages which this package depends on.
     .target(
       name: "TokamakCore",
-      dependencies: ["OpenCombine", "Runtime"]
+      dependencies: [
+        .byName(name: "OpenCombine", condition: .when(platforms: [.wasi])),
+        "Runtime",
+      ]
     ),
     .target(
       name: "TokamakDemo",
@@ -53,6 +64,19 @@ let package = Package(
     .target(
       name: "TokamakShim",
       dependencies: [.target(name: "TokamakDOM", condition: .when(platforms: [.wasi]))]
+    ),
+    .target(
+      name: "TokamakStatic",
+      dependencies: [
+        "TokamakCore",
+        "TokamakDOM",
+      ]
+    ),
+    .target(
+      name: "TokamakStaticDemo",
+      dependencies: [
+        "TokamakStatic",
+      ]
     ),
     .target(
       name: "TokamakTestRenderer",
