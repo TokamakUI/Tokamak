@@ -30,26 +30,30 @@ extension Path: ViewDeferredToRenderer {
       "stroke-width": "\(strokeStyle.lineWidth)",
     ]
     let uniqueKeys = { (first: String, _: String) in first }
+    let width: String? = sizing == .flexible ? "100%" : nil
+    let height: String? = sizing == .flexible ? "100%" : nil
+    let centerX: String? = sizing == .flexible ? "50%" : nil
+    let centerY: String? = sizing == .flexible ? "50%" : nil
     switch storage {
     case .empty:
       return AnyView(EmptyView())
     case let .rect(rect):
       return AnyView(AnyView(HTML("rect", [
-        "width": "\(max(0, rect.size.width))",
-        "height": "\(max(0, rect.size.height))",
+        "width": width ?? "\(max(0, rect.size.width))",
+        "height": height ?? "\(max(0, rect.size.height))",
         "x": "\(rect.origin.x - (rect.size.width / 2))",
         "y": "\(rect.origin.y - (rect.size.height / 2))",
       ].merging(stroke, uniquingKeysWith: uniqueKeys))))
     case let .ellipse(rect):
-      return AnyView(HTML("ellipse", ["cx": "\(rect.origin.x)",
-                                      "cy": "\(rect.origin.y)",
-                                      "rx": "\(rect.size.width)",
-                                      "ry": "\(rect.size.height)"]
+      return AnyView(HTML("ellipse", ["cx": centerX ?? "\(rect.origin.x)",
+                                      "cy": centerY ?? "\(rect.origin.y)",
+                                      "rx": centerX ?? "\(rect.size.width)",
+                                      "ry": centerY ?? "\(rect.size.height)"]
           .merging(stroke, uniquingKeysWith: uniqueKeys)))
     case let .roundedRect(roundedRect):
       return AnyView(HTML("rect", [
-        "width": "\(roundedRect.rect.size.width)",
-        "height": "\(roundedRect.rect.size.height)",
+        "width": width ?? "\(roundedRect.rect.size.width)",
+        "height": height ?? "\(roundedRect.rect.size.height)",
         "rx": "\(roundedRect.cornerSize.width)",
         "ry": """
         \(roundedRect.style == .continuous ?
@@ -161,9 +165,17 @@ extension Path: ViewDeferredToRenderer {
   }
 
   public var deferredBody: AnyView {
-    AnyView(HTML("svg", ["style": """
-    width: \(max(0, size.width));
-    height: \(max(0, size.height));
+    let sizeStyle = sizing == .flexible ?
+      """
+      width: 100%;
+      height: 100%;
+      """ :
+      """
+      width: \(max(0, size.width));
+      height: \(max(0, size.height));
+      """
+    return AnyView(HTML("svg", ["style": """
+    \(sizeStyle)
     overflow: visible;
     """]) {
       svgBody()

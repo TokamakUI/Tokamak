@@ -17,7 +17,7 @@
 
 public struct Ellipse: Shape {
   public func path(in rect: CGRect) -> Path {
-    .init(ellipseIn: rect)
+    .init(storage: .ellipse(rect), sizing: .flexible)
   }
 
   public init() {}
@@ -25,7 +25,7 @@ public struct Ellipse: Shape {
 
 public struct Circle: Shape {
   public func path(in rect: CGRect) -> Path {
-    .init(ellipseIn: rect)
+    .init(storage: .ellipse(rect), sizing: .flexible)
   }
 
   public init() {}
@@ -38,9 +38,19 @@ public struct Capsule: Shape {
     self.style = style
   }
 
-  public func path(in r: CGRect) -> Path {
-    .init(roundedRect: r,
-          cornerRadius: min(r.size.width, r.size.height) / 2,
-          style: style)
+  public func path(in rect: CGRect) -> Path {
+    let widthRadius = rect.size.width / 2
+    let heightRadius = rect.size.height / 2
+    return .init(
+      storage: .roundedRect(.init(
+        rect: rect,
+        cornerSize: .init(
+          width: widthRadius,
+          height: heightRadius
+        ),
+        style: style
+      )),
+      sizing: .flexible
+    )
   }
 }

@@ -61,6 +61,7 @@ public struct Path: Equatable, LosslessStringConvertible {
   }
 
   public var storage: Storage
+  public let sizing: _Sizing
   public var elements: [Element] = []
   public var transform: CGAffineTransform = .identity
 
@@ -73,37 +74,43 @@ public struct Path: Equatable, LosslessStringConvertible {
 
   public init() {
     storage = .empty
+    sizing = .fixed
   }
 
-  init(storage: Storage) {
+  init(storage: Storage, sizing: _Sizing = .fixed) {
     self.storage = storage
+    self.sizing = sizing
   }
 
   public init(_ rect: CGRect) {
-    storage = .rect(rect)
+    self.init(storage: .rect(rect))
   }
 
   public init(roundedRect rect: CGRect,
               cornerSize: CGSize,
               style: RoundedCornerStyle = .circular) {
-    storage = .roundedRect(FixedRoundedRect(
+    self.init(storage: .roundedRect(FixedRoundedRect(
       rect: rect,
       cornerSize: cornerSize,
       style: style
-    ))
+    )))
   }
 
   public init(roundedRect rect: CGRect,
               cornerRadius: CGFloat,
               style: RoundedCornerStyle = .circular) {
-    storage = .roundedRect(FixedRoundedRect(rect: rect,
-                                            cornerSize: CGSize(width: cornerRadius,
-                                                               height: cornerRadius),
-                                            style: style))
+    self.init(
+      storage: .roundedRect(FixedRoundedRect(
+        rect: rect,
+        cornerSize: CGSize(width: cornerRadius,
+                           height: cornerRadius),
+        style: style
+      ))
+    )
   }
 
   public init(ellipseIn rect: CGRect) {
-    storage = .ellipse(rect)
+    self.init(storage: .ellipse(rect))
   }
 
   public init(_ callback: (inout Self) -> ()) {
