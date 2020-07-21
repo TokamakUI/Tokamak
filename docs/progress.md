@@ -43,8 +43,8 @@ Table columns:
 
 |     |                                                                              |     |
 | --- | ---------------------------------------------------------------------------- | :-: |
-|     | [Toggle](https://developer.apple.com/documentation/swiftui/toggle)           |     |
-|     | [Picker](https://developer.apple.com/documentation/swiftui/picker)           |     |
+| 🚧  | [Toggle](https://developer.apple.com/documentation/swiftui/toggle)           |     |
+| 🚧  | [Picker](https://developer.apple.com/documentation/swiftui/picker)           |     |
 |     | [DatePicker](https://developer.apple.com/documentation/swiftui/datepicker)   |     |
 |     | [Slider](https://developer.apple.com/documentation/swiftui/slider)           |     |
 |     | [Stepper](https://developer.apple.com/documentation/swiftui/stepper)         |     |
@@ -75,15 +75,15 @@ Table columns:
 
 |     |                                                                          |     |
 | --- | ------------------------------------------------------------------------ | :-: |
-|     | [LazyHGrid](https://developer.apple.com/documentation/swiftui/lazyhgrid) |  β  |
-|     | [LazyVGrid](https://developer.apple.com/documentation/swiftui/lazyvgrid) |  β  |
-|     | [GridItem](https://developer.apple.com/documentation/swiftui/griditem)   |  β  |
+|🚧| [LazyHGrid](https://developer.apple.com/documentation/swiftui/lazyhgrid) |  β  |
+|🚧| [LazyVGrid](https://developer.apple.com/documentation/swiftui/lazyvgrid) |  β  |
+|🚧| [GridItem](https://developer.apple.com/documentation/swiftui/griditem)   |  β  |
 
 ### Lists and Scroll Views
 
 |     |                                                                                            |     |
 | --- | ------------------------------------------------------------------------------------------ | :-: |
-|     | [List](https://developer.apple.com/documentation/swiftui/list)                             |     |
+| 🚧  | [List](https://developer.apple.com/documentation/swiftui/list)                             |     |
 | 🚧  | [ForEach](https://developer.apple.com/documentation/swiftui/foreach)                       |     |
 | 🚧  | [ScrollView](https://developer.apple.com/documentation/swiftui/scrollview)                 |     |
 |     | [ScrollViewReader](https://developer.apple.com/documentation/swiftui/scrollviewreader)     |  β  |
@@ -95,22 +95,22 @@ Table columns:
 |     |                                                                        |     |
 | --- | ---------------------------------------------------------------------- | :-: |
 |     | [Form](https://developer.apple.com/documentation/swiftui/form)         |     |
-|     | [Group](https://developer.apple.com/documentation/swiftui/group)       |     |
+| ✅  | [Group](https://developer.apple.com/documentation/swiftui/group)       |     |
 |     | [GroupBox](https://developer.apple.com/documentation/swiftui/groupbox) |     |
-|     | [Section](https://developer.apple.com/documentation/swiftui/section)   |     |
+| 🚧 | [Section](https://developer.apple.com/documentation/swiftui/section)   |     |
 
 ### Hierarchical Views
 
 |     |                                                                                      |     |
 | --- | ------------------------------------------------------------------------------------ | :-: |
-|     | [OutlineGroup](https://developer.apple.com/documentation/swiftui/outlinegroup)       |  β  |
-|     | [DisclosureGroup](https://developer.apple.com/documentation/swiftui/disclosuregroup) |  β  |
+|🚧| [OutlineGroup](https://developer.apple.com/documentation/swiftui/outlinegroup)       |  β  |
+|🚧| [DisclosureGroup](https://developer.apple.com/documentation/swiftui/disclosuregroup) |  β  |
 
 ### Spacers and Dividers
 
 |     |                                                                      |     |
 | --- | -------------------------------------------------------------------- | :-: |
-| ✅ | [Spacer](https://developer.apple.com/documentation/swiftui/spacer)   |     |
+| ✅  | [Spacer](https://developer.apple.com/documentation/swiftui/spacer)   |     |
 |     | [Divider](https://developer.apple.com/documentation/swiftui/divider) |     |
 
 ### Architectural Views
@@ -133,29 +133,29 @@ Table columns:
 
 |     |                                                                          |     |
 | --- | ------------------------------------------------------------------------ | :-: |
-| 🚧  | [AnyView](https://developer.apple.com/documentation/swiftui/anyview)     |     |
+| ✅  | [AnyView](https://developer.apple.com/documentation/swiftui/anyview)     |     |
 | ✅  | [TupleView](https://developer.apple.com/documentation/swiftui/tupleview) |     |
 
 ## Shapes, Paths, and Styles
 
 ### Shapes
 
-|     |                                                                                            |     |
-| --- | ------------------------------------------------------------------------------------------ | :-: |
-| 🚧  | [Rectangle](https://developer.apple.com/documentation/swiftui/rectangle)                    |     |
-| 🚧  | [RoundedRectangle](https://developer.apple.com/documentation/swiftui/roundedrectangle)     |     |
-| 🚧  | [Ellipse](https://developer.apple.com/documentation/swiftui/ellipse)                       |     |
-| 🚧  | [Circle](https://developer.apple.com/documentation/swiftui/circle)                         |     |
-| 🚧  | [Capsule](https://developer.apple.com/documentation/swiftui/capsule)                       |     |
+|     |                                                                                        |     |
+| --- | -------------------------------------------------------------------------------------- | :-: |
+| 🚧  | [Rectangle](https://developer.apple.com/documentation/swiftui/rectangle)               |     |
+| 🚧  | [RoundedRectangle](https://developer.apple.com/documentation/swiftui/roundedrectangle) |     |
+| 🚧  | [Ellipse](https://developer.apple.com/documentation/swiftui/ellipse)                   |     |
+| 🚧  | [Circle](https://developer.apple.com/documentation/swiftui/circle)                     |     |
+| 🚧  | [Capsule](https://developer.apple.com/documentation/swiftui/capsule)                   |     |
 
 ### Paths
 
-|     |                                                                                            |     |
-| --- | ------------------------------------------------------------------------------------------ | :-: |
-| 🚧  | [Path](https://developer.apple.com/documentation/swiftui/path)                             |     |
+|     |                                                                |     |
+| --- | -------------------------------------------------------------- | :-: |
+| 🚧  | [Path](https://developer.apple.com/documentation/swiftui/path) |     |
 
 ### Styles
 
-|     |                                                                                            |     |
-| --- | ------------------------------------------------------------------------------------------ | :-: |
-| 🚧  | [Color](https://developer.apple.com/documentation/swiftui/color)                           |     |
+|     |                                                                  |     |
+| --- | ---------------------------------------------------------------- | :-: |
+| 🚧  | [Color](https://developer.apple.com/documentation/swiftui/color) |     |

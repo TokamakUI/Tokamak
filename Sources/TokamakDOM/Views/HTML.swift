@@ -20,11 +20,6 @@ import TokamakCore
 
 public typealias Listener = (JSObjectRef) -> ()
 
-public typealias View = TokamakCore.View
-public typealias AnyView = TokamakCore.AnyView
-public typealias EmptyView = TokamakCore.EmptyView
-public typealias State = TokamakCore.State
-
 protocol AnyHTML {
   var innerHTML: String? { get }
   var tag: String { get }

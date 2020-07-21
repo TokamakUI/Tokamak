@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakDOM
+import TokamakShim
 
 public struct ForEachDemo: View {
-  @State public var items: [Int] = []
+  @State public var maxItem = 0
 
   public var body: some View {
     VStack {
-      Button(action: { items.append((items.last ?? 0) + 1) }) {
+      Button(action: { maxItem += 1 }) {
         Text("Add item")
       }
 
-      ForEach(items, id: \.self) {
+      ForEach(0..<maxItem) {
         Text("Item: \($0)")
       }
     }

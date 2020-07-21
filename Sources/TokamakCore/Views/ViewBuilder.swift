@@ -15,6 +15,7 @@
 //  Created by Max Desiatov on 08/04/2020.
 //
 
+/// A `View` with no effect on rendering.
 public struct EmptyView: View {
   @inlinable public init() {}
 
@@ -24,13 +25,38 @@ public struct EmptyView: View {
 }
 
 // swiftlint:disable:next type_name
-public enum _ConditionalContent<TrueBranch, FalseBranch>: View
-  where TrueBranch: View, FalseBranch: View {
-  case trueBranch(TrueBranch)
-  case falseBranch(FalseBranch)
+public struct _ConditionalContent<TrueContent, FalseContent>: View
+  where TrueContent: View, FalseContent: View {
+  enum Storage {
+    case trueContent(TrueContent)
+    case falseContent(FalseContent)
+  }
+
+  let storage: Storage
 
   public var body: Never {
-    neverBody("_ConditionalContent")
+    neverBody("_ConditionContent")
+  }
+}
+
+extension _ConditionalContent: GroupView {
+  public var children: [AnyView] {
+    switch storage {
+    case let .trueContent(view):
+      return [AnyView(view)]
+    case let .falseContent(view):
+      return [AnyView(view)]
+    }
+  }
+}
+
+extension Optional: View where Wrapped: View {
+  public var body: some View {
+    if let view = self {
+      view
+    } else {
+      EmptyView()
+    }
   }
 }
 
@@ -50,13 +76,13 @@ public enum _ConditionalContent<TrueBranch, FalseBranch>: View
   public static func buildEither<TrueContent, FalseContent>(
     first: TrueContent
   ) -> _ConditionalContent<TrueContent, FalseContent> where TrueContent: View, FalseContent: View {
-    .trueBranch(first)
+    .init(storage: .trueContent(first))
   }
 
   public static func buildEither<TrueContent, FalseContent>(
     second: FalseContent
   ) -> _ConditionalContent<TrueContent, FalseContent> where TrueContent: View, FalseContent: View {
-    .falseBranch(second)
+    .init(storage: .falseContent(second))
   }
 }
 

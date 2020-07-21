@@ -17,13 +17,15 @@
 
 import Runtime
 
+/// A type-erased view.
 public struct AnyView: View {
   let type: Any.Type
   let typeConstructorName: String
   let bodyType: Any.Type
   var view: Any
 
-  // needs to take a fresh version of `view` as an argument, otherwise it captures the old view value
+  // needs to take a fresh version of `view` as an argument,
+  // otherwise it captures the old view value
   let bodyClosure: (Any) -> AnyView
 
   public init<V>(_ view: V) where V: View {
@@ -71,4 +73,13 @@ extension AnyView: ParentView {
   public var children: [AnyView] {
     (view as? ParentView)?.children ?? []
   }
+}
+
+public struct _AnyViewProxy {
+  public var subject: AnyView
+
+  public init(_ subject: AnyView) { self.subject = subject }
+
+  public var type: Any.Type { subject.type }
+  public var view: Any { subject.view }
 }

@@ -14,11 +14,14 @@
 
 import TokamakCore
 
-public typealias ViewModifier = TokamakCore.ViewModifier
-public typealias ModifiedContent = TokamakCore.ModifiedContent
-
 public protocol DOMViewModifier {
   var attributes: [String: String] { get }
+  /// Can the modifier be flattened?
+  var isOrderDependent: Bool { get }
+}
+
+extension DOMViewModifier {
+  public var isOrderDependent: Bool { false }
 }
 
 extension ModifiedContent: DOMViewModifier
@@ -42,6 +45,7 @@ extension _ZIndexModifier: DOMViewModifier {
 }
 
 extension _BackgroundModifier: DOMViewModifier where Background == Color {
+  public var isOrderDependent: Bool { true }
   public var attributes: [String: String] {
     ["style": "background-color: \(background.description)"]
   }

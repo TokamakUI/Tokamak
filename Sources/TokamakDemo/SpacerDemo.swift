@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 6/29/20.
 //
 
-import TokamakDOM
+import TokamakShim
 
 struct SpacerDemo: View {
   var body: some View {

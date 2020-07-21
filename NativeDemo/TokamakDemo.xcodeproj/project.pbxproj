@@ -1,0 +1,655 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		854A1A9124B3E3630027BC32 /* ToggleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CBD5DE24B3BF090066468A /* ToggleDemo.swift */; };
+		854A1A9324B3F28F0027BC32 /* ToggleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CBD5DE24B3BF090066468A /* ToggleDemo.swift */; };
+		85ED186A24AD38F20085DFA0 /* UIAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED186924AD38F20085DFA0 /* UIAppDelegate.swift */; };
+		85ED188A24AD3CD60085DFA0 /* macOS.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85ED188724AD3CC30085DFA0 /* macOS.storyboard */; };
+		85ED188C24AD3CF10085DFA0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85ED188B24AD3CF10085DFA0 /* LaunchScreen.storyboard */; };
+		85ED18A324AD425E0085DFA0 /* SpacerDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED189A24AD425E0085DFA0 /* SpacerDemo.swift */; };
+		85ED18A424AD425E0085DFA0 /* SpacerDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED189A24AD425E0085DFA0 /* SpacerDemo.swift */; };
+		85ED18A524AD425E0085DFA0 /* TextDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED189B24AD425E0085DFA0 /* TextDemo.swift */; };
+		85ED18A624AD425E0085DFA0 /* TextDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED189B24AD425E0085DFA0 /* TextDemo.swift */; };
+		85ED18A724AD425E0085DFA0 /* ForEachDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED189C24AD425E0085DFA0 /* ForEachDemo.swift */; };
+		85ED18A824AD425E0085DFA0 /* ForEachDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED189C24AD425E0085DFA0 /* ForEachDemo.swift */; };
+		85ED18A924AD425E0085DFA0 /* TokamakDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED189D24AD425E0085DFA0 /* TokamakDemo.swift */; };
+		85ED18AA24AD425E0085DFA0 /* TokamakDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED189D24AD425E0085DFA0 /* TokamakDemo.swift */; };
+		85ED18AB24AD425E0085DFA0 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED189E24AD425E0085DFA0 /* Counter.swift */; };
+		85ED18AC24AD425E0085DFA0 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED189E24AD425E0085DFA0 /* Counter.swift */; };
+		85ED18AD24AD425E0085DFA0 /* TextFieldDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED189F24AD425E0085DFA0 /* TextFieldDemo.swift */; };
+		85ED18AE24AD425E0085DFA0 /* TextFieldDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED189F24AD425E0085DFA0 /* TextFieldDemo.swift */; };
+		85ED18AF24AD425E0085DFA0 /* EnvironmentDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED18A024AD425E0085DFA0 /* EnvironmentDemo.swift */; };
+		85ED18B024AD425E0085DFA0 /* EnvironmentDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED18A024AD425E0085DFA0 /* EnvironmentDemo.swift */; };
+		85ED18B624AD42D70085DFA0 /* NSAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED189424AD41B90085DFA0 /* NSAppDelegate.swift */; };
+		B51F215024B920B400CF2583 /* PathDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F214F24B920B400CF2583 /* PathDemo.swift */; };
+		B51F215124B920B400CF2583 /* PathDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F214F24B920B400CF2583 /* PathDemo.swift */; };
+		B56F22E024BC89FD001738DF /* ColorDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F22DF24BC89FD001738DF /* ColorDemo.swift */; };
+		B56F22E124BC89FD001738DF /* ColorDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F22DF24BC89FD001738DF /* ColorDemo.swift */; };
+		B56F22E324BD1C26001738DF /* GridDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F22E224BD1C26001738DF /* GridDemo.swift */; };
+		B56F22E424BD1C26001738DF /* GridDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F22E224BD1C26001738DF /* GridDemo.swift */; };
+		D1B4229024B3B9BB00682F74 /* ListDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4228E24B3B9BB00682F74 /* ListDemo.swift */; };
+		D1B4229124B3B9BB00682F74 /* ListDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4228E24B3B9BB00682F74 /* ListDemo.swift */; };
+		D1B4229224B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */; };
+		D1B4229324B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */; };
+		D1E5FDAD24C1D57000E7485E /* TokamakShim.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E5FDAC24C1D57000E7485E /* TokamakShim.swift */; };
+		D1E5FDAF24C1D58E00E7485E /* libTokamakShim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1E5FDA424C1D54B00E7485E /* libTokamakShim.a */; };
+		D1E5FDB224C1D59400E7485E /* libTokamakShim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1E5FDA424C1D54B00E7485E /* libTokamakShim.a */; };
+		D1EE7EA724C0DD2100C0D127 /* PickerDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EE7EA624C0DD2100C0D127 /* PickerDemo.swift */; };
+		D1EE7EA824C0DD2100C0D127 /* PickerDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EE7EA624C0DD2100C0D127 /* PickerDemo.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D1E5FDB024C1D58E00E7485E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 85ED183E24AD37970085DFA0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D1E5FDA324C1D54B00E7485E;
+			remoteInfo = TokamakShim;
+		};
+		D1E5FDB324C1D59400E7485E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 85ED183E24AD37970085DFA0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D1E5FDA324C1D54B00E7485E;
+			remoteInfo = TokamakShim;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D1E5FDA224C1D54B00E7485E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		85CBD5DE24B3BF090066468A /* ToggleDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleDemo.swift; sourceTree = "<group>"; };
+		85ED184A24AD379A0085DFA0 /* TokamakDemo Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TokamakDemo Native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		85ED185224AD379A0085DFA0 /* TokamakDemo Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TokamakDemo Native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		85ED186924AD38F20085DFA0 /* UIAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAppDelegate.swift; sourceTree = "<group>"; };
+		85ED188724AD3CC30085DFA0 /* macOS.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = macOS.storyboard; sourceTree = "<group>"; };
+		85ED188B24AD3CF10085DFA0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		85ED189424AD41B90085DFA0 /* NSAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAppDelegate.swift; sourceTree = "<group>"; };
+		85ED189A24AD425E0085DFA0 /* SpacerDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpacerDemo.swift; sourceTree = "<group>"; };
+		85ED189B24AD425E0085DFA0 /* TextDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextDemo.swift; sourceTree = "<group>"; };
+		85ED189C24AD425E0085DFA0 /* ForEachDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForEachDemo.swift; sourceTree = "<group>"; };
+		85ED189D24AD425E0085DFA0 /* TokamakDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokamakDemo.swift; sourceTree = "<group>"; };
+		85ED189E24AD425E0085DFA0 /* Counter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
+		85ED189F24AD425E0085DFA0 /* TextFieldDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldDemo.swift; sourceTree = "<group>"; };
+		85ED18A024AD425E0085DFA0 /* EnvironmentDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentDemo.swift; sourceTree = "<group>"; };
+		85ED18BD24AD46340085DFA0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		85ED18BF24AD464B0085DFA0 /* iOS Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iOS Info.plist"; sourceTree = "<group>"; };
+		B51F214F24B920B400CF2583 /* PathDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathDemo.swift; sourceTree = "<group>"; };
+		B56F22DF24BC89FD001738DF /* ColorDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = ColorDemo.swift; sourceTree = "<group>"; tabWidth = 2; };
+		B56F22E224BD1C26001738DF /* GridDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridDemo.swift; sourceTree = "<group>"; };
+		D1B4228E24B3B9BB00682F74 /* ListDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDemo.swift; sourceTree = "<group>"; };
+		D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutlineGroupDemo.swift; sourceTree = "<group>"; };
+		D1E5FDA424C1D54B00E7485E /* libTokamakShim.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTokamakShim.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1E5FDAC24C1D57000E7485E /* TokamakShim.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokamakShim.swift; sourceTree = "<group>"; };
+		D1EE7EA624C0DD2100C0D127 /* PickerDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerDemo.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		85ED184724AD379A0085DFA0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1E5FDAF24C1D58E00E7485E /* libTokamakShim.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85ED184F24AD379A0085DFA0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1E5FDB224C1D59400E7485E /* libTokamakShim.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1E5FDA124C1D54B00E7485E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		85ED183D24AD37970085DFA0 = {
+			isa = PBXGroup;
+			children = (
+				D1E5FDAB24C1D57000E7485E /* TokamakShim */,
+				85ED188B24AD3CF10085DFA0 /* LaunchScreen.storyboard */,
+				85ED186924AD38F20085DFA0 /* UIAppDelegate.swift */,
+				85ED189424AD41B90085DFA0 /* NSAppDelegate.swift */,
+				85ED188724AD3CC30085DFA0 /* macOS.storyboard */,
+				85ED18BF24AD464B0085DFA0 /* iOS Info.plist */,
+				85ED18BD24AD46340085DFA0 /* Info.plist */,
+				85ED189924AD425E0085DFA0 /* TokamakDemo */,
+				85ED184B24AD379A0085DFA0 /* Products */,
+				D1E5FDAE24C1D58E00E7485E /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		85ED184B24AD379A0085DFA0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				85ED184A24AD379A0085DFA0 /* TokamakDemo Native.app */,
+				85ED185224AD379A0085DFA0 /* TokamakDemo Native.app */,
+				D1E5FDA424C1D54B00E7485E /* libTokamakShim.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		85ED189924AD425E0085DFA0 /* TokamakDemo */ = {
+			isa = PBXGroup;
+			children = (
+				D1EE7EA624C0DD2100C0D127 /* PickerDemo.swift */,
+				D1B4228E24B3B9BB00682F74 /* ListDemo.swift */,
+				D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */,
+				85ED189A24AD425E0085DFA0 /* SpacerDemo.swift */,
+				85ED189B24AD425E0085DFA0 /* TextDemo.swift */,
+				85ED189C24AD425E0085DFA0 /* ForEachDemo.swift */,
+				85ED189D24AD425E0085DFA0 /* TokamakDemo.swift */,
+				85ED189E24AD425E0085DFA0 /* Counter.swift */,
+				85ED189F24AD425E0085DFA0 /* TextFieldDemo.swift */,
+				85CBD5DE24B3BF090066468A /* ToggleDemo.swift */,
+				85ED18A024AD425E0085DFA0 /* EnvironmentDemo.swift */,
+				B51F214F24B920B400CF2583 /* PathDemo.swift */,
+				B56F22DF24BC89FD001738DF /* ColorDemo.swift */,
+				B56F22E224BD1C26001738DF /* GridDemo.swift */,
+			);
+			name = TokamakDemo;
+			path = ../Sources/TokamakDemo;
+			sourceTree = "<group>";
+		};
+		D1E5FDAB24C1D57000E7485E /* TokamakShim */ = {
+			isa = PBXGroup;
+			children = (
+				D1E5FDAC24C1D57000E7485E /* TokamakShim.swift */,
+			);
+			name = TokamakShim;
+			path = ../Sources/TokamakShim;
+			sourceTree = "<group>";
+		};
+		D1E5FDAE24C1D58E00E7485E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		85ED184924AD379A0085DFA0 /* iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85ED185E24AD379B0085DFA0 /* Build configuration list for PBXNativeTarget "iOS" */;
+			buildPhases = (
+				85ED184624AD379A0085DFA0 /* Sources */,
+				85ED184724AD379A0085DFA0 /* Frameworks */,
+				85ED184824AD379A0085DFA0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D1E5FDB124C1D58E00E7485E /* PBXTargetDependency */,
+			);
+			name = iOS;
+			productName = iOS;
+			productReference = 85ED184A24AD379A0085DFA0 /* TokamakDemo Native.app */;
+			productType = "com.apple.product-type.application";
+		};
+		85ED185124AD379A0085DFA0 /* macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85ED186124AD379B0085DFA0 /* Build configuration list for PBXNativeTarget "macOS" */;
+			buildPhases = (
+				85ED184E24AD379A0085DFA0 /* Sources */,
+				85ED184F24AD379A0085DFA0 /* Frameworks */,
+				85ED185024AD379A0085DFA0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D1E5FDB424C1D59400E7485E /* PBXTargetDependency */,
+			);
+			name = macOS;
+			productName = macOS;
+			productReference = 85ED185224AD379A0085DFA0 /* TokamakDemo Native.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D1E5FDA324C1D54B00E7485E /* TokamakShim */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D1E5FDA824C1D54B00E7485E /* Build configuration list for PBXNativeTarget "TokamakShim" */;
+			buildPhases = (
+				D1E5FDA024C1D54B00E7485E /* Sources */,
+				D1E5FDA124C1D54B00E7485E /* Frameworks */,
+				D1E5FDA224C1D54B00E7485E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TokamakShim;
+			productName = TokamakShim;
+			productReference = D1E5FDA424C1D54B00E7485E /* libTokamakShim.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		85ED183E24AD37970085DFA0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1200;
+				LastUpgradeCheck = 1200;
+				TargetAttributes = {
+					85ED184924AD379A0085DFA0 = {
+						CreatedOnToolsVersion = 12.0;
+						LastSwiftMigration = 1200;
+					};
+					85ED185124AD379A0085DFA0 = {
+						CreatedOnToolsVersion = 12.0;
+						LastSwiftMigration = 1200;
+					};
+					D1E5FDA324C1D54B00E7485E = {
+						CreatedOnToolsVersion = 12.0;
+					};
+				};
+			};
+			buildConfigurationList = 85ED184124AD37970085DFA0 /* Build configuration list for PBXProject "TokamakDemo Native" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 85ED183D24AD37970085DFA0;
+			productRefGroup = 85ED184B24AD379A0085DFA0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				85ED184924AD379A0085DFA0 /* iOS */,
+				85ED185124AD379A0085DFA0 /* macOS */,
+				D1E5FDA324C1D54B00E7485E /* TokamakShim */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		85ED184824AD379A0085DFA0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85ED188C24AD3CF10085DFA0 /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85ED185024AD379A0085DFA0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85ED188A24AD3CD60085DFA0 /* macOS.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		85ED184624AD379A0085DFA0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85ED186A24AD38F20085DFA0 /* UIAppDelegate.swift in Sources */,
+				B56F22E324BD1C26001738DF /* GridDemo.swift in Sources */,
+				D1B4229224B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */,
+				B56F22E024BC89FD001738DF /* ColorDemo.swift in Sources */,
+				B51F215024B920B400CF2583 /* PathDemo.swift in Sources */,
+				85ED18AF24AD425E0085DFA0 /* EnvironmentDemo.swift in Sources */,
+				85ED18A324AD425E0085DFA0 /* SpacerDemo.swift in Sources */,
+				D1B4229024B3B9BB00682F74 /* ListDemo.swift in Sources */,
+				D1EE7EA724C0DD2100C0D127 /* PickerDemo.swift in Sources */,
+				85ED18A924AD425E0085DFA0 /* TokamakDemo.swift in Sources */,
+				85ED18AD24AD425E0085DFA0 /* TextFieldDemo.swift in Sources */,
+				85ED18A724AD425E0085DFA0 /* ForEachDemo.swift in Sources */,
+				854A1A9124B3E3630027BC32 /* ToggleDemo.swift in Sources */,
+				85ED18A524AD425E0085DFA0 /* TextDemo.swift in Sources */,
+				85ED18AB24AD425E0085DFA0 /* Counter.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85ED184E24AD379A0085DFA0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85ED18AA24AD425E0085DFA0 /* TokamakDemo.swift in Sources */,
+				B56F22E424BD1C26001738DF /* GridDemo.swift in Sources */,
+				D1B4229324B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */,
+				B56F22E124BC89FD001738DF /* ColorDemo.swift in Sources */,
+				B51F215124B920B400CF2583 /* PathDemo.swift in Sources */,
+				85ED18A424AD425E0085DFA0 /* SpacerDemo.swift in Sources */,
+				85ED18B024AD425E0085DFA0 /* EnvironmentDemo.swift in Sources */,
+				D1B4229124B3B9BB00682F74 /* ListDemo.swift in Sources */,
+				D1EE7EA824C0DD2100C0D127 /* PickerDemo.swift in Sources */,
+				85ED18B624AD42D70085DFA0 /* NSAppDelegate.swift in Sources */,
+				85ED18AC24AD425E0085DFA0 /* Counter.swift in Sources */,
+				85ED18A824AD425E0085DFA0 /* ForEachDemo.swift in Sources */,
+				854A1A9324B3F28F0027BC32 /* ToggleDemo.swift in Sources */,
+				85ED18AE24AD425E0085DFA0 /* TextFieldDemo.swift in Sources */,
+				85ED18A624AD425E0085DFA0 /* TextDemo.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1E5FDA024C1D54B00E7485E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1E5FDAD24C1D57000E7485E /* TokamakShim.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D1E5FDB124C1D58E00E7485E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D1E5FDA324C1D54B00E7485E /* TokamakShim */;
+			targetProxy = D1E5FDB024C1D58E00E7485E /* PBXContainerItemProxy */;
+		};
+		D1E5FDB424C1D59400E7485E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D1E5FDA324C1D54B00E7485E /* TokamakShim */;
+			targetProxy = D1E5FDB324C1D59400E7485E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		85ED185C24AD379B0085DFA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jedfox.Tokamak-Native";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		85ED185D24AD379B0085DFA0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jedfox.Tokamak-Native";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		85ED185F24AD379B0085DFA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 288H3WAR3W;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "iOS Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_NAME = "TokamakDemo Native";
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		85ED186024AD379B0085DFA0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 288H3WAR3W;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "iOS Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_NAME = "TokamakDemo Native";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		85ED186224AD379B0085DFA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_NAME = "TokamakDemo Native";
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		85ED186324AD379B0085DFA0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 288H3WAR3W;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_NAME = "TokamakDemo Native";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		D1E5FDA924C1D54B00E7485E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D1E5FDAA24C1D54B00E7485E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		85ED184124AD37970085DFA0 /* Build configuration list for PBXProject "TokamakDemo Native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85ED185C24AD379B0085DFA0 /* Debug */,
+				85ED185D24AD379B0085DFA0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		85ED185E24AD379B0085DFA0 /* Build configuration list for PBXNativeTarget "iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85ED185F24AD379B0085DFA0 /* Debug */,
+				85ED186024AD379B0085DFA0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		85ED186124AD379B0085DFA0 /* Build configuration list for PBXNativeTarget "macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85ED186224AD379B0085DFA0 /* Debug */,
+				85ED186324AD379B0085DFA0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D1E5FDA824C1D54B00E7485E /* Build configuration list for PBXNativeTarget "TokamakShim" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D1E5FDA924C1D54B00E7485E /* Debug */,
+				D1E5FDAA24C1D54B00E7485E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 85ED183E24AD37970085DFA0 /* Project object */;
+}

@@ -12,7 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakDOM
+import TokamakShim
+
+struct CustomModifier: ViewModifier {
+  func body(content: Content) -> some View {
+    Text("Whole new body!")
+  }
+}
 
 struct TextDemo: View {
   var body: some View {
@@ -47,6 +53,8 @@ struct TextDemo: View {
         Text("THICK TEXT")
           .kerning(0.5)
       }
+      (Text("This text has been ") + Text("concatenated").bold())
+        .italic()
     }
   }
 }

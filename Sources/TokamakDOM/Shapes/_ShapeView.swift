@@ -17,19 +17,29 @@
 
 import TokamakCore
 
+protocol ShapeAttributes {
+  func attributes(_ style: ShapeStyle) -> [String: String]
+}
+
+extension _StrokedShape: ShapeAttributes {
+  func attributes(_ style: ShapeStyle) -> [String: String] {
+    if let color = style as? Color {
+      return ["style": "stroke: \(color); fill: none;"]
+    } else {
+      return ["style": "stroke: black; fill: none;"]
+    }
+  }
+}
+
 extension _ShapeView: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     let path = shape.path(in: .zero).deferredBody
-    if let fillColor = style as? Color {
-      return AnyView(HTML("div", ["style": "fill: \(fillColor.description)"]) { path })
+    if let shapeAttributes = shape as? ShapeAttributes {
+      return AnyView(HTML("div", shapeAttributes.attributes(style)) { path })
+    } else if let color = style as? Color {
+      return AnyView(HTML("div", ["style": "fill: \(color);"]) { path })
     } else {
       return path
     }
   }
 }
-
-public typealias Rectangle = TokamakCore.Rectangle
-public typealias RoundedRectangle = TokamakCore.RoundedRectangle
-public typealias Ellipse = TokamakCore.Ellipse
-public typealias Circle = TokamakCore.Circle
-public typealias Capsule = TokamakCore.Capsule

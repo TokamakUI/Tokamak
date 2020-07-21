@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import OpenCombine
+
 public struct EnvironmentValues: CustomStringConvertible {
   public var description: String {
     String(describing: values)
@@ -30,6 +32,15 @@ public struct EnvironmentValues: CustomStringConvertible {
     }
     set {
       values[ObjectIdentifier(key)] = newValue
+    }
+  }
+
+  subscript<B>(bindable: ObjectIdentifier) -> B? where B: ObservableObject {
+    get {
+      values[bindable] as? B
+    }
+    set {
+      values[bindable] = newValue
     }
   }
 }
