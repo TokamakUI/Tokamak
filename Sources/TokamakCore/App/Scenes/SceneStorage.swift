@@ -62,35 +62,40 @@ public enum _DefaultSceneStorageProvider {
 }
 
 extension SceneStorage {
-  public init(wrappedValue: Value, _ key: String, store: _SceneStorageProvider? = nil) where Value == Bool {
+  public init(wrappedValue: Value,
+              _ key: String) where Value == Bool {
     defaultValue = wrappedValue
     self.key = key
     wrapValue = { String($0) }
     unwrapValue = { Bool($0) }
   }
 
-  public init(wrappedValue: Value, _ key: String) where Value == Int {
+  public init(wrappedValue: Value,
+              _ key: String) where Value == Int {
     defaultValue = wrappedValue
     self.key = key
     wrapValue = { String($0) }
     unwrapValue = { Int($0) }
   }
 
-  public init(wrappedValue: Value, _ key: String) where Value == Double {
+  public init(wrappedValue: Value,
+              _ key: String) where Value == Double {
     defaultValue = wrappedValue
     self.key = key
     wrapValue = { String($0) }
     unwrapValue = { Double($0) }
   }
 
-  public init(wrappedValue: Value, _ key: String) where Value == String {
+  public init(wrappedValue: Value,
+              _ key: String) where Value == String {
     defaultValue = wrappedValue
     self.key = key
     wrapValue = { $0 }
     unwrapValue = { $0 }
   }
 
-  public init(wrappedValue: Value, _ key: String)
+  public init(wrappedValue: Value,
+              _ key: String)
     where Value: RawRepresentable, Value.RawValue == Int {
     defaultValue = wrappedValue
     self.key = key
@@ -103,7 +108,8 @@ extension SceneStorage {
     }
   }
 
-  public init(wrappedValue: Value, _ key: String)
+  public init(wrappedValue: Value,
+              _ key: String)
     where Value: RawRepresentable, Value.RawValue == String {
     defaultValue = wrappedValue
     self.key = key

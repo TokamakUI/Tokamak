@@ -18,8 +18,8 @@
 public protocol Scene {
   associatedtype Body: Scene
 
-  // If I put `@SceneBuilder` in front of this it fails to build
-  // with no useful error message.
+  // FIXME: If I put `@SceneBuilder` in front of this
+  // it fails to build with no useful error message.
   var body: Self.Body { get }
 }
 

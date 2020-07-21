@@ -19,12 +19,12 @@ import OpenCombine
 import Runtime
 
 /// Provides the ability to set the title of the Scene.
-public protocol TitledApp {
+public protocol _TitledApp {
   static func _setTitle(_ title: String)
 }
 
 /// The renderer is responsible for implementing certain functionality.
-public protocol App: TitledApp {
+public protocol App: _TitledApp {
   associatedtype Body: Scene
   var body: Body { get }
 

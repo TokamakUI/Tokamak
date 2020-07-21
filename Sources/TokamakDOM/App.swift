@@ -19,10 +19,6 @@ import JavaScriptKit
 import OpenCombine
 import TokamakCore
 
-public typealias App = TokamakCore.App
-
-public typealias ScenePhase = TokamakCore.ScenePhase
-
 private enum ScenePhaseObserver {
   static var publisher = CurrentValueSubject<ScenePhase, Never>(.active)
 
@@ -77,64 +73,4 @@ extension App {
   public var _phasePublisher: CurrentValueSubject<ScenePhase, Never> {
     ScenePhaseObserver.publisher
   }
-}
-
-public typealias AppStorage = TokamakCore.AppStorage
-public class LocalStorage: _AppStorageProvider {
-  let localStorage = JSObjectRef.global.localStorage.object!
-
-  init() {
-    _ = JSObjectRef.global.window.object!.addEventListener!("storage", JSClosure { _ in
-      self.publisher.send()
-      return .undefined
-    })
-    subscription = Self.rootPublisher.sink { _ in
-      self.publisher.send()
-    }
-  }
-
-  public func store(key: String, value: String) {
-    Self.rootPublisher.send()
-    _ = localStorage.setItem!(key, value)
-  }
-
-  public func read(key: String) -> String? {
-    localStorage.getItem!(key).string
-  }
-
-  public static var standard: _AppStorageProvider {
-    LocalStorage()
-  }
-
-  var subscription: AnyCancellable?
-  static let rootPublisher = ObservableObjectPublisher()
-  public let publisher = ObservableObjectPublisher()
-}
-
-public typealias SceneStorage = TokamakCore.SceneStorage
-public class SessionStorage: _SceneStorageProvider {
-  let sessionStorage = JSObjectRef.global.sessionStorage.object!
-
-  init() {
-    subscription = Self.rootPublisher.sink { _ in
-      self.publisher.send()
-    }
-  }
-
-  public func store(key: String, value: String) {
-    Self.rootPublisher.send()
-    _ = sessionStorage.setItem!(key, value)
-  }
-
-  public func read(key: String) -> String? {
-    sessionStorage.getItem!(key).string
-  }
-
-  public static var standard: _SceneStorageProvider {
-    SessionStorage()
-  }
-
-  var subscription: AnyCancellable?
-  static let rootPublisher = ObservableObjectPublisher()
-  public let publisher = ObservableObjectPublisher()
 }

@@ -100,6 +100,15 @@ public typealias View = TokamakCore.View
 public typealias AnyView = TokamakCore.AnyView
 public typealias EmptyView = TokamakCore.EmptyView
 
+// MARK: App & Scene
+
+public typealias App = TokamakCore.App
+public typealias Scene = TokamakCore.Scene
+public typealias WindowGroup = TokamakCore.WindowGroup
+public typealias ScenePhase = TokamakCore.ScenePhase
+public typealias AppStorage = TokamakCore.AppStorage
+public typealias SceneStorage = TokamakCore.SceneStorage
+
 // MARK: Misc
 
 // FIXME: I would put this inside TokamakCore, but for

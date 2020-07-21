@@ -64,7 +64,9 @@ public protocol _AppStorageProvider {
 extension AppStorage: DynamicProperty {}
 
 extension AppStorage {
-  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == Bool {
+  public init(wrappedValue: Value,
+              _ key: String,
+              store: _AppStorageProvider? = nil) where Value == Bool {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -72,7 +74,9 @@ extension AppStorage {
     unwrapValue = { Bool($0) }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == Int {
+  public init(wrappedValue: Value,
+              _ key: String,
+              store: _AppStorageProvider? = nil) where Value == Int {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -80,7 +84,9 @@ extension AppStorage {
     unwrapValue = { Int($0) }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == Double {
+  public init(wrappedValue: Value,
+              _ key: String,
+              store: _AppStorageProvider? = nil) where Value == Double {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -88,7 +94,9 @@ extension AppStorage {
     unwrapValue = { Double($0) }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == String {
+  public init(wrappedValue: Value,
+              _ key: String,
+              store: _AppStorageProvider? = nil) where Value == String {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -112,7 +120,9 @@ extension AppStorage {
     }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil)
+  public init(wrappedValue: Value,
+              _ key: String,
+              store: _AppStorageProvider? = nil)
     where Value: RawRepresentable, Value.RawValue == String {
     defaultValue = wrappedValue
     self.key = key
@@ -123,7 +133,9 @@ extension AppStorage {
 }
 
 extension AppStorage where Value: ExpressibleByNilLiteral {
-  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == Bool? {
+  public init(wrappedValue: Value,
+              _ key: String,
+              store: _AppStorageProvider? = nil) where Value == Bool? {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -137,7 +149,9 @@ extension AppStorage where Value: ExpressibleByNilLiteral {
     unwrapValue = { Bool($0) }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == Int? {
+  public init(wrappedValue: Value,
+              _ key: String,
+              store: _AppStorageProvider? = nil) where Value == Int? {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -151,7 +165,9 @@ extension AppStorage where Value: ExpressibleByNilLiteral {
     unwrapValue = { Int($0) }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == Double? {
+  public init(wrappedValue: Value,
+              _ key: String,
+              store: _AppStorageProvider? = nil) where Value == Double? {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -165,7 +181,9 @@ extension AppStorage where Value: ExpressibleByNilLiteral {
     unwrapValue = { Double($0) }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _AppStorageProvider? = nil) where Value == String? {
+  public init(wrappedValue: Value,
+              _ key: String,
+              store: _AppStorageProvider? = nil) where Value == String? {
     defaultValue = wrappedValue
     self.key = key
     provider = store

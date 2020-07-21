@@ -40,7 +40,7 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
                                                  environmentValues)
     if let title = mountedScene.title {
       // swiftlint:disable force_cast
-      (app.appType as! TitledApp.Type)._setTitle(title)
+      (app.appType as! _TitledApp.Type)._setTitle(title)
     }
     return mountedScene.body
   }

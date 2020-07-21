@@ -17,9 +17,6 @@
 
 import TokamakCore
 
-public typealias Scene = TokamakCore.Scene
-public typealias WindowGroup = TokamakCore.WindowGroup
-
 extension WindowGroup: SceneDeferredToRenderer {
   public var deferredBody: AnyView {
     AnyView(content)
