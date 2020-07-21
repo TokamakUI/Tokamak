@@ -87,6 +87,10 @@ extension Color {
   // FIXME: Switch to use colorScheme
   public static let primary: Self = .black
   public static let secondary: Self = .gray
+
+  public init(_ color: UIColor) {
+    self = color.color
+  }
 }
 
 extension Color: ExpressibleByIntegerLiteral {
@@ -123,7 +127,7 @@ extension Color {
 
 extension Color: ShapeStyle {}
 extension Color: View {
-  public var body: _ShapeView<Rectangle, Self> {
+  public var body: some View {
     _ShapeView(shape: Rectangle(), style: self)
   }
 }
