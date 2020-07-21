@@ -33,15 +33,12 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
   /// Target of this host view supplied by a renderer after mounting has completed.
   private var target: R.TargetType?
 
-  private let environmentValues: EnvironmentValues
-
   init(_ view: AnyView,
        _ parentTarget: R.TargetType,
        _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
-    self.environmentValues = environmentValues
 
-    super.init(view)
+    super.init(view, environmentValues)
   }
 
   override func mount(with reconciler: StackReconciler<R>) {
@@ -105,17 +102,6 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
         let newChild: MountedView<R>
         if firstChild.typeConstructorName == mountedChildren[0].view.typeConstructorName {
           child.view = firstChild
-          // Inject Environment
-          // swiftlint:disable force_try
-          let viewInfo = try! typeInfo(of: child.view.type)
-          for prop in viewInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-            // swiftlint:disable force_cast
-            var wrapper = try! prop.get(from: child.view.view) as! EnvironmentReader
-            wrapper.setContent(from: environmentValues)
-            try! prop.set(value: wrapper, on: &child.view.view)
-            // swiftlint:enable force_cast
-          }
-          // swiftlint:enable force_try
           child.update(with: reconciler)
           newChild = child
         } else {

@@ -33,7 +33,7 @@ public struct Text: View {
   let storage: _Storage
   let modifiers: [_Modifier]
 
-  @Environment(\.font) var font: Font?
+  @Environment(\.font) var font
 
   public enum _Storage {
     case verbatim(String)

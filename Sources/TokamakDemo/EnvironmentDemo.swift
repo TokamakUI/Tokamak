@@ -33,16 +33,19 @@ struct EnvironmentObjectDemo: View {
 }
 
 struct EnvironmentDemo: View {
-  @Environment(\.colorScheme) var scheme: ColorScheme
+  @Environment(\.colorScheme) var scheme
 
-  @Environment(\.font) var font: Font?
-  @EnvironmentObject var testEnv: TestEnvironment
+  @Environment(\.font) var font
+  // @EnvironmentObject var testEnv: TestEnvironment
 
   var body: some View {
-    VStack {
-      Text(font == nil ? "`font` environment not set." : "\(String(describing: font!))")
-      Text(testEnv.envTest)
-      EnvironmentObjectDemo()
+    print("in EnvironmentDemo scheme is \(scheme)")
+    return VStack {
+      Text(font == nil ?
+        "colorScheme is \(scheme), `font` environment not set." :
+        "colorScheme is \(scheme), font environment is \(String(describing: font!))")
+      // Text(testEnv.envTest)
+      // EnvironmentObjectDemo()
     }
   }
 }

@@ -52,7 +52,7 @@ public struct _AnyToggleStyle: ToggleStyle {
   }
 }
 
-public enum ToggleStyleKey: EnvironmentKey {
+public enum _ToggleStyleKey: EnvironmentKey {
   public static var defaultValue: _AnyToggleStyle {
     fatalError("\(self) must have a renderer-provided default value")
   }
@@ -61,10 +61,10 @@ public enum ToggleStyleKey: EnvironmentKey {
 extension EnvironmentValues {
   var toggleStyle: _AnyToggleStyle {
     get {
-      self[ToggleStyleKey.self]
+      self[_ToggleStyleKey.self]
     }
     set {
-      self[ToggleStyleKey.self] = newValue
+      self[_ToggleStyleKey.self] = newValue
     }
   }
 }

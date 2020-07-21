@@ -12,30 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public enum ColorScheme: CaseIterable {
-  case dark
-  case light
-}
+import JavaScriptKit
 
-public struct _ColorSchemeKey: EnvironmentKey {
-  public static var defaultValue: ColorScheme {
-    fatalError("\(self) must have a renderer-provided default value")
-  }
-}
-
-public extension EnvironmentValues {
-  var colorScheme: ColorScheme {
-    get {
-      self[_ColorSchemeKey.self]
+extension ColorScheme {
+  init(matchMediaDarkScheme: JSObjectRef) {
+    if matchMediaDarkScheme.matches.boolean == true {
+      self = .dark
+    } else {
+      self = .light
     }
-    set {
-      self[_ColorSchemeKey.self] = newValue
-    }
-  }
-}
-
-public extension View {
-  func colorScheme(_ colorScheme: ColorScheme) -> some View {
-    environment(\.colorScheme, colorScheme)
   }
 }

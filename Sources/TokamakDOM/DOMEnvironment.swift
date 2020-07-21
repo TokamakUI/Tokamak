@@ -25,20 +25,21 @@ struct DOMEnvironment<V: View>: View {
 
   let content: V
 
-  private let matchMedia =
-    JSObjectRef.global.window.object!.matchMedia!("(prefers-color-scheme: dark)").object!
-
   var body: some View {
-    content
+    print("DOMEnvironment.body called")
+    return content
       .colorScheme(scheme)
       .onAppear {
         colorSchemeListener = JSClosure {
-          scheme = $0[0].object!.matches.boolean == true ? .dark : .light
+          scheme = .init(matchMediaDarkScheme: $0[0].object!)
           return .undefined
         }
-        _ = matchMedia.addEventListener!("change", colorSchemeListener!)
-      }.onDisappear {
-        _ = matchMedia.removeEventListener!("change", colorSchemeListener!)
+        // FIXME: the lifetime of this `window` object is weird, capturing it as a property of
+        // this view causes crashes
+        _ = matchMediaDarkScheme.addEventListener!("change", colorSchemeListener!)
+      }
+      .onDisappear {
+        _ = matchMediaDarkScheme.removeEventListener!("change", colorSchemeListener!)
       }
   }
 }

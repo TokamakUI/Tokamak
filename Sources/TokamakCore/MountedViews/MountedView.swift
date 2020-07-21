@@ -19,9 +19,11 @@ import Runtime
 
 public class MountedView<R: Renderer> {
   public internal(set) var view: AnyView
+  let environmentValues: EnvironmentValues
 
-  init(_ view: AnyView) {
+  init(_ view: AnyView, _ environmentValues: EnvironmentValues) {
     self.view = view
+    self.environmentValues = environmentValues
   }
 
   func mount(with reconciler: StackReconciler<R>) {
@@ -33,7 +35,22 @@ public class MountedView<R: Renderer> {
   }
 
   func update(with reconciler: StackReconciler<R>) {
-    fatalError("implement \(#function) in subclass")
+    // swiftlint:disable:next force_try
+    try! typeInfo(of: view.type).injectEnvironment(from: environmentValues, into: &view.view)
+  }
+}
+
+extension TypeInfo {
+  func injectEnvironment(from environmentValues: EnvironmentValues, into view: inout Any) {
+    for prop in properties.filter({ $0.type is EnvironmentReader.Type }) {
+      // swiftlint:disable force_cast
+      // swiftlint:disable force_try
+      var wrapper = try! prop.get(from: view) as! EnvironmentReader
+      wrapper.setContent(from: environmentValues)
+      try! prop.set(value: wrapper, on: &view)
+      // swiftlint:enable force_cast
+      // swiftlint:enable force_try
+    }
   }
 }
 
@@ -60,14 +77,7 @@ extension View {
       }
     }
 
-    // Inject @Environment values
-    for prop in viewInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-      // swiftlint:disable force_cast
-      var wrapper = try! prop.get(from: any.view) as! EnvironmentReader
-      wrapper.setContent(from: modifiedEnv)
-      try! prop.set(value: wrapper, on: &extractedView)
-      // swiftlint:enable force_cast
-    }
+    viewInfo.injectEnvironment(from: modifiedEnv, into: &extractedView)
 
     // Set the extractedView back on the AnyView after modification
     let anyViewInfo = try! typeInfo(of: AnyView.self)
@@ -77,7 +87,7 @@ extension View {
     // Make MountedView
     let anyView = injectableView as? AnyView ?? AnyView(injectableView)
     if anyView.type == EmptyView.self {
-      return MountedNull(anyView)
+      return MountedNull(anyView, modifiedEnv)
     } else if anyView.bodyType == Never.self && !(anyView.type is ViewDeferredToRenderer.Type) {
       return MountedHostView(anyView, parentTarget, modifiedEnv)
     } else {

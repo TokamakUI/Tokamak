@@ -48,6 +48,7 @@ public final class DOMNode: Target {
   }
 }
 
+// FIXME: doesn't this belong to TokamakCore
 private extension AnyView {
   var axes: [SpacerContainerAxis] {
     var axes = [SpacerContainerAxis]()
@@ -67,8 +68,11 @@ private extension AnyView {
   }
 }
 
-let log = JSObjectRef.global.console.object!.log.function!
-let document = JSObjectRef.global.document.object!
+let global = JSObjectRef.global
+let window = global.window.object!
+let matchMediaDarkScheme = window.matchMedia!("(prefers-color-scheme: dark)").object!
+let log = global.console.object!.log.function!
+let document = global.document.object!
 let head = document.head.object!
 
 public final class DOMRenderer: Renderer {
@@ -84,12 +88,18 @@ public final class DOMRenderer: Renderer {
     rootStyle.innerHTML = .string(tokamakStyles)
     _ = head.appendChild!(rootStyle)
 
-    let environmentView = DOMEnvironment(scheme: .light, content: view)
+    let colorScheme = ColorScheme(matchMediaDarkScheme: matchMediaDarkScheme)
+    let environmentView = DOMEnvironment(scheme: colorScheme, content: view)
+    var initialEnvironment = EnvironmentValues()
+    initialEnvironment[_ToggleStyleKey] = .init(DefaultToggleStyle())
+    initialEnvironment[_ColorSchemeKey] = colorScheme
+    print("current color scheme is \(initialEnvironment[_ColorSchemeKey])")
 
     reconciler = StackReconciler(
       view: environmentView,
       target: DOMNode(environmentView, ref),
-      renderer: self
+      renderer: self,
+      environment: initialEnvironment
     ) { closure in
       let fn = JSClosure { _ in
         closure()

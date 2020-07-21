@@ -33,14 +33,12 @@ final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {
 
   var state = [Any]()
   var subscriptions = [AnyCancellable]()
-  var environmentValues: EnvironmentValues
 
   init(_ view: AnyView, _ parentTarget: R.TargetType,
        _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
-    self.environmentValues = environmentValues
 
-    super.init(view)
+    super.init(view, environmentValues)
   }
 
   override func mount(with reconciler: StackReconciler<R>) {
