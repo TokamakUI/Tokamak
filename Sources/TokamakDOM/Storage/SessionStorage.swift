@@ -19,22 +19,13 @@ import JavaScriptKit
 import OpenCombine
 import TokamakCore
 
-public class SessionStorage: _SceneStorageProvider {
-  let sessionStorage = JSObjectRef.global.sessionStorage.object!
+public class SessionStorage: WebStorage, _SceneStorageProvider {
+  let storage = JSObjectRef.global.sessionStorage.object!
 
-  init() {
+  required init() {
     subscription = Self.rootPublisher.sink { _ in
       self.publisher.send()
     }
-  }
-
-  public func store(key: String, value: String) {
-    Self.rootPublisher.send()
-    _ = sessionStorage.setItem!(key, value)
-  }
-
-  public func read(key: String) -> String? {
-    sessionStorage.getItem!(key).string
   }
 
   public static var standard: _SceneStorageProvider {

@@ -18,8 +18,16 @@
 import OpenCombine
 
 public protocol _AppStorageProvider {
-  func store(key: String, value: String)
+  func store(key: String, value: Bool?)
+  func store(key: String, value: Int?)
+  func store(key: String, value: Double?)
+  func store(key: String, value: String?)
+
+  func read(key: String) -> Bool?
+  func read(key: String) -> Int?
+  func read(key: String) -> Double?
   func read(key: String) -> String?
+
   static var standard: _AppStorageProvider { get }
   var publisher: ObservableObjectPublisher { get }
 }
@@ -33,8 +41,8 @@ public protocol _AppStorageProvider {
 
   let key: String
   let defaultValue: Value
-  let wrapValue: (Value) -> String
-  let unwrapValue: (String) -> Value?
+  let store: (_AppStorageProvider, String, Value) -> ()
+  let read: (_AppStorageProvider, String) -> Value?
 
   var objectWillChange: AnyPublisher<(), Never> {
     unwrappedProvider.publisher.eraseToAnyPublisher()
@@ -42,13 +50,10 @@ public protocol _AppStorageProvider {
 
   public var wrappedValue: Value {
     get {
-      if let stringValue = unwrappedProvider.read(key: key) {
-        return unwrapValue(stringValue) ?? defaultValue
-      }
-      return defaultValue
+      read(unwrappedProvider, key) ?? defaultValue
     }
     nonmutating set {
-      unwrappedProvider.store(key: key, value: wrapValue(newValue))
+      store(unwrappedProvider, key, newValue)
     }
   }
 
@@ -70,8 +75,8 @@ extension AppStorage {
     defaultValue = wrappedValue
     self.key = key
     provider = store
-    wrapValue = { String($0) }
-    unwrapValue = { Bool($0) }
+    self.store = { $0.store(key: $1, value: $2) }
+    read = { $0.read(key: $1) }
   }
 
   public init(wrappedValue: Value,
@@ -80,8 +85,8 @@ extension AppStorage {
     defaultValue = wrappedValue
     self.key = key
     provider = store
-    wrapValue = { String($0) }
-    unwrapValue = { Int($0) }
+    self.store = { $0.store(key: $1, value: $2) }
+    read = { $0.read(key: $1) }
   }
 
   public init(wrappedValue: Value,
@@ -90,8 +95,8 @@ extension AppStorage {
     defaultValue = wrappedValue
     self.key = key
     provider = store
-    wrapValue = { String($0) }
-    unwrapValue = { Double($0) }
+    self.store = { $0.store(key: $1, value: $2) }
+    read = { $0.read(key: $1) }
   }
 
   public init(wrappedValue: Value,
@@ -100,8 +105,8 @@ extension AppStorage {
     defaultValue = wrappedValue
     self.key = key
     provider = store
-    wrapValue = { $0 }
-    unwrapValue = { $0 }
+    self.store = { $0.store(key: $1, value: $2) }
+    read = { $0.read(key: $1) }
   }
 
   public init(wrappedValue: Value,
@@ -111,9 +116,9 @@ extension AppStorage {
     defaultValue = wrappedValue
     self.key = key
     provider = store
-    wrapValue = { String($0.rawValue) }
-    unwrapValue = {
-      guard let rawValue = Int($0) else {
+    self.store = { $0.store(key: $1, value: $2.rawValue) }
+    read = {
+      guard let rawValue = $0.read(key: $1) as Int? else {
         return nil
       }
       return Value(rawValue: rawValue)
@@ -127,8 +132,13 @@ extension AppStorage {
     defaultValue = wrappedValue
     self.key = key
     provider = store
-    wrapValue = { $0.rawValue }
-    unwrapValue = { Value(rawValue: $0) }
+    self.store = { $0.store(key: $1, value: $2.rawValue) }
+    read = {
+      guard let rawValue = $0.read(key: $1) as String? else {
+        return nil
+      }
+      return Value(rawValue: rawValue)
+    }
   }
 }
 
@@ -139,14 +149,8 @@ extension AppStorage where Value: ExpressibleByNilLiteral {
     defaultValue = wrappedValue
     self.key = key
     provider = store
-    wrapValue = {
-      if let val = $0 {
-        return String(val)
-      } else {
-        return ""
-      }
-    }
-    unwrapValue = { Bool($0) }
+    self.store = { $0.store(key: $1, value: $2) }
+    read = { $0.read(key: $1) }
   }
 
   public init(wrappedValue: Value,
@@ -155,14 +159,8 @@ extension AppStorage where Value: ExpressibleByNilLiteral {
     defaultValue = wrappedValue
     self.key = key
     provider = store
-    wrapValue = {
-      if let val = $0 {
-        return String(val)
-      } else {
-        return ""
-      }
-    }
-    unwrapValue = { Int($0) }
+    self.store = { $0.store(key: $1, value: $2) }
+    read = { $0.read(key: $1) }
   }
 
   public init(wrappedValue: Value,
@@ -171,14 +169,8 @@ extension AppStorage where Value: ExpressibleByNilLiteral {
     defaultValue = wrappedValue
     self.key = key
     provider = store
-    wrapValue = {
-      if let val = $0 {
-        return String(val)
-      } else {
-        return ""
-      }
-    }
-    unwrapValue = { Double($0) }
+    self.store = { $0.store(key: $1, value: $2) }
+    read = { $0.read(key: $1) }
   }
 
   public init(wrappedValue: Value,
@@ -187,8 +179,8 @@ extension AppStorage where Value: ExpressibleByNilLiteral {
     defaultValue = wrappedValue
     self.key = key
     provider = store
-    wrapValue = { $0 ?? "" }
-    unwrapValue = { $0 }
+    self.store = { $0.store(key: $1, value: $2) }
+    read = { $0.read(key: $1) }
   }
 }
 

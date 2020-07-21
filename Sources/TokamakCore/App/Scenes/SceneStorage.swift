@@ -18,8 +18,16 @@
 import OpenCombine
 
 public protocol _SceneStorageProvider {
-  func store(key: String, value: String)
+  func store(key: String, value: Bool?)
+  func store(key: String, value: Int?)
+  func store(key: String, value: Double?)
+  func store(key: String, value: String?)
+
+  func read(key: String) -> Bool?
+  func read(key: String) -> Int?
+  func read(key: String) -> Double?
   func read(key: String) -> String?
+
   static var standard: _SceneStorageProvider { get }
   var publisher: ObservableObjectPublisher { get }
 }
@@ -33,8 +41,8 @@ public enum _DefaultSceneStorageProvider {
 @propertyWrapper public struct SceneStorage<Value>: ObservedProperty {
   let key: String
   let defaultValue: Value
-  let wrapValue: (Value) -> String
-  let unwrapValue: (String) -> Value?
+  let store: (_SceneStorageProvider, String, Value) -> ()
+  let read: (_SceneStorageProvider, String) -> Value?
 
   var objectWillChange: AnyPublisher<(), Never> {
     _DefaultSceneStorageProvider.default.publisher.eraseToAnyPublisher()
@@ -42,13 +50,10 @@ public enum _DefaultSceneStorageProvider {
 
   public var wrappedValue: Value {
     get {
-      if let stringValue = _DefaultSceneStorageProvider.default.read(key: key) {
-        return unwrapValue(stringValue) ?? defaultValue
-      }
-      return defaultValue
+      read(_DefaultSceneStorageProvider.default, key) ?? defaultValue
     }
     nonmutating set {
-      _DefaultSceneStorageProvider.default.store(key: key, value: wrapValue(newValue))
+      store(_DefaultSceneStorageProvider.default, key, newValue)
     }
   }
 
@@ -66,32 +71,32 @@ extension SceneStorage {
               _ key: String) where Value == Bool {
     defaultValue = wrappedValue
     self.key = key
-    wrapValue = { String($0) }
-    unwrapValue = { Bool($0) }
+    store = { $0.store(key: $1, value: $2) }
+    read = { $0.read(key: $1) }
   }
 
   public init(wrappedValue: Value,
               _ key: String) where Value == Int {
     defaultValue = wrappedValue
     self.key = key
-    wrapValue = { String($0) }
-    unwrapValue = { Int($0) }
+    store = { $0.store(key: $1, value: $2) }
+    read = { $0.read(key: $1) }
   }
 
   public init(wrappedValue: Value,
               _ key: String) where Value == Double {
     defaultValue = wrappedValue
     self.key = key
-    wrapValue = { String($0) }
-    unwrapValue = { Double($0) }
+    store = { $0.store(key: $1, value: $2) }
+    read = { $0.read(key: $1) }
   }
 
   public init(wrappedValue: Value,
               _ key: String) where Value == String {
     defaultValue = wrappedValue
     self.key = key
-    wrapValue = { $0 }
-    unwrapValue = { $0 }
+    store = { $0.store(key: $1, value: $2) }
+    read = { $0.read(key: $1) }
   }
 
   public init(wrappedValue: Value,
@@ -99,9 +104,9 @@ extension SceneStorage {
     where Value: RawRepresentable, Value.RawValue == Int {
     defaultValue = wrappedValue
     self.key = key
-    wrapValue = { String($0.rawValue) }
-    unwrapValue = {
-      guard let rawValue = Int($0) else {
+    store = { $0.store(key: $1, value: $2.rawValue) }
+    read = {
+      guard let rawValue = $0.read(key: $1) as Int? else {
         return nil
       }
       return Value(rawValue: rawValue)
@@ -113,7 +118,12 @@ extension SceneStorage {
     where Value: RawRepresentable, Value.RawValue == String {
     defaultValue = wrappedValue
     self.key = key
-    wrapValue = { $0.rawValue }
-    unwrapValue = { Value(rawValue: $0) }
+    store = { $0.store(key: $1, value: $2.rawValue) }
+    read = {
+      guard let rawValue = $0.read(key: $1) as String? else {
+        return nil
+      }
+      return Value(rawValue: rawValue)
+    }
   }
 }
