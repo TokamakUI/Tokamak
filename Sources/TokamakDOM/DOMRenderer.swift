@@ -101,14 +101,15 @@ public final class DOMRenderer: Renderer {
     _ = head.appendChild!(rootStyle)
 
     // Establish default settings
-    var rootEnvironment = rootEnvironment ?? EnvironmentValues()
-    rootEnvironment[keyPath: \._defaultAppStorage] = LocalStorage.standard
+    var environment = EnvironmentValues()
+    environment[ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
+    environment[keyPath: \._defaultAppStorage] = LocalStorage.standard
     _DefaultSceneStorageProvider.default = SessionStorage.standard
 
     reconciler = StackReconciler(
       view: view,
       target: DOMNode(view, ref),
-      environment: rootEnvironment,
+      environment: environment,
       renderer: self
     ) { closure in
       let fn = JSClosure { _ in
@@ -137,14 +138,15 @@ public final class DOMRenderer: Renderer {
     _ = head.appendChild!(rootStyle)
 
     // Establish default settings
-    var rootEnvironment = rootEnvironment ?? EnvironmentValues()
-    rootEnvironment[keyPath: \._defaultAppStorage] = LocalStorage.standard
+    var environment = EnvironmentValues()
+    environment[ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
+    environment[keyPath: \._defaultAppStorage] = LocalStorage.standard
     _DefaultSceneStorageProvider.default = SessionStorage.standard
 
     reconciler = StackReconciler(
       app: app,
       target: DOMNode(app, ref),
-      environment: rootEnvironment,
+      environment: environment,
       renderer: self
     ) { closure in
       let fn = JSClosure { _ in

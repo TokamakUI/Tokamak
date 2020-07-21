@@ -56,6 +56,12 @@ extension SecureField where Label == Text {
   }
 }
 
+extension SecureField: ParentView {
+  public var children: [AnyView] {
+    (label as? GroupView)?.children ?? [AnyView(label)]
+  }
+}
+
 /// This is a helper class that works around absence of "package private" access control in Swift
 public struct _SecureFieldProxy {
   public let subject: SecureField<Text>
