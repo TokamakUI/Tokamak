@@ -26,12 +26,14 @@ struct DOMEnvironment<V: View>: View {
   let content: V
 
   var body: some View {
-    print("DOMEnvironment.body called")
+    print("DOMEnvironment.body called, scheme is \(scheme)")
     return content
       .colorScheme(scheme)
       .onAppear {
         colorSchemeListener = JSClosure {
+          print("colorSchemeListener called")
           scheme = .init(matchMediaDarkScheme: $0[0].object!)
+          print("now scheme is \(scheme)")
           return .undefined
         }
         // FIXME: the lifetime of this `window` object is weird, capturing it as a property of

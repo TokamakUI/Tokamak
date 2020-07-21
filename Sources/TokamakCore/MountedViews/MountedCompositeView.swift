@@ -63,6 +63,8 @@ final class MountedCompositeView<R: Renderer>: MountedView<R>, Hashable {
   }
 
   override func update(with reconciler: StackReconciler<R>) {
+    super.update(with: reconciler)
+
     // FIXME: for now without properly handling `Group` mounted composite views have only
     // a single element in `mountedChildren`, but this will change when
     // fragments are implemented and this switch should be rewritten to compare

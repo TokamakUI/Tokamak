@@ -19,52 +19,52 @@ import TokamakShim
 
 struct TokamakDemoView: View {
   var body: some View {
-    ScrollView(showsIndicators: true) {
-      HStack {
-        Spacer()
-      }
-      VStack {
-        Group {
-          Counter(count: Count(value: 5), limit: 15)
-            .padding()
-            .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
-            .border(Color.red, width: 3)
-          ZStack {
-            Text("I'm on bottom")
-            Text("I'm forced to the top")
-              .zIndex(1)
-            Text("I'm on top")
-          }
-          .padding(20)
-        }
-        Group {
-          ForEachDemo()
-          TextDemo()
-          ToggleDemo()
-          PathDemo()
-          TextFieldDemo()
-          SpacerDemo()
-          EnvironmentDemo()
-            .font(.system(size: 8))
-          PickerDemo()
-        }
-        Group {
-          #if canImport(TokamakDOM)
-          ListDemo().listStyle(InsetGroupedListStyle())
-          #else
-          ListDemo()
-          #endif
-          if #available(OSX 10.16, iOS 14.0, *) {
-            OutlineGroupDemo()
-          }
-          ColorDemo()
-            .padding()
-          if #available(OSX 10.16, iOS 14.0, *) {
-            GridDemo()
-          }
-        }
-      }
-    }
-    .environmentObject(TestEnvironment())
+    // ScrollView(showsIndicators: true) {
+    //   HStack {
+    //     Spacer()
+    //   }
+    //   VStack {
+    // Group {
+    //   Counter(count: Count(value: 5), limit: 15)
+    //     .padding()
+    //     .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
+    //     .border(Color.red, width: 3)
+    //   ZStack {
+    //     Text("I'm on bottom")
+    //     Text("I'm forced to the top")
+    //       .zIndex(1)
+    //     Text("I'm on top")
+    //   }
+    //   .padding(20)
+    // }
+    // Group {
+    // ForEachDemo()
+    // TextDemo()
+    // ToggleDemo()
+    // PathDemo()
+    // TextFieldDemo()
+    // SpacerDemo()
+    EnvironmentDemo()
+    // .font(.system(size: 8))
+    //   PickerDemo()
+    // }
+    // Group {
+    //   #if canImport(TokamakDOM)
+    //   ListDemo().listStyle(InsetGroupedListStyle())
+    //   #else
+    //   ListDemo()
+    //   #endif
+    //   if #available(OSX 10.16, iOS 14.0, *) {
+    //     OutlineGroupDemo()
+    //   }
+    //   ColorDemo()
+    //     .padding()
+    //   if #available(OSX 10.16, iOS 14.0, *) {
+    //     GridDemo()
+    //   }
+    // }
+    //   }
+    // }
+    // .environmentObject(TestEnvironment())
   }
 }

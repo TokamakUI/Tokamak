@@ -35,6 +35,7 @@ public class MountedView<R: Renderer> {
   }
 
   func update(with reconciler: StackReconciler<R>) {
+    print("in \(#function) environment for \(view.type) is \(environmentValues)")
     // swiftlint:disable:next force_try
     try! typeInfo(of: view.type).injectEnvironment(from: environmentValues, into: &view.view)
   }
@@ -68,7 +69,7 @@ extension View {
     let viewInfo = try! typeInfo(of: any.type)
     if viewInfo
       .genericTypes
-      .filter({ $0 is EnvironmentModifier.Type }).count > 0 {
+      .contains(where: { $0 is EnvironmentModifier.Type }) {
       // Apply Environment changes:
       if let modifier = try? viewInfo
         .property(named: "modifier")
@@ -77,6 +78,7 @@ extension View {
       }
     }
 
+    print("in \(#function) environment is \(modifiedEnv)")
     viewInfo.injectEnvironment(from: modifiedEnv, into: &extractedView)
 
     // Set the extractedView back on the AnyView after modification
