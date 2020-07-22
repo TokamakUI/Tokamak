@@ -14,7 +14,7 @@
 
 public struct Rectangle: Shape {
   public func path(in rect: CGRect) -> Path {
-    .init(rect)
+    .init(storage: .rect(rect), sizing: .flexible)
   }
 
   public init() {}
@@ -35,7 +35,14 @@ public struct RoundedRectangle: Shape {
   }
 
   public func path(in rect: CGRect) -> Path {
-    .init(roundedRect: rect, cornerSize: cornerSize, style: style)
+    .init(
+      storage: .roundedRect(.init(
+        rect: rect,
+        cornerSize: cornerSize,
+        style: style
+      )),
+      sizing: .flexible
+    )
   }
 }
 
@@ -52,9 +59,10 @@ extension Rectangle: InsettableShape {
     }
 
     public func path(in rect: CGRect) -> Path {
-      .init(CGRect(origin: rect.origin,
-                   size: CGSize(width: rect.size.width - (amount / 2),
-                                height: rect.size.height - (amount / 2))))
+      .init(storage: .rect(CGRect(origin: rect.origin,
+                                  size: CGSize(width: rect.size.width - (amount / 2),
+                                               height: rect.size.height - (amount / 2)))),
+            sizing: .flexible)
     }
 
     public func inset(by amount: CGFloat) -> Rectangle._Inset {
