@@ -87,6 +87,10 @@ extension Color {
   // FIXME: Switch to use colorScheme
   public static let primary: Self = .black
   public static let secondary: Self = .gray
+
+  public init(_ color: UIColor) {
+    self = color.color
+  }
 }
 
 extension Color: ExpressibleByIntegerLiteral {
@@ -123,7 +127,7 @@ extension Color {
 
 extension Color: ShapeStyle {}
 extension Color: View {
-  public var body: _ShapeView<Rectangle, Self> {
+  public var body: some View {
     _ShapeView(shape: Rectangle(), style: self)
   }
 }
@@ -152,5 +156,26 @@ extension View {
 extension Color {
   public static var accentColor: Self {
     envAccentColor ?? .blue
+  }
+}
+
+struct ForegroundColorKey: EnvironmentKey {
+  static let defaultValue: Color? = nil
+}
+
+public extension EnvironmentValues {
+  var foregroundColor: Color? {
+    get {
+      self[ForegroundColorKey.self]
+    }
+    set {
+      self[ForegroundColorKey.self] = newValue
+    }
+  }
+}
+
+extension View {
+  public func foregroundColor(_ color: Color?) -> some View {
+    environment(\.foregroundColor, color)
   }
 }

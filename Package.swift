@@ -37,7 +37,7 @@ let package = Package(
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     // .package(url: /* package url */, from: "1.0.0"),
-    .package(url: "https://github.com/kateinoigakukun/JavaScriptKit.git", .revision("47f2bb1")),
+    .package(url: "https://github.com/kateinoigakukun/JavaScriptKit.git", .revision("c90e82f")),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", .branch("wasi-build")),
     .package(url: "https://github.com/MaxDesiatov/OpenCombine.git", .branch("observable-object")),
   ],
