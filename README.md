@@ -123,7 +123,7 @@ Not all of these were tested though, compatibility reports are very welcome!
 
 ## Getting started
 
-Tokamak relies on [`carton`](https://carton.dev) 0.4.1 as a primary build tool. As a part of these steps
+Tokamak relies on [`carton`](https://carton.dev) as a primary build tool. As a part of these steps
 you'll install `carton` via [Homebrew](https://brew.sh/) on macOS (unfortunately you'll have to build
 it manually on Linux). Assuming you already have Homebrew installed, you can create a new Tokamak 
 app by following these steps:
