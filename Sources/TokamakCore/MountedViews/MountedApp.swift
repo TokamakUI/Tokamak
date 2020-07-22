@@ -35,9 +35,8 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
   }
 
   func mountChild<S: Scene>(_ childBody: S) -> MountedElement<R> {
-    let mountedScene = childBody.makeMountedView(R.self,
-                                                 parentTarget,
-                                                 environmentValues)
+    let mountedScene: MountedScene<R> = childBody.makeMountedView(parentTarget,
+                                                                  environmentValues)
     if let title = mountedScene.title {
       // swiftlint:disable force_cast
       (app.appType as! _TitledApp.Type)._setTitle(title)
@@ -51,28 +50,9 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     // fragments are implemented and this switch should be rewritten to compare
     // all elements in `mountedChildren`
 
-    // Inject @Environment values
-    // `DynamicProperty`s can have `@Environment` properties contained in them,
-    // so we have to inject into them as well.
-    // swiftlint:disable force_try
+    // swiftlint:disable:next force_try
     let appInfo = try! typeInfo(of: app.appType)
-    for dynamicProp in appInfo.properties.filter({ $0.type is DynamicProperty.Type }) {
-      let propInfo = try! typeInfo(of: dynamicProp.type)
-      var propWrapper = try! dynamicProp.get(from: app.app) as! DynamicProperty
-      for prop in propInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-        var wrapper = try! prop.get(from: propWrapper) as! EnvironmentReader
-        wrapper.setContent(from: environmentValues)
-        try! prop.set(value: wrapper, on: &propWrapper)
-      }
-      try! dynamicProp.set(value: propWrapper, on: &app.app)
-    }
-    for prop in appInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-      var wrapper = try! prop.get(from: app.app) as! EnvironmentReader
-      wrapper.setContent(from: environmentValues)
-      try! prop.set(value: wrapper, on: &app.app)
-    }
-    // swiftlint:enable force_cast
-    // swiftlint:enable force_try
+    appInfo.injectEnvironment(from: environmentValues, into: &app.app)
 
     switch (mountedChildren.last, reconciler.render(mountedApp: self)) {
     // no mounted children, but children available now
@@ -119,26 +99,8 @@ extension App {
 
     let appInfo = try! typeInfo(of: any.appType)
     var extractedApp = any.app
-    // Inject @Environment values
-    // swiftlint:disable force_cast
-    // `DynamicProperty`s can have `@Environment` properties contained in them,
-    // so we have to inject into them as well.
-    for dynamicProp in appInfo.properties.filter({ $0.type is DynamicProperty.Type }) {
-      let propInfo = try! typeInfo(of: dynamicProp.type)
-      var propWrapper = try! dynamicProp.get(from: extractedApp) as! DynamicProperty
-      for prop in propInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-        var wrapper = try! prop.get(from: propWrapper) as! EnvironmentReader
-        wrapper.setContent(from: environmentValues)
-        try! prop.set(value: wrapper, on: &propWrapper)
-      }
-      try! dynamicProp.set(value: propWrapper, on: &extractedApp)
-    }
-    for prop in appInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-      var wrapper = try! prop.get(from: any.app) as! EnvironmentReader
-      wrapper.setContent(from: environmentValues)
-      try! prop.set(value: wrapper, on: &extractedApp)
-    }
-    // swiftlint:enable force_cast
+
+    appInfo.injectEnvironment(from: environmentValues, into: &extractedApp)
 
     // Set the extractedApp back on the AnyApp after modification
     let anyAppInfo = try! typeInfo(of: AnyApp.self)
