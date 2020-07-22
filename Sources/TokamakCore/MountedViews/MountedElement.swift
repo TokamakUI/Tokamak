@@ -98,6 +98,33 @@ public class MountedElement<R: Renderer> {
   }
 }
 
+extension TypeInfo {
+  func injectEnvironment(from environmentValues: EnvironmentValues, into element: inout Any) {
+    // Inject @Environment values
+    // swiftlint:disable force_cast
+    // swiftlint:disable force_try
+    // `DynamicProperty`s can have `@Environment` properties contained in them,
+    // so we have to inject into them as well.
+    for dynamicProp in properties.filter({ $0.type is DynamicProperty.Type }) {
+      let propInfo = try! typeInfo(of: dynamicProp.type)
+      var propWrapper = try! dynamicProp.get(from: element) as! DynamicProperty
+      for prop in propInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
+        var wrapper = try! prop.get(from: propWrapper) as! EnvironmentReader
+        wrapper.setContent(from: environmentValues)
+        try! prop.set(value: wrapper, on: &propWrapper)
+      }
+      try! dynamicProp.set(value: propWrapper, on: &element)
+    }
+    for prop in properties.filter({ $0.type is EnvironmentReader.Type }) {
+      var wrapper = try! prop.get(from: element) as! EnvironmentReader
+      wrapper.setContent(from: environmentValues)
+      try! prop.set(value: wrapper, on: &element)
+    }
+    // swiftlint:enable force_try
+    // swiftlint:enable force_cast
+  }
+}
+
 extension View {
   func makeMountedView<R: Renderer>(_ parentTarget: R.TargetType,
                                     _ environmentValues: EnvironmentValues)
@@ -121,26 +148,7 @@ extension View {
       }
     }
 
-    // Inject @Environment values
-    // swiftlint:disable force_cast
-    // `DynamicProperty`s can have `@Environment` properties contained in them,
-    // so we have to inject into them as well.
-    for dynamicProp in viewInfo.properties.filter({ $0.type is DynamicProperty.Type }) {
-      let propInfo = try! typeInfo(of: dynamicProp.type)
-      var propWrapper = try! dynamicProp.get(from: extractedView) as! DynamicProperty
-      for prop in propInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-        var wrapper = try! prop.get(from: propWrapper) as! EnvironmentReader
-        wrapper.setContent(from: environmentValues)
-        try! prop.set(value: wrapper, on: &propWrapper)
-      }
-      try! dynamicProp.set(value: propWrapper, on: &extractedView)
-    }
-    for prop in viewInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-      var wrapper = try! prop.get(from: any.view) as! EnvironmentReader
-      wrapper.setContent(from: environmentValues)
-      try! prop.set(value: wrapper, on: &extractedView)
-    }
-    // swiftlint:enable force_cast
+    viewInfo.injectEnvironment(from: environmentValues, into: &extractedView)
 
     // Set the extractedView back on the AnyView after modification
     let anyViewInfo = try! typeInfo(of: AnyView.self)
@@ -162,10 +170,10 @@ extension View {
 typealias MountedScene<R: Renderer> = (body: MountedElement<R>, title: String?)
 
 extension Scene {
-  func makeMountedView<R: Renderer>(_ renderer: R.Type,
-                                    _ parentTarget: R.TargetType,
-                                    _ environmentValues: EnvironmentValues)
-    -> MountedScene<R> {
+  func makeMountedView<R: Renderer>(
+    _ parentTarget: R.TargetType,
+    _ environmentValues: EnvironmentValues
+  ) -> MountedScene<R> {
     let anySelf = (self as? AnyScene) ?? AnyScene(self)
     var title: String?
     if let titledSelf = anySelf.scene as? TitledScene,
@@ -177,7 +185,7 @@ extension Scene {
     } else if let deferredSelf = anySelf.scene as? SceneDeferredToRenderer {
       return (deferredSelf.deferredBody.makeMountedView(parentTarget, environmentValues), title)
     } else if let groupSelf = anySelf.scene as? GroupScene {
-      return groupSelf.children[0].makeMountedView(renderer, parentTarget, environmentValues)
+      return groupSelf.children[0].makeMountedView(parentTarget, environmentValues)
     } else {
       fatalError("Unsupported `Scene` type `\(anySelf.sceneType)`. Please file a bug report.")
     }

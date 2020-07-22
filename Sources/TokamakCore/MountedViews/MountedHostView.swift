@@ -104,28 +104,9 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
         if firstChild.typeConstructorName == mountedChildren[0].view.typeConstructorName {
           child.view = firstChild
           // Inject Environment
-          // swiftlint:disable force_try
+          // swiftlint:disable:next force_try
           let viewInfo = try! typeInfo(of: child.view.type)
-          // swiftlint:disable force_cast
-          // `DynamicProperty`s can have `@Environment` properties contained in them,
-          // so we have to inject into them as well.
-          for dynamicProp in viewInfo.properties.filter({ $0.type is DynamicProperty.Type }) {
-            let propInfo = try! typeInfo(of: dynamicProp.type)
-            var propWrapper = try! dynamicProp.get(from: child.view.view) as! DynamicProperty
-            for prop in propInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-              var wrapper = try! prop.get(from: propWrapper) as! EnvironmentReader
-              wrapper.setContent(from: environmentValues)
-              try! prop.set(value: wrapper, on: &propWrapper)
-            }
-            try! dynamicProp.set(value: propWrapper, on: &child.view.view)
-          }
-          for prop in viewInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-            var wrapper = try! prop.get(from: child.view.view) as! EnvironmentReader
-            wrapper.setContent(from: environmentValues)
-            try! prop.set(value: wrapper, on: &child.view.view)
-          }
-          // swiftlint:enable force_cast
-          // swiftlint:enable force_try
+          viewInfo.injectEnvironment(from: environmentValues, into: &child.view.view)
           child.update(with: reconciler)
           newChild = child
         } else {
