@@ -11,5 +11,3 @@ Before we create the `Renderer`, we need to understand the requirements of our p
 	`TokamakDOM` provides HTML representations of many `Views`, so we can utilize it. However, we will cover how to provide custom `View` bodies your `Renderer` can understand, and when you are required to do so.
 
 And that’s it! In the next part we’ll go more in depth on `Renderers`.
-
-#tokamak

@@ -8,5 +8,3 @@ So, what goes into a `Renderer`?
 5. `func unmount` - This function is called when an existing target instance should be unmounted: removed from the parent and most likely destroyed.
 
 That’s it! Let’s get our project setup.
-
-#tokamak

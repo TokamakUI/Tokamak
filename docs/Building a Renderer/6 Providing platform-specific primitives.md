@@ -50,5 +50,3 @@ Then we were able to access the properties of the HTML.
 Proxies allow access to internal properties of views implemented by `TokamakCore`. For instance, to access the storage of the `Text` view, we were required to use a `_TextProxy`.
 
 Proxies contain all of the properties of the primitive necessary to build your platform-specific implementation.
-
-#tokamak

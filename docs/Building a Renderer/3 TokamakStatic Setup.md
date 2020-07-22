@@ -75,5 +75,3 @@ extension Text {
 ```
 
 We’ve omitted any stateful `Views`, as well as property wrappers used to modify state.
-
-#tokamak

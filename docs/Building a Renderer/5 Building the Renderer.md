@@ -120,5 +120,3 @@ This spits out:
 ```
 
 Congratulations 🎉 You successfully wrote a `Renderer`.  We can’t wait to see what platforms you’ll bring Tokamak to.
-
-#tokamak
