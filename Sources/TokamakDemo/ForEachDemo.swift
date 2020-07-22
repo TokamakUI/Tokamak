@@ -23,7 +23,7 @@ public struct ForEachDemo: View {
         Text("Add item")
       }
 
-      ForEach(0..<maxItem) {
+      ForEach(0..<maxItem, id: \.self) {
         Text("Item: \($0)")
       }
     }

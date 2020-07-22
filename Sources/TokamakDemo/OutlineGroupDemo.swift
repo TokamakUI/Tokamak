@@ -23,7 +23,7 @@ struct File: Identifiable {
   let children: [File]?
 }
 
-@available(OSX 10.16, iOS 14, *)
+@available(OSX 10.16, iOS 14.0, *)
 struct OutlineGroupDemo: View {
   let fs: [File] = [
     .init(id: 0, name: "Users", children: [

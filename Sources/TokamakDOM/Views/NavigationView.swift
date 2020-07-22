@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Tokamak contributors
+// Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,22 +11,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Carson Katri on 6/29/20.
-//
 
-import TokamakShim
+import JavaScriptKit
+import TokamakCore
 
-struct SpacerDemo: View {
-  var body: some View {
-    VStack {
-      HStack {
-        Text("Left side.")
-        Spacer()
-        Text("Right side.")
-      }
-      Spacer()
-      Text("Forced to bottom.")
-    }
+extension NavigationView: ViewDeferredToRenderer {
+  public var deferredBody: AnyView {
+    AnyView(HTML("div", [
+      "style": """
+      display: flex; flex-direction: row; align-items: stretch;
+      width: 100%; height: 100%;
+      """,
+    ]) {
+      _NavigationViewProxy(self).body
+    })
   }
 }
