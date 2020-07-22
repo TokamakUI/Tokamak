@@ -52,6 +52,8 @@ struct PathDemo: View {
           .frame(width: 25, height: 25)
         Rectangle()
           .frame(width: 25, height: 25)
+        Capsule()
+          .frame(width: 50, height: 25)
       }
       .foregroundColor(Color.blue)
     }

@@ -166,8 +166,16 @@ public struct Path: Equatable, LosslessStringConvertible {
 
 public struct FixedRoundedRect: Equatable {
   public let rect: CGRect
-  public let cornerSize: CGSize
+  public let cornerSize: CGSize?
   public let style: RoundedCornerStyle
+
+  public init(rect: CGRect, cornerSize: CGSize, style: RoundedCornerStyle) {
+    (self.rect, self.cornerSize, self.style) = (rect, cornerSize, style)
+  }
+
+  init(capsule rect: CGRect, style: RoundedCornerStyle) {
+    (self.rect, cornerSize, self.style) = (rect, nil, style)
+  }
 }
 
 public struct StrokedPath: Equatable {

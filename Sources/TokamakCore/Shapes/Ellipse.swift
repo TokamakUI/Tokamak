@@ -43,11 +43,7 @@ public struct Capsule: Shape {
     let heightRadius = rect.size.height / 2
     return .init(
       storage: .roundedRect(.init(
-        rect: rect,
-        cornerSize: .init(
-          width: widthRadius,
-          height: heightRadius
-        ),
+        capsule: rect,
         style: style
       )),
       sizing: .flexible
