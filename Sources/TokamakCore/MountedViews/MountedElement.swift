@@ -19,15 +19,15 @@ import Runtime
 
 /// The container for any of the possible `MountedElement` types
 enum MountedElementKind {
-  case app(AnyApp)
-  case scene(AnyScene)
+  case app(_AnyApp)
+  case scene(_AnyScene)
   case view(AnyView)
 }
 
 public class MountedElement<R: Renderer> {
   var element: MountedElementKind
 
-  public internal(set) var app: AnyApp {
+  public internal(set) var app: _AnyApp {
     get {
       if case let .app(app) = element {
         return app
@@ -39,7 +39,7 @@ public class MountedElement<R: Renderer> {
     }
   }
 
-  public internal(set) var scene: AnyScene {
+  public internal(set) var scene: _AnyScene {
     get {
       if case let .scene(scene) = element {
         return scene
@@ -73,11 +73,11 @@ public class MountedElement<R: Renderer> {
     }
   }
 
-  init(_ app: AnyApp) {
+  init(_ app: _AnyApp) {
     element = .app(app)
   }
 
-  init(_ scene: AnyScene) {
+  init(_ scene: _AnyScene) {
     element = .scene(scene)
   }
 
@@ -174,7 +174,7 @@ extension Scene {
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues
   ) -> MountedScene<R> {
-    let anySelf = (self as? AnyScene) ?? AnyScene(self)
+    let anySelf = (self as? _AnyScene) ?? _AnyScene(self)
     var title: String?
     if let titledSelf = anySelf.scene as? TitledScene,
       let text = titledSelf.title {

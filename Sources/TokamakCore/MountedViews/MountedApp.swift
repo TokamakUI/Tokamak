@@ -73,7 +73,7 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
       // new child has the same type as existing child
       // swiftlint:disable:next force_try
       if try! wrapper.view.typeConstructorName == typeInfo(of: childBodyType).mangledName {
-        wrapper.scene = AnyScene(childBody)
+        wrapper.scene = _AnyScene(childBody)
         wrapper.update(with: reconciler)
       } else {
         // new child is of a different type, complete rerender, i.e. unmount the old
@@ -94,7 +94,7 @@ extension App {
     -> MountedApp<R> where R: Renderer {
     // Find Environment changes
     var injectableApp = self
-    let any = (injectableApp as? AnyApp) ?? AnyApp(injectableApp)
+    let any = (injectableApp as? _AnyApp) ?? _AnyApp(injectableApp)
     // swiftlint:disable force_try
 
     let appInfo = try! typeInfo(of: any.appType)
@@ -103,12 +103,12 @@ extension App {
     appInfo.injectEnvironment(from: environmentValues, into: &extractedApp)
 
     // Set the extractedApp back on the AnyApp after modification
-    let anyAppInfo = try! typeInfo(of: AnyApp.self)
+    let anyAppInfo = try! typeInfo(of: _AnyApp.self)
     try! anyAppInfo.property(named: "app").set(value: extractedApp, on: &injectableApp)
     // swiftlint:enable force_try
 
     // Make MountedView
-    let anyApp = injectableApp as? AnyApp ?? AnyApp(injectableApp)
+    let anyApp = injectableApp as? _AnyApp ?? _AnyApp(injectableApp)
     return MountedApp(anyApp, parentTarget, environmentValues)
   }
 }

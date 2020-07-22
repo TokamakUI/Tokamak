@@ -23,7 +23,7 @@ public protocol _SceneModifier {
 
 public struct _SceneModifier_Content<Modifier>: Scene where Modifier: _SceneModifier {
   public let modifier: Modifier
-  public let scene: AnyScene
+  public let scene: _AnyScene
 
   public var body: Never {
     neverScene("_SceneModifier_Content")

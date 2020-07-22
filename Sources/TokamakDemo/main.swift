@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if os(WASI)
-import TokamakDOM
-#else
-import SwiftUI
-#endif
+import TokamakShim
 
 @available(OSX 10.16, iOS 14.0, *)
 struct TokamakDemoApp: App {

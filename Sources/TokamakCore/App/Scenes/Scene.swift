@@ -32,7 +32,7 @@ protocol ViewContainingScene {
 }
 
 protocol ParentScene {
-  var children: [AnyScene] { get }
+  var children: [_AnyScene] { get }
 }
 
 protocol GroupScene: ParentScene {}

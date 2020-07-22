@@ -17,7 +17,7 @@
 
 open class Target {
   var element: MountedElementKind
-  public internal(set) var app: AnyApp {
+  public internal(set) var app: _AnyApp {
     get {
       if case let .app(app) = element {
         return app
@@ -30,7 +30,7 @@ open class Target {
     }
   }
 
-  public internal(set) var scene: AnyScene {
+  public internal(set) var scene: _AnyScene {
     get {
       if case let .scene(scene) = element {
         return scene
@@ -61,6 +61,6 @@ open class Target {
   }
 
   public init<A: App>(_ app: A) {
-    element = .app(AnyApp(app))
+    element = .app(_AnyApp(app))
   }
 }

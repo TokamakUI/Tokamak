@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/19/20.
 //
 
-public struct AnyScene: Scene {
+public struct _AnyScene: Scene {
   let scene: Any
   let sceneType: Any.Type
 
@@ -25,6 +25,6 @@ public struct AnyScene: Scene {
   }
 
   public var body: Never {
-    neverScene("AnyScene")
+    neverScene("_AnyScene")
   }
 }

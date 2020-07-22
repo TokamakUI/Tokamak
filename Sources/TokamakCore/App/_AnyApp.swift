@@ -17,31 +17,31 @@
 
 import OpenCombine
 
-public struct AnyApp: App {
+public struct _AnyApp: App {
   var app: Any
   let appType: Any.Type
-  let bodyClosure: (Any) -> AnyScene
+  let bodyClosure: (Any) -> _AnyScene
   let bodyType: Any.Type
 
   init<A: App>(_ app: A) {
     self.app = app
     appType = A.self
     // swiftlint:disable:next force_cast
-    bodyClosure = { AnyScene(($0 as! A).body) }
+    bodyClosure = { _AnyScene(($0 as! A).body) }
     bodyType = A.Body.self
   }
 
   public var body: Never {
-    neverScene("AnyApp")
+    neverScene("_AnyApp")
   }
 
   public init() {
-    fatalError("`AnyApp` cannot be initialized without an underlying `App` type.")
+    fatalError("`_AnyApp` cannot be initialized without an underlying `App` type.")
   }
 
   public static func _launch(_ app: Self,
                              _ rootEnvironment: EnvironmentValues) {
-    fatalError("`AnyApp` cannot be launched. Access underlying `app` value.")
+    fatalError("`_AnyApp` cannot be launched. Access underlying `app` value.")
   }
 
   public static func _setTitle(_ title: String) {
@@ -49,6 +49,6 @@ public struct AnyApp: App {
   }
 
   public var _phasePublisher: CurrentValueSubject<ScenePhase, Never> {
-    fatalError("`AnyApp` cannot monitor scenePhase. Access underlying `app` value.")
+    fatalError("`_AnyApp` cannot monitor scenePhase. Access underlying `app` value.")
   }
 }

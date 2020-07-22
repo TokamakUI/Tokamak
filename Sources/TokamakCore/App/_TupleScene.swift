@@ -17,9 +17,9 @@
 
 struct _TupleScene<T>: Scene, GroupScene {
   let value: T
-  var children: [AnyScene]
+  var children: [_AnyScene]
 
-  init(_ value: T, children: [AnyScene]) {
+  init(_ value: T, children: [_AnyScene]) {
     self.value = value
     self.children = children
   }
