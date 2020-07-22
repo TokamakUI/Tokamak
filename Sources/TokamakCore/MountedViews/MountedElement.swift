@@ -126,9 +126,10 @@ extension TypeInfo {
 }
 
 extension View {
-  func makeMountedView<R: Renderer>(_ parentTarget: R.TargetType,
-                                    _ environmentValues: EnvironmentValues)
-    -> MountedElement<R> {
+  func makeMountedView<R: Renderer>(
+    _ parentTarget: R.TargetType,
+    _ environmentValues: EnvironmentValues
+  ) -> MountedElement<R> {
     // Find Environment changes
     var modifiedEnv = environmentValues
     var injectableView = self
