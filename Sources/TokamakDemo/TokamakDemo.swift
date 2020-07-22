@@ -38,6 +38,9 @@ struct TokamakDemoView: View {
           .padding(20)
         }
         Group {
+          if #available(OSX 11, iOS 14, *) {
+            AppStorageDemo()
+          }
           ForEachDemo()
           TextDemo()
           ToggleDemo()

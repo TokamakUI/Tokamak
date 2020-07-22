@@ -21,11 +21,13 @@ public protocol View {
   @ViewBuilder var body: Self.Body { get }
 }
 
-extension Never: View {
+extension Never {
   public var body: Never {
     neverBody("Never")
   }
 }
+
+extension Never: View {}
 
 /// A `View` type that renders with subviews, usually specified in the `Content` type argument
 public protocol ParentView {

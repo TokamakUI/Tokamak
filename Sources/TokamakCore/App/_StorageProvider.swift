@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Tokamak contributors
+// Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,13 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Max Desiatov on 05/01/2019.
+//  Created by Carson Katri on 7/22/20.
 //
 
-final class MountedNull<R: Renderer>: MountedElement<R> {
-  override func mount(with reconciler: StackReconciler<R>) {}
+import OpenCombine
 
-  override func unmount(with reconciler: StackReconciler<R>) {}
+public protocol _StorageProvider {
+  func store(key: String, value: Bool?)
+  func store(key: String, value: Int?)
+  func store(key: String, value: Double?)
+  func store(key: String, value: String?)
 
-  override func update(with reconciler: StackReconciler<R>) {}
+  func read(key: String) -> Bool?
+  func read(key: String) -> Int?
+  func read(key: String) -> Double?
+  func read(key: String) -> String?
+
+  static var standard: _StorageProvider { get }
+  var publisher: ObservableObjectPublisher { get }
 }
