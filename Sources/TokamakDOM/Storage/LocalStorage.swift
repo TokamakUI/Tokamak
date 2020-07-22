@@ -19,7 +19,7 @@ import JavaScriptKit
 import OpenCombine
 import TokamakCore
 
-public class LocalStorage: WebStorage, _AppStorageProvider {
+public class LocalStorage: WebStorage, _StorageProvider {
   let storage = JSObjectRef.global.localStorage.object!
 
   required init() {
@@ -32,8 +32,8 @@ public class LocalStorage: WebStorage, _AppStorageProvider {
     }
   }
 
-  public static var standard: _AppStorageProvider {
-    LocalStorage()
+  public static var standard: _StorageProvider {
+    Self()
   }
 
   var subscription: AnyCancellable?

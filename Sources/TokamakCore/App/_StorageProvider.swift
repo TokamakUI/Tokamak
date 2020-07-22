@@ -12,27 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 7/20/20.
+//  Created by Carson Katri on 7/22/20.
 //
 
-import JavaScriptKit
 import OpenCombine
-import TokamakCore
 
-public class SessionStorage: WebStorage, _StorageProvider {
-  let storage = JSObjectRef.global.sessionStorage.object!
+public protocol _StorageProvider {
+  func store(key: String, value: Bool?)
+  func store(key: String, value: Int?)
+  func store(key: String, value: Double?)
+  func store(key: String, value: String?)
 
-  required init() {
-    subscription = Self.rootPublisher.sink { _ in
-      self.publisher.send()
-    }
-  }
+  func read(key: String) -> Bool?
+  func read(key: String) -> Int?
+  func read(key: String) -> Double?
+  func read(key: String) -> String?
 
-  public static var standard: _StorageProvider {
-    Self()
-  }
-
-  var subscription: AnyCancellable?
-  static let rootPublisher = ObservableObjectPublisher()
-  public let publisher = ObservableObjectPublisher()
+  static var standard: _StorageProvider { get }
+  var publisher: ObservableObjectPublisher { get }
 }
