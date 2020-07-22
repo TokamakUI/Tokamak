@@ -39,9 +39,7 @@ public struct Capsule: Shape {
   }
 
   public func path(in rect: CGRect) -> Path {
-    let widthRadius = rect.size.width / 2
-    let heightRadius = rect.size.height / 2
-    return .init(
+    .init(
       storage: .roundedRect(.init(
         capsule: rect,
         style: style

@@ -164,65 +164,6 @@ public struct Path: Equatable, LosslessStringConvertible {
   //  public init(_ path: CGMutablePath)
 }
 
-public struct FixedRoundedRect: Equatable {
-  public let rect: CGRect
-  public let cornerSize: CGSize?
-  public let style: RoundedCornerStyle
-
-  public init(rect: CGRect, cornerSize: CGSize, style: RoundedCornerStyle) {
-    (self.rect, self.cornerSize, self.style) = (rect, cornerSize, style)
-  }
-
-  init(capsule rect: CGRect, style: RoundedCornerStyle) {
-    (self.rect, cornerSize, self.style) = (rect, nil, style)
-  }
-}
-
-public struct StrokedPath: Equatable {
-  public let path: Path
-  public let style: StrokeStyle
-
-  public init(path: Path, style: StrokeStyle) {
-    self.path = path
-    self.style = style
-  }
-}
-
-public struct TrimmedPath: Equatable {
-  public let path: Path
-  public let from: CGFloat
-  public let to: CGFloat
-
-  public init(path: Path, from: CGFloat, to: CGFloat) {
-    self.path = path
-    self.from = from
-    self.to = to
-  }
-}
-
-public struct StrokeStyle: Equatable {
-  public var lineWidth: CGFloat
-  public var lineCap: CGLineCap
-  public var lineJoin: CGLineJoin
-  public var miterLimit: CGFloat
-  public var dash: [CGFloat]
-  public var dashPhase: CGFloat
-
-  public init(lineWidth: CGFloat = 1,
-              lineCap: CGLineCap = .butt,
-              lineJoin: CGLineJoin = .miter,
-              miterLimit: CGFloat = 10,
-              dash: [CGFloat] = [CGFloat](),
-              dashPhase: CGFloat = 0) {
-    self.lineWidth = lineWidth
-    self.lineCap = lineCap
-    self.lineJoin = lineJoin
-    self.miterLimit = miterLimit
-    self.dash = dash
-    self.dashPhase = dashPhase
-  }
-}
-
 public enum RoundedCornerStyle: Hashable, Equatable {
   case circular
   case continuous
