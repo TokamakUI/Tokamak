@@ -158,3 +158,24 @@ extension Color {
     envAccentColor ?? .blue
   }
 }
+
+struct ForegroundColorKey: EnvironmentKey {
+  static let defaultValue: Color? = nil
+}
+
+public extension EnvironmentValues {
+  var foregroundColor: Color? {
+    get {
+      self[ForegroundColorKey.self]
+    }
+    set {
+      self[ForegroundColorKey.self] = newValue
+    }
+  }
+}
+
+extension View {
+  public func foregroundColor(_ color: Color?) -> some View {
+    environment(\.foregroundColor, color)
+  }
+}

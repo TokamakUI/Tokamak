@@ -71,6 +71,14 @@ var gridDemo: NavItem {
   }
 }
 
+var appStorageDemo: NavItem {
+  if #available(OSX 11.0, iOS 14.0, *) {
+    return NavItem("AppStorage", destination: AppStorageDemo())
+  } else {
+    return NavItem(unavailiable: "AppStorage")
+  }
+}
+
 var links: [NavItem] {
   [
     NavItem("Counter", destination:
@@ -95,6 +103,7 @@ var links: [NavItem] {
     NavItem("List", destination: listDemo),
     outlineGroupDemo,
     NavItem("Color", destination: ColorDemo()),
+    appStorageDemo,
     gridDemo,
   ]
 }

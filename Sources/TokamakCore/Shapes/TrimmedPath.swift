@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Tokamak contributors
+// Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,13 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Max Desiatov on 05/01/2019.
+//  Created by Carson Katri on 7/22/20.
 //
 
-final class MountedNull<R: Renderer>: MountedElement<R> {
-  override func mount(with reconciler: StackReconciler<R>) {}
+public struct TrimmedPath: Equatable {
+  public let path: Path
+  public let from: CGFloat
+  public let to: CGFloat
 
-  override func unmount(with reconciler: StackReconciler<R>) {}
-
-  override func update(with reconciler: StackReconciler<R>) {}
+  public init(path: Path, from: CGFloat, to: CGFloat) {
+    self.path = path
+    self.from = from
+    self.to = to
+  }
 }

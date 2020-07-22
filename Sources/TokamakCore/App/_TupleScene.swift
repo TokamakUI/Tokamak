@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Tokamak contributors
+// Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,13 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Max Desiatov on 05/01/2019.
+//  Created by Carson Katri on 7/16/20.
 //
 
-final class MountedNull<R: Renderer>: MountedElement<R> {
-  override func mount(with reconciler: StackReconciler<R>) {}
+struct _TupleScene<T>: Scene, GroupScene {
+  let value: T
+  var children: [_AnyScene]
 
-  override func unmount(with reconciler: StackReconciler<R>) {}
+  init(_ value: T, children: [_AnyScene]) {
+    self.value = value
+    self.children = children
+  }
 
-  override func update(with reconciler: StackReconciler<R>) {}
+  var body: Never {
+    neverScene("_TupleScene")
+  }
 }

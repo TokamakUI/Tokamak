@@ -61,6 +61,7 @@ public struct Path: Equatable, LosslessStringConvertible {
   }
 
   public var storage: Storage
+  public let sizing: _Sizing
   public var elements: [Element] = []
   public var transform: CGAffineTransform = .identity
 
@@ -73,37 +74,43 @@ public struct Path: Equatable, LosslessStringConvertible {
 
   public init() {
     storage = .empty
+    sizing = .fixed
   }
 
-  init(storage: Storage) {
+  init(storage: Storage, sizing: _Sizing = .fixed) {
     self.storage = storage
+    self.sizing = sizing
   }
 
   public init(_ rect: CGRect) {
-    storage = .rect(rect)
+    self.init(storage: .rect(rect))
   }
 
   public init(roundedRect rect: CGRect,
               cornerSize: CGSize,
               style: RoundedCornerStyle = .circular) {
-    storage = .roundedRect(FixedRoundedRect(
+    self.init(storage: .roundedRect(FixedRoundedRect(
       rect: rect,
       cornerSize: cornerSize,
       style: style
-    ))
+    )))
   }
 
   public init(roundedRect rect: CGRect,
               cornerRadius: CGFloat,
               style: RoundedCornerStyle = .circular) {
-    storage = .roundedRect(FixedRoundedRect(rect: rect,
-                                            cornerSize: CGSize(width: cornerRadius,
-                                                               height: cornerRadius),
-                                            style: style))
+    self.init(
+      storage: .roundedRect(FixedRoundedRect(
+        rect: rect,
+        cornerSize: CGSize(width: cornerRadius,
+                           height: cornerRadius),
+        style: style
+      ))
+    )
   }
 
   public init(ellipseIn rect: CGRect) {
-    storage = .ellipse(rect)
+    self.init(storage: .ellipse(rect))
   }
 
   public init(_ callback: (inout Self) -> ()) {
@@ -155,57 +162,6 @@ public struct Path: Equatable, LosslessStringConvertible {
   //  FIXME: In SwiftUI, but we don't have CGPath...
   //  public init(_ path: CGPath)
   //  public init(_ path: CGMutablePath)
-}
-
-public struct FixedRoundedRect: Equatable {
-  public let rect: CGRect
-  public let cornerSize: CGSize
-  public let style: RoundedCornerStyle
-}
-
-public struct StrokedPath: Equatable {
-  public let path: Path
-  public let style: StrokeStyle
-
-  public init(path: Path, style: StrokeStyle) {
-    self.path = path
-    self.style = style
-  }
-}
-
-public struct TrimmedPath: Equatable {
-  public let path: Path
-  public let from: CGFloat
-  public let to: CGFloat
-
-  public init(path: Path, from: CGFloat, to: CGFloat) {
-    self.path = path
-    self.from = from
-    self.to = to
-  }
-}
-
-public struct StrokeStyle: Equatable {
-  public var lineWidth: CGFloat
-  public var lineCap: CGLineCap
-  public var lineJoin: CGLineJoin
-  public var miterLimit: CGFloat
-  public var dash: [CGFloat]
-  public var dashPhase: CGFloat
-
-  public init(lineWidth: CGFloat = 1,
-              lineCap: CGLineCap = .butt,
-              lineJoin: CGLineJoin = .miter,
-              miterLimit: CGFloat = 10,
-              dash: [CGFloat] = [CGFloat](),
-              dashPhase: CGFloat = 0) {
-    self.lineWidth = lineWidth
-    self.lineCap = lineCap
-    self.lineJoin = lineJoin
-    self.miterLimit = miterLimit
-    self.dash = dash
-    self.dashPhase = dashPhase
-  }
 }
 
 public enum RoundedCornerStyle: Hashable, Equatable {

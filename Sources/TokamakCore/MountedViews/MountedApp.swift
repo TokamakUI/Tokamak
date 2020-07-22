@@ -12,32 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Max Desiatov on 03/12/2018.
+//  Created by Carson Katri on 7/19/20.
 //
 
 import OpenCombine
 import Runtime
 
-final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
+// This is very similar to `MountedCompositeView`. However, the `mountedBody`
+// is the computed content of the specified `Scene`, instead of having child
+// `View`s
+final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
   override func mount(with reconciler: StackReconciler<R>) {
-    let childBody = reconciler.render(compositeView: self)
+    let childBody = reconciler.render(mountedApp: self)
 
-    if let appearanceAction = view.view as? AppearanceActionProtocol {
-      appearanceAction.appear?()
-    }
-
-    let child: MountedElement<R> = childBody.makeMountedView(parentTarget,
-                                                             environmentValues)
+    let child: MountedElement<R> = mountChild(childBody)
     mountedChildren = [child]
     child.mount(with: reconciler)
   }
 
   override func unmount(with reconciler: StackReconciler<R>) {
     mountedChildren.forEach { $0.unmount(with: reconciler) }
+  }
 
-    if let appearanceAction = view.view as? AppearanceActionProtocol {
-      appearanceAction.disappear?()
+  func mountChild<S: Scene>(_ childBody: S) -> MountedElement<R> {
+    let mountedScene: MountedScene<R> = childBody.makeMountedView(parentTarget,
+                                                                  environmentValues)
+    if let title = mountedScene.title {
+      // swiftlint:disable force_cast
+      (app.appType as! _TitledApp.Type)._setTitle(title)
     }
+    return mountedScene.body
   }
 
   override func update(with reconciler: StackReconciler<R>) {
@@ -45,11 +49,15 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     // a single element in `mountedChildren`, but this will change when
     // fragments are implemented and this switch should be rewritten to compare
     // all elements in `mountedChildren`
-    switch (mountedChildren.last, reconciler.render(compositeView: self)) {
+
+    // swiftlint:disable:next force_try
+    let appInfo = try! typeInfo(of: app.appType)
+    appInfo.injectEnvironment(from: environmentValues, into: &app.app)
+
+    switch (mountedChildren.last, reconciler.render(mountedApp: self)) {
     // no mounted children, but children available now
     case let (nil, childBody):
-      let child: MountedElement<R> = childBody.makeMountedView(parentTarget,
-                                                               environmentValues)
+      let child: MountedElement<R> = mountChild(childBody)
       mountedChildren = [child]
       child.mount(with: reconciler)
 
@@ -65,18 +73,42 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
       // new child has the same type as existing child
       // swiftlint:disable:next force_try
       if try! wrapper.view.typeConstructorName == typeInfo(of: childBodyType).mangledName {
-        wrapper.view = AnyView(childBody)
+        wrapper.scene = _AnyScene(childBody)
         wrapper.update(with: reconciler)
       } else {
         // new child is of a different type, complete rerender, i.e. unmount the old
         // wrapper, then mount a new one with the new `childBody`
         wrapper.unmount(with: reconciler)
 
-        let child: MountedElement<R> = childBody.makeMountedView(parentTarget,
-                                                                 environmentValues)
+        let child: MountedElement<R> = mountChild(childBody)
         mountedChildren = [child]
         child.mount(with: reconciler)
       }
     }
+  }
+}
+
+extension App {
+  func makeMountedApp<R>(_ parentTarget: R.TargetType,
+                         _ environmentValues: EnvironmentValues)
+    -> MountedApp<R> where R: Renderer {
+    // Find Environment changes
+    var injectableApp = self
+    let any = (injectableApp as? _AnyApp) ?? _AnyApp(injectableApp)
+    // swiftlint:disable force_try
+
+    let appInfo = try! typeInfo(of: any.appType)
+    var extractedApp = any.app
+
+    appInfo.injectEnvironment(from: environmentValues, into: &extractedApp)
+
+    // Set the extractedApp back on the AnyApp after modification
+    let anyAppInfo = try! typeInfo(of: _AnyApp.self)
+    try! anyAppInfo.property(named: "app").set(value: extractedApp, on: &injectableApp)
+    // swiftlint:enable force_try
+
+    // Make MountedView
+    let anyApp = injectableApp as? _AnyApp ?? _AnyApp(injectableApp)
+    return MountedApp(anyApp, parentTarget, environmentValues)
   }
 }
