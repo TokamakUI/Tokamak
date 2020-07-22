@@ -86,9 +86,11 @@ public struct Path: Equatable, LosslessStringConvertible {
   public init(roundedRect rect: CGRect,
               cornerSize: CGSize,
               style: RoundedCornerStyle = .circular) {
-    storage = .roundedRect(FixedRoundedRect(rect: rect,
-                                            cornerSize: cornerSize,
-                                            style: style))
+    storage = .roundedRect(FixedRoundedRect(
+      rect: rect,
+      cornerSize: cornerSize,
+      style: style
+    ))
   }
 
   public init(roundedRect rect: CGRect,

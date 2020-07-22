@@ -46,7 +46,7 @@ public struct Button<Label>: View where Label: View {
   }
 
   public var body: Never {
-    neverBody("Text")
+    neverBody("Button")
   }
 }
 

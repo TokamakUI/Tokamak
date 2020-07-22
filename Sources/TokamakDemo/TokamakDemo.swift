@@ -86,6 +86,7 @@ var links: [NavItem] {
     }.padding(20)),
     NavItem("ForEach", destination: ForEachDemo()),
     NavItem("Text", destination: TextDemo()),
+    NavItem("Toggle", destination: ToggleDemo()),
     NavItem("Path", destination: PathDemo()),
     NavItem("TextField", destination: TextFieldDemo()),
     NavItem("Spacer", destination: SpacerDemo()),
