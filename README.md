@@ -107,7 +107,10 @@ app.
 
 ## Requirements for app developers
 
-- macOS 10.15 and Xcode 11.4 or later for macOS.
+- macOS 10.15 and Xcode 11.4/11.5/11.6 for macOS. Xcode betas are currently not supported. You can have
+those installed, but please make sure you use 
+[`xcode-select`](https://developer.apple.com/library/archive/technotes/tn2339/_index.html#//apple_ref/doc/uid/DTS40014588-CH1-HOW_DO_I_SELECT_THE_DEFAULT_VERSION_OF_XCODE_TO_USE_FOR_MY_COMMAND_LINE_TOOLS_) 
+to point it to a release version of Xcode.
 - [Swift 5.2 or later](https://swift.org/download/) for Linux.
 
 ## Requirements for app users
