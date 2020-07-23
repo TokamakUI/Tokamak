@@ -38,7 +38,7 @@ struct NavItem: Identifiable {
     self.destination = title(destination.frame(minWidth: 300), title: id)
   }
 
-  init(unavailiable id: String) {
+  init(unavailable id: String) {
     self.id = id
   }
 }
@@ -47,7 +47,7 @@ var outlineGroupDemo: NavItem {
   if #available(OSX 10.16, iOS 14.0, *) {
     return NavItem("OutlineGroup", destination: OutlineGroupDemo())
   } else {
-    return NavItem(unavailiable: "OutlineGroup")
+    return NavItem(unavailable: "OutlineGroup")
   }
 }
 
@@ -67,7 +67,7 @@ var gridDemo: NavItem {
   if #available(OSX 10.16, iOS 14.0, *) {
     return NavItem("Grid", destination: GridDemo())
   } else {
-    return NavItem(unavailiable: "Grid")
+    return NavItem(unavailable: "Grid")
   }
 }
 
@@ -75,7 +75,7 @@ var appStorageDemo: NavItem {
   if #available(OSX 11.0, iOS 14.0, *) {
     return NavItem("AppStorage", destination: AppStorageDemo())
   } else {
-    return NavItem(unavailiable: "AppStorage")
+    return NavItem(unavailable: "AppStorage")
   }
 }
 
