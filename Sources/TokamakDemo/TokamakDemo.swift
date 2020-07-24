@@ -145,15 +145,11 @@ struct TokamakDemoView: View {
         .frame(minHeight: 300),
         title: "Demos"
       )
-      #if os(WASI)
-      return AnyView(list.listStyle(SidebarListStyle()))
-      #else
       if #available(iOS 14.0, *) {
         return AnyView(list.listStyle(SidebarListStyle()))
       } else {
         return AnyView(list)
       }
-      #endif
     }
     .environmentObject(TestEnvironment())
   }
