@@ -131,6 +131,8 @@ struct TokamakDemoView: View {
           } else {
             #if os(WASI)
             Text(link.id)
+            #elseif os(macOS)
+            Text(link.id).opacity(0.5)
             #else
             HStack {
               Text(link.id)
