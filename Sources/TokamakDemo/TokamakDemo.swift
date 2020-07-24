@@ -63,6 +63,18 @@ var listDemo: AnyView {
 var listDemo = ListDemo()
 #endif
 
+var sidebarDemo: AnyView {
+  #if os(WASI)
+  return AnyView(SidebarListDemo().listStyle(SidebarListStyle()))
+  #else
+  if #available(iOS 14.0, *) {
+    return AnyView(SidebarListDemo().listStyle(SidebarListStyle()))
+  } else {
+    return AnyView(SidebarListDemo())
+  }
+  #endif
+}
+
 var gridDemo: NavItem {
   if #available(OSX 10.16, iOS 14.0, *) {
     return NavItem("Grid", destination: GridDemo())
@@ -101,6 +113,7 @@ var links: [NavItem] {
     NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8))),
     NavItem("Picker", destination: PickerDemo()),
     NavItem("List", destination: listDemo),
+    NavItem("Sidebar", destination: sidebarDemo),
     outlineGroupDemo,
     NavItem("Color", destination: ColorDemo()),
     appStorageDemo,
@@ -135,7 +148,7 @@ struct TokamakDemoView: View {
         title: "Demos"
       )
       #if os(WASI)
-      return AnyView(list)
+      return AnyView(list.listStyle(SidebarListStyle()))
       #else
       if #available(iOS 14.0, *) {
         return AnyView(list.listStyle(SidebarListStyle()))

@@ -88,3 +88,14 @@ extension InsetGroupedListStyle: ListStyleDeferredToRenderer {
       .padding(.leading, 20))
   }
 }
+
+extension SidebarListStyle: ListStyleDeferredToRenderer {
+  public func listBody<ListBody>(_ content: ListBody) -> AnyView where ListBody: View {
+    AnyView(content
+      .padding(.all)
+      .padding(.leading, 20)
+
+      .background(Color(0xF2F2F7))
+    )
+  }
+}

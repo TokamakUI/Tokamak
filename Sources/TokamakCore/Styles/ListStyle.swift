@@ -66,6 +66,10 @@ public struct InsetGroupedListStyle: ListStyle {
   public init() {}
 }
 
+public struct SidebarListStyle: ListStyle {
+  public init() {}
+}
+
 enum ListStyleKey: EnvironmentKey {
   static let defaultValue: ListStyle = DefaultListStyle()
 }
