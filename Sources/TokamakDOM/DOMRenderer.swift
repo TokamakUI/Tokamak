@@ -85,7 +85,7 @@ public final class DOMRenderer: Renderer {
 
   public init<V: View>(_ view: V,
                        _ ref: JSObjectRef,
-                       _ rootEnvironment: EnvironmentValues? = nil) {
+                       _: EnvironmentValues? = nil) {
     rootRef = ref
     rootRef.style = """
     display: flex;
@@ -102,6 +102,7 @@ public final class DOMRenderer: Renderer {
 
     // Establish default settings
     var environment = EnvironmentValues()
+    environment[ButtonStyleKey] = AnyButtonStyle(DefaultButtonStyle())
     environment[ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
     environment[keyPath: \._defaultAppStorage] = LocalStorage.standard
     _DefaultSceneStorageProvider.default = SessionStorage.standard
@@ -122,7 +123,7 @@ public final class DOMRenderer: Renderer {
 
   init<A: App>(_ app: A,
                _ ref: JSObjectRef,
-               _ rootEnvironment: EnvironmentValues? = nil) {
+               _: EnvironmentValues? = nil) {
     rootRef = ref
     rootRef.style = """
     display: flex;
@@ -139,6 +140,7 @@ public final class DOMRenderer: Renderer {
 
     // Establish default settings
     var environment = EnvironmentValues()
+    environment[ButtonStyleKey] = AnyButtonStyle(DefaultButtonStyle())
     environment[ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
     environment[keyPath: \._defaultAppStorage] = LocalStorage.standard
     _DefaultSceneStorageProvider.default = SessionStorage.standard

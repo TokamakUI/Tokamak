@@ -12,15 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Max Desiatov on 11/04/2020.
+//  Created by Gene Z. Ragan on 07/22/2020.
 //
 
 import TokamakCore
 
-extension Button: ViewDeferredToRenderer where Label == Text {
-  public var deferredBody: AnyView {
-    AnyView(HTML("button", listeners: ["click": { _ in _ButtonProxy(self).action() }]) {
-      _ButtonProxy(self).label.subject
-    })
+public struct DefaultButtonStyle: ButtonStyle {
+  public func makeBody(configuration: ButtonStyleConfiguration) -> some View {
+    HTML("button",
+         listeners: ["click": { _ in
+           configuration.action()
+         }]) {
+      configuration.label
+    }
   }
 }

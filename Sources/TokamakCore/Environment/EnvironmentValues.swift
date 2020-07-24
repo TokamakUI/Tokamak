@@ -45,6 +45,21 @@ public struct EnvironmentValues: CustomStringConvertible {
   }
 }
 
+struct IsEnabledKey: EnvironmentKey {
+  static let defaultValue = true
+}
+
+extension EnvironmentValues {
+  public var isEnabled: Bool {
+    get {
+      self[IsEnabledKey.self]
+    }
+    set {
+      self[IsEnabledKey.self] = newValue
+    }
+  }
+}
+
 struct _EnvironmentValuesWritingModifier: ViewModifier, EnvironmentModifier {
   let environmentValues: EnvironmentValues
 

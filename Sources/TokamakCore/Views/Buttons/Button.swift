@@ -37,6 +37,7 @@
 ///     }
 public struct Button<Label>: View where Label: View {
   let label: Label
+  @Environment(\.buttonStyle) var buttonStyle: AnyButtonStyle
 
   let action: () -> ()
 
@@ -45,8 +46,11 @@ public struct Button<Label>: View where Label: View {
     self.action = action
   }
 
-  public var body: Never {
-    neverBody("Button")
+  public var body: AnyView {
+    buttonStyle.makeBody(
+      configuration: ButtonStyleConfiguration(label: AnyView(label),
+                                              action: action)
+    )
   }
 }
 
@@ -62,16 +66,4 @@ extension Button: ParentView {
   public var children: [AnyView] {
     (label as? GroupView)?.children ?? [AnyView(label)]
   }
-}
-
-/// This is a helper class that works around absence of "package private" access control in Swift
-public struct _ButtonProxy<Label> where Label: View {
-  let subject: Button<Label>
-
-  public init(_ subject: Button<Label>) { self.subject = subject }
-  public var action: () -> () { subject.action }
-}
-
-extension _ButtonProxy where Label == Text {
-  public var label: _TextProxy { _TextProxy(subject.label) }
 }
