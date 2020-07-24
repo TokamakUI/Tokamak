@@ -15,7 +15,7 @@
 //  Created by Gene Z. Ragan on 07/22/2020.
 
 public struct ButtonStyleConfiguration {
-  public let label: String
+  public let label: AnyView!
   public let action: () -> ()
   public var isPressed = false
 }
