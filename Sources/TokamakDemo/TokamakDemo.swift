@@ -63,16 +63,12 @@ var listDemo: AnyView {
 var listDemo = ListDemo()
 #endif
 
-var sidebarDemo: AnyView {
-  #if os(WASI)
-  return AnyView(SidebarListDemo().listStyle(SidebarListStyle()))
-  #else
+var sidebarDemo: NavItem {
   if #available(iOS 14.0, *) {
-    return AnyView(SidebarListDemo().listStyle(SidebarListStyle()))
+    return NavItem("Sidebar", destination: SidebarListDemo().listStyle(SidebarListStyle()))
   } else {
-    return AnyView(SidebarListDemo())
+    return NavItem(unavailable: "Sidebar")
   }
-  #endif
 }
 
 var gridDemo: NavItem {
@@ -113,7 +109,7 @@ var links: [NavItem] {
     NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8))),
     NavItem("Picker", destination: PickerDemo()),
     NavItem("List", destination: listDemo),
-    NavItem("Sidebar", destination: sidebarDemo),
+    sidebarDemo,
     outlineGroupDemo,
     NavItem("Color", destination: ColorDemo()),
     appStorageDemo,
