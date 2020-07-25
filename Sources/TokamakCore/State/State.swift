@@ -41,7 +41,10 @@ protocol ValueStorage {
   }
 
   public var projectedValue: Binding<Value> {
-    .init {
+    guard _location != nil else {
+      fatalError("\(#function) not available outside of `body`")
+    }
+    return .init {
       // swiftlint:disable:next force_cast
       _location.value as! Value
     } set: {
