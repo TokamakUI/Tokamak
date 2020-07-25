@@ -20,34 +20,16 @@ import TokamakDOM
 #endif
 
 struct PressedButtonStyle: ButtonStyle {
-  var pressedColor: Color
+  let pressedColor: Color
 
-  func makeBody(configuration: Self.Configuration) -> some View {
-    PressedButton(
-      configuration: configuration,
-      pressedColor: pressedColor
-    )
-  }
-}
-
-private extension PressedButtonStyle {
-  struct PressedButton: View {
-    @Environment(\.isEnabled) var isEnabled
-
-    let configuration: PressedButtonStyle.Configuration
-    let pressedColor: Color
-
-    var body: some View {
-      configuration.label
-        .foregroundColor(configuration.isPressed ? pressedColor : .blue)
-        .padding(15)
-    }
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .foregroundColor(configuration.isPressed ? pressedColor : .blue)
+      .padding(15)
   }
 }
 
 public struct ButtonStyleDemo: View {
-  @State var checked = false
-
   public var body: some View {
     VStack {
       Button("Default Style") {

@@ -36,21 +36,30 @@
 ///       Button("\(counter)", action: { counter += 1 })
 ///     }
 public struct Button<Label>: View where Label: View {
-  let label: Label
-  @Environment(\.buttonStyle) var buttonStyle: AnyButtonStyle
-
-  let action: () -> ()
+  let button: _Button<Label>
 
   public init(action: @escaping () -> (), @ViewBuilder label: () -> Label) {
-    self.label = label()
+    button = _Button(action: action, label: label())
+  }
+
+  public var body: some View {
+    button
+  }
+}
+
+public struct _Button<Label>: View where Label: View {
+  public let label: Label
+  public let action: () -> ()
+  @State public var isPressed = false
+  @Environment(\.buttonStyle) public var buttonStyle: _AnyButtonStyle
+
+  public init(action: @escaping () -> (), label: Label) {
+    self.label = label
     self.action = action
   }
 
-  public var body: AnyView {
-    buttonStyle.makeBody(
-      configuration: ButtonStyleConfiguration(label: AnyView(label),
-                                              action: action)
-    )
+  public var body: Never {
+    neverBody("_Button")
   }
 }
 
@@ -64,6 +73,6 @@ extension Button where Label == Text {
 
 extension Button: ParentView {
   public var children: [AnyView] {
-    (label as? GroupView)?.children ?? [AnyView(label)]
+    (button.label as? GroupView)?.children ?? [AnyView(button.label)]
   }
 }

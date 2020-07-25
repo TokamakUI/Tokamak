@@ -19,11 +19,6 @@ import TokamakCore
 
 public struct DefaultButtonStyle: ButtonStyle {
   public func makeBody(configuration: ButtonStyleConfiguration) -> some View {
-    HTML("button",
-         listeners: ["click": { _ in
-           configuration.action()
-         }]) {
-      configuration.label
-    }
+    configuration.label
   }
 }

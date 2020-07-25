@@ -15,9 +15,36 @@
 //  Created by Gene Z. Ragan on 07/22/2020.
 
 public struct ButtonStyleConfiguration {
-  public let label: AnyView!
-  public let action: () -> ()
-  public var isPressed = false
+  public struct Label: View {
+    let content: AnyView
+    public var body: Never {
+      neverBody("ButtonStyleConfiguration.Label")
+    }
+  }
+
+  public let label: Label
+  public let isPressed: Bool
+}
+
+/// This is a helper class that works around absence of "package private" access control in Swift
+public struct _ButtonStyleConfigurationProxy {
+  public struct Label {
+    public typealias Subject = ButtonStyleConfiguration.Label
+    public let subject: Subject
+
+    public init(_ subject: Subject) { self.subject = subject }
+
+    public var content: AnyView { subject.content }
+  }
+
+  public typealias Subject = ButtonStyleConfiguration
+  public let subject: Subject
+
+  public init(label: AnyView, isPressed: Bool) {
+    subject = .init(label: .init(content: label), isPressed: isPressed)
+  }
+
+  public var label: ButtonStyleConfiguration.Label { subject.label }
 }
 
 public protocol ButtonStyle {
@@ -28,7 +55,7 @@ public protocol ButtonStyle {
   typealias Configuration = ButtonStyleConfiguration
 }
 
-public struct AnyButtonStyle: ButtonStyle {
+public struct _AnyButtonStyle: ButtonStyle {
   public typealias Body = AnyView
 
   private let bodyClosure: (ButtonStyleConfiguration) -> AnyView
@@ -44,25 +71,25 @@ public struct AnyButtonStyle: ButtonStyle {
   }
 }
 
-public enum ButtonStyleKey: EnvironmentKey {
-  public static var defaultValue: AnyButtonStyle {
+public enum _ButtonStyleKey: EnvironmentKey {
+  public static var defaultValue: _AnyButtonStyle {
     fatalError("\(self) must have a renderer-provided default value")
   }
 }
 
 extension EnvironmentValues {
-  var buttonStyle: AnyButtonStyle {
+  var buttonStyle: _AnyButtonStyle {
     get {
-      self[ButtonStyleKey.self]
+      self[_ButtonStyleKey.self]
     }
     set {
-      self[ButtonStyleKey.self] = newValue
+      self[_ButtonStyleKey.self] = newValue
     }
   }
 }
 
 extension View {
   public func buttonStyle<S>(_ style: S) -> some View where S: ButtonStyle {
-    environment(\.buttonStyle, AnyButtonStyle(style))
+    environment(\.buttonStyle, _AnyButtonStyle(style))
   }
 }
