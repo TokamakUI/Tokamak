@@ -30,7 +30,7 @@ class MountedCompositeElement<R: Renderer>: MountedElement<R>, Hashable {
   var mountedChildren = [MountedElement<R>]()
   let parentTarget: R.TargetType
 
-  var state = [Any]()
+  var state = [StateLocation]()
   var subscriptions = [AnyCancellable]()
   var environmentValues: EnvironmentValues
 

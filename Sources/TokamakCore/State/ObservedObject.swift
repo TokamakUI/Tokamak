@@ -22,7 +22,7 @@ protocol ObservedProperty: DynamicProperty {
 }
 
 @propertyWrapper
-public struct ObservedObject<ObjectType>: ObservedProperty where ObjectType: ObservableObject {
+public struct ObservedObject<ObjectType>: DynamicProperty where ObjectType: ObservableObject {
   @dynamicMemberLookup
   public struct Wrapper {
     let root: ObjectType
@@ -52,4 +52,4 @@ public struct ObservedObject<ObjectType>: ObservedProperty where ObjectType: Obs
   }
 }
 
-extension ObservedObject: DynamicProperty {}
+extension ObservedObject: ObservedProperty {}

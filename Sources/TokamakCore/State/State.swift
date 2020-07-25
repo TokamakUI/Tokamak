@@ -15,40 +15,42 @@
 //  Created by Max Desiatov on 08/04/2020.
 //
 
+import OpenCombine
+
+protocol AnyLocation: AnyObject {
+  var value: Any { get set }
+}
+
 protocol ValueStorage {
-  var getter: (() -> Any)? { get set }
-  var setter: ((Any) -> ())? { get set }
+  var _location: AnyLocation! { get set }
   var anyInitialValue: Any { get }
 }
 
-@propertyWrapper public struct State<Value> {
+@propertyWrapper public struct State<Value>: DynamicProperty {
   private let initialValue: Value
-
-  var anyInitialValue: Any { initialValue }
-
-  var getter: (() -> Any)?
-  var setter: ((Any) -> ())?
+  var _location: AnyLocation!
+  var anyInitialValue: Any { initialValue as Any }
 
   public init(wrappedValue value: Value) {
     initialValue = value
   }
 
   public var wrappedValue: Value {
-    get { getter?() as? Value ?? initialValue }
-    nonmutating set { setter?(newValue) }
+    get { _location.value as? Value ?? initialValue }
+    nonmutating set { _location.value = newValue }
   }
 
   public var projectedValue: Binding<Value> {
-    guard let getter = getter, let setter = setter else {
-      fatalError("\(#function) not available outside of `body`")
+    .init {
+      // swiftlint:disable:next force_cast
+      _location.value as! Value
+    } set: {
+      _location.value = $0
     }
-    // swiftlint:disable:next force_cast
-    return .init(get: { getter() as! Value }, set: { setter($0) })
   }
 }
 
 extension State: ValueStorage {}
-extension State: DynamicProperty {}
 
 extension State where Value: ExpressibleByNilLiteral {
   @inlinable public init() { self.init(wrappedValue: nil) }

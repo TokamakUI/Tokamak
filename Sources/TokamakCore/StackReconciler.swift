@@ -66,15 +66,6 @@ public final class StackReconciler<R: Renderer> {
     }
   }
 
-  private func queueStateUpdate(
-    for mountedElement: MountedCompositeElement<R>,
-    id: Int,
-    updater: (inout Any) -> ()
-  ) {
-    updater(&mountedElement.state[id])
-    queueUpdate(for: mountedElement)
-  }
-
   private func queueUpdate(for mountedElement: MountedCompositeElement<R>) {
     let shouldSchedule = queuedRerenders.isEmpty
     queuedRerenders.insert(mountedElement)
@@ -104,19 +95,18 @@ public final class StackReconciler<R: Renderer> {
     var state = try! property.get(from: compositeElement[keyPath: bodyKeypath]) as! ValueStorage
 
     if compositeElement.state.count == id {
-      compositeElement.state.append(state.anyInitialValue)
+      compositeElement.state.append(StateLocation(initialValue: state.anyInitialValue))
     }
 
-    if state.getter == nil || state.setter == nil {
-      state.getter = { compositeElement.state[id] }
-
+    if state._location == nil {
+      state._location = compositeElement.state[id]
       // Avoiding an indirect reference cycle here: this closure can be
       // owned by callbacks owned by view's target, which is strongly referenced
       // by the reconciler.
-      state.setter = { [weak self, weak compositeElement] newValue in
+      compositeElement.state[id].publisher.sink { [weak self, weak compositeElement] _ in
         guard let element = compositeElement else { return }
-        self?.queueStateUpdate(for: element, id: id) { $0 = newValue }
-      }
+        self?.queueUpdate(for: element)
+      }.store(in: &compositeElement.subscriptions)
     }
     try! property.set(value: state, on: &compositeElement[keyPath: bodyKeypath])
   }
@@ -142,11 +132,17 @@ public final class StackReconciler<R: Renderer> {
                  body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
                  result: KeyPath<MountedCompositeElement<R>, (Any) -> T>) -> T {
     let info = try! typeInfo(of: compositeElement.elementType)
+    info.injectEnvironment(from: compositeElement.environmentValues,
+                           into: &compositeElement[keyPath: bodyKeypath])
 
     let needsSubscriptions = compositeElement.subscriptions.isEmpty
 
     var stateIdx = 0
-    for property in info.properties {
+    let dynamicProps = info.dynamicProperties(compositeElement.environmentValues,
+                                              source: &compositeElement[keyPath: bodyKeypath],
+                                              shouldUpdate: true)
+    for property in dynamicProps {
+      // Setup state/subscriptions
       if property.type is ValueStorage.Type {
         setupState(id: stateIdx, for: property, of: compositeElement, body: bodyKeypath)
         stateIdx += 1
