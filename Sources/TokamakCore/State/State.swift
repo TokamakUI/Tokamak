@@ -14,14 +14,13 @@
 //
 //  Created by Max Desiatov on 08/04/2020.
 //
-
 protocol ValueStorage {
   var getter: (() -> Any)? { get set }
   var setter: ((Any) -> ())? { get set }
   var anyInitialValue: Any { get }
 }
 
-@propertyWrapper public struct State<Value> {
+@propertyWrapper public struct State<Value>: DynamicProperty {
   private let initialValue: Value
 
   var anyInitialValue: Any { initialValue }
@@ -48,7 +47,6 @@ protocol ValueStorage {
 }
 
 extension State: ValueStorage {}
-extension State: DynamicProperty {}
 
 extension State where Value: ExpressibleByNilLiteral {
   @inlinable public init() { self.init(wrappedValue: nil) }

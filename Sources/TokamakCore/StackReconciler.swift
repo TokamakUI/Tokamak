@@ -142,11 +142,17 @@ public final class StackReconciler<R: Renderer> {
                  body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
                  result: KeyPath<MountedCompositeElement<R>, (Any) -> T>) -> T {
     let info = try! typeInfo(of: compositeElement.elementType)
+    info.injectEnvironment(from: compositeElement.environmentValues,
+                           into: &compositeElement[keyPath: bodyKeypath])
 
     let needsSubscriptions = compositeElement.subscriptions.isEmpty
 
     var stateIdx = 0
-    for property in info.properties {
+    let dynamicProps = info.dynamicProperties(compositeElement.environmentValues,
+                                              source: &compositeElement[keyPath: bodyKeypath],
+                                              shouldUpdate: true)
+    for property in dynamicProps {
+      // Setup state/subscriptions
       if property.type is ValueStorage.Type {
         setupState(id: stateIdx, for: property, of: compositeElement, body: bodyKeypath)
         stateIdx += 1

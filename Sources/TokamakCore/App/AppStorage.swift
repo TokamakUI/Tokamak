@@ -17,7 +17,7 @@
 
 import OpenCombine
 
-@propertyWrapper public struct AppStorage<Value>: ObservedProperty {
+@propertyWrapper public struct AppStorage<Value>: DynamicProperty {
   let provider: _StorageProvider?
   @Environment(\._defaultAppStorage) var defaultProvider: _StorageProvider?
   var unwrappedProvider: _StorageProvider {
@@ -51,7 +51,7 @@ import OpenCombine
   }
 }
 
-extension AppStorage: DynamicProperty {}
+extension AppStorage: ObservedProperty {}
 
 extension AppStorage {
   public init(wrappedValue: Value,

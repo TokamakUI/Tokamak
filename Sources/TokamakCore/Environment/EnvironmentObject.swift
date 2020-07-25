@@ -17,8 +17,7 @@
 
 import OpenCombine
 
-@propertyWrapper public struct EnvironmentObject<ObjectType>: ObservedProperty,
-  EnvironmentReader
+@propertyWrapper public struct EnvironmentObject<ObjectType>: DynamicProperty
   where ObjectType: ObservableObject {
   @dynamicMemberLookup public struct Wrapper {
     internal let root: ObjectType
@@ -62,6 +61,8 @@ import OpenCombine
 
   public init() {}
 }
+
+extension EnvironmentObject: ObservedProperty, EnvironmentReader {}
 
 extension ObservableObject {
   static var environmentStore: WritableKeyPath<EnvironmentValues, Self?> {
