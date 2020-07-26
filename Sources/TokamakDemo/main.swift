@@ -12,12 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import JavaScriptKit
-import TokamakDOM
+import TokamakShim
 
-let document = JSObjectRef.global.document.object!
+@available(OSX 10.16, iOS 14.0, *)
+struct TokamakDemoApp: App {
+  @Environment(\.scenePhase) private var scenePhase
 
-let div = document.createElement!("div").object!
-let renderer = DOMRenderer(TokamakDemoView(), div)
+  var body: some Scene {
+    print(scenePhase)
+    return WindowGroup("Tokamak Demo") {
+      TokamakDemoView()
+    }
+  }
+}
 
-_ = document.body.object!.appendChild!(div)
+// If @main was supported for executable Swift Packages,
+// this would match SwiftUI 100%
+if #available(OSX 10.16, iOS 14.0, *) {
+  TokamakDemoApp.main()
+}

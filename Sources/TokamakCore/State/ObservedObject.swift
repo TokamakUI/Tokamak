@@ -17,12 +17,12 @@ import OpenCombine
 public typealias ObservableObject = OpenCombine.ObservableObject
 public typealias Published = OpenCombine.Published
 
-protocol ObservedProperty {
+protocol ObservedProperty: DynamicProperty {
   var objectWillChange: AnyPublisher<(), Never> { get }
 }
 
 @propertyWrapper
-public struct ObservedObject<ObjectType>: ObservedProperty where ObjectType: ObservableObject {
+public struct ObservedObject<ObjectType>: DynamicProperty where ObjectType: ObservableObject {
   @dynamicMemberLookup
   public struct Wrapper {
     let root: ObjectType
@@ -51,3 +51,5 @@ public struct ObservedObject<ObjectType>: ObservedProperty where ObjectType: Obs
     wrappedValue.objectWillChange.map { _ in }.eraseToAnyPublisher()
   }
 }
+
+extension ObservedObject: ObservedProperty {}

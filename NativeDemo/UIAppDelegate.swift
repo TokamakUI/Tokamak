@@ -23,13 +23,14 @@ public class NSApplication: UIApplication {}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-  let window = UIWindow()
+  var window: UIWindow?
   func application(
     _: UIApplication,
     didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
-    window.rootViewController = UIHostingController(rootView: TokamakDemoView())
-    window.makeKeyAndVisible()
+    window = UIWindow()
+    window?.rootViewController = UIHostingController(rootView: TokamakDemoView())
+    window?.makeKeyAndVisible()
     return true
   }
 }

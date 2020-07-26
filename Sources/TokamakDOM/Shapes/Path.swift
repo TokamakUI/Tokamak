@@ -14,7 +14,6 @@
 //
 //  Created by Carson Katri on 6/29/20.
 //
-
 import TokamakCore
 
 extension Path: ViewDeferredToRenderer {
@@ -30,35 +29,53 @@ extension Path: ViewDeferredToRenderer {
       "stroke-width": "\(strokeStyle.lineWidth)",
     ]
     let uniqueKeys = { (first: String, _: String) in first }
+    let flexibleWidth: String? = sizing == .flexible ? "100%" : nil
+    let flexibleHeight: String? = sizing == .flexible ? "100%" : nil
+    let flexibleCenterX: String? = sizing == .flexible ? "50%" : nil
+    let flexibleCenterY: String? = sizing == .flexible ? "50%" : nil
     switch storage {
     case .empty:
       return AnyView(EmptyView())
     case let .rect(rect):
       return AnyView(AnyView(HTML("rect", [
-        "width": "\(max(0, rect.size.width))",
-        "height": "\(max(0, rect.size.height))",
+        "width": flexibleWidth ?? "\(max(0, rect.size.width))",
+        "height": flexibleHeight ?? "\(max(0, rect.size.height))",
         "x": "\(rect.origin.x - (rect.size.width / 2))",
         "y": "\(rect.origin.y - (rect.size.height / 2))",
       ].merging(stroke, uniquingKeysWith: uniqueKeys))))
     case let .ellipse(rect):
-      return AnyView(HTML("ellipse", ["cx": "\(rect.origin.x)",
-                                      "cy": "\(rect.origin.y)",
-                                      "rx": "\(rect.size.width)",
-                                      "ry": "\(rect.size.height)"]
+      return AnyView(HTML("ellipse", ["cx": flexibleCenterX ?? "\(rect.origin.x)",
+                                      "cy": flexibleCenterY ?? "\(rect.origin.y)",
+                                      "rx": flexibleCenterX ?? "\(rect.size.width)",
+                                      "ry": flexibleCenterY ?? "\(rect.size.height)"]
           .merging(stroke, uniquingKeysWith: uniqueKeys)))
     case let .roundedRect(roundedRect):
+      // When cornerRadius is nil we use 50% rx.
+      let size = roundedRect.rect.size
+      let cornerRadius = { () -> [String: String] in
+        if let cornerSize = roundedRect.cornerSize {
+          return [
+            "rx": "\(cornerSize.width)",
+            "ry": """
+            \(roundedRect.style == .continuous ?
+              cornerSize.width :
+              cornerSize.height)
+            """,
+          ]
+        } else {
+          // For this to support vertical capsules, we need
+          // GeometryReader, to know which axis is larger.
+          return ["ry": "50%"]
+        }
+      }()
       return AnyView(HTML("rect", [
-        "width": "\(roundedRect.rect.size.width)",
-        "height": "\(roundedRect.rect.size.height)",
-        "rx": "\(roundedRect.cornerSize.width)",
-        "ry": """
-        \(roundedRect.style == .continuous ?
-          roundedRect.cornerSize.width :
-          roundedRect.cornerSize.height)
-        """,
+        "width": flexibleWidth ?? "\(size.width)",
+        "height": flexibleHeight ?? "\(size.height)",
         "x": "\(roundedRect.rect.origin.x)",
         "y": "\(roundedRect.rect.origin.y)",
-      ].merging(stroke, uniquingKeysWith: uniqueKeys)))
+      ]
+      .merging(cornerRadius, uniquingKeysWith: uniqueKeys)
+      .merging(stroke, uniquingKeysWith: uniqueKeys)))
     case let .stroked(stroked):
       return AnyView(stroked.path.svgBody(strokeStyle: stroked.style))
     case let .trimmed(trimmed):
@@ -161,9 +178,17 @@ extension Path: ViewDeferredToRenderer {
   }
 
   public var deferredBody: AnyView {
-    AnyView(HTML("svg", ["style": """
-    width: \(max(0, size.width));
-    height: \(max(0, size.height));
+    let sizeStyle = sizing == .flexible ?
+      """
+      width: 100%;
+      height: 100%;
+      """ :
+      """
+      width: \(max(0, size.width));
+      height: \(max(0, size.height));
+      """
+    return AnyView(HTML("svg", ["style": """
+    \(sizeStyle)
     overflow: visible;
     """]) {
       svgBody()

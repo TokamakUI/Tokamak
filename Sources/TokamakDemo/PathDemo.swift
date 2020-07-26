@@ -47,6 +47,15 @@ struct PathDemo: View {
       }
       .stroke(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1), lineWidth: 4)
       .padding(.vertical)
+      HStack {
+        Circle()
+          .frame(width: 25, height: 25)
+        Rectangle()
+          .frame(width: 25, height: 25)
+        Capsule()
+          .frame(width: 50, height: 25)
+      }
+      .foregroundColor(Color.blue)
     }
   }
 }
