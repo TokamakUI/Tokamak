@@ -22,3 +22,9 @@ public struct DefaultButtonStyle: ButtonStyle {
     configuration.label
   }
 }
+
+extension ButtonStyleConfiguration.Label: ViewDeferredToRenderer {
+  public var deferredBody: AnyView {
+    _ButtonStyleConfigurationProxy.Label(self).content
+  }
+}

@@ -21,8 +21,8 @@ extension _Button: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
     AnyView(HTML("button", listeners: [
       "click": { _ in action() },
-      "onmousedown": { _ in isPressed = true },
-      "onmouseup": { _ in isPressed = false },
+      "pointerdown": { _ in isPressed = true },
+      "pointerup": { _ in isPressed = false },
     ]) {
       buttonStyle.makeBody(
         configuration: _ButtonStyleConfigurationProxy(
@@ -31,11 +31,5 @@ extension _Button: ViewDeferredToRenderer where Label == Text {
         ).subject
       )
     })
-  }
-}
-
-extension ButtonStyleConfiguration.Label: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    _ButtonStyleConfigurationProxy.Label(self).content
   }
 }

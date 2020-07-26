@@ -34,11 +34,9 @@ public struct ButtonStyleDemo: View {
     VStack {
       Button("Default Style") {
         print("tapped")
-        return
       }
       Button("Pressed Button Style") {
         print("tapped")
-        return
       }
       .buttonStyle(
         PressedButtonStyle(pressedColor: Color.red)
