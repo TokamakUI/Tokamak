@@ -73,8 +73,6 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
   override func update(with reconciler: StackReconciler<R>) {
     guard let target = target else { return }
 
-    super.update(with: reconciler)
-
     target.view = view
     reconciler.renderer?.update(target: target, with: self)
 
