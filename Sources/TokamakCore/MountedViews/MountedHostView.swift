@@ -33,12 +33,13 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
   /// Target of this host view supplied by a renderer after mounting has completed.
   private var target: R.TargetType?
 
-  init(_ view: AnyView,
-       _ parentTarget: R.TargetType,
-       _ environmentValues: EnvironmentValues) {
-    self.parentTarget = parentTarget
+  private let environmentValues: EnvironmentValues
 
-    super.init(view, environmentValues)
+  init(_ view: AnyView, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
+    self.parentTarget = parentTarget
+    self.environmentValues = environmentValues
+
+    super.init(view)
   }
 
   override func mount(with reconciler: StackReconciler<R>) {

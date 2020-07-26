@@ -99,7 +99,7 @@ public final class DOMRenderer: Renderer {
 
     // Establish default settings
     var environment = EnvironmentValues()
-    environment[ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
+    environment[_ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
     environment[keyPath: \._defaultAppStorage] = LocalStorage.standard
     _DefaultSceneStorageProvider.default = SessionStorage.standard
 
@@ -136,7 +136,7 @@ public final class DOMRenderer: Renderer {
 
     // Establish default settings
     var environment = EnvironmentValues()
-    environment[ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
+    environment[_ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
     environment[keyPath: \._defaultAppStorage] = LocalStorage.standard
     _DefaultSceneStorageProvider.default = SessionStorage.standard
 
