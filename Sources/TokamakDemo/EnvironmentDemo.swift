@@ -32,6 +32,17 @@ struct EnvironmentObjectDemo: View {
   }
 }
 
+extension ColorScheme: CustomStringConvertible {
+  public var description: String {
+    switch self {
+    case .dark: return "dark"
+    case .light: return "light"
+        @unknown default:
+      return "unknown"
+    }
+  }
+}
+
 struct EnvironmentDemo: View {
   @Environment(\.colorScheme) var scheme
 
@@ -42,8 +53,8 @@ struct EnvironmentDemo: View {
     print("in EnvironmentDemo scheme is \(scheme)")
     return VStack {
       Text(font == nil ?
-        "colorScheme is \(scheme), `font` environment not set." :
-        "colorScheme is \(scheme), font environment is \(String(describing: font!))")
+        "colorScheme is \(scheme.description), `font` environment not set." :
+        "colorScheme is \(scheme.description), font environment is \(String(describing: font!))")
       // Text(testEnv.envTest)
       // EnvironmentObjectDemo()
     }
