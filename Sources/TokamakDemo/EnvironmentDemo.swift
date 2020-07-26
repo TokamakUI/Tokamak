@@ -37,8 +37,7 @@ extension ColorScheme: CustomStringConvertible {
     switch self {
     case .dark: return "dark"
     case .light: return "light"
-        @unknown default:
-      return "unknown"
+    @unknown default: return "unknown"
     }
   }
 }
