@@ -172,12 +172,12 @@ public final class StackReconciler<R: Renderer> {
     render(compositeElement: mountedApp, body: \.app.app, result: \.app.bodyClosure)
   }
 
-  func reconcile<E>(
+  func reconcile<Element>(
     _ mountedElement: MountedCompositeElement<R>,
-    with element: E,
-    getElementType: (E) -> Any.Type,
+    with element: Element,
+    getElementType: (Element) -> Any.Type,
     updateChild: (MountedElement<R>) -> (),
-    mountChild: (E) -> MountedElement<R>
+    mountChild: (Element) -> MountedElement<R>
   ) {
     // FIXME: for now without properly handling `Group` and `TupleView` mounted composite views
     // have only a single element in `mountedChildren`, but this will change when
