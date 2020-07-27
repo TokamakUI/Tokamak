@@ -34,17 +34,19 @@ class MountedCompositeElement<R: Renderer>: MountedElement<R>, Hashable {
   var subscriptions = [AnyCancellable]()
   var environmentValues: EnvironmentValues
 
-  init(_ app: _AnyApp,
-       _ parentTarget: R.TargetType,
-       _ environmentValues: EnvironmentValues) {
+  init(_ app: _AnyApp, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
     self.environmentValues = environmentValues
     super.init(app)
   }
 
-  init(_ view: AnyView,
-       _ parentTarget: R.TargetType,
-       _ environmentValues: EnvironmentValues) {
+  init(_ scene: _AnyScene, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
+    self.parentTarget = parentTarget
+    self.environmentValues = environmentValues
+    super.init(scene)
+  }
+
+  init(_ view: AnyView, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
     self.environmentValues = environmentValues
     super.init(view)

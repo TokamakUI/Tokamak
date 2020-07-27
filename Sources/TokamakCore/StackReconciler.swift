@@ -171,4 +171,48 @@ public final class StackReconciler<R: Renderer> {
   func render(mountedApp: MountedApp<R>) -> some Scene {
     render(compositeElement: mountedApp, body: \.app.app, result: \.app.bodyClosure)
   }
+
+  func reconcile<E>(
+    _ mountedElement: MountedCompositeElement<R>,
+    with element: E,
+    getElementType: (E) -> Any.Type,
+    updateChild: (MountedElement<R>) -> (),
+    mountChild: (E) -> MountedElement<R>
+  ) {
+    // FIXME: for now without properly handling `Group` and `TupleView` mounted composite views
+    // have only a single element in `mountedChildren`, but this will change when
+    // fragments are implemented and this switch should be rewritten to compare
+    // all elements in `mountedChildren`
+    switch (mountedElement.mountedChildren.last, element) {
+    // no mounted children previously, but children available now
+    case let (nil, childBody):
+      let child: MountedElement<R> = mountChild(childBody)
+      mountedElement.mountedChildren = [child]
+      child.mount(with: self)
+
+    // some mounted children before and now
+    case let (mountedChild?, childBody):
+      let childBodyType = getElementType(childBody)
+
+      // FIXME: no idea if using `mangledName` is reliable, but seems to be the only way to get
+      // a name of a type constructor in runtime. Should definitely check if these are different
+      // across modules, otherwise can cause problems with views with same names in different
+      // modules.
+
+      // new child has the same type as existing child
+      // swiftlint:disable:next force_try
+      if try! mountedChild.view.typeConstructorName == typeInfo(of: childBodyType).mangledName {
+        updateChild(mountedChild)
+        mountedChild.update(with: self)
+      } else {
+        // new child is of a different type, complete rerender, i.e. unmount the old
+        // wrapper, then mount a new one with the new `childBody`
+        mountedChild.unmount(with: self)
+
+        let newMountedChild: MountedElement<R> = mountChild(childBody)
+        mountedElement.mountedChildren = [newMountedChild]
+        newMountedChild.mount(with: self)
+      }
+    }
+  }
 }

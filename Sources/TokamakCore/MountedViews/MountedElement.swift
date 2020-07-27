@@ -25,7 +25,7 @@ enum MountedElementKind {
 }
 
 public class MountedElement<R: Renderer> {
-  var element: MountedElementKind
+  private var element: MountedElementKind
 
   public internal(set) var app: _AnyApp {
     get {
@@ -67,8 +67,8 @@ public class MountedElement<R: Renderer> {
 
   var elementType: Any.Type {
     switch element {
-    case let .app(app): return app.appType
-    case let .scene(scene): return scene.sceneType
+    case let .app(app): return app.type
+    case let .scene(scene): return scene.type
     case let .view(view): return view.type
     }
   }
@@ -188,7 +188,7 @@ extension Scene {
     } else if let groupSelf = anySelf.scene as? GroupScene {
       return groupSelf.children[0].makeMountedView(parentTarget, environmentValues)
     } else {
-      fatalError("Unsupported `Scene` type `\(anySelf.sceneType)`. Please file a bug report.")
+      fatalError("Unsupported `Scene` type `\(anySelf.type)`. Please file a bug report.")
     }
   }
 }
