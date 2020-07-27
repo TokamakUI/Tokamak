@@ -37,7 +37,6 @@ protocol EnvironmentReader {
   }
 
   mutating func setContent(from values: EnvironmentValues) {
-    print("content set for \(keyPath),\nvalues is \(values)")
     content = .value(values[keyPath: keyPath])
   }
 
@@ -46,7 +45,6 @@ protocol EnvironmentReader {
     case let .value(value):
       return value
     case let .keyPath(keyPath):
-      print("EnvironmentValues() called for keyPath \(keyPath)")
       // not bound to a view, return the default value.
       return EnvironmentValues()[keyPath: keyPath]
     }
