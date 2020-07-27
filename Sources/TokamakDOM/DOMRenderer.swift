@@ -18,43 +18,22 @@
 import JavaScriptKit
 import TokamakCore
 
-public final class DOMNode: Target {
-  let ref: JSObjectRef
-  private var listeners: [String: JSClosure]
+extension EnvironmentValues {
+  /// Returns default settings for the DOM environment
+  static var defaultEnvironment: Self {
+    var environment = EnvironmentValues()
+    environment[_ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
+    environment[keyPath: \._defaultAppStorage] = LocalStorage.standard
+    _DefaultSceneStorageProvider.default = SessionStorage.standard
 
-  init<V: View>(_ view: V, _ ref: JSObjectRef, _ listeners: [String: Listener] = [:]) {
-    self.ref = ref
-    self.listeners = [:]
-    super.init(view)
-    reinstall(listeners)
-  }
-
-  init<A: App>(_ app: A, _ ref: JSObjectRef, _ listeners: [String: Listener] = [:]) {
-    self.ref = ref
-    self.listeners = [:]
-    super.init(app)
-    reinstall(listeners)
-  }
-
-  /// Removes all existing event listeners on this DOM node and install new ones from
-  /// the `listeners` argument
-  func reinstall(_ listeners: [String: Listener]) {
-    for (event, jsClosure) in self.listeners {
-      _ = ref.removeEventListener!(event, jsClosure)
-    }
-    self.listeners = [:]
-
-    for (event, listener) in listeners {
-      let jsClosure = JSClosure {
-        listener($0[0].object!)
-        return .undefined
-      }
-      _ = ref.addEventListener!(event, jsClosure)
-      self.listeners[event] = jsClosure
-    }
+    return environment
   }
 }
 
+/** `SpacerContainer` is part of TokamakDOM, as not all renderers will handle flexible 
+ sizing the way browsers do. Their parent element could already know that if a child is 
+ requesting full width, then it needs to expand.
+*/
 private extension AnyView {
   var axes: [SpacerContainerAxis] {
     var axes = [SpacerContainerAxis]()
@@ -78,83 +57,58 @@ let log = JSObjectRef.global.console.object!.log.function!
 let document = JSObjectRef.global.document.object!
 let head = document.head.object!
 
+let timeoutScheduler = { (closure: @escaping () -> ()) in
+  let fn = JSClosure { _ in
+    closure()
+    return .undefined
+  }
+  _ = JSObjectRef.global.setTimeout!(fn, 0)
+}
+
+func appendRootStyle(_ rootNode: JSObjectRef) {
+  rootNode.style = .string(rootNodeStyles)
+  let rootStyle = document.createElement!("style").object!
+  rootStyle.innerHTML = .string(tokamakStyles)
+  _ = head.appendChild!(rootStyle)
+}
+
 public final class DOMRenderer: Renderer {
   public private(set) var reconciler: StackReconciler<DOMRenderer>?
 
   private let rootRef: JSObjectRef
 
-  public init<V: View>(_ view: V,
-                       _ ref: JSObjectRef,
-                       _ rootEnvironment: EnvironmentValues? = nil) {
+  public init<V: View>(
+    _ view: V,
+    _ ref: JSObjectRef,
+    _ rootEnvironment: EnvironmentValues? = nil
+  ) {
     rootRef = ref
-    rootRef.style = """
-    display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    """
-
-    let rootStyle = document.createElement!("style").object!
-    rootStyle.innerHTML = .string(tokamakStyles)
-    _ = head.appendChild!(rootStyle)
-
-    // Establish default settings
-    var environment = EnvironmentValues()
-    environment[ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
-    environment[keyPath: \._defaultAppStorage] = LocalStorage.standard
-    _DefaultSceneStorageProvider.default = SessionStorage.standard
+    appendRootStyle(ref)
 
     reconciler = StackReconciler(
       view: view,
       target: DOMNode(view, ref),
-      environment: environment,
-      renderer: self
-    ) { closure in
-      let fn = JSClosure { _ in
-        closure()
-        return .undefined
-      }
-      _ = JSObjectRef.global.setTimeout!(fn, 0)
-    }
+      environment: .defaultEnvironment,
+      renderer: self,
+      scheduler: timeoutScheduler
+    )
   }
 
-  init<A: App>(_ app: A,
-               _ ref: JSObjectRef,
-               _ rootEnvironment: EnvironmentValues? = nil) {
+  init<A: App>(
+    _ app: A,
+    _ ref: JSObjectRef,
+    _ rootEnvironment: EnvironmentValues? = nil
+  ) {
     rootRef = ref
-    rootRef.style = """
-    display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    """
-
-    let rootStyle = document.createElement!("style").object!
-    rootStyle.innerHTML = .string(tokamakStyles)
-    _ = head.appendChild!(rootStyle)
-
-    // Establish default settings
-    var environment = EnvironmentValues()
-    environment[ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
-    environment[keyPath: \._defaultAppStorage] = LocalStorage.standard
-    _DefaultSceneStorageProvider.default = SessionStorage.standard
+    appendRootStyle(ref)
 
     reconciler = StackReconciler(
       app: app,
       target: DOMNode(app, ref),
-      environment: environment,
-      renderer: self
-    ) { closure in
-      let fn = JSClosure { _ in
-        closure()
-        return .undefined
-      }
-      _ = JSObjectRef.global.setTimeout!(fn, 0)
-    }
+      environment: .defaultEnvironment,
+      renderer: self,
+      scheduler: timeoutScheduler
+    )
   }
 
   public func mountTarget(to parent: DOMNode, with host: MountedHost) -> DOMNode? {
@@ -191,10 +145,8 @@ public final class DOMRenderer: Renderer {
   }
 
   public func update(target: DOMNode, with host: MountedHost) {
-    guard let html = mapAnyView(
-      host.view,
-      transform: { (html: AnyHTML) in html }
-    ) else { return }
+    guard let html = mapAnyView(host.view, transform: { (html: AnyHTML) in html })
+    else { return }
 
     html.update(dom: target)
   }
@@ -205,16 +157,10 @@ public final class DOMRenderer: Renderer {
     with host: MountedHost,
     completion: @escaping () -> ()
   ) {
-    defer {
-      completion()
-    }
+    defer { completion() }
 
-    guard mapAnyView(
-      host.view,
-      transform: { (html: AnyHTML) in html }
-    ) != nil else {
-      return
-    }
+    guard mapAnyView(host.view, transform: { (html: AnyHTML) in html }) != nil
+    else { return }
 
     _ = parent.ref.removeChild!(target.ref)
   }
