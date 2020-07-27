@@ -120,7 +120,7 @@ public struct _ListRow {
   public static func listRow<V: View>(_ view: V, _ style: ListStyle, isLast: Bool) -> some View {
     (style as? ListStyleDeferredToRenderer)?.listRow(view) ??
       AnyView(view.padding([.trailing, .top, .bottom]))
-    if !isLast && style as? SidebarListStyle == nil {
+    if !isLast && style.hasDividers {
       Divider()
     }
   }
