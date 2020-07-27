@@ -57,7 +57,8 @@ public final class StackReconciler<R: Renderer> {
 
     rootElement.mount(with: self)
     if let mountedApp = rootElement as? MountedApp<R> {
-      mountedApp.setupSubscriptions(with: self)
+      mountedApp.setupSubscription(with: self, app._phasePublisher, to: \.scenePhase)
+      mountedApp.setupSubscription(with: self, app._colorSchemePublisher, to: \.colorScheme)
     }
   }
 
