@@ -23,17 +23,17 @@ extension EnvironmentValues {
   static var defaultEnvironment: Self {
     var environment = EnvironmentValues()
     environment[_ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
-    environment[keyPath: \._defaultAppStorage] = LocalStorage.standard
+    environment._defaultAppStorage = LocalStorage.standard
     _DefaultSceneStorageProvider.default = SessionStorage.standard
 
     return environment
   }
 }
 
-/** `SpacerContainer` is part of TokamakDOM, as not all renderers will handle flexible 
- sizing the way browsers do. Their parent element could already know that if a child is 
+/** `SpacerContainer` is part of TokamakDOM, as not all renderers will handle flexible
+ sizing the way browsers do. Their parent element could already know that if a child is
  requesting full width, then it needs to expand.
-*/
+ */
 private extension AnyView {
   var axes: [SpacerContainerAxis] {
     var axes = [SpacerContainerAxis]()
@@ -55,6 +55,7 @@ private extension AnyView {
 
 let log = JSObjectRef.global.console.object!.log.function!
 let document = JSObjectRef.global.document.object!
+let body = document.body.object!
 let head = document.head.object!
 
 let timeoutScheduler = { (closure: @escaping () -> ()) in
@@ -77,28 +78,15 @@ public final class DOMRenderer: Renderer {
 
   private let rootRef: JSObjectRef
 
-  public init<V: View>(
+  public convenience init<V: View>(
     _ view: V,
     _ ref: JSObjectRef,
     _ rootEnvironment: EnvironmentValues? = nil
   ) {
-    rootRef = ref
-    appendRootStyle(ref)
-
-    reconciler = StackReconciler(
-      view: view,
-      target: DOMNode(view, ref),
-      environment: .defaultEnvironment,
-      renderer: self,
-      scheduler: timeoutScheduler
-    )
+    self.init(DefaultApp(content: view), ref, rootEnvironment)
   }
 
-  init<A: App>(
-    _ app: A,
-    _ ref: JSObjectRef,
-    _ rootEnvironment: EnvironmentValues? = nil
-  ) {
+  init<A: App>(_ app: A, _ ref: JSObjectRef, _ rootEnvironment: EnvironmentValues? = nil) {
     rootRef = ref
     appendRootStyle(ref)
 
