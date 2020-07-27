@@ -86,6 +86,18 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
       }
     }
   }
+
+  func setupSubscriptions(with reconciler: StackReconciler<R>) {
+    app._phasePublisher.sink { [weak self, weak reconciler] phase in
+      guard
+        let mountedApp = self,
+        mountedApp.environmentValues.scenePhase != phase
+      else { return }
+
+      mountedApp.environmentValues.scenePhase = phase
+      reconciler?.queueUpdate(for: mountedApp)
+    }.store(in: &subscriptions)
+  }
 }
 
 extension App {

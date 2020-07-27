@@ -34,6 +34,9 @@ public protocol App: _TitledApp {
   /// Implemented by the renderer to update the `App` on `ScenePhase` changes
   var _phasePublisher: CurrentValueSubject<ScenePhase, Never> { get }
 
+  /// Implemented by the renderer to update the `App` on `ColorScheme` changes
+  var _colorSchemePublisher: CurrentValueSubject<ColorScheme, Never> { get }
+
   static func main()
 
   init()

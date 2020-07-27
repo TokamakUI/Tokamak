@@ -19,22 +19,6 @@ import JavaScriptKit
 import OpenCombine
 import TokamakCore
 
-private enum ScenePhaseObserver {
-  static var publisher = CurrentValueSubject<ScenePhase, Never>(.active)
-
-  static func observe() {
-    _ = document.addEventListener!("visibilitychange", JSClosure { _ in
-      let visibilityState = document.visibilityState.string
-      if visibilityState == "visible" {
-        publisher.send(.active)
-      } else if visibilityState == "hidden" {
-        publisher.send(.background)
-      }
-      return .undefined
-    })
-  }
-}
-
 extension App {
   /// The default implementation of `launch` for a `TokamakDOM` app.
   ///
@@ -57,6 +41,7 @@ extension App {
     _ = body.appendChild!(div)
 
     ScenePhaseObserver.observe()
+    ColorSchemeObserver.observe()
   }
 
   public static func _setTitle(_ title: String) {
@@ -68,6 +53,10 @@ extension App {
 
   public var _phasePublisher: CurrentValueSubject<ScenePhase, Never> {
     ScenePhaseObserver.publisher
+  }
+
+  public var _colorSchemePublisher: CurrentValueSubject<ColorScheme, Never> {
+    ColorSchemeObserver.publisher
   }
 }
 

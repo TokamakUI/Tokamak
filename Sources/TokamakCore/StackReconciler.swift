@@ -57,12 +57,7 @@ public final class StackReconciler<R: Renderer> {
 
     rootElement.mount(with: self)
     if let mountedApp = rootElement as? MountedApp<R> {
-      app._phasePublisher.sink { [weak self] phase in
-        if mountedApp.environmentValues.scenePhase != phase {
-          mountedApp.environmentValues.scenePhase = phase
-          self?.queueUpdate(for: mountedApp)
-        }
-      }.store(in: &mountedApp.subscriptions)
+      mountedApp.setupSubscriptions(with: self)
     }
   }
 
@@ -75,7 +70,7 @@ public final class StackReconciler<R: Renderer> {
     queueUpdate(for: mountedElement)
   }
 
-  private func queueUpdate(for mountedElement: MountedCompositeElement<R>) {
+  func queueUpdate(for mountedElement: MountedCompositeElement<R>) {
     let shouldSchedule = queuedRerenders.isEmpty
     queuedRerenders.insert(mountedElement)
 
