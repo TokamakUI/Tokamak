@@ -167,28 +167,3 @@ extension View {
     }
   }
 }
-
-typealias MountedScene<R: Renderer> = (body: MountedElement<R>, title: String?)
-
-extension Scene {
-  func makeMountedView<R: Renderer>(
-    _ parentTarget: R.TargetType,
-    _ environmentValues: EnvironmentValues
-  ) -> MountedScene<R> {
-    let anySelf = (self as? _AnyScene) ?? _AnyScene(self)
-    var title: String?
-    if let titledSelf = anySelf.scene as? TitledScene,
-      let text = titledSelf.title {
-      title = _TextProxy(text).rawText
-    }
-    if let viewSelf = anySelf.scene as? ViewContainingScene {
-      return (body: viewSelf.anyContent.makeMountedView(parentTarget, environmentValues), title)
-    } else if let deferredSelf = anySelf.scene as? SceneDeferredToRenderer {
-      return (deferredSelf.deferredBody.makeMountedView(parentTarget, environmentValues), title)
-    } else if let groupSelf = anySelf.scene as? GroupScene {
-      return groupSelf.children[0].makeMountedView(parentTarget, environmentValues)
-    } else {
-      fatalError("Unsupported `Scene` type `\(anySelf.type)`. Please file a bug report.")
-    }
-  }
-}

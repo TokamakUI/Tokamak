@@ -172,6 +172,10 @@ public final class StackReconciler<R: Renderer> {
     render(compositeElement: mountedApp, body: \.app.app, result: \.app.bodyClosure)
   }
 
+  func render(mountedScene: MountedScene<R>) -> some Scene {
+    render(compositeElement: mountedScene, body: \.scene.scene, result: \.scene.bodyClosure)
+  }
+
   func reconcile<Element>(
     _ mountedElement: MountedCompositeElement<R>,
     with element: Element,

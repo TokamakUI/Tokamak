@@ -35,8 +35,7 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
   }
 
   private func mountChild<S: Scene>(_ childBody: S) -> MountedElement<R> {
-    let mountedScene: MountedScene<R> = childBody.makeMountedView(parentTarget,
-                                                                  environmentValues)
+    let mountedScene: MountedScene<R> = childBody.makeMountedScene(parentTarget, environmentValues)
     if let title = mountedScene.title {
       // swiftlint:disable force_cast
       (app.type as! _TitledApp.Type)._setTitle(title)

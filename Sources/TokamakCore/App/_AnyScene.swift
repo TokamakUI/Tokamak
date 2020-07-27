@@ -18,10 +18,15 @@
 public struct _AnyScene: Scene {
   let scene: Any
   let type: Any.Type
+  let bodyClosure: (Any) -> _AnyScene
+  let bodyType: Any.Type
 
   init<S: Scene>(_ scene: S) {
     self.scene = scene
     type = S.self
+    // swiftlint:disable:next force_cast
+    bodyClosure = { _AnyScene(($0 as! S).body) }
+    bodyType = S.Body.self
   }
 
   public var body: Never {
