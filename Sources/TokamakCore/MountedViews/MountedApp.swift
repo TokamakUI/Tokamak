@@ -87,23 +87,28 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     }
   }
 
-  func setupSubscriptions(with reconciler: StackReconciler<R>) {
-    app._phasePublisher.sink { [weak self, weak reconciler] phase in
+  func setupSubscription<T: Equatable>(
+    with reconciler: StackReconciler<R>,
+    _ publisher: AnyPublisher<T, Never>,
+    to keyPath: WritableKeyPath<EnvironmentValues, T>
+  ) {
+    publisher.sink { [weak self, weak reconciler] value in
       guard
         let mountedApp = self,
-        mountedApp.environmentValues.scenePhase != phase
+        mountedApp.environmentValues[keyPath: keyPath] != value
       else { return }
 
-      mountedApp.environmentValues.scenePhase = phase
+      mountedApp.environmentValues[keyPath: keyPath] = value
       reconciler?.queueUpdate(for: mountedApp)
     }.store(in: &subscriptions)
   }
 }
 
 extension App {
-  func makeMountedApp<R>(_ parentTarget: R.TargetType,
-                         _ environmentValues: EnvironmentValues)
-    -> MountedApp<R> where R: Renderer {
+  func makeMountedApp<R>(
+    _ parentTarget: R.TargetType,
+    _ environmentValues: EnvironmentValues
+  ) -> MountedApp<R> where R: Renderer {
     // Find Environment changes
     var injectableApp = self
     let any = (injectableApp as? _AnyApp) ?? _AnyApp(injectableApp)

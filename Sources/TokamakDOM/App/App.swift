@@ -51,12 +51,12 @@ extension App {
     _ = head.appendChild!(titleTag)
   }
 
-  public var _phasePublisher: CurrentValueSubject<ScenePhase, Never> {
-    ScenePhaseObserver.publisher
+  public var _phasePublisher: AnyPublisher<ScenePhase, Never> {
+    ScenePhaseObserver.publisher.eraseToAnyPublisher()
   }
 
-  public var _colorSchemePublisher: CurrentValueSubject<ColorScheme, Never> {
-    ColorSchemeObserver.publisher
+  public var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
+    ColorSchemeObserver.publisher.eraseToAnyPublisher()
   }
 }
 

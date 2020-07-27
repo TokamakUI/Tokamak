@@ -138,9 +138,7 @@ extension View {
     // Extract the view from the AnyView for modification
     var extractedView = any.view
     let viewInfo = try! typeInfo(of: any.type)
-    if viewInfo
-      .genericTypes
-      .filter({ $0 is EnvironmentModifier.Type }).count > 0 {
+    if viewInfo.genericTypes.filter({ $0 is EnvironmentModifier.Type }).count > 0 {
       // Apply Environment changes:
       if let modifier = try? viewInfo
         .property(named: "modifier")

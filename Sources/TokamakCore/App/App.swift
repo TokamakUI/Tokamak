@@ -32,10 +32,10 @@ public protocol App: _TitledApp {
   static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues)
 
   /// Implemented by the renderer to update the `App` on `ScenePhase` changes
-  var _phasePublisher: CurrentValueSubject<ScenePhase, Never> { get }
+  var _phasePublisher: AnyPublisher<ScenePhase, Never> { get }
 
   /// Implemented by the renderer to update the `App` on `ColorScheme` changes
-  var _colorSchemePublisher: CurrentValueSubject<ColorScheme, Never> { get }
+  var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> { get }
 
   static func main()
 
