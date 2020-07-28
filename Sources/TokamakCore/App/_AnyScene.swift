@@ -17,11 +17,11 @@
 
 public struct _AnyScene: Scene {
   let scene: Any
-  let sceneType: Any.Type
+  let type: Any.Type
 
   init<S: Scene>(_ scene: S) {
     self.scene = scene
-    sceneType = S.self
+    type = S.self
   }
 
   public var body: Never {

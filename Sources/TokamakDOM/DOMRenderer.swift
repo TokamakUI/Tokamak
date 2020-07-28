@@ -30,10 +30,10 @@ extension EnvironmentValues {
   }
 }
 
-/** `SpacerContainer` is part of TokamakDOM, as not all renderers will handle flexible 
- sizing the way browsers do. Their parent element could already know that if a child is 
+/** `SpacerContainer` is part of TokamakDOM, as not all renderers will handle flexible
+ sizing the way browsers do. Their parent element could already know that if a child is
  requesting full width, then it needs to expand.
-*/
+ */
 private extension AnyView {
   var axes: [SpacerContainerAxis] {
     var axes = [SpacerContainerAxis]()
