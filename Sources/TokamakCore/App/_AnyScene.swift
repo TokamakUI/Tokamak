@@ -16,7 +16,7 @@
 //
 
 public struct _AnyScene: Scene {
-  let scene: Any
+  var scene: Any
   let type: Any.Type
   let bodyClosure: (Any) -> _AnyScene
   let bodyType: Any.Type

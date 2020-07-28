@@ -40,7 +40,7 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
       // swiftlint:disable force_cast
       (app.type as! _TitledApp.Type)._setTitle(title)
     }
-    return mountedScene.body
+    return mountedScene
   }
 
   override func update(with reconciler: StackReconciler<R>) {
