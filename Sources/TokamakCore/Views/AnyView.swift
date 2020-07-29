@@ -22,33 +22,29 @@ public struct AnyView: View {
   /// The type of the underlying `view`.
   let type: Any.Type
 
-  /** The name of the unapplied generic type of the underlying view. `Button<Text>` and
+  /** The name of the unapplied generic type of the underlying `view`. `Button<Text>` and
    `Button<Image>` types are different, but when reconciling the tree of mounted views
    they are treated the same, thus the `Button` part of the type (the type constructor)
    is stored in this property.
    */
   let typeConstructorName: String
 
+  /// The actual `View` value wrapped within this `AnyView`.
+  var view: Any
+
+  /** Type-erased `body` of the underlying `view`. Needs to take a fresh version of `view` as an
+   argument, otherwise it captures an old value of the `body` property.
+   */
+  let bodyClosure: (Any) -> AnyView
+
   /** The type of the `body` of the underlying `view`. Used to cast the result of the applied
    `bodyClosure` property.
    */
   let bodyType: Any.Type
 
-  /// The actual `View` value wrapped within this `AnyView`.
-  var view: Any
-
-  /** Type-erased `body` of the underlying `view`. Needs to take a fresh version of `view` as an
-   argument, otherwise it captures the old view value.
-   */
-  let bodyClosure: (Any) -> AnyView
-
   public init<V>(_ view: V) where V: View {
     if let anyView = view as? AnyView {
-      type = anyView.type
-      typeConstructorName = anyView.typeConstructorName
-      bodyType = anyView.bodyType
-      self.view = anyView.view
-      bodyClosure = anyView.bodyClosure
+      self = anyView
     } else {
       type = V.self
 

@@ -30,7 +30,7 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
   override func mount(with reconciler: StackReconciler<R>) {
     let childBody = reconciler.render(mountedScene: self)
 
-    let child: MountedElement<R> = childBody.makeMountedScene(parentTarget, environmentValues)
+    let child: MountedElement<R> = childBody.makeMountedElement(parentTarget, environmentValues)
     mountedChildren = [child]
     child.mount(with: reconciler)
   }
@@ -44,38 +44,65 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
     reconciler.reconcile(
       self,
       with: element,
-      getElementType: { ($0 as? _AnyScene)?.type ?? type(of: $0) },
-      updateChild: { $0.scene = _AnyScene(element) },
-      mountChild: { $0.makeMountedScene(parentTarget, environmentValues) }
+      getElementType: { $0.type },
+      updateChild: {
+        switch element {
+        case let .scene(scene):
+          $0.scene = _AnyScene(scene)
+        case let .view(view):
+          $0.view = AnyView(view)
+        }
+      },
+      mountChild: { $0.makeMountedElement(parentTarget, environmentValues) }
     )
   }
 }
 
-extension Scene {
+extension _AnyScene.BodyResult {
+  var type: Any.Type {
+    switch self {
+    case let .scene(scene):
+      return scene.type
+    case let .view(view):
+      return view.type
+    }
+  }
+
+  func makeMountedElement<R: Renderer>(
+    _ parentTarget: R.TargetType,
+    _ environmentValues: EnvironmentValues
+  ) -> MountedElement<R> {
+    switch self {
+    case let .scene(scene):
+      return scene.makeMountedScene(parentTarget, environmentValues)
+    case let .view(view):
+      return view.makeMountedView(parentTarget, environmentValues)
+    }
+  }
+}
+
+extension _AnyScene {
   func makeMountedScene<R: Renderer>(
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues
   ) -> MountedScene<R> {
-    let anySelf = (self as? _AnyScene) ?? _AnyScene(self)
     var title: String?
-    if let titledSelf = anySelf.scene as? TitledScene,
+    if let titledSelf = scene as? TitledScene,
       let text = titledSelf.title {
       title = _TextProxy(text).rawText
     }
     let children: [MountedElement<R>]
-    if let viewSelf = anySelf.scene as? ViewContainingScene {
-      children = [viewSelf.anyContent.makeMountedView(parentTarget, environmentValues)]
-    } else if let deferredSelf = anySelf.scene as? SceneDeferredToRenderer {
+    if let deferredSelf = scene as? SceneDeferredToRenderer {
       children = [deferredSelf.deferredBody.makeMountedView(parentTarget, environmentValues)]
-    } else if let groupSelf = anySelf.scene as? GroupScene {
+    } else if let groupSelf = scene as? GroupScene {
       children = groupSelf.children.map { $0.makeMountedScene(parentTarget, environmentValues) }
     } else {
       fatalError("""
-      Unsupported `Scene` type `\(anySelf.type)`. Please file a bug report at \
+      Unsupported `Scene` type `\(type)`. Please file a bug report at \
       https://github.com/swiftwasm/Tokamak/issues/new
       """)
     }
 
-    return .init(anySelf, title, children, parentTarget, environmentValues)
+    return .init(self, title, children, parentTarget, environmentValues)
   }
 }

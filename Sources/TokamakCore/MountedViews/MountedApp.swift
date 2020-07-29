@@ -34,7 +34,7 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     mountedChildren.forEach { $0.unmount(with: reconciler) }
   }
 
-  private func mountChild<S: Scene>(_ childBody: S) -> MountedElement<R> {
+  private func mountChild(_ childBody: _AnyScene) -> MountedElement<R> {
     let mountedScene: MountedScene<R> = childBody.makeMountedScene(parentTarget, environmentValues)
     if let title = mountedScene.title {
       // swiftlint:disable force_cast
@@ -48,7 +48,7 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     reconciler.reconcile(
       self,
       with: element,
-      getElementType: { ($0 as? _AnyScene)?.type ?? type(of: $0) },
+      getElementType: { $0.type },
       updateChild: { $0.scene = _AnyScene(element) },
       mountChild: { mountChild($0) }
     )

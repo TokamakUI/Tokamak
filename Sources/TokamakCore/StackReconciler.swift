@@ -18,12 +18,49 @@
 import OpenCombine
 import Runtime
 
+/** A class that reconciles a "raw" tree of element values (such as `App`, `Scene` and `View`,
+ all coming from `body` or `deferredBody` properties) with a tree of mounted element instances
+ ('MountedApp', `MountedScene`, `MountedCompositeView` and `MountedHostView` respectively). Any
+ updates to the former tree are reflected in the latter tree, and then resulting changes are
+ delegated to the renderer for it to reflect those in its viewport.
+
+ Scheduled updates are stored in a simple stack-like structure and are processed sequentially as
+ opposed to potentially more sophisticated implementations. [React's fiber
+ reconciler](https://github.com/acdlite/react-fiber-architecture) is one of those and could be
+ implemented in the future to improve UI responsiveness under heavy load and potentially even
+ support multi-threading when it's supported in WebAssembly.
+ */
 public final class StackReconciler<R: Renderer> {
+  /** A set of mounted elements that triggered a re-render. These are stored in a `Set` instead of
+   an array to avoid duplicate re-renders. The actual performance benefits of such de-duplication
+   haven't been proven in the absence of benchmarks, so this could be updated to a simple `Array` in
+   the future if that's proven to be more effective.
+   */
   private var queuedRerenders = Set<MountedCompositeElement<R>>()
 
+  /** A root renderer's target instance. We establish the "host-target" terminology where a "host"
+   is a primitive `View` that doesn't have any children, and a "target" is an instance of a type
+   declared by a rendererto which the "host" is rendered to. For example, in the DOM renderer a
+   "target" is a DOM node, in a hypothetical iOS renderer it would be a `UIView`, and a macOS
+   renderer would declare an `NSView` as its "target" type.
+   */
   public let rootTarget: R.TargetType
+
+  /** A root of the mounted elements tree to which all other mounted elements are attached to.
+   */
   private let rootElement: MountedElement<R>
+
+  /** A renderer instances to delegate to. Usually the renderer owns the reconciler instance, thus
+   the reference has to be weak to avoid a reference cycle.
+   **/
   private(set) weak var renderer: R?
+
+  /** A platform-specific implementation of an event loop cycle scheduler. Usually reconciler
+   updates are scheduled in reponse to user input. To make the updates non-blocking so that app
+   feels responsive, the actual reconcilliation needs to be scheduled on the next event loop cycle.
+   Usually it's `DispatchQueue.main.async` on platforms where `Dispatch` is supported, or
+   `setTimeout` in the DOM environment.
+   */
   private let scheduler: (@escaping () -> ()) -> ()
 
   public init<V: View>(
@@ -164,15 +201,15 @@ public final class StackReconciler<R: Renderer> {
     return compositeElement[keyPath: result](compositeElement[keyPath: bodyKeypath])
   }
 
-  func render(compositeView: MountedCompositeView<R>) -> some View {
+  func render(compositeView: MountedCompositeView<R>) -> AnyView {
     render(compositeElement: compositeView, body: \.view.view, result: \.view.bodyClosure)
   }
 
-  func render(mountedApp: MountedApp<R>) -> some Scene {
+  func render(mountedApp: MountedApp<R>) -> _AnyScene {
     render(compositeElement: mountedApp, body: \.app.app, result: \.app.bodyClosure)
   }
 
-  func render(mountedScene: MountedScene<R>) -> some Scene {
+  func render(mountedScene: MountedScene<R>) -> _AnyScene.BodyResult {
     render(compositeElement: mountedScene, body: \.scene.scene, result: \.scene.bodyClosure)
   }
 
@@ -205,7 +242,7 @@ public final class StackReconciler<R: Renderer> {
 
       // new child has the same type as existing child
       // swiftlint:disable:next force_try
-      if try! mountedChild.view.typeConstructorName == typeInfo(of: childBodyType).mangledName {
+      if try! mountedChild.typeConstructorName == typeInfo(of: childBodyType).mangledName {
         updateChild(mountedChild)
         mountedChild.update(with: self)
       } else {

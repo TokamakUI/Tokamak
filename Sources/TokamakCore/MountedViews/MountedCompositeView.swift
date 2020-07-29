@@ -44,7 +44,7 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     reconciler.reconcile(
       self,
       with: element,
-      getElementType: { ($0 as? AnyView)?.type ?? type(of: $0) },
+      getElementType: { $0.type },
       updateChild: { $0.view = AnyView(element) },
       mountChild: { $0.makeMountedView(parentTarget, environmentValues) }
     )
