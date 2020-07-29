@@ -78,11 +78,7 @@ final class DOMRenderer: Renderer {
 
   private let rootRef: JSObjectRef
 
-  init<A: App>(
-    _ app: A,
-    _ ref: JSObjectRef,
-    _ rootEnvironment: EnvironmentValues? = nil
-  ) {
+  init<A: App>(_ app: A, _ ref: JSObjectRef, _ rootEnvironment: EnvironmentValues? = nil) {
     rootRef = ref
     appendRootStyle(ref)
 
