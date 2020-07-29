@@ -117,10 +117,20 @@ public class MountedElement<R: Renderer> {
 }
 
 extension TypeInfo {
-  func injectEnvironment(from environmentValues: EnvironmentValues, into element: inout Any) {
+  func injectEnvironment(from environmentValues: EnvironmentValues, into element: inout Any) -> EnvironmentValues {
+    var modifiedEnv = environmentValues
+    // swiftlint:disable force_try
+    // Extract the view from the AnyView for modification
+    if genericTypes.filter({ $0 is EnvironmentModifier.Type }).count > 0 {
+      // Apply Environment changes:
+      if let modifier = try! property(named: "modifier").get(from: element) as? EnvironmentModifier {
+        print("modifier found: \(modifier)")
+        modifier.modifyEnvironment(&modifiedEnv)
+      }
+    }
+
     // Inject @Environment values
     // swiftlint:disable force_cast
-    // swiftlint:disable force_try
     // `DynamicProperty`s can have `@Environment` properties contained in them,
     // so we have to inject into them as well.
     for dynamicProp in properties.filter({ $0.type is DynamicProperty.Type }) {
@@ -128,18 +138,20 @@ extension TypeInfo {
       var propWrapper = try! dynamicProp.get(from: element) as! DynamicProperty
       for prop in propInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
         var wrapper = try! prop.get(from: propWrapper) as! EnvironmentReader
-        wrapper.setContent(from: environmentValues)
+        wrapper.setContent(from: modifiedEnv)
         try! prop.set(value: wrapper, on: &propWrapper)
       }
       try! dynamicProp.set(value: propWrapper, on: &element)
     }
     for prop in properties.filter({ $0.type is EnvironmentReader.Type }) {
       var wrapper = try! prop.get(from: element) as! EnvironmentReader
-      wrapper.setContent(from: environmentValues)
+      wrapper.setContent(from: modifiedEnv)
       try! prop.set(value: wrapper, on: &element)
     }
     // swiftlint:enable force_try
     // swiftlint:enable force_cast
+
+    return modifiedEnv
   }
 }
 
@@ -148,21 +160,12 @@ extension AnyView {
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues
   ) -> MountedElement<R> {
-    // Find Environment changes
-    var modifiedEnv = environmentValues
-    // swiftlint:disable force_try
-    // Extract the view from the AnyView for modification
+    // swiftlint:disable:next force_try
     let viewInfo = try! typeInfo(of: type)
-    if viewInfo.genericTypes.filter({ $0 is EnvironmentModifier.Type }).count > 0 {
-      // Apply Environment changes:
-      if let modifier = try! viewInfo
-        .property(named: "modifier")
-        .get(from: view) as? EnvironmentModifier {
-        modifier.modifyEnvironment(&modifiedEnv)
-      }
-    }
+
+    // Find Environment changes
     var modifiedView = view
-    viewInfo.injectEnvironment(from: environmentValues, into: &modifiedView)
+    let modifiedEnv = viewInfo.injectEnvironment(from: environmentValues, into: &modifiedView)
 
     var anyView = self
     anyView.view = modifiedView

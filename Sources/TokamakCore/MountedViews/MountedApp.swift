@@ -66,11 +66,11 @@ extension _AnyApp {
     // swiftlint:disable:next force_try
     let info = try! typeInfo(of: type)
 
-    var modified = app
-    info.injectEnvironment(from: environmentValues, into: &modified)
+    var modifiedApp = app
+    let modifiedEnv = info.injectEnvironment(from: environmentValues, into: &modifiedApp)
 
     var result = self
-    result.app = modified
-    return MountedApp(result, parentTarget, environmentValues)
+    result.app = modifiedApp
+    return MountedApp(result, parentTarget, modifiedEnv)
   }
 }

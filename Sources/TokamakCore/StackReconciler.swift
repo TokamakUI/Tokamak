@@ -179,8 +179,10 @@ public final class StackReconciler<R: Renderer> {
                  body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
                  result: KeyPath<MountedCompositeElement<R>, (Any) -> T>) -> T {
     let info = try! typeInfo(of: compositeElement.elementType)
-    info.injectEnvironment(from: compositeElement.environmentValues,
-                           into: &compositeElement[keyPath: bodyKeypath])
+    compositeElement.environmentValues = info.injectEnvironment(
+      from: compositeElement.environmentValues,
+      into: &compositeElement[keyPath: bodyKeypath]
+    )
 
     let needsSubscriptions = compositeElement.subscriptions.isEmpty
 
