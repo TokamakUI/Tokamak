@@ -16,17 +16,29 @@
 //
 
 public struct _AnyScene: Scene {
+  enum BodyResult {
+    case scene(_AnyScene)
+    case view(AnyView)
+  }
+
   var scene: Any
+
+  /// The type of the underlying `scene`
   let type: Any.Type
-  let bodyClosure: (Any) -> _AnyScene
+  let bodyClosure: (Any) -> BodyResult
   let bodyType: Any.Type
 
   init<S: Scene>(_ scene: S) {
     self.scene = scene
     type = S.self
-    // swiftlint:disable:next force_cast
-    bodyClosure = { _AnyScene(($0 as! S).body) }
     bodyType = S.Body.self
+    if scene is SceneDeferredToRenderer {
+      // swiftlint:disable:next force_cast
+      bodyClosure = { .view(($0 as! SceneDeferredToRenderer).deferredBody) }
+    } else {
+      // swiftlint:disable:next force_cast
+      bodyClosure = { .scene(_AnyScene(($0 as! S).body)) }
+    }
   }
 
   public var body: Never {
