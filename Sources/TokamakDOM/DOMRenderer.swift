@@ -73,33 +73,29 @@ func appendRootStyle(_ rootNode: JSObjectRef) {
   _ = head.appendChild!(rootStyle)
 }
 
-public final class DOMRenderer: Renderer {
-  public private(set) var reconciler: StackReconciler<DOMRenderer>?
+final class DOMRenderer: Renderer {
+  private(set) var reconciler: StackReconciler<DOMRenderer>?
 
   private let rootRef: JSObjectRef
 
-  public convenience init<V: View>(
-    _ view: V,
+  init<A: App>(
+    _ app: A,
     _ ref: JSObjectRef,
     _ rootEnvironment: EnvironmentValues? = nil
   ) {
-    self.init(DefaultApp(content: view), ref, rootEnvironment)
-  }
-
-  init<A: App>(_ app: A, _ ref: JSObjectRef, _ rootEnvironment: EnvironmentValues? = nil) {
     rootRef = ref
     appendRootStyle(ref)
 
     reconciler = StackReconciler(
       app: app,
-      target: DOMNode(app, ref),
+      target: DOMNode(ref),
       environment: .defaultEnvironment,
       renderer: self,
       scheduler: timeoutScheduler
     )
   }
 
-  public func mountTarget(to parent: DOMNode, with host: MountedHost) -> DOMNode? {
+  func mountTarget(to parent: DOMNode, with host: MountedHost) -> DOMNode? {
     guard let (outerHTML, listeners) = mapAnyView(
       host.view,
       transform: { (html: AnyHTML) in (html.outerHTML, html.listeners) }
@@ -132,14 +128,14 @@ public final class DOMRenderer: Renderer {
     return DOMNode(host.view, lastChild, listeners)
   }
 
-  public func update(target: DOMNode, with host: MountedHost) {
+  func update(target: DOMNode, with host: MountedHost) {
     guard let html = mapAnyView(host.view, transform: { (html: AnyHTML) in html })
     else { return }
 
     html.update(dom: target)
   }
 
-  public func unmount(
+  func unmount(
     target: DOMNode,
     from parent: DOMNode,
     with host: MountedHost,
