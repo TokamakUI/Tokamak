@@ -85,7 +85,7 @@ public final class DOMRenderer<A: App>: Renderer {
 
     reconciler = StackReconciler(
       app: app,
-      target: DOMNode(app, ref),
+      target: DOMNode(ref),
       environment: .defaultEnvironment,
       renderer: self,
       scheduler: timeoutScheduler

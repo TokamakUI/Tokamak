@@ -31,7 +31,7 @@ public protocol Renderer: AnyObject {
    Usually a target is a simple view (`UIView` and `NSView` for `UIKit`
    and `AppKit` respectively).
    */
-  associatedtype TargetType
+  associatedtype TargetType: Target
 
   /// Reconciler instance used by this renderer.
   var reconciler: StackReconciler<Self>? { get }

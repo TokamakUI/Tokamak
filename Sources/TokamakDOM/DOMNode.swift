@@ -18,7 +18,7 @@ import TokamakCore
 public final class DOMNode: Target {
   let ref: JSObjectRef
   private var listeners: [String: JSClosure]
-  private let view: AnyView?
+  public var view: AnyView
 
   init<V: View>(_ view: V, _ ref: JSObjectRef, _ listeners: [String: Listener] = [:]) {
     self.ref = ref
@@ -29,6 +29,7 @@ public final class DOMNode: Target {
 
   init(_ ref: JSObjectRef) {
     self.ref = ref
+    view = AnyView(EmptyView())
     listeners = [:]
   }
 

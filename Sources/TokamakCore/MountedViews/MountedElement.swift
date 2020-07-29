@@ -67,11 +67,7 @@ public class MountedElement<R: Renderer> {
 
   var elementType: Any.Type {
     switch element {
-    case .app: fatalError("""
-    `App` values aren't supposed to be reconciled, thus the type constructor name is not stored \
-    for `App` elements. Please report this crash as a bug at \
-    https://github.com/swiftwasm/Tokamak/issues/new
-    """)
+    case .app: return R.AppType.self
     case let .scene(scene): return scene.type
     case let .view(view): return view.type
     }

@@ -15,6 +15,6 @@
 //  Created by Max Desiatov on 10/02/2019.
 //
 
-protocol Target {
+public protocol Target: AnyObject {
   var view: AnyView { get set }
 }
