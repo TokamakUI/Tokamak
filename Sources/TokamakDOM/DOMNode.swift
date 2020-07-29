@@ -15,10 +15,10 @@
 import JavaScriptKit
 import TokamakCore
 
-public final class DOMNode: Target {
+final class DOMNode: Target {
   let ref: JSObjectRef
   private var listeners: [String: JSClosure]
-  public var view: AnyView
+  var view: AnyView
 
   init<V: View>(_ view: V, _ ref: JSObjectRef, _ listeners: [String: Listener] = [:]) {
     self.ref = ref
