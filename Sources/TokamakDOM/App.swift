@@ -23,7 +23,6 @@ private enum ScenePhaseObserver {
   static var publisher = CurrentValueSubject<ScenePhase, Never>(.active)
 
   static func observe() {
-    let document = JSObjectRef.global.document.object!
     _ = document.addEventListener!("visibilitychange", JSClosure { _ in
       let visibilityState = document.visibilityState.string
       if visibilityState == "visible" {
@@ -44,12 +43,11 @@ extension App {
   /// The body is styled with `margin: 0;` to match the `SwiftUI` layout
   /// system as closely as possible
   ///
-  public static func _launch(_ app: Self,
-                             _ rootEnvironment: EnvironmentValues) {
-    let document = JSObjectRef.global.document.object!
-    let body = document.body.object!
-    let head = document.head.object!
-    body.style = "margin: 0;"
+  public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
+    let body = TokamakDOM.body
+    if body.style == .undefined {
+      body.style = "margin: 0;"
+    }
     let rootStyle = document.createElement!("style").object!
     rootStyle.id = "_tokamak-app-style"
     rootStyle.innerHTML = .string(tokamakStyles)
@@ -72,5 +70,15 @@ extension App {
 
   public var _phasePublisher: CurrentValueSubject<ScenePhase, Never> {
     ScenePhaseObserver.publisher
+  }
+}
+
+struct DefaultApp<V: View>: App {
+  var content: V?
+
+  var body: some Scene {
+    WindowGroup {
+      content
+    }
   }
 }

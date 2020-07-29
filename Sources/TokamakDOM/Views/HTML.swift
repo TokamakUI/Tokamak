@@ -45,7 +45,7 @@ extension AnyHTML {
     // then use the standard lib to get the difference?
 
     for (attribute, value) in attributes {
-      _ = dom.ref[dynamicMember: attribute] = JSValue(stringLiteral: value)
+      _ = dom.ref[dynamicMember: attribute] = .string(value)
     }
 
     dom.reinstall(listeners)
