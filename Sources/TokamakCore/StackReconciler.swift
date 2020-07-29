@@ -50,13 +50,13 @@ public final class StackReconciler<R: Renderer> {
    */
   private let rootElement: MountedElement<R>
 
-  /** A renderer instances to delegate to. Usually the renderer owns the reconciler instance, thus
+  /** A renderer instance to delegate to. Usually the renderer owns the reconciler instance, thus
    the reference has to be weak to avoid a reference cycle.
    **/
   private(set) weak var renderer: R?
 
-  /** A platform-specific implementation of an event loop cycle scheduler. Usually reconciler
-   updates are scheduled in reponse to user input. To make the updates non-blocking so that app
+  /** A platform-specific implementation of an event loop scheduler. Usually reconciler
+   updates are scheduled in reponse to user input. To make updates non-blocking so that the app
    feels responsive, the actual reconcilliation needs to be scheduled on the next event loop cycle.
    Usually it's `DispatchQueue.main.async` on platforms where `Dispatch` is supported, or
    `setTimeout` in the DOM environment.
