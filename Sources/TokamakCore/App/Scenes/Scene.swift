@@ -27,10 +27,6 @@ protocol TitledScene {
   var title: Text? { get }
 }
 
-protocol ViewContainingScene {
-  var anyContent: AnyView { get }
-}
-
 protocol ParentScene {
   var children: [_AnyScene] { get }
 }

@@ -21,8 +21,6 @@ import Runtime
  views by `StackReconciler`.
  */
 public final class MountedHostView<R: Renderer>: MountedElement<R> {
-  private var mountedChildren = [MountedElement<R>]()
-
   /** Target of a closest ancestor host view. As a parent of this view
    might not be a host view, but a composite view, we need to pass
    around the target of a host view to its closests descendant host
@@ -33,15 +31,10 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
   /// Target of this host view supplied by a renderer after mounting has completed.
   private var target: R.TargetType?
 
-  private let environmentValues: EnvironmentValues
-
-  init(_ view: AnyView,
-       _ parentTarget: R.TargetType,
-       _ environmentValues: EnvironmentValues) {
+  init(_ view: AnyView, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
-    self.environmentValues = environmentValues
 
-    super.init(view)
+    super.init(view, environmentValues)
   }
 
   override func mount(with reconciler: StackReconciler<R>) {

@@ -15,14 +15,21 @@
 import TokamakShim
 
 @available(OSX 10.16, iOS 14.0, *)
-struct TokamakDemoApp: App {
+struct CustomScene: Scene {
   @Environment(\.scenePhase) private var scenePhase
 
   var body: some Scene {
-    print(scenePhase)
+    print("In CustomScene.body scenePhase is \(scenePhase)")
     return WindowGroup("Tokamak Demo") {
       TokamakDemoView()
     }
+  }
+}
+
+@available(OSX 10.16, iOS 14.0, *)
+struct TokamakDemoApp: App {
+  var body: some Scene {
+    CustomScene()
   }
 }
 

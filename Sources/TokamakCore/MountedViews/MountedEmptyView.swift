@@ -15,7 +15,7 @@
 //  Created by Max Desiatov on 05/01/2019.
 //
 
-final class MountedNull<R: Renderer>: MountedElement<R> {
+final class MountedEmptyView<R: Renderer>: MountedElement<R> {
   override func mount(with reconciler: StackReconciler<R>) {}
 
   override func unmount(with reconciler: StackReconciler<R>) {}

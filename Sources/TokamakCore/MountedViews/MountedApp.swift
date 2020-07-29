@@ -34,14 +34,13 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     mountedChildren.forEach { $0.unmount(with: reconciler) }
   }
 
-  private func mountChild<S: Scene>(_ childBody: S) -> MountedElement<R> {
-    let mountedScene: MountedScene<R> = childBody.makeMountedView(parentTarget,
-                                                                  environmentValues)
+  private func mountChild(_ childBody: _AnyScene) -> MountedElement<R> {
+    let mountedScene: MountedScene<R> = childBody.makeMountedScene(parentTarget, environmentValues)
     if let title = mountedScene.title {
       // swiftlint:disable force_cast
       (app.type as! _TitledApp.Type)._setTitle(title)
     }
-    return mountedScene.body
+    return mountedScene
   }
 
   override func update(with reconciler: StackReconciler<R>) {
@@ -49,34 +48,29 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     reconciler.reconcile(
       self,
       with: element,
-      getElementType: { ($0 as? _AnyScene)?.type ?? type(of: $0) },
-      updateChild: { $0.scene = _AnyScene(element) },
+      getElementType: { $0.type },
+      updateChild: {
+        $0.environmentValues = environmentValues
+        $0.scene = _AnyScene(element)
+      },
       mountChild: { mountChild($0) }
     )
   }
 }
 
-extension App {
-  func makeMountedApp<R>(_ parentTarget: R.TargetType,
-                         _ environmentValues: EnvironmentValues)
-    -> MountedApp<R> where R: Renderer {
-    // Find Environment changes
-    var injectableApp = self
-    let any = (injectableApp as? _AnyApp) ?? _AnyApp(injectableApp)
-    // swiftlint:disable force_try
+extension _AnyApp {
+  func makeMountedApp<R>(
+    _ parentTarget: R.TargetType,
+    _ environmentValues: EnvironmentValues
+  ) -> MountedApp<R> where R: Renderer {
+    // swiftlint:disable:next force_try
+    let info = try! typeInfo(of: type)
 
-    let appInfo = try! typeInfo(of: any.type)
-    var extractedApp = any.app
+    var modified = app
+    info.injectEnvironment(from: environmentValues, into: &modified)
 
-    appInfo.injectEnvironment(from: environmentValues, into: &extractedApp)
-
-    // Set the extractedApp back on the AnyApp after modification
-    let anyAppInfo = try! typeInfo(of: _AnyApp.self)
-    try! anyAppInfo.property(named: "app").set(value: extractedApp, on: &injectableApp)
-    // swiftlint:enable force_try
-
-    // Make MountedView
-    let anyApp = injectableApp as? _AnyApp ?? _AnyApp(injectableApp)
-    return MountedApp(anyApp, parentTarget, environmentValues)
+    var result = self
+    result.app = modified
+    return MountedApp(result, parentTarget, environmentValues)
   }
 }
