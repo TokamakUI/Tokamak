@@ -167,7 +167,7 @@ extension AnyView {
     var anyView = self
     anyView.view = modifiedView
     if anyView.type == EmptyView.self {
-      return MountedNull(anyView, modifiedEnv)
+      return MountedEmptyView(anyView, modifiedEnv)
     } else if anyView.bodyType == Never.self && !(anyView.type is ViewDeferredToRenderer.Type) {
       return MountedHostView(anyView, parentTarget, modifiedEnv)
     } else {
