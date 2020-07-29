@@ -175,9 +175,11 @@ public final class StackReconciler<R: Renderer> {
     }.store(in: &compositeElement.subscriptions)
   }
 
-  func render<T>(compositeElement: MountedCompositeElement<R>,
-                 body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
-                 result: KeyPath<MountedCompositeElement<R>, (Any) -> T>) -> T {
+  func render<T>(
+    compositeElement: MountedCompositeElement<R>,
+    body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
+    bodyClosure: (MountedCompositeElement<R>) -> T
+  ) -> T {
     let info = try! typeInfo(of: compositeElement.elementType)
     info.injectEnvironment(from: compositeElement.environmentValues,
                            into: &compositeElement[keyPath: bodyKeypath])
@@ -198,19 +200,19 @@ public final class StackReconciler<R: Renderer> {
       }
     }
 
-    return compositeElement[keyPath: result](compositeElement[keyPath: bodyKeypath])
+    return bodyClosure(compositeElement)
   }
 
   func render(compositeView: MountedCompositeView<R>) -> AnyView {
-    render(compositeElement: compositeView, body: \.view.view, result: \.view.bodyClosure)
+    render(compositeElement: compositeView, body: \.view.view) { $0.view.bodyClosure($0.view.view) }
   }
 
   func render(mountedApp: MountedApp<R>) -> _AnyScene {
-    render(compositeElement: mountedApp, body: \.app.app, result: \.app.bodyClosure)
+    render(compositeElement: mountedApp, body: \.app.app) { $0.app.bodyClosure($0.app.app) }
   }
 
   func render(mountedScene: MountedScene<R>) -> _AnyScene.BodyResult {
-    render(compositeElement: mountedScene, body: \.scene.scene, result: \.scene.bodyClosure)
+    render(compositeElement: mountedScene, body: \.scene.scene) { $0.scene.bodyClosure($0.scene.scene) }
   }
 
   func reconcile<Element>(
