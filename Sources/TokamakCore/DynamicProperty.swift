@@ -37,7 +37,7 @@ extension TypeInfo {
       dynamicProps.append(prop)
       // swiftlint:disable force_try
       let propInfo = try! typeInfo(of: prop.type)
-      propInfo.injectEnvironment(from: environment, into: &source)
+      _ = propInfo.injectEnvironment(from: environment, into: &source)
       var extracted = try! prop.get(from: source)
       dynamicProps.append(
         contentsOf: propInfo.dynamicProperties(environment,

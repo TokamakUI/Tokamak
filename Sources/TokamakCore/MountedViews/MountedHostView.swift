@@ -68,7 +68,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
 
     // swiftlint:disable:next force_try
     let viewInfo = try! typeInfo(of: view.type)
-    viewInfo.injectEnvironment(from: environmentValues, into: &view.view)
+    environmentValues = viewInfo.injectEnvironment(from: environmentValues, into: &view.view)
     target.view = view
     reconciler.renderer?.update(target: target, with: self)
 
@@ -100,7 +100,8 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
           // Inject Environment
           // swiftlint:disable:next force_try
           let viewInfo = try! typeInfo(of: child.view.type)
-          viewInfo.injectEnvironment(from: environmentValues, into: &child.view.view)
+          child.environmentValues =
+            viewInfo.injectEnvironment(from: environmentValues, into: &child.view.view)
           child.update(with: reconciler)
           newChild = child
         } else {

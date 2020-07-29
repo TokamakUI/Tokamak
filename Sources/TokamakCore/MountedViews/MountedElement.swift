@@ -117,16 +117,16 @@ public class MountedElement<R: Renderer> {
 }
 
 extension TypeInfo {
-  func injectEnvironment(from environmentValues: EnvironmentValues, into element: inout Any) -> EnvironmentValues {
+  func injectEnvironment(
+    from environmentValues: EnvironmentValues,
+    into element: inout Any
+  ) -> EnvironmentValues {
     var modifiedEnv = environmentValues
     // swiftlint:disable force_try
-    // Extract the view from the AnyView for modification
-    if genericTypes.filter({ $0 is EnvironmentModifier.Type }).count > 0 {
-      // Apply Environment changes:
-      if let modifier = try! property(named: "modifier").get(from: element) as? EnvironmentModifier {
-        print("modifier found: \(modifier)")
-        modifier.modifyEnvironment(&modifiedEnv)
-      }
+    // Extract the view from the AnyView for modification, apply Environment changes:
+    if genericTypes.contains(where: { $0 is EnvironmentModifier.Type }),
+      let modifier = try! property(named: "modifier").get(from: element) as? EnvironmentModifier {
+      modifier.modifyEnvironment(&modifiedEnv)
     }
 
     // Inject @Environment values
