@@ -45,7 +45,10 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
       self,
       with: element,
       getElementType: { $0.type },
-      updateChild: { $0.view = AnyView(element) },
+      updateChild: {
+        $0.environmentValues = environmentValues
+        $0.view = AnyView(element)
+      },
       mountChild: { $0.makeMountedView(parentTarget, environmentValues) }
     )
   }

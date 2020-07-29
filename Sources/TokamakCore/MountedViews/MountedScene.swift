@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Runtime
+
 final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
   let title: String?
 
@@ -46,6 +48,7 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
       with: element,
       getElementType: { $0.type },
       updateChild: {
+        $0.environmentValues = environmentValues
         switch element {
         case let .scene(scene):
           $0.scene = _AnyScene(scene)
@@ -86,23 +89,28 @@ extension _AnyScene {
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues
   ) -> MountedScene<R> {
+    // swiftlint:disable:next force_try
+    let info = try! typeInfo(of: type)
+
+    var modified = scene
+    info.injectEnvironment(from: environmentValues, into: &modified)
+
     var title: String?
-    if let titledSelf = scene as? TitledScene,
+    if let titledSelf = modified as? TitledScene,
       let text = titledSelf.title {
       title = _TextProxy(text).rawText
     }
     let children: [MountedElement<R>]
-    if let deferredSelf = scene as? SceneDeferredToRenderer {
-      children = [deferredSelf.deferredBody.makeMountedView(parentTarget, environmentValues)]
-    } else if let groupSelf = scene as? GroupScene {
-      children = groupSelf.children.map { $0.makeMountedScene(parentTarget, environmentValues) }
+    if let deferredScene = modified as? SceneDeferredToRenderer {
+      children = [deferredScene.deferredBody.makeMountedView(parentTarget, environmentValues)]
+    } else if let groupScene = modified as? GroupScene {
+      children = groupScene.children.map { $0.makeMountedScene(parentTarget, environmentValues) }
     } else {
-      fatalError("""
-      Unsupported `Scene` type `\(type)`. Please file a bug report at \
-      https://github.com/swiftwasm/Tokamak/issues/new
-      """)
+      children = []
     }
 
-    return .init(self, title, children, parentTarget, environmentValues)
+    var result = self
+    result.scene = modified
+    return .init(result, title, children, parentTarget, environmentValues)
   }
 }

@@ -74,7 +74,7 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootElement = view.makeMountedView(target, environment)
+    rootElement = AnyView(view).makeMountedView(target, environment)
 
     rootElement.mount(with: self)
   }
@@ -90,13 +90,13 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootElement = app.makeMountedApp(target, environment)
+    rootElement = _AnyApp(app).makeMountedApp(target, environment)
 
     rootElement.mount(with: self)
     if let mountedApp = rootElement as? MountedApp<R> {
       app._phasePublisher.sink { [weak self] phase in
-        if mountedApp.environmentValues[keyPath: \.scenePhase] != phase {
-          mountedApp.environmentValues[keyPath: \.scenePhase] = phase
+        if mountedApp.environmentValues.scenePhase != phase {
+          mountedApp.environmentValues.scenePhase = phase
           self?.queueUpdate(for: mountedApp)
         }
       }.store(in: &mountedApp.subscriptions)
