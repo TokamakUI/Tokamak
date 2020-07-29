@@ -23,7 +23,7 @@ protocol EnvironmentReader {
   mutating func setContent(from values: EnvironmentValues)
 }
 
-@propertyWrapper public struct Environment<Value>: EnvironmentReader {
+@propertyWrapper public struct Environment<Value>: DynamicProperty {
   enum Content {
     case keyPath(KeyPath<EnvironmentValues, Value>)
     case value(Value)
@@ -50,3 +50,5 @@ protocol EnvironmentReader {
     }
   }
 }
+
+extension Environment: EnvironmentReader {}

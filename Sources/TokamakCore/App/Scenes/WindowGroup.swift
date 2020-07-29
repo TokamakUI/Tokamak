@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/16/20.
 //
 
-public struct WindowGroup<Content>: Scene, TitledScene, ViewContainingScene where Content: View {
+public struct WindowGroup<Content>: Scene, TitledScene where Content: View {
   public let id: String
   public let title: Text?
   public let content: Content

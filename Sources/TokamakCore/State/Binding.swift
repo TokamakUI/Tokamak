@@ -21,7 +21,7 @@ typealias Updater<T> = (inout T) -> ()
  view's state in-place synchronously, but only schedule an update with
  the renderer at a later time.
  */
-@propertyWrapper public struct Binding<Value> {
+@propertyWrapper public struct Binding<Value>: DynamicProperty {
   public var wrappedValue: Value {
     get { get() }
     nonmutating set { set(newValue) }

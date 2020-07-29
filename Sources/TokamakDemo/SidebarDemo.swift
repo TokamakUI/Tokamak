@@ -12,13 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Max Desiatov on 05/01/2019.
+//  Created by Gene Z. Ragan on 7/23/20.
 //
 
-final class MountedNull<R: Renderer>: MountedElement<R> {
-  override func mount(with reconciler: StackReconciler<R>) {}
+import TokamakShim
 
-  override func unmount(with reconciler: StackReconciler<R>) {}
-
-  override func update(with reconciler: StackReconciler<R>) {}
+public struct SidebarListDemo: View {
+  public var body: some View {
+    List {
+      ForEach(0..<10) {
+        Text("Item \($0 + 1)")
+      }
+    }
+  }
 }

@@ -54,3 +54,12 @@ let tokamakStyles = """
   margin-left: 1em;
 }
 """
+
+let rootNodeStyles = """
+display: flex;
+width: 100%;
+height: 100%;
+justify-content: center;
+align-items: center;
+overflow: hidden;
+"""

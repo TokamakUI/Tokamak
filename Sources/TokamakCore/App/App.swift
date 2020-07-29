@@ -29,8 +29,8 @@ public protocol App: _TitledApp {
   var body: Body { get }
 
   /// Implemented by the renderer to mount the `App`
-  static func _launch(_ app: Self,
-                      _ rootEnvironment: EnvironmentValues)
+  static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues)
+
   /// Implemented by the renderer to update the `App` on `ScenePhase` changes
   var _phasePublisher: CurrentValueSubject<ScenePhase, Never> { get }
 
