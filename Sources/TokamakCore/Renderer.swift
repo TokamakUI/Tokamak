@@ -25,11 +25,13 @@ public protocol Renderer: AnyObject {
   typealias Mounted = MountedElement<Self>
   typealias MountedHost = MountedHostView<Self>
 
+  associatedtype AppType: App
+
   /** Views are rendered to platform-specific targets with a renderer.
    Usually a target is a simple view (`UIView` and `NSView` for `UIKit`
    and `AppKit` respectively).
    */
-  associatedtype TargetType: Target
+  associatedtype TargetType
 
   /// Reconciler instance used by this renderer.
   var reconciler: StackReconciler<Self>? { get }
@@ -41,20 +43,14 @@ public protocol Renderer: AnyObject {
    - parameter view: The host view that renders to the newly created target.
    - returns: The newly created target.
    */
-  func mountTarget(
-    to parent: TargetType,
-    with host: MountedHost
-  ) -> TargetType?
+  func mountTarget(to parent: TargetType, with host: MountedHost) -> TargetType?
 
   /** Function called by a reconciler when an existing target instance should be
    updated.
    - parameter target: Existing target instance to be updated.
    - parameter view: The host view that renders to the updated target.
    */
-  func update(
-    target: TargetType,
-    with host: MountedHost
-  )
+  func update(target: TargetType, with host: MountedHost)
 
   /** Function called by a reconciler when an existing target instance should be
    unmounted: removed from the parent and most likely destroyed.

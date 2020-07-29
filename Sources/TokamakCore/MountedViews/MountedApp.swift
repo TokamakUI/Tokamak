@@ -34,11 +34,10 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     mountedChildren.forEach { $0.unmount(with: reconciler) }
   }
 
-  private func mountChild(_ childBody: _AnyScene) -> MountedElement<R> {
-    let mountedScene: MountedScene<R> = childBody.makeMountedScene(parentTarget, environmentValues)
+  private func mountChild<S: Scene>(_ scene: S) -> MountedElement<R> {
+    let mountedScene: MountedScene<R> = scene.makeMountedScene(parentTarget, environmentValues)
     if let title = mountedScene.title {
-      // swiftlint:disable force_cast
-      (app.type as! _TitledApp.Type)._setTitle(title)
+      R.AppType._setTitle(title)
     }
     return mountedScene
   }
@@ -48,7 +47,7 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     reconciler.reconcile(
       self,
       with: element,
-      getElementType: { $0.type },
+      getElementType: { type(of: $0) },
       updateChild: {
         $0.environmentValues = environmentValues
         $0.scene = _AnyScene(element)
@@ -58,19 +57,17 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
   }
 }
 
-extension _AnyApp {
+extension App {
   func makeMountedApp<R>(
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues
-  ) -> MountedApp<R> where R: Renderer {
+  ) -> MountedApp<R> where R: Renderer, R.AppType == Self {
     // swiftlint:disable:next force_try
-    let info = try! typeInfo(of: type)
+    let info = try! typeInfo(of: Self.self)
 
-    var modified = app
+    var modified = self
     info.injectEnvironment(from: environmentValues, into: &modified)
 
-    var result = self
-    result.app = modified
-    return MountedApp(result, parentTarget, environmentValues)
+    return MountedApp(modified, parentTarget, environmentValues)
   }
 }

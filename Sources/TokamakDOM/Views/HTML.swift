@@ -37,7 +37,7 @@ extension AnyHTML {
     """
   }
 
-  func update(dom: DOMNode) {
+  func update<A: App>(dom: DOMNode<A>) {
     // FIXME: is there a sensible way to diff attributes and listeners to avoid
     // crossing the JavaScript bridge and touching DOM if not needed?
 

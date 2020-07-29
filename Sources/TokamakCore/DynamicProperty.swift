@@ -29,9 +29,11 @@ extension TypeInfo {
   /// Extract all `DynamicProperty` from a type, recursively.
   /// This is necessary as a `DynamicProperty` can be nested.
   /// `EnvironmentValues` can also be injected at this point.
-  func dynamicProperties(_ environment: EnvironmentValues,
-                         source: inout Any,
-                         shouldUpdate: Bool) -> [PropertyInfo] {
+  func dynamicProperties<T>(
+    _ environment: EnvironmentValues,
+    source: inout T,
+    shouldUpdate: Bool
+  ) -> [PropertyInfo] {
     var dynamicProps = [PropertyInfo]()
     for prop in properties where prop.type is DynamicProperty.Type {
       dynamicProps.append(prop)
@@ -40,9 +42,11 @@ extension TypeInfo {
       propInfo.injectEnvironment(from: environment, into: &source)
       var extracted = try! prop.get(from: source)
       dynamicProps.append(
-        contentsOf: propInfo.dynamicProperties(environment,
-                                               source: &extracted,
-                                               shouldUpdate: shouldUpdate)
+        contentsOf: propInfo.dynamicProperties(
+          environment,
+          source: &extracted,
+          shouldUpdate: shouldUpdate
+        )
       )
       // swiftlint:disable:next force_cast
       var extractedDynamicProp = extracted as! DynamicProperty

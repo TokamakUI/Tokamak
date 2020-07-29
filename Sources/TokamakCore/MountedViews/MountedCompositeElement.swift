@@ -32,7 +32,7 @@ class MountedCompositeElement<R: Renderer>: MountedElement<R>, Hashable {
   var state = [Any]()
   var subscriptions = [AnyCancellable]()
 
-  init(_ app: _AnyApp, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
+  init(_ app: R.AppType, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
     super.init(app, environmentValues)
   }

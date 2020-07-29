@@ -15,52 +15,6 @@
 //  Created by Max Desiatov on 10/02/2019.
 //
 
-open class Target {
-  var element: MountedElementKind
-  public internal(set) var app: _AnyApp {
-    get {
-      if case let .app(app) = element {
-        return app
-      } else {
-        fatalError("`Target` has type \(element) not `App`")
-      }
-    }
-    set {
-      element = .app(newValue)
-    }
-  }
-
-  public internal(set) var scene: _AnyScene {
-    get {
-      if case let .scene(scene) = element {
-        return scene
-      } else {
-        fatalError("`Target` has type \(element) not `Scene`")
-      }
-    }
-    set {
-      element = .scene(newValue)
-    }
-  }
-
-  public internal(set) var view: AnyView {
-    get {
-      if case let .view(view) = element {
-        return view
-      } else {
-        fatalError("`Target` has type \(element) not `View`")
-      }
-    }
-    set {
-      element = .view(newValue)
-    }
-  }
-
-  public init<V: View>(_ view: V) {
-    element = .view(AnyView(view))
-  }
-
-  public init<A: App>(_ app: A) {
-    element = .app(_AnyApp(app))
-  }
+protocol Target {
+  var view: AnyView { get set }
 }

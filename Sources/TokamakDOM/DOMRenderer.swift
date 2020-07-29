@@ -72,33 +72,14 @@ func appendRootStyle(_ rootNode: JSObjectRef) {
   _ = head.appendChild!(rootStyle)
 }
 
-public final class DOMRenderer: Renderer {
+public final class DOMRenderer<A: App>: Renderer {
+  public typealias AppType = A
+
   public private(set) var reconciler: StackReconciler<DOMRenderer>?
 
   private let rootRef: JSObjectRef
 
-  public init<V: View>(
-    _ view: V,
-    _ ref: JSObjectRef,
-    _ rootEnvironment: EnvironmentValues? = nil
-  ) {
-    rootRef = ref
-    appendRootStyle(ref)
-
-    reconciler = StackReconciler(
-      view: view,
-      target: DOMNode(view, ref),
-      environment: .defaultEnvironment,
-      renderer: self,
-      scheduler: timeoutScheduler
-    )
-  }
-
-  init<A: App>(
-    _ app: A,
-    _ ref: JSObjectRef,
-    _ rootEnvironment: EnvironmentValues? = nil
-  ) {
+  init(_ app: A, _ ref: JSObjectRef, _ rootEnvironment: EnvironmentValues? = nil) {
     rootRef = ref
     appendRootStyle(ref)
 

@@ -17,17 +17,17 @@
 
 import Runtime
 
-/// The container for any of the possible `MountedElement` types
-enum MountedElementKind {
-  case app(_AnyApp)
-  case scene(_AnyScene)
-  case view(AnyView)
-}
-
 public class MountedElement<R: Renderer> {
-  private var element: MountedElementKind
+  /// The container for any of the possible "raw" element types
+  enum Kind {
+    case app(R.AppType)
+    case scene(_AnyScene)
+    case view(AnyView)
+  }
 
-  public internal(set) var app: _AnyApp {
+  private var element: Kind
+
+  public internal(set) var app: R.AppType {
     get {
       if case let .app(app) = element {
         return app
@@ -67,7 +67,11 @@ public class MountedElement<R: Renderer> {
 
   var elementType: Any.Type {
     switch element {
-    case let .app(app): return app.type
+    case .app: fatalError("""
+    `App` values aren't supposed to be reconciled, thus the type constructor name is not stored \
+    for `App` elements. Please report this crash as a bug at \
+    https://github.com/swiftwasm/Tokamak/issues/new
+    """)
     case let .scene(scene): return scene.type
     case let .view(view): return view.type
     }
@@ -88,7 +92,7 @@ public class MountedElement<R: Renderer> {
   var mountedChildren = [MountedElement<R>]()
   var environmentValues: EnvironmentValues
 
-  init(_ app: _AnyApp, _ environmentValues: EnvironmentValues) {
+  init(_ app: R.AppType, _ environmentValues: EnvironmentValues) {
     element = .app(app)
     self.environmentValues = environmentValues
   }
@@ -117,7 +121,7 @@ public class MountedElement<R: Renderer> {
 }
 
 extension TypeInfo {
-  func injectEnvironment(from environmentValues: EnvironmentValues, into element: inout Any) {
+  func injectEnvironment<E>(from environmentValues: EnvironmentValues, into element: inout E) {
     // Inject @Environment values
     // swiftlint:disable force_cast
     // swiftlint:disable force_try

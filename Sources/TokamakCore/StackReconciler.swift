@@ -48,7 +48,7 @@ public final class StackReconciler<R: Renderer> {
 
   /** A root of the mounted elements tree to which all other mounted elements are attached to.
    */
-  private let rootElement: MountedElement<R>
+  private let mountedApp: MountedApp<R>
 
   /** A renderer instance to delegate to. Usually the renderer owns the reconciler instance, thus
    the reference has to be weak to avoid a reference cycle.
@@ -63,8 +63,8 @@ public final class StackReconciler<R: Renderer> {
    */
   private let scheduler: (@escaping () -> ()) -> ()
 
-  public init<V: View>(
-    view: V,
+  public init(
+    app: R.AppType,
     target: R.TargetType,
     environment: EnvironmentValues,
     renderer: R,
@@ -74,33 +74,15 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootElement = AnyView(view).makeMountedView(target, environment)
+    mountedApp = app.makeMountedApp(target, environment)
 
-    rootElement.mount(with: self)
-  }
-
-  public init<A: App>(
-    app: A,
-    target: R.TargetType,
-    environment: EnvironmentValues,
-    renderer: R,
-    scheduler: @escaping (@escaping () -> ()) -> ()
-  ) {
-    self.renderer = renderer
-    self.scheduler = scheduler
-    rootTarget = target
-
-    rootElement = _AnyApp(app).makeMountedApp(target, environment)
-
-    rootElement.mount(with: self)
-    if let mountedApp = rootElement as? MountedApp<R> {
-      app._phasePublisher.sink { [weak self] phase in
-        if mountedApp.environmentValues.scenePhase != phase {
-          mountedApp.environmentValues.scenePhase = phase
-          self?.queueUpdate(for: mountedApp)
-        }
-      }.store(in: &mountedApp.subscriptions)
-    }
+    mountedApp.mount(with: self)
+    app._phasePublisher.sink { [weak self, weak mountedApp] phase in
+      if let mountedApp = mountedApp, mountedApp.environmentValues.scenePhase != phase {
+        mountedApp.environmentValues.scenePhase = phase
+        self?.queueUpdate(for: mountedApp)
+      }
+    }.store(in: &mountedApp.subscriptions)
   }
 
   private func queueStateUpdate(
@@ -129,11 +111,11 @@ public final class StackReconciler<R: Renderer> {
     queuedRerenders.removeAll()
   }
 
-  private func setupState(
+  private func setupState<Element>(
     id: Int,
     for property: PropertyInfo,
     of compositeElement: MountedCompositeElement<R>,
-    body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>
+    body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Element>
   ) {
     // swiftlint:disable force_try
     // `ValueStorage` property already filtered out, so safe to assume the value's type
@@ -158,10 +140,10 @@ public final class StackReconciler<R: Renderer> {
     try! property.set(value: state, on: &compositeElement[keyPath: bodyKeypath])
   }
 
-  private func setupSubscription(
+  private func setupSubscription<Element>(
     for property: PropertyInfo,
     of compositeElement: MountedCompositeElement<R>,
-    body bodyKeypath: KeyPath<MountedCompositeElement<R>, Any>
+    body bodyKeypath: KeyPath<MountedCompositeElement<R>, Element>
   ) {
     // `ObservedProperty` property already filtered out, so safe to assume the value's type
     // swiftlint:disable force_cast
@@ -175,11 +157,11 @@ public final class StackReconciler<R: Renderer> {
     }.store(in: &compositeElement.subscriptions)
   }
 
-  func render<T>(
+  func render<Element, Body>(
     compositeElement: MountedCompositeElement<R>,
-    body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
-    bodyClosure: (MountedCompositeElement<R>) -> T
-  ) -> T {
+    body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Element>,
+    bodyClosure: (MountedCompositeElement<R>) -> Body
+  ) -> Body {
     let info = try! typeInfo(of: compositeElement.elementType)
     info.injectEnvironment(from: compositeElement.environmentValues,
                            into: &compositeElement[keyPath: bodyKeypath])
@@ -187,9 +169,11 @@ public final class StackReconciler<R: Renderer> {
     let needsSubscriptions = compositeElement.subscriptions.isEmpty
 
     var stateIdx = 0
-    let dynamicProps = info.dynamicProperties(compositeElement.environmentValues,
-                                              source: &compositeElement[keyPath: bodyKeypath],
-                                              shouldUpdate: true)
+    let dynamicProps = info.dynamicProperties(
+      compositeElement.environmentValues,
+      source: &compositeElement[keyPath: bodyKeypath],
+      shouldUpdate: true
+    )
     for property in dynamicProps {
       // Setup state/subscriptions
       if property.type is ValueStorage.Type {
@@ -204,15 +188,21 @@ public final class StackReconciler<R: Renderer> {
   }
 
   func render(compositeView: MountedCompositeView<R>) -> AnyView {
-    render(compositeElement: compositeView, body: \.view.view) { $0.view.bodyClosure($0.view.view) }
+    render(compositeElement: compositeView, body: \.view.view) {
+      $0.view.bodyClosure($0.view.view)
+    }
   }
 
-  func render(mountedApp: MountedApp<R>) -> _AnyScene {
-    render(compositeElement: mountedApp, body: \.app.app) { $0.app.bodyClosure($0.app.app) }
+  func render(mountedApp: MountedApp<R>) -> some Scene {
+    render(compositeElement: mountedApp, body: \.app) {
+      $0.app.body
+    }
   }
 
   func render(mountedScene: MountedScene<R>) -> _AnyScene.BodyResult {
-    render(compositeElement: mountedScene, body: \.scene.scene) { $0.scene.bodyClosure($0.scene.scene) }
+    render(compositeElement: mountedScene, body: \.scene.scene) {
+      $0.scene.bodyClosure($0.scene.scene)
+    }
   }
 
   func reconcile<Element>(

@@ -84,15 +84,15 @@ extension _AnyScene.BodyResult {
   }
 }
 
-extension _AnyScene {
+extension Scene {
   func makeMountedScene<R: Renderer>(
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues
   ) -> MountedScene<R> {
     // swiftlint:disable:next force_try
-    let info = try! typeInfo(of: type)
+    let info = try! typeInfo(of: Self.self)
 
-    var modified = scene
+    var modified = self
     info.injectEnvironment(from: environmentValues, into: &modified)
 
     var title: String?
@@ -109,8 +109,6 @@ extension _AnyScene {
       children = []
     }
 
-    var result = self
-    result.scene = modified
-    return .init(result, title, children, parentTarget, environmentValues)
+    return .init(_AnyScene(modified), title, children, parentTarget, environmentValues)
   }
 }
