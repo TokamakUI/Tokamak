@@ -108,6 +108,7 @@ var links: [NavItem] {
     NavItem("Spacer", destination: SpacerDemo()),
     NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8))),
     NavItem("Picker", destination: PickerDemo()),
+    NavItem("Slider", destination: SliderDemo()),
     NavItem("List", destination: listDemo),
     sidebarDemo,
     outlineGroupDemo,
