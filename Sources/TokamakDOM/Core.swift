@@ -43,6 +43,7 @@ public typealias PlainListStyle = TokamakCore.PlainListStyle
 public typealias InsetListStyle = TokamakCore.InsetListStyle
 public typealias GroupedListStyle = TokamakCore.GroupedListStyle
 public typealias InsetGroupedListStyle = TokamakCore.InsetGroupedListStyle
+public typealias SidebarListStyle = TokamakCore.SidebarListStyle
 
 public typealias DefaultPickerStyle = TokamakCore.DefaultPickerStyle
 public typealias PopUpButtonPickerStyle = TokamakCore.PopUpButtonPickerStyle
@@ -83,6 +84,8 @@ public typealias HStack = TokamakCore.HStack
 public typealias LazyHGrid = TokamakCore.LazyHGrid
 public typealias LazyVGrid = TokamakCore.LazyVGrid
 public typealias List = TokamakCore.List
+public typealias NavigationLink = TokamakCore.NavigationLink
+public typealias NavigationView = TokamakCore.NavigationView
 public typealias OutlineGroup = TokamakCore.OutlineGroup
 public typealias Picker = TokamakCore.Picker
 public typealias ScrollView = TokamakCore.ScrollView
@@ -101,7 +104,18 @@ public typealias View = TokamakCore.View
 public typealias AnyView = TokamakCore.AnyView
 public typealias EmptyView = TokamakCore.EmptyView
 
+// MARK: App & Scene
+
+public typealias App = TokamakCore.App
+public typealias Scene = TokamakCore.Scene
+public typealias WindowGroup = TokamakCore.WindowGroup
+public typealias ScenePhase = TokamakCore.ScenePhase
+public typealias AppStorage = TokamakCore.AppStorage
+public typealias SceneStorage = TokamakCore.SceneStorage
+
 // MARK: Misc
+
+public typealias ViewBuilder = TokamakCore.ViewBuilder
 
 // FIXME: I would put this inside TokamakCore, but for
 // some reason it doesn't get exported with the typealias

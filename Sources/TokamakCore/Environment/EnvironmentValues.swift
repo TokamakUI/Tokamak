@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if os(WASI)
-import OpenCombine
-#else
-import Combine
-#endif
+import CombineShim
 
 public struct EnvironmentValues: CustomStringConvertible {
   public var description: String {
@@ -46,5 +42,23 @@ public struct EnvironmentValues: CustomStringConvertible {
     set {
       values[bindable] = newValue
     }
+  }
+}
+
+struct _EnvironmentValuesWritingModifier: ViewModifier, EnvironmentModifier {
+  let environmentValues: EnvironmentValues
+
+  func body(content: Content) -> some View {
+    content
+  }
+
+  func modifyEnvironment(_ values: inout EnvironmentValues) {
+    values = environmentValues
+  }
+}
+
+extension View {
+  public func environmentValues(_ values: EnvironmentValues) -> some View {
+    modifier(_EnvironmentValuesWritingModifier(environmentValues: values))
   }
 }

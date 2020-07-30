@@ -12,22 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if os(WASI)
-import OpenCombine
-public typealias ObservableObject = OpenCombine.ObservableObject
-public typealias Published = OpenCombine.Published
-#else
-import Combine
-public typealias ObservableObject = Combine.ObservableObject
-public typealias Published = Combine.Published
-#endif
+import CombineShim
 
-protocol ObservedProperty {
+public typealias ObservableObject = CombineShim.ObservableObject
+public typealias Published = CombineShim.Published
+
+protocol ObservedProperty: DynamicProperty {
   var objectWillChange: AnyPublisher<(), Never> { get }
 }
 
 @propertyWrapper
-public struct ObservedObject<ObjectType>: ObservedProperty where ObjectType: ObservableObject {
+public struct ObservedObject<ObjectType>: DynamicProperty where ObjectType: ObservableObject {
   @dynamicMemberLookup
   public struct Wrapper {
     let root: ObjectType
@@ -56,3 +51,5 @@ public struct ObservedObject<ObjectType>: ObservedProperty where ObjectType: Obs
     wrappedValue.objectWillChange.map { _ in }.eraseToAnyPublisher()
   }
 }
+
+extension ObservedObject: ObservedProperty {}

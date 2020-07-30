@@ -15,8 +15,24 @@
 //  Created by Max Desiatov on 21/12/2018.
 //
 
+#if os(WASI)
+import JavaScriptKit
+#else
 import Dispatch
+#endif
 import TokamakCore
+
+public func testScheduler(closure: @escaping () -> ()) {
+  #if os(WASI)
+  let fn = JSClosure { _ in
+    closure()
+    return .undefined
+  }
+  _ = JSObjectRef.global.setTimeout!(fn, 0)
+  #else
+  DispatchQueue.main.async(execute: closure)
+  #endif
+}
 
 public final class TestRenderer: Renderer {
   public private(set) var reconciler: StackReconciler<TestRenderer>?
@@ -26,10 +42,13 @@ public final class TestRenderer: Renderer {
   }
 
   public init<V: View>(_ view: V) {
-    // FIXME: the root target shouldn't be `EmptyView`, but something more sensible, maybe Group?
-    reconciler = StackReconciler(view: view, target: TestView(EmptyView()), renderer: self) {
-      DispatchQueue.main.async(execute: $0)
-    }
+    reconciler = StackReconciler(
+      view: view,
+      target: TestView(EmptyView()),
+      environment: .init(),
+      renderer: self,
+      scheduler: testScheduler
+    )
   }
 
   public func mountTarget(

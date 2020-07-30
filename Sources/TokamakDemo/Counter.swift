@@ -28,7 +28,7 @@ struct Counter: View {
 
   let limit: Int
 
-  public var body: some View {
+  @ViewBuilder public var body: some View {
     if count.value < limit {
       VStack {
         Button("Increment") { count.value += 1 }

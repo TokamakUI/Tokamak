@@ -20,9 +20,7 @@ import Runtime
 /* A representation of a `View`, which has a `body` of type `Never`, stored in the tree of mounted
  views by `StackReconciler`.
  */
-public final class MountedHostView<R: Renderer>: MountedView<R> {
-  private var mountedChildren = [MountedView<R>]()
-
+public final class MountedHostView<R: Renderer>: MountedElement<R> {
   /** Target of a closest ancestor host view. As a parent of this view
    might not be a host view, but a composite view, we need to pass
    around the target of a host view to its closests descendant host
@@ -33,15 +31,10 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
   /// Target of this host view supplied by a renderer after mounting has completed.
   private var target: R.TargetType?
 
-  private let environmentValues: EnvironmentValues
-
-  init(_ view: AnyView,
-       _ parentTarget: R.TargetType,
-       _ environmentValues: EnvironmentValues) {
+  init(_ view: AnyView, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
-    self.environmentValues = environmentValues
 
-    super.init(view)
+    super.init(view, environmentValues)
   }
 
   override func mount(with reconciler: StackReconciler<R>) {
@@ -89,33 +82,24 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
 
     // if no existing children then mount all new children
     case (true, false):
-      mountedChildren = childrenViews.map {
-        $0.makeMountedView(target, environmentValues)
-      }
+      mountedChildren = childrenViews.map { $0.makeMountedView(target, environmentValues) }
       mountedChildren.forEach { $0.mount(with: reconciler) }
 
     // if both arrays have items then reconcile by types and keys
     case (false, false):
-      var newChildren = [MountedView<R>]()
+      var newChildren = [MountedElement<R>]()
 
       // iterate through every `mountedChildren` element and compare with
       // a corresponding `childrenViews` element, remount if type differs, otherwise
       // run simple update
       while let child = mountedChildren.first, let firstChild = childrenViews.first {
-        let newChild: MountedView<R>
+        let newChild: MountedElement<R>
         if firstChild.typeConstructorName == mountedChildren[0].view.typeConstructorName {
           child.view = firstChild
           // Inject Environment
-          // swiftlint:disable force_try
+          // swiftlint:disable:next force_try
           let viewInfo = try! typeInfo(of: child.view.type)
-          for prop in viewInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-            // swiftlint:disable force_cast
-            var wrapper = try! prop.get(from: child.view.view) as! EnvironmentReader
-            wrapper.setContent(from: environmentValues)
-            try! prop.set(value: wrapper, on: &child.view.view)
-            // swiftlint:enable force_cast
-          }
-          // swiftlint:enable force_try
+          viewInfo.injectEnvironment(from: environmentValues, into: &child.view.view)
           child.update(with: reconciler)
           newChild = child
         } else {
@@ -138,7 +122,7 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
         // more views left than children were mounted,
         // mount remaining views
         for firstChild in childrenViews {
-          let newChild: MountedView<R> =
+          let newChild: MountedElement<R> =
             firstChild.makeMountedView(target, environmentValues)
           newChild.mount(with: reconciler)
           newChildren.append(newChild)
@@ -148,8 +132,7 @@ public final class MountedHostView<R: Renderer>: MountedView<R> {
       mountedChildren = newChildren
 
     // both arrays are empty, nothing to reconcile
-    case (true, true):
-      ()
+    case (true, true): ()
     }
   }
 }

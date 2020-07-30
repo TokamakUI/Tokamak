@@ -15,14 +15,9 @@
 //  Created by Carson Katri on 7/7/20.
 //
 
-#if os(WASI)
-import OpenCombine
-#else
-import Combine
-#endif
+import CombineShim
 
-@propertyWrapper public struct EnvironmentObject<ObjectType>: ObservedProperty,
-  EnvironmentReader
+@propertyWrapper public struct EnvironmentObject<ObjectType>: DynamicProperty
   where ObjectType: ObservableObject {
   @dynamicMemberLookup public struct Wrapper {
     internal let root: ObjectType
@@ -66,6 +61,8 @@ import Combine
 
   public init() {}
 }
+
+extension EnvironmentObject: ObservedProperty, EnvironmentReader {}
 
 extension ObservableObject {
   static var environmentStore: WritableKeyPath<EnvironmentValues, Self?> {

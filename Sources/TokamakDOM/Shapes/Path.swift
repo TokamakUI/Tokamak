@@ -14,7 +14,6 @@
 //
 //  Created by Carson Katri on 6/29/20.
 //
-
 import TokamakCore
 
 extension Path: ViewDeferredToRenderer {
