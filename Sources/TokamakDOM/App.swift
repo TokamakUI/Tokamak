@@ -15,8 +15,8 @@
 //  Created by Carson Katri on 7/16/20.
 //
 
+import CombineShim
 import JavaScriptKit
-import OpenCombine
 import TokamakCore
 
 private enum ScenePhaseObserver {

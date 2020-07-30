@@ -11,28 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Carson Katri on 7/20/20.
-//
 
-import CombineShim
-import JavaScriptKit
-import TokamakCore
-
-public class SessionStorage: WebStorage, _StorageProvider {
-  let storage = JSObjectRef.global.sessionStorage.object!
-
-  required init() {
-    subscription = Self.rootPublisher.sink { _ in
-      self.publisher.send()
-    }
-  }
-
-  public static var standard: _StorageProvider {
-    Self()
-  }
-
-  var subscription: AnyCancellable?
-  static let rootPublisher = ObservableObjectPublisher()
-  public let publisher = ObservableObjectPublisher()
-}
+#if canImport(Combine)
+@_exported import Combine
+#else
+@_exported import OpenCombine
+#endif
