@@ -56,20 +56,4 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
       mountChild: { mountChild($0) }
     )
   }
-
-  func setupSubscription<T: Equatable>(
-    with reconciler: StackReconciler<R>,
-    _ publisher: AnyPublisher<T, Never>,
-    to keyPath: WritableKeyPath<EnvironmentValues, T>
-  ) {
-    publisher.sink { [weak self, weak reconciler] value in
-      guard
-        let mountedApp = self,
-        mountedApp.environmentValues[keyPath: keyPath] != value
-      else { return }
-
-      mountedApp.environmentValues[keyPath: keyPath] = value
-      reconciler?.queueUpdate(for: mountedApp)
-    }.store(in: &subscriptions)
-  }
 }

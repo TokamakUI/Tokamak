@@ -25,12 +25,8 @@ public struct _ColorSchemeKey: EnvironmentKey {
 
 public extension EnvironmentValues {
   var colorScheme: ColorScheme {
-    get {
-      self[_ColorSchemeKey.self]
-    }
-    set {
-      self[_ColorSchemeKey.self] = newValue
-    }
+    get { self[_ColorSchemeKey.self] }
+    set { self[_ColorSchemeKey.self] = newValue }
   }
 }
 
