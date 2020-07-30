@@ -39,8 +39,16 @@ let package = Package(
     // Targets can depend on other targets in this package, and on products
     // in packages which this package depends on.
     .target(
+      name: "CombineShim",
+      dependencies: [.product(
+        name: "OpenCombine",
+        package: "OpenCombine",
+        condition: .when(platforms: [.wasi, .linux])
+      )]
+    ),
+    .target(
       name: "TokamakCore",
-      dependencies: ["OpenCombine", "Runtime"]
+      dependencies: ["CombineShim", "Runtime"]
     ),
     .target(
       name: "TokamakDemo",
@@ -48,7 +56,7 @@ let package = Package(
     ),
     .target(
       name: "TokamakDOM",
-      dependencies: ["JavaScriptKit", "TokamakCore"]
+      dependencies: ["CombineShim", "JavaScriptKit", "TokamakCore"]
     ),
     .target(
       name: "TokamakShim",

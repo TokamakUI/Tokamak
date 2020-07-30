@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import OpenCombine
+import CombineShim
 
-public typealias ObservableObject = OpenCombine.ObservableObject
-public typealias Published = OpenCombine.Published
+public typealias ObservableObject = CombineShim.ObservableObject
+public typealias Published = CombineShim.Published
 
 protocol ObservedProperty: DynamicProperty {
   var objectWillChange: AnyPublisher<(), Never> { get }

@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/16/20.
 //
 
-import OpenCombine
+import CombineShim
 
 @propertyWrapper public struct AppStorage<Value>: DynamicProperty {
   let provider: _StorageProvider?
