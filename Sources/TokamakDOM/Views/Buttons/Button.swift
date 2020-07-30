@@ -23,11 +23,7 @@ extension _Button: ViewDeferredToRenderer where Label == Text {
     if buttonStyle.type == DefaultButtonStyle.self {
       attributes = [:]
     } else {
-      attributes = ["style": """
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      """]
+      attributes = ["class": "_tokamak-buttonstyle-reset"]
     }
 
     return AnyView(HTML("button", attributes, listeners: [

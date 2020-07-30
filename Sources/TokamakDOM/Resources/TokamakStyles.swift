@@ -53,6 +53,16 @@ let tokamakStyles = """
   flex-direction: column;
   margin-left: 1em;
 }
+._tokamak-buttonstyle-reset {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+}
 """
 
 let rootNodeStyles = """
