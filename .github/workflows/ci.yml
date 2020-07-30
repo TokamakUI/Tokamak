@@ -16,12 +16,12 @@ jobs:
         with:
           shell-action: swift build --triple wasm32-unknown-wasi --product TokamakDemo
 
-  macos_demo_build:
+  macos_build:
     runs-on: macos-10.15
 
     steps:
       - uses: actions/checkout@v2
-      - name: Build macOS demo code to test compatibility with SwiftUI
+      - name: Run the test suite on macOS, build the demo project for iOS
         shell: bash
         run: |
           set -ex
