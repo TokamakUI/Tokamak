@@ -43,15 +43,14 @@ extension ColorScheme: CustomStringConvertible {
 }
 
 struct EnvironmentDemo: View {
-  @Environment(\.colorScheme) var scheme
+  @Environment(\.colorScheme) var colorScheme
 
   @Environment(\.font) var font
   // @EnvironmentObject var testEnv: TestEnvironment
 
   var body: some View {
-    print("in EnvironmentDemo scheme is \(scheme)")
-    return VStack {
-      Text("`colorScheme` is \(scheme.description)")
+    VStack {
+      Text("`colorScheme` is \(colorScheme.description)")
       if let font = font {
         Text("`font` environment is \(String(describing: font))")
       }

@@ -18,8 +18,10 @@ import OpenCombine
 enum ScenePhaseObserver {
   static var publisher = CurrentValueSubject<ScenePhase, Never>(.active)
 
+  private static var closure: JSClosure?
+
   static func observe() {
-    _ = document.addEventListener!("visibilitychange", JSClosure { _ in
+    let closure = JSClosure { _ in
       let visibilityState = document.visibilityState.string
       if visibilityState == "visible" {
         publisher.send(.active)
@@ -27,6 +29,8 @@ enum ScenePhaseObserver {
         publisher.send(.background)
       }
       return .undefined
-    })
+    }
+    _ = document.addEventListener!("visibilitychange", closure)
+    Self.closure = closure
   }
 }

@@ -20,12 +20,14 @@ enum ColorSchemeObserver {
     .init(matchMediaDarkScheme: matchMediaDarkScheme)
   )
 
+  private static var closure: JSClosure?
+
   static func observe() {
-    _ = matchMediaDarkScheme.addEventListener!("change", JSClosure {
-      print("colorSchemeListener called")
+    let closure = JSClosure {
       publisher.value = .init(matchMediaDarkScheme: $0[0].object!)
-      print("now scheme is \(publisher.value)")
       return .undefined
-    })
+    }
+    _ = matchMediaDarkScheme.addEventListener!("change", closure)
+    Self.closure = closure
   }
 }
