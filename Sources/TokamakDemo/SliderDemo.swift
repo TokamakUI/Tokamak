@@ -19,7 +19,13 @@ struct SliderDemo: View {
 
   var body: some View {
     VStack {
-      Slider(value: $value, in: 0...1, step: 0.1, minimumValueLabel: Text("min"), maximumValueLabel: Text("max")) {
+      Slider(
+        value: $value,
+        in: 0...1,
+        step: 0.1,
+        minimumValueLabel: Text("min"),
+        maximumValueLabel: Text("max")
+      ) {
         Text("label")
       }
       Text("Value: \(value)")
