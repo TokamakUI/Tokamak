@@ -59,8 +59,10 @@ public struct _AnyButtonStyle: ButtonStyle {
   public typealias Body = AnyView
 
   private let bodyClosure: (ButtonStyleConfiguration) -> AnyView
+  public let type: Any.Type
 
   public init<S: ButtonStyle>(_ style: S) {
+    type = S.self
     bodyClosure = { configuration in
       AnyView(style.makeBody(configuration: configuration))
     }

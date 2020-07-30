@@ -51,7 +51,7 @@ public struct _Button<Label>: View where Label: View {
   public let label: Label
   public let action: () -> ()
   @State public var isPressed = false
-  @Environment(\.buttonStyle) public var buttonStyle: _AnyButtonStyle
+  @Environment(\.buttonStyle) public var buttonStyle
 
   public init(action: @escaping () -> (), label: Label) {
     self.label = label

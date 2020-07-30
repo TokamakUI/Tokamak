@@ -19,7 +19,18 @@ import TokamakCore
 
 extension _Button: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
-    AnyView(HTML("button", listeners: [
+    let attributes: [String: String]
+    if buttonStyle.type == DefaultButtonStyle.self {
+      attributes = [:]
+    } else {
+      attributes = ["style": """
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      """]
+    }
+
+    return AnyView(HTML("button", attributes, listeners: [
       "click": { _ in action() },
       "pointerdown": { _ in isPressed = true },
       "pointerup": { _ in isPressed = false },
