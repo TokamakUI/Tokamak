@@ -51,9 +51,10 @@ struct EnvironmentDemo: View {
   var body: some View {
     print("in EnvironmentDemo scheme is \(scheme)")
     return VStack {
-      Text(font == nil ?
-        "colorScheme is \(scheme.description), `font` environment not set." :
-        "colorScheme is \(scheme.description), font environment is \(String(describing: font!))")
+      Text("`colorScheme` is \(scheme.description)")
+      if let font = font {
+        Text("`font` environment is \(String(describing: font))")
+      }
       // Text(testEnv.envTest)
       // EnvironmentObjectDemo()
     }

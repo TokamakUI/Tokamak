@@ -43,12 +43,16 @@ public typealias PlainListStyle = TokamakCore.PlainListStyle
 public typealias InsetListStyle = TokamakCore.InsetListStyle
 public typealias GroupedListStyle = TokamakCore.GroupedListStyle
 public typealias InsetGroupedListStyle = TokamakCore.InsetGroupedListStyle
+public typealias SidebarListStyle = TokamakCore.SidebarListStyle
 
 public typealias DefaultPickerStyle = TokamakCore.DefaultPickerStyle
 public typealias PopUpButtonPickerStyle = TokamakCore.PopUpButtonPickerStyle
 public typealias RadioGroupPickerStyle = TokamakCore.RadioGroupPickerStyle
 public typealias SegmentedPickerStyle = TokamakCore.SegmentedPickerStyle
 public typealias WheelPickerStyle = TokamakCore.WheelPickerStyle
+
+public typealias ButtonStyle = TokamakCore.ButtonStyle
+public typealias ButtonStyleConfiguration = TokamakCore.ButtonStyleConfiguration
 
 public typealias ColorScheme = TokamakCore.ColorScheme
 

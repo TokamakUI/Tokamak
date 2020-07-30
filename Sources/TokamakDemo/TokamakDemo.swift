@@ -63,6 +63,14 @@ var listDemo: AnyView {
 var listDemo = ListDemo()
 #endif
 
+var sidebarDemo: NavItem {
+  if #available(iOS 14.0, *) {
+    return NavItem("Sidebar", destination: SidebarListDemo().listStyle(SidebarListStyle()))
+  } else {
+    return NavItem(unavailable: "Sidebar")
+  }
+}
+
 var gridDemo: NavItem {
   if #available(OSX 10.16, iOS 14.0, *) {
     return NavItem("Grid", destination: GridDemo())
@@ -92,6 +100,7 @@ var links: [NavItem] {
         .zIndex(1)
       Text("I'm on top")
     }.padding(20)),
+    NavItem("ButtonStyle", destination: ButtonStyleDemo()),
     NavItem("ForEach", destination: ForEachDemo()),
     NavItem("Text", destination: TextDemo()),
     NavItem("Toggle", destination: ToggleDemo()),
@@ -101,6 +110,7 @@ var links: [NavItem] {
     NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8))),
     NavItem("Picker", destination: PickerDemo()),
     NavItem("List", destination: listDemo),
+    sidebarDemo,
     outlineGroupDemo,
     NavItem("Color", destination: ColorDemo()),
     appStorageDemo,
@@ -122,6 +132,8 @@ struct TokamakDemoView: View {
           } else {
             #if os(WASI)
             Text(link.id)
+            #elseif os(macOS)
+            Text(link.id).opacity(0.5)
             #else
             HStack {
               Text(link.id)
@@ -134,15 +146,11 @@ struct TokamakDemoView: View {
         .frame(minHeight: 300),
         title: "Demos"
       )
-      #if os(WASI)
-      return AnyView(list)
-      #else
       if #available(iOS 14.0, *) {
         return AnyView(list.listStyle(SidebarListStyle()))
       } else {
         return AnyView(list)
       }
-      #endif
     }
     .environmentObject(TestEnvironment())
   }

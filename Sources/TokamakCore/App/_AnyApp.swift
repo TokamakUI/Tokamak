@@ -19,13 +19,13 @@ import OpenCombine
 
 public struct _AnyApp: App {
   var app: Any
-  let appType: Any.Type
+  let type: Any.Type
   let bodyClosure: (Any) -> _AnyScene
   let bodyType: Any.Type
 
   init<A: App>(_ app: A) {
     self.app = app
-    appType = A.self
+    type = A.self
     // swiftlint:disable:next force_cast
     bodyClosure = { _AnyScene(($0 as! A).body) }
     bodyType = A.Body.self

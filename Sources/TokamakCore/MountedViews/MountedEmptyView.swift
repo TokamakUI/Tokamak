@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2019-2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,15 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 7/17/20.
+//  Created by Max Desiatov on 05/01/2019.
 //
 
-import Runtime
+final class MountedEmptyView<R: Renderer>: MountedElement<R> {
+  override func mount(with reconciler: StackReconciler<R>) {}
 
-public protocol DynamicProperty {
-  mutating func update()
-}
+  override func unmount(with reconciler: StackReconciler<R>) {}
 
-extension DynamicProperty {
-  public mutating func update() {}
+  override func update(with reconciler: StackReconciler<R>) {}
 }

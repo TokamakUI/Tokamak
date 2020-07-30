@@ -29,7 +29,9 @@ extension App {
   ///
   public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
     let body = TokamakDOM.body
-    body.style = "margin: 0;"
+    if body.style == .undefined {
+      body.style = "margin: 0;"
+    }
     let rootStyle = document.createElement!("style").object!
     rootStyle.id = "_tokamak-app-style"
     rootStyle.innerHTML = .string(tokamakStyles)

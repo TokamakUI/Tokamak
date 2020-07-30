@@ -27,8 +27,10 @@ struct AppStorageButtons: View {
   @SceneStorage("count") var sceneCount: Int = 0
 
   var body: some View {
-    Button("Increment AppStorage") { count += 1 }
-    Button("Increment SceneStorage") { sceneCount += 1 }
+    HStack {
+      Button("Increment AppStorage") { count += 1 }
+      Button("Increment SceneStorage") { sceneCount += 1 }
+    }
   }
 }
 

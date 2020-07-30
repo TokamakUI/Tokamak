@@ -22,10 +22,18 @@ enum MountedElementKind {
   case app(_AnyApp)
   case scene(_AnyScene)
   case view(AnyView)
+
+  var type: Any.Type {
+    switch self {
+    case let .app(app): return app.type
+    case let .scene(scene): return scene.type
+    case let .view(view): return view.type
+    }
+  }
 }
 
 public class MountedElement<R: Renderer> {
-  var element: MountedElementKind
+  private var element: MountedElementKind
 
   public internal(set) var app: _AnyApp {
     get {
@@ -65,24 +73,52 @@ public class MountedElement<R: Renderer> {
     }
   }
 
-  var elementType: Any.Type {
+  var typeConstructorName: String {
     switch element {
-    case let .app(app): return app.appType
-    case let .scene(scene): return scene.sceneType
-    case let .view(view): return view.type
+    case .app: fatalError("""
+    `App` values aren't supposed to be reconciled, thus the type constructor name is not stored \
+    for `App` elements. Please report this crash as a bug at \
+    https://github.com/swiftwasm/Tokamak/issues/new
+    """)
+    case let .scene(scene): return scene.typeConstructorName
+    case let .view(view): return view.typeConstructorName
     }
   }
 
-  init(_ app: _AnyApp) {
+  var mountedChildren = [MountedElement<R>]()
+  var environmentValues: EnvironmentValues
+
+  init(_ app: _AnyApp, _ environmentValues: EnvironmentValues) {
     element = .app(app)
+    self.environmentValues = environmentValues
+    updateEnvironment()
   }
 
-  init(_ scene: _AnyScene) {
+  init(_ scene: _AnyScene, _ environmentValues: EnvironmentValues) {
     element = .scene(scene)
+    self.environmentValues = environmentValues
+    updateEnvironment()
   }
 
-  init(_ view: AnyView) {
+  init(_ view: AnyView, _ environmentValues: EnvironmentValues) {
     element = .view(view)
+    self.environmentValues = environmentValues
+    updateEnvironment()
+  }
+
+  @discardableResult func updateEnvironment() -> TypeInfo {
+    // swiftlint:disable:next force_try
+    let info = try! typeInfo(of: element.type)
+    switch element {
+    case .app:
+      environmentValues = info.injectEnvironment(from: environmentValues, into: &app.app)
+    case .scene:
+      environmentValues = info.injectEnvironment(from: environmentValues, into: &scene.scene)
+    case .view:
+      environmentValues = info.injectEnvironment(from: environmentValues, into: &view.view)
+    }
+
+    return info
   }
 
   func mount(with reconciler: StackReconciler<R>) {
@@ -99,10 +135,20 @@ public class MountedElement<R: Renderer> {
 }
 
 extension TypeInfo {
-  func injectEnvironment(from environmentValues: EnvironmentValues, into element: inout Any) {
+  fileprivate func injectEnvironment(
+    from environmentValues: EnvironmentValues,
+    into element: inout Any
+  ) -> EnvironmentValues {
+    var modifiedEnv = environmentValues
+    // swiftlint:disable force_try
+    // Extract the view from the AnyView for modification, apply Environment changes:
+    if genericTypes.contains(where: { $0 is EnvironmentModifier.Type }),
+      let modifier = try! property(named: "modifier").get(from: element) as? EnvironmentModifier {
+      modifier.modifyEnvironment(&modifiedEnv)
+    }
+
     // Inject @Environment values
     // swiftlint:disable force_cast
-    // swiftlint:disable force_try
     // `DynamicProperty`s can have `@Environment` properties contained in them,
     // so we have to inject into them as well.
     for dynamicProp in properties.filter({ $0.type is DynamicProperty.Type }) {
@@ -110,83 +156,59 @@ extension TypeInfo {
       var propWrapper = try! dynamicProp.get(from: element) as! DynamicProperty
       for prop in propInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
         var wrapper = try! prop.get(from: propWrapper) as! EnvironmentReader
-        wrapper.setContent(from: environmentValues)
+        wrapper.setContent(from: modifiedEnv)
         try! prop.set(value: wrapper, on: &propWrapper)
       }
       try! dynamicProp.set(value: propWrapper, on: &element)
     }
     for prop in properties.filter({ $0.type is EnvironmentReader.Type }) {
       var wrapper = try! prop.get(from: element) as! EnvironmentReader
-      wrapper.setContent(from: environmentValues)
+      wrapper.setContent(from: modifiedEnv)
       try! prop.set(value: wrapper, on: &element)
     }
     // swiftlint:enable force_try
     // swiftlint:enable force_cast
+
+    return modifiedEnv
+  }
+
+  /// Extract all `DynamicProperty` from a type, recursively.
+  /// This is necessary as a `DynamicProperty` can be nested.
+  /// `EnvironmentValues` can also be injected at this point.
+  func dynamicProperties(_ environment: EnvironmentValues,
+                         source: inout Any) -> [PropertyInfo] {
+    var dynamicProps = [PropertyInfo]()
+    for prop in properties where prop.type is DynamicProperty.Type {
+      dynamicProps.append(prop)
+      // swiftlint:disable force_try
+      let propInfo = try! typeInfo(of: prop.type)
+      _ = propInfo.injectEnvironment(from: environment, into: &source)
+      var extracted = try! prop.get(from: source)
+      dynamicProps.append(
+        contentsOf: propInfo.dynamicProperties(environment,
+                                               source: &extracted)
+      )
+      // swiftlint:disable:next force_cast
+      var extractedDynamicProp = extracted as! DynamicProperty
+      extractedDynamicProp.update()
+      try! prop.set(value: extractedDynamicProp, on: &source)
+      // swiftlint:enable force_try
+    }
+    return dynamicProps
   }
 }
 
-extension View {
+extension AnyView {
   func makeMountedView<R: Renderer>(
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues
   ) -> MountedElement<R> {
-    // Find Environment changes
-    var modifiedEnv = environmentValues
-    var injectableView = self
-    let any = (injectableView as? AnyView) ?? AnyView(injectableView)
-    // swiftlint:disable force_try
-    // Extract the view from the AnyView for modification
-    var extractedView = any.view
-    let viewInfo = try! typeInfo(of: any.type)
-    if viewInfo.genericTypes.filter({ $0 is EnvironmentModifier.Type }).count > 0 {
-      // Apply Environment changes:
-      if let modifier = try? viewInfo
-        .property(named: "modifier")
-        .get(from: any.view) as? EnvironmentModifier {
-        modifier.modifyEnvironment(&modifiedEnv)
-      }
-    }
-
-    viewInfo.injectEnvironment(from: environmentValues, into: &extractedView)
-
-    // Set the extractedView back on the AnyView after modification
-    let anyViewInfo = try! typeInfo(of: AnyView.self)
-    try! anyViewInfo.property(named: "view").set(value: extractedView, on: &injectableView)
-    // swiftlint:enable force_try
-
-    // Make MountedView
-    let anyView = injectableView as? AnyView ?? AnyView(injectableView)
-    if anyView.type == EmptyView.self {
-      return MountedNull(anyView)
-    } else if anyView.bodyType == Never.self && !(anyView.type is ViewDeferredToRenderer.Type) {
-      return MountedHostView(anyView, parentTarget, modifiedEnv)
+    if type == EmptyView.self {
+      return MountedEmptyView(self, environmentValues)
+    } else if bodyType == Never.self && !(type is ViewDeferredToRenderer.Type) {
+      return MountedHostView(self, parentTarget, environmentValues)
     } else {
-      return MountedCompositeView(anyView, parentTarget, modifiedEnv)
-    }
-  }
-}
-
-typealias MountedScene<R: Renderer> = (body: MountedElement<R>, title: String?)
-
-extension Scene {
-  func makeMountedView<R: Renderer>(
-    _ parentTarget: R.TargetType,
-    _ environmentValues: EnvironmentValues
-  ) -> MountedScene<R> {
-    let anySelf = (self as? _AnyScene) ?? _AnyScene(self)
-    var title: String?
-    if let titledSelf = anySelf.scene as? TitledScene,
-      let text = titledSelf.title {
-      title = _TextProxy(text).rawText
-    }
-    if let viewSelf = anySelf.scene as? ViewContainingScene {
-      return (body: viewSelf.anyContent.makeMountedView(parentTarget, environmentValues), title)
-    } else if let deferredSelf = anySelf.scene as? SceneDeferredToRenderer {
-      return (deferredSelf.deferredBody.makeMountedView(parentTarget, environmentValues), title)
-    } else if let groupSelf = anySelf.scene as? GroupScene {
-      return groupSelf.children[0].makeMountedView(parentTarget, environmentValues)
-    } else {
-      fatalError("Unsupported `Scene` type `\(anySelf.sceneType)`. Please file a bug report.")
+      return MountedCompositeView(self, parentTarget, environmentValues)
     }
   }
 }

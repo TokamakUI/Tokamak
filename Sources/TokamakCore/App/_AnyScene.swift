@@ -15,13 +15,62 @@
 //  Created by Carson Katri on 7/19/20.
 //
 
+import Runtime
+
 public struct _AnyScene: Scene {
-  let scene: Any
-  let sceneType: Any.Type
+  /** The result type of `bodyClosure` allowing to disambiguate between scenes that
+   produce other scenes or scenes that only produce containing views.
+   */
+  enum BodyResult {
+    case scene(_AnyScene)
+    case view(AnyView)
+  }
+
+  /** The name of the unapplied generic type of the underlying `view`. `Button<Text>` and
+   `Button<Image>` types are different, but when reconciling the tree of mounted views
+   they are treated the same, thus the `Button` part of the type (the type constructor)
+   is stored in this property.
+   */
+  let typeConstructorName: String
+
+  /// The actual `Scene` value wrapped within this `_AnyScene`.
+  var scene: Any
+
+  /// The type of the underlying `scene`
+  let type: Any.Type
+
+  /** Type-erased `body` of the underlying `scene`. Needs to take a fresh version of `scene` as an
+   argument, otherwise it captures an old value of the `body` property.
+   */
+  let bodyClosure: (Any) -> BodyResult
+
+  /** The type of the `body` of the underlying `scene`. Used to cast the result of the applied
+   `bodyClosure` property.
+   */
+  let bodyType: Any.Type
 
   init<S: Scene>(_ scene: S) {
-    self.scene = scene
-    sceneType = S.self
+    if let anyScene = scene as? _AnyScene {
+      self = anyScene
+    } else {
+      self.scene = scene
+      type = S.self
+      bodyType = S.Body.self
+      if scene is SceneDeferredToRenderer {
+        // swiftlint:disable:next force_cast
+        bodyClosure = { .view(($0 as! SceneDeferredToRenderer).deferredBody) }
+      } else {
+        // swiftlint:disable:next force_cast
+        bodyClosure = { .scene(_AnyScene(($0 as! S).body)) }
+      }
+      // FIXME: no idea if using `mangledName` is reliable, but seems to be the only way to get
+      // a name of a type constructor in runtime. Should definitely check if these are different
+      // across modules, otherwise can cause problems with scenes with same names in different
+      // modules.
+
+      // swiftlint:disable:next force_try
+      typeConstructorName = try! typeInfo(of: type).mangledName
+    }
   }
 
   public var body: Never {

@@ -21,8 +21,6 @@ import Runtime
  views by `StackReconciler`.
  */
 public final class MountedHostView<R: Renderer>: MountedElement<R> {
-  private var mountedChildren = [MountedElement<R>]()
-
   /** Target of a closest ancestor host view. As a parent of this view
    might not be a host view, but a composite view, we need to pass
    around the target of a host view to its closests descendant host
@@ -33,19 +31,14 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
   /// Target of this host view supplied by a renderer after mounting has completed.
   private var target: R.TargetType?
 
-  private let environmentValues: EnvironmentValues
-
   init(_ view: AnyView, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
-    self.environmentValues = environmentValues
 
-    super.init(view)
+    super.init(view, environmentValues)
   }
 
   override func mount(with reconciler: StackReconciler<R>) {
-    guard
-      let target = reconciler.renderer?.mountTarget(to: parentTarget,
-                                                    with: self)
+    guard let target = reconciler.renderer?.mountTarget(to: parentTarget, with: self)
     else { return }
 
     self.target = target
@@ -73,6 +66,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
   override func update(with reconciler: StackReconciler<R>) {
     guard let target = target else { return }
 
+    updateEnvironment()
     target.view = view
     reconciler.renderer?.update(target: target, with: self)
 
@@ -101,10 +95,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
         let newChild: MountedElement<R>
         if firstChild.typeConstructorName == mountedChildren[0].view.typeConstructorName {
           child.view = firstChild
-          // Inject Environment
-          // swiftlint:disable:next force_try
-          let viewInfo = try! typeInfo(of: child.view.type)
-          viewInfo.injectEnvironment(from: environmentValues, into: &child.view.view)
+          child.updateEnvironment()
           child.update(with: reconciler)
           newChild = child
         } else {
