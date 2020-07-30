@@ -17,24 +17,15 @@
 
 import OpenCombine
 
-class MountedCompositeElement<R: Renderer>: MountedElement<R>, Hashable {
-  static func == (lhs: MountedCompositeElement<R>,
-                  rhs: MountedCompositeElement<R>) -> Bool {
-    lhs === rhs
-  }
-
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(ObjectIdentifier(self))
-  }
-
+class MountedCompositeElement<R: Renderer>: MountedElement<R> {
   let parentTarget: R.TargetType
 
   var state = [Any]()
   var subscriptions = [AnyCancellable]()
 
-  init(_ app: _AnyApp, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
+  init<A: App>(_ app: A, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
-    super.init(app, environmentValues)
+    super.init(_AnyApp(app), environmentValues)
   }
 
   init(_ scene: _AnyScene, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
@@ -45,5 +36,16 @@ class MountedCompositeElement<R: Renderer>: MountedElement<R>, Hashable {
   init(_ view: AnyView, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
     super.init(view, environmentValues)
+  }
+}
+
+extension MountedCompositeElement: Hashable {
+  static func == (lhs: MountedCompositeElement<R>,
+                  rhs: MountedCompositeElement<R>) -> Bool {
+    lhs === rhs
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(ObjectIdentifier(self))
   }
 }

@@ -22,6 +22,14 @@ enum MountedElementKind {
   case app(_AnyApp)
   case scene(_AnyScene)
   case view(AnyView)
+
+  var type: Any.Type {
+    switch self {
+    case let .app(app): return app.type
+    case let .scene(scene): return scene.type
+    case let .view(view): return view.type
+    }
+  }
 }
 
 public class MountedElement<R: Renderer> {
@@ -65,14 +73,6 @@ public class MountedElement<R: Renderer> {
     }
   }
 
-  var elementType: Any.Type {
-    switch element {
-    case let .app(app): return app.type
-    case let .scene(scene): return scene.type
-    case let .view(view): return view.type
-    }
-  }
-
   var typeConstructorName: String {
     switch element {
     case .app: fatalError("""
@@ -91,16 +91,34 @@ public class MountedElement<R: Renderer> {
   init(_ app: _AnyApp, _ environmentValues: EnvironmentValues) {
     element = .app(app)
     self.environmentValues = environmentValues
+    updateEnvironment()
   }
 
   init(_ scene: _AnyScene, _ environmentValues: EnvironmentValues) {
     element = .scene(scene)
     self.environmentValues = environmentValues
+    updateEnvironment()
   }
 
   init(_ view: AnyView, _ environmentValues: EnvironmentValues) {
     element = .view(view)
     self.environmentValues = environmentValues
+    updateEnvironment()
+  }
+
+  @discardableResult func updateEnvironment() -> TypeInfo {
+    // swiftlint:disable:next force_try
+    let info = try! typeInfo(of: element.type)
+    switch element {
+    case .app:
+      environmentValues = info.injectEnvironment(from: environmentValues, into: &app.app)
+    case .scene:
+      environmentValues = info.injectEnvironment(from: environmentValues, into: &scene.scene)
+    case .view:
+      environmentValues = info.injectEnvironment(from: environmentValues, into: &view.view)
+    }
+
+    return info
   }
 
   func mount(with reconciler: StackReconciler<R>) {
@@ -117,7 +135,7 @@ public class MountedElement<R: Renderer> {
 }
 
 extension TypeInfo {
-  func injectEnvironment(
+  fileprivate func injectEnvironment(
     from environmentValues: EnvironmentValues,
     into element: inout Any
   ) -> EnvironmentValues {
@@ -153,6 +171,31 @@ extension TypeInfo {
 
     return modifiedEnv
   }
+
+  /// Extract all `DynamicProperty` from a type, recursively.
+  /// This is necessary as a `DynamicProperty` can be nested.
+  /// `EnvironmentValues` can also be injected at this point.
+  func dynamicProperties(_ environment: EnvironmentValues,
+                         source: inout Any) -> [PropertyInfo] {
+    var dynamicProps = [PropertyInfo]()
+    for prop in properties where prop.type is DynamicProperty.Type {
+      dynamicProps.append(prop)
+      // swiftlint:disable force_try
+      let propInfo = try! typeInfo(of: prop.type)
+      _ = propInfo.injectEnvironment(from: environment, into: &source)
+      var extracted = try! prop.get(from: source)
+      dynamicProps.append(
+        contentsOf: propInfo.dynamicProperties(environment,
+                                               source: &extracted)
+      )
+      // swiftlint:disable:next force_cast
+      var extractedDynamicProp = extracted as! DynamicProperty
+      extractedDynamicProp.update()
+      try! prop.set(value: extractedDynamicProp, on: &source)
+      // swiftlint:enable force_try
+    }
+    return dynamicProps
+  }
 }
 
 extension AnyView {
@@ -160,21 +203,12 @@ extension AnyView {
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues
   ) -> MountedElement<R> {
-    // swiftlint:disable:next force_try
-    let viewInfo = try! typeInfo(of: type)
-
-    // Find Environment changes
-    var modifiedView = view
-    let modifiedEnv = viewInfo.injectEnvironment(from: environmentValues, into: &modifiedView)
-
-    var anyView = self
-    anyView.view = modifiedView
-    if anyView.type == EmptyView.self {
-      return MountedEmptyView(anyView, modifiedEnv)
-    } else if anyView.bodyType == Never.self && !(anyView.type is ViewDeferredToRenderer.Type) {
-      return MountedHostView(anyView, parentTarget, modifiedEnv)
+    if type == EmptyView.self {
+      return MountedEmptyView(self, environmentValues)
+    } else if bodyType == Never.self && !(type is ViewDeferredToRenderer.Type) {
+      return MountedHostView(self, parentTarget, environmentValues)
     } else {
-      return MountedCompositeView(anyView, parentTarget, modifiedEnv)
+      return MountedCompositeView(self, parentTarget, environmentValues)
     }
   }
 }
