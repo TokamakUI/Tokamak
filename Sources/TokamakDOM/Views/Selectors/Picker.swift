@@ -14,13 +14,14 @@
 
 import JavaScriptKit
 import TokamakCore
+import TokamakStaticHTML
 
 extension _PickerContainer: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     AnyView(HTML("label") {
       label
       Text(" ")
-      HTML("select", listeners: ["change": {
+      DynamicHTML("select", listeners: ["change": {
         guard
           let valueString = $0.target.object!.value.string,
           let value = Int(valueString) as? SelectionValue

@@ -18,6 +18,7 @@
 import CombineShim
 import JavaScriptKit
 import TokamakCore
+import TokamakStaticHTML
 
 private enum ScenePhaseObserver {
   static var publisher = CurrentValueSubject<ScenePhase, Never>(.active)

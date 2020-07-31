@@ -11,20 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 7/31/20.
+//
 
-import TokamakCore
+import TokamakStaticHTML
 
-extension NavigationLink: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    let proxy = _NavigationLinkProxy(self)
-    return AnyView(
-      HTML("a", [
-        "href": "javascript:void%200",
-      ], listeners: [
-        // FIXME: Focus destination or something so assistive
-        // technology knows where to look when clicking the link.
-        "click": { _ in proxy.activate() },
-      ]) { proxy.label }
-    )
+struct ContentView: View {
+  var body: some View {
+    Text("Hello, world!")
   }
 }

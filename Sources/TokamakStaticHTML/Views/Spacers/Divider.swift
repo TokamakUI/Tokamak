@@ -12,18 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import JavaScriptKit
 import TokamakCore
 
-extension NavigationView: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    AnyView(HTML("div", [
+extension Divider: AnyHTML {
+  public var innerHTML: String? { nil }
+  public var tag: String { "hr" }
+  public var attributes: [String: String] {
+    [
       "style": """
-      display: flex; flex-direction: row; align-items: stretch;
-      width: 100%; height: 100%;
+      width: 100%; height: 0; margin: 0;
+      border-top: none;
+      border-right: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+      border-left: none;
       """,
-    ]) {
-      _NavigationViewProxy(self).body
-    })
+    ]
   }
 }

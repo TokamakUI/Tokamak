@@ -26,8 +26,8 @@ let package = Package(
       targets: ["TokamakShim"]
     ),
     .library(
-      name: "TokamakStatic",
-      targets: ["TokamakStatic"]
+      name: "TokamakStaticHTML",
+      targets: ["TokamakStaticHTML"]
     ),
     .executable(
       name: "TokamakStaticDemo",
@@ -59,28 +59,27 @@ let package = Package(
       dependencies: ["CombineShim", "Runtime"]
     ),
     .target(
-      name: "TokamakDemo",
-      dependencies: ["JavaScriptKit", "TokamakShim"]
+      name: "TokamakStaticHTML",
+      dependencies: [
+        "TokamakCore",
+      ]
     ),
     .target(
       name: "TokamakDOM",
-      dependencies: ["CombineShim", "JavaScriptKit", "TokamakCore"]
+      dependencies: ["CombineShim", "JavaScriptKit", "TokamakCore", "TokamakStaticHTML"]
     ),
     .target(
       name: "TokamakShim",
       dependencies: [.target(name: "TokamakDOM", condition: .when(platforms: [.wasi]))]
     ),
     .target(
-      name: "TokamakStatic",
-      dependencies: [
-        "TokamakCore",
-        "TokamakDOM",
-      ]
+      name: "TokamakDemo",
+      dependencies: ["JavaScriptKit", "TokamakShim"]
     ),
     .target(
       name: "TokamakStaticDemo",
       dependencies: [
-        "TokamakStatic",
+        "TokamakStaticHTML",
       ]
     ),
     .target(

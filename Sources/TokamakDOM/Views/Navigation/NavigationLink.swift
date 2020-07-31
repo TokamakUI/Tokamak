@@ -14,20 +14,17 @@
 
 import TokamakCore
 
-extension Divider: AnyHTML {
-  public var innerHTML: String? { nil }
-  public var tag: String { "hr" }
-  public var attributes: [String: String] {
-    [
-      "style": """
-      width: 100%; height: 0; margin: 0;
-      border-top: none;
-      border-right: none;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-      border-left: none;
-      """,
-    ]
+extension NavigationLink: ViewDeferredToRenderer {
+  public var deferredBody: AnyView {
+    let proxy = _NavigationLinkProxy(self)
+    return AnyView(
+      DynamicHTML("a", [
+        "href": "javascript:void%200",
+      ], listeners: [
+        // FIXME: Focus destination or something so assistive
+        // technology knows where to look when clicking the link.
+        "click": { _ in proxy.activate() },
+      ]) { proxy.label }
+    )
   }
-
-  public var listeners: [String: Listener] { [:] }
 }

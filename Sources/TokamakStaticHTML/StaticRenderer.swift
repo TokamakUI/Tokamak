@@ -16,7 +16,6 @@
 //
 
 import TokamakCore
-import TokamakDOM
 
 public final class HTMLTarget: Target {
   var html: AnyHTML
@@ -26,6 +25,12 @@ public final class HTMLTarget: Target {
                 _ html: AnyHTML) {
     self.html = html
     super.init(view)
+  }
+
+  init<A: App>(_ app: A,
+               _ html: AnyHTML) {
+    self.html = html
+    super.init(app)
   }
 }
 
@@ -44,8 +49,9 @@ extension HTMLTarget {
 struct HTMLBody: AnyHTML {
   let tag: String = "body"
   let innerHTML: String? = nil
-  let attributes: [String: String] = [:]
-  let listeners: [String: Listener] = [:]
+  let attributes: [String: String] = [
+    "style": "margin: 0;" + rootNodeStyles,
+  ]
 }
 
 public final class StaticRenderer: Renderer {
@@ -66,16 +72,32 @@ public final class StaticRenderer: Renderer {
     """
   }
 
-  public init<V: View>(_ view: V) {
+  public init<V: View>(_ view: V, _ rootEnvironment: EnvironmentValues? = nil) {
     rootTarget = HTMLTarget(view, HTMLBody())
+
     reconciler = StackReconciler(
       view: view,
       target: rootTarget,
+      environment: EnvironmentValues(),
       renderer: self,
-      environment: EnvironmentValues()
-    ) { _ in
-      fatalError("Stateful apps cannot be created with TokamakStatic")
-    }
+      scheduler: { _ in
+        fatalError("Stateful apps cannot be created with TokamakStatic")
+      }
+    )
+  }
+
+  public init<A: App>(_ app: A, _ rootEnvironment: EnvironmentValues? = nil) {
+    rootTarget = HTMLTarget(app, HTMLBody())
+
+    reconciler = StackReconciler(
+      app: app,
+      target: rootTarget,
+      environment: EnvironmentValues(),
+      renderer: self,
+      scheduler: { _ in
+        fatalError("Stateful apps cannot be created with TokamakStatic")
+      }
+    )
   }
 
   public func mountTarget(to parent: HTMLTarget, with host: MountedHost) -> HTMLTarget? {

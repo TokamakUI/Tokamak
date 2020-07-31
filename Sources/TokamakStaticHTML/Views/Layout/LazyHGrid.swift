@@ -17,11 +17,11 @@
 
 import TokamakCore
 
-extension LazyVGrid: SpacerContainer {
-  var axis: SpacerContainerAxis { .vertical }
-  var hasSpacer: Bool { false }
-  var fillCrossAxis: Bool {
-    _LazyVGridProxy(self).columns.contains {
+extension LazyHGrid: SpacerContainer {
+  public var axis: SpacerContainerAxis { .horizontal }
+  public var hasSpacer: Bool { false }
+  public var fillCrossAxis: Bool {
+    _LazyHGridProxy(self).rows.contains {
       if case .adaptive(minimum: _, maximum: _) = $0.size {
         return true
       } else {
@@ -31,31 +31,31 @@ extension LazyVGrid: SpacerContainer {
   }
 }
 
-extension LazyVGrid: ViewDeferredToRenderer {
-  var lastColumn: GridItem? {
-    _LazyVGridProxy(self).columns.last
+extension LazyHGrid: ViewDeferredToRenderer {
+  public var lastRow: GridItem? {
+    _LazyHGridProxy(self).rows.last
   }
 
   public var deferredBody: AnyView {
     var styles = """
     display: grid;
-    grid-template-columns: \(_LazyVGridProxy(self)
-      .columns
+    grid-template-rows: \(_LazyHGridProxy(self)
+      .rows
       .map(\.description)
       .joined(separator: " "));
-    grid-auto-flow: row;
+    grid-auto-flow: column;
     """
     if fillCrossAxis {
-      styles += "width: 100%;"
+      styles += "height: 100%;"
     }
-    // CSS Grid doesn't let these be specified for specific columns
-    if let lastCol = lastColumn {
-      styles += "justify-items: \(lastCol.alignment.horizontal.cssValue);"
-      styles += "align-items: \(lastCol.alignment.vertical.cssValue);"
+    // CSS Grid doesn't let these be specified for specific rows
+    if let lastRow = lastRow {
+      styles += "justify-items: \(lastRow.alignment.horizontal.cssValue);"
+      styles += "align-items: \(lastRow.alignment.vertical.cssValue);"
     }
-    styles += "grid-gap: \(_LazyVGridProxy(self).spacing)px;"
+    styles += "grid-gap: \(_LazyHGridProxy(self).spacing)px;"
     return AnyView(HTML("div", ["style": styles]) {
-      _LazyVGridProxy(self).content
+      _LazyHGridProxy(self).content
     })
   }
 }

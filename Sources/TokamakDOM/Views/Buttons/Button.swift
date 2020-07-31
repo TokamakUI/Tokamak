@@ -19,8 +19,11 @@ import TokamakCore
 
 extension Button: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
-    AnyView(HTML("button", listeners: ["click": { _ in _ButtonProxy(self).action() }]) {
-      _ButtonProxy(self).label.subject
-    })
+    AnyView(DynamicHTML("button",
+                        listeners: ["click": { _ in
+                          _ButtonProxy(self).action()
+                        }]) {
+        _ButtonProxy(self).label.subject
+      })
   }
 }
