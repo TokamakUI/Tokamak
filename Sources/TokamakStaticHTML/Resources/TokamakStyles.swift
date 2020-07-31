@@ -67,7 +67,7 @@ public let tokamakStyles = """
 ._tokamak-text-redacted {
   position: relative;
 }
-._tokamak-text-redacted:after {
+._tokamak-text-redacted::after {
   content: " ";
   background-color: rgb(200, 200, 200);
   position: absolute;
