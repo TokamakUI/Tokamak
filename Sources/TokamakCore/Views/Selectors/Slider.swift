@@ -13,10 +13,16 @@
 // limitations under the License.
 
 public enum _SliderStep {
-  /* where Step: BinaryFloatingPoint.Stride */
-  public typealias Step = Double.Stride
   case any
-  case discrete(Step)
+  case discrete(Double.Stride)
+}
+
+func convert<T>(_ binding: Binding<T>) -> Binding<Double> where T: BinaryFloatingPoint {
+  Binding(get: { Double(binding.wrappedValue) }, set: { binding.wrappedValue = T($0) })
+}
+
+func convert<T>(_ range: ClosedRange<T>) -> ClosedRange<Double> where T: BinaryFloatingPoint {
+  Double(range.lowerBound)...Double(range.upperBound)
 }
 
 /// A control for selecting a value from a bounded linear range of values.
@@ -28,7 +34,7 @@ public struct Slider<Label, ValueLabel>: View where Label: View, ValueLabel: Vie
   let maxValueLabel: ValueLabel
   let valueBinding: Binding<Double>
   let bounds: ClosedRange<Double>
-  let step: _SliderStep // <Double>
+  let step: _SliderStep
   // FIXME: IMPLEMENT “For example, on iOS, a Slider is considered to be actively
   // editing while the user is touching the knob and sliding it around the track.”
   let onEditingChanged: (Bool) -> ()
@@ -38,91 +44,89 @@ public struct Slider<Label, ValueLabel>: View where Label: View, ValueLabel: Vie
   }
 }
 
-public typealias V = Double
-
 extension Slider where Label == EmptyView, ValueLabel == EmptyView {
-  public init(
+  public init<V>(
     value: Binding<V>,
     in bounds: ClosedRange<V> = 0...1,
     onEditingChanged: @escaping (Bool) -> () = { _ in }
-  ) /* where V : BinaryFloatingPoint, V.Stride : BinaryFloatingPoint */ {
+  ) where V: BinaryFloatingPoint, V.Stride: BinaryFloatingPoint {
     label = EmptyView()
     minValueLabel = EmptyView()
     maxValueLabel = EmptyView()
-    valueBinding = value
-    self.bounds = bounds
+    valueBinding = convert(value)
+    self.bounds = convert(bounds)
     step = .any
     self.onEditingChanged = onEditingChanged
   }
 
-  public init(
+  public init<V>(
     value: Binding<V>,
     in bounds: ClosedRange<V>,
     step: V.Stride = 1,
     onEditingChanged: @escaping (Bool) -> () = { _ in }
-  ) /* where V : BinaryFloatingPoint, V.Stride : BinaryFloatingPoint */ {
+  ) where V: BinaryFloatingPoint, V.Stride: BinaryFloatingPoint {
     label = EmptyView()
     minValueLabel = EmptyView()
     maxValueLabel = EmptyView()
-    valueBinding = value
-    self.bounds = bounds
-    self.step = .discrete(step)
+    valueBinding = convert(value)
+    self.bounds = convert(bounds)
+    self.step = .discrete(Double.Stride(step))
     self.onEditingChanged = onEditingChanged
   }
 }
 
 extension Slider where ValueLabel == EmptyView {
-  public init(
+  public init<V>(
     value: Binding<V>,
     in bounds: ClosedRange<V> = 0...1,
     onEditingChanged: @escaping (Bool) -> () = { _ in },
     label: () -> Label
-  ) /* where V : BinaryFloatingPoint, V.Stride : BinaryFloatingPoint */ {
+  ) where V: BinaryFloatingPoint, V.Stride: BinaryFloatingPoint {
     self.label = label()
     minValueLabel = EmptyView()
     maxValueLabel = EmptyView()
-    valueBinding = value
-    self.bounds = bounds
+    valueBinding = convert(value)
+    self.bounds = convert(bounds)
     step = .any
     self.onEditingChanged = onEditingChanged
   }
 
-  public init(
+  public init<V>(
     value: Binding<V>,
     in bounds: ClosedRange<V>,
     step: V.Stride = 1,
     onEditingChanged: @escaping (Bool) -> () = { _ in },
     label: () -> Label
-  ) /* where V : BinaryFloatingPoint, V.Stride : BinaryFloatingPoint */ {
+  ) where V: BinaryFloatingPoint, V.Stride: BinaryFloatingPoint {
     self.label = label()
     minValueLabel = EmptyView()
     maxValueLabel = EmptyView()
-    valueBinding = value
-    self.bounds = bounds
-    self.step = .discrete(step)
+    valueBinding = convert(value)
+    self.bounds = convert(bounds)
+    self.step = .discrete(Double.Stride(step))
     self.onEditingChanged = onEditingChanged
   }
 }
 
 extension Slider {
-  public init(
+  public init<V>(
     value: Binding<V>,
     in bounds: ClosedRange<V> = 0...1,
     onEditingChanged: @escaping (Bool) -> () = { _ in },
     minimumValueLabel: ValueLabel,
     maximumValueLabel: ValueLabel,
     label: () -> Label
-  ) /* where V : BinaryFloatingPoint, V.Stride : BinaryFloatingPoint */ {
+  ) where V: BinaryFloatingPoint, V.Stride: BinaryFloatingPoint {
     self.label = label()
     minValueLabel = minimumValueLabel
     maxValueLabel = maximumValueLabel
-    valueBinding = value
-    self.bounds = bounds
+    valueBinding = convert(value)
+    self.bounds = convert(bounds)
     step = .any
     self.onEditingChanged = onEditingChanged
   }
 
-  public init(
+  public init<V>(
     value: Binding<V>,
     in bounds: ClosedRange<V>,
     step: V.Stride = 1,
@@ -130,13 +134,13 @@ extension Slider {
     minimumValueLabel: ValueLabel,
     maximumValueLabel: ValueLabel,
     label: () -> Label
-  ) /* where V : BinaryFloatingPoint, V.Stride : BinaryFloatingPoint */ {
+  ) where V: BinaryFloatingPoint, V.Stride: BinaryFloatingPoint {
     self.label = label()
     minValueLabel = minimumValueLabel
     maxValueLabel = maximumValueLabel
-    valueBinding = value
-    self.bounds = bounds
-    self.step = .discrete(step)
+    valueBinding = convert(value)
+    self.bounds = convert(bounds)
+    self.step = .discrete(Double.Stride(step))
     self.onEditingChanged = onEditingChanged
   }
 }
@@ -160,6 +164,6 @@ public struct _SliderProxy<Label, ValueLabel> where Label: View, ValueLabel: Vie
   public var maxValueLabel: ValueLabel { subject.maxValueLabel }
   public var valueBinding: Binding<Double> { subject.valueBinding }
   public var bounds: ClosedRange<Double> { subject.bounds }
-  public var step: _SliderStep /* <Double> */ { subject.step }
+  public var step: _SliderStep { subject.step }
   public var onEditingChanged: (Bool) -> () { subject.onEditingChanged }
 }
