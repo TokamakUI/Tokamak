@@ -74,6 +74,7 @@ public struct Animation: Equatable {
   public static var easeIn: Animation {
     .init()
   }
+
   public static func easeOut(duration: Double) -> Animation {
     .init()
   }
