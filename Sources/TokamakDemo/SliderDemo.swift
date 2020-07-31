@@ -16,6 +16,7 @@ import TokamakShim
 
 struct SliderDemo: View {
   @State private var value: Double = 0
+  @State private var editing = false
 
   var body: some View {
     VStack {
@@ -23,12 +24,14 @@ struct SliderDemo: View {
         value: $value,
         in: 0...1,
         step: 0.1,
+        onEditingChanged: { editing = $0; print($0) },
         minimumValueLabel: Text("min"),
         maximumValueLabel: Text("max")
       ) {
         Text("label")
       }
       Text("Value: \(value)")
+      Text(editing ? "Editing" : "Not editing")
     }
   }
 }

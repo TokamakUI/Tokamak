@@ -42,6 +42,9 @@ extension Slider: ViewDeferredToRenderer {
             "input": { event in
               proxy.valueBinding.wrappedValue = Double(event.target.object!.value.string!)!
             },
+            "pointerdown": { _ in proxy.onEditingChanged(true) },
+            "pointerup": { _ in proxy.onEditingChanged(false) },
+            "pointercancel": { _ in proxy.onEditingChanged(false) },
           ]
         )
         proxy.maxValueLabel
