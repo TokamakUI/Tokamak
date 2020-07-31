@@ -82,6 +82,7 @@
 /* Begin PBXFileReference section */
 		3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidebarDemo.swift; sourceTree = "<group>"; };
 		8500293E24D2FF3E001A2E84 /* SliderDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderDemo.swift; sourceTree = "<group>"; };
+		8587DF5524D4B9A40033EF43 /* TokamakDemo Native.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "TokamakDemo Native.entitlements"; sourceTree = "<group>"; };
 		85CBD5DE24B3BF090066468A /* ToggleDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleDemo.swift; sourceTree = "<group>"; };
 		85ED184A24AD379A0085DFA0 /* TokamakDemo Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TokamakDemo Native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		85ED185224AD379A0085DFA0 /* TokamakDemo Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TokamakDemo Native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +140,7 @@
 		85ED183D24AD37970085DFA0 = {
 			isa = PBXGroup;
 			children = (
+				8587DF5524D4B9A40033EF43 /* TokamakDemo Native.entitlements */,
 				D1E5FDAB24C1D57000E7485E /* TokamakShim */,
 				85ED188B24AD3CF10085DFA0 /* LaunchScreen.storyboard */,
 				85ED186924AD38F20085DFA0 /* UIAppDelegate.swift */,
@@ -515,6 +517,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "TokamakDemo Native.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 288H3WAR3W;
 				ENABLE_PREVIEWS = YES;
@@ -526,6 +529,7 @@
 				);
 				PRODUCT_NAME = "TokamakDemo Native";
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -537,6 +541,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "TokamakDemo Native.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 288H3WAR3W;
 				ENABLE_PREVIEWS = YES;
@@ -548,6 +553,7 @@
 				);
 				PRODUCT_NAME = "TokamakDemo Native";
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
