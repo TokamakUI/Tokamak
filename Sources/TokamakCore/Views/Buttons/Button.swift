@@ -36,14 +36,14 @@
 ///       Button("\(counter)", action: { counter += 1 })
 ///     }
 public struct Button<Label>: View where Label: View {
-  let button: _Button<Label>
+  let implementation: _Button<Label>
 
   public init(action: @escaping () -> (), @ViewBuilder label: () -> Label) {
-    button = _Button(action: action, label: label())
+    implementation = _Button(action: action, label: label())
   }
 
   public var body: some View {
-    button
+    implementation
   }
 }
 
@@ -73,6 +73,6 @@ extension Button where Label == Text {
 
 extension Button: ParentView {
   public var children: [AnyView] {
-    (button.label as? GroupView)?.children ?? [AnyView(button.label)]
+    (implementation.label as? GroupView)?.children ?? [AnyView(implementation.label)]
   }
 }

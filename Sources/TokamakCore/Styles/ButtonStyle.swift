@@ -26,6 +26,13 @@ public struct ButtonStyleConfiguration {
   public let isPressed: Bool
 }
 
+public struct DefaultButtonStyle: ButtonStyle {
+  public init() {}
+  public func makeBody(configuration: ButtonStyleConfiguration) -> some View {
+    configuration.label
+  }
+}
+
 /// This is a helper class that works around absence of "package private" access control in Swift
 public struct _ButtonStyleConfigurationProxy {
   public struct Label {
@@ -75,7 +82,7 @@ public struct _AnyButtonStyle: ButtonStyle {
 
 public enum _ButtonStyleKey: EnvironmentKey {
   public static var defaultValue: _AnyButtonStyle {
-    fatalError("\(self) must have a renderer-provided default value")
+    _AnyButtonStyle(DefaultButtonStyle())
   }
 }
 
