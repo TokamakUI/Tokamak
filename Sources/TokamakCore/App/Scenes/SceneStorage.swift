@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/17/20.
 //
 
-import OpenCombine
+import CombineShim
 
 /// The renderer must specify a default `_StorageProvider` before any `SceneStorage`
 /// values are accessed.

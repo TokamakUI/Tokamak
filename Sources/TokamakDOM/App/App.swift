@@ -15,8 +15,8 @@
 //  Created by Carson Katri on 7/16/20.
 //
 
+import CombineShim
 import JavaScriptKit
-import OpenCombine
 import TokamakCore
 
 extension App {
@@ -59,15 +59,5 @@ extension App {
 
   public var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
     ColorSchemeObserver.publisher.eraseToAnyPublisher()
-  }
-}
-
-struct DefaultApp<V: View>: App {
-  var content: V?
-
-  var body: some Scene {
-    WindowGroup {
-      content
-    }
   }
 }

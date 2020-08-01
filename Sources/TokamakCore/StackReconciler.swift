@@ -15,7 +15,7 @@
 //  Created by Max Desiatov on 28/11/2018.
 //
 
-import OpenCombine
+import CombineShim
 import Runtime
 
 /** A class that reconciles a "raw" tree of element values (such as `App`, `Scene` and `View`,

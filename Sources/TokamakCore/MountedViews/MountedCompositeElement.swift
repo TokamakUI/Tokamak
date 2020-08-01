@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/19/20.
 //
 
-import OpenCombine
+import CombineShim
 
 class MountedCompositeElement<R: Renderer>: MountedElement<R> {
   let parentTarget: R.TargetType

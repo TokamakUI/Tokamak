@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/19/20.
 //
 
-import OpenCombine
+import CombineShim
 
 public struct _AnyApp: App {
   var app: Any

@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/19/20.
 //
 
-import OpenCombine
+import CombineShim
 import Runtime
 
 // This is very similar to `MountedCompositeView`. However, the `mountedBody`

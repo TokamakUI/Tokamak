@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/16/20.
 //
 
-import OpenCombine
+import CombineShim
 import Runtime
 
 /// Provides the ability to set the title of the Scene.
