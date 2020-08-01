@@ -28,7 +28,7 @@ jobs:
           sudo xcode-select --switch /Applications/Xcode_12_beta.app/Contents/Developer/
           swift test
           xcodebuild -version
-          cd "NativeDemo"
-          xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
-            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
-            xcpretty --color
+          #cd "NativeDemo"
+          #xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
+          #  CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
+          #  xcpretty --color
