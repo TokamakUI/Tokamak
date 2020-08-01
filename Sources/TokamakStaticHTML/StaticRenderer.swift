@@ -59,10 +59,12 @@ public final class StaticRenderer: Renderer {
 
   var rootTarget: HTMLTarget
 
+  static var title: String = ""
   public var html: String {
     """
     <html>
     <head>
+      <title>\(Self.title)</title>
       <style>
         \(tokamakStyles)
       </style>

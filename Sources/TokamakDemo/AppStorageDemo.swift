@@ -15,11 +15,7 @@
 //  Created by Carson Katri on 7/17/20.
 //
 
-#if canImport(SwiftUI)
-import SwiftUI
-#else
-import TokamakDOM
-#endif
+import TokamakShim
 
 @available(OSX 11.0, iOS 14.0, *)
 struct AppStorageButtons: View {
