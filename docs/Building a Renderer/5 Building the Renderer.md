@@ -29,7 +29,7 @@ public init<V: View>(_ view: V) {
     renderer: self,
     environment: EnvironmentValues()
   ) { closure in
-    fatalError("Stateful apps cannot be created with TokamakStatic")
+    fatalError("Stateful apps cannot be created with TokamakStaticHTML")
   }
 }
 ```
@@ -81,7 +81,7 @@ The other two functions required by the `Renderer` protocol can crash, as `Tokam
 
 ```swift
 public func update(target: HTMLTarget, with host: MountedHost) {
-  fatalError("Stateful apps cannot be created with TokamakStatic")
+  fatalError("Stateful apps cannot be created with TokamakStaticHTML")
 }
 
 public func unmount(
@@ -90,7 +90,7 @@ public func unmount(
   with host: MountedHost,
   completion: @escaping () -> ()
 ) {
-  fatalError("Stateful apps cannot be created with TokamakStatic")
+  fatalError("Stateful apps cannot be created with TokamakStaticHTML")
 }
 ```
 

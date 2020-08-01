@@ -83,7 +83,7 @@ public final class StaticHTMLRenderer: Renderer {
       environment: EnvironmentValues(),
       renderer: self,
       scheduler: { _ in
-        fatalError("Stateful apps cannot be created with TokamakStatic")
+        fatalError("Stateful apps cannot be created with TokamakStaticHTML")
       }
     )
   }
@@ -97,7 +97,7 @@ public final class StaticHTMLRenderer: Renderer {
       environment: EnvironmentValues(),
       renderer: self,
       scheduler: { _ in
-        fatalError("Stateful apps cannot be created with TokamakStatic")
+        fatalError("Stateful apps cannot be created with TokamakStaticHTML")
       }
     )
   }
@@ -121,7 +121,7 @@ public final class StaticHTMLRenderer: Renderer {
   }
 
   public func update(target: HTMLTarget, with host: MountedHost) {
-    fatalError("Stateful apps cannot be created with TokamakStatic")
+    fatalError("Stateful apps cannot be created with TokamakStaticHTML")
   }
 
   public func unmount(
@@ -130,6 +130,6 @@ public final class StaticHTMLRenderer: Renderer {
     with host: MountedHost,
     completion: @escaping () -> ()
   ) {
-    fatalError("Stateful apps cannot be created with TokamakStatic")
+    fatalError("Stateful apps cannot be created with TokamakStaticHTML")
   }
 }
