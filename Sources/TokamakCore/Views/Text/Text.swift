@@ -35,6 +35,7 @@ public struct Text: View {
 
   @Environment(\.font) var font
   @Environment(\.foregroundColor) var foregroundColor
+  @Environment(\.redactionReasons) var redactionReasons
 
   public enum _Storage {
     case verbatim(String)
@@ -103,6 +104,8 @@ public struct _TextProxy {
       .color(subject.foregroundColor),
     ] + subject.modifiers
   }
+
+  public var redactionReasons: RedactionReasons { subject.redactionReasons }
 }
 
 public extension Text {
