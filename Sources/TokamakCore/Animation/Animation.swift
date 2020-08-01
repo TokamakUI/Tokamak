@@ -13,10 +13,10 @@
 // limitations under the License.
 
 public struct Animation: Equatable {
-  static let `default`: Animation
+  static let `default` = Animation()
 
   public func delay(_ delay: Double) -> Animation {
-  	.init()
+    .init()
   }
 
   public func speed(_ speed: Double) -> Animation {
@@ -24,41 +24,41 @@ public struct Animation: Equatable {
   }
 
   public func repeatCount(
-    _ repeatCount: Int, 
+    _ repeatCount: Int,
     autoreverses: Bool = true
   ) -> Animation {
     .init()
   }
-  
+
   public func repeatForever(autoreverses: Bool = true) -> Animation {
-    .init() 
+    .init()
   }
-  
+
   public static func spring(
-    response: Double = 0.55, 
-    dampingFraction: Double = 0.825, 
+    response: Double = 0.55,
+    dampingFraction: Double = 0.825,
     blendDuration: Double = 0
   ) -> Animation {
     .init()
   }
 
   public static func interactiveSpring(
-    response: Double = 0.15, 
-    dampingFraction: Double = 0.86, 
+    response: Double = 0.15,
+    dampingFraction: Double = 0.86,
     blendDuration: Double = 0.25
   ) -> Animation {
     .init()
   }
-  
+
   public static func interpolatingSpring(
-	mass: Double = 1.0, 
-	stiffness: Double, 
-	damping: Double, 
-	initialVelocity: Double = 0.0
+    mass: Double = 1.0,
+    stiffness: Double,
+    damping: Double,
+    initialVelocity: Double = 0.0
   ) -> Animation {
     .init()
   }
-  
+
   public static func easeInOut(duration: Double) -> Animation {
     .init()
   }
@@ -70,7 +70,7 @@ public struct Animation: Equatable {
   public static func easeIn(duration: Double) -> Animation {
     .init()
   }
-  
+
   public static var easeIn: Animation {
     .init()
   }
@@ -82,20 +82,20 @@ public struct Animation: Equatable {
   public static var easeOut: Animation {
     .init()
   }
-  
+
   public static func linear(duration: Double) -> Animation {
     .init()
   }
-  
+
   public static var linear: Animation {
     .init()
   }
-  
+
   public static func timingCurve(
-    _ c0x: Double, 
-    _ c0y: Double, 
-    _ c1x: Double, 
-    _ c1y: Double, 
+    _ c0x: Double,
+    _ c0y: Double,
+    _ c1x: Double,
+    _ c1y: Double,
     duration: Double = 0.35
   ) -> Animation {
     .init()

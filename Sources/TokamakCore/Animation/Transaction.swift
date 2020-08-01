@@ -14,9 +14,14 @@
 
 public struct Transaction {
   public var animation: Animation?
+
+  /** This value is true during the initial phase of a two-part transition update, to prevent
+   `animation(_:)`` from inserting new animations into the transaction.
+   */
   public var disablesAnimations: Bool
 
   public init(animation: Animation?) {
     self.animation = animation
+    disablesAnimations = true
   }
 }
