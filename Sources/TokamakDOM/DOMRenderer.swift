@@ -23,7 +23,6 @@ extension EnvironmentValues {
   static var defaultEnvironment: Self {
     var environment = EnvironmentValues()
     environment[_ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
-    environment[_ButtonStyleKey] = _AnyButtonStyle(DefaultButtonStyle())
     environment[_ColorSchemeKey] = .init(matchMediaDarkScheme: matchMediaDarkScheme)
     environment._defaultAppStorage = LocalStorage.standard
     _DefaultSceneStorageProvider.default = SessionStorage.standard
