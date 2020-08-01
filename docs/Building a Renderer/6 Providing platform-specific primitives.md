@@ -29,7 +29,7 @@ Now we can use `HTML` to override the body of the primitive `Views` provided by 
 ```swift
 extension Text: ViewDeferredToRenderer {
   var deferredBody: AnyView {
-	  AnyView(HTML("span", [:], _TextProxy(self).rawText))
+    AnyView(HTML("span", [:], _TextProxy(self).rawText))
   }
 }
 ```
