@@ -31,6 +31,10 @@ extension Slider: ViewDeferredToRenderer {
       "max": String(proxy.bounds.upperBound),
       "step": step,
       "value": String(proxy.valueBinding.wrappedValue),
+      "style": """
+        display: block;
+        width: 100%;
+      """,
     ]
     return AnyView(
       HStack {
