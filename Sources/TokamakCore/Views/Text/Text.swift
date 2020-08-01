@@ -33,7 +33,8 @@ public struct Text: View {
   let storage: _Storage
   let modifiers: [_Modifier]
 
-  @Environment(\.font) var font: Font?
+  @Environment(\.font) var font
+  @Environment(\.foregroundColor) var foregroundColor
 
   public enum _Storage {
     case verbatim(String)
@@ -99,15 +100,12 @@ public struct _TextProxy {
   public var modifiers: [Text._Modifier] {
     [
       .font(subject.font),
+      .color(subject.foregroundColor),
     ] + subject.modifiers
   }
 }
 
 public extension Text {
-  func foregroundColor(_ color: Color?) -> Text {
-    .init(storage: storage, modifiers: modifiers + [.color(color)])
-  }
-
   func font(_ font: Font?) -> Text {
     .init(storage: storage, modifiers: modifiers + [.font(font)])
   }

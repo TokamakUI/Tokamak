@@ -57,20 +57,3 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     )
   }
 }
-
-extension _AnyApp {
-  func makeMountedApp<R>(
-    _ parentTarget: R.TargetType,
-    _ environmentValues: EnvironmentValues
-  ) -> MountedApp<R> where R: Renderer {
-    // swiftlint:disable:next force_try
-    let info = try! typeInfo(of: type)
-
-    var modified = app
-    info.injectEnvironment(from: environmentValues, into: &modified)
-
-    var result = self
-    result.app = modified
-    return MountedApp(result, parentTarget, environmentValues)
-  }
-}

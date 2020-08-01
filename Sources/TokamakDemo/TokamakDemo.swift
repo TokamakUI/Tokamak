@@ -100,6 +100,7 @@ var links: [NavItem] {
         .zIndex(1)
       Text("I'm on top")
     }.padding(20)),
+    NavItem("ButtonStyle", destination: ButtonStyleDemo()),
     NavItem("ForEach", destination: ForEachDemo()),
     NavItem("Text", destination: TextDemo()),
     NavItem("Toggle", destination: ToggleDemo()),

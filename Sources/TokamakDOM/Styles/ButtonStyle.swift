@@ -12,15 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 7/17/20.
+//  Created by Gene Z. Ragan on 07/22/2020.
 //
 
-import Runtime
+import TokamakCore
 
-public protocol DynamicProperty {
-  mutating func update()
+public struct DefaultButtonStyle: ButtonStyle {
+  public func makeBody(configuration: ButtonStyleConfiguration) -> some View {
+    configuration.label
+  }
 }
 
-extension DynamicProperty {
-  public mutating func update() {}
+extension ButtonStyleConfiguration.Label: ViewDeferredToRenderer {
+  public var deferredBody: AnyView {
+    _ButtonStyleConfigurationProxy.Label(self).content
+  }
 }
