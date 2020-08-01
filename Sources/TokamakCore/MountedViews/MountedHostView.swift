@@ -38,9 +38,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
   }
 
   override func mount(with reconciler: StackReconciler<R>) {
-    guard
-      let target = reconciler.renderer?.mountTarget(to: parentTarget,
-                                                    with: self)
+    guard let target = reconciler.renderer?.mountTarget(to: parentTarget, with: self)
     else { return }
 
     self.target = target
@@ -68,6 +66,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
   override func update(with reconciler: StackReconciler<R>) {
     guard let target = target else { return }
 
+    updateEnvironment()
     target.view = view
     reconciler.renderer?.update(target: target, with: self)
 
@@ -96,10 +95,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
         let newChild: MountedElement<R>
         if firstChild.typeConstructorName == mountedChildren[0].view.typeConstructorName {
           child.view = firstChild
-          // Inject Environment
-          // swiftlint:disable:next force_try
-          let viewInfo = try! typeInfo(of: child.view.type)
-          viewInfo.injectEnvironment(from: environmentValues, into: &child.view.view)
+          child.updateEnvironment()
           child.update(with: reconciler)
           newChild = child
         } else {

@@ -11,23 +11,31 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Carson Katri on 7/31/20.
-//
 
-import CombineShim
-import TokamakCore
+import TokamakShim
 
-extension App {
-  public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
-    fatalError("TokamakStaticHTML does not support default `App._launch`")
+struct PressedButtonStyle: ButtonStyle {
+  let pressedColor: Color
+
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .foregroundColor(configuration.isPressed ? pressedColor : .blue)
+      .padding(15)
   }
+}
 
-  public static func _setTitle(_ title: String) {
-    StaticHTMLRenderer.title = title
-  }
-
-  public var _phasePublisher: CurrentValueSubject<ScenePhase, Never> {
-    CurrentValueSubject<ScenePhase, Never>(.active)
+public struct ButtonStyleDemo: View {
+  public var body: some View {
+    VStack {
+      Button("Default Style") {
+        print("tapped")
+      }
+      Button("Pressed Button Style") {
+        print("tapped")
+      }
+      .buttonStyle(
+        PressedButtonStyle(pressedColor: Color.red)
+      )
+    }
   }
 }

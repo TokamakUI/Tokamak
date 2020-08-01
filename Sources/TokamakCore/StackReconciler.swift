@@ -90,7 +90,7 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootElement = _AnyApp(app).makeMountedApp(target, environment)
+    rootElement = MountedApp(app, target, environment)
 
     rootElement.mount(with: self)
     if let mountedApp = rootElement as? MountedApp<R> {
@@ -147,9 +147,8 @@ public final class StackReconciler<R: Renderer> {
     if state.getter == nil || state.setter == nil {
       state.getter = { compositeElement.state[id] }
 
-      // Avoiding an indirect reference cycle here: this closure can be
-      // owned by callbacks owned by view's target, which is strongly referenced
-      // by the reconciler.
+      // Avoiding an indirect reference cycle here: this closure can be owned by callbacks
+      // owned by view's target, which is strongly referenced by the reconciler.
       state.setter = { [weak self, weak compositeElement] newValue in
         guard let element = compositeElement else { return }
         self?.queueStateUpdate(for: element, id: id) { $0 = newValue }
@@ -178,16 +177,15 @@ public final class StackReconciler<R: Renderer> {
   func render<T>(compositeElement: MountedCompositeElement<R>,
                  body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
                  result: KeyPath<MountedCompositeElement<R>, (Any) -> T>) -> T {
-    let info = try! typeInfo(of: compositeElement.elementType)
-    info.injectEnvironment(from: compositeElement.environmentValues,
-                           into: &compositeElement[keyPath: bodyKeypath])
-
-    let needsSubscriptions = compositeElement.subscriptions.isEmpty
+    let info = compositeElement.updateEnvironment()
 
     var stateIdx = 0
-    let dynamicProps = info.dynamicProperties(compositeElement.environmentValues,
-                                              source: &compositeElement[keyPath: bodyKeypath],
-                                              shouldUpdate: true)
+    let dynamicProps = info.dynamicProperties(
+      compositeElement.environmentValues,
+      source: &compositeElement[keyPath: bodyKeypath]
+    )
+
+    let needsSubscriptions = compositeElement.subscriptions.isEmpty
     for property in dynamicProps {
       // Setup state/subscriptions
       if property.type is ValueStorage.Type {

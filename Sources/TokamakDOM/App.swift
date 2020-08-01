@@ -73,13 +73,3 @@ extension App {
     ScenePhaseObserver.publisher
   }
 }
-
-struct DefaultApp<V: View>: App {
-  var content: V?
-
-  var body: some Scene {
-    WindowGroup {
-      content
-    }
-  }
-}

@@ -21,16 +21,16 @@ public final class HTMLTarget: Target {
   var html: AnyHTML
   var children: [HTMLTarget] = []
 
-  init<V: View>(_ view: V,
-                _ html: AnyHTML) {
+  public var view: AnyView
+
+  init<V: View>(_ view: V, _ html: AnyHTML) {
     self.html = html
-    super.init(view)
+    self.view = AnyView(view)
   }
 
-  init<A: App>(_ app: A,
-               _ html: AnyHTML) {
+  init(_ html: AnyHTML) {
     self.html = html
-    super.init(app)
+    view = AnyView(EmptyView())
   }
 }
 
@@ -54,8 +54,8 @@ struct HTMLBody: AnyHTML {
   ]
 }
 
-public final class StaticRenderer: Renderer {
-  public private(set) var reconciler: StackReconciler<StaticRenderer>?
+public final class StaticHTMLRenderer: Renderer {
+  public private(set) var reconciler: StackReconciler<StaticHTMLRenderer>?
 
   var rootTarget: HTMLTarget
 
@@ -89,7 +89,7 @@ public final class StaticRenderer: Renderer {
   }
 
   public init<A: App>(_ app: A, _ rootEnvironment: EnvironmentValues? = nil) {
-    rootTarget = HTMLTarget(app, HTMLBody())
+    rootTarget = HTMLTarget(HTMLBody())
 
     reconciler = StackReconciler(
       app: app,

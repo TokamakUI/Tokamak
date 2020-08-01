@@ -48,23 +48,18 @@ struct Counter: View {
     }
   }
 }
-```
 
-You can then render your view in any DOM node captured with
-[JavaScriptKit](https://github.com/kateinoigakukun/JavaScriptKit/), just
-pass it as an argument to the `DOMRenderer` initializer together with your view:
+struct CounterApp: App {
+  var body: some Scene {
+    WindowGroup("Counter Demo") {
+      Counter(count: 5, limit: 15)
+    }
+  }
+}
 
-```swift
-import JavaScriptKit
-import TokamakDOM
-
-let document = JSObjectRef.global.document.object!
-
-let divElement = document.createElement!("div").object!
-let renderer = DOMRenderer(Counter(count: 5, limit: 15), divElement)
-
-let body = document.body.object!
-_ = body.appendChild!(divElement)
+// @main attribute is not supported in SwiftPM apps.
+// See https://bugs.swift.org/browse/SR-12683 for more details.
+CounterApp.main()
 ```
 
 ### Arbitrary HTML
@@ -108,9 +103,9 @@ app.
 ## Requirements for app developers
 
 - macOS 10.15 and Xcode 11.4/11.5/11.6 for macOS. Xcode betas are currently not supported. You can have
-those installed, but please make sure you use 
-[`xcode-select`](https://developer.apple.com/library/archive/technotes/tn2339/_index.html#//apple_ref/doc/uid/DTS40014588-CH1-HOW_DO_I_SELECT_THE_DEFAULT_VERSION_OF_XCODE_TO_USE_FOR_MY_COMMAND_LINE_TOOLS_) 
-to point it to a release version of Xcode.
+  those installed, but please make sure you use
+  [`xcode-select`](https://developer.apple.com/library/archive/technotes/tn2339/_index.html#//apple_ref/doc/uid/DTS40014588-CH1-HOW_DO_I_SELECT_THE_DEFAULT_VERSION_OF_XCODE_TO_USE_FOR_MY_COMMAND_LINE_TOOLS_)
+  to point it to a release version of Xcode.
 - [Swift 5.2 or later](https://swift.org/download/) for Linux.
 
 ## Requirements for app users
@@ -128,7 +123,7 @@ Not all of these were tested though, compatibility reports are very welcome!
 
 Tokamak relies on [`carton`](https://carton.dev) as a primary build tool. As a part of these steps
 you'll install `carton` via [Homebrew](https://brew.sh/) on macOS (unfortunately you'll have to build
-it manually on Linux). Assuming you already have Homebrew installed, you can create a new Tokamak 
+it manually on Linux). Assuming you already have Homebrew installed, you can create a new Tokamak
 app by following these steps:
 
 1. Install `carton`:
@@ -156,15 +151,15 @@ carton init --template tokamak
 ```
 
 4. Build the project and start the development server, `carton dev` can be kept running
-during development:
+   during development:
 
 ```
 carton dev
 ```
 
 5. Open [http://127.0.0.1:8080/](http://127.0.0.1:8080/) in your browser to see the app
-running. You can edit the app source code in your favorite editor and save it, `carton` 
-will immediately rebuild the app and reload all browser tabs that have the app open.
+   running. You can edit the app source code in your favorite editor and save it, `carton`
+   will immediately rebuild the app and reload all browser tabs that have the app open.
 
 You can also clone this repository and run `carton dev` in its root directory. This
 will build the demo app that shows almost all of the currently implemented APIs.

@@ -37,22 +37,22 @@ extension AnyHTML {
   }
 }
 
-public final class DOMNode: Target {
+final class DOMNode: Target {
   let ref: JSObjectRef
   private var listeners: [String: JSClosure]
+  var view: AnyView
 
   init<V: View>(_ view: V, _ ref: JSObjectRef, _ listeners: [String: Listener] = [:]) {
     self.ref = ref
     self.listeners = [:]
-    super.init(view)
+    self.view = AnyView(view)
     reinstall(listeners)
   }
 
-  init<A: App>(_ app: A, _ ref: JSObjectRef, _ listeners: [String: Listener] = [:]) {
+  init(_ ref: JSObjectRef) {
     self.ref = ref
-    self.listeners = [:]
-    super.init(app)
-    reinstall(listeners)
+    view = AnyView(EmptyView())
+    listeners = [:]
   }
 
   /// Removes all existing event listeners on this DOM node and install new ones from

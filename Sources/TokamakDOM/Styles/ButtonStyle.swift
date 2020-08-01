@@ -12,22 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 7/31/20.
+//  Created by Gene Z. Ragan on 07/22/2020.
 //
 
-import CombineShim
 import TokamakCore
 
-extension App {
-  public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
-    fatalError("TokamakStaticHTML does not support default `App._launch`")
-  }
-
-  public static func _setTitle(_ title: String) {
-    StaticHTMLRenderer.title = title
-  }
-
-  public var _phasePublisher: CurrentValueSubject<ScenePhase, Never> {
-    CurrentValueSubject<ScenePhase, Never>(.active)
+extension ButtonStyleConfiguration.Label: ViewDeferredToRenderer {
+  public var deferredBody: AnyView {
+    _ButtonStyleConfigurationProxy.Label(self).content
   }
 }

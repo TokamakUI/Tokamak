@@ -1,9 +1,10 @@
 # Building the `Renderer`
+
 Now that we have a `Target`, we can start the `Renderer`:
 
 ```swift
-public final class StaticRenderer: Renderer {
-	public private(set) var reconciler: StackReconciler<StaticRenderer>?
+public final class StaticHTMLRenderer: Renderer {
+	public private(set) var reconciler: StackReconciler<StaticHTMLRenderer>?
   var rootTarget: HTMLTarget
 
   public var html: String {
@@ -36,6 +37,7 @@ public init<V: View>(_ view: V) {
 Next we declare an initializer that takes a `View` and builds a reconciler. The reconciler takes the `View`, our root `Target` (in this case, `HTMLBody`), the renderer (`self`), and any default `EnvironmentValues` we may need to setup. The closure at the end is the scheduler. It tells the reconciler when it can update. In this case, we won’t need to update, so we can crash.
 
 `HTMLBody` is declared like so:
+
 ```swift
 struct HTMLBody: AnyHTML {
   let tag: String = "body"
@@ -46,6 +48,7 @@ struct HTMLBody: AnyHTML {
 ```
 
 ## Mounting
+
 Now that we have a reconciler, we need to be able to mount the `HTMLTargets` it asks for.
 
 ```swift
@@ -93,8 +96,8 @@ public func unmount(
 
 If you are creating a `Renderer` that supports state changes, here’s a quick synopsis:
 
-* `func update` - Mutate the `target` to match the `host`.
-* `func unmount` - Remove the `target` from the `parent`, and call `completion` once it has been removed.
+- `func update` - Mutate the `target` to match the `host`.
+- `func unmount` - Remove the `target` from the `parent`, and call `completion` once it has been removed.
 
 Now that we can mount, let’s give it a try:
 
@@ -105,7 +108,7 @@ struct ContentView : View {
   }
 }
 
-let renderer = StaticRenderer(ContentView())
+let renderer = StaticHTMLRenderer(ContentView())
 print(renderer.html)
 ```
 
@@ -113,10 +116,10 @@ This spits out:
 
 ```html
 <html>
-<body>
-  <span style="...">Hello, world!</span>
-</body>
+  <body>
+    <span style="...">Hello, world!</span>
+  </body>
 </html>
 ```
 
-Congratulations 🎉 You successfully wrote a `Renderer`.  We can’t wait to see what platforms you’ll bring Tokamak to.
+Congratulations 🎉 You successfully wrote a `Renderer`. We can’t wait to see what platforms you’ll bring Tokamak to.

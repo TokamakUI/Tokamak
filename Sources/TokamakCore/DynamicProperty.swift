@@ -24,34 +24,3 @@ public protocol DynamicProperty {
 extension DynamicProperty {
   public mutating func update() {}
 }
-
-extension TypeInfo {
-  /// Extract all `DynamicProperty` from a type, recursively.
-  /// This is necessary as a `DynamicProperty` can be nested.
-  /// `EnvironmentValues` can also be injected at this point.
-  func dynamicProperties(_ environment: EnvironmentValues,
-                         source: inout Any,
-                         shouldUpdate: Bool) -> [PropertyInfo] {
-    var dynamicProps = [PropertyInfo]()
-    for prop in properties where prop.type is DynamicProperty.Type {
-      dynamicProps.append(prop)
-      // swiftlint:disable force_try
-      let propInfo = try! typeInfo(of: prop.type)
-      propInfo.injectEnvironment(from: environment, into: &source)
-      var extracted = try! prop.get(from: source)
-      dynamicProps.append(
-        contentsOf: propInfo.dynamicProperties(environment,
-                                               source: &extracted,
-                                               shouldUpdate: shouldUpdate)
-      )
-      // swiftlint:disable:next force_cast
-      var extractedDynamicProp = extracted as! DynamicProperty
-      if shouldUpdate {
-        extractedDynamicProp.update()
-      }
-      try! prop.set(value: extractedDynamicProp, on: &source)
-      // swiftlint:enable force_try
-    }
-    return dynamicProps
-  }
-}

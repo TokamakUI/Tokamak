@@ -21,7 +21,7 @@ public struct ToggleDemo: View {
     VStack {
       Toggle("Check me!", isOn: $checked)
       Toggle(isOn: Binding(get: { true }, set: { _ in })) {
-        Text("I’m always checked!").foregroundColor(.red).italic()
+        Group { Text("I’m always checked!").italic() }.foregroundColor(.red)
       }
     }
   }

@@ -25,4 +25,4 @@ struct TestApp: App {
   }
 }
 
-print(StaticRenderer(TestApp()).html)
+print(StaticHTMLRenderer(TestApp()).html)
