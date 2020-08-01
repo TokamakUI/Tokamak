@@ -58,7 +58,7 @@ final class ReconcilerTests: XCTestCase {
     )
     let stack = conditional.subviews[0]
     XCTAssertEqual(stack.subviews.count, 2)
-    XCTAssertTrue(stack.subviews[0].view.view is Button<Text>)
+    XCTAssertTrue(stack.subviews[0].view.view is _Button<Text>)
     XCTAssertTrue(stack.subviews[1].view.view is Text)
     XCTAssertEqual((stack.subviews[1].view.view as? Text)?.verbatim, "42")
   }
@@ -68,7 +68,7 @@ final class ReconcilerTests: XCTestCase {
     let root = renderer.rootTarget
     let stack = root.subviews[0].subviews[0]
 
-    guard let button = stack.subviews[0].view.view as? Button<Text> else {
+    guard let button = stack.subviews[0].view.view as? _Button<Text> else {
       XCTAssert(false, "counter has no button")
       return
     }
@@ -86,7 +86,7 @@ final class ReconcilerTests: XCTestCase {
       XCTAssert(stack === newStack)
       XCTAssertTrue(stack.view.view is VStack<TupleView<(Button<Text>, Text)>>)
       XCTAssertEqual(stack.subviews.count, 2)
-      XCTAssertTrue(stack.subviews[0].view.view is Button<Text>)
+      XCTAssertTrue(stack.subviews[0].view.view is _Button<Text>)
       XCTAssertTrue(stack.subviews[1].view.view is Text)
       XCTAssertTrue(originalLabel === newStack.subviews[1])
       XCTAssertEqual((stack.subviews[1].view.view as? Text)?.verbatim, "43")
@@ -102,7 +102,7 @@ final class ReconcilerTests: XCTestCase {
     let root = renderer.rootTarget
     let stack = root.subviews[0].subviews[0]
 
-    guard let button = stack.subviews[0].view.view as? Button<Text> else {
+    guard let button = stack.subviews[0].view.view as? _Button<Text> else {
       XCTAssert(false, "counter has no button")
       return
     }
@@ -120,12 +120,12 @@ final class ReconcilerTests: XCTestCase {
       XCTAssert(stack === newStack)
       XCTAssertTrue(stack.view.view is VStack<TupleView<(Button<Text>, Text)>>)
       XCTAssertEqual(stack.subviews.count, 2)
-      XCTAssertTrue(stack.subviews[0].view.view is Button<Text>)
+      XCTAssertTrue(stack.subviews[0].view.view is _Button<Text>)
       XCTAssertTrue(stack.subviews[1].view.view is Text)
       XCTAssertTrue(originalLabel === newStack.subviews[1])
       XCTAssertEqual((stack.subviews[1].view.view as? Text)?.verbatim, "43")
 
-      guard let button = stack.subviews[0].view.view as? Button<Text> else {
+      guard let button = stack.subviews[0].view.view as? _Button<Text> else {
         XCTAssert(false, "counter has no button")
         return
       }
@@ -139,7 +139,7 @@ final class ReconcilerTests: XCTestCase {
         XCTAssert(stack === newStack)
         XCTAssertTrue(stack.view.view is VStack<TupleView<(Button<Text>, Text)>>)
         XCTAssertEqual(stack.subviews.count, 2)
-        XCTAssertTrue(stack.subviews[0].view.view is Button<Text>)
+        XCTAssertTrue(stack.subviews[0].view.view is _Button<Text>)
         XCTAssertTrue(stack.subviews[1].view.view is Text)
         XCTAssertTrue(originalLabel === newStack.subviews[1])
         XCTAssertEqual((stack.subviews[1].view.view as? Text)?.verbatim, "44")
@@ -156,7 +156,7 @@ final class ReconcilerTests: XCTestCase {
     let root = renderer.rootTarget
 
     let stack = root.subviews[0].subviews[0]
-    guard let button = stack.subviews[0].view.view as? Button<Text> else {
+    guard let button = stack.subviews[0].view.view as? _Button<Text> else {
       XCTAssert(false, "counter has no button")
       return
     }
@@ -167,7 +167,7 @@ final class ReconcilerTests: XCTestCase {
 
     testScheduler {
       // rerender completed here, schedule another one
-      guard let button = stack.subviews[0].view.view as? Button<Text> else {
+      guard let button = stack.subviews[0].view.view as? _Button<Text> else {
         XCTAssert(false, "counter has no button")
         return
       }
@@ -175,7 +175,7 @@ final class ReconcilerTests: XCTestCase {
       button.action()
 
       testScheduler {
-        guard let button = stack.subviews[0].view.view as? Button<Text> else {
+        guard let button = stack.subviews[0].view.view as? _Button<Text> else {
           XCTAssert(false, "counter has no button")
           return
         }

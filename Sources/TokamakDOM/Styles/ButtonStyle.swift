@@ -17,12 +17,6 @@
 
 import TokamakCore
 
-public struct DefaultButtonStyle: ButtonStyle {
-  public func makeBody(configuration: ButtonStyleConfiguration) -> some View {
-    configuration.label
-  }
-}
-
 extension ButtonStyleConfiguration.Label: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     _ButtonStyleConfigurationProxy.Label(self).content
