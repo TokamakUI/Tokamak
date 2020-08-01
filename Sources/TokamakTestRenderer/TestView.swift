@@ -27,11 +27,13 @@ public final class TestView: Target {
   /// Parent `TestView` instance that owns this instance as a child
   private weak var parent: TestView?
 
+  public var view: AnyView
+
   /** Initialize a new test view. */
   init<V: View>(_ view: V,
                 _ subviews: [TestView] = []) {
     self.subviews = subviews
-    super.init(view)
+    self.view = AnyView(view)
   }
 
   /** Add a subview to this test view.

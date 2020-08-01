@@ -11,16 +11,31 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Carson Katri on 7/17/20.
-//
 
-import Runtime
+import TokamakShim
 
-public protocol DynamicProperty {
-  mutating func update()
+struct PressedButtonStyle: ButtonStyle {
+  let pressedColor: Color
+
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .foregroundColor(configuration.isPressed ? pressedColor : .blue)
+      .padding(15)
+  }
 }
 
-extension DynamicProperty {
-  public mutating func update() {}
+public struct ButtonStyleDemo: View {
+  public var body: some View {
+    VStack {
+      Button("Default Style") {
+        print("tapped")
+      }
+      Button("Pressed Button Style") {
+        print("tapped")
+      }
+      .buttonStyle(
+        PressedButtonStyle(pressedColor: Color.red)
+      )
+    }
+  }
 }

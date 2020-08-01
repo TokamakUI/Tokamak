@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import OpenCombine
+import CombineShim
 
 public struct EnvironmentValues: CustomStringConvertible {
   public var description: String {
@@ -41,6 +41,21 @@ public struct EnvironmentValues: CustomStringConvertible {
     }
     set {
       values[bindable] = newValue
+    }
+  }
+}
+
+struct IsEnabledKey: EnvironmentKey {
+  static let defaultValue = true
+}
+
+extension EnvironmentValues {
+  public var isEnabled: Bool {
+    get {
+      self[IsEnabledKey.self]
+    }
+    set {
+      self[IsEnabledKey.self] = newValue
     }
   }
 }

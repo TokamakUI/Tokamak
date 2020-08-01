@@ -11,16 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Carson Katri on 7/17/20.
-//
 
-import Runtime
-
-public protocol DynamicProperty {
-  mutating func update()
-}
-
-extension DynamicProperty {
-  public mutating func update() {}
-}
+#if canImport(Combine)
+@_exported import Combine
+#else
+@_exported import OpenCombine
+#endif

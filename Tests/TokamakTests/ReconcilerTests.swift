@@ -15,33 +15,60 @@
 //  Created by Max Desiatov on 07/12/2018.
 //
 
-import TokamakDemo
 import TokamakTestRenderer
 import XCTest
 
 @testable import TokamakCore
 
+struct Counter: View {
+  @State var count: Int
+
+  let limit: Int
+
+  @ViewBuilder public var body: some View {
+    if count < limit {
+      VStack {
+        Button("Increment") { count += 1 }
+        Text("\(count)")
+      }
+    } else {
+      VStack { Text("Limit exceeded") }
+    }
+  }
+}
+
+extension Text {
+  var verbatim: String? {
+    guard case let .verbatim(text) = storage else { return nil }
+    return text
+  }
+}
+
 final class ReconcilerTests: XCTestCase {
   func testMount() {
-    let renderer = TestRenderer(Counter(42))
+    let renderer = TestRenderer(Counter(count: 42, limit: 45))
     let root = renderer.rootTarget
 
     XCTAssertTrue(root.view.view is EmptyView)
     XCTAssertEqual(root.subviews.count, 1)
-    let stack = root.subviews[0]
-    XCTAssertTrue(stack.view.view is HStack<TupleView<(Button<Text>, Text)>>)
+    let conditional = root.subviews[0]
+    XCTAssertTrue(
+      conditional.view.view is
+        _ConditionalContent<VStack<TupleView<(Button<Text>, Text)>>, VStack<Text>>
+    )
+    let stack = conditional.subviews[0]
     XCTAssertEqual(stack.subviews.count, 2)
-    XCTAssertTrue(stack.subviews[0].view.view is Button<Text>)
+    XCTAssertTrue(stack.subviews[0].view.view is _Button<Text>)
     XCTAssertTrue(stack.subviews[1].view.view is Text)
-    XCTAssertEqual((stack.subviews[1].view.view as? Text)?.content, "42")
+    XCTAssertEqual((stack.subviews[1].view.view as? Text)?.verbatim, "42")
   }
 
   func testUpdate() {
-    let renderer = TestRenderer(Counter(42))
+    let renderer = TestRenderer(Counter(count: 42, limit: 45))
     let root = renderer.rootTarget
-    let stack = root.subviews[0]
+    let stack = root.subviews[0].subviews[0]
 
-    guard let button = stack.subviews[0].view.view as? Button<Text> else {
+    guard let button = stack.subviews[0].view.view as? _Button<Text> else {
       XCTAssert(false, "counter has no button")
       return
     }
@@ -52,17 +79,17 @@ final class ReconcilerTests: XCTestCase {
 
     let e = expectation(description: "rerender")
 
-    DispatchQueue.main.async {
+    testScheduler {
       XCTAssertTrue(root.view.view is EmptyView)
       XCTAssertEqual(root.subviews.count, 1)
-      let newStack = root.subviews[0]
+      let newStack = root.subviews[0].subviews[0]
       XCTAssert(stack === newStack)
-      XCTAssertTrue(stack.view.view is HStack<TupleView<(Button<Text>, Text)>>)
+      XCTAssertTrue(stack.view.view is VStack<TupleView<(Button<Text>, Text)>>)
       XCTAssertEqual(stack.subviews.count, 2)
-      XCTAssertTrue(stack.subviews[0].view.view is Button<Text>)
+      XCTAssertTrue(stack.subviews[0].view.view is _Button<Text>)
       XCTAssertTrue(stack.subviews[1].view.view is Text)
       XCTAssertTrue(originalLabel === newStack.subviews[1])
-      XCTAssertEqual((stack.subviews[1].view.view as? Text)?.content, "43")
+      XCTAssertEqual((stack.subviews[1].view.view as? Text)?.verbatim, "43")
 
       e.fulfill()
     }
@@ -71,11 +98,11 @@ final class ReconcilerTests: XCTestCase {
   }
 
   func testDoubleUpdate() {
-    let renderer = TestRenderer(Counter(42))
+    let renderer = TestRenderer(Counter(count: 42, limit: 45))
     let root = renderer.rootTarget
-    let stack = root.subviews[0]
+    let stack = root.subviews[0].subviews[0]
 
-    guard let button = stack.subviews[0].view.view as? Button<Text> else {
+    guard let button = stack.subviews[0].view.view as? _Button<Text> else {
       XCTAssert(false, "counter has no button")
       return
     }
@@ -86,36 +113,36 @@ final class ReconcilerTests: XCTestCase {
 
     let e = expectation(description: "rerender")
 
-    DispatchQueue.main.async {
+    testScheduler {
       XCTAssertTrue(root.view.view is EmptyView)
       XCTAssertEqual(root.subviews.count, 1)
-      let newStack = root.subviews[0]
+      let newStack = root.subviews[0].subviews[0]
       XCTAssert(stack === newStack)
-      XCTAssertTrue(stack.view.view is HStack<TupleView<(Button<Text>, Text)>>)
+      XCTAssertTrue(stack.view.view is VStack<TupleView<(Button<Text>, Text)>>)
       XCTAssertEqual(stack.subviews.count, 2)
-      XCTAssertTrue(stack.subviews[0].view.view is Button<Text>)
+      XCTAssertTrue(stack.subviews[0].view.view is _Button<Text>)
       XCTAssertTrue(stack.subviews[1].view.view is Text)
       XCTAssertTrue(originalLabel === newStack.subviews[1])
-      XCTAssertEqual((stack.subviews[1].view.view as? Text)?.content, "43")
+      XCTAssertEqual((stack.subviews[1].view.view as? Text)?.verbatim, "43")
 
-      guard let button = stack.subviews[0].view.view as? Button<Text> else {
+      guard let button = stack.subviews[0].view.view as? _Button<Text> else {
         XCTAssert(false, "counter has no button")
         return
       }
 
       button.action()
 
-      DispatchQueue.main.async {
+      testScheduler {
         XCTAssertTrue(root.view.view is EmptyView)
         XCTAssertEqual(root.subviews.count, 1)
-        let newStack = root.subviews[0]
+        let newStack = root.subviews[0].subviews[0]
         XCTAssert(stack === newStack)
-        XCTAssertTrue(stack.view.view is HStack<TupleView<(Button<Text>, Text)>>)
+        XCTAssertTrue(stack.view.view is VStack<TupleView<(Button<Text>, Text)>>)
         XCTAssertEqual(stack.subviews.count, 2)
-        XCTAssertTrue(stack.subviews[0].view.view is Button<Text>)
+        XCTAssertTrue(stack.subviews[0].view.view is _Button<Text>)
         XCTAssertTrue(stack.subviews[1].view.view is Text)
         XCTAssertTrue(originalLabel === newStack.subviews[1])
-        XCTAssertEqual((stack.subviews[1].view.view as? Text)?.content, "44")
+        XCTAssertEqual((stack.subviews[1].view.view as? Text)?.verbatim, "44")
 
         e.fulfill()
       }
@@ -125,11 +152,11 @@ final class ReconcilerTests: XCTestCase {
   }
 
   func testUnmount() {
-    let renderer = TestRenderer(Counter(42, limit: 45))
+    let renderer = TestRenderer(Counter(count: 42, limit: 45))
     let root = renderer.rootTarget
 
-    let stack = root.subviews[0]
-    guard let button = stack.subviews[0].view.view as? Button<Text> else {
+    let stack = root.subviews[0].subviews[0]
+    guard let button = stack.subviews[0].view.view as? _Button<Text> else {
       XCTAssert(false, "counter has no button")
       return
     }
@@ -138,30 +165,30 @@ final class ReconcilerTests: XCTestCase {
 
     let e = expectation(description: "rerender")
 
-    DispatchQueue.main.async {
+    testScheduler {
       // rerender completed here, schedule another one
-      guard let button = stack.subviews[0].view.view as? Button<Text> else {
+      guard let button = stack.subviews[0].view.view as? _Button<Text> else {
         XCTAssert(false, "counter has no button")
         return
       }
 
       button.action()
 
-      DispatchQueue.main.async {
-        guard let button = stack.subviews[0].view.view as? Button<Text> else {
+      testScheduler {
+        guard let button = stack.subviews[0].view.view as? _Button<Text> else {
           XCTAssert(false, "counter has no button")
           return
         }
 
         button.action()
 
-        DispatchQueue.main.async {
+        testScheduler {
           XCTAssertTrue(root.view.view is EmptyView)
           XCTAssertEqual(root.subviews.count, 1)
-          let newStack = root.subviews[0]
+          let newStack = root.subviews[0].subviews[0]
           XCTAssert(stack === newStack)
-          XCTAssertTrue(stack.view.view is HStack<EmptyView>)
-          XCTAssertEqual(stack.subviews.count, 0)
+          XCTAssertTrue(stack.view.view is VStack<Text>)
+          XCTAssertEqual(stack.subviews.count, 1)
 
           e.fulfill()
         }

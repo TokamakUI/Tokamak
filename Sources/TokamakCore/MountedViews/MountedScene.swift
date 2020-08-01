@@ -89,28 +89,19 @@ extension _AnyScene {
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues
   ) -> MountedScene<R> {
-    // swiftlint:disable:next force_try
-    let info = try! typeInfo(of: type)
-
-    var modified = scene
-    info.injectEnvironment(from: environmentValues, into: &modified)
-
     var title: String?
-    if let titledSelf = modified as? TitledScene,
+    if let titledSelf = scene as? TitledScene,
       let text = titledSelf.title {
       title = _TextProxy(text).rawText
     }
     let children: [MountedElement<R>]
-    if let deferredScene = modified as? SceneDeferredToRenderer {
+    if let deferredScene = scene as? SceneDeferredToRenderer {
       children = [deferredScene.deferredBody.makeMountedView(parentTarget, environmentValues)]
-    } else if let groupScene = modified as? GroupScene {
+    } else if let groupScene = scene as? GroupScene {
       children = groupScene.children.map { $0.makeMountedScene(parentTarget, environmentValues) }
     } else {
       children = []
     }
-
-    var result = self
-    result.scene = modified
-    return .init(result, title, children, parentTarget, environmentValues)
+    return .init(self, title, children, parentTarget, environmentValues)
   }
 }

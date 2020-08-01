@@ -15,8 +15,8 @@
 //  Created by Carson Katri on 7/20/20.
 //
 
+import CombineShim
 import JavaScriptKit
-import OpenCombine
 import TokamakCore
 
 public class SessionStorage: WebStorage, _StorageProvider {

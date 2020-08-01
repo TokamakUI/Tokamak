@@ -51,6 +51,9 @@ public typealias RadioGroupPickerStyle = TokamakCore.RadioGroupPickerStyle
 public typealias SegmentedPickerStyle = TokamakCore.SegmentedPickerStyle
 public typealias WheelPickerStyle = TokamakCore.WheelPickerStyle
 
+public typealias ButtonStyle = TokamakCore.ButtonStyle
+public typealias ButtonStyleConfiguration = TokamakCore.ButtonStyleConfiguration
+
 // MARK: Shapes
 
 public typealias Shape = TokamakCore.Shape

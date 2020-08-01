@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/22/20.
 //
 
-import OpenCombine
+import CombineShim
 
 public protocol _StorageProvider {
   func store(key: String, value: Bool?)

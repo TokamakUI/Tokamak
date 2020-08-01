@@ -43,6 +43,8 @@
 		D1B4229124B3B9BB00682F74 /* ListDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4228E24B3B9BB00682F74 /* ListDemo.swift */; };
 		D1B4229224B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */; };
 		D1B4229324B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */; };
+		D1C726F324CB63C6003B576D /* ButtonStyleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C726F224CB63C6003B576D /* ButtonStyleDemo.swift */; };
+		D1C726F424CB63C6003B576D /* ButtonStyleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C726F224CB63C6003B576D /* ButtonStyleDemo.swift */; };
 		D1E5FDAD24C1D57000E7485E /* TokamakShim.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E5FDAC24C1D57000E7485E /* TokamakShim.swift */; };
 		D1E5FDAF24C1D58E00E7485E /* libTokamakShim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1E5FDA424C1D54B00E7485E /* libTokamakShim.a */; };
 		D1E5FDB224C1D59400E7485E /* libTokamakShim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1E5FDA424C1D54B00E7485E /* libTokamakShim.a */; };
@@ -105,6 +107,7 @@
 		B5C76E4924C73ED4003EABB2 /* AppStorageDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppStorageDemo.swift; sourceTree = "<group>"; };
 		D1B4228E24B3B9BB00682F74 /* ListDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDemo.swift; sourceTree = "<group>"; };
 		D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutlineGroupDemo.swift; sourceTree = "<group>"; };
+		D1C726F224CB63C6003B576D /* ButtonStyleDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStyleDemo.swift; sourceTree = "<group>"; };
 		D1E5FDA424C1D54B00E7485E /* libTokamakShim.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTokamakShim.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1E5FDAC24C1D57000E7485E /* TokamakShim.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokamakShim.swift; sourceTree = "<group>"; };
 		D1EE7EA624C0DD2100C0D127 /* PickerDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerDemo.swift; sourceTree = "<group>"; };
@@ -167,6 +170,7 @@
 		85ED189924AD425E0085DFA0 /* TokamakDemo */ = {
 			isa = PBXGroup;
 			children = (
+				D1C726F224CB63C6003B576D /* ButtonStyleDemo.swift */,
 				B5C76E4924C73ED4003EABB2 /* AppStorageDemo.swift */,
 				B56F22DF24BC89FD001738DF /* ColorDemo.swift */,
 				85ED189E24AD425E0085DFA0 /* Counter.swift */,
@@ -342,6 +346,7 @@
 				3DCDE44424CA6AD400910F17 /* SidebarDemo.swift in Sources */,
 				85ED18AD24AD425E0085DFA0 /* TextFieldDemo.swift in Sources */,
 				85ED18A724AD425E0085DFA0 /* ForEachDemo.swift in Sources */,
+				D1C726F324CB63C6003B576D /* ButtonStyleDemo.swift in Sources */,
 				854A1A9124B3E3630027BC32 /* ToggleDemo.swift in Sources */,
 				85ED18A524AD425E0085DFA0 /* TextDemo.swift in Sources */,
 				85ED18AB24AD425E0085DFA0 /* Counter.swift in Sources */,
@@ -367,6 +372,7 @@
 				3DCDE44524CA6AD400910F17 /* SidebarDemo.swift in Sources */,
 				85ED18AC24AD425E0085DFA0 /* Counter.swift in Sources */,
 				85ED18A824AD425E0085DFA0 /* ForEachDemo.swift in Sources */,
+				D1C726F424CB63C6003B576D /* ButtonStyleDemo.swift in Sources */,
 				854A1A9324B3F28F0027BC32 /* ToggleDemo.swift in Sources */,
 				85ED18AE24AD425E0085DFA0 /* TextFieldDemo.swift in Sources */,
 				85ED18A624AD425E0085DFA0 /* TextDemo.swift in Sources */,

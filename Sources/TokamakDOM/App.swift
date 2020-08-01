@@ -15,8 +15,8 @@
 //  Created by Carson Katri on 7/16/20.
 //
 
+import CombineShim
 import JavaScriptKit
-import OpenCombine
 import TokamakCore
 
 private enum ScenePhaseObserver {
@@ -70,15 +70,5 @@ extension App {
 
   public var _phasePublisher: CurrentValueSubject<ScenePhase, Never> {
     ScenePhaseObserver.publisher
-  }
-}
-
-struct DefaultApp<V: View>: App {
-  var content: V?
-
-  var body: some Scene {
-    WindowGroup {
-      content
-    }
   }
 }
