@@ -1,7 +1,8 @@
 # Providing platform-specific primitives
-Primitive `Views`, such as `Text`, `Button`, `HStack`, etc. have a body type of `Never`.  When the `StackReconciler` goes to render these `Views`, it expects your `Renderer` to provide a body.
 
-This is done via the `ViewDeferredToRenderer` protocol. There we can provide a `View` that our `Renderer` understands. For instance, `TokamakDOM` (and `TokamakStatic` by extension) use the `HTML` view. Let’s look at a simpler version of this view:
+Primitive `Views`, such as `Text`, `Button`, `HStack`, etc. have a body type of `Never`. When the `StackReconciler` goes to render these `Views`, it expects your `Renderer` to provide a body.
+
+This is done via the `ViewDeferredToRenderer` protocol. There we can provide a `View` that our `Renderer` understands. For instance, `TokamakDOM` (and `TokamakStaticHTML` by extension) use the `HTML` view. Let’s look at a simpler version of this view:
 
 ```swift
 protocol AnyHTML {
@@ -20,7 +21,7 @@ struct HTML: View, AnyHTML {
 }
 ```
 
-Here we define an `HTML` view to have a body type of `Never`, like other primitive `Views`.  It also conforms to `AnyHTML`, which allows our `Renderer` to access the attributes of the `HTML` without worrying about the `associatedtypes` involved with `View`.
+Here we define an `HTML` view to have a body type of `Never`, like other primitive `Views`. It also conforms to `AnyHTML`, which allows our `Renderer` to access the attributes of the `HTML` without worrying about the `associatedtypes` involved with `View`.
 
 ## `ViewDeferredToRenderer`
 
@@ -47,6 +48,7 @@ guard let html = mapAnyView(
 Then we were able to access the properties of the HTML.
 
 ## Proxies
+
 Proxies allow access to internal properties of views implemented by `TokamakCore`. For instance, to access the storage of the `Text` view, we were required to use a `_TextProxy`.
 
 Proxies contain all of the properties of the primitive necessary to build your platform-specific implementation.

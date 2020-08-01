@@ -77,7 +77,7 @@ public func mountTarget(to parent: HTMLTarget, with host: MountedHost) -> HTMLTa
 2. `ParentView` is a special type of `View` in Tokamak. It indicates that the view has no representation itself, and is purely a container for children (e.g. `ForEach` or `Group`).
 3. We create a new `HTMLTarget` for the view, assign it as a child of the parent, and return it.
 
-The other two functions required by the `Renderer` protocol can crash, as `TokamakStatic` doesn’t support state changes:
+The other two functions required by the `Renderer` protocol can crash, as `TokamakStaticHTML` doesn’t support state changes:
 
 ```swift
 public func update(target: HTMLTarget, with host: MountedHost) {
