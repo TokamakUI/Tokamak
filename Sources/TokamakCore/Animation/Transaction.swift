@@ -15,8 +15,8 @@
 public struct Transaction {
   public var animation: Animation?
 
-  /** This value is true during the initial phase of a two-part transition update, to prevent
-   `animation(_:)`` from inserting new animations into the transaction.
+  /** `true` in the first part of the transition update, this avoids situations when `animation(_:)`
+   could add more animations to this transaction.
    */
   public var disablesAnimations: Bool
 
