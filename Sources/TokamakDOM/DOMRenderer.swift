@@ -17,6 +17,7 @@
 
 import JavaScriptKit
 import TokamakCore
+import TokamakStaticHTML
 
 extension EnvironmentValues {
   /// Returns default settings for the DOM environment
@@ -91,10 +92,10 @@ final class DOMRenderer: Renderer {
     )
   }
 
-  func mountTarget(to parent: DOMNode, with host: MountedHost) -> DOMNode? {
-    guard let (outerHTML, listeners) = mapAnyView(
+  public func mountTarget(to parent: DOMNode, with host: MountedHost) -> DOMNode? {
+    guard let anyHTML = mapAnyView(
       host.view,
-      transform: { (html: AnyHTML) in (html.outerHTML, html.listeners) }
+      transform: { (html: AnyHTML) in html }
     ) else {
       // handle cases like `TupleView`
       if mapAnyView(host.view, transform: { (view: ParentView) in view }) != nil {
@@ -104,7 +105,7 @@ final class DOMRenderer: Renderer {
       return nil
     }
 
-    _ = parent.ref.insertAdjacentHTML!("beforeend", JSValue(stringLiteral: outerHTML))
+    _ = parent.ref.insertAdjacentHTML!("beforeend", JSValue(stringLiteral: anyHTML.outerHTML))
 
     guard
       let children = parent.ref.childNodes.object,
@@ -121,7 +122,11 @@ final class DOMRenderer: Renderer {
       lastChild.style.object!.height = "100%"
     }
 
-    return DOMNode(host.view, lastChild, listeners)
+    if let dynamicHTML = anyHTML as? AnyDynamicHTML {
+      return DOMNode(host.view, lastChild, dynamicHTML.listeners)
+    } else {
+      return DOMNode(host.view, lastChild, [:])
+    }
   }
 
   func update(target: DOMNode, with host: MountedHost) {

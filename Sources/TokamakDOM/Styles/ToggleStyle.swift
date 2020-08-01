@@ -16,11 +16,14 @@
 //
 
 import TokamakCore
+import TokamakStaticHTML
 
 public struct DefaultToggleStyle: ToggleStyle {
   public func makeBody(configuration: Configuration) -> some View {
     CheckboxToggleStyle().makeBody(configuration: configuration)
   }
+
+  public init() {}
 }
 
 public struct CheckboxToggleStyle: ToggleStyle {
@@ -30,7 +33,7 @@ public struct CheckboxToggleStyle: ToggleStyle {
       attrs["checked"] = "checked"
     }
     return HTML("label") {
-      HTML("input", attrs, listeners: [
+      DynamicHTML("input", attrs, listeners: [
         "change": { event in
           let checked = event.target.object?.checked.boolean ?? false
           configuration.isOn = checked

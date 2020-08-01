@@ -11,26 +11,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Jed Fox on 06/28/2020.
-//
 
 import TokamakCore
 
-extension SecureField: ViewDeferredToRenderer where Label == Text {
+extension NavigationLink: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    let proxy = _SecureFieldProxy(self)
-    return AnyView(DynamicHTML("input", [
-      "type": "password",
-      "value": proxy.textBinding.wrappedValue,
-      "placeholder": proxy.label.rawText,
-    ], listeners: [
-      "keypress": { event in if event.key == "Enter" { proxy.onCommit() } },
-      "input": { event in
-        if let newValue = event.target.object?.value.string {
-          proxy.textBinding.wrappedValue = newValue
-        }
-      },
-    ]))
+    let proxy = _NavigationLinkProxy(self)
+    return AnyView(
+      DynamicHTML("a", [
+        "href": "javascript:void%200",
+      ], listeners: [
+        // FIXME: Focus destination or something so assistive
+        // technology knows where to look when clicking the link.
+        "click": { _ in proxy.activate() },
+      ]) { proxy.label }
+    )
   }
 }
