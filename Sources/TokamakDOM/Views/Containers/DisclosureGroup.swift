@@ -16,16 +16,19 @@
 //
 
 import TokamakCore
+import TokamakStaticHTML
 
 extension DisclosureGroup: ViewDeferredToRenderer {
   var chevron: some View {
-    HTML("div",
-         ["class": "_tokamak-disclosuregroup-chevron-container"],
-         listeners: [
-           "click": { _ in
-             _DisclosureGroupProxy(self).toggleIsExpanded()
-           },
-         ]) {
+    DynamicHTML(
+      "div",
+      ["class": "_tokamak-disclosuregroup-chevron-container"],
+      listeners: [
+        "click": { _ in
+          _DisclosureGroupProxy(self).toggleIsExpanded()
+        },
+      ]
+    ) {
       HTML("div", ["class": "_tokamak-disclosuregroup-chevron"])
         .rotationEffect(_DisclosureGroupProxy(self).isExpanded ?
           .degrees(90) :

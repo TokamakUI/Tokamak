@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import JavaScriptKit
 import TokamakCore
 
 extension Font.Design: CustomStringConvertible {
@@ -78,7 +77,7 @@ extension Font.Leading: CustomStringConvertible {
 }
 
 extension Font: StylesConvertible {
-  var styles: [String: String] {
+  public var styles: [String: String] {
     [
       "font-family": _name == _FontNames.system.rawValue ? _design.description : _name,
       "font-weight": "\(_bold ? Font.Weight.bold.value : _weight.value)",
@@ -102,8 +101,8 @@ extension Text: AnyHTML {
     }
   }
 
-  var tag: String { "span" }
-  var attributes: [String: String] {
+  public var tag: String { "span" }
+  public var attributes: [String: String] {
     var font: Font?
     var color: Color?
     var italic: Bool = false
@@ -159,6 +158,4 @@ extension Text: AnyHTML {
       """,
     ]
   }
-
-  var listeners: [String: Listener] { [:] }
 }

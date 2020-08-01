@@ -14,6 +14,28 @@
 
 import JavaScriptKit
 import TokamakCore
+import TokamakStaticHTML
+
+extension AnyHTML {
+  func update(dom: DOMNode) {
+    // FIXME: is there a sensible way to diff attributes and listeners to avoid
+    // crossing the JavaScript bridge and touching DOM if not needed?
+
+    // @carson-katri: For diffing, could you build a Set from the keys and values of the dictionary,
+    // then use the standard lib to get the difference?
+
+    for (attribute, value) in attributes {
+      _ = dom.ref[dynamicMember: attribute] = .string(value)
+    }
+
+    if let dynamicSelf = self as? AnyDynamicHTML {
+      dom.reinstall(dynamicSelf.listeners)
+    }
+
+    guard let innerHTML = innerHTML else { return }
+    dom.ref.innerHTML = .string(innerHTML)
+  }
+}
 
 final class DOMNode: Target {
   let ref: JSObjectRef

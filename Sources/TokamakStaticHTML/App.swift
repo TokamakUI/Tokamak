@@ -11,19 +11,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 7/31/20.
+//
 
-import JavaScriptKit
+import CombineShim
 import TokamakCore
 
-extension NavigationView: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    AnyView(HTML("div", [
-      "style": """
-      display: flex; flex-direction: row; align-items: stretch;
-      width: 100%; height: 100%;
-      """,
-    ]) {
-      _NavigationViewProxy(self).body
-    })
+extension App {
+  public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
+    fatalError("TokamakStaticHTML does not support default `App._launch`")
+  }
+
+  public static func _setTitle(_ title: String) {
+    StaticHTMLRenderer.title = title
+  }
+
+  public var _phasePublisher: CurrentValueSubject<ScenePhase, Never> {
+    CurrentValueSubject<ScenePhase, Never>(.active)
   }
 }

@@ -18,7 +18,7 @@
 import TokamakCore
 
 extension ScrollView: ViewDeferredToRenderer, SpacerContainer {
-  var axis: SpacerContainerAxis {
+  public var axis: SpacerContainerAxis {
     if axes.contains(.horizontal) {
       return .horizontal
     } else {

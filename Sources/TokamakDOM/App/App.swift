@@ -18,6 +18,7 @@
 import CombineShim
 import JavaScriptKit
 import TokamakCore
+import TokamakStaticHTML
 
 extension App {
   /// The default implementation of `launch` for a `TokamakDOM` app.

@@ -32,7 +32,7 @@ extension TextField: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
     let proxy = _TextFieldProxy(self)
 
-    return AnyView(HTML("input", [
+    return AnyView(DynamicHTML("input", [
       "type": proxy.textFieldStyle is RoundedBorderTextFieldStyle ? "search" : "text",
       "value": proxy.textBinding.wrappedValue,
       "placeholder": proxy.label.rawText,
