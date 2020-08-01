@@ -63,6 +63,19 @@ public let tokamakStyles = """
   padding: 0;
   font-size: inherit;
 }
+
+._tokamak-text-redacted {
+  position: relative;
+}
+._tokamak-text-redacted::after {
+  content: " ";
+  background-color: rgb(200, 200, 200);
+  position: absolute;
+  left: 0;
+  width: calc(100% + .1em);
+  height: 1.2em;
+  border-radius: .1em;
+}
 """
 
 public let rootNodeStyles = """
