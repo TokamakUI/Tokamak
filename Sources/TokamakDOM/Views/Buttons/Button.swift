@@ -26,7 +26,7 @@ extension _Button: ViewDeferredToRenderer where Label == Text {
       attributes = ["class": "_tokamak-buttonstyle-reset"]
     }
 
-    return AnyView(HTML("button", attributes, listeners: [
+    return AnyView(DynamicHTML("button", attributes, listeners: [
       "click": { _ in action() },
       "pointerdown": { _ in isPressed = true },
       "pointerup": { _ in isPressed = false },

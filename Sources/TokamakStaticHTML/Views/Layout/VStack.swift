@@ -14,28 +14,28 @@
 
 import TokamakCore
 
-extension VerticalAlignment {
+extension HorizontalAlignment {
   var cssValue: String {
     switch self {
-    case .top:
-      return "start"
+    case .leading:
+      return "flex-start"
     case .center:
       return "center"
-    case .bottom:
-      return "end"
+    case .trailing:
+      return "flex-end"
     }
   }
 }
 
-extension HStack: ViewDeferredToRenderer, SpacerContainer {
-  var axis: SpacerContainerAxis { .horizontal }
+extension VStack: ViewDeferredToRenderer, SpacerContainer {
+  public var axis: SpacerContainerAxis { .vertical }
 
   public var deferredBody: AnyView {
     AnyView(HTML("div", [
       "style": """
-      display: flex; flex-direction: row; align-items: \(alignment.cssValue);
-      \(hasSpacer ? "width: 100%;" : "")
-      \(fillCrossAxis ? "height: 100%;" : "")
+      display: flex; flex-direction: column; align-items: \(alignment.cssValue);
+      \(hasSpacer ? "height: 100%;" : "")
+      \(fillCrossAxis ? "width: 100%;" : "")
       """,
       "class": "_tokamak-stack",
     ]) { content })

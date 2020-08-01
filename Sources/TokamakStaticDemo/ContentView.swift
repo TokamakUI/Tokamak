@@ -11,23 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 7/31/20.
+//
 
-import TokamakCore
+import TokamakStaticHTML
 
-extension Divider: AnyHTML {
-  var innerHTML: String? { nil }
-  var tag: String { "hr" }
-  var attributes: [String: String] {
-    [
-      "style": """
-      width: 100%; height: 0; margin: 0;
-      border-top: none;
-      border-right: none;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-      border-left: none;
-      """,
-    ]
+struct ContentView: View {
+  var body: some View {
+    Text("Hello, world!")
   }
-
-  var listeners: [String: Listener] { [:] }
 }

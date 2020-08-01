@@ -87,6 +87,14 @@ var appStorageDemo: NavItem {
   }
 }
 
+var redactDemo: NavItem {
+  if #available(OSX 11.0, iOS 14.0, *) {
+    return NavItem("Redact", destination: RedactDemo())
+  } else {
+    return NavItem(unavailable: "Redact")
+  }
+}
+
 var links: [NavItem] {
   [
     NavItem("Counter", destination:
@@ -116,6 +124,7 @@ var links: [NavItem] {
     NavItem("Color", destination: ColorDemo()),
     appStorageDemo,
     gridDemo,
+    redactDemo,
   ]
 }
 

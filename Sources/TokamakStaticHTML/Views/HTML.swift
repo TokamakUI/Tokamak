@@ -15,16 +15,12 @@
 //  Created by Max Desiatov on 11/04/2020.
 //
 
-import JavaScriptKit
 import TokamakCore
 
-public typealias Listener = (JSObjectRef) -> ()
-
-protocol AnyHTML {
+public protocol AnyHTML {
   var innerHTML: String? { get }
   var tag: String { get }
   var attributes: [String: String] { get }
-  var listeners: [String: Listener] { get }
 }
 
 extension AnyHTML {
@@ -36,44 +32,24 @@ extension AnyHTML {
     </\(tag)>
     """
   }
-
-  func update(dom: DOMNode) {
-    // FIXME: is there a sensible way to diff attributes and listeners to avoid
-    // crossing the JavaScript bridge and touching DOM if not needed?
-
-    // @carson-katri: For diffing, could you build a Set from the keys and values of the dictionary,
-    // then use the standard lib to get the difference?
-
-    for (attribute, value) in attributes {
-      _ = dom.ref[dynamicMember: attribute] = .string(value)
-    }
-
-    dom.reinstall(listeners)
-
-    guard let innerHTML = innerHTML else { return }
-    dom.ref.innerHTML = .string(innerHTML)
-  }
 }
 
 public struct HTML<Content>: View, AnyHTML where Content: View {
-  let tag: String
-  let attributes: [String: String]
-  let listeners: [String: Listener]
+  public let tag: String
+  public let attributes: [String: String]
   let content: Content
 
   public init(
     _ tag: String,
     _ attributes: [String: String] = [:],
-    listeners: [String: Listener] = [:],
     @ViewBuilder content: () -> Content
   ) {
     self.tag = tag
     self.attributes = attributes
-    self.listeners = listeners
     self.content = content()
   }
 
-  var innerHTML: String? { nil }
+  public var innerHTML: String? { nil }
 
   public var body: Never {
     neverBody("HTML")
@@ -83,10 +59,9 @@ public struct HTML<Content>: View, AnyHTML where Content: View {
 extension HTML where Content == EmptyView {
   public init(
     _ tag: String,
-    _ attributes: [String: String] = [:],
-    listeners: [String: Listener] = [:]
+    _ attributes: [String: String] = [:]
   ) {
-    self = HTML(tag, attributes, listeners: listeners) { EmptyView() }
+    self = HTML(tag, attributes) { EmptyView() }
   }
 }
 
@@ -96,12 +71,12 @@ extension HTML: ParentView {
   }
 }
 
-protocol StylesConvertible {
+public protocol StylesConvertible {
   var styles: [String: String] { get }
 }
 
 extension Dictionary {
-  var inlineStyles: String {
+  public var inlineStyles: String {
     map { "\($0.0): \($0.1);" }
       .joined(separator: " ")
   }

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-let tokamakStyles = """
+public let tokamakStyles = """
 ._tokamak-stack > * {
   flex-shrink: 0;
 }
@@ -63,9 +63,22 @@ let tokamakStyles = """
   padding: 0;
   font-size: inherit;
 }
+
+._tokamak-text-redacted {
+  position: relative;
+}
+._tokamak-text-redacted::after {
+  content: " ";
+  background-color: rgb(200, 200, 200);
+  position: absolute;
+  left: 0;
+  width: calc(100% + .1em);
+  height: 1.2em;
+  border-radius: .1em;
+}
 """
 
-let rootNodeStyles = """
+public let rootNodeStyles = """
 display: flex;
 width: 100%;
 height: 100%;

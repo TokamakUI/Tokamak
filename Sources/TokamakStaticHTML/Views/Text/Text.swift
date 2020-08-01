@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import JavaScriptKit
 import TokamakCore
 
 extension Font.Design: CustomStringConvertible {
@@ -78,7 +77,7 @@ extension Font.Leading: CustomStringConvertible {
 }
 
 extension Font: StylesConvertible {
-  var styles: [String: String] {
+  public var styles: [String: String] {
     [
       "font-family": _name == _FontNames.system.rawValue ? _design.description : _name,
       "font-weight": "\(_bold ? Font.Weight.bold.value : _weight.value)",
@@ -102,8 +101,11 @@ extension Text: AnyHTML {
     }
   }
 
-  var tag: String { "span" }
-  var attributes: [String: String] {
+  public var tag: String { "span" }
+  public var attributes: [String: String] {
+    let proxy = _TextProxy(self)
+    let isRedacted = proxy.redactionReasons.contains(.placeholder)
+
     var font: Font?
     var color: Color?
     var italic: Bool = false
@@ -112,7 +114,7 @@ extension Text: AnyHTML {
     var baseline: CGFloat?
     var strikethrough: (Bool, Color?)?
     var underline: (Bool, Color?)?
-    for modifier in _TextProxy(self).modifiers {
+    for modifier in proxy.modifiers {
       switch modifier {
       case let .color(_color):
         color = _color
@@ -138,6 +140,7 @@ extension Text: AnyHTML {
     let textDecoration = !hasStrikethrough && !hasUnderline ?
       "none" :
       "\(hasStrikethrough ? "line-through" : "") \(hasUnderline ? "underline" : "")"
+
     return [
       "style": """
       \(font?.styles.filter {
@@ -157,8 +160,7 @@ extension Text: AnyHTML {
       text-decoration-color: \(strikethrough?.1?.description ?? underline?.1?.description
         ?? "inherit")
       """,
+      "class": isRedacted ? "_tokamak-text-redacted" : "",
     ]
   }
-
-  var listeners: [String: Listener] { [:] }
 }

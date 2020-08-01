@@ -11,17 +11,42 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 7/31/20.
+//
 
 import TokamakShim
 
-public struct ToggleDemo: View {
-  @State var checked = false
+@available(OSX 11.0, iOS 14.0, *)
+struct RedactDemo: View {
+  func title(_ text: String) -> some View {
+    Group {
+      Text(text)
+        .font(.headline)
+      Divider()
+    }
+  }
 
-  public var body: some View {
+  var content: some View {
     VStack {
-      Toggle("Check me!", isOn: $checked)
-      Toggle(isOn: Binding(get: { true }, set: { _ in })) {
-        Group { Text("I’m always checked!").italic() }.foregroundColor(.red)
+      Text("Hello, world!")
+      Text("Unredacted text")
+        .unredacted()
+    }
+  }
+
+  var body: some View {
+    HStack {
+      VStack {
+        title("Unredacted")
+        content
+          .padding()
+      }
+      VStack {
+        title("Redacted")
+        content
+          .redacted(reason: .placeholder)
+          .padding()
       }
     }
   }
