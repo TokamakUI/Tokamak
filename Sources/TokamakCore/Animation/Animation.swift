@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+let defaultDuration = 0.35
+
 public struct Animation: Equatable {
   static let `default` = Animation()
 
@@ -64,7 +66,7 @@ public struct Animation: Equatable {
   }
 
   public static var easeInOut: Animation {
-    .init()
+    easeInOut(duration: defaultDuration)
   }
 
   public static func easeIn(duration: Double) -> Animation {
@@ -72,7 +74,7 @@ public struct Animation: Equatable {
   }
 
   public static var easeIn: Animation {
-    .init()
+    easeIn(duration: defaultDuration)
   }
 
   public static func easeOut(duration: Double) -> Animation {
@@ -80,15 +82,15 @@ public struct Animation: Equatable {
   }
 
   public static var easeOut: Animation {
-    .init()
+    easeOut(duration: defaultDuration)
   }
 
   public static func linear(duration: Double) -> Animation {
-    .init()
+    timingCurve(0, 0, 1, 1, duration: duration)
   }
 
   public static var linear: Animation {
-    .init()
+    timingCurve(0, 0, 1, 1)
   }
 
   public static func timingCurve(
@@ -96,7 +98,7 @@ public struct Animation: Equatable {
     _ c0y: Double,
     _ c1x: Double,
     _ c1y: Double,
-    duration: Double = 0.35
+    duration: Double = defaultDuration
   ) -> Animation {
     .init()
   }
