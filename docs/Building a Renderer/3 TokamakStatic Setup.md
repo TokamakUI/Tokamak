@@ -1,6 +1,8 @@
 # `TokamakStaticHTML` Setup
 
-Every `Renderer` can choose what `Views`, `ViewModifiers`, property wrappers, etc. are available to use. A `Core.swift` file is used to reexport these symbols. For `TokamakStaticHTML`, we’ll use the following `Core.swift` file:
+Every `Renderer` can choose what `Views`, `ViewModifiers`, property wrappers, etc. are available to
+use. A `Core.swift` file is used to reexport these symbols. For `TokamakStaticHTML`, we’ll use the
+following `Core.swift` file:
 
 ```swift
 import TokamakCore

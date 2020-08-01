@@ -4,7 +4,8 @@ If you recall, we defined a `Target` as:
 
 > the destination for rendered `Views`
 
-In `TokamakStaticHTML`, this would be a tag in an `HTML` file. A tag has several properties, although we don’t need to worry about all of them. For now, we can consider a tag to have:
+In `TokamakStaticHTML`, this would be a tag in an `HTML` file. A tag has several properties,
+although we don’t need to worry about all of them. For now, we can consider a tag to have:
 
 - The HTML for the tag itself (outer HTML)
 - Child tags (inner HTML)
@@ -24,7 +25,8 @@ public final class HTMLTarget: Target {
 }
 ```
 
-`AnyHTML` is from `TokamakDOM`, which you can declare as a dependency. The target stores the `View` it hosts, the `HTML` that represents it, and its child elements.
+`AnyHTML` is from `TokamakDOM`, which you can declare as a dependency. The target stores the `View`
+it hosts, the `HTML` that represents it, and its child elements.
 
 Lastly, we can also provide an HTML string representation of the target:
 
