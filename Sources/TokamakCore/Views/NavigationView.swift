@@ -30,7 +30,7 @@ public struct NavigationView<Content>: View where Content: View {
 }
 
 /// This is a helper class that works around absence of "package private" access control in Swift
-public struct _NavigationViewProxy<Content: View> {
+public struct _NavigationViewProxy<Content: View>: View {
   public let subject: NavigationView<Content>
 
   public init(_ subject: NavigationView<Content>) { self.subject = subject }
