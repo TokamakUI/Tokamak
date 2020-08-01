@@ -46,7 +46,7 @@ struct EnvironmentDemo: View {
   @Environment(\.colorScheme) var colorScheme
 
   @Environment(\.font) var font
-  // @EnvironmentObject var testEnv: TestEnvironment
+  @EnvironmentObject var testEnv: TestEnvironment
 
   var body: some View {
     VStack {
@@ -54,8 +54,8 @@ struct EnvironmentDemo: View {
       if let font = font {
         Text("`font` environment is \(String(describing: font))")
       }
-      // Text(testEnv.envTest)
-      // EnvironmentObjectDemo()
+      Text(testEnv.envTest)
+      EnvironmentObjectDemo()
     }
   }
 }
