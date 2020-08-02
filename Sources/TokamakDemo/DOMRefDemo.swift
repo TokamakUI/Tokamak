@@ -21,7 +21,6 @@ struct DOMRefDemo: View {
 
   var body: some View {
     Button("Click me") {
-      print(button!)
       button?.innerHTML = "This text was set directly through a DOM reference"
     }._domRef($button)
   }
