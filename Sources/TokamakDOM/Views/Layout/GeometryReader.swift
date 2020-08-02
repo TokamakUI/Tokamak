@@ -16,7 +16,7 @@ import JavaScriptKit
 import TokamakCore
 import TokamakStaticHTML
 
-private let ResizeObserver = JSObjectRef.global.ResizeObserver
+private let ResizeObserver = JSObjectRef.global.ResizeObserver.function!
 
 extension GeometryReader: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
@@ -25,19 +25,59 @@ extension GeometryReader: ViewDeferredToRenderer {
 }
 
 struct _GeometryReader<Content: View>: View {
-  public let content: (GeometryProxy) -> Content
+  final class State: ObservableObject {
+    /** Holds a strong reference to a `JSClosure` instance that has to stay alive as long as
+     the `_GeometryReader` owner is alive.
+     */
+    var closure: JSClosure?
 
-  @State var ref: JSObjectRef?
-  @State var size: CGSize?
+    /// A reference to a DOM node being observed for size updates.
+    var observedNodeRef: JSObjectRef?
+
+    /// A reference to a `ResizeObserver` instance.
+    var observerRef: JSObjectRef?
+
+    /// The last known size of the `observedNodeRef` DOM node.
+    @Published var size: CGSize?
+  }
+
+  let content: (GeometryProxy) -> Content
+
+  @StateObject private var state = State()
 
   var body: some View {
     HTML("div") {
-      if let size = size {
+      if let size = state.size {
         content(makeProxy(from: size))
       } else {
         EmptyView()
       }
     }
-    ._domRef($ref)
+    ._domRef($state.observedNodeRef)
+    .onAppear {
+      let closure = JSClosure { [weak state] args in
+        log(args[0].object!.contentRect)
+
+        // FIXME: `JSArrayRef` is not a `RandomAccessCollection` for some reason, which forces
+        // us to use a string subscript
+        guard
+          let rect = args[0].object?[dynamicMember: "0"].object?.contentRect.object,
+          let width = rect.width.number,
+          let height = rect.height.number
+        else { return .undefined }
+
+        state?.size = .init(width: width, height: height)
+
+        return .undefined
+      }
+      state.closure = closure
+
+      let observerRef = ResizeObserver.new(closure)
+      log(observerRef)
+
+      _ = observerRef.observe!(state.observedNodeRef!)
+
+      state.observerRef = observerRef
+    }
   }
 }

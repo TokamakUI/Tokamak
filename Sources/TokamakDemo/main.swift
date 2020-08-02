@@ -21,7 +21,9 @@ struct CustomScene: Scene {
   var body: some Scene {
     print("In CustomScene.body scenePhase is \(scenePhase)")
     return WindowGroup("Tokamak Demo") {
-      TokamakDemoView()
+      GeometryReader {
+        Text("\(String(describing: $0))")
+      }
     }
   }
 }
