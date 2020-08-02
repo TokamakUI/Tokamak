@@ -12,8 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import JavaScriptKit
 import TokamakCore
 import TokamakStaticHTML
+
+private let ResizeObserver = JSObjectRef.global.ResizeObserver
 
 extension GeometryReader: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
