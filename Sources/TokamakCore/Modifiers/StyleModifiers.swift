@@ -32,7 +32,10 @@ public struct _BackgroundModifier<Background>: ViewModifier where Background: Vi
 extension _BackgroundModifier: Equatable where Background: Equatable {}
 
 extension View {
-  public func background<Background>(_ background: Background, alignment: Alignment = .center) -> some View where Background: View {
+  public func background<Background>(
+    _ background: Background,
+    alignment: Alignment = .center
+  ) -> some View where Background: View {
     modifier(_BackgroundModifier(background: background, alignment: alignment))
   }
 }

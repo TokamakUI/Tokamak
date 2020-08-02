@@ -96,7 +96,7 @@ var redactDemo: NavItem {
 }
 
 var links: [NavItem] {
-  [
+  var result = [
     NavItem("Counter", destination:
       Counter(count: Count(value: 5), limit: 15)
         .padding()
@@ -125,6 +125,12 @@ var links: [NavItem] {
     gridDemo,
     redactDemo,
   ]
+
+  #if os(WASI)
+  result.append(NavItem("DOM manipulation", destination: DOMRefDemo()))
+  #endif
+
+  return result
 }
 
 struct TokamakDemoView: View {

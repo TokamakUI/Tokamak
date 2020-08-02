@@ -59,7 +59,7 @@ let document = JSObjectRef.global.document.object!
 let body = document.body.object!
 let head = document.head.object!
 
-let timeoutScheduler = { (closure: @escaping () -> ()) in
+private let timeoutScheduler = { (closure: @escaping () -> ()) in
   let fn = JSClosure { _ in
     closure()
     return .undefined
