@@ -53,6 +53,6 @@ public struct _AnyApp: App {
   }
 
   public var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
-    fatalError("`_AnyApp` cannot monitor scenePhase. Access underlying `app` value.")
+    fatalError("`_AnyApp` cannot monitor colorScheme. Access underlying `app` value.")
   }
 }
