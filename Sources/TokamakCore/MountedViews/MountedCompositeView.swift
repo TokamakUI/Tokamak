@@ -32,7 +32,7 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
 
     // `_TargetRef` is a composite view, so it's enough to check for it only here
     if var targetRef = view.view as? TargetRefType {
-      // `_TargetRef` body is not always a host view that has a target, need to travers
+      // `_TargetRef` body is not always a host view that has a target, need to traverse
       // all descendants to find a `MountedHostView<R>` instance.
       var descendant: MountedElement<R>? = child
       while descendant != nil && !(descendant is MountedHostView<R>) {
