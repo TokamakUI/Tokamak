@@ -12,17 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
+import CombineShim
+import JavaScriptKit
 
-extension NavigationView: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    AnyView(HTML("div", [
-      "style": """
-      display: flex; flex-direction: row; align-items: stretch;
-      width: 100%; height: 100%;
-      """,
-    ]) {
-      _NavigationViewProxy(self)
-    })
+enum ScenePhaseObserver {
+  static var publisher = CurrentValueSubject<ScenePhase, Never>(.active)
+
+  private static var closure: JSClosure?
+
+  static func observe() {
+    let closure = JSClosure { _ in
+      let visibilityState = document.visibilityState.string
+      if visibilityState == "visible" {
+        publisher.send(.active)
+      } else if visibilityState == "hidden" {
+        publisher.send(.background)
+      }
+      return .undefined
+    }
+    _ = document.addEventListener!("visibilitychange", closure)
+    Self.closure = closure
   }
 }

@@ -12,17 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
+public enum ColorScheme: CaseIterable {
+  case dark
+  case light
+}
 
-extension NavigationView: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    AnyView(HTML("div", [
-      "style": """
-      display: flex; flex-direction: row; align-items: stretch;
-      width: 100%; height: 100%;
-      """,
-    ]) {
-      _NavigationViewProxy(self)
-    })
+public struct _ColorSchemeKey: EnvironmentKey {
+  public static var defaultValue: ColorScheme {
+    fatalError("\(self) must have a renderer-provided default value")
+  }
+}
+
+public extension EnvironmentValues {
+  var colorScheme: ColorScheme {
+    get { self[_ColorSchemeKey.self] }
+    set { self[_ColorSchemeKey.self] = newValue }
+  }
+}
+
+public extension View {
+  func colorScheme(_ colorScheme: ColorScheme) -> some View {
+    environment(\.colorScheme, colorScheme)
   }
 }

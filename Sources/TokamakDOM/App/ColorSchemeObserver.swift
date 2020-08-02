@@ -12,17 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
+import CombineShim
+import JavaScriptKit
 
-extension NavigationView: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    AnyView(HTML("div", [
-      "style": """
-      display: flex; flex-direction: row; align-items: stretch;
-      width: 100%; height: 100%;
-      """,
-    ]) {
-      _NavigationViewProxy(self)
-    })
+enum ColorSchemeObserver {
+  static var publisher = CurrentValueSubject<ColorScheme, Never>(
+    .init(matchMediaDarkScheme: matchMediaDarkScheme)
+  )
+
+  private static var closure: JSClosure?
+
+  static func observe() {
+    let closure = JSClosure {
+      publisher.value = .init(matchMediaDarkScheme: $0[0].object!)
+      return .undefined
+    }
+    _ = matchMediaDarkScheme.addEventListener!("change", closure)
+    Self.closure = closure
   }
 }

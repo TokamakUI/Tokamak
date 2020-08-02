@@ -48,7 +48,11 @@ public struct _AnyApp: App {
     fatalError("`title` cannot be set for `AnyApp`. Access underlying `app` value.")
   }
 
-  public var _phasePublisher: CurrentValueSubject<ScenePhase, Never> {
+  public var _phasePublisher: AnyPublisher<ScenePhase, Never> {
     fatalError("`_AnyApp` cannot monitor scenePhase. Access underlying `app` value.")
+  }
+
+  public var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
+    fatalError("`_AnyApp` cannot monitor colorScheme. Access underlying `app` value.")
   }
 }

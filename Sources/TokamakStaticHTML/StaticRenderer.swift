@@ -17,6 +17,16 @@
 
 import TokamakCore
 
+extension EnvironmentValues {
+  /// Returns default settings for the static HTML environment
+  static var defaultEnvironment: Self {
+    var environment = EnvironmentValues()
+    environment[_ColorSchemeKey] = .light
+
+    return environment
+  }
+}
+
 public final class HTMLTarget: Target {
   var html: AnyHTML
   var children: [HTMLTarget] = []
@@ -80,7 +90,7 @@ public final class StaticHTMLRenderer: Renderer {
     reconciler = StackReconciler(
       view: view,
       target: rootTarget,
-      environment: EnvironmentValues(),
+      environment: .defaultEnvironment,
       renderer: self,
       scheduler: { _ in
         fatalError("Stateful apps cannot be created with TokamakStaticHTML")
@@ -94,7 +104,7 @@ public final class StaticHTMLRenderer: Renderer {
     reconciler = StackReconciler(
       app: app,
       target: rootTarget,
-      environment: EnvironmentValues(),
+      environment: .defaultEnvironment,
       renderer: self,
       scheduler: { _ in
         fatalError("Stateful apps cannot be created with TokamakStaticHTML")
