@@ -23,10 +23,7 @@ extension View {
     // Convert `Binding<JSObjectRef?>` to `Binding<DOMNode?>` first.
     let targetBinding = Binding(
       get: { binding.wrappedValue.map(DOMNode.init) },
-      set: {
-        print("setting binding to \($0)")
-        binding.wrappedValue = $0?.ref
-      }
+      set: { binding.wrappedValue = $0?.ref }
     )
     return _targetRef(targetBinding)
   }

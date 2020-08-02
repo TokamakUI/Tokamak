@@ -22,18 +22,12 @@ public struct _TargetRef<V: View, T>: View, TargetRefType {
   let view: V
 
   var target: Target? {
-    get {
-      binding.wrappedValue as? Target
-    }
+    get { binding.wrappedValue as? Target }
 
-    set {
-      binding.wrappedValue = newValue as? T
-    }
+    set { binding.wrappedValue = newValue as? T }
   }
 
-  public var body: V {
-    view
-  }
+  public var body: V { view }
 }
 
 extension View {
