@@ -26,32 +26,11 @@ public typealias Environment = TokamakCore.Environment
 public typealias ViewModifier = TokamakCore.ViewModifier
 public typealias ModifiedContent = TokamakCore.ModifiedContent
 
-public typealias DefaultTextFieldStyle = TokamakCore.DefaultTextFieldStyle
-public typealias PlainTextFieldStyle = TokamakCore.PlainTextFieldStyle
-public typealias RoundedBorderTextFieldStyle = TokamakCore.RoundedBorderTextFieldStyle
-public typealias SquareBorderTextFieldStyle = TokamakCore.SquareBorderTextFieldStyle
-
 public typealias DefaultListStyle = TokamakCore.DefaultListStyle
 public typealias PlainListStyle = TokamakCore.PlainListStyle
 public typealias InsetListStyle = TokamakCore.InsetListStyle
 public typealias GroupedListStyle = TokamakCore.GroupedListStyle
 public typealias InsetGroupedListStyle = TokamakCore.InsetGroupedListStyle
-public typealias SidebarListStyle = TokamakCore.SidebarListStyle
-
-public typealias DefaultPickerStyle = TokamakCore.DefaultPickerStyle
-public typealias PopUpButtonPickerStyle = TokamakCore.PopUpButtonPickerStyle
-public typealias RadioGroupPickerStyle = TokamakCore.RadioGroupPickerStyle
-public typealias SegmentedPickerStyle = TokamakCore.SegmentedPickerStyle
-public typealias WheelPickerStyle = TokamakCore.WheelPickerStyle
-
-public typealias ToggleStyle = TokamakCore.ToggleStyle
-public typealias ToggleStyleConfiguration = TokamakCore.ToggleStyleConfiguration
-
-public typealias ButtonStyle = TokamakCore.ButtonStyle
-public typealias ButtonStyleConfiguration = TokamakCore.ButtonStyleConfiguration
-public typealias DefaultButtonStyle = TokamakCore.DefaultButtonStyle
-
-public typealias ColorScheme = TokamakCore.ColorScheme
 
 // MARK: Shapes
 
@@ -76,8 +55,6 @@ public typealias CGSize = TokamakCore.CGSize
 
 // MARK: Views
 
-public typealias Button = TokamakCore.Button
-public typealias DisclosureGroup = TokamakCore.DisclosureGroup
 public typealias Divider = TokamakCore.Divider
 public typealias ForEach = TokamakCore.ForEach
 public typealias GridItem = TokamakCore.GridItem
@@ -86,17 +63,10 @@ public typealias HStack = TokamakCore.HStack
 public typealias LazyHGrid = TokamakCore.LazyHGrid
 public typealias LazyVGrid = TokamakCore.LazyVGrid
 public typealias List = TokamakCore.List
-public typealias NavigationLink = TokamakCore.NavigationLink
-public typealias NavigationView = TokamakCore.NavigationView
-public typealias OutlineGroup = TokamakCore.OutlineGroup
-public typealias Picker = TokamakCore.Picker
 public typealias ScrollView = TokamakCore.ScrollView
 public typealias Section = TokamakCore.Section
-public typealias SecureField = TokamakCore.SecureField
 public typealias Spacer = TokamakCore.Spacer
 public typealias Text = TokamakCore.Text
-public typealias TextField = TokamakCore.TextField
-public typealias Toggle = TokamakCore.Toggle
 public typealias VStack = TokamakCore.VStack
 public typealias ZStack = TokamakCore.ZStack
 
