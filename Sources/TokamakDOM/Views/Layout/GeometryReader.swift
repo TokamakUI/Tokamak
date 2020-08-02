@@ -20,9 +20,24 @@ private let ResizeObserver = JSObjectRef.global.ResizeObserver
 
 extension GeometryReader: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    AnyView(
-      HTML("div")
-        .onAppear {}
-    )
+    AnyView(_GeometryReader(content: content))
+  }
+}
+
+struct _GeometryReader<Content: View>: View {
+  public let content: (GeometryProxy) -> Content
+
+  @State var ref: JSObjectRef?
+  @State var size: CGSize?
+
+  var body: some View {
+    HTML("div") {
+      if let size = size {
+        content(makeProxy(from: size))
+      } else {
+        EmptyView()
+      }
+    }
+    ._domRef($ref)
   }
 }

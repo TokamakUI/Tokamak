@@ -21,10 +21,6 @@ protocol AppearanceActionType {
 struct _AppearanceActionModifier: ViewModifier {
   var appear: (() -> ())?
   var disappear: (() -> ())?
-  init(appear: (() -> ())? = nil, disappear: (() -> ())? = nil) {
-    self.appear = appear
-    self.disappear = disappear
-  }
 
   typealias Body = Never
 }

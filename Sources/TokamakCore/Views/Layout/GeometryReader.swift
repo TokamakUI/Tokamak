@@ -16,6 +16,10 @@ public struct GeometryProxy {
   public let size: CGSize
 }
 
+public func makeProxy(from size: CGSize) -> GeometryProxy {
+  .init(size: size)
+}
+
 // FIXME: to be implemented
 // public enum CoordinateSpace {
 //   case global
