@@ -133,7 +133,7 @@ struct TokamakDemoView: View {
               NavItem(unavailable: "AppStorage")
             }
             if #available(OSX 11.0, iOS 14.0, *) {
-              NavItem("Redaction", destination: RedactDemo())
+              NavItem("Redaction", destination: RedactionDemo())
             } else {
               NavItem(unavailable: "Redaction")
             }
