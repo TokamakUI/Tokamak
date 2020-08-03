@@ -17,37 +17,37 @@
 
 import TokamakShim
 
-@available(OSX 11.0, iOS 14.0, *)
-struct RedactDemo: View {
-  func title(_ text: String) -> some View {
-    Group {
-      Text(text)
-        .font(.headline)
-      Divider()
-    }
-  }
-
-  var content: some View {
-    VStack {
-      Text("Hello, world!")
-      Text("Unredacted text")
-        .unredacted()
-    }
-  }
-
-  var body: some View {
-    HStack {
-      VStack {
-        title("Unredacted")
-        content
-          .padding()
-      }
-      VStack {
-        title("Redacted")
-        content
-          .redacted(reason: .placeholder)
-          .padding()
-      }
-    }
-  }
-}
+// @available(OSX 11.0, iOS 14.0, *)
+// struct RedactDemo: View {
+//  func title(_ text: String) -> some View {
+//    Group {
+//      Text(text)
+//        .font(.headline)
+//      Divider()
+//    }
+//  }
+//
+//  var content: some View {
+//    VStack {
+//      Text("Hello, world!")
+//      Text("Unredacted text")
+//        .unredacted()
+//    }
+//  }
+//
+//  var body: some View {
+//    HStack {
+//      VStack {
+//        title("Unredacted")
+//        content
+//          .padding()
+//      }
+//      VStack {
+//        title("Redacted")
+//        content
+//          .redacted(reason: .placeholder)
+//          .padding()
+//      }
+//    }
+//  }
+// }
