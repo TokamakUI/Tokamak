@@ -41,6 +41,9 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
       view.view = targetRef
     }
 
+    // FIXME: this has to be implemented in a render-specific way, otherwise it's equivalent to
+    // `_onMount` and `_onUnmount` at the moment,
+    // see https://github.com/swiftwasm/Tokamak/issues/175 for more details
     if let appearanceAction = view.view as? AppearanceActionType {
       appearanceAction.appear?()
     }

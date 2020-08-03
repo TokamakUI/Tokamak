@@ -122,6 +122,7 @@ let links = [
   NavItem("Path", destination: PathDemo()),
   NavItem("TextField", destination: TextFieldDemo()),
   NavItem("Spacer", destination: SpacerDemo()),
+  NavItem("GeometryReader", destination: GeometryReaderDemo()),
   NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8))),
   NavItem("Picker", destination: PickerDemo()),
   NavItem("List", destination: listDemo),

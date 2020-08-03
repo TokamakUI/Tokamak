@@ -46,7 +46,7 @@ struct _GeometryReader<Content: View>: View {
   @StateObject private var state = State()
 
   var body: some View {
-    HTML("div") {
+    HTML("div", ["style": "width: 100%; height: 100%"]) {
       if let size = state.size {
         content(makeProxy(from: size))
       } else {
@@ -54,10 +54,8 @@ struct _GeometryReader<Content: View>: View {
       }
     }
     ._domRef($state.observedNodeRef)
-    .onAppear {
+    ._onMount {
       let closure = JSClosure { [weak state] args in
-        log(args[0].object!.contentRect)
-
         // FIXME: `JSArrayRef` is not a `RandomAccessCollection` for some reason, which forces
         // us to use a string subscript
         guard
@@ -73,7 +71,6 @@ struct _GeometryReader<Content: View>: View {
       state.closure = closure
 
       let observerRef = ResizeObserver.new(closure)
-      log(observerRef)
 
       _ = observerRef.observe!(state.observedNodeRef!)
 

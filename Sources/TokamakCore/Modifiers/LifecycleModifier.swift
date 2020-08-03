@@ -12,29 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakShim
-
-@available(OSX 10.16, iOS 14.0, *)
-struct CustomScene: Scene {
-  @Environment(\.scenePhase) private var scenePhase
-
-  var body: some Scene {
-    print("In CustomScene.body scenePhase is \(scenePhase)")
-    return WindowGroup("Tokamak Demo") {
-      TokamakDemoView()
-    }
+// FIXME: these should have standalone implementations
+extension View {
+  public func _onMount(perform action: (() -> ())? = nil) -> some View {
+    modifier(_AppearanceActionModifier(appear: action))
   }
-}
 
-@available(OSX 10.16, iOS 14.0, *)
-struct TokamakDemoApp: App {
-  var body: some Scene {
-    CustomScene()
+  public func _onUnmount(perform action: (() -> ())? = nil) -> some View {
+    modifier(_AppearanceActionModifier(disappear: action))
   }
-}
-
-// If @main was supported for executable Swift Packages,
-// this would match SwiftUI 100%
-if #available(OSX 10.16, iOS 14.0, *) {
-  TokamakDemoApp.main()
 }
