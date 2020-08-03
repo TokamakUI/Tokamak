@@ -39,7 +39,7 @@ extension Slider: ViewDeferredToRenderer {
     return AnyView(
       HStack {
         proxy.minValueLabel
-        HTML(
+        DynamicHTML(
           "input",
           attributes,
           listeners: [
