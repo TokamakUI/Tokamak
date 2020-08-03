@@ -17,7 +17,7 @@
 
 public struct Color: Hashable, Equatable {
   // FIXME: This is not injected.
-  @Environment(\.accentColor) static var envAccentColor: Color?
+  @Environment(\.accentColor) static var envAccentColor
 
   public enum RGBColorSpace {
     case sRGB

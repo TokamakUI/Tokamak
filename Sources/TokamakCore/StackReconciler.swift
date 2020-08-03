@@ -94,12 +94,8 @@ public final class StackReconciler<R: Renderer> {
 
     rootElement.mount(with: self)
     if let mountedApp = rootElement as? MountedApp<R> {
-      app._phasePublisher.sink { [weak self] phase in
-        if mountedApp.environmentValues.scenePhase != phase {
-          mountedApp.environmentValues.scenePhase = phase
-          self?.queueUpdate(for: mountedApp)
-        }
-      }.store(in: &mountedApp.subscriptions)
+      setupSubscription(for: app._phasePublisher, to: \.scenePhase, of: mountedApp)
+      setupSubscription(for: app._colorSchemePublisher, to: \.colorScheme, of: mountedApp)
     }
   }
 
@@ -172,6 +168,22 @@ public final class StackReconciler<R: Renderer> {
     observed.objectWillChange.sink { [weak self] _ in
       self?.queueUpdate(for: compositeElement)
     }.store(in: &compositeElement.subscriptions)
+  }
+
+  private func setupSubscription<T: Equatable>(
+    for publisher: AnyPublisher<T, Never>,
+    to keyPath: WritableKeyPath<EnvironmentValues, T>,
+    of mountedApp: MountedApp<R>
+  ) {
+    publisher.sink { [weak self, weak mountedApp] value in
+      guard
+        let mountedApp = mountedApp,
+        mountedApp.environmentValues[keyPath: keyPath] != value
+      else { return }
+
+      mountedApp.environmentValues[keyPath: keyPath] = value
+      self?.queueUpdate(for: mountedApp)
+    }.store(in: &mountedApp.subscriptions)
   }
 
   func render<T>(compositeElement: MountedCompositeElement<R>,

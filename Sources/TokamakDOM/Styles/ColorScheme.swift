@@ -12,17 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
+import JavaScriptKit
 
-extension NavigationView: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    AnyView(HTML("div", [
-      "style": """
-      display: flex; flex-direction: row; align-items: stretch;
-      width: 100%; height: 100%;
-      """,
-    ]) {
-      _NavigationViewProxy(self)
-    })
+extension ColorScheme {
+  init(matchMediaDarkScheme: JSObjectRef) {
+    self = matchMediaDarkScheme.matches.boolean == true ? .dark : .light
   }
 }

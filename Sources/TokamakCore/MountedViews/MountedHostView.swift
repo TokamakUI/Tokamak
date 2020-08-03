@@ -94,6 +94,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
       while let child = mountedChildren.first, let firstChild = childrenViews.first {
         let newChild: MountedElement<R>
         if firstChild.typeConstructorName == mountedChildren[0].view.typeConstructorName {
+          child.environmentValues = environmentValues
           child.view = firstChild
           child.updateEnvironment()
           child.update(with: reconciler)

@@ -24,6 +24,7 @@ extension EnvironmentValues {
   static var defaultEnvironment: Self {
     var environment = EnvironmentValues()
     environment[_ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
+    environment[_ColorSchemeKey] = .init(matchMediaDarkScheme: matchMediaDarkScheme)
     environment._defaultAppStorage = LocalStorage.standard
     _DefaultSceneStorageProvider.default = SessionStorage.standard
 
@@ -54,8 +55,11 @@ private extension AnyView {
   }
 }
 
-let log = JSObjectRef.global.console.object!.log.function!
-let document = JSObjectRef.global.document.object!
+let global = JSObjectRef.global
+let window = global.window.object!
+let matchMediaDarkScheme = window.matchMedia!("(prefers-color-scheme: dark)").object!
+let log = global.console.object!.log.function!
+let document = global.document.object!
 let body = document.body.object!
 let head = document.head.object!
 

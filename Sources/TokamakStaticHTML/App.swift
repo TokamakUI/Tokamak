@@ -27,7 +27,11 @@ extension App {
     StaticHTMLRenderer.title = title
   }
 
-  public var _phasePublisher: CurrentValueSubject<ScenePhase, Never> {
-    CurrentValueSubject<ScenePhase, Never>(.active)
+  public var _phasePublisher: AnyPublisher<ScenePhase, Never> {
+    CurrentValueSubject<ScenePhase, Never>(.active).eraseToAnyPublisher()
+  }
+
+  public var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
+    CurrentValueSubject<ColorScheme, Never>(.light).eraseToAnyPublisher()
   }
 }
