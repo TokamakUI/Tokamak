@@ -81,16 +81,15 @@ struct TokamakDemoView: View {
           }
           Section(header: Text("Containers")) {
             NavItem("ForEach", destination: ForEachDemo())
-            #if !os(macOS)
             if #available(iOS 14.0, *) {
+              #if os(macOS)
+              NavItem("List", destination: ListDemo())
+              #else
               NavItem("List", destination: ListDemo().listStyle(InsetGroupedListStyle()))
+              #endif
             } else {
               NavItem("List", destination: ListDemo())
             }
-            #else
-            NavItem("List", destination: ListDemo())
-            #endif
-
             if #available(iOS 14.0, *) {
               NavItem("Sidebar", destination: SidebarListDemo().listStyle(SidebarListStyle()))
             } else {
@@ -134,16 +133,16 @@ struct TokamakDemoView: View {
               NavItem(unavailable: "AppStorage")
             }
             if #available(OSX 11.0, iOS 14.0, *) {
-              NavItem("Redact", destination: RedactDemo())
+              NavItem("Redaction", destination: RedactDemo())
             } else {
-              NavItem(unavailable: "Redact")
+              NavItem(unavailable: "Redaction")
             }
-            #if os(WASI)
-            NavItem("DOM reference", destination: DOMRefDemo())
-            #else
-            NavItem(unavailable: "DOM reference")
-            #endif
           }
+          #if os(WASI)
+          Section(header: Text("TokamakDOM")) {
+            NavItem("DOM reference", destination: DOMRefDemo())
+          }
+          #endif
         }
         .frame(minHeight: 300),
         title: "Demos"
