@@ -12,17 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
+protocol TargetRefType {
+  var target: Target? { get set }
+}
 
-extension NavigationView: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    AnyView(HTML("div", [
-      "style": """
-      display: flex; flex-direction: row; align-items: stretch;
-      width: 100%; height: 100%;
-      """,
-    ]) {
-      _NavigationViewProxy(self)
-    })
+public struct _TargetRef<V: View, T>: View, TargetRefType {
+  let binding: Binding<T?>
+
+  let view: V
+
+  var target: Target? {
+    get { binding.wrappedValue as? Target }
+
+    set { binding.wrappedValue = newValue as? T }
+  }
+
+  public var body: V { view }
+}
+
+extension View {
+  /** Allows capturing target instance of aclosest descendant host view. The resulting instance
+   is written to a given `binding`. */
+  public func _targetRef<T: Target>(_ binding: Binding<T?>) -> _TargetRef<Self, T> {
+    .init(binding: binding, view: self)
   }
 }

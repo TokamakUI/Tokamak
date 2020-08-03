@@ -82,7 +82,11 @@ extension Shape {
     OffsetShape(shape: self, offset: .init(width: x, height: y))
   }
 
-  public func scale(x: CGFloat = 1, y: CGFloat = 1, anchor: UnitPoint = .center) -> ScaledShape<Self> {
+  public func scale(
+    x: CGFloat = 1,
+    y: CGFloat = 1,
+    anchor: UnitPoint = .center
+  ) -> ScaledShape<Self> {
     ScaledShape(shape: self,
                 scale: CGSize(width: x, height: y), anchor: anchor)
   }
@@ -121,7 +125,10 @@ extension Shape {
 }
 
 extension Shape {
-  public func fill<S>(_ content: S, style: FillStyle = FillStyle()) -> some View where S: ShapeStyle {
+  public func fill<S>(
+    _ content: S,
+    style: FillStyle = FillStyle()
+  ) -> some View where S: ShapeStyle {
     _ShapeView(shape: self, style: content, fillStyle: style)
   }
 

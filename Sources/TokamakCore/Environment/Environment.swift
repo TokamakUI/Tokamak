@@ -29,8 +29,8 @@ protocol EnvironmentReader {
     case value(Value)
   }
 
-  var content: Content
-  let keyPath: KeyPath<EnvironmentValues, Value>
+  private var content: Content
+  private let keyPath: KeyPath<EnvironmentValues, Value>
   public init(_ keyPath: KeyPath<EnvironmentValues, Value>) {
     content = .keyPath(keyPath)
     self.keyPath = keyPath

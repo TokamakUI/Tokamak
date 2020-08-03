@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
+#if os(WASI)
+import JavaScriptKit
+import TokamakShim
 
-extension NavigationView: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    AnyView(HTML("div", [
-      "style": """
-      display: flex; flex-direction: row; align-items: stretch;
-      width: 100%; height: 100%;
-      """,
-    ]) {
-      _NavigationViewProxy(self)
-    })
+struct DOMRefDemo: View {
+  @State var button: JSObjectRef?
+
+  var body: some View {
+    Button("Click me") {
+      button?.innerHTML = "This text was set directly through a DOM reference"
+    }._domRef($button)
   }
 }
+#endif

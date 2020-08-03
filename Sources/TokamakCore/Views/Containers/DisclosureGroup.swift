@@ -20,7 +20,7 @@ public struct DisclosureGroup<Label, Content>: View
   @State var isExpanded: Bool = false
   let isExpandedBinding: Binding<Bool>?
 
-  @Environment(\._outlineGroupStyle) var style: _OutlineGroupStyle
+  @Environment(\._outlineGroupStyle) var style
 
   let label: Label
   let content: () -> Content

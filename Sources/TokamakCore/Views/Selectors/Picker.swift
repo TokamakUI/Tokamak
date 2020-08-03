@@ -16,7 +16,7 @@ public struct _PickerContainer<Label: View, SelectionValue: Hashable, Content: V
   @Binding public var selection: SelectionValue
   public let label: Label
   public let content: Content
-  @Environment(\.pickerStyle) public var style: PickerStyle
+  @Environment(\.pickerStyle) public var style
 
   public init(
     selection: Binding<SelectionValue>,
@@ -36,7 +36,7 @@ public struct _PickerContainer<Label: View, SelectionValue: Hashable, Content: V
 public struct _PickerElement: View {
   public let valueIndex: Int?
   public let content: AnyView
-  @Environment(\.pickerStyle) public var style: PickerStyle
+  @Environment(\.pickerStyle) public var style
 
   public var body: Never {
     neverBody("_PickerElement")

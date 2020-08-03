@@ -29,7 +29,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
   private let parentTarget: R.TargetType
 
   /// Target of this host view supplied by a renderer after mounting has completed.
-  private var target: R.TargetType?
+  private(set) var target: R.TargetType?
 
   init(_ view: AnyView, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
@@ -94,6 +94,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
       while let child = mountedChildren.first, let firstChild = childrenViews.first {
         let newChild: MountedElement<R>
         if firstChild.typeConstructorName == mountedChildren[0].view.typeConstructorName {
+          child.environmentValues = environmentValues
           child.view = firstChild
           child.updateEnvironment()
           child.update(with: reconciler)

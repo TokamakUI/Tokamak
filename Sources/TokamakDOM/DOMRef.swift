@@ -12,17 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import JavaScriptKit
 import TokamakCore
 
-extension NavigationView: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    AnyView(HTML("div", [
-      "style": """
-      display: flex; flex-direction: row; align-items: stretch;
-      width: 100%; height: 100%;
-      """,
-    ]) {
-      _NavigationViewProxy(self)
-    })
+extension View {
+  /** Allows capturing DOM references of host views. The resulting reference is written
+   to a given `binding`.
+   */
+  public func _domRef(_ binding: Binding<JSObjectRef?>) -> some View {
+    // Convert `Binding<JSObjectRef?>` to `Binding<DOMNode?>` first.
+    let targetBinding = Binding(
+      get: { binding.wrappedValue.map(DOMNode.init) },
+      set: { binding.wrappedValue = $0?.ref }
+    )
+    return _targetRef(targetBinding)
   }
 }
