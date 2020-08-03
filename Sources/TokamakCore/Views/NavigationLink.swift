@@ -19,7 +19,8 @@ public struct NavigationLink<Label, Destination>: View where Label: View, Destin
   let destination: Destination
   let label: Label
 
-  @Environment(_navigationDestinationKey) var navigationContext
+  @Environment(\.navigationDestination) var navigationContext
+  @Environment(\._navigationLinkStyle) var style
 
   public init(destination: Destination, @ViewBuilder label: () -> Label) {
     self.destination = destination
@@ -46,8 +47,7 @@ extension NavigationLink where Label == Text {
   /// Creates an instance that presents `destination`, with a `Text` label
   /// generated from a title string.
   public init<S>(_ title: S, destination: Destination) where S: StringProtocol {
-    self.destination = destination
-    label = Text(title)
+    self.init(destination: destination) { Text(title) }
   }
 
   /// Creates an instance that presents `destination` when active, with a
@@ -71,7 +71,15 @@ public struct _NavigationLinkProxy<Label, Destination> where Label: View, Destin
 
   public init(_ subject: NavigationLink<Label, Destination>) { self.subject = subject }
 
-  public var label: Label { subject.label }
+  public var label: AnyView {
+    subject.style.makeBody(configuration: .init(body: AnyView(subject.label),
+                                                isSelected: isSelected))
+  }
+
+  public var style: _AnyNavigationLinkStyle { subject.style }
+  public var isSelected: Bool {
+    true
+  }
 
   public func activate() {
     subject.navigationContext!.wrappedValue = AnyView(subject.destination)

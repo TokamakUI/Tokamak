@@ -90,16 +90,43 @@ extension InsetGroupedListStyle: ListStyleDeferredToRenderer {
 }
 
 extension SidebarListStyle: ListStyleDeferredToRenderer {
+  public func listRow<Row>(_ row: Row) -> AnyView where Row: View {
+    AnyView(row)
+  }
+
   public func listBody<ListBody>(_ content: ListBody) -> AnyView where ListBody: View {
     AnyView(content
-      .padding(.all)
-      .padding(.leading, 20)
+      ._navigationLinkStyle(_SidebarNavigationLinkStyle())
+      .padding([.horizontal, .top], 6)
       .background(Color._withScheme {
         switch $0 {
         case .light: return Color(0xF2F2F7)
-        case .dark: return Color(.sRGB, red: 45 / 255, green: 43 / 255, blue: 48 / 255)
+        case .dark: return Color(0x2D2B30)
         }
       })
     )
+  }
+}
+
+public struct _SidebarNavigationLinkStyle: _NavigationLinkStyle {
+  @ViewBuilder
+  public func makeBody(configuration: _NavigationLinkStyleConfiguration) -> some View {
+    if configuration.isSelected {
+      configuration
+        .padding(6)
+        .font(.footnote)
+        .background(Color._withScheme {
+          switch $0 {
+          case .light: return Color(.sRGB, white: 0, opacity: 0.1)
+          case .dark: return Color(.sRGB, white: 1, opacity: 0.1)
+          }
+        })
+        .cornerRadius(5)
+    } else {
+      configuration
+        .padding(6)
+        .foregroundColor(.primary)
+        .font(.footnote)
+    }
   }
 }

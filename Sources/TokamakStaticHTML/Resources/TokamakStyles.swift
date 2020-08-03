@@ -77,31 +77,22 @@ public let tokamakStyles = """
   border-radius: .1em;
 }
 
+._tokamak-buttonstyle-default,
+._tokamak-securefield,
+._tokamak-textfield-default,
+._tokamak-textfield-roundedborder,
+._tokamak-picker {
+  color-scheme: light dark;
+}
+
 @media (prefers-color-scheme:dark) {
-  ._tokamak-buttonstyle-default {
-    background-color: rgb(99, 95, 98);
-  }
-
-  ._tokamak-securefield {
-    background-color: rgb(99, 95, 98);
-    color: #FFFFFF;
-  }
-  ._tokamak-textfield-default {
-    background-color: rgb(99, 95, 98);
-    color: #FFFFFF;
-  }
-  ._tokamak-textfield-roundedborder {
-    background-color: rgb(99, 95, 98);
-    color: #FFFFFF;
-  }
-
-  ._tokamak-picker {
-    background-color: rgb(99, 95, 98);
-    color: #FFFFFF;
-  }
-
   ._tokamak-text-redacted::after {
     background-color: rgb(100, 100, 100);
+  }
+
+  ._tokamak-disclosuregroup-chevron {
+    border-right-color: rgba(255, 255, 255, 0.25);
+    border-top-color: rgba(255, 255, 255, 0.25);
   }
 }
 """

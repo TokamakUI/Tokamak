@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import TokamakCore
+import TokamakStaticHTML
 
 extension NavigationLink: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
@@ -20,11 +21,16 @@ extension NavigationLink: ViewDeferredToRenderer {
     return AnyView(
       DynamicHTML("a", [
         "href": "javascript:void%200",
+        "style": proxy.style.type == _SidebarNavigationLinkStyle.self ?
+          "width: 100%; text-decoration: none;"
+          : "",
       ], listeners: [
         // FIXME: Focus destination or something so assistive
         // technology knows where to look when clicking the link.
         "click": { _ in proxy.activate() },
-      ]) { proxy.label }
+      ]) {
+        proxy.label
+      }
     )
   }
 }
