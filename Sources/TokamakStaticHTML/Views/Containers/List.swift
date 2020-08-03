@@ -91,7 +91,7 @@ extension InsetGroupedListStyle: ListStyleDeferredToRenderer {
 
 extension SidebarListStyle: ListStyleDeferredToRenderer {
   public func listRow<Row>(_ row: Row) -> AnyView where Row: View {
-    AnyView(row)
+    AnyView(row.frame(minWidth: 0, maxWidth: .infinity))
   }
 
   public func listBody<ListBody>(_ content: ListBody) -> AnyView where ListBody: View {

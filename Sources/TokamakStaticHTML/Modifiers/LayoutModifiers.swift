@@ -15,11 +15,17 @@
 import TokamakCore
 
 private extension DOMViewModifier {
-  func unwrapToStyle<T>(_ key: KeyPath<Self, T?>, property: String) -> String {
+  func unwrapToStyle<T>(_ key: KeyPath<Self, T?>,
+                        property: String? = nil,
+                        defaultValue: String = "") -> String {
     if let val = self[keyPath: key] {
-      return "\(property): \(val)px;"
+      if let property = property {
+        return "\(property): \(val)px;"
+      } else {
+        return "\(val)px;"
+      }
     } else {
-      return ""
+      return defaultValue
     }
   }
 }
@@ -40,12 +46,14 @@ extension _FrameLayout: DOMViewModifier {
 
 extension _FlexFrameLayout: DOMViewModifier {
   public var attributes: [String: String] {
-    ["style": """
+    let flexibleWidth = minWidth == 0 && maxWidth == .infinity
+    let flexibleHeight = minHeight == 0 && maxHeight == .infinity
+    return ["style": """
     \(unwrapToStyle(\.minWidth, property: "min-width"))
-    \(unwrapToStyle(\.idealWidth, property: "width"))
+    width: \(unwrapToStyle(\.idealWidth, defaultValue: flexibleWidth ? "100%" : "auto"));
     \(unwrapToStyle(\.maxWidth, property: "max-width"))
     \(unwrapToStyle(\.minHeight, property: "min-height"))
-    \(unwrapToStyle(\.idealHeight, property: "height"))
+    height: \(unwrapToStyle(\.idealHeight, defaultValue: flexibleHeight ? "100%" : "auto"));
     \(unwrapToStyle(\.maxHeight, property: "max-height"))
     overflow: hidden;
     text-overflow: ellipsis;

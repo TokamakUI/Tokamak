@@ -15,10 +15,14 @@
 //  Created by Jed Fox on 06/30/2020.
 //
 
+final class NavigationContext: ObservableObject {
+  @Published var destination = NavigationLinkDestination(EmptyView())
+}
+
 public struct NavigationView<Content>: View where Content: View {
   let content: Content
 
-  @State var destination = AnyView(EmptyView())
+  @ObservedObject var context = NavigationContext()
 
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()
@@ -39,8 +43,9 @@ public struct _NavigationViewProxy<Content: View>: View {
   public var body: some View {
     HStack {
       content
-      subject.destination
-    }.environment(\.navigationDestination, subject.$destination)
+      subject.context.destination.view
+    }
+    .environmentObject(subject.context)
   }
 }
 
