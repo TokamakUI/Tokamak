@@ -95,38 +95,45 @@ var redactDemo: NavItem {
   }
 }
 
-var links: [NavItem] {
-  [
-    NavItem("Counter", destination:
-      Counter(count: Count(value: 5), limit: 15)
-        .padding()
-        .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
-        .border(Color.red, width: 3)
-        .foregroundColor(.black)),
-    NavItem("ZStack", destination: ZStack {
-      Text("I'm on bottom")
-      Text("I'm forced to the top")
-        .zIndex(1)
-      Text("I'm on top")
-    }.padding(20)),
-    NavItem("ButtonStyle", destination: ButtonStyleDemo()),
-    NavItem("ForEach", destination: ForEachDemo()),
-    NavItem("Text", destination: TextDemo()),
-    NavItem("Toggle", destination: ToggleDemo()),
-    NavItem("Path", destination: PathDemo()),
-    NavItem("TextField", destination: TextFieldDemo()),
-    NavItem("Spacer", destination: SpacerDemo()),
-    NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8))),
-    NavItem("Picker", destination: PickerDemo()),
-    NavItem("List", destination: listDemo),
-    sidebarDemo,
-    outlineGroupDemo,
-    NavItem("Color", destination: ColorDemo()),
-    appStorageDemo,
-    gridDemo,
-    redactDemo,
-  ]
+var domRefDemo: NavItem {
+  #if os(WASI)
+  return NavItem("DOM reference", destination: DOMRefDemo())
+  #else
+  return NavItem(unavailable: "DOM reference")
+  #endif
 }
+
+let links = [
+  NavItem("Counter", destination:
+    Counter(count: Count(value: 5), limit: 15)
+      .padding()
+      .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
+      .border(Color.red, width: 3)
+      .foregroundColor(.black)),
+  NavItem("ZStack", destination: ZStack {
+    Text("I'm on bottom")
+    Text("I'm forced to the top")
+      .zIndex(1)
+    Text("I'm on top")
+  }.padding(20)),
+  NavItem("ButtonStyle", destination: ButtonStyleDemo()),
+  NavItem("ForEach", destination: ForEachDemo()),
+  NavItem("Text", destination: TextDemo()),
+  NavItem("Toggle", destination: ToggleDemo()),
+  NavItem("Path", destination: PathDemo()),
+  NavItem("TextField", destination: TextFieldDemo()),
+  NavItem("Spacer", destination: SpacerDemo()),
+  NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8))),
+  NavItem("Picker", destination: PickerDemo()),
+  NavItem("List", destination: listDemo),
+  sidebarDemo,
+  outlineGroupDemo,
+  NavItem("Color", destination: ColorDemo()),
+  appStorageDemo,
+  gridDemo,
+  redactDemo,
+  domRefDemo,
+]
 
 struct TokamakDemoView: View {
   var body: some View {

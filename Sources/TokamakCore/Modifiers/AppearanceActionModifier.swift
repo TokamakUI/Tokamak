@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-protocol AppearanceActionProtocol {
+protocol AppearanceActionType {
   var appear: (() -> ())? { get }
   var disappear: (() -> ())? { get }
 }
@@ -29,7 +29,7 @@ struct _AppearanceActionModifier: ViewModifier {
   typealias Body = Never
 }
 
-extension ModifiedContent: AppearanceActionProtocol
+extension ModifiedContent: AppearanceActionType
   where Content: View, Modifier == _AppearanceActionModifier {
   var appear: (() -> ())? { modifier.appear }
   var disappear: (() -> ())? { modifier.disappear }
