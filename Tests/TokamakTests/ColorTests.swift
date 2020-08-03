@@ -17,7 +17,8 @@ import XCTest
 
 final class ColorTests: XCTestCase {
   func testHexColors() {
-    guard let color = Color(hex: "#FF00FF") else {
+    let env = EnvironmentValues()
+    guard let color = Color(hex: "#FF00FF")?._evaluate(env) else {
       XCTFail("Hexadecimal decoding failed")
       return
     }
@@ -28,11 +29,11 @@ final class ColorTests: XCTestCase {
 
     XCTAssertEqual(
       color,
-      Color(hex: "FF00FF"),
+      Color(hex: "FF00FF")?._evaluate(env),
       "The '#' before a hex code produced a different output than without it"
     )
 
-    guard let red = Color(hex: "#FF0000") else {
+    guard let red = Color(hex: "#FF0000")?._evaluate(env) else {
       XCTFail("Hexadecimal decoding failed")
       return
     }
@@ -41,7 +42,7 @@ final class ColorTests: XCTestCase {
     XCTAssertEqual(red.green, 0)
     XCTAssertEqual(red.blue, 0)
 
-    guard let green = Color(hex: "#00FF00") else {
+    guard let green = Color(hex: "#00FF00")?._evaluate(env) else {
       XCTFail("Hexadecimal decoding failed")
       return
     }
@@ -50,7 +51,7 @@ final class ColorTests: XCTestCase {
     XCTAssertEqual(green.green, 1)
     XCTAssertEqual(green.blue, 0)
 
-    guard let blue = Color(hex: "#0000FF") else {
+    guard let blue = Color(hex: "#0000FF")?._evaluate(env) else {
       XCTFail("Hexadecimal decoding failed")
       return
     }

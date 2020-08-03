@@ -94,7 +94,12 @@ extension SidebarListStyle: ListStyleDeferredToRenderer {
     AnyView(content
       .padding(.all)
       .padding(.leading, 20)
-      .background(Color(0xF2F2F7))
+      .background(Color._withScheme {
+        switch $0 {
+        case .light: return Color(0xF2F2F7)
+        case .dark: return Color(.sRGB, red: 45 / 255, green: 43 / 255, blue: 48 / 255)
+        }
+      })
     )
   }
 }

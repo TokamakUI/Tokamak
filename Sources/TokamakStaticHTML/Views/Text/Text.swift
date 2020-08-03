@@ -151,13 +151,13 @@ extension Text: AnyHTML {
         }
       }.inlineStyles ?? "")
       \(font == nil ? "font-family: \(Font.Design.default.description);" : "")
-      color: \(color?.description ?? "inherit");
+      color: \((color ?? .primary).cssValue(environment));
       font-style: \(italic ? "italic" : "normal");
       font-weight: \(weight?.value ?? font?._weight.value ?? 400);
       letter-spacing: \(kerning);
       vertical-align: \(baseline == nil ? "baseline" : "\(baseline!)em");
       text-decoration: \(textDecoration);
-      text-decoration-color: \(strikethrough?.1?.description ?? underline?.1?.description
+      text-decoration-color: \(strikethrough?.1?.cssValue(environment) ?? underline?.1?.cssValue(environment)
         ?? "inherit")
       """,
       "class": isRedacted ? "_tokamak-text-redacted" : "",

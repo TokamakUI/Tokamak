@@ -33,6 +33,7 @@ public struct Text: View {
   let storage: _Storage
   let modifiers: [_Modifier]
 
+  @Environment(\.self) public var environment
   @Environment(\.font) var font
   @Environment(\.foregroundColor) var foregroundColor
   @Environment(\.redactionReasons) var redactionReasons

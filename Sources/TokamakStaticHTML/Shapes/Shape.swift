@@ -25,7 +25,7 @@ extension _OverlayModifier: DOMViewModifier
     return ["style": """
     border-style: \(style);
     border-width: \(overlay.shape.style.lineWidth);
-    border-color: \(overlay.style.description);
+    border-color: \(overlay.style.cssValue(environment));
     border-radius: inherit;
     """]
   }

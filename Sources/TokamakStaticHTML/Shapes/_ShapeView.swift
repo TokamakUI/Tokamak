@@ -24,7 +24,7 @@ protocol ShapeAttributes {
 extension _StrokedShape: ShapeAttributes {
   func attributes(_ style: ShapeStyle) -> [String: String] {
     if let color = style as? Color {
-      return ["style": "stroke: \(color); fill: none;"]
+      return ["style": "stroke: \(color.cssValue(environment)); fill: none;"]
     } else {
       return ["style": "stroke: black; fill: none;"]
     }
@@ -37,9 +37,9 @@ extension _ShapeView: ViewDeferredToRenderer {
     if let shapeAttributes = shape as? ShapeAttributes {
       return AnyView(HTML("div", shapeAttributes.attributes(style)) { path })
     } else if let color = style as? Color {
-      return AnyView(HTML("div", ["style": "fill: \(color);"]) { path })
+      return AnyView(HTML("div", ["style": "fill: \(color.cssValue(environment));"]) { path })
     } else if let foregroundColor = foregroundColor {
-      return AnyView(HTML("div", ["style": "fill: \(foregroundColor);"]) { path })
+      return AnyView(HTML("div", ["style": "fill: \(foregroundColor.cssValue(environment));"]) { path })
     } else {
       return path
     }

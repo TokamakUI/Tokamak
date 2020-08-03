@@ -14,13 +14,20 @@
 
 /// A value with a modifier applied to it.
 public struct ModifiedContent<Content, Modifier> {
+  @Environment(\.self) public var environment
   public typealias Body = Never
-  public let content: Content
-  public let modifier: Modifier
+  public private(set) var content: Content
+  public private(set) var modifier: Modifier
 
-  @inlinable public init(content: Content, modifier: Modifier) {
+  public init(content: Content, modifier: Modifier) {
     self.content = content
     self.modifier = modifier
+  }
+}
+
+extension ModifiedContent: EnvironmentReader where Modifier: EnvironmentReader {
+  mutating func setContent(from values: EnvironmentValues) {
+    modifier.setContent(from: values)
   }
 }
 

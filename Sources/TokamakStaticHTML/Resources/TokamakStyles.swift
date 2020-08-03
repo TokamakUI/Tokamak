@@ -76,6 +76,34 @@ public let tokamakStyles = """
   height: 1.2em;
   border-radius: .1em;
 }
+
+@media (prefers-color-scheme:dark) {
+  ._tokamak-buttonstyle-default {
+    background-color: rgb(99, 95, 98);
+  }
+
+  ._tokamak-securefield {
+    background-color: rgb(99, 95, 98);
+    color: #FFFFFF;
+  }
+  ._tokamak-textfield-default {
+    background-color: rgb(99, 95, 98);
+    color: #FFFFFF;
+  }
+  ._tokamak-textfield-roundedborder {
+    background-color: rgb(99, 95, 98);
+    color: #FFFFFF;
+  }
+
+  ._tokamak-picker {
+    background-color: rgb(99, 95, 98);
+    color: #FFFFFF;
+  }
+
+  ._tokamak-text-redacted::after {
+    background-color: rgb(100, 100, 100);
+  }
+}
 """
 
 public let rootNodeStyles = """

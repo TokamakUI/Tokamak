@@ -21,7 +21,7 @@ extension _Button: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
     let attributes: [String: String]
     if buttonStyle.type == DefaultButtonStyle.self {
-      attributes = [:]
+      attributes = ["class": "_tokamak-buttonstyle-default"]
     } else {
       attributes = ["class": "_tokamak-buttonstyle-reset"]
     }

@@ -15,7 +15,9 @@
 //  Created by Carson Katri on 6/29/20.
 //
 
-public struct _BackgroundModifier<Background>: ViewModifier where Background: View {
+public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
+  where Background: View {
+  public var environment: EnvironmentValues!
   public var background: Background
   public var alignment: Alignment
 
@@ -27,9 +29,18 @@ public struct _BackgroundModifier<Background>: ViewModifier where Background: Vi
   public func body(content: Content) -> some View {
     content
   }
+
+  mutating func setContent(from values: EnvironmentValues) {
+    environment = values
+  }
 }
 
-extension _BackgroundModifier: Equatable where Background: Equatable {}
+extension _BackgroundModifier: Equatable where Background: Equatable {
+  public static func == (lhs: _BackgroundModifier<Background>,
+                         rhs: _BackgroundModifier<Background>) -> Bool {
+    lhs.background == rhs.background
+  }
+}
 
 extension View {
   public func background<Background>(_ background: Background, alignment: Alignment = .center) -> some View where Background: View {
@@ -37,7 +48,9 @@ extension View {
   }
 }
 
-public struct _OverlayModifier<Overlay>: ViewModifier where Overlay: View {
+public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
+  where Overlay: View {
+  public var environment: EnvironmentValues!
   public var overlay: Overlay
   public var alignment: Alignment
 
@@ -52,9 +65,18 @@ public struct _OverlayModifier<Overlay>: ViewModifier where Overlay: View {
       overlay
     }
   }
+
+  mutating func setContent(from values: EnvironmentValues) {
+    environment = values
+  }
 }
 
-extension _OverlayModifier: Equatable where Overlay: Equatable {}
+extension _OverlayModifier: Equatable where Overlay: Equatable {
+  public static func == (lhs: _OverlayModifier<Overlay>,
+                         rhs: _OverlayModifier<Overlay>) -> Bool {
+    lhs.overlay == rhs.overlay
+  }
+}
 
 extension View {
   public func overlay<Overlay>(_ overlay: Overlay,
