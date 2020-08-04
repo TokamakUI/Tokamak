@@ -17,75 +17,164 @@ import TokamakCore
 extension PlainListStyle: ListStyleDeferredToRenderer {
   public func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
     AnyView(header
-      .padding(.vertical, 5)
-      .background(Color(0xDDDDDD)))
+      .font(.system(size: 17, weight: .medium))
+      .padding(.vertical, 4)
+      .padding(.leading)
+      .background(Color._withScheme {
+        switch $0 {
+        case .light: return Color(0xDDDDDD)
+        case .dark: return Color(0x323234)
+        }
+      })
+      .frame(minWidth: 0, maxWidth: .infinity)
+    )
   }
 
   public func sectionFooter<Footer>(_ footer: Footer) -> AnyView where Footer: View {
-    AnyView(VStack {
+    AnyView(VStack(alignment: .leading) {
       Divider()
       _ListRow.listRow(footer, self, isLast: true)
-    })
+    }
+    .padding(.leading)
+    .frame(minWidth: 0, maxWidth: .infinity))
+  }
+
+  public func sectionBody<SectionBody>(_ section: SectionBody) -> AnyView where SectionBody: View {
+    AnyView(section.padding(.leading).frame(minWidth: 0, maxWidth: .infinity))
+  }
+
+  public func listRow<Row>(_ row: Row) -> AnyView where Row: View {
+    AnyView(row.padding(.vertical))
+  }
+}
+
+extension InsetListStyle: ListStyleDeferredToRenderer {
+  public func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
+    AnyView(header
+      .font(.system(size: 17, weight: .medium))
+      .padding(.vertical, 4)
+      .padding(.leading, 24)
+      .background(Color._withScheme {
+        switch $0 {
+        case .light: return Color(0xDDDDDD)
+        case .dark: return Color(0x323234)
+        }
+      })
+      .frame(minWidth: 0, maxWidth: .infinity)
+    )
+  }
+
+  public func sectionFooter<Footer>(_ footer: Footer) -> AnyView where Footer: View {
+    AnyView(VStack(alignment: .leading) {
+      Divider()
+      _ListRow.listRow(footer, self, isLast: true)
+    }
+    .padding(.leading, 24)
+    .frame(minWidth: 0, maxWidth: .infinity))
+  }
+
+  public func sectionBody<SectionBody>(_ section: SectionBody) -> AnyView where SectionBody: View {
+    AnyView(section
+      .padding(.leading, 24)
+      .frame(minWidth: 0, maxWidth: .infinity)
+    )
+  }
+
+  public func listRow<Row>(_ row: Row) -> AnyView where Row: View {
+    AnyView(row.padding(.vertical))
   }
 }
 
 extension GroupedListStyle: ListStyleDeferredToRenderer {
   public func listBody<ListBody>(_ content: ListBody) -> AnyView where ListBody: View {
     AnyView(content
-      .padding(.top, 20)
-      .background(Color(0xEEEEEE))
+      .background(Color._withScheme {
+        switch $0 {
+        case .light: return Color(0xEEEEEE)
+        case .dark: return .clear
+        }
+      })
     )
   }
 
   public func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
     AnyView(header
       .font(.caption)
-      .padding(.leading, 20))
+      .padding([.top, .leading])
+      .frame(minWidth: 0, maxWidth: .infinity)
+    )
   }
 
   public func sectionBody<SectionBody>(_ section: SectionBody) -> AnyView where SectionBody: View {
     AnyView(section
-      .background(Color.white)
-      .padding(.top))
+      .padding(.leading)
+      .background(Color._withScheme {
+        switch $0 {
+        case .light: return .white
+        case .dark: return Color(0x444444)
+        }
+      })
+      .padding(.top)
+      .frame(minWidth: 0, maxWidth: .infinity))
   }
 
   public func sectionFooter<Footer>(_ footer: Footer) -> AnyView where Footer: View {
     AnyView(footer
       .font(.caption)
-      .padding(.leading, 20))
+      .padding([.top, .leading])
+    )
+  }
+
+  public func listRow<Row>(_ row: Row) -> AnyView where Row: View {
+    AnyView(row.padding(.vertical))
   }
 }
 
 extension InsetGroupedListStyle: ListStyleDeferredToRenderer {
   public func listBody<ListBody>(_ content: ListBody) -> AnyView where ListBody: View {
     AnyView(content
-      .padding(.top, 20)
-      .background(Color(0xEEEEEE))
+      .background(Color._withScheme {
+        switch $0 {
+        case .light: return Color(0xEEEEEE)
+        case .dark: return .clear
+        }
+      })
     )
-  }
-
-  public func listRow<Row>(_ row: Row) -> AnyView where Row: View {
-    AnyView(row
-      .padding([.leading, .trailing, .top, .bottom]))
   }
 
   public func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
     AnyView(header
       .font(.caption)
-      .padding(.leading, 20))
+      .padding([.top, .leading])
+      .padding(.leading)
+      .frame(minWidth: 0, maxWidth: .infinity)
+    )
   }
 
   public func sectionBody<SectionBody>(_ section: SectionBody) -> AnyView where SectionBody: View {
     AnyView(section
-      .background(Color.white)
+      .padding(.leading)
+      .background(Color._withScheme {
+        switch $0 {
+        case .light: return .white
+        case .dark: return Color(0x444444)
+        }
+      })
       .cornerRadius(10)
-      .padding(.all))
+      .padding([.horizontal, .top])
+      .frame(minWidth: 0, maxWidth: .infinity))
   }
 
   public func sectionFooter<Footer>(_ footer: Footer) -> AnyView where Footer: View {
     AnyView(footer
       .font(.caption)
-      .padding(.leading, 20))
+      .padding([.top, .leading])
+      .padding(.leading)
+    )
+  }
+
+  public func listRow<Row>(_ row: Row) -> AnyView where Row: View {
+    AnyView(row.padding(.vertical))
   }
 }
 
