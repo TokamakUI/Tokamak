@@ -46,7 +46,7 @@ struct _GeometryReader<Content: View>: View {
   @StateObject private var state = State()
 
   var body: some View {
-    HTML("div", ["style": "width: 100%; height: 100%"]) {
+    HTML("div", ["class": "_tokamak-geometryreader"]) {
       if let size = state.size {
         content(makeProxy(from: size))
       } else {

@@ -31,7 +31,6 @@ public let tokamakStyles = """
   height: 100%;
   padding: 0;
 }
-
 ._tokamak-disclosuregroup-label {
   cursor: pointer;
 }
@@ -75,6 +74,13 @@ public let tokamakStyles = """
   width: calc(100% + .1em);
   height: 1.2em;
   border-radius: .1em;
+}
+._tokamak-geometryreader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 """
 
