@@ -77,6 +77,20 @@ public let tokamakStyles = """
   border-radius: .1em;
 }
 
+._tokamak-navigationview {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+}
+._tokamak-navigationview-content {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  flex-grow: 1;
+  height: 100%;
+}
+
 ._tokamak-buttonstyle-default,
 ._tokamak-securefield,
 ._tokamak-textfield-default,
