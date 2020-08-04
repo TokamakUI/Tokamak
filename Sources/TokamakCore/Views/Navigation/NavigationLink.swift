@@ -15,8 +15,6 @@
 //  Created by Jed Fox on 06/30/2020.
 //
 
-import OpenCombine
-
 final class NavigationLinkDestination {
   let view: AnyView
   init<V: View>(_ destination: V) {
