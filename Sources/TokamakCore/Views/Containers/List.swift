@@ -68,11 +68,11 @@ public struct List<SelectionValue, Content>: View
             }
           }))
         }
-        return AnyView(_ListRow.buildItems(sections) { (view, isLast) -> AnyView in
+        return AnyView(_ListRow.buildItems(sections) { view, isLast in
           if let section = view.view as? SectionView {
-            return AnyView(section.listRow(style))
+            section.listRow(style)
           } else {
-            return AnyView(_ListRow.listRow(view, style, isLast: isLast))
+            _ListRow.listRow(view, style, isLast: isLast)
           }
         })
       } else {
@@ -83,7 +83,7 @@ public struct List<SelectionValue, Content>: View
 
   public var body: some View {
     if let style = style as? ListStyleDeferredToRenderer {
-      return style.listBody(ScrollView {
+      style.listBody(ScrollView {
         HStack {
           Spacer()
         }
@@ -91,13 +91,13 @@ public struct List<SelectionValue, Content>: View
           .environment(\._outlineGroupStyle, _ListOutlineGroupStyle())
       })
     } else {
-      return AnyView(ScrollView {
+      ScrollView {
         HStack {
           Spacer()
         }
         listStack
           .environment(\._outlineGroupStyle, _ListOutlineGroupStyle())
-      })
+      }
     }
   }
 }
@@ -111,7 +111,7 @@ public struct _ListRow {
         HStack {
           Spacer()
         }
-        AnyView(rowView(view, offset == children.count - 1))
+        rowView(view, offset == children.count - 1)
       }
     }
   }
