@@ -21,8 +21,8 @@ public struct _FlexFrameLayout: ViewModifier {
   public let maxHeight: CGFloat?
   public let alignment: Alignment
 
-  // This is a special case in SwiftUI, where the child
-  // will request the entire width of the parent.
+  // These are special cases in SwiftUI, where the child
+  // will request the entire width/height of the parent.
   public var fillWidth: Bool {
     minWidth == 0 && maxWidth == .infinity
   }
