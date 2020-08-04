@@ -89,7 +89,21 @@ extension InsetGroupedListStyle: ListStyleDeferredToRenderer {
   }
 }
 
+// TODO: Make sections collabsible (see Section.swift for more impl. details)
 extension SidebarListStyle: ListStyleDeferredToRenderer {
+  public func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
+    AnyView(header
+      .font(.system(size: 11, weight: .medium))
+      .foregroundColor(Color._withScheme {
+        switch $0 {
+        case .light: return Color(.sRGB, white: 0, opacity: 0.4)
+        case .dark: return Color(.sRGB, white: 1, opacity: 0.4)
+        }
+      })
+      .padding(.vertical, 2)
+      .padding(.leading, 4))
+  }
+
   public func listRow<Row>(_ row: Row) -> AnyView where Row: View {
     AnyView(row.frame(minWidth: 0, maxWidth: .infinity))
   }

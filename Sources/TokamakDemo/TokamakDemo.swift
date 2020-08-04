@@ -43,13 +43,10 @@ struct NavItem: View {
     destination = nil
   }
 
-  @ViewBuilder var body: some View {
+  @ViewBuilder
+  var body: some View {
     if let dest = destination {
-      NavigationLink(id, destination: HStack {
-        Spacer(minLength: 0)
-        dest
-        Spacer(minLength: 0)
-      })
+      NavigationLink(id, destination: dest)
     } else {
       #if os(WASI)
       Text(id)
@@ -76,7 +73,8 @@ struct TokamakDemoView: View {
               Counter(count: Count(value: 5), limit: 15)
                 .padding()
                 .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
-                .border(Color.red, width: 3))
+                .border(Color.red, width: 3)
+                .foregroundColor(.black))
             NavItem("ButtonStyle", destination: ButtonStyleDemo())
           }
           Section(header: Text("Containers")) {
