@@ -20,12 +20,7 @@ extension PlainListStyle: ListStyleDeferredToRenderer {
       .font(.system(size: 17, weight: .medium))
       .padding(.vertical, 4)
       .padding(.leading)
-      .background(Color._withScheme {
-        switch $0 {
-        case .light: return Color(0xDDDDDD)
-        case .dark: return Color(0x323234)
-        }
-      })
+      .background(Color.listSectionHeader)
       .frame(minWidth: 0, maxWidth: .infinity)
     )
   }
@@ -54,12 +49,7 @@ extension InsetListStyle: ListStyleDeferredToRenderer {
       .font(.system(size: 17, weight: .medium))
       .padding(.vertical, 4)
       .padding(.leading, 24)
-      .background(Color._withScheme {
-        switch $0 {
-        case .light: return Color(0xDDDDDD)
-        case .dark: return Color(0x323234)
-        }
-      })
+      .background(Color.listSectionHeader)
       .frame(minWidth: 0, maxWidth: .infinity)
     )
   }
@@ -88,12 +78,7 @@ extension InsetListStyle: ListStyleDeferredToRenderer {
 extension GroupedListStyle: ListStyleDeferredToRenderer {
   public func listBody<ListBody>(_ content: ListBody) -> AnyView where ListBody: View {
     AnyView(content
-      .background(Color._withScheme {
-        switch $0 {
-        case .light: return Color(0xEEEEEE)
-        case .dark: return .clear
-        }
-      })
+      .background(Color.groupedListBackground)
     )
   }
 
@@ -108,12 +93,7 @@ extension GroupedListStyle: ListStyleDeferredToRenderer {
   public func sectionBody<SectionBody>(_ section: SectionBody) -> AnyView where SectionBody: View {
     AnyView(section
       .padding(.leading)
-      .background(Color._withScheme {
-        switch $0 {
-        case .light: return .white
-        case .dark: return Color(0x444444)
-        }
-      })
+      .background(Color.listGroupBackground)
       .padding(.top)
       .frame(minWidth: 0, maxWidth: .infinity))
   }
@@ -132,14 +112,7 @@ extension GroupedListStyle: ListStyleDeferredToRenderer {
 
 extension InsetGroupedListStyle: ListStyleDeferredToRenderer {
   public func listBody<ListBody>(_ content: ListBody) -> AnyView where ListBody: View {
-    AnyView(content
-      .background(Color._withScheme {
-        switch $0 {
-        case .light: return Color(0xEEEEEE)
-        case .dark: return .clear
-        }
-      })
-    )
+    AnyView(content.background(Color.groupedListBackground))
   }
 
   public func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
@@ -154,12 +127,7 @@ extension InsetGroupedListStyle: ListStyleDeferredToRenderer {
   public func sectionBody<SectionBody>(_ section: SectionBody) -> AnyView where SectionBody: View {
     AnyView(section
       .padding(.leading)
-      .background(Color._withScheme {
-        switch $0 {
-        case .light: return .white
-        case .dark: return Color(0x444444)
-        }
-      })
+      .background(Color.listGroupBackground)
       .cornerRadius(10)
       .padding([.horizontal, .top])
       .frame(minWidth: 0, maxWidth: .infinity))
@@ -201,12 +169,7 @@ extension SidebarListStyle: ListStyleDeferredToRenderer {
     AnyView(content
       ._navigationLinkStyle(_SidebarNavigationLinkStyle())
       .padding([.horizontal, .top], 6)
-      .background(Color._withScheme {
-        switch $0 {
-        case .light: return Color(0xF2F2F7)
-        case .dark: return Color(0x2D2B30)
-        }
-      })
+      .background(Color.sidebarBackground)
     )
   }
 }

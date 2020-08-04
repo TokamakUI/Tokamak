@@ -31,12 +31,11 @@ enum ColorSchemeObserver {
     _ = matchMediaDarkScheme.addEventListener!("change", closure)
     Self.closure = closure
     Self.cancellable = Self.publisher.sink { colorScheme in
-      let systemBackground = { () -> String in
-        switch colorScheme {
-        case .light: return "#FFFFFF"
-        case .dark: return "rgb(38, 38, 38)"
-        }
-      }()
+      let systemBackground: String
+      switch colorScheme {
+      case .light: systemBackground = "#FFFFFF"
+      case .dark: systemBackground = "rgb(38, 38, 38)"
+      }
       rootElement.style.object!.backgroundColor = .string("\(systemBackground)")
     }
   }
