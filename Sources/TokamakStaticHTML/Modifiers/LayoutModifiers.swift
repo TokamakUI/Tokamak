@@ -46,14 +46,12 @@ extension _FrameLayout: DOMViewModifier {
 
 extension _FlexFrameLayout: DOMViewModifier {
   public var attributes: [String: String] {
-    let flexibleWidth = minWidth == 0 && maxWidth == .infinity
-    let flexibleHeight = minHeight == 0 && maxHeight == .infinity
-    return ["style": """
+    ["style": """
     \(unwrapToStyle(\.minWidth, property: "min-width"))
-    width: \(unwrapToStyle(\.idealWidth, defaultValue: flexibleWidth ? "100%" : "auto"));
+    width: \(unwrapToStyle(\.idealWidth, defaultValue: fillWidth ? "100%" : "auto"));
     \(unwrapToStyle(\.maxWidth, property: "max-width"))
     \(unwrapToStyle(\.minHeight, property: "min-height"))
-    height: \(unwrapToStyle(\.idealHeight, defaultValue: flexibleHeight ? "100%" : "auto"));
+    height: \(unwrapToStyle(\.idealHeight, defaultValue: fillHeight ? "100%" : "auto"));
     \(unwrapToStyle(\.maxHeight, property: "max-height"))
     overflow: hidden;
     text-overflow: ellipsis;
