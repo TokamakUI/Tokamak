@@ -37,9 +37,13 @@ extension _ShapeView: ViewDeferredToRenderer {
     if let shapeAttributes = shape as? ShapeAttributes {
       return AnyView(HTML("div", shapeAttributes.attributes(style)) { path })
     } else if let color = style as? Color {
-      return AnyView(HTML("div", ["style": "fill: \(color.cssValue(environment));"]) { path })
+      return AnyView(HTML("div", [
+        "style": "fill: \(color.cssValue(environment));",
+      ]) { path })
     } else if let foregroundColor = foregroundColor {
-      return AnyView(HTML("div", ["style": "fill: \(foregroundColor.cssValue(environment));"]) { path })
+      return AnyView(HTML("div", [
+        "style": "fill: \(foregroundColor.cssValue(environment));",
+      ]) { path })
     } else {
       return path
     }

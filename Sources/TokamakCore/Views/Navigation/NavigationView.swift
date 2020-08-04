@@ -39,13 +39,14 @@ public struct _NavigationViewProxy<Content: View>: View {
 
   public init(_ subject: NavigationView<Content>) { self.subject = subject }
 
-  public var content: Content { subject.content }
+  public var content: some View {
+    subject.content
+      .environmentObject(subject.context)
+  }
+
   public var body: some View {
-    HStack {
-      content
-      subject.context.destination.view
-    }
-    .environmentObject(subject.context)
+    subject.context.destination.view
+      .environmentObject(subject.context)
   }
 }
 

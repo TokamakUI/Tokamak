@@ -22,7 +22,17 @@ extension NavigationView: ViewDeferredToRenderer {
       width: 100%; height: 100%;
       """,
     ]) {
-      _NavigationViewProxy(self)
+      _NavigationViewProxy(self).content
+      HTML("div", [
+        "style": """
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        flex-grow: 1;
+        height: 100%;
+        """,
+      ]) {
+        _NavigationViewProxy(self)
+      }
     })
   }
 }

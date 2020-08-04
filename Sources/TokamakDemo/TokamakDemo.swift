@@ -35,7 +35,7 @@ struct NavItem: Identifiable {
 
   init<V>(_ id: String, destination: V) where V: View {
     self.id = id
-    self.destination = title(destination.frame(minWidth: 300), title: id)
+    self.destination = title(destination, title: id)
   }
 
   init(unavailable id: String) {
@@ -141,11 +141,7 @@ struct TokamakDemoView: View {
       let list = title(
         List(links) { link in
           if let dest = link.destination {
-            NavigationLink(link.id, destination: HStack {
-              Spacer()
-              dest
-              Spacer()
-            })
+            NavigationLink(link.id, destination: dest)
           } else {
             #if os(WASI)
             Text(link.id)

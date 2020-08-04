@@ -157,11 +157,15 @@ extension Text {
         underline = (active, color)
       }
     }
+
     let hasStrikethrough = strikethrough?.0 ?? false
     let hasUnderline = underline?.0 ?? false
     let textDecoration = !hasStrikethrough && !hasUnderline ?
       "none" :
       "\(hasStrikethrough ? "line-through" : "") \(hasUnderline ? "underline" : "")"
+    let decorationColor = strikethrough?.1?.cssValue(environment)
+      ?? underline?.1?.cssValue(environment)
+      ?? "inherit"
 
     return [
       "style": """
@@ -179,8 +183,7 @@ extension Text {
       letter-spacing: \(kerning);
       vertical-align: \(baseline == nil ? "baseline" : "\(baseline!)em");
       text-decoration: \(textDecoration);
-      text-decoration-color: \(strikethrough?.1?.cssValue(environment) ?? underline?.1?.cssValue(environment)
-        ?? "inherit")
+      text-decoration-color: \(decorationColor)
       """,
       "class": isRedacted ? "_tokamak-text-redacted" : "",
     ]
