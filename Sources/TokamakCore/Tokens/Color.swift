@@ -31,11 +31,13 @@ public struct Color: Hashable, Equatable {
   public let opacity: Double
   public let space: RGBColorSpace
 
-  public init(_ colorSpace: RGBColorSpace = .sRGB,
-              red: Double,
-              green: Double,
-              blue: Double,
-              opacity: Double = 1) {
+  public init(
+    _ colorSpace: RGBColorSpace = .sRGB,
+    red: Double,
+    green: Double,
+    blue: Double,
+    opacity: Double = 1
+  ) {
     self.red = red
     self.green = green
     self.blue = blue
@@ -43,9 +45,7 @@ public struct Color: Hashable, Equatable {
     space = colorSpace
   }
 
-  public init(_ colorSpace: RGBColorSpace = .sRGB,
-              white: Double,
-              opacity: Double = 1) {
+  public init(_ colorSpace: RGBColorSpace = .sRGB, white: Double, opacity: Double = 1) {
     red = white
     green = white
     blue = white
@@ -55,10 +55,7 @@ public struct Color: Hashable, Equatable {
 
   // Source for the formula:
   // https://en.wikipedia.org/wiki/HSL_and_HSV#HSL_to_RGB_alternative
-  public init(hue: Double,
-              saturation: Double,
-              brightness: Double,
-              opacity: Double = 1) {
+  public init(hue: Double, saturation: Double, brightness: Double, opacity: Double = 1) {
     let a = saturation * min(brightness / 2, 1 - (brightness / 2))
     let f: (Int) -> Double = { n in
       let k = Double((n + Int(hue * 12)) % 12)

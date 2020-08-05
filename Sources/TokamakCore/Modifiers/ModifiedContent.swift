@@ -18,7 +18,8 @@ public struct ModifiedContent<Content, Modifier> {
   public let content: Content
   public let modifier: Modifier
 
-  @inlinable public init(content: Content, modifier: Modifier) {
+  @inlinable
+  public init(content: Content, modifier: Modifier) {
     self.content = content
     self.modifier = modifier
   }

@@ -200,18 +200,18 @@ appreciated and helps in maintaining the project.
 
 ### Coding Style
 
-This project uses [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
-and [SwiftLint](https://github.com/realm/SwiftLint) to
-enforce formatting and coding style. We encourage you to run SwiftFormat within
-a local clone of the repository in whatever way works best for you either
-manually or automatically via an [Xcode
-extension](https://github.com/nicklockwood/SwiftFormat#xcode-source-editor-extension),
-[build phase](https://github.com/nicklockwood/SwiftFormat#xcode-build-phase) or
-[git pre-commit
-hook](https://github.com/nicklockwood/SwiftFormat#git-pre-commit-hook) etc.
+This project uses [SwiftFormat](https://github.com/nicklockwood/SwiftFormat) and
+[SwiftLint](https://github.com/realm/SwiftLint) to enforce formatting and coding style. SwiftFormat
+0.45.3 and SwiftLint 0.39.2 or later versions are recommended. We encourage you to run SwiftFormat
+and SwiftLint within a local clone of the repository in whatever way works best for you. You can do
+that either manually, or automatically with VSCode extensions for
+[SwiftFormat](https://github.com/vknabel/vscode-swiftformat) and
+[SwiftLint](https://github.com/vknabel/vscode-swiftlint) respectively, or with the [Xcode
+extension](https://github.com/nicklockwood/SwiftFormat#xcode-source-editor-extension), or [build
+phase](https://github.com/nicklockwood/SwiftFormat#xcode-build-phase).
 
-To guarantee that these tools run before you commit your changes on macOS, you're encouraged
-to run this once to set up the [pre-commit](https://pre-commit.com/) hook:
+To guarantee that these tools run before you commit your changes on macOS, you're encouraged to run
+this once to set up the [pre-commit](https://pre-commit.com/) hook:
 
 ```
 brew bundle # installs SwiftLint, SwiftFormat and pre-commit

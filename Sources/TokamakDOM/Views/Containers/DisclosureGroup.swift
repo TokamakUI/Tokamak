@@ -30,9 +30,11 @@ extension DisclosureGroup: ViewDeferredToRenderer {
       ]
     ) {
       HTML("div", ["class": "_tokamak-disclosuregroup-chevron"])
-        .rotationEffect(_DisclosureGroupProxy(self).isExpanded ?
-          .degrees(90) :
-          .degrees(0))
+        .rotationEffect(
+          _DisclosureGroupProxy(self).isExpanded ?
+            .degrees(90) :
+            .degrees(0)
+        )
     }
   }
 
