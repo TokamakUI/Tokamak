@@ -40,3 +40,15 @@ extension View {
     padding(.all, length)
   }
 }
+
+extension ModifiedContent where Modifier == _PaddingLayout, Content: View {
+  public func padding(_ length: CGFloat) -> some View {
+    var layout = modifier
+    layout.insets?.top += length
+    layout.insets?.leading += length
+    layout.insets?.bottom += length
+    layout.insets?.trailing += length
+
+    return ModifiedContent(content: content, modifier: layout)
+  }
+}
