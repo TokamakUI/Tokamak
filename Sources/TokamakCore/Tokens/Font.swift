@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// swiftlint:disable line_length
 public struct Font: Hashable {
   public let _name: String
   public let _size: CGFloat
@@ -25,11 +24,31 @@ public struct Font: Hashable {
   public let _leading: Leading
 
   public func italic() -> Self {
-    .init(_name: _name, _size: _size, _design: _design, _weight: _weight, _smallCaps: _smallCaps, _italic: true, _bold: _bold, _monospaceDigit: _monospaceDigit, _leading: _leading)
+    .init(
+      _name: _name,
+      _size: _size,
+      _design: _design,
+      _weight: _weight,
+      _smallCaps: _smallCaps,
+      _italic: true,
+      _bold: _bold,
+      _monospaceDigit: _monospaceDigit,
+      _leading: _leading
+    )
   }
 
   public func smallCaps() -> Self {
-    .init(_name: _name, _size: _size, _design: _design, _weight: _weight, _smallCaps: true, _italic: _italic, _bold: _bold, _monospaceDigit: _monospaceDigit, _leading: _leading)
+    .init(
+      _name: _name,
+      _size: _size,
+      _design: _design,
+      _weight: _weight,
+      _smallCaps: true,
+      _italic: _italic,
+      _bold: _bold,
+      _monospaceDigit: _monospaceDigit,
+      _leading: _leading
+    )
   }
 
   public func lowercaseSmallCaps() -> Self {
@@ -41,19 +60,59 @@ public struct Font: Hashable {
   }
 
   public func monospacedDigit() -> Self {
-    .init(_name: _name, _size: _size, _design: _design, _weight: _weight, _smallCaps: _smallCaps, _italic: _italic, _bold: _bold, _monospaceDigit: true, _leading: _leading)
+    .init(
+      _name: _name,
+      _size: _size,
+      _design: _design,
+      _weight: _weight,
+      _smallCaps: _smallCaps,
+      _italic: _italic,
+      _bold: _bold,
+      _monospaceDigit: true,
+      _leading: _leading
+    )
   }
 
   public func weight(_ weight: Weight) -> Self {
-    .init(_name: _name, _size: _size, _design: _design, _weight: weight, _smallCaps: _smallCaps, _italic: _italic, _bold: _bold, _monospaceDigit: _monospaceDigit, _leading: _leading)
+    .init(
+      _name: _name,
+      _size: _size,
+      _design: _design,
+      _weight: weight,
+      _smallCaps: _smallCaps,
+      _italic: _italic,
+      _bold: _bold,
+      _monospaceDigit: _monospaceDigit,
+      _leading: _leading
+    )
   }
 
   public func bold() -> Self {
-    .init(_name: _name, _size: _size, _design: _design, _weight: _weight, _smallCaps: _smallCaps, _italic: _italic, _bold: true, _monospaceDigit: _monospaceDigit, _leading: _leading)
+    .init(
+      _name: _name,
+      _size: _size,
+      _design: _design,
+      _weight: _weight,
+      _smallCaps: _smallCaps,
+      _italic: _italic,
+      _bold: true,
+      _monospaceDigit: _monospaceDigit,
+      _leading: _leading
+    )
   }
 
   public func leading(_ leading: Leading) -> Self {
-    .init(_name: _name, _size: _size, _design: _design, _weight: _weight, _smallCaps: _smallCaps, _italic: _italic, _bold: true, _monospaceDigit: _monospaceDigit, _leading: leading)
+    .init(
+      _name: _name,
+      _size: _size,
+      _design: _design,
+      _weight: _weight,
+      _smallCaps: _smallCaps,
+      _italic: _italic,
+      _bold: true,
+      _monospaceDigit: _monospaceDigit,
+      _leading: leading
+    )
   }
 }
 
@@ -86,8 +145,20 @@ public enum _FontNames: String, CaseIterable {
 }
 
 extension Font {
-  public static func system(size: CGFloat, weight: Weight = .regular, design: Design = .default) -> Self {
-    .init(_name: _FontNames.system.rawValue, _size: size, _design: design, _weight: weight, _smallCaps: false, _italic: false, _bold: false, _monospaceDigit: false, _leading: .standard)
+  public static func system(size: CGFloat, weight: Weight = .regular,
+                            design: Design = .default) -> Self
+  {
+    .init(
+      _name: _FontNames.system.rawValue,
+      _size: size,
+      _design: design,
+      _weight: weight,
+      _smallCaps: false,
+      _italic: false,
+      _bold: false,
+      _monospaceDigit: false,
+      _leading: .standard
+    )
   }
 
   public enum Design: Hashable {

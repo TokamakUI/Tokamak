@@ -15,9 +15,11 @@
 import TokamakCore
 
 private extension DOMViewModifier {
-  func unwrapToStyle<T>(_ key: KeyPath<Self, T?>,
-                        property: String? = nil,
-                        defaultValue: String = "") -> String {
+  func unwrapToStyle<T>(
+    _ key: KeyPath<Self, T?>,
+    property: String? = nil,
+    defaultValue: String = ""
+  ) -> String {
     if let val = self[keyPath: key] {
       if let property = property {
         return "\(property): \(val)px;"

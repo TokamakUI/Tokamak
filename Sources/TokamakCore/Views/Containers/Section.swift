@@ -77,12 +77,14 @@ extension Section: View, SectionView where Parent: View, Content: View, Footer: 
   }
 
   func listRow(_ style: ListStyle) -> AnyView {
-    AnyView(VStack(alignment: .leading) {
-      headerView(style)
-      sectionContent(style)
-      footerView(style)
-    }
-    .frame(minWidth: 0, maxWidth: .infinity))
+    AnyView(
+      VStack(alignment: .leading) {
+        headerView(style)
+        sectionContent(style)
+        footerView(style)
+      }
+      .frame(minWidth: 0, maxWidth: .infinity)
+    )
   }
 }
 

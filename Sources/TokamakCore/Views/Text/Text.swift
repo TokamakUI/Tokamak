@@ -82,7 +82,7 @@ extension Text._Storage {
     switch self {
     case let .segmentedText(segments):
       return segments
-        .map { $0.0.rawText }
+        .map(\.0.rawText)
         .reduce("", +)
     case let .verbatim(text):
       return text

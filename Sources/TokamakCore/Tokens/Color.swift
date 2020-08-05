@@ -49,46 +49,31 @@ public struct Color: Hashable, Equatable {
     self.evaluator = evaluator
   }
 
-  public init(_ colorSpace: RGBColorSpace = .sRGB,
-              red: Double,
-              green: Double,
-              blue: Double,
-              opacity: Double = 1) {
+  public init(
+    _ colorSpace: RGBColorSpace = .sRGB,
+    red: Double,
+    green: Double,
+    blue: Double,
+    opacity: Double = 1
+  ) {
     self.init { _ in
-      _RGBA(red: red,
-            green: green,
-            blue: blue,
-            opacity: opacity,
-            space: colorSpace)
+      _RGBA(red: red, green: green, blue: blue, opacity: opacity, space: colorSpace)
     }
   }
 
-  public init(_ colorSpace: RGBColorSpace = .sRGB,
-              white: Double,
-              opacity: Double = 1) {
-    self.init(colorSpace,
-              red: white,
-              green: white,
-              blue: white,
-              opacity: opacity)
+  public init(_ colorSpace: RGBColorSpace = .sRGB, white: Double, opacity: Double = 1) {
+    self.init(colorSpace, red: white, green: white, blue: white, opacity: opacity)
   }
 
   // Source for the formula:
   // https://en.wikipedia.org/wiki/HSL_and_HSV#HSL_to_RGB_alternative
-  public init(hue: Double,
-              saturation: Double,
-              brightness: Double,
-              opacity: Double = 1) {
+  public init(hue: Double, saturation: Double, brightness: Double, opacity: Double = 1) {
     let a = saturation * min(brightness / 2, 1 - (brightness / 2))
     let f = { (n: Int) -> Double in
       let k = Double((n + Int(hue * 12)) % 12)
       return brightness - (a * max(-1, min(k - 3, 9 - k, 1)))
     }
-    self.init(.sRGB,
-              red: f(0),
-              green: f(8),
-              blue: f(4),
-              opacity: opacity)
+    self.init(.sRGB, red: f(0), green: f(8), blue: f(4), opacity: opacity)
   }
 
   /// Create a `Color` dependent on the current `ColorScheme`.
@@ -118,17 +103,9 @@ extension Color {
   public static let primary: Self = .init {
     switch $0.colorScheme {
     case .light:
-      return .init(red: 0,
-                   green: 0,
-                   blue: 0,
-                   opacity: 1,
-                   space: .sRGB)
+      return .init(red: 0, green: 0, blue: 0, opacity: 1, space: .sRGB)
     case .dark:
-      return .init(red: 1,
-                   green: 1,
-                   blue: 1,
-                   opacity: 1,
-                   space: .sRGB)
+      return .init(red: 1, green: 1, blue: 1, opacity: 1, space: .sRGB)
     }
   }
 
@@ -145,11 +122,13 @@ extension Color {
 extension Color: ExpressibleByIntegerLiteral {
   /// Allows initializing value of `Color` type from hex values
   public init(integerLiteral bitMask: UInt32) {
-    self.init(.sRGB,
-              red: Double((bitMask & 0xFF0000) >> 16) / 255,
-              green: Double((bitMask & 0x00FF00) >> 8) / 255,
-              blue: Double(bitMask & 0x0000FF) / 255,
-              opacity: 1)
+    self.init(
+      .sRGB,
+      red: Double((bitMask & 0xFF0000) >> 16) / 255,
+      green: Double((bitMask & 0x00FF00) >> 8) / 255,
+      blue: Double(bitMask & 0x0000FF) / 255,
+      opacity: 1
+    )
   }
 }
 
@@ -166,11 +145,13 @@ extension Color {
     else {
       return nil
     }
-    self.init(.sRGB,
-              red: Double(red) / 255,
-              green: Double(green) / 255,
-              blue: Double(blue) / 255,
-              opacity: 1)
+    self.init(
+      .sRGB,
+      red: Double(red) / 255,
+      green: Double(green) / 255,
+      blue: Double(blue) / 255,
+      opacity: 1
+    )
   }
 }
 

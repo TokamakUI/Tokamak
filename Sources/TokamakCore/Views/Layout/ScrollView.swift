@@ -40,9 +40,11 @@ public struct ScrollView<Content>: View where Content: View {
   public let axes: Axis.Set
   public let showsIndicators: Bool
 
-  public init(_ axes: Axis.Set = .vertical,
-              showsIndicators: Bool = true,
-              @ViewBuilder content: () -> Content) {
+  public init(
+    _ axes: Axis.Set = .vertical,
+    showsIndicators: Bool = true,
+    @ViewBuilder content: () -> Content
+  ) {
     self.axes = axes
     self.showsIndicators = showsIndicators
     self.content = content()

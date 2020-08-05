@@ -54,41 +54,37 @@ public enum _DefaultSceneStorageProvider {
 extension SceneStorage: ObservedProperty {}
 
 extension SceneStorage {
-  public init(wrappedValue: Value,
-              _ key: String) where Value == Bool {
+  public init(wrappedValue: Value, _ key: String) where Value == Bool {
     defaultValue = wrappedValue
     self.key = key
     store = { $0.store(key: $1, value: $2) }
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value,
-              _ key: String) where Value == Int {
+  public init(wrappedValue: Value, _ key: String) where Value == Int {
     defaultValue = wrappedValue
     self.key = key
     store = { $0.store(key: $1, value: $2) }
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value,
-              _ key: String) where Value == Double {
+  public init(wrappedValue: Value, _ key: String) where Value == Double {
     defaultValue = wrappedValue
     self.key = key
     store = { $0.store(key: $1, value: $2) }
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value,
-              _ key: String) where Value == String {
+  public init(wrappedValue: Value, _ key: String) where Value == String {
     defaultValue = wrappedValue
     self.key = key
     store = { $0.store(key: $1, value: $2) }
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value,
-              _ key: String)
-    where Value: RawRepresentable, Value.RawValue == Int {
+  public init(wrappedValue: Value, _ key: String) where Value: RawRepresentable,
+    Value.RawValue == Int
+  {
     defaultValue = wrappedValue
     self.key = key
     store = { $0.store(key: $1, value: $2.rawValue) }
@@ -100,9 +96,9 @@ extension SceneStorage {
     }
   }
 
-  public init(wrappedValue: Value,
-              _ key: String)
-    where Value: RawRepresentable, Value.RawValue == String {
+  public init(wrappedValue: Value, _ key: String)
+    where Value: RawRepresentable, Value.RawValue == String
+  {
     defaultValue = wrappedValue
     self.key = key
     store = { $0.store(key: $1, value: $2.rawValue) }

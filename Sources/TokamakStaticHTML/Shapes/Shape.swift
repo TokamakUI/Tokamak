@@ -19,7 +19,8 @@ import TokamakCore
 
 // Border modifier
 extension _OverlayModifier: DOMViewModifier
-  where Overlay == _ShapeView<_StrokedShape<TokamakCore.Rectangle._Inset>, Color> {
+  where Overlay == _ShapeView<_StrokedShape<TokamakCore.Rectangle._Inset>, Color>
+{
   public var attributes: [String: String] {
     let style = overlay.shape.style.dashPhase == 0 ? "solid" : "dashed"
     return ["style": """

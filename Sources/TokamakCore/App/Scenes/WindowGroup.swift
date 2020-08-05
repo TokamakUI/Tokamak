@@ -27,18 +27,17 @@ public struct WindowGroup<Content>: Scene, TitledScene where Content: View {
     self.content = content()
   }
 
-  @_disfavoredOverload public init(_ title: Text,
-                                   id: String,
-                                   @ViewBuilder content: () -> Content) {
+  @_disfavoredOverload
+  public init(_ title: Text, id: String, @ViewBuilder content: () -> Content) {
     self.id = id
     self.title = title
     self.content = content()
   }
 
-  @_disfavoredOverload public init<S>(_ title: S,
-                                      id: String,
-                                      @ViewBuilder content: () -> Content)
-    where S: StringProtocol {
+  @_disfavoredOverload
+  public init<S>(_ title: S, id: String, @ViewBuilder content: () -> Content)
+    where S: StringProtocol
+  {
     self.id = id
     self.title = Text(title)
     self.content = content()
@@ -50,16 +49,15 @@ public struct WindowGroup<Content>: Scene, TitledScene where Content: View {
     self.content = content()
   }
 
-  @_disfavoredOverload public init(_ title: Text,
-                                   @ViewBuilder content: () -> Content) {
+  @_disfavoredOverload
+  public init(_ title: Text, @ViewBuilder content: () -> Content) {
     id = ""
     self.title = title
     self.content = content()
   }
 
-  @_disfavoredOverload public init<S>(_ title: S,
-                                      @ViewBuilder content: () -> Content)
-    where S: StringProtocol {
+  @_disfavoredOverload
+  public init<S>(_ title: S, @ViewBuilder content: () -> Content) where S: StringProtocol {
     id = ""
     self.title = Text(title)
     self.content = content()
