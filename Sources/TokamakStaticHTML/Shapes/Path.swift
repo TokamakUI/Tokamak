@@ -16,18 +16,17 @@
 //
 import TokamakCore
 
+extension StrokeStyle {
+  static var zero: Self {
+    .init(lineWidth: 0, lineCap: .butt, lineJoin: .miter, miterLimit: 0, dash: [], dashPhase: 0)
+  }
+}
+
 extension Path: ViewDeferredToRenderer {
   // TODO: Support transformations
   func svgFrom(
     storage: Storage,
-    strokeStyle: StrokeStyle = .init(
-      lineWidth: 0,
-      lineCap: .butt,
-      lineJoin: .miter,
-      miterLimit: 0,
-      dash: [],
-      dashPhase: 0
-    )
+    strokeStyle: StrokeStyle = .zero
   ) -> AnyView {
     let stroke = [
       "stroke-width": "\(strokeStyle.lineWidth)",
@@ -94,14 +93,7 @@ extension Path: ViewDeferredToRenderer {
 
   func svgFrom(
     elements: [Element],
-    strokeStyle: StrokeStyle = .init(
-      lineWidth: 0,
-      lineCap: .butt,
-      lineJoin: .miter,
-      miterLimit: 0,
-      dash: [],
-      dashPhase: 0
-    )
+    strokeStyle: StrokeStyle = .zero
   ) -> AnyView {
     var d = [String]()
     for element in elements {
@@ -126,14 +118,7 @@ extension Path: ViewDeferredToRenderer {
 
   func svgFrom(
     subpaths: [_SubPath],
-    strokeStyle: StrokeStyle = .init(
-      lineWidth: 0,
-      lineCap: .butt,
-      lineJoin: .miter,
-      miterLimit: 0,
-      dash: [],
-      dashPhase: 0
-    )
+    strokeStyle: StrokeStyle = .zero
   ) -> AnyView {
     AnyView(ForEach(Array(subpaths.enumerated()), id: \.offset) { _, path in
       path.path.svgBody(strokeStyle: strokeStyle)
@@ -185,14 +170,7 @@ extension Path: ViewDeferredToRenderer {
 
   @ViewBuilder
   func svgBody(
-    strokeStyle: StrokeStyle = .init(
-      lineWidth: 0,
-      lineCap: .butt,
-      lineJoin: .miter,
-      miterLimit: 0,
-      dash: [],
-      dashPhase: 0
-    )
+    strokeStyle: StrokeStyle = .zero
   ) -> some View {
     svgFrom(storage: storage, strokeStyle: strokeStyle)
     svgFrom(elements: elements, strokeStyle: strokeStyle)

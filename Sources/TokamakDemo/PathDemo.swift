@@ -39,10 +39,7 @@ struct PathDemo: View {
           size: .init(width: 20, height: 20)
         ))
         path.addRoundedRect(
-          in: .init(
-            origin: .init(x: 50, y: 0),
-            size: .init(width: 20, height: 20)
-          ),
+          in: .init(origin: .init(x: 50, y: 0), size: .init(width: 20, height: 20)),
           cornerSize: .init(width: 4, height: 4)
         )
         path.addArc(
