@@ -169,13 +169,7 @@ extension Text {
 
     return [
       "style": """
-      \(font?.styles.filter {
-        if weight != nil {
-          return $0.key != "font-weight"
-        } else {
-          return true
-        }
-      }.inlineStyles ?? "")
+      \(font?.styles.filter { weight != nil ? $0.key != "font-weight" : true }.inlineStyles ?? "")
       \(font == nil ? "font-family: \(Font.Design.default.description);" : "")
       color: \((color ?? .primary).cssValue(environment));
       font-style: \(italic ? "italic" : "normal");
