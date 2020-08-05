@@ -39,31 +39,16 @@ extension OutlineGroup where ID == Data.Element.ID,
     _ root: DataElement,
     children: KeyPath<DataElement, Data?>,
     @ViewBuilder content: @escaping (DataElement) -> Leaf
-  )
-    where ID == DataElement.ID, DataElement: Identifiable, DataElement == Data.Element
-  {
-    self.init(
-      root,
-      id: \.id,
-      children: children,
-      content: content
-    )
+  ) where ID == DataElement.ID, DataElement: Identifiable, DataElement == Data.Element {
+    self.init(root, id: \.id, children: children, content: content)
   }
 
   public init<DataElement>(
     _ data: Data,
     children: KeyPath<DataElement, Data?>,
     @ViewBuilder content: @escaping (DataElement) -> Leaf
-  ) where ID == DataElement.ID,
-    DataElement: Identifiable,
-    DataElement == Data.Element
-  {
-    self.init(
-      data,
-      id: \.id,
-      children: children,
-      content: content
-    )
+  ) where ID == DataElement.ID, DataElement: Identifiable, DataElement == Data.Element {
+    self.init(data, id: \.id, children: children, content: content)
   }
 }
 
