@@ -4,22 +4,25 @@
 
 ![CI status](https://github.com/swiftwasm/Tokamak/workflows/CI/badge.svg?branch=main)
 
-At the moment Tokamak implements a very basic subset of SwiftUI. Its DOM renderer supports
-a few view types and modifiers (you can check the current list in [the progress document](docs/progress.md)),
-and a new `HTML` view for constructing arbitrary HTML. The long-term goal of Tokamak is to implement
-as much of SwiftUI API as possible and to provide a few more helpful additions that simplify HTML
-and CSS interactions.
+At the moment Tokamak implements a very basic subset of SwiftUI. Its DOM renderer supports a few
+view types and modifiers (you can check the current list in [the progress
+document](docs/progress.md)), and a new `HTML` view for constructing arbitrary HTML. The long-term
+goal of Tokamak is to implement as much of SwiftUI API as possible and to provide a few more helpful
+additions that simplify HTML and CSS interactions.
 
 If there's some SwiftUI API that's missing but you'd like to use it, please review the existing
-[issues](https://github.com/swiftwasm/Tokamak/issues) and [PRs](https://github.com/swiftwasm/Tokamak/pulls)
-to get more details about the current status, or [create a new issue](https://github.com/swiftwasm/Tokamak/issues/new)
-to let us prioritize the development based on the demand. We also try to make the development of
-views and modifiers easier (with the help from the `HTML` view, see [the example
-below](https://github.com/swiftwasm/Tokamak#arbitrary-html)), so pull requests are very welcome! Don't
-forget to check [the "Contributing" section](https://github.com/swiftwasm/Tokamak#contributing) first.
+[issues](https://github.com/swiftwasm/Tokamak/issues) and
+[PRs](https://github.com/swiftwasm/Tokamak/pulls) to get more details about the current status, or
+[create a new issue](https://github.com/swiftwasm/Tokamak/issues/new) to let us prioritize the
+development based on the demand. We also try to make the development of views and modifiers easier
+(with the help from the `HTML` view, see [the example
+below](https://github.com/swiftwasm/Tokamak#arbitrary-html)), so pull requests are very welcome!
+Don't forget to check [the "Contributing"
+section](https://github.com/swiftwasm/Tokamak#contributing) first.
 
-If you'd like to participate in the growing [SwiftWasm](https://swiftwasm.org) community, you're also very
-welcome to join the `#webassembly` channel in [the SwiftPM Slack](https://swift-package-manager.herokuapp.com/).
+If you'd like to participate in the growing [SwiftWasm](https://swiftwasm.org) community, you're
+also very welcome to join the `#webassembly` channel in [the SwiftPM
+Slack](https://swift-package-manager.herokuapp.com/).
 
 ### Example code
 
@@ -169,34 +172,33 @@ will build the demo app that shows almost all of the currently implemented APIs.
 ### Modular structure
 
 Tokamak is built with modularity in mind, providing a cross-platform `TokamakCore` module and
-separate modules for platform-specific renderers. Currently, the only available renderer module
-is `TokamakDOM`, but we intend to provide other renderers in the future, such as `TokamakHTML`
-for static websites and server-side rendering. Tokamak users only need to import a renderer module
-they would like to use, while `TokamakCore` is hidden as an "internal" `Tokamak` package target.
-Unfortunately, Swift does not allow us to specify that certain symbols in `TokamakCore` are private
-to a package, but they need to stay `public` for renderer modules to get access to them. Thus, the
-current workaround is to mark those symbols with underscores in their names to indicate this. It
-can be formulated as these "rules":
+separate modules for platform-specific renderers. Currently, the only available renderer modules are
+`TokamakDOM` and `TokamakStaticHTML`, the latter can be used for static websites and server-side
+rendering. If you'd like to implement your own custom renderer, please refer to our [renderers
+guide](docs/RenderersGuide.md) for more details.
 
-1. If a symbol is restricted to a module and has no `public` access control, no need for an underscore.
-2. If a symbol is part of a public renderer module API (e.g. `TokamakDOM`), no need for an underscore,
-   users may use those symbols directly, and it is re-exported from `TokamakCore` by the renderer module
-   via `public typealias`.
-3. If a function or a type have `public` on them only by necessity to make them available in `TokamakDOM`,
-   but unavailable to users (or not intended for public use), underscore is needed to indicate that.
+Tokamak users only need to import a renderer module they would like to use, while
+`TokamakCore` is hidden as an "internal" `Tokamak` package target. Unfortunately, Swift does not
+allow us to specify that certain symbols in `TokamakCore` are private to a package, but they need to
+stay `public` for renderer modules to get access to them. Thus, the current workaround is to mark
+those symbols with underscores in their names to indicate this. It can be formulated as these
+"rules":
 
-The benefit of separate modules is that they allow us to provide separate renderers for different platforms.
-Users can pick and choose what they want to use, e.g. purely static websites would use only `TokamakHTML`,
-single-page apps would use `TokamakDOM`, maybe in conjuction with `TokamakHTML` for pre-rendering. As we'd
-like to try to implement a native renderer for Android at some point, probably in a separate `TokamakAndroid`
-module, Android apps would use `TokamakAndroid` with no need to be aware of any of the web modules.
+1. If a symbol is restricted to a module and has no `public` access control, no need for an
+   underscore.
+2. If a symbol is part of a public renderer module API (e.g. `TokamakDOM`), no need for an
+   underscore, users may use those symbols directly, and it is re-exported from `TokamakCore` by the
+   renderer module via `public typealias`.
+3. If a function or a type have `public` on them only by necessity to make them available in
+   `TokamakDOM`, but unavailable to users (or not intended for public use), underscore is needed to
+   indicate that.
 
-### Sponsorship
-
-If this library saved you any amount of time or money, please consider [sponsoring
-the work of its maintainer](https://github.com/sponsors/MaxDesiatov). While some of the
-sponsorship tiers give you priority support or even consulting time, any amount is
-appreciated and helps in maintaining the project.
+The benefit of separate modules is that they allow us to provide separate renderers for different
+platforms. Users can pick and choose what they want to use, e.g. purely static websites would use
+only `TokamakStaticHTML`, single-page apps would use `TokamakDOM`, maybe in conjuction with
+`TokamakStaticHTML` for pre-rendering. As we'd like to try to implement a native renderer for
+Android at some point, probably in a separate `TokamakAndroid` module, Android apps would use
+`TokamakAndroid` with no need to be aware of any of the web modules.
 
 ### Coding Style
 
@@ -231,6 +233,13 @@ This project adheres to the [Contributor Covenant Code of
 Conduct](https://github.com/swiftwasm/Tokamak/blob/main/CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code. Please report
 unacceptable behavior to conduct@tokamak.dev.
+
+### Sponsorship
+
+If this library saved you any amount of time or money, please consider [sponsoring
+the work of its maintainer](https://github.com/sponsors/MaxDesiatov). While some of the
+sponsorship tiers give you priority support or even consulting time, any amount is
+appreciated and helps in maintaining the project.
 
 ## Maintainers
 
