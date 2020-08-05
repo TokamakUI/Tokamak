@@ -27,7 +27,7 @@ enum ColorSchemeObserver {
       publisher.value = .init(matchMediaDarkScheme: $0[0].object!)
       return .undefined
     }
-    _ = matchMediaDarkScheme.addEventListener!("change", closure)
+    _ = matchMediaDarkScheme.addListener!(closure)
     Self.closure = closure
   }
 }
