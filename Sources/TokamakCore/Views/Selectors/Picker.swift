@@ -67,7 +67,8 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
       // update the binding.
       ForEach(0..<children.count) { index in
         if let forEach = mapAnyView(children[index], transform: { (v: ForEachProtocol) in v }),
-          forEach.elementType == SelectionValue.self {
+          forEach.elementType == SelectionValue.self
+        {
           let nestedChildren = forEach.children
 
           ForEach(0..<nestedChildren.count) { nestedIndex in
@@ -82,7 +83,8 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
 }
 
 extension Picker where Label == Text {
-  @_disfavoredOverload public init<S: StringProtocol>(
+  @_disfavoredOverload
+  public init<S: StringProtocol>(
     _ title: S,
     selection: Binding<SelectionValue>,
     @ViewBuilder content: () -> Content

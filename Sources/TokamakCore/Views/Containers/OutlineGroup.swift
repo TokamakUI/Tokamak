@@ -16,7 +16,8 @@
 //
 
 public struct OutlineGroup<Data, ID, Parent, Leaf, Subgroup>
-  where Data: RandomAccessCollection, ID: Hashable {
+  where Data: RandomAccessCollection, ID: Hashable
+{
   enum Root {
     case collection(Data)
     case single(Data.Element)
@@ -32,49 +33,66 @@ extension OutlineGroup where ID == Data.Element.ID,
   Parent: View,
   Parent == Leaf,
   Subgroup == DisclosureGroup<Parent, OutlineSubgroupChildren>,
-  Data.Element: Identifiable {
-  public init<DataElement>(_ root: DataElement,
-                           children: KeyPath<DataElement, Data?>,
-                           @ViewBuilder content: @escaping (DataElement) -> Leaf)
-    where ID == DataElement.ID, DataElement: Identifiable, DataElement == Data.Element {
-    self.init(root,
-              id: \.id,
-              children: children,
-              content: content)
+  Data.Element: Identifiable
+{
+  public init<DataElement>(
+    _ root: DataElement,
+    children: KeyPath<DataElement, Data?>,
+    @ViewBuilder content: @escaping (DataElement) -> Leaf
+  )
+    where ID == DataElement.ID, DataElement: Identifiable, DataElement == Data.Element
+  {
+    self.init(
+      root,
+      id: \.id,
+      children: children,
+      content: content
+    )
   }
 
-  public init<DataElement>(_ data: Data,
-                           children: KeyPath<DataElement, Data?>,
-                           @ViewBuilder content: @escaping (DataElement) -> Leaf)
-    where ID == DataElement.ID,
+  public init<DataElement>(
+    _ data: Data,
+    children: KeyPath<DataElement, Data?>,
+    @ViewBuilder content: @escaping (DataElement) -> Leaf
+  ) where ID == DataElement.ID,
     DataElement: Identifiable,
-    DataElement == Data.Element {
-    self.init(data,
-              id: \.id,
-              children: children,
-              content: content)
+    DataElement == Data.Element
+  {
+    self.init(
+      data,
+      id: \.id,
+      children: children,
+      content: content
+    )
   }
 }
 
 extension OutlineGroup where Parent: View,
   Parent == Leaf,
-  Subgroup == DisclosureGroup<Parent, OutlineSubgroupChildren> {
-  public init<DataElement>(_ root: DataElement,
-                           id: KeyPath<DataElement, ID>,
-                           children: KeyPath<DataElement, Data?>,
-                           @ViewBuilder content: @escaping (DataElement) -> Leaf)
-    where DataElement == Data.Element {
+  Subgroup == DisclosureGroup<Parent, OutlineSubgroupChildren>
+{
+  public init<DataElement>(
+    _ root: DataElement,
+    id: KeyPath<DataElement, ID>,
+    children: KeyPath<DataElement, Data?>,
+    @ViewBuilder content: @escaping (DataElement) -> Leaf
+  )
+    where DataElement == Data.Element
+  {
     self.root = .single(root)
     self.children = children
     self.id = id
     self.content = content
   }
 
-  public init<DataElement>(_ data: Data,
-                           id: KeyPath<DataElement, ID>,
-                           children: KeyPath<DataElement, Data?>,
-                           @ViewBuilder content: @escaping (DataElement) -> Leaf)
-    where DataElement == Data.Element {
+  public init<DataElement>(
+    _ data: Data,
+    id: KeyPath<DataElement, ID>,
+    children: KeyPath<DataElement, Data?>,
+    @ViewBuilder content: @escaping (DataElement) -> Leaf
+  )
+    where DataElement == Data.Element
+  {
     root = .collection(data)
     self.id = id
     self.children = children
@@ -90,10 +108,12 @@ extension OutlineGroup: View where Parent: View, Leaf: View, Subgroup: View {
         OutlineSubgroupChildren { () -> AnyView in
           if let subgroup = elem[keyPath: children] {
             return AnyView(DisclosureGroup(content: {
-              OutlineGroup(root: .collection(subgroup),
-                           children: children,
-                           id: id,
-                           content: content)
+              OutlineGroup(
+                root: .collection(subgroup),
+                children: children,
+                id: id,
+                content: content
+              )
             }) {
               content(elem)
             })

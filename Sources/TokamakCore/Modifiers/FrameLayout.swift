@@ -17,9 +17,7 @@ public struct _FrameLayout: ViewModifier {
   public let height: CGFloat?
   public let alignment: Alignment
 
-  init(width: CGFloat?,
-       height: CGFloat?,
-       alignment: Alignment) {
+  init(width: CGFloat?, height: CGFloat?, alignment: Alignment) {
     self.width = width
     self.height = height
     self.alignment = alignment
@@ -31,9 +29,11 @@ public struct _FrameLayout: ViewModifier {
 }
 
 extension View {
-  public func frame(width: CGFloat? = nil,
-                    height: CGFloat? = nil,
-                    alignment: Alignment = .center) -> some View {
+  public func frame(
+    width: CGFloat? = nil,
+    height: CGFloat? = nil,
+    alignment: Alignment = .center
+  ) -> some View {
     modifier(_FrameLayout(width: width, height: height, alignment: alignment))
   }
 }

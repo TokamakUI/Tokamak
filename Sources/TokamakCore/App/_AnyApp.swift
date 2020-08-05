@@ -39,8 +39,7 @@ public struct _AnyApp: App {
     fatalError("`_AnyApp` cannot be initialized without an underlying `App` type.")
   }
 
-  public static func _launch(_ app: Self,
-                             _ rootEnvironment: EnvironmentValues) {
+  public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
     fatalError("`_AnyApp` cannot be launched. Access underlying `app` value.")
   }
 

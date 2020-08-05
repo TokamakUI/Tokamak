@@ -58,8 +58,7 @@ public struct Text: View {
   init(storage: _Storage, modifiers: [_Modifier] = []) {
     if case let .segmentedText(segments) = storage {
       self.storage = .segmentedText(segments.map {
-        Self(storage: $0.storage,
-             modifiers: modifiers + $0.modifiers)
+        Self(storage: $0.storage, modifiers: modifiers + $0.modifiers)
       })
     } else {
       self.storage = storage

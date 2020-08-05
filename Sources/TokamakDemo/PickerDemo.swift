@@ -20,8 +20,11 @@ struct PickerDemo: View {
   @State private var selection = 0
 
   var body: some View {
-    Picker(selection: $selection, label: Text("Text style")
-      .font(.system(textStyles[selection]))) {
+    Picker(
+      selection: $selection,
+      label: Text("Text style")
+        .font(.system(textStyles[selection]))
+    ) {
       Text("Pick a text style...")
       ForEach(0..<textStyles.count) {
         Text(String(describing: textStyles[$0]))

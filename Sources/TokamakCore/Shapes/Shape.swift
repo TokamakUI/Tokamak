@@ -87,8 +87,11 @@ extension Shape {
     y: CGFloat = 1,
     anchor: UnitPoint = .center
   ) -> ScaledShape<Self> {
-    ScaledShape(shape: self,
-                scale: CGSize(width: x, height: y), anchor: anchor)
+    ScaledShape(
+      shape: self,
+      scale: CGSize(width: x, height: y),
+      anchor: anchor
+    )
   }
 
   public func scale(_ scale: CGFloat, anchor: UnitPoint = .center) -> ScaledShape<Self> {

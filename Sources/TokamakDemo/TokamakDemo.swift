@@ -72,11 +72,14 @@ struct TokamakDemoView: View {
       let list = title(
         List {
           Section(header: Text("Buttons")) {
-            NavItem("Counter", destination:
+            NavItem(
+              "Counter",
+              destination:
               Counter(count: Count(value: 5), limit: 15)
                 .padding()
                 .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
-                .border(Color.red, width: 3))
+                .border(Color.red, width: 3)
+            )
             NavItem("ButtonStyle", destination: ButtonStyleDemo())
           }
           Section(header: Text("Containers")) {

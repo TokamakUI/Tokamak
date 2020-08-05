@@ -34,16 +34,24 @@ struct PathDemo: View {
         .fill(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1))
       Path { path in
         path.addRect(.init(origin: .zero, size: .init(width: 20, height: 20)))
-        path.addEllipse(in: .init(origin: .init(x: 25, y: 0),
-                                  size: .init(width: 20, height: 20)))
-        path.addRoundedRect(in: .init(origin: .init(x: 50, y: 0),
-                                      size: .init(width: 20, height: 20)),
-                            cornerSize: .init(width: 4, height: 4))
-        path.addArc(center: .init(x: 85, y: 10),
-                    radius: 10,
-                    startAngle: .degrees(90),
-                    endAngle: .degrees(180),
-                    clockwise: true)
+        path.addEllipse(in: .init(
+          origin: .init(x: 25, y: 0),
+          size: .init(width: 20, height: 20)
+        ))
+        path.addRoundedRect(
+          in: .init(
+            origin: .init(x: 50, y: 0),
+            size: .init(width: 20, height: 20)
+          ),
+          cornerSize: .init(width: 4, height: 4)
+        )
+        path.addArc(
+          center: .init(x: 85, y: 10),
+          radius: 10,
+          startAngle: .degrees(90),
+          endAngle: .degrees(180),
+          clockwise: true
+        )
       }
       .stroke(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1), lineWidth: 4)
       .padding(.vertical)

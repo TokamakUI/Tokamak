@@ -106,7 +106,8 @@ public class MountedElement<R: Renderer> {
     updateEnvironment()
   }
 
-  @discardableResult func updateEnvironment() -> TypeInfo {
+  @discardableResult
+  func updateEnvironment() -> TypeInfo {
     // swiftlint:disable:next force_try
     let info = try! typeInfo(of: element.type)
     switch element {
@@ -143,7 +144,8 @@ extension TypeInfo {
     // swiftlint:disable force_try
     // Extract the view from the AnyView for modification, apply Environment changes:
     if genericTypes.contains(where: { $0 is EnvironmentModifier.Type }),
-      let modifier = try! property(named: "modifier").get(from: element) as? EnvironmentModifier {
+      let modifier = try! property(named: "modifier").get(from: element) as? EnvironmentModifier
+    {
       modifier.modifyEnvironment(&modifiedEnv)
     }
 
@@ -176,7 +178,8 @@ extension TypeInfo {
   /// This is necessary as a `DynamicProperty` can be nested.
   /// `EnvironmentValues` can also be injected at this point.
   func dynamicProperties(_ environment: EnvironmentValues,
-                         source: inout Any) -> [PropertyInfo] {
+                         source: inout Any) -> [PropertyInfo]
+  {
     var dynamicProps = [PropertyInfo]()
     for prop in properties where prop.type is DynamicProperty.Type {
       dynamicProps.append(prop)
@@ -185,8 +188,10 @@ extension TypeInfo {
       _ = propInfo.injectEnvironment(from: environment, into: &source)
       var extracted = try! prop.get(from: source)
       dynamicProps.append(
-        contentsOf: propInfo.dynamicProperties(environment,
-                                               source: &extracted)
+        contentsOf: propInfo.dynamicProperties(
+          environment,
+          source: &extracted
+        )
       )
       // swiftlint:disable:next force_cast
       var extractedDynamicProp = extracted as! DynamicProperty

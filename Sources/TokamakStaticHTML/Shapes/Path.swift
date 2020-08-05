@@ -18,13 +18,17 @@ import TokamakCore
 
 extension Path: ViewDeferredToRenderer {
   // TODO: Support transformations
-  func svgFrom(storage: Storage,
-               strokeStyle: StrokeStyle = .init(lineWidth: 0,
-                                                lineCap: .butt,
-                                                lineJoin: .miter,
-                                                miterLimit: 0,
-                                                dash: [],
-                                                dashPhase: 0)) -> AnyView {
+  func svgFrom(
+    storage: Storage,
+    strokeStyle: StrokeStyle = .init(
+      lineWidth: 0,
+      lineCap: .butt,
+      lineJoin: .miter,
+      miterLimit: 0,
+      dash: [],
+      dashPhase: 0
+    )
+  ) -> AnyView {
     let stroke = [
       "stroke-width": "\(strokeStyle.lineWidth)",
     ]
@@ -44,11 +48,14 @@ extension Path: ViewDeferredToRenderer {
         "y": "\(rect.origin.y - (rect.size.height / 2))",
       ].merging(stroke, uniquingKeysWith: uniqueKeys))))
     case let .ellipse(rect):
-      return AnyView(HTML("ellipse", ["cx": flexibleCenterX ?? "\(rect.origin.x)",
-                                      "cy": flexibleCenterY ?? "\(rect.origin.y)",
-                                      "rx": flexibleCenterX ?? "\(rect.size.width)",
-                                      "ry": flexibleCenterY ?? "\(rect.size.height)"]
-          .merging(stroke, uniquingKeysWith: uniqueKeys)))
+      return AnyView(HTML(
+        "ellipse",
+        ["cx": flexibleCenterX ?? "\(rect.origin.x)",
+         "cy": flexibleCenterY ?? "\(rect.origin.y)",
+         "rx": flexibleCenterX ?? "\(rect.size.width)",
+         "ry": flexibleCenterY ?? "\(rect.size.height)"]
+          .merging(stroke, uniquingKeysWith: uniqueKeys)
+      ))
     case let .roundedRect(roundedRect):
       // When cornerRadius is nil we use 50% rx.
       let size = roundedRect.rect.size
@@ -68,29 +75,38 @@ extension Path: ViewDeferredToRenderer {
           return ["ry": "50%"]
         }
       }()
-      return AnyView(HTML("rect", [
-        "width": flexibleWidth ?? "\(size.width)",
-        "height": flexibleHeight ?? "\(size.height)",
-        "x": "\(roundedRect.rect.origin.x)",
-        "y": "\(roundedRect.rect.origin.y)",
-      ]
-      .merging(cornerRadius, uniquingKeysWith: uniqueKeys)
-      .merging(stroke, uniquingKeysWith: uniqueKeys)))
+      return AnyView(HTML(
+        "rect",
+        [
+          "width": flexibleWidth ?? "\(size.width)",
+          "height": flexibleHeight ?? "\(size.height)",
+          "x": "\(roundedRect.rect.origin.x)",
+          "y": "\(roundedRect.rect.origin.y)",
+        ]
+        .merging(cornerRadius, uniquingKeysWith: uniqueKeys)
+        .merging(stroke, uniquingKeysWith: uniqueKeys)
+      ))
     case let .stroked(stroked):
       return AnyView(stroked.path.svgBody(strokeStyle: stroked.style))
     case let .trimmed(trimmed):
-      return trimmed.path.svgFrom(storage: trimmed.path.storage,
-                                  strokeStyle: strokeStyle) // TODO: Trim the path
+      return trimmed.path.svgFrom(
+        storage: trimmed.path.storage,
+        strokeStyle: strokeStyle
+      ) // TODO: Trim the path
     }
   }
 
-  func svgFrom(elements: [Element],
-               strokeStyle: StrokeStyle = .init(lineWidth: 0,
-                                                lineCap: .butt,
-                                                lineJoin: .miter,
-                                                miterLimit: 0,
-                                                dash: [],
-                                                dashPhase: 0)) -> AnyView {
+  func svgFrom(
+    elements: [Element],
+    strokeStyle: StrokeStyle = .init(
+      lineWidth: 0,
+      lineCap: .butt,
+      lineJoin: .miter,
+      miterLimit: 0,
+      dash: [],
+      dashPhase: 0
+    )
+  ) -> AnyView {
     var d = [String]()
     for element in elements {
       switch element {
@@ -112,13 +128,17 @@ extension Path: ViewDeferredToRenderer {
     ]))
   }
 
-  func svgFrom(subpaths: [_SubPath],
-               strokeStyle: StrokeStyle = .init(lineWidth: 0,
-                                                lineCap: .butt,
-                                                lineJoin: .miter,
-                                                miterLimit: 0,
-                                                dash: [],
-                                                dashPhase: 0)) -> AnyView {
+  func svgFrom(
+    subpaths: [_SubPath],
+    strokeStyle: StrokeStyle = .init(
+      lineWidth: 0,
+      lineCap: .butt,
+      lineJoin: .miter,
+      miterLimit: 0,
+      dash: [],
+      dashPhase: 0
+    )
+  ) -> AnyView {
     AnyView(ForEach(Array(subpaths.enumerated()), id: \.offset) { _, path in
       path.path.svgBody(strokeStyle: strokeStyle)
     })
@@ -161,17 +181,23 @@ extension Path: ViewDeferredToRenderer {
   }
 
   var size: CGSize {
-    .init(width: max(storageSize.width, elementsSize.width),
-          height: max(storageSize.height, elementsSize.height))
+    .init(
+      width: max(storageSize.width, elementsSize.width),
+      height: max(storageSize.height, elementsSize.height)
+    )
   }
 
   @ViewBuilder
-  func svgBody(strokeStyle: StrokeStyle = .init(lineWidth: 0,
-                                                lineCap: .butt,
-                                                lineJoin: .miter,
-                                                miterLimit: 0,
-                                                dash: [],
-                                                dashPhase: 0)) -> some View {
+  func svgBody(
+    strokeStyle: StrokeStyle = .init(
+      lineWidth: 0,
+      lineCap: .butt,
+      lineJoin: .miter,
+      miterLimit: 0,
+      dash: [],
+      dashPhase: 0
+    )
+  ) -> some View {
     svgFrom(storage: storage, strokeStyle: strokeStyle)
     svgFrom(elements: elements, strokeStyle: strokeStyle)
     svgFrom(subpaths: subpaths, strokeStyle: strokeStyle)

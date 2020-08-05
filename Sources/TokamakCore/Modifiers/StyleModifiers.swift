@@ -60,8 +60,9 @@ public struct _OverlayModifier<Overlay>: ViewModifier where Overlay: View {
 extension _OverlayModifier: Equatable where Overlay: Equatable {}
 
 extension View {
-  public func overlay<Overlay>(_ overlay: Overlay,
-                               alignment: Alignment = .center) -> some View where Overlay: View {
+  public func overlay<Overlay>(_ overlay: Overlay, alignment: Alignment = .center) -> some View
+    where Overlay: View
+  {
     modifier(_OverlayModifier(overlay: overlay, alignment: alignment))
   }
 

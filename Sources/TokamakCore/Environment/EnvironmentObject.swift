@@ -18,7 +18,8 @@
 import CombineShim
 
 @propertyWrapper public struct EnvironmentObject<ObjectType>: DynamicProperty
-  where ObjectType: ObservableObject {
+  where ObjectType: ObservableObject
+{
   @dynamicMemberLookup public struct Wrapper {
     internal let root: ObjectType
     public subscript<Subject>(

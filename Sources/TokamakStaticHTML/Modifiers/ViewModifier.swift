@@ -25,7 +25,8 @@ extension DOMViewModifier {
 }
 
 extension ModifiedContent: DOMViewModifier
-  where Content: DOMViewModifier, Modifier: DOMViewModifier {
+  where Content: DOMViewModifier, Modifier: DOMViewModifier
+{
   // Merge attributes
   public var attributes: [String: String] {
     var attr = content.attributes

@@ -34,8 +34,7 @@ public extension ListStyleDeferredToRenderer {
   }
 
   func listRow<Row>(_ row: Row) -> AnyView where Row: View {
-    AnyView(row
-      .padding([.trailing, .top, .bottom]))
+    AnyView(row.padding([.trailing, .top, .bottom]))
   }
 
   func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
