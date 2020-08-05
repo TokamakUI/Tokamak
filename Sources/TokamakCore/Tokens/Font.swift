@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// swiftlint:disable line_length
 public struct Font: Hashable {
   public let _name: String
   public let _size: CGFloat

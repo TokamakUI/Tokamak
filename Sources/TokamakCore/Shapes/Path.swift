@@ -87,11 +87,9 @@ public struct Path: Equatable, LosslessStringConvertible {
   }
 
   public init(roundedRect rect: CGRect, cornerSize: CGSize, style: RoundedCornerStyle = .circular) {
-    self.init(storage: .roundedRect(FixedRoundedRect(
-      rect: rect,
-      cornerSize: cornerSize,
-      style: style
-    )))
+    self.init(
+      storage: .roundedRect(FixedRoundedRect(rect: rect, cornerSize: cornerSize, style: style))
+    )
   }
 
   public init(
@@ -191,18 +189,9 @@ extension Path {
 
   public mutating func addRect(_ rect: CGRect, transform: CGAffineTransform = .identity) {
     move(to: rect.origin)
-    addLine(
-      to: CGPoint(x: rect.size.width, y: 0)
-        .offset(by: rect.origin)
-    )
-    addLine(
-      to: CGPoint(x: rect.size.width, y: rect.size.height)
-        .offset(by: rect.origin)
-    )
-    addLine(
-      to: CGPoint(x: 0, y: rect.size.height)
-        .offset(by: rect.origin)
-    )
+    addLine(to: CGPoint(x: rect.size.width, y: 0).offset(by: rect.origin))
+    addLine(to: CGPoint(x: rect.size.width, y: rect.size.height).offset(by: rect.origin))
+    addLine(to: CGPoint(x: 0, y: rect.size.height).offset(by: rect.origin))
     closeSubpath()
   }
 
@@ -212,10 +201,7 @@ extension Path {
     style: RoundedCornerStyle = .circular,
     transform: CGAffineTransform = .identity
   ) {
-    move(
-      to: CGPoint(x: rect.size.width, y: rect.size.height / 2)
-        .offset(by: rect.origin)
-    )
+    move(to: CGPoint(x: rect.size.width, y: rect.size.height / 2).offset(by: rect.origin))
     addLine(
       to: CGPoint(x: rect.size.width, y: rect.size.height - cornerSize.height)
         .offset(by: rect.origin)
@@ -226,30 +212,21 @@ extension Path {
       control: CGPoint(x: rect.size.width, y: rect.size.height)
         .offset(by: rect.origin)
     )
-    addLine(
-      to: CGPoint(x: cornerSize.width, y: rect.size.height)
-        .offset(by: rect.origin)
-    )
+    addLine(to: CGPoint(x: cornerSize.width, y: rect.size.height).offset(by: rect.origin))
     addQuadCurve(
       to: CGPoint(x: 0, y: rect.size.height - cornerSize.height)
         .offset(by: rect.origin),
       control: CGPoint(x: 0, y: rect.size.height)
         .offset(by: rect.origin)
     )
-    addLine(
-      to: CGPoint(x: 0, y: cornerSize.height)
-        .offset(by: rect.origin)
-    )
+    addLine(to: CGPoint(x: 0, y: cornerSize.height).offset(by: rect.origin))
     addQuadCurve(
       to: CGPoint(x: cornerSize.width, y: 0)
         .offset(by: rect.origin),
       control: CGPoint.zero
         .offset(by: rect.origin)
     )
-    addLine(
-      to: CGPoint(x: rect.size.width - cornerSize.width, y: 0)
-        .offset(by: rect.origin)
-    )
+    addLine(to: CGPoint(x: rect.size.width - cornerSize.width, y: 0).offset(by: rect.origin))
     addQuadCurve(
       to: CGPoint(x: rect.size.width, y: cornerSize.height)
         .offset(by: rect.origin),
@@ -262,15 +239,8 @@ extension Path {
   public mutating func addEllipse(in rect: CGRect, transform: CGAffineTransform = .identity) {
     subpaths.append(.init(
       path: .init(ellipseIn: .init(
-        origin: rect.origin
-          .offset(by: .init(
-            x: rect.size.width / 2,
-            y: rect.size.height / 2
-          )),
-        size: .init(
-          width: rect.size.width / 2,
-          height: rect.size.height / 2
-        )
+        origin: rect.origin.offset(by: .init(x: rect.size.width / 2, y: rect.size.height / 2)),
+        size: .init(width: rect.size.width / 2, height: rect.size.height / 2)
       )),
       transform: transform
     ))
