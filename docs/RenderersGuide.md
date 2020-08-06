@@ -1,9 +1,6 @@
----
-authors:
-  - "@carson-katri"
----
-
 # `Renderers` in Tokamak
+
+**Author: [@carson-katri](https://github.com/carson-katri)**
 
 Tokamak is a flexible library. `TokamakCore` provides the SwiftUI API, which your `Renderer` can use
 to construct a representation of `Views` that your platform understands.
