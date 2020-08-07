@@ -35,10 +35,18 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
     let child: MountedElement<R> = childBody.makeMountedElement(parentTarget, environmentValues)
     mountedChildren = [child]
     child.mount(with: reconciler)
+    #if DEBUG
+    reconciler.debugTree[ObjectIdentifier(child)] = child.debugNode(parent: self)
+    #endif
   }
 
   override func unmount(with reconciler: StackReconciler<R>) {
-    mountedChildren.forEach { $0.unmount(with: reconciler) }
+    mountedChildren.forEach {
+      $0.unmount(with: reconciler)
+      #if DEBUG
+      reconciler.debugTree[ObjectIdentifier($0)] = nil
+      #endif
+    }
   }
 
   override func update(with reconciler: StackReconciler<R>) {
@@ -58,6 +66,17 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
       },
       mountChild: { $0.makeMountedElement(parentTarget, environmentValues) }
     )
+  }
+
+  override func debugNode(parent: MountedElement<R>? = nil) -> ViewTree<R>.Node {
+    // swiftlint:disable:next force_try
+    let info = try! typeInfo(of: scene.type)
+    return .init(type: scene.type,
+                 isPrimitive: scene.bodyType is Never.Type,
+                 isHost: false,
+                 dynamicProperties: info.properties.filter { $0.type is DynamicProperty.Type }.map(\.name),
+                 object: self,
+                 parent: parent)
   }
 }
 

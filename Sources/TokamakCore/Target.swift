@@ -17,4 +17,10 @@
 
 public protocol Target: AnyObject {
   var view: AnyView { get set }
+  /// Provide a way to identify this Target from the debug tree.
+  var debugIdentifier: String? { get }
+}
+
+extension Target {
+  public var debugIdentifier: String? { nil }
 }

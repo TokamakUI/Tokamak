@@ -40,6 +40,7 @@ let package = Package(
     .package(url: "https://github.com/kateinoigakukun/JavaScriptKit.git", .revision("c90e82f")),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", .branch("wasi-build")),
     .package(url: "https://github.com/MaxDesiatov/OpenCombine.git", .branch("observable-object")),
+    .package(url: "https://github.com/fabianfett/pure-swift-json.git", from: "0.4.0"),
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define
@@ -66,7 +67,13 @@ let package = Package(
     ),
     .target(
       name: "TokamakDOM",
-      dependencies: ["CombineShim", "JavaScriptKit", "TokamakCore", "TokamakStaticHTML"]
+      dependencies: [
+        "CombineShim",
+        "JavaScriptKit",
+        "TokamakCore",
+        "TokamakStaticHTML",
+        .product(name: "PureSwiftJSON", package: "pure-swift-json"),
+      ]
     ),
     .target(
       name: "TokamakShim",

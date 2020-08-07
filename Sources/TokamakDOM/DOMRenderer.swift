@@ -16,6 +16,7 @@
 //
 
 import JavaScriptKit
+import PureSwiftJSON
 import TokamakCore
 import TokamakStaticHTML
 
@@ -126,6 +127,8 @@ final class DOMRenderer: Renderer {
       lastChild.style.object!.height = "100%"
     }
 
+    lastChild.id = "\(ObjectIdentifier(host).hashValue)".jsValue()
+
     if let dynamicHTML = anyHTML as? AnyDynamicHTML {
       return DOMNode(host.view, lastChild, dynamicHTML.listeners)
     } else {
@@ -152,5 +155,24 @@ final class DOMRenderer: Renderer {
     else { return }
 
     _ = parent.ref.removeChild!(target.ref)
+  }
+
+  public func debugTree(
+    _ tree: Set<ViewTree<DOMRenderer>.Node>,
+    context: ViewTree<DOMRenderer>.Context
+  ) {
+    if tree.count > 0,
+      let json = try? PSJSONEncoder().encode(tree) {
+      switch context {
+      case .firstRender:
+        JSObjectRef.global.window.object!._tokamak_debug_tree = json.jsValue()
+      case .update:
+        let Object = JSObjectRef.global.Object.function!
+        let details = Object.new()
+        details.detail = json.jsValue()
+        let event = window.CustomEvent.function!.new("_tokamak_debug_tree_update", details)
+        _ = document.body.object!.dispatchEvent!(event)
+      }
+    }
   }
 }

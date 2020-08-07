@@ -29,6 +29,9 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     let child: MountedElement<R> = childBody.makeMountedView(parentTarget, environmentValues)
     mountedChildren = [child]
     child.mount(with: reconciler)
+    #if DEBUG
+    reconciler.debugTree[ObjectIdentifier(child)] = child.debugNode(parent: self)
+    #endif
 
     // `_TargetRef` is a composite view, so it's enough to check for it only here
     if var targetRef = view.view as? TargetRefType {
@@ -47,7 +50,12 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
   }
 
   override func unmount(with reconciler: StackReconciler<R>) {
-    mountedChildren.forEach { $0.unmount(with: reconciler) }
+    mountedChildren.forEach {
+      $0.unmount(with: reconciler)
+      #if DEBUG
+      reconciler.debugTree[ObjectIdentifier($0)] = nil
+      #endif
+    }
 
     if let appearanceAction = view.view as? AppearanceActionType {
       appearanceAction.disappear?()
@@ -66,5 +74,16 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
       },
       mountChild: { $0.makeMountedView(parentTarget, environmentValues) }
     )
+  }
+
+  override func debugNode(parent: MountedElement<R>? = nil) -> ViewTree<R>.Node {
+    // swiftlint:disable:next force_try
+    let info = try! typeInfo(of: view.type)
+    return .init(type: view.type,
+                 isPrimitive: view.bodyType is Never.Type,
+                 isHost: false,
+                 dynamicProperties: info.properties.filter { $0.type is DynamicProperty.Type }.map(\.name),
+                 object: self,
+                 parent: parent)
   }
 }

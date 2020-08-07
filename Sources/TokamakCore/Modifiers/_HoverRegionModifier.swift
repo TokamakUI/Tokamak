@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Tokamak contributors
+// Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,21 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Max Desiatov on 05/01/2019.
+//  Created by Carson Katri on 8/6/20.
 //
 
-final class MountedEmptyView<R: Renderer>: MountedElement<R> {
-  override func mount(with reconciler: StackReconciler<R>) {}
+extension View {
+  public func onHover(perform action: @escaping (Bool) -> ()) -> some View {
+    modifier(_HoverRegionModifier(action))
+  }
+}
 
-  override func unmount(with reconciler: StackReconciler<R>) {}
+public struct _HoverRegionModifier: ViewModifier {
+  public let callback: (Bool) -> ()
+  public init(_ callback: @escaping (Bool) -> ()) {
+    self.callback = callback
+  }
 
-  override func update(with reconciler: StackReconciler<R>) {}
-
-  override func debugNode(parent: MountedElement<R>? = nil) -> ViewTree<R>.Node {
-    .init(type: EmptyView.self,
-          isPrimitive: true,
-          isHost: false,
-          object: self,
-          parent: parent)
+  public func body(content: Content) -> some View {
+    content
   }
 }

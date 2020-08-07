@@ -42,10 +42,15 @@ final class DOMNode: Target {
   private var listeners: [String: JSClosure]
   var view: AnyView
 
+  let debugIdentifier: String?
+
   init<V: View>(_ view: V, _ ref: JSObjectRef, _ listeners: [String: Listener] = [:]) {
     self.ref = ref
     self.listeners = [:]
     self.view = AnyView(view)
+
+    debugIdentifier = ref.id.string
+
     reinstall(listeners)
   }
 
@@ -53,6 +58,8 @@ final class DOMNode: Target {
     self.ref = ref
     view = AnyView(EmptyView())
     listeners = [:]
+
+    debugIdentifier = ref.id.string
   }
 
   /// Removes all existing event listeners on this DOM node and install new ones from

@@ -33,7 +33,7 @@ enum MountedElementKind {
 }
 
 public class MountedElement<R: Renderer> {
-  private var element: MountedElementKind
+  var element: MountedElementKind
 
   public internal(set) var app: _AnyApp {
     get {
@@ -130,6 +130,10 @@ public class MountedElement<R: Renderer> {
   }
 
   func update(with reconciler: StackReconciler<R>) {
+    fatalError("implement \(#function) in subclass")
+  }
+
+  func debugNode(parent: MountedElement<R>? = nil) -> ViewTree<R>.Node {
     fatalError("implement \(#function) in subclass")
   }
 }
