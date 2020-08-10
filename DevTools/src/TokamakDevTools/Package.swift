@@ -7,7 +7,7 @@ let package = Package(
     .executable(name: "TokamakDevTools", targets: ["TokamakDevTools"]),
   ],
   dependencies: [
-    .package(name: "Tokamak", path: "~/Desktop/Web/Tokamak"),
+    .package(name: "Tokamak", path: "../../../"),
     .package(url: "https://github.com/fabianfett/pure-swift-json.git", from: "0.4.0"),
   ],
   targets: [
