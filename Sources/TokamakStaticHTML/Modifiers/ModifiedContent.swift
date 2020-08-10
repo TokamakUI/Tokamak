@@ -51,6 +51,8 @@ extension ModifiedContent: ViewDeferredToRenderer where Content: View {
           content
         })
       }
+    } else if let viewModifier = modifier as? ViewModifierDeferredToRenderer {
+      return viewModifier.deferredBody(content: content)
     } else {
       return AnyView(content)
     }

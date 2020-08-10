@@ -124,6 +124,9 @@ struct TokamakDemoView: View {
             NavItem("Text", destination: TextDemo())
             NavItem("TextField", destination: TextFieldDemo())
           }
+          Section(header: Text("Actions")) {
+            NavItem("onHover", destination: HoverDemo())
+          }
           Section(header: Text("Misc")) {
             NavItem("Path", destination: PathDemo())
             NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8)))

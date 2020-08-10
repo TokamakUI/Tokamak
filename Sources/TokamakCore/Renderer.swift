@@ -68,4 +68,14 @@ public protocol Renderer: AnyObject {
     with host: MountedHost,
     completion: @escaping () -> ()
   )
+
+  func debugTree(
+    _ tree: Set<ViewTree<Self>.Node>,
+    context: ViewTree<Self>.Context
+  )
+}
+
+extension Renderer {
+  public func debugTree(_ tree: Set<ViewTree<Self>.Node>,
+                        context: ViewTree<Self>.Context) {}
 }

@@ -63,6 +63,11 @@ public final class StackReconciler<R: Renderer> {
    */
   private let scheduler: (@escaping () -> ()) -> ()
 
+  #if DEBUG
+  typealias Tree = ViewTree<R>
+  var debugTree: [ObjectIdentifier: Tree.Node]
+  #endif
+
   public init<V: View>(
     view: V,
     target: R.TargetType,
@@ -76,7 +81,15 @@ public final class StackReconciler<R: Renderer> {
 
     rootElement = AnyView(view).makeMountedView(target, environment)
 
+    #if DEBUG
+    debugTree = [ObjectIdentifier(rootElement): rootElement.debugNode(parent: nil)]
+    #endif
+
     rootElement.mount(with: self)
+
+    #if DEBUG
+    renderer.debugTree(Set(debugTree.values), context: .firstRender)
+    #endif
   }
 
   public init<A: App>(
@@ -92,11 +105,19 @@ public final class StackReconciler<R: Renderer> {
 
     rootElement = MountedApp(app, target, environment)
 
+    #if DEBUG
+    debugTree = [ObjectIdentifier(rootElement): rootElement.debugNode(parent: nil)]
+    #endif
+
     rootElement.mount(with: self)
     if let mountedApp = rootElement as? MountedApp<R> {
       setupSubscription(for: app._phasePublisher, to: \.scenePhase, of: mountedApp)
       setupSubscription(for: app._colorSchemePublisher, to: \.colorScheme, of: mountedApp)
     }
+
+    #if DEBUG
+    renderer.debugTree(Set(debugTree.values), context: .firstRender)
+    #endif
   }
 
   private func queueStateUpdate(
@@ -118,9 +139,21 @@ public final class StackReconciler<R: Renderer> {
   }
 
   private func updateStateAndReconcile() {
+    #if DEBUG
+    let preValues = Set(debugTree.values)
+    #endif
+
     for mountedView in queuedRerenders {
       mountedView.update(with: self)
     }
+
+    #if DEBUG
+    // Only send the difference for performance reasons
+    renderer?.debugTree(
+      Set(debugTree.values).subtracting(preValues),
+      context: .update
+    )
+    #endif
 
     queuedRerenders.removeAll()
   }

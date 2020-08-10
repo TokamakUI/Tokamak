@@ -108,6 +108,22 @@ public let tokamakStyles = """
     border-top-color: rgba(255, 255, 255, 0.25);
   }
 }
+
+._tokamak-debug-hover {
+  position: relative;
+}
+._tokamak-debug-hover::after {
+  background-color: rgb(100, 178, 200);
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  bottom: 0;
+  right: 0;
+  content: '';
+  z-index: 999;
+}
 """
 
 public let rootNodeStyles = """

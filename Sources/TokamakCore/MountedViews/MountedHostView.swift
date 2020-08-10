@@ -48,7 +48,12 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     mountedChildren = view.children.map {
       $0.makeMountedView(target, environmentValues)
     }
-    mountedChildren.forEach { $0.mount(with: reconciler) }
+    mountedChildren.forEach {
+      $0.mount(with: reconciler)
+      #if DEBUG
+      reconciler.debugTree[ObjectIdentifier($0)] = $0.debugNode(parent: self)
+      #endif
+    }
   }
 
   override func unmount(with reconciler: StackReconciler<R>) {
@@ -59,7 +64,12 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
       from: parentTarget,
       with: self
     ) {
-      self.mountedChildren.forEach { $0.unmount(with: reconciler) }
+      self.mountedChildren.forEach {
+        $0.unmount(with: reconciler)
+        #if DEBUG
+        reconciler.debugTree[ObjectIdentifier($0)] = nil
+        #endif
+      }
     }
   }
 
@@ -131,5 +141,16 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     // both arrays are empty, nothing to reconcile
     case (true, true): ()
     }
+  }
+
+  override func debugNode(parent: MountedElement<R>? = nil) -> ViewTree<R>.Node {
+    .init(
+      type: view.type,
+      isPrimitive: view.bodyType is Never.Type,
+      isHost: true,
+      target: target,
+      object: self,
+      parent: parent
+    )
   }
 }
