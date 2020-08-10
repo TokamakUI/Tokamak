@@ -16,6 +16,7 @@
 //
 
 import TokamakCore
+import TokamakStaticHTML
 
 extension _Button: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
@@ -30,9 +31,10 @@ extension _Button: ViewDeferredToRenderer where Label == Text {
       return AnyView(DynamicHTML(
         "button",
         ["class": "_tokamak-buttonstyle-default"],
-        listeners: listeners,
-        content: label.innerHTML ?? ""
-      ))
+        listeners: listeners
+      ) {
+        HTML("span", content: label.innerHTML ?? "")
+      })
     } else {
       return AnyView(DynamicHTML(
         "button",
