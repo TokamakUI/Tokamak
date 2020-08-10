@@ -15,8 +15,7 @@
 //  Created by Carson Katri on 7/3/20.
 //
 
-public struct DisclosureGroup<Label, Content>: View
-  where Label: View, Content: View {
+public struct DisclosureGroup<Label, Content>: View where Label: View, Content: View {
   @State var isExpanded: Bool = false
   let isExpandedBinding: Binding<Bool>?
 
@@ -25,16 +24,17 @@ public struct DisclosureGroup<Label, Content>: View
   let label: Label
   let content: () -> Content
 
-  public init(@ViewBuilder content: @escaping () -> Content,
-              @ViewBuilder label: () -> Label) {
+  public init(@ViewBuilder content: @escaping () -> Content, @ViewBuilder label: () -> Label) {
     isExpandedBinding = nil
     self.label = label()
     self.content = content
   }
 
-  public init(isExpanded: Binding<Bool>,
-              @ViewBuilder content: @escaping () -> Content,
-              @ViewBuilder label: () -> Label) {
+  public init(
+    isExpanded: Binding<Bool>,
+    @ViewBuilder content: @escaping () -> Content,
+    @ViewBuilder label: () -> Label
+  ) {
     isExpandedBinding = isExpanded
     self.label = label()
     self.content = content
@@ -53,22 +53,26 @@ extension DisclosureGroup where Label == Text {
 //              isExpanded: SwiftUI.Binding<Swift.Bool>,
 //              @SwiftUI.ViewBuilder content: @escaping () -> Content)
 
-  @_disfavoredOverload public init<S>(_ label: S,
-                                      @ViewBuilder content: @escaping () -> Content)
-    where S: StringProtocol {
+  @_disfavoredOverload
+  public init<S>(_ label: S, @ViewBuilder content: @escaping () -> Content)
+    where S: StringProtocol
+  {
     self.init(content: content, label: { Text(label) })
   }
 
-  @_disfavoredOverload public init<S>(_ label: S,
-                                      isExpanded: Binding<Bool>,
-                                      @ViewBuilder content: @escaping () -> Content)
-    where S: StringProtocol {
+  @_disfavoredOverload
+  public init<S>(
+    _ label: S,
+    isExpanded: Binding<Bool>,
+    @ViewBuilder content: @escaping () -> Content
+  ) where S: StringProtocol {
     self.init(isExpanded: isExpanded, content: content, label: { Text(label) })
   }
 }
 
 public struct _DisclosureGroupProxy<Label, Content>
-  where Label: View, Content: View {
+  where Label: View, Content: View
+{
   public var subject: DisclosureGroup<Label, Content>
 
   public init(_ subject: DisclosureGroup<Label, Content>) { self.subject = subject }

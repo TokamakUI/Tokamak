@@ -71,12 +71,15 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
   override func debugNode(parent: MountedElement<R>? = nil) -> ViewTree<R>.Node {
     // swiftlint:disable:next force_try
     let info = try! typeInfo(of: scene.type)
-    return .init(type: scene.type,
-                 isPrimitive: scene.bodyType is Never.Type,
-                 isHost: false,
-                 dynamicProperties: info.properties.filter { $0.type is DynamicProperty.Type }.map(\.name),
-                 object: self,
-                 parent: parent)
+    return .init(
+      type: scene.type,
+      isPrimitive: scene.bodyType is Never.Type,
+      isHost: false,
+      dynamicProperties: info.properties.filter { $0.type is DynamicProperty.Type }
+        .map(\.name),
+      object: self,
+      parent: parent
+    )
   }
 }
 
@@ -110,7 +113,8 @@ extension _AnyScene {
   ) -> MountedScene<R> {
     var title: String?
     if let titledSelf = scene as? TitledScene,
-      let text = titledSelf.title {
+      let text = titledSelf.title
+    {
       title = _TextProxy(text).rawText
     }
     let children: [MountedElement<R>]

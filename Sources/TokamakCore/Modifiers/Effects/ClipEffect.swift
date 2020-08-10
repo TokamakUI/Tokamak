@@ -35,12 +35,16 @@ extension View {
   }
 
   public func clipped(antialiased: Bool = false) -> some View {
-    clipShape(Rectangle(),
-              style: FillStyle(antialiased: antialiased))
+    clipShape(
+      Rectangle(),
+      style: FillStyle(antialiased: antialiased)
+    )
   }
 
   public func cornerRadius(_ radius: CGFloat, antialiased: Bool = true) -> some View {
-    clipShape(RoundedRectangle(cornerRadius: radius),
-              style: FillStyle(antialiased: antialiased))
+    clipShape(
+      RoundedRectangle(cornerRadius: radius),
+      style: FillStyle(antialiased: antialiased)
+    )
   }
 }

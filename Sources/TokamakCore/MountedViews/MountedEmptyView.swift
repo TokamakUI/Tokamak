@@ -23,10 +23,12 @@ final class MountedEmptyView<R: Renderer>: MountedElement<R> {
   override func update(with reconciler: StackReconciler<R>) {}
 
   override func debugNode(parent: MountedElement<R>? = nil) -> ViewTree<R>.Node {
-    .init(type: EmptyView.self,
-          isPrimitive: true,
-          isHost: false,
-          object: self,
-          parent: parent)
+    .init(
+      type: EmptyView.self,
+      isPrimitive: true,
+      isHost: false,
+      object: self,
+      parent: parent
+    )
   }
 }

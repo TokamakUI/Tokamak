@@ -68,11 +68,14 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
   override func debugNode(parent: MountedElement<R>? = nil) -> ViewTree<R>.Node {
     // swiftlint:disable:next force_try
     let info = try! typeInfo(of: app.type)
-    return .init(type: app.type,
-                 isPrimitive: false,
-                 isHost: false,
-                 dynamicProperties: info.properties.filter { $0.type is DynamicProperty.Type }.map(\.name),
-                 object: self,
-                 parent: parent)
+    return .init(
+      type: app.type,
+      isPrimitive: false,
+      isHost: false,
+      dynamicProperties: info.properties.filter { $0.type is DynamicProperty.Type }
+        .map(\.name),
+      object: self,
+      parent: parent
+    )
   }
 }

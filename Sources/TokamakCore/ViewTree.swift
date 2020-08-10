@@ -49,7 +49,8 @@ public final class ViewTree<R: Renderer> {
          dynamicProperties: [String] = [],
          target: R.TargetType? = nil,
          object: MountedElement<R>,
-         parent: MountedElement<R>? = nil) {
+         parent: MountedElement<R>? = nil)
+    {
       self.type = "\(type)"
       id = ObjectIdentifier(object)
       self.isPrimitive = isPrimitive

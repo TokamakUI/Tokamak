@@ -79,11 +79,14 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
   override func debugNode(parent: MountedElement<R>? = nil) -> ViewTree<R>.Node {
     // swiftlint:disable:next force_try
     let info = try! typeInfo(of: view.type)
-    return .init(type: view.type,
-                 isPrimitive: view.bodyType is Never.Type,
-                 isHost: false,
-                 dynamicProperties: info.properties.filter { $0.type is DynamicProperty.Type }.map(\.name),
-                 object: self,
-                 parent: parent)
+    return .init(
+      type: view.type,
+      isPrimitive: view.bodyType is Never.Type,
+      isHost: false,
+      dynamicProperties: info.properties.filter { $0.type is DynamicProperty.Type }
+        .map(\.name),
+      object: self,
+      parent: parent
+    )
   }
 }

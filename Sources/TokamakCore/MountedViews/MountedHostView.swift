@@ -144,11 +144,13 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
   }
 
   override func debugNode(parent: MountedElement<R>? = nil) -> ViewTree<R>.Node {
-    .init(type: view.type,
-          isPrimitive: view.bodyType is Never.Type,
-          isHost: true,
-          target: target,
-          object: self,
-          parent: parent)
+    .init(
+      type: view.type,
+      isPrimitive: view.bodyType is Never.Type,
+      isHost: true,
+      target: target,
+      object: self,
+      parent: parent
+    )
   }
 }

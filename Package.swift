@@ -38,9 +38,11 @@ let package = Package(
     // Dependencies declare other packages that this package depends on.
     // .package(url: /* package url */, from: "1.0.0"),
     .package(url: "https://github.com/kateinoigakukun/JavaScriptKit.git", .revision("c90e82f")),
-    .package(url: "https://github.com/MaxDesiatov/Runtime.git", .branch("wasi-build")),
-    .package(url: "https://github.com/MaxDesiatov/OpenCombine.git", .branch("observable-object")),
-    .package(url: "https://github.com/fabianfett/pure-swift-json.git", from: "0.4.0"),
+    .package(url: "https://github.com/MaxDesiatov/Runtime.git", .branch("wasi-build-5.3")),
+    .package(
+      url: "https://github.com/MaxDesiatov/OpenCombine.git",
+      .branch("observable-object-5.3")
+    ),
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define

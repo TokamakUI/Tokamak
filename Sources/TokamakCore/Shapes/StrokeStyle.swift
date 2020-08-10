@@ -23,12 +23,14 @@ public struct StrokeStyle: Equatable {
   public var dash: [CGFloat]
   public var dashPhase: CGFloat
 
-  public init(lineWidth: CGFloat = 1,
-              lineCap: CGLineCap = .butt,
-              lineJoin: CGLineJoin = .miter,
-              miterLimit: CGFloat = 10,
-              dash: [CGFloat] = [CGFloat](),
-              dashPhase: CGFloat = 0) {
+  public init(
+    lineWidth: CGFloat = 1,
+    lineCap: CGLineCap = .butt,
+    lineJoin: CGLineJoin = .miter,
+    miterLimit: CGFloat = 10,
+    dash: [CGFloat] = [CGFloat](),
+    dashPhase: CGFloat = 0
+  ) {
     self.lineWidth = lineWidth
     self.lineCap = lineCap
     self.lineJoin = lineJoin

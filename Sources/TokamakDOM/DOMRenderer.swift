@@ -162,7 +162,8 @@ final class DOMRenderer: Renderer {
     context: ViewTree<DOMRenderer>.Context
   ) {
     if tree.count > 0,
-      let json = try? PSJSONEncoder().encode(tree) {
+      let json = try? PSJSONEncoder().encode(tree)
+    {
       switch context {
       case .firstRender:
         JSObjectRef.global.window.object!._tokamak_debug_tree = json.jsValue()

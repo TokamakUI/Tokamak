@@ -91,7 +91,6 @@ public let tokamakStyles = """
   height: 100%;
 }
 
-._tokamak-buttonstyle-default,
 ._tokamak-securefield,
 ._tokamak-textfield-default,
 ._tokamak-textfield-roundedborder,

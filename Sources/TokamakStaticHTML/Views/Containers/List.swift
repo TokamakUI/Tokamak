@@ -16,22 +16,25 @@ import TokamakCore
 
 extension PlainListStyle: ListStyleDeferredToRenderer {
   public func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
-    AnyView(header
-      .font(.system(size: 17, weight: .medium))
-      .padding(.vertical, 4)
-      .padding(.leading)
-      .background(Color.listSectionHeader)
-      .frame(minWidth: 0, maxWidth: .infinity)
+    AnyView(
+      header
+        .font(.system(size: 17, weight: .medium))
+        .padding(.vertical, 4)
+        .padding(.leading)
+        .background(Color.listSectionHeader)
+        .frame(minWidth: 0, maxWidth: .infinity)
     )
   }
 
   public func sectionFooter<Footer>(_ footer: Footer) -> AnyView where Footer: View {
-    AnyView(VStack(alignment: .leading) {
-      Divider()
-      _ListRow.listRow(footer, self, isLast: true)
-    }
-    .padding(.leading)
-    .frame(minWidth: 0, maxWidth: .infinity))
+    AnyView(
+      VStack(alignment: .leading) {
+        Divider()
+        _ListRow.listRow(footer, self, isLast: true)
+      }
+      .padding(.leading)
+      .frame(minWidth: 0, maxWidth: .infinity)
+    )
   }
 
   public func sectionBody<SectionBody>(_ section: SectionBody) -> AnyView where SectionBody: View {
@@ -45,28 +48,32 @@ extension PlainListStyle: ListStyleDeferredToRenderer {
 
 extension InsetListStyle: ListStyleDeferredToRenderer {
   public func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
-    AnyView(header
-      .font(.system(size: 17, weight: .medium))
-      .padding(.vertical, 4)
-      .padding(.leading, 24)
-      .background(Color.listSectionHeader)
-      .frame(minWidth: 0, maxWidth: .infinity)
+    AnyView(
+      header
+        .font(.system(size: 17, weight: .medium))
+        .padding(.vertical, 4)
+        .padding(.leading, 24)
+        .background(Color.listSectionHeader)
+        .frame(minWidth: 0, maxWidth: .infinity)
     )
   }
 
   public func sectionFooter<Footer>(_ footer: Footer) -> AnyView where Footer: View {
-    AnyView(VStack(alignment: .leading) {
-      Divider()
-      _ListRow.listRow(footer, self, isLast: true)
-    }
-    .padding(.leading, 24)
-    .frame(minWidth: 0, maxWidth: .infinity))
+    AnyView(
+      VStack(alignment: .leading) {
+        Divider()
+        _ListRow.listRow(footer, self, isLast: true)
+      }
+      .padding(.leading, 24)
+      .frame(minWidth: 0, maxWidth: .infinity)
+    )
   }
 
   public func sectionBody<SectionBody>(_ section: SectionBody) -> AnyView where SectionBody: View {
-    AnyView(section
-      .padding(.leading, 24)
-      .frame(minWidth: 0, maxWidth: .infinity)
+    AnyView(
+      section
+        .padding(.leading, 24)
+        .frame(minWidth: 0, maxWidth: .infinity)
     )
   }
 
@@ -77,31 +84,36 @@ extension InsetListStyle: ListStyleDeferredToRenderer {
 
 extension GroupedListStyle: ListStyleDeferredToRenderer {
   public func listBody<ListBody>(_ content: ListBody) -> AnyView where ListBody: View {
-    AnyView(content
-      .background(Color.groupedListBackground)
+    AnyView(
+      content
+        .background(Color.groupedListBackground)
     )
   }
 
   public func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
-    AnyView(header
-      .font(.caption)
-      .padding([.top, .leading])
-      .frame(minWidth: 0, maxWidth: .infinity)
+    AnyView(
+      header
+        .font(.caption)
+        .padding([.top, .leading])
+        .frame(minWidth: 0, maxWidth: .infinity)
     )
   }
 
   public func sectionBody<SectionBody>(_ section: SectionBody) -> AnyView where SectionBody: View {
-    AnyView(section
-      .padding(.leading)
-      .background(Color.listGroupBackground)
-      .padding(.top)
-      .frame(minWidth: 0, maxWidth: .infinity))
+    AnyView(
+      section
+        .padding(.leading)
+        .background(Color.listGroupBackground)
+        .padding(.top)
+        .frame(minWidth: 0, maxWidth: .infinity)
+    )
   }
 
   public func sectionFooter<Footer>(_ footer: Footer) -> AnyView where Footer: View {
-    AnyView(footer
-      .font(.caption)
-      .padding([.top, .leading])
+    AnyView(
+      footer
+        .font(.caption)
+        .padding([.top, .leading])
     )
   }
 
@@ -116,28 +128,32 @@ extension InsetGroupedListStyle: ListStyleDeferredToRenderer {
   }
 
   public func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
-    AnyView(header
-      .font(.caption)
-      .padding([.top, .leading])
-      .padding(.leading)
-      .frame(minWidth: 0, maxWidth: .infinity)
+    AnyView(
+      header
+        .font(.caption)
+        .padding([.top, .leading])
+        .padding(.leading)
+        .frame(minWidth: 0, maxWidth: .infinity)
     )
   }
 
   public func sectionBody<SectionBody>(_ section: SectionBody) -> AnyView where SectionBody: View {
-    AnyView(section
-      .padding(.leading)
-      .background(Color.listGroupBackground)
-      .cornerRadius(10)
-      .padding([.horizontal, .top])
-      .frame(minWidth: 0, maxWidth: .infinity))
+    AnyView(
+      section
+        .padding(.leading)
+        .background(Color.listGroupBackground)
+        .cornerRadius(10)
+        .padding([.horizontal, .top])
+        .frame(minWidth: 0, maxWidth: .infinity)
+    )
   }
 
   public func sectionFooter<Footer>(_ footer: Footer) -> AnyView where Footer: View {
-    AnyView(footer
-      .font(.caption)
-      .padding([.top, .leading])
-      .padding(.leading)
+    AnyView(
+      footer
+        .font(.caption)
+        .padding([.top, .leading])
+        .padding(.leading)
     )
   }
 
@@ -149,16 +165,18 @@ extension InsetGroupedListStyle: ListStyleDeferredToRenderer {
 // TODO: Make sections collabsible (see Section.swift for more impl. details)
 extension SidebarListStyle: ListStyleDeferredToRenderer {
   public func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
-    AnyView(header
-      .font(.system(size: 11, weight: .medium))
-      .foregroundColor(Color._withScheme {
-        switch $0 {
-        case .light: return Color(.sRGB, white: 0, opacity: 0.4)
-        case .dark: return Color(.sRGB, white: 1, opacity: 0.4)
-        }
-      })
-      .padding(.vertical, 2)
-      .padding(.leading, 4))
+    AnyView(
+      header
+        .font(.system(size: 11, weight: .medium))
+        .foregroundColor(Color._withScheme {
+          switch $0 {
+          case .light: return Color(.sRGB, white: 0, opacity: 0.4)
+          case .dark: return Color(.sRGB, white: 1, opacity: 0.4)
+          }
+        })
+        .padding(.vertical, 2)
+        .padding(.leading, 4)
+    )
   }
 
   public func listRow<Row>(_ row: Row) -> AnyView where Row: View {
@@ -166,10 +184,11 @@ extension SidebarListStyle: ListStyleDeferredToRenderer {
   }
 
   public func listBody<ListBody>(_ content: ListBody) -> AnyView where ListBody: View {
-    AnyView(content
-      ._navigationLinkStyle(_SidebarNavigationLinkStyle())
-      .padding([.horizontal, .top], 6)
-      .background(Color.sidebarBackground)
+    AnyView(
+      content
+        ._navigationLinkStyle(_SidebarNavigationLinkStyle())
+        .padding([.horizontal, .top], 6)
+        .background(Color.sidebarBackground)
     )
   }
 }

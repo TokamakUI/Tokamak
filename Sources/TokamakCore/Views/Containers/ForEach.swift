@@ -31,8 +31,9 @@ protocol ForEachProtocol: GroupView {
 ///         Text("\($0)")
 ///       }
 ///     }
-public struct ForEach<Data, ID, Content>: View
-  where Data: RandomAccessCollection, ID: Hashable, Content: View {
+public struct ForEach<Data, ID, Content>: View where Data: RandomAccessCollection, ID: Hashable,
+  Content: View
+{
   let data: Data
   let id: KeyPath<Data.Element, ID>
   public let content: (Data.Element) -> Content

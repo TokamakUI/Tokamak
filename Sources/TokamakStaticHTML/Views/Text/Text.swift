@@ -106,10 +106,14 @@ extension Text: AnyHTML {
     case let .segmentedText(segments):
       return segments
         .map {
-          TextSpan(content: $0.0.rawText,
-                   attributes: Self.attributes(from: $0.1,
-                                               environment: proxy.environment))
-            .outerHTML
+          TextSpan(
+            content: $0.0.rawText,
+            attributes: Self.attributes(
+              from: $0.1,
+              environment: proxy.environment
+            )
+          )
+          .outerHTML
         }
         .reduce("", +)
     }
@@ -118,14 +122,18 @@ extension Text: AnyHTML {
   public var tag: String { "span" }
   public var attributes: [String: String] {
     let proxy = _TextProxy(self)
-    return Self.attributes(from: proxy.modifiers,
-                           environment: proxy.environment)
+    return Self.attributes(
+      from: proxy.modifiers,
+      environment: proxy.environment
+    )
   }
 }
 
 extension Text {
-  static func attributes(from modifiers: [_Modifier],
-                         environment: EnvironmentValues) -> [String: String] {
+  static func attributes(
+    from modifiers: [_Modifier],
+    environment: EnvironmentValues
+  ) -> [String: String] {
     let isRedacted = environment.redactionReasons.contains(.placeholder)
 
     var font: Font?
@@ -169,13 +177,7 @@ extension Text {
 
     return [
       "style": """
-      \(font?.styles.filter {
-        if weight != nil {
-          return $0.key != "font-weight"
-        } else {
-          return true
-        }
-      }.inlineStyles ?? "")
+      \(font?.styles.filter { weight != nil ? $0.key != "font-weight" : true }.inlineStyles ?? "")
       \(font == nil ? "font-family: \(Font.Design.default.description);" : "")
       color: \((color ?? .primary).cssValue(environment));
       font-style: \(italic ? "italic" : "normal");

@@ -149,8 +149,10 @@ public final class StackReconciler<R: Renderer> {
 
     #if DEBUG
     // Only send the difference for performance reasons
-    renderer?.debugTree(Set(debugTree.values).subtracting(preValues),
-                        context: .update)
+    renderer?.debugTree(
+      Set(debugTree.values).subtracting(preValues),
+      context: .update
+    )
     #endif
 
     queuedRerenders.removeAll()
@@ -217,9 +219,11 @@ public final class StackReconciler<R: Renderer> {
     }.store(in: &mountedApp.subscriptions)
   }
 
-  func render<T>(compositeElement: MountedCompositeElement<R>,
-                 body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
-                 result: KeyPath<MountedCompositeElement<R>, (Any) -> T>) -> T {
+  func render<T>(
+    compositeElement: MountedCompositeElement<R>,
+    body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
+    result: KeyPath<MountedCompositeElement<R>, (Any) -> T>
+  ) -> T {
     let info = compositeElement.updateEnvironment()
 
     var stateIdx = 0
