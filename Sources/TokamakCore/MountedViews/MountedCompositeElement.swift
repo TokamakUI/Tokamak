@@ -40,8 +40,7 @@ class MountedCompositeElement<R: Renderer>: MountedElement<R> {
 }
 
 extension MountedCompositeElement: Hashable {
-  static func == (lhs: MountedCompositeElement<R>,
-                  rhs: MountedCompositeElement<R>) -> Bool {
+  static func == (lhs: MountedCompositeElement<R>, rhs: MountedCompositeElement<R>) -> Bool {
     lhs === rhs
   }
 

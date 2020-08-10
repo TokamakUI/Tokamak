@@ -47,6 +47,7 @@ public struct FillStyle: Equatable, ShapeStyle {
 }
 
 public struct _ShapeView<Content, Style>: View where Content: Shape, Style: ShapeStyle {
+  @Environment(\.self) public var environment
   @Environment(\.foregroundColor) public var foregroundColor
   public var shape: Content
   public var style: Style
@@ -87,8 +88,11 @@ extension Shape {
     y: CGFloat = 1,
     anchor: UnitPoint = .center
   ) -> ScaledShape<Self> {
-    ScaledShape(shape: self,
-                scale: CGSize(width: x, height: y), anchor: anchor)
+    ScaledShape(
+      shape: self,
+      scale: CGSize(width: x, height: y),
+      anchor: anchor
+    )
   }
 
   public func scale(_ scale: CGFloat, anchor: UnitPoint = .center) -> ScaledShape<Self> {

@@ -49,5 +49,6 @@ protocol ValueStorage {
 extension State: ValueStorage {}
 
 extension State where Value: ExpressibleByNilLiteral {
-  @inlinable public init() { self.init(wrappedValue: nil) }
+  @inlinable
+  public init() { self.init(wrappedValue: nil) }
 }

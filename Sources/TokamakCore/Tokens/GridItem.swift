@@ -26,9 +26,11 @@ public struct GridItem {
   public var spacing: CGFloat
   public var alignment: Alignment
 
-  public init(_ size: GridItem.Size = .flexible(),
-              spacing: CGFloat? = nil,
-              alignment: Alignment? = nil) {
+  public init(
+    _ size: GridItem.Size = .flexible(),
+    spacing: CGFloat? = nil,
+    alignment: Alignment? = nil
+  ) {
     self.size = size
     self.spacing = spacing ?? 4
     self.alignment = alignment ?? .center

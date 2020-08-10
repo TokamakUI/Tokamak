@@ -86,24 +86,21 @@ public struct Path: Equatable, LosslessStringConvertible {
     self.init(storage: .rect(rect))
   }
 
-  public init(roundedRect rect: CGRect,
-              cornerSize: CGSize,
-              style: RoundedCornerStyle = .circular) {
-    self.init(storage: .roundedRect(FixedRoundedRect(
-      rect: rect,
-      cornerSize: cornerSize,
-      style: style
-    )))
+  public init(roundedRect rect: CGRect, cornerSize: CGSize, style: RoundedCornerStyle = .circular) {
+    self.init(
+      storage: .roundedRect(FixedRoundedRect(rect: rect, cornerSize: cornerSize, style: style))
+    )
   }
 
-  public init(roundedRect rect: CGRect,
-              cornerRadius: CGFloat,
-              style: RoundedCornerStyle = .circular) {
+  public init(
+    roundedRect rect: CGRect,
+    cornerRadius: CGFloat,
+    style: RoundedCornerStyle = .circular
+  ) {
     self.init(
       storage: .roundedRect(FixedRoundedRect(
         rect: rect,
-        cornerSize: CGSize(width: cornerRadius,
-                           height: cornerRadius),
+        cornerSize: CGSize(width: cornerRadius, height: cornerRadius),
         style: style
       ))
     )
@@ -192,55 +189,61 @@ extension Path {
 
   public mutating func addRect(_ rect: CGRect, transform: CGAffineTransform = .identity) {
     move(to: rect.origin)
-    addLine(to: CGPoint(x: rect.size.width, y: 0)
-      .offset(by: rect.origin))
-    addLine(to: CGPoint(x: rect.size.width, y: rect.size.height)
-      .offset(by: rect.origin))
-    addLine(to: CGPoint(x: 0, y: rect.size.height)
-      .offset(by: rect.origin))
+    addLine(to: CGPoint(x: rect.size.width, y: 0).offset(by: rect.origin))
+    addLine(to: CGPoint(x: rect.size.width, y: rect.size.height).offset(by: rect.origin))
+    addLine(to: CGPoint(x: 0, y: rect.size.height).offset(by: rect.origin))
     closeSubpath()
   }
 
-  public mutating func addRoundedRect(in rect: CGRect,
-                                      cornerSize: CGSize,
-                                      style: RoundedCornerStyle = .circular,
-                                      transform: CGAffineTransform = .identity) {
-    move(to: CGPoint(x: rect.size.width, y: rect.size.height / 2)
-      .offset(by: rect.origin))
-    addLine(to: CGPoint(x: rect.size.width, y: rect.size.height - cornerSize.height)
-      .offset(by: rect.origin))
-    addQuadCurve(to: CGPoint(x: rect.size.width - cornerSize.width, y: rect.size.height)
-      .offset(by: rect.origin),
-                 control: CGPoint(x: rect.size.width, y: rect.size.height)
-        .offset(by: rect.origin))
-    addLine(to: CGPoint(x: cornerSize.width, y: rect.size.height)
-      .offset(by: rect.origin))
-    addQuadCurve(to: CGPoint(x: 0, y: rect.size.height - cornerSize.height)
-      .offset(by: rect.origin),
-                 control: CGPoint(x: 0, y: rect.size.height)
-        .offset(by: rect.origin))
-    addLine(to: CGPoint(x: 0, y: cornerSize.height)
-      .offset(by: rect.origin))
-    addQuadCurve(to: CGPoint(x: cornerSize.width, y: 0)
-      .offset(by: rect.origin),
-                 control: CGPoint.zero
-        .offset(by: rect.origin))
-    addLine(to: CGPoint(x: rect.size.width - cornerSize.width, y: 0)
-      .offset(by: rect.origin))
-    addQuadCurve(to: CGPoint(x: rect.size.width, y: cornerSize.height)
-      .offset(by: rect.origin),
-                 control: CGPoint(x: rect.size.width, y: 0)
-        .offset(by: rect.origin))
+  public mutating func addRoundedRect(
+    in rect: CGRect,
+    cornerSize: CGSize,
+    style: RoundedCornerStyle = .circular,
+    transform: CGAffineTransform = .identity
+  ) {
+    move(to: CGPoint(x: rect.size.width, y: rect.size.height / 2).offset(by: rect.origin))
+    addLine(
+      to: CGPoint(x: rect.size.width, y: rect.size.height - cornerSize.height)
+        .offset(by: rect.origin)
+    )
+    addQuadCurve(
+      to: CGPoint(x: rect.size.width - cornerSize.width, y: rect.size.height)
+        .offset(by: rect.origin),
+      control: CGPoint(x: rect.size.width, y: rect.size.height)
+        .offset(by: rect.origin)
+    )
+    addLine(to: CGPoint(x: cornerSize.width, y: rect.size.height).offset(by: rect.origin))
+    addQuadCurve(
+      to: CGPoint(x: 0, y: rect.size.height - cornerSize.height)
+        .offset(by: rect.origin),
+      control: CGPoint(x: 0, y: rect.size.height)
+        .offset(by: rect.origin)
+    )
+    addLine(to: CGPoint(x: 0, y: cornerSize.height).offset(by: rect.origin))
+    addQuadCurve(
+      to: CGPoint(x: cornerSize.width, y: 0)
+        .offset(by: rect.origin),
+      control: CGPoint.zero
+        .offset(by: rect.origin)
+    )
+    addLine(to: CGPoint(x: rect.size.width - cornerSize.width, y: 0).offset(by: rect.origin))
+    addQuadCurve(
+      to: CGPoint(x: rect.size.width, y: cornerSize.height)
+        .offset(by: rect.origin),
+      control: CGPoint(x: rect.size.width, y: 0)
+        .offset(by: rect.origin)
+    )
     closeSubpath()
   }
 
   public mutating func addEllipse(in rect: CGRect, transform: CGAffineTransform = .identity) {
-    subpaths.append(.init(path: .init(ellipseIn: .init(origin: rect.origin
-          .offset(by: .init(x: rect.size.width / 2,
-                            y: rect.size.height / 2)),
-                                                       size: .init(width: rect.size.width / 2,
-                                                                   height: rect.size.height / 2))),
-                          transform: transform))
+    subpaths.append(.init(
+      path: .init(ellipseIn: .init(
+        origin: rect.origin.offset(by: .init(x: rect.size.width / 2, y: rect.size.height / 2)),
+        size: .init(width: rect.size.width / 2, height: rect.size.height / 2)
+      )),
+      transform: transform
+    ))
   }
 
   public mutating func addRects(_ rects: [CGRect], transform: CGAffineTransform = .identity) {
@@ -251,71 +254,93 @@ extension Path {
     lines.forEach { addLine(to: $0) }
   }
 
-  public mutating func addRelativeArc(center: CGPoint,
-                                      radius: CGFloat,
-                                      startAngle: Angle,
-                                      delta: Angle,
-                                      transform: CGAffineTransform = .identity) {
-    addArc(center: center,
-           radius: radius,
-           startAngle: startAngle,
-           endAngle: startAngle + delta,
-           clockwise: false)
+  public mutating func addRelativeArc(
+    center: CGPoint,
+    radius: CGFloat,
+    startAngle: Angle,
+    delta: Angle,
+    transform: CGAffineTransform = .identity
+  ) {
+    addArc(
+      center: center,
+      radius: radius,
+      startAngle: startAngle,
+      endAngle: startAngle + delta,
+      clockwise: false
+    )
   }
 
   // There's a great article on bezier curves here:
   // https://pomax.github.io/bezierinfo
   // FIXME: Handle negative delta
-  public mutating func addArc(center: CGPoint,
-                              radius: CGFloat,
-                              startAngle: Angle,
-                              endAngle: Angle,
-                              clockwise: Bool,
-                              transform: CGAffineTransform = .identity) {
+  public mutating func addArc(
+    center: CGPoint,
+    radius: CGFloat,
+    startAngle: Angle,
+    endAngle: Angle,
+    clockwise: Bool,
+    transform: CGAffineTransform = .identity
+  ) {
     if clockwise {
-      addArc(center: center,
-             radius: radius,
-             startAngle: endAngle,
-             endAngle: endAngle + (.radians(.pi * 2) - endAngle) + startAngle,
-             clockwise: false)
+      addArc(
+        center: center,
+        radius: radius,
+        startAngle: endAngle,
+        endAngle: endAngle + (.radians(.pi * 2) - endAngle) + startAngle,
+        clockwise: false
+      )
     } else {
       let angle = abs(startAngle.radians - endAngle.radians)
       if angle > .pi / 2 {
         // Split the angle into 90º chunks
         let chunk1 = Angle.radians(startAngle.radians + (.pi / 2))
-        addArc(center: center,
-               radius: radius,
-               startAngle: startAngle,
-               endAngle: chunk1,
-               clockwise: clockwise)
-        addArc(center: center,
-               radius: radius,
-               startAngle: chunk1,
-               endAngle: endAngle,
-               clockwise: clockwise)
+        addArc(
+          center: center,
+          radius: radius,
+          startAngle: startAngle,
+          endAngle: chunk1,
+          clockwise: clockwise
+        )
+        addArc(
+          center: center,
+          radius: radius,
+          startAngle: chunk1,
+          endAngle: endAngle,
+          clockwise: clockwise
+        )
       } else {
-        let startPoint = CGPoint(x: radius + center.x,
-                                 y: center.y)
-        let endPoint = CGPoint(x: (radius * cos(angle)) + center.x,
-                               y: (radius * sin(angle)) + center.y)
+        let startPoint = CGPoint(
+          x: radius + center.x,
+          y: center.y
+        )
+        let endPoint = CGPoint(
+          x: (radius * cos(angle)) + center.x,
+          y: (radius * sin(angle)) + center.y
+        )
         let l = (4 / 3) * tan(angle / 4)
         let c1 = CGPoint(x: radius + center.x, y: (l * radius) + center.y)
-        let c2 = CGPoint(x: ((cos(angle) + l * sin(angle)) * radius) + center.x,
-                         y: ((sin(angle) - l * cos(angle)) * radius) + center.y)
+        let c2 = CGPoint(
+          x: ((cos(angle) + l * sin(angle)) * radius) + center.x,
+          y: ((sin(angle) - l * cos(angle)) * radius) + center.y
+        )
 
         move(to: startPoint.rotate(startAngle, around: center))
-        addCurve(to: endPoint.rotate(startAngle, around: center),
-                 control1: c1.rotate(startAngle, around: center),
-                 control2: c2.rotate(startAngle, around: center))
+        addCurve(
+          to: endPoint.rotate(startAngle, around: center),
+          control1: c1.rotate(startAngle, around: center),
+          control2: c2.rotate(startAngle, around: center)
+        )
       }
     }
   }
 
   // FIXME: How does this arc method work?
-  public mutating func addArc(tangent1End p1: CGPoint,
-                              tangent2End p2: CGPoint,
-                              radius: CGFloat,
-                              transform: CGAffineTransform = .identity) {}
+  public mutating func addArc(
+    tangent1End p1: CGPoint,
+    tangent2End p2: CGPoint,
+    radius: CGFloat,
+    transform: CGAffineTransform = .identity
+  ) {}
 
   public mutating func addPath(_ path: Path, transform: CGAffineTransform = .identity) {
     subpaths.append(.init(path: path, transform: transform))

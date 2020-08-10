@@ -14,9 +14,10 @@
 
 import TokamakCore
 
-extension Color: CustomStringConvertible {
-  public var description: String {
-    "rgb(\(red * 255), \(green * 255), \(blue * 255), \(opacity * 255))"
+extension Color {
+  func cssValue(_ environment: EnvironmentValues) -> String {
+    let rgba = _evaluate(environment)
+    return "rgba(\(rgba.red * 255), \(rgba.green * 255), \(rgba.blue * 255), \(rgba.opacity))"
   }
 }
 

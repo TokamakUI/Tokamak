@@ -35,7 +35,7 @@ struct NavItem: View {
 
   init<V>(_ id: String, destination: V) where V: View {
     self.id = id
-    self.destination = title(destination.frame(minWidth: 300), title: id)
+    self.destination = title(destination, title: id)
   }
 
   init(unavailable id: String) {
@@ -43,13 +43,10 @@ struct NavItem: View {
     destination = nil
   }
 
-  @ViewBuilder var body: some View {
+  @ViewBuilder
+  var body: some View {
     if let dest = destination {
-      NavigationLink(id, destination: HStack {
-        Spacer(minLength: 0)
-        dest
-        Spacer(minLength: 0)
-      })
+      NavigationLink(id, destination: dest)
     } else {
       #if os(WASI)
       Text(id)
@@ -72,11 +69,15 @@ struct TokamakDemoView: View {
       let list = title(
         List {
           Section(header: Text("Buttons")) {
-            NavItem("Counter", destination:
+            NavItem(
+              "Counter",
+              destination:
               Counter(count: Count(value: 5), limit: 15)
                 .padding()
                 .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
-                .border(Color.red, width: 3))
+                .border(Color.red, width: 3)
+                .foregroundColor(.black)
+            )
             NavItem("ButtonStyle", destination: ButtonStyleDemo())
           }
           Section(header: Text("Containers")) {

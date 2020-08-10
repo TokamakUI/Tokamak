@@ -186,9 +186,11 @@ public final class StackReconciler<R: Renderer> {
     }.store(in: &mountedApp.subscriptions)
   }
 
-  func render<T>(compositeElement: MountedCompositeElement<R>,
-                 body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
-                 result: KeyPath<MountedCompositeElement<R>, (Any) -> T>) -> T {
+  func render<T>(
+    compositeElement: MountedCompositeElement<R>,
+    body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
+    result: KeyPath<MountedCompositeElement<R>, (Any) -> T>
+  ) -> T {
     let info = compositeElement.updateEnvironment()
 
     var stateIdx = 0

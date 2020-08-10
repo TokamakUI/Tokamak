@@ -25,7 +25,8 @@ extension DOMViewModifier {
 }
 
 extension ModifiedContent: DOMViewModifier
-  where Content: DOMViewModifier, Modifier: DOMViewModifier {
+  where Content: DOMViewModifier, Modifier: DOMViewModifier
+{
   // Merge attributes
   public var attributes: [String: String] {
     var attr = content.attributes
@@ -47,6 +48,6 @@ extension _ZIndexModifier: DOMViewModifier {
 extension _BackgroundModifier: DOMViewModifier where Background == Color {
   public var isOrderDependent: Bool { true }
   public var attributes: [String: String] {
-    ["style": "background-color: \(background.description)"]
+    ["style": "background-color: \(background.cssValue(environment))"]
   }
 }

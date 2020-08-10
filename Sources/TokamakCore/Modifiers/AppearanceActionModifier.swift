@@ -26,7 +26,8 @@ struct _AppearanceActionModifier: ViewModifier {
 }
 
 extension ModifiedContent: AppearanceActionType
-  where Content: View, Modifier == _AppearanceActionModifier {
+  where Content: View, Modifier == _AppearanceActionModifier
+{
   var appear: (() -> ())? { modifier.appear }
   var disappear: (() -> ())? { modifier.disappear }
 }
