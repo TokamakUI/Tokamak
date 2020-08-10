@@ -34,11 +34,32 @@ extension AnyHTML {
   }
 }
 
-public struct HTML<Content>: View, AnyHTML where Content: View {
+public struct HTML<Content>: View, AnyHTML {
   public let tag: String
   public let attributes: [String: String]
   let content: Content
 
+  public let innerHTML: String?
+
+  public var body: Never {
+    neverBody("HTML")
+  }
+}
+
+extension HTML where Content: StringProtocol {
+  public init(
+    _ tag: String,
+    _ attributes: [String: String] = [:],
+    content: Content
+  ) {
+    self.tag = tag
+    self.attributes = attributes
+    self.content = content
+    innerHTML = String(content)
+  }
+}
+
+extension HTML: ParentView where Content: View {
   public init(
     _ tag: String,
     _ attributes: [String: String] = [:],
@@ -47,12 +68,11 @@ public struct HTML<Content>: View, AnyHTML where Content: View {
     self.tag = tag
     self.attributes = attributes
     self.content = content()
+    innerHTML = nil
   }
 
-  public var innerHTML: String? { nil }
-
-  public var body: Never {
-    neverBody("HTML")
+  public var children: [AnyView] {
+    [AnyView(content)]
   }
 }
 
@@ -62,12 +82,6 @@ extension HTML where Content == EmptyView {
     _ attributes: [String: String] = [:]
   ) {
     self = HTML(tag, attributes) { EmptyView() }
-  }
-}
-
-extension HTML: ParentView {
-  public var children: [AnyView] {
-    [AnyView(content)]
   }
 }
 

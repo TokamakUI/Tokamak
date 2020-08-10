@@ -16,8 +16,18 @@
 //
 
 public struct Color: Hashable, Equatable {
-  // FIXME: This is not injected.
-  @Environment(\.accentColor) static var envAccentColor
+  public static func == (lhs: Self, rhs: Self) -> Bool {
+    var lightEnv = EnvironmentValues()
+    lightEnv.colorScheme = .light
+    var darkEnv = EnvironmentValues()
+    darkEnv.colorScheme = .dark
+    return lhs._evaluate(lightEnv) == rhs._evaluate(lightEnv) &&
+      lhs._evaluate(darkEnv) == rhs._evaluate(darkEnv)
+  }
+
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(evaluator(EnvironmentValues()))
+  }
 
   public enum RGBColorSpace {
     case sRGB
@@ -25,11 +35,19 @@ public struct Color: Hashable, Equatable {
     case displayP3
   }
 
-  public let red: Double
-  public let green: Double
-  public let blue: Double
-  public let opacity: Double
-  public let space: RGBColorSpace
+  public struct _RGBA: Hashable, Equatable {
+    public let red: Double
+    public let green: Double
+    public let blue: Double
+    public let opacity: Double
+    public let space: RGBColorSpace
+  }
+
+  let evaluator: (EnvironmentValues) -> _RGBA
+
+  private init(_ evaluator: @escaping (EnvironmentValues) -> _RGBA) {
+    self.evaluator = evaluator
+  }
 
   public init(
     _ colorSpace: RGBColorSpace = .sRGB,
@@ -38,34 +56,35 @@ public struct Color: Hashable, Equatable {
     blue: Double,
     opacity: Double = 1
   ) {
-    self.red = red
-    self.green = green
-    self.blue = blue
-    self.opacity = opacity
-    space = colorSpace
+    self.init { _ in
+      _RGBA(red: red, green: green, blue: blue, opacity: opacity, space: colorSpace)
+    }
   }
 
   public init(_ colorSpace: RGBColorSpace = .sRGB, white: Double, opacity: Double = 1) {
-    red = white
-    green = white
-    blue = white
-    self.opacity = opacity
-    space = colorSpace
+    self.init(colorSpace, red: white, green: white, blue: white, opacity: opacity)
   }
 
   // Source for the formula:
   // https://en.wikipedia.org/wiki/HSL_and_HSV#HSL_to_RGB_alternative
   public init(hue: Double, saturation: Double, brightness: Double, opacity: Double = 1) {
     let a = saturation * min(brightness / 2, 1 - (brightness / 2))
-    let f: (Int) -> Double = { n in
+    let f = { (n: Int) -> Double in
       let k = Double((n + Int(hue * 12)) % 12)
       return brightness - (a * max(-1, min(k - 3, 9 - k, 1)))
     }
-    red = f(0)
-    green = f(8)
-    blue = f(4)
-    self.opacity = opacity
-    space = .sRGB
+    self.init(.sRGB, red: f(0), green: f(8), blue: f(4), opacity: opacity)
+  }
+
+  /// Create a `Color` dependent on the current `ColorScheme`.
+  public static func _withScheme(_ evaluator: @escaping (ColorScheme) -> Self) -> Self {
+    .init {
+      evaluator($0.colorScheme)._evaluate($0)
+    }
+  }
+
+  public func _evaluate(_ environment: EnvironmentValues) -> _RGBA {
+    evaluator(environment)
   }
 }
 
@@ -81,9 +100,19 @@ extension Color {
   public static let yellow: Self = .init(red: 1.00, green: 0.84, blue: 0.04)
   public static let pink: Self = .init(red: 1.00, green: 0.22, blue: 0.37)
   public static let purple: Self = .init(red: 0.75, green: 0.36, blue: 0.95)
-  // FIXME: Switch to use colorScheme
-  public static let primary: Self = .black
+  public static let primary: Self = .init {
+    switch $0.colorScheme {
+    case .light:
+      return .init(red: 0, green: 0, blue: 0, opacity: 1, space: .sRGB)
+    case .dark:
+      return .init(red: 1, green: 1, blue: 1, opacity: 1, space: .sRGB)
+    }
+  }
+
   public static let secondary: Self = .gray
+  public static let accentColor: Self = .init {
+    ($0.accentColor ?? Self.blue)._evaluate($0)
+  }
 
   public init(_ color: UIColor) {
     self = color.color
@@ -93,11 +122,13 @@ extension Color {
 extension Color: ExpressibleByIntegerLiteral {
   /// Allows initializing value of `Color` type from hex values
   public init(integerLiteral bitMask: UInt32) {
-    red = Double((bitMask & 0xFF0000) >> 16) / 255
-    green = Double((bitMask & 0x00FF00) >> 8) / 255
-    blue = Double(bitMask & 0x0000FF) / 255
-    opacity = 1
-    space = .sRGB
+    self.init(
+      .sRGB,
+      red: Double((bitMask & 0xFF0000) >> 16) / 255,
+      green: Double((bitMask & 0x00FF00) >> 8) / 255,
+      blue: Double(bitMask & 0x0000FF) / 255,
+      opacity: 1
+    )
   }
 }
 
@@ -114,11 +145,13 @@ extension Color {
     else {
       return nil
     }
-    self.red = Double(red) / 255
-    self.green = Double(green) / 255
-    self.blue = Double(blue) / 255
-    opacity = 1
-    space = .sRGB
+    self.init(
+      .sRGB,
+      red: Double(red) / 255,
+      green: Double(green) / 255,
+      blue: Double(blue) / 255,
+      opacity: 1
+    )
   }
 }
 
@@ -147,12 +180,6 @@ public extension EnvironmentValues {
 extension View {
   public func accentColor(_ accentColor: Color?) -> some View {
     environment(\.accentColor, accentColor)
-  }
-}
-
-extension Color {
-  public static var accentColor: Self {
-    envAccentColor ?? .blue
   }
 }
 

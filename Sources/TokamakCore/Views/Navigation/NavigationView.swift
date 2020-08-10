@@ -15,10 +15,14 @@
 //  Created by Jed Fox on 06/30/2020.
 //
 
+final class NavigationContext: ObservableObject {
+  @Published var destination = NavigationLinkDestination(EmptyView())
+}
+
 public struct NavigationView<Content>: View where Content: View {
   let content: Content
 
-  @State var destination = AnyView(EmptyView())
+  @ObservedObject var context = NavigationContext()
 
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()
@@ -30,17 +34,19 @@ public struct NavigationView<Content>: View where Content: View {
 }
 
 /// This is a helper class that works around absence of "package private" access control in Swift
-public struct _NavigationViewProxy<Content: View>: View {
+public struct _NavigationViewProxy<Content: View> {
   public let subject: NavigationView<Content>
 
   public init(_ subject: NavigationView<Content>) { self.subject = subject }
 
-  public var content: Content { subject.content }
-  public var body: some View {
-    HStack {
-      content
-      subject.destination
-    }.environment(\.navigationDestination, subject.$destination)
+  public var content: some View {
+    subject.content
+      .environmentObject(subject.context)
+  }
+
+  public var destination: some View {
+    subject.context.destination.view
+      .environmentObject(subject.context)
   }
 }
 

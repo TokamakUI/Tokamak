@@ -16,27 +16,39 @@
 //
 
 import TokamakCore
+import TokamakStaticHTML
 
 extension _Button: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
-    let attributes: [String: String]
-    if buttonStyle.type == DefaultButtonStyle.self {
-      attributes = [:]
-    } else {
-      attributes = ["class": "_tokamak-buttonstyle-reset"]
-    }
-
-    return AnyView(DynamicHTML("button", attributes, listeners: [
-      "click": { _ in action() },
+    let listeners: [String: Listener] = [
       "pointerdown": { _ in isPressed = true },
-      "pointerup": { _ in isPressed = false },
-    ]) {
-      buttonStyle.makeBody(
-        configuration: _ButtonStyleConfigurationProxy(
-          label: AnyView(label),
-          isPressed: isPressed
-        ).subject
-      )
-    })
+      "pointerup": { _ in
+        isPressed = false
+        action()
+      },
+    ]
+    if buttonStyle.type == DefaultButtonStyle.self {
+      return AnyView(DynamicHTML(
+        "button",
+        ["class": "_tokamak-buttonstyle-default"],
+        listeners: listeners
+      ) {
+        HTML("span", content: label.innerHTML ?? "")
+      })
+    } else {
+      return AnyView(DynamicHTML(
+        "button",
+        ["class": "_tokamak-buttonstyle-reset"],
+        listeners: listeners
+      ) {
+        buttonStyle.makeBody(
+          configuration: _ButtonStyleConfigurationProxy(
+            label: AnyView(label),
+            isPressed: isPressed
+          ).subject
+        )
+        .colorScheme(.light)
+      })
+    }
   }
 }

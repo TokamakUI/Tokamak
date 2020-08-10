@@ -89,14 +89,32 @@ extension Font: StylesConvertible {
   }
 }
 
+private struct TextSpan: AnyHTML {
+  let content: String
+  let attributes: [String: String]
+
+  var innerHTML: String? { content }
+  var tag: String { "span" }
+}
+
 extension Text: AnyHTML {
   public var innerHTML: String? {
-    switch _TextProxy(self).storage {
+    let proxy = _TextProxy(self)
+    switch proxy.storage {
     case let .verbatim(text):
       return text
     case let .segmentedText(segments):
       return segments
-        .map(\.outerHTML)
+        .map {
+          TextSpan(
+            content: $0.0.rawText,
+            attributes: Self.attributes(
+              from: $0.1,
+              environment: proxy.environment
+            )
+          )
+          .outerHTML
+        }
         .reduce("", +)
     }
   }
@@ -104,7 +122,19 @@ extension Text: AnyHTML {
   public var tag: String { "span" }
   public var attributes: [String: String] {
     let proxy = _TextProxy(self)
-    let isRedacted = proxy.redactionReasons.contains(.placeholder)
+    return Self.attributes(
+      from: proxy.modifiers,
+      environment: proxy.environment
+    )
+  }
+}
+
+extension Text {
+  static func attributes(
+    from modifiers: [_Modifier],
+    environment: EnvironmentValues
+  ) -> [String: String] {
+    let isRedacted = environment.redactionReasons.contains(.placeholder)
 
     var font: Font?
     var color: Color?
@@ -114,7 +144,7 @@ extension Text: AnyHTML {
     var baseline: CGFloat?
     var strikethrough: (Bool, Color?)?
     var underline: (Bool, Color?)?
-    for modifier in proxy.modifiers {
+    for modifier in modifiers {
       switch modifier {
       case let .color(_color):
         color = _color
@@ -135,30 +165,27 @@ extension Text: AnyHTML {
         underline = (active, color)
       }
     }
+
     let hasStrikethrough = strikethrough?.0 ?? false
     let hasUnderline = underline?.0 ?? false
     let textDecoration = !hasStrikethrough && !hasUnderline ?
       "none" :
       "\(hasStrikethrough ? "line-through" : "") \(hasUnderline ? "underline" : "")"
+    let decorationColor = strikethrough?.1?.cssValue(environment)
+      ?? underline?.1?.cssValue(environment)
+      ?? "inherit"
 
     return [
       "style": """
-      \(font?.styles.filter {
-        if weight != nil {
-          return $0.key != "font-weight"
-        } else {
-          return true
-        }
-      }.inlineStyles ?? "")
+      \(font?.styles.filter { weight != nil ? $0.key != "font-weight" : true }.inlineStyles ?? "")
       \(font == nil ? "font-family: \(Font.Design.default.description);" : "")
-      color: \(color?.description ?? "inherit");
+      color: \((color ?? .primary).cssValue(environment));
       font-style: \(italic ? "italic" : "normal");
       font-weight: \(weight?.value ?? font?._weight.value ?? 400);
       letter-spacing: \(kerning);
       vertical-align: \(baseline == nil ? "baseline" : "\(baseline!)em");
       text-decoration: \(textDecoration);
-      text-decoration-color: \(strikethrough?.1?.description ?? underline?.1?.description
-        ?? "inherit")
+      text-decoration-color: \(decorationColor)
       """,
       "class": isRedacted ? "_tokamak-text-redacted" : "",
     ]

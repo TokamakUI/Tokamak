@@ -15,14 +15,22 @@
 //  Created by Jed Fox on 06/30/2020.
 //
 
+final class NavigationLinkDestination {
+  let view: AnyView
+  init<V: View>(_ destination: V) {
+    view = AnyView(destination)
+  }
+}
+
 public struct NavigationLink<Label, Destination>: View where Label: View, Destination: View {
-  let destination: Destination
+  @State var destination: NavigationLinkDestination
   let label: Label
 
-  @Environment(_navigationDestinationKey) var navigationContext
+  @EnvironmentObject var navigationContext: NavigationContext
+  @Environment(\._navigationLinkStyle) var style
 
   public init(destination: Destination, @ViewBuilder label: () -> Label) {
-    self.destination = destination
+    _destination = State(wrappedValue: NavigationLinkDestination(destination))
     self.label = label()
   }
 
@@ -46,8 +54,7 @@ extension NavigationLink where Label == Text {
   /// Creates an instance that presents `destination`, with a `Text` label
   /// generated from a title string.
   public init<S>(_ title: S, destination: Destination) where S: StringProtocol {
-    self.destination = destination
-    label = Text(title)
+    self.init(destination: destination) { Text(title) }
   }
 
   /// Creates an instance that presents `destination` when active, with a
@@ -69,11 +76,25 @@ extension NavigationLink where Label == Text {
 public struct _NavigationLinkProxy<Label, Destination> where Label: View, Destination: View {
   public let subject: NavigationLink<Label, Destination>
 
-  public init(_ subject: NavigationLink<Label, Destination>) { self.subject = subject }
+  public init(_ subject: NavigationLink<Label, Destination>) {
+    self.subject = subject
+  }
 
-  public var label: Label { subject.label }
+  public var label: AnyView {
+    subject.style.makeBody(configuration: .init(
+      body: AnyView(subject.label),
+      isSelected: isSelected
+    ))
+  }
+
+  public var style: _AnyNavigationLinkStyle { subject.style }
+  public var isSelected: Bool {
+    ObjectIdentifier(subject.destination) == ObjectIdentifier(subject.navigationContext.destination)
+  }
 
   public func activate() {
-    subject.navigationContext!.wrappedValue = AnyView(subject.destination)
+    if !isSelected {
+      subject.navigationContext.destination = subject.destination
+    }
   }
 }

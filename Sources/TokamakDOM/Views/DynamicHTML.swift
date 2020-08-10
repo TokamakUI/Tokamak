@@ -25,12 +25,35 @@ protocol AnyDynamicHTML: AnyHTML {
   var listeners: [String: Listener] { get }
 }
 
-public struct DynamicHTML<Content>: View, AnyDynamicHTML where Content: View {
+public struct DynamicHTML<Content>: View, AnyDynamicHTML {
   public let tag: String
   public let attributes: [String: String]
   public let listeners: [String: Listener]
   let content: Content
 
+  public var innerHTML: String?
+
+  public var body: Never {
+    neverBody("HTML")
+  }
+}
+
+extension DynamicHTML where Content: StringProtocol {
+  public init(
+    _ tag: String,
+    _ attributes: [String: String] = [:],
+    listeners: [String: Listener] = [:],
+    content: Content
+  ) {
+    self.tag = tag
+    self.attributes = attributes
+    self.listeners = listeners
+    self.content = content
+    innerHTML = String(content)
+  }
+}
+
+extension DynamicHTML: ParentView where Content: View {
   public init(
     _ tag: String,
     _ attributes: [String: String] = [:],
@@ -41,12 +64,11 @@ public struct DynamicHTML<Content>: View, AnyDynamicHTML where Content: View {
     self.attributes = attributes
     self.listeners = listeners
     self.content = content()
+    innerHTML = nil
   }
 
-  public var innerHTML: String? { nil }
-
-  public var body: Never {
-    neverBody("HTML")
+  public var children: [AnyView] {
+    [AnyView(content)]
   }
 }
 
@@ -57,11 +79,5 @@ extension DynamicHTML where Content == EmptyView {
     listeners: [String: Listener] = [:]
   ) {
     self = DynamicHTML(tag, attributes, listeners: listeners) { EmptyView() }
-  }
-}
-
-extension DynamicHTML: ParentView {
-  public var children: [AnyView] {
-    [AnyView(content)]
   }
 }

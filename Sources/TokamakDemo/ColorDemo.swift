@@ -37,20 +37,20 @@ public struct ColorDemo: View {
     case rgb, hsb
   }
 
-  let colors: [Color] = [
-    .clear,
-    .black,
-    .white,
-    .gray,
-    .red,
-    .green,
-    .blue,
-    .orange,
-    .yellow,
-    .pink,
-    .purple,
-    .primary,
-    .secondary,
+  let colors: [(String, Color)] = [
+    ("Clear", .clear),
+    ("Black", .black),
+    ("White", .white),
+    ("Gray", .gray),
+    ("Red", .red),
+    ("Green", .green),
+    ("Blue", .blue),
+    ("Orange", .orange),
+    ("Yellow", .yellow),
+    ("Pink", .pink),
+    ("Purple", .purple),
+    ("Primary", .primary),
+    ("Secondary", .secondary),
   ]
 
   @State private var colorForm: ColorForm = .hsb
@@ -72,16 +72,16 @@ public struct ColorDemo: View {
           .bold()
           .padding()
           .background(color)
-        Text("Accent Color: \(Color.accentColor.description)")
+        Text("Accent Color: \(String(describing: Color.accentColor))")
           .bold()
           .padding()
           .background(Color.accentColor)
-        ForEach(colors, id: \.self) {
-          Text($0.description)
+        ForEach(colors, id: \.0) {
+          Text($0.0)
             .font(.caption)
             .bold()
             .padding()
-            .background($0)
+            .background($0.1)
         }
       }.padding(.horizontal)
     }

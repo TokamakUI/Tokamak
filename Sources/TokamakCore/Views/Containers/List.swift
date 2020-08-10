@@ -85,6 +85,7 @@ public struct List<SelectionValue, Content>: View
         listStack
           .environment(\._outlineGroupStyle, _ListOutlineGroupStyle())
       })
+        .frame(minHeight: 0, maxHeight: .infinity)
     } else {
       ScrollView {
         HStack { Spacer() }

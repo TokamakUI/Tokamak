@@ -17,18 +17,29 @@
 
 import TokamakCore
 
-func css(for style: TextFieldStyle) -> String {
-  if style is PlainTextFieldStyle {
-    return """
-    background: transparent;
-    border: none;
-    """
-  } else {
-    return ""
-  }
-}
-
 extension TextField: ViewDeferredToRenderer where Label == Text {
+  func css(for style: TextFieldStyle) -> String {
+    if style is PlainTextFieldStyle {
+      return """
+      background: transparent;
+      border: none;
+      """
+    } else {
+      return ""
+    }
+  }
+
+  func className(for style: TextFieldStyle) -> String {
+    switch style {
+    case is DefaultTextFieldStyle:
+      return "_tokamak-textfield-default"
+    case is RoundedBorderTextFieldStyle:
+      return "_tokamak-textfield-roundedborder"
+    default:
+      return ""
+    }
+  }
+
   public var deferredBody: AnyView {
     let proxy = _TextFieldProxy(self)
 
@@ -37,6 +48,7 @@ extension TextField: ViewDeferredToRenderer where Label == Text {
       "value": proxy.textBinding.wrappedValue,
       "placeholder": proxy.label.rawText,
       "style": css(for: proxy.textFieldStyle),
+      "class": className(for: proxy.textFieldStyle),
     ], listeners: [
       "focus": { _ in proxy.onEditingChanged(true) },
       "blur": { _ in proxy.onEditingChanged(false) },

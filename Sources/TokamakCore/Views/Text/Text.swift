@@ -33,13 +33,11 @@ public struct Text: View {
   let storage: _Storage
   let modifiers: [_Modifier]
 
-  @Environment(\.font) var font
-  @Environment(\.foregroundColor) var foregroundColor
-  @Environment(\.redactionReasons) var redactionReasons
+  @Environment(\.self) var environment
 
   public enum _Storage {
     case verbatim(String)
-    case segmentedText([Text])
+    case segmentedText([(_Storage, [_Modifier])])
   }
 
   public enum _Modifier: Equatable {
@@ -58,7 +56,7 @@ public struct Text: View {
   init(storage: _Storage, modifiers: [_Modifier] = []) {
     if case let .segmentedText(segments) = storage {
       self.storage = .segmentedText(segments.map {
-        Self(storage: $0.storage, modifiers: modifiers + $0.modifiers)
+        ($0.0, modifiers + $0.1)
       })
     } else {
       self.storage = storage
@@ -79,6 +77,19 @@ public struct Text: View {
   }
 }
 
+extension Text._Storage {
+  public var rawText: String {
+    switch self {
+    case let .segmentedText(segments):
+      return segments
+        .map(\.0.rawText)
+        .reduce("", +)
+    case let .verbatim(text):
+      return text
+    }
+  }
+}
+
 /// This is a helper class that works around absence of "package private" access control in Swift
 public struct _TextProxy {
   public let subject: Text
@@ -87,24 +98,17 @@ public struct _TextProxy {
 
   public var storage: Text._Storage { subject.storage }
   public var rawText: String {
-    switch subject.storage {
-    case let .segmentedText(segments):
-      return segments
-        .map { Self($0).rawText }
-        .reduce("", +)
-    case let .verbatim(text):
-      return text
-    }
+    subject.storage.rawText
   }
 
   public var modifiers: [Text._Modifier] {
     [
-      .font(subject.font),
-      .color(subject.foregroundColor),
+      .font(subject.environment.font),
+      .color(subject.environment.foregroundColor),
     ] + subject.modifiers
   }
 
-  public var redactionReasons: RedactionReasons { subject.redactionReasons }
+  public var environment: EnvironmentValues { subject.environment }
 }
 
 public extension Text {
@@ -147,6 +151,9 @@ public extension Text {
 
 extension Text {
   public static func _concatenating(lhs: Self, rhs: Self) -> Self {
-    .init(storage: .segmentedText([lhs, rhs]))
+    .init(storage: .segmentedText([
+      (lhs.storage, lhs.modifiers),
+      (rhs.storage, rhs.modifiers),
+    ]))
   }
 }

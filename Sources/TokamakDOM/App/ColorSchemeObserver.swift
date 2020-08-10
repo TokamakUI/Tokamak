@@ -21,13 +21,22 @@ enum ColorSchemeObserver {
   )
 
   private static var closure: JSClosure?
+  private static var cancellable: AnyCancellable?
 
-  static func observe() {
+  static func observe(_ rootElement: JSObjectRef) {
     let closure = JSClosure {
       publisher.value = .init(matchMediaDarkScheme: $0[0].object!)
       return .undefined
     }
     _ = matchMediaDarkScheme.addListener!(closure)
     Self.closure = closure
+    Self.cancellable = Self.publisher.sink { colorScheme in
+      let systemBackground: String
+      switch colorScheme {
+      case .light: systemBackground = "#FFFFFF"
+      case .dark: systemBackground = "rgb(38, 38, 38)"
+      }
+      rootElement.style.object!.backgroundColor = .string("\(systemBackground)")
+    }
   }
 }
