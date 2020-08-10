@@ -81,7 +81,7 @@ public let tokamakStyles = """
   display: flex;
   align-items: center;
   justify-content: center;
-
+}
 ._tokamak-navigationview {
   display: flex;
   flex-direction: row;
