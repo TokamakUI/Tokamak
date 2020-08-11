@@ -115,6 +115,7 @@ struct TokamakDemoView: View {
                 .zIndex(1)
               Text("I'm on top")
             }.padding(20))
+            NavItem("GeometryReader", destination: GeometryReaderDemo())
           }
           Section(header: Text("Selectors")) {
             NavItem("Picker", destination: PickerDemo())

@@ -87,6 +87,7 @@ public typealias Button = TokamakCore.Button
 public typealias DisclosureGroup = TokamakCore.DisclosureGroup
 public typealias Divider = TokamakCore.Divider
 public typealias ForEach = TokamakCore.ForEach
+public typealias GeometryReader = TokamakCore.GeometryReader
 public typealias GridItem = TokamakCore.GridItem
 public typealias Group = TokamakCore.Group
 public typealias HStack = TokamakCore.HStack
