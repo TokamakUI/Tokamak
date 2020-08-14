@@ -94,8 +94,8 @@ public final class StackReconciler<R: Renderer> {
 
     rootElement.mount(with: self)
     if let mountedApp = rootElement as? MountedApp<R> {
-      setupSubscription(for: app._phasePublisher, to: \.scenePhase, of: mountedApp)
-      setupSubscription(for: app._colorSchemePublisher, to: \.colorScheme, of: mountedApp)
+      setupPersistentSubscription(for: app._phasePublisher, to: \.scenePhase, of: mountedApp)
+      setupPersistentSubscription(for: app._colorSchemePublisher, to: \.colorScheme, of: mountedApp)
     }
   }
 
@@ -153,7 +153,7 @@ public final class StackReconciler<R: Renderer> {
     try! property.set(value: state, on: &compositeElement[keyPath: bodyKeypath])
   }
 
-  private func setupSubscription(
+  private func setupTransientSubscription(
     for property: PropertyInfo,
     of compositeElement: MountedCompositeElement<R>,
     body bodyKeypath: KeyPath<MountedCompositeElement<R>, Any>
@@ -165,12 +165,16 @@ public final class StackReconciler<R: Renderer> {
     ) as! ObservedProperty
     // swiftlint:enable force_cast
 
-    observed.objectWillChange.sink { [weak self] _ in
-      self?.queueUpdate(for: compositeElement)
-    }.store(in: &compositeElement.subscriptions)
+    // break the reference cycle here as subscriptions are stored in the `compositeElement`
+    // instance property
+    observed.objectWillChange.sink { [weak self, weak compositeElement] _ in
+      if let compositeElement = compositeElement {
+        self?.queueUpdate(for: compositeElement)
+      }
+    }.store(in: &compositeElement.transientSubscriptions)
   }
 
-  private func setupSubscription<T: Equatable>(
+  private func setupPersistentSubscription<T: Equatable>(
     for publisher: AnyPublisher<T, Never>,
     to keyPath: WritableKeyPath<EnvironmentValues, T>,
     of mountedApp: MountedApp<R>
@@ -183,7 +187,7 @@ public final class StackReconciler<R: Renderer> {
 
       mountedApp.environmentValues[keyPath: keyPath] = value
       self?.queueUpdate(for: mountedApp)
-    }.store(in: &mountedApp.subscriptions)
+    }.store(in: &mountedApp.persistentSubscriptions)
   }
 
   func render<T>(
@@ -199,14 +203,14 @@ public final class StackReconciler<R: Renderer> {
       source: &compositeElement[keyPath: bodyKeypath]
     )
 
-    let needsSubscriptions = compositeElement.subscriptions.isEmpty
+    compositeElement.transientSubscriptions = []
     for property in dynamicProps {
       // Setup state/subscriptions
       if property.type is ValueStorage.Type {
         setupState(id: stateIdx, for: property, of: compositeElement, body: bodyKeypath)
         stateIdx += 1
-      } else if needsSubscriptions && property.type is ObservedProperty.Type {
-        setupSubscription(for: property, of: compositeElement, body: bodyKeypath)
+      } else if property.type is ObservedProperty.Type {
+        setupTransientSubscription(for: property, of: compositeElement, body: bodyKeypath)
       }
     }
 
