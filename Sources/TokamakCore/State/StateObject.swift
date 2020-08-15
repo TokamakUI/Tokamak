@@ -12,4 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public typealias StateObject = ObservedObject
+import CombineShim
+
+@propertyWrapper
+public struct StateObject<ObjectType: ObservableObject>: DynamicProperty {
+  enum Storage {
+    case initially(() -> ObjectType)
+    case object(ObservedObject<ObjectType>)
+  }
+
+  var storage: Storage
+
+  public var wrappedValue: ObjectType { projectedValue.root }
+
+  public init(wrappedValue thunk: @autoclosure @escaping () -> ObjectType) {
+    storage = .initially(thunk)
+  }
+
+  public var projectedValue: ObservedObject<ObjectType>.Wrapper {
+    switch storage {
+    case let .object(observed): return observed.projectedValue
+    default: fatalError()
+    }
+  }
+
+  var objectWillChange: AnyPublisher<(), Never> {
+    wrappedValue.objectWillChange.map { _ in }.eraseToAnyPublisher()
+  }
+}
+
+extension StateObject: ObservedProperty {}
