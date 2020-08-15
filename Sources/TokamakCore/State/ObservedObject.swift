@@ -32,7 +32,8 @@ public struct ObservedObject<ObjectType>: DynamicProperty where ObjectType: Obse
       .init(
         get: {
           self.root[keyPath: keyPath]
-        }, set: {
+        },
+        set: {
           self.root[keyPath: keyPath] = $0
         }
       )
