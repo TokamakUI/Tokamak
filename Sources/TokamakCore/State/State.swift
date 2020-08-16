@@ -16,8 +16,11 @@
 //
 protocol ValueStorage {
   var getter: (() -> Any)? { get set }
-  var setter: ((Any) -> ())? { get set }
   var anyInitialValue: Any { get }
+}
+
+protocol WritableValueStorage: ValueStorage {
+  var setter: ((Any) -> ())? { get set }
 }
 
 @propertyWrapper public struct State<Value>: DynamicProperty {
@@ -46,7 +49,7 @@ protocol ValueStorage {
   }
 }
 
-extension State: ValueStorage {}
+extension State: WritableValueStorage {}
 
 extension State where Value: ExpressibleByNilLiteral {
   @inlinable

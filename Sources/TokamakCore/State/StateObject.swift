@@ -16,29 +16,28 @@ import CombineShim
 
 @propertyWrapper
 public struct StateObject<ObjectType: ObservableObject>: DynamicProperty {
-  enum Storage {
-    case initially(() -> ObjectType)
-    case object(ObservedObject<ObjectType>)
-  }
+  public var wrappedValue: ObjectType { (getter?() as? ObservedObject.Wrapper)?.root ?? initial() }
 
-  var storage: Storage
+  let initial: () -> ObjectType
+  var getter: (() -> Any)?
 
-  public var wrappedValue: ObjectType { projectedValue.root }
-
-  public init(wrappedValue thunk: @autoclosure @escaping () -> ObjectType) {
-    storage = .initially(thunk)
+  public init(wrappedValue initial: @autoclosure @escaping () -> ObjectType) {
+    self.initial = initial
   }
 
   public var projectedValue: ObservedObject<ObjectType>.Wrapper {
-    switch storage {
-    case let .object(observed): return observed.projectedValue
-    default: fatalError()
-    }
+    getter?() as? ObservedObject.Wrapper ?? ObservedObject.Wrapper(root: initial())
   }
+}
 
+extension StateObject: ObservedProperty {
   var objectWillChange: AnyPublisher<(), Never> {
     wrappedValue.objectWillChange.map { _ in }.eraseToAnyPublisher()
   }
 }
 
-extension StateObject: ObservedProperty {}
+extension StateObject: ValueStorage {
+  var anyInitialValue: Any {
+    ObservedObject.Wrapper(root: initial())
+  }
+}

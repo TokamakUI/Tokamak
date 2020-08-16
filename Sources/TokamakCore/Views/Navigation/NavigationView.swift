@@ -22,7 +22,7 @@ final class NavigationContext: ObservableObject {
 public struct NavigationView<Content>: View where Content: View {
   let content: Content
 
-  @ObservedObject var context = NavigationContext()
+  @StateObject var context = NavigationContext()
 
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()

@@ -27,6 +27,7 @@ public typealias ObservableObject = TokamakCore.ObservableObject
 public typealias ObservedObject = TokamakCore.ObservedObject
 public typealias Published = TokamakCore.Published
 public typealias State = TokamakCore.State
+public typealias StateObject = TokamakCore.StateObject
 
 // MARK: Modifiers & Styles
 
