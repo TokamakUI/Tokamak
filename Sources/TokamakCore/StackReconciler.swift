@@ -99,12 +99,12 @@ public final class StackReconciler<R: Renderer> {
     }
   }
 
-  private func queueStateUpdate(
+  private func queueStorageUpdate(
     for mountedElement: MountedCompositeElement<R>,
     id: Int,
     updater: (inout Any) -> ()
   ) {
-    updater(&mountedElement.state[id])
+    updater(&mountedElement.storage[id])
     queueUpdate(for: mountedElement)
   }
 
@@ -125,7 +125,7 @@ public final class StackReconciler<R: Renderer> {
     queuedRerenders.removeAll()
   }
 
-  private func setupState(
+  private func setupStorage(
     id: Int,
     for property: PropertyInfo,
     of compositeElement: MountedCompositeElement<R>,
@@ -134,23 +134,28 @@ public final class StackReconciler<R: Renderer> {
     // swiftlint:disable force_try
     // `ValueStorage` property already filtered out, so safe to assume the value's type
     // swiftlint:disable:next force_cast
-    var state = try! property.get(from: compositeElement[keyPath: bodyKeypath]) as! ValueStorage
+    var storage = try! property.get(from: compositeElement[keyPath: bodyKeypath]) as! ValueStorage
 
-    if compositeElement.state.count == id {
-      compositeElement.state.append(state.anyInitialValue)
+    if compositeElement.storage.count == id {
+      compositeElement.storage.append(storage.anyInitialValue)
     }
 
-    if state.getter == nil || state.setter == nil {
-      state.getter = { compositeElement.state[id] }
+    if storage.getter == nil {
+      storage.getter = { compositeElement.storage[id] }
+
+      guard var writableStorage = storage as? WritableValueStorage else {
+        return try! property.set(value: storage, on: &compositeElement[keyPath: bodyKeypath])
+      }
 
       // Avoiding an indirect reference cycle here: this closure can be owned by callbacks
       // owned by view's target, which is strongly referenced by the reconciler.
-      state.setter = { [weak self, weak compositeElement] newValue in
+      writableStorage.setter = { [weak self, weak compositeElement] newValue in
         guard let element = compositeElement else { return }
-        self?.queueStateUpdate(for: element, id: id) { $0 = newValue }
+        self?.queueStorageUpdate(for: element, id: id) { $0 = newValue }
       }
+
+      try! property.set(value: writableStorage, on: &compositeElement[keyPath: bodyKeypath])
     }
-    try! property.set(value: state, on: &compositeElement[keyPath: bodyKeypath])
   }
 
   private func setupTransientSubscription(
@@ -207,9 +212,10 @@ public final class StackReconciler<R: Renderer> {
     for property in dynamicProps {
       // Setup state/subscriptions
       if property.type is ValueStorage.Type {
-        setupState(id: stateIdx, for: property, of: compositeElement, body: bodyKeypath)
+        setupStorage(id: stateIdx, for: property, of: compositeElement, body: bodyKeypath)
         stateIdx += 1
-      } else if property.type is ObservedProperty.Type {
+      }
+      if property.type is ObservedProperty.Type {
         setupTransientSubscription(for: property, of: compositeElement, body: bodyKeypath)
       }
     }

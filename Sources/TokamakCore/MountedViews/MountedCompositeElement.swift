@@ -20,10 +20,10 @@ import CombineShim
 class MountedCompositeElement<R: Renderer>: MountedElement<R> {
   let parentTarget: R.TargetType
 
-  /** An array that stores type-erased values captured with the `@State` property wrappers used
-   in declarations of this element.
+  /** An array that stores type-erased values captured with the `@State` and `@StateObject` property
+    wrappers used in declarations of this element.
    */
-  var state = [Any]()
+  var storage = [Any]()
 
   /** An array that stores subscriptions to updates on `@ObservableObject` property wrappers used
     in declarations of this element. These subscriptions are transient and may be cleaned up on

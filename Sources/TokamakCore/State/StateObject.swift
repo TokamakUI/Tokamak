@@ -12,4 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public typealias StateObject = ObservedObject
+import CombineShim
+
+@propertyWrapper
+public struct StateObject<ObjectType: ObservableObject>: DynamicProperty {
+  public var wrappedValue: ObjectType { (getter?() as? ObservedObject.Wrapper)?.root ?? initial() }
+
+  let initial: () -> ObjectType
+  var getter: (() -> Any)?
+
+  public init(wrappedValue initial: @autoclosure @escaping () -> ObjectType) {
+    self.initial = initial
+  }
+
+  public var projectedValue: ObservedObject<ObjectType>.Wrapper {
+    getter?() as? ObservedObject.Wrapper ?? ObservedObject.Wrapper(root: initial())
+  }
+}
+
+extension StateObject: ObservedProperty {
+  var objectWillChange: AnyPublisher<(), Never> {
+    wrappedValue.objectWillChange.map { _ in }.eraseToAnyPublisher()
+  }
+}
+
+extension StateObject: ValueStorage {
+  var anyInitialValue: Any {
+    ObservedObject.Wrapper(root: initial())
+  }
+}
