@@ -5,27 +5,27 @@
         "package": "JavaScriptKit",
         "repositoryURL": "https://github.com/kateinoigakukun/JavaScriptKit.git",
         "state": {
-          "branch": "c90e82f",
+          "branch": null,
           "revision": "c90e82fe1d576a2ccd1aae798380bf80be7885fb",
-          "version": null
+          "version": "0.5.0"
         }
       },
       {
         "package": "OpenCombine",
         "repositoryURL": "https://github.com/MaxDesiatov/OpenCombine.git",
         "state": {
-          "branch": "observable-object-5.3",
-          "revision": "979d83e8725a504567827b89a5656bf4fd36d0c6",
-          "version": null
+          "branch": null,
+          "revision": "29ab27e488a1c9afef217b1435b3293d4a77b1ae",
+          "version": "0.0.1"
         }
       },
       {
         "package": "Runtime",
         "repositoryURL": "https://github.com/MaxDesiatov/Runtime.git",
         "state": {
-          "branch": "wasi-build-5.3",
+          "branch": null,
           "revision": "a617ead8a125a97e69d6100e4d27922006e82e0a",
-          "version": null
+          "version": "2.1.2"
         }
       }
     ]
