@@ -1,4 +1,4 @@
-# 0.3.0 (17 August, 2020)
+# 0.3.0 (19 August, 2020)
 
 This release introduces many new features, specifically:
 
@@ -39,6 +39,9 @@ The complete list of changes included in this release is available below.
 
 **Merged pull requests:**
 
+- Set versions of dependencies in `Package.swift`
+  ([#262](https://github.com/swiftwasm/Tokamak/pull/262)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
 - Implement `StateObject` property wrapper ([#260](https://github.com/swiftwasm/Tokamak/pull/260))
   via [@MaxDesiatov](https://github.com/MaxDesiatov)
 - Fix `NavigationView` broken state after re-render
