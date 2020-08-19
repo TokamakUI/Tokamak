@@ -84,11 +84,13 @@ struct SVGCircle: View {
 
 ### Arbitrary styles and scripts
 
-While `JavaScriptKit` is a great option for occasional interactions with JavaScript,
+While [`JavaScriptKit`](https://github.com/swiftwasm/JavaScriptKit) is a great option for occasional interactions with JavaScript,
 sometimes you need to inject arbitrary scripts or styles, which can be done through direct
 DOM access:
 
 ```swift
+import JavaScriptKit
+
 _ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
 """#)
