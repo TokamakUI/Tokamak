@@ -89,6 +89,8 @@ sometimes you need to inject arbitrary scripts or styles, which can be done thro
 DOM access:
 
 ```swift
+import JavaScriptKit
+
 _ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
 """#)
