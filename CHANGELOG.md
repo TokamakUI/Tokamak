@@ -1,6 +1,6 @@
 # 0.3.0 (19 August, 2020)
 
-This release improves compatibility with the SwiftUI AP and fixes bugs in our WebAssembly/DOM renderer, included but not limited to:
+This release improves compatibility with the SwiftUI API and fixes bugs in our WebAssembly/DOM renderer, included but not limited to:
 
 - support for `App`/`Scene` lifecycle;
 - `ColorScheme` detection and environment setting;
