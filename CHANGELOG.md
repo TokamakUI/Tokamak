@@ -1,6 +1,6 @@
 # 0.3.0 (19 August, 2020)
 
-This release introduces many new features, specifically:
+This release improves compatibility with the SwiftUI AP and fixes bugs in our WebAssembly/DOM renderer, included but not limited to:
 
 - support for `App`/`Scene` lifecycle;
 - `ColorScheme` detection and environment setting;
@@ -8,6 +8,10 @@ This release introduces many new features, specifically:
 - `@StateObject` property wrapper implementation;
 - `SidebarListStyle`, `ButtonStyle`, `GeometryProxy` types;
 - `NavigationView` and `GeometryReader` views.
+
+Additionally, new `TokamakStaticHTML` renderer was added that supports rendering stateless views into static HTML that doesn't include any JavaScript or WebAssembly dependencies. This is useful for static websites and in the future could be used together with `TokamakDOM` for server-side rendering.
+
+Tokamak 0.3.0 now requires 5.3 snapshots of SwiftWasm, which in general should be more stable than the development snapshots that were previously used, and is also compatible with Xcode 12 betas. If you have a `.swift-version` file in your project, you should specify `wasm-5.3-SNAPSHOT-2020-07-27-a` in it or a later 5.3 snapshot, otherwise `carton` 0.5 selects a compatible 5.3 snapshot for you automatically. Allowing `carton` to select a default snapshot is the recommended approach, so in general we recommend avoiding `.swif-version` files in projects that use Tokamak.
 
 Many thanks to [@carson-katri](https://github.com/carson-katri), [@j-f1](https://github.com/j-f1),
 and [@Outcue](https://github.com/Outcue) for their contributions to this release.
