@@ -20,8 +20,22 @@ import CombineShim
 class MountedCompositeElement<R: Renderer>: MountedElement<R> {
   let parentTarget: R.TargetType
 
-  var state = [Any]()
-  var subscriptions = [AnyCancellable]()
+  /** An array that stores type-erased values captured with the `@State` and `@StateObject` property
+    wrappers used in declarations of this element.
+   */
+  var storage = [Any]()
+
+  /** An array that stores subscriptions to updates on `@ObservableObject` property wrappers used
+    in declarations of this element. These subscriptions are transient and may be cleaned up on
+    every re-render of this composite element.
+   */
+  var transientSubscriptions = [AnyCancellable]()
+
+  /** An array that stores subscriptions to updates on `@StateObject` property wrappers and renderer
+    observers. These subscriptions are persistent and are only cleaned up when this composite
+    element is deallocated.
+   */
+  var persistentSubscriptions = [AnyCancellable]()
 
   init<A: App>(_ app: A, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
     self.parentTarget = parentTarget
@@ -40,8 +54,7 @@ class MountedCompositeElement<R: Renderer>: MountedElement<R> {
 }
 
 extension MountedCompositeElement: Hashable {
-  static func == (lhs: MountedCompositeElement<R>,
-                  rhs: MountedCompositeElement<R>) -> Bool {
+  static func == (lhs: MountedCompositeElement<R>, rhs: MountedCompositeElement<R>) -> Bool {
     lhs === rhs
   }
 

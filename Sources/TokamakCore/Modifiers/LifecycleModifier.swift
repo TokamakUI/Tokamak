@@ -12,28 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public struct _FrameLayout: ViewModifier {
-  public let width: CGFloat?
-  public let height: CGFloat?
-  public let alignment: Alignment
-
-  init(width: CGFloat?, height: CGFloat?, alignment: Alignment) {
-    self.width = width
-    self.height = height
-    self.alignment = alignment
-  }
-
-  public func body(content: Content) -> some View {
-    content
-  }
-}
-
+// FIXME: these should have standalone implementations
 extension View {
-  public func frame(
-    width: CGFloat? = nil,
-    height: CGFloat? = nil,
-    alignment: Alignment = .center
-  ) -> some View {
-    modifier(_FrameLayout(width: width, height: height, alignment: alignment))
+  public func _onMount(perform action: (() -> ())? = nil) -> some View {
+    modifier(_AppearanceActionModifier(appear: action))
+  }
+
+  public func _onUnmount(perform action: (() -> ())? = nil) -> some View {
+    modifier(_AppearanceActionModifier(disappear: action))
   }
 }

@@ -23,7 +23,12 @@ extension Divider: AnyHTML {
       width: 100%; height: 0; margin: 0;
       border-top: none;
       border-right: none;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid \(Color._withScheme {
+        switch $0 {
+        case .light: return .init(.sRGB, white: 0, opacity: 0.2)
+        case .dark: return .init(.sRGB, white: 1, opacity: 0.2)
+        }
+      }.cssValue(environment));
       border-left: none;
       """,
     ]

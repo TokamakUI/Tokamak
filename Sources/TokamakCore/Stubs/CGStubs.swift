@@ -38,13 +38,17 @@ public struct CGPoint: Equatable {
   func rotate(_ angle: Angle, around origin: Self) -> Self {
     let cosAngle = cos(angle.radians)
     let sinAngle = sin(angle.radians)
-    return .init(x: cosAngle * (x - origin.x) - sinAngle * (y - origin.y) + origin.x,
-                 y: sinAngle * (x - origin.x) + cosAngle * (y - origin.y) + origin.y)
+    return .init(
+      x: cosAngle * (x - origin.x) - sinAngle * (y - origin.y) + origin.x,
+      y: sinAngle * (x - origin.x) + cosAngle * (y - origin.y) + origin.y
+    )
   }
 
   func offset(by offset: Self) -> Self {
-    .init(x: x + offset.x,
-          y: y + offset.y)
+    .init(
+      x: x + offset.x,
+      y: y + offset.y
+    )
   }
 }
 
@@ -107,13 +111,20 @@ public struct CGAffineTransform: Equatable {
   public var ty: CGFloat
 
   /// The identity matrix
-  public static let identity: Self = .init(a: 1, b: 0, // 0
-                                           c: 0, d: 1, // 0
-                                           tx: 0, ty: 0) // 1
+  public static let identity: Self = .init(
+    a: 1,
+    b: 0, // 0
+    c: 0,
+    d: 1, // 0
+    tx: 0,
+    ty: 0
+  ) // 1
 
-  public init(a: CGFloat, b: CGFloat,
-              c: CGFloat, d: CGFloat,
-              tx: CGFloat, ty: CGFloat) {
+  public init(
+    a: CGFloat, b: CGFloat,
+    c: CGFloat, d: CGFloat,
+    tx: CGFloat, ty: CGFloat
+  ) {
     self.a = a
     self.b = b
     self.c = c
@@ -135,28 +146,38 @@ public struct CGAffineTransform: Equatable {
   /// - Parameters:
   ///   - sx: The factor by which to scale the x-axis of the coordinate system.
   ///   - sy: The factor by which to scale the y-axis of the coordinate system.
-  public init(scaleX sx: CGFloat,
-              y sy: CGFloat) {
-    self.init(a: sx, b: 0,
-              c: 0, d: sy,
-              tx: 0, ty: 0)
+  public init(scaleX sx: CGFloat, y sy: CGFloat) {
+    self.init(
+      a: sx,
+      b: 0,
+      c: 0,
+      d: sy,
+      tx: 0,
+      ty: 0
+    )
   }
 
   /// Returns an affine transformation matrix constructed from translation values you provide.
   /// - Parameters:
   ///   - tx: The value by which to move the x-axis of the coordinate system.
   ///   - ty: The value by which to move the y-axis of the coordinate system.
-  public init(translationX tx: CGFloat,
-              y ty: CGFloat) {
-    self.init(a: 1, b: 0,
-              c: 0, d: 1,
-              tx: tx, ty: ty)
+  public init(translationX tx: CGFloat, y ty: CGFloat) {
+    self.init(
+      a: 1,
+      b: 0,
+      c: 0,
+      d: 1,
+      tx: tx,
+      ty: ty
+    )
   }
 
   /// Transform the point into the transform's coordinate system.
   public func transform(point: CGPoint) -> CGPoint {
-    CGPoint(x: (a * point.x) + (c * point.y) + tx,
-            y: (b * point.x) + (d * point.y) + ty)
+    CGPoint(
+      x: (a * point.x) + (c * point.y) + tx,
+      y: (b * point.x) + (d * point.y) + ty
+    )
   }
 
   /// Returns an affine transformation matrix constructed by combining two existing affine
@@ -180,9 +201,14 @@ public struct CGAffineTransform: Equatable {
         }
       }
     }
-    return .init(a: res[0][0], b: res[0][1],
-                 c: res[1][0], d: res[1][1],
-                 tx: res[2][0], ty: res[2][1])
+    return .init(
+      a: res[0][0],
+      b: res[0][1],
+      c: res[1][0],
+      d: res[1][1],
+      tx: res[2][0],
+      ty: res[2][1]
+    )
   }
 
   /// Returns an affine transformation matrix constructed by inverting an existing affine transform.
@@ -205,10 +231,9 @@ public struct CGAffineTransform: Equatable {
   ///   - tx: The value by which to move x values with the affine transform.
   ///   - ty: The value by which to move y values with the affine transform.
   public func translatedBy(x tx: CGFloat,
-                           y ty: CGFloat) -> Self {
-    .init(a: a, b: b,
-          c: c, d: d,
-          tx: self.tx + tx, ty: self.ty + ty)
+                           y ty: CGFloat) -> Self
+  {
+    .init(a: a, b: b, c: c, d: d, tx: self.tx + tx, ty: self.ty + ty)
   }
 
   /// Returns an affine transformation matrix constructed by scaling an existing affine transform.
@@ -216,10 +241,9 @@ public struct CGAffineTransform: Equatable {
   ///   - sx: The value by which to scale x values of the affine transform.
   ///   - sy: The value by which to scale y values of the affine transform.
   public func scaledBy(x sx: CGFloat,
-                       y sy: CGFloat) -> Self {
-    .init(a: a + sx, b: b,
-          c: c, d: d + sy,
-          tx: tx, ty: ty)
+                       y sy: CGFloat) -> Self
+  {
+    .init(a: a + sx, b: b, c: c, d: d + sy, tx: tx, ty: ty)
   }
 
   public var isIdentity: Bool {

@@ -21,16 +21,13 @@ protocol AppearanceActionType {
 struct _AppearanceActionModifier: ViewModifier {
   var appear: (() -> ())?
   var disappear: (() -> ())?
-  init(appear: (() -> ())? = nil, disappear: (() -> ())? = nil) {
-    self.appear = appear
-    self.disappear = disappear
-  }
 
   typealias Body = Never
 }
 
 extension ModifiedContent: AppearanceActionType
-  where Content: View, Modifier == _AppearanceActionModifier {
+  where Content: View, Modifier == _AppearanceActionModifier
+{
   var appear: (() -> ())? { modifier.appear }
   var disappear: (() -> ())? { modifier.disappear }
 }

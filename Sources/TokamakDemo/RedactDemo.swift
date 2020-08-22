@@ -18,7 +18,7 @@
 import TokamakShim
 
 @available(OSX 11.0, iOS 14.0, *)
-struct RedactDemo: View {
+struct RedactionDemo: View {
   func title(_ text: String) -> some View {
     Group {
       Text(text)

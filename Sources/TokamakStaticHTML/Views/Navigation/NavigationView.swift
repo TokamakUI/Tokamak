@@ -17,12 +17,14 @@ import TokamakCore
 extension NavigationView: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     AnyView(HTML("div", [
-      "style": """
-      display: flex; flex-direction: row; align-items: stretch;
-      width: 100%; height: 100%;
-      """,
+      "class": "_tokamak-navigationview",
     ]) {
-      _NavigationViewProxy(self)
+      _NavigationViewProxy(self).content
+      HTML("div", [
+        "class": "_tokamak-navigationview-content",
+      ]) {
+        _NavigationViewProxy(self).destination
+      }
     })
   }
 }

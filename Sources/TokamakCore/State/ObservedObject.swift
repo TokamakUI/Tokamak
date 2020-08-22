@@ -32,7 +32,8 @@ public struct ObservedObject<ObjectType>: DynamicProperty where ObjectType: Obse
       .init(
         get: {
           self.root[keyPath: keyPath]
-        }, set: {
+        },
+        set: {
           self.root[keyPath: keyPath] = $0
         }
       )
@@ -46,10 +47,10 @@ public struct ObservedObject<ObjectType>: DynamicProperty where ObjectType: Obse
   }
 
   public let projectedValue: Wrapper
+}
 
+extension ObservedObject: ObservedProperty {
   var objectWillChange: AnyPublisher<(), Never> {
     wrappedValue.objectWillChange.map { _ in }.eraseToAnyPublisher()
   }
 }
-
-extension ObservedObject: ObservedProperty {}

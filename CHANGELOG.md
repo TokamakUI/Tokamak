@@ -1,3 +1,125 @@
+# 0.3.0 (19 August, 2020)
+
+This release improves compatibility with the SwiftUI API and fixes bugs in our WebAssembly/DOM renderer, included but not limited to:
+
+- support for `App`/`Scene` lifecycle;
+- `ColorScheme` detection and environment setting;
+- dark mode styles;
+- `@StateObject` property wrapper implementation;
+- `SidebarListStyle`, `ButtonStyle`, `GeometryProxy` types;
+- `NavigationView` and `GeometryReader` views.
+
+Additionally, new `TokamakStaticHTML` renderer was added that supports rendering stateless views into static HTML that doesn't include any JavaScript or WebAssembly dependencies. This is useful for static websites and in the future could be used together with `TokamakDOM` for server-side rendering.
+
+Tokamak 0.3.0 now requires 5.3 snapshots of SwiftWasm, which in general should be more stable than the development snapshots that were previously used, and is also compatible with Xcode 12 betas. If you have a `.swift-version` file in your project, you should specify `wasm-5.3-SNAPSHOT-2020-07-27-a` in it or a later 5.3 snapshot, otherwise `carton` 0.5 selects a compatible 5.3 snapshot for you automatically. Allowing `carton` to select a default snapshot is the recommended approach, so in general we recommend avoiding `.swif-version` files in projects that use Tokamak.
+
+Many thanks to [@carson-katri](https://github.com/carson-katri), [@j-f1](https://github.com/j-f1),
+and [@Outcue](https://github.com/Outcue) for their contributions to this release.
+
+The complete list of changes included in this release is available below.
+
+**Closed issues:**
+
+- Command "carton dev" failed ([#258](https://github.com/swiftwasm/Tokamak/issues/258))
+- Dark mode detection causes crashes in Safari
+  ([#245](https://github.com/swiftwasm/Tokamak/issues/245))
+- Add dark color scheme style ([#237](https://github.com/swiftwasm/Tokamak/issues/237))
+- Establish App lifecycle as the only way to start rendering
+  ([#224](https://github.com/swiftwasm/Tokamak/issues/224))
+- Runtime issues with dynamic properties in `App` types
+  ([#222](https://github.com/swiftwasm/Tokamak/issues/222))
+- `List` appearance changes when reloaded ([#212](https://github.com/swiftwasm/Tokamak/issues/212))
+- List scrolling does not work on Firefox 78 on macOS
+  ([#211](https://github.com/swiftwasm/Tokamak/issues/211))
+- Scrolling broken when `List` is child of `NavigationView`
+  ([#208](https://github.com/swiftwasm/Tokamak/issues/208))
+- `Rectangle` frame is not being set properly
+  ([#185](https://github.com/swiftwasm/Tokamak/issues/185))
+- Implement `SidebarListStyle` ([#180](https://github.com/swiftwasm/Tokamak/issues/180))
+- Implement `GeometryReader`/`GeometryProxy`
+  ([#176](https://github.com/swiftwasm/Tokamak/issues/176))
+- `@StateObject` support ([#158](https://github.com/swiftwasm/Tokamak/issues/158))
+- NavigationView/NavigationLink ([#129](https://github.com/swiftwasm/Tokamak/issues/129))
+
+**Merged pull requests:**
+
+- Set versions of dependencies in `Package.swift`
+  ([#262](https://github.com/swiftwasm/Tokamak/pull/262)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Implement `StateObject` property wrapper ([#260](https://github.com/swiftwasm/Tokamak/pull/260))
+  via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Fix `NavigationView` broken state after re-render
+  ([#259](https://github.com/swiftwasm/Tokamak/pull/259)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add `GeometryReader` implementation ([#239](https://github.com/swiftwasm/Tokamak/pull/239)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add default dark styles for Views ([#241](https://github.com/swiftwasm/Tokamak/pull/241)) via
+  [@carson-katri](https://github.com/carson-katri)
+- Link to the renderers guide from `README.md`
+  ([#251](https://github.com/swiftwasm/Tokamak/pull/251)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Use the latest 5.3 snapshot in `.swift-version`
+  ([#252](https://github.com/swiftwasm/Tokamak/pull/252)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Fix color scheme observer crashes in Safari
+  ([#249](https://github.com/swiftwasm/Tokamak/pull/249)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Update to the latest version of SwiftFormat
+  ([#250](https://github.com/swiftwasm/Tokamak/pull/250)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Split demo list into sections ([#243](https://github.com/swiftwasm/Tokamak/pull/243)) via
+  [@j-f1](https://github.com/j-f1)
+- Remove some `AnyView` in the `List` implementation
+  ([#246](https://github.com/swiftwasm/Tokamak/pull/246)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add `_targetRef` and `_domRef` modifiers ([#240](https://github.com/swiftwasm/Tokamak/pull/240))
+  via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add `ColorScheme` environment ([#136](https://github.com/swiftwasm/Tokamak/pull/136)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add `redacted` modifier ([#232](https://github.com/swiftwasm/Tokamak/pull/232)) via
+  [@carson-katri](https://github.com/carson-katri)
+- Add Static HTML Renderer and Documentation ([#204](https://github.com/swiftwasm/Tokamak/pull/204))
+  via [@carson-katri](https://github.com/carson-katri)
+- Fix tests, move `DefaultButtonStyle` to TokamakCore
+  ([#234](https://github.com/swiftwasm/Tokamak/pull/234)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Remove `DefaultApp`, make `DOMRenderer` internal
+  ([#227](https://github.com/swiftwasm/Tokamak/pull/227)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add basic `ButtonStyle` implementation ([#214](https://github.com/swiftwasm/Tokamak/pull/214)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Make reconciler tests build and run on macOS
+  ([#229](https://github.com/swiftwasm/Tokamak/pull/229)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Fix environment changes causing remounted scenes with lost state
+  ([#223](https://github.com/swiftwasm/Tokamak/pull/223)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add `DefaultApp` type to simplify `DOMRenderer.init`
+  ([#217](https://github.com/swiftwasm/Tokamak/pull/217)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Implement `SidebarListStyle` ([#210](https://github.com/swiftwasm/Tokamak/pull/210)) via
+  [@Outcue](https://github.com/Outcue)
+- Unify code of `MountedApp`/`MountedCompositeView`
+  ([#219](https://github.com/swiftwasm/Tokamak/pull/219)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Generalize style and environment in `DOMRenderer`
+  ([#215](https://github.com/swiftwasm/Tokamak/pull/215)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Implement `DynamicProperty` ([#213](https://github.com/swiftwasm/Tokamak/pull/213)) via
+  [@carson-katri](https://github.com/carson-katri)
+- Warn against beta versions of Xcode in README.md
+  ([#207](https://github.com/swiftwasm/Tokamak/pull/207)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Fix typo in `TokamakDemo.swift` ([#206](https://github.com/swiftwasm/Tokamak/pull/206)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Update "Requirements" and "Getting started" README sections
+  ([#205](https://github.com/swiftwasm/Tokamak/pull/205)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Initial `NavigationView` implementation ([#130](https://github.com/swiftwasm/Tokamak/pull/130))
+  via [@j-f1](https://github.com/j-f1)
+- Add SwiftUI App Lifecycle ([#195](https://github.com/swiftwasm/Tokamak/pull/195)) via
+  [@carson-katri](https://github.com/carson-katri)
+
 # 0.2.0 (21 July, 2020)
 
 This is the first release that supports WebAssembly and browser apps with the new `TokamakDOM`

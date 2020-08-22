@@ -30,7 +30,7 @@ extension App {
   ///
   public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
     let body = TokamakDOM.body
-    if body.style == .undefined {
+    if body.style.object!.all == "" {
       body.style = "margin: 0;"
     }
     let rootStyle = document.createElement!("style").object!
@@ -44,7 +44,7 @@ extension App {
     _ = body.appendChild!(div)
 
     ScenePhaseObserver.observe()
-    ColorSchemeObserver.observe()
+    ColorSchemeObserver.observe(div)
   }
 
   public static func _setTitle(_ title: String) {

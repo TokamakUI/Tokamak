@@ -21,13 +21,25 @@ public struct _FlexFrameLayout: ViewModifier {
   public let maxHeight: CGFloat?
   public let alignment: Alignment
 
-  init(minWidth: CGFloat? = nil,
-       idealWidth: CGFloat? = nil,
-       maxWidth: CGFloat? = nil,
-       minHeight: CGFloat? = nil,
-       idealHeight: CGFloat? = nil,
-       maxHeight: CGFloat? = nil,
-       alignment: Alignment) {
+  // These are special cases in SwiftUI, where the child
+  // will request the entire width/height of the parent.
+  public var fillWidth: Bool {
+    minWidth == 0 && maxWidth == .infinity
+  }
+
+  public var fillHeight: Bool {
+    minHeight == 0 && maxHeight == .infinity
+  }
+
+  init(
+    minWidth: CGFloat? = nil,
+    idealWidth: CGFloat? = nil,
+    maxWidth: CGFloat? = nil,
+    minHeight: CGFloat? = nil,
+    idealHeight: CGFloat? = nil,
+    maxHeight: CGFloat? = nil,
+    alignment: Alignment
+  ) {
     self.minWidth = minWidth
     self.idealWidth = idealWidth
     self.maxWidth = maxWidth
@@ -43,13 +55,15 @@ public struct _FlexFrameLayout: ViewModifier {
 }
 
 extension View {
-  public func frame(minWidth: CGFloat? = nil,
-                    idealWidth: CGFloat? = nil,
-                    maxWidth: CGFloat? = nil,
-                    minHeight: CGFloat? = nil,
-                    idealHeight: CGFloat? = nil,
-                    maxHeight: CGFloat? = nil,
-                    alignment: Alignment = .center) -> some View {
+  public func frame(
+    minWidth: CGFloat? = nil,
+    idealWidth: CGFloat? = nil,
+    maxWidth: CGFloat? = nil,
+    minHeight: CGFloat? = nil,
+    idealHeight: CGFloat? = nil,
+    maxHeight: CGFloat? = nil,
+    alignment: Alignment = .center
+  ) -> some View {
     func areInNondecreasingOrder(
       _ min: CGFloat?, _ ideal: CGFloat?, _ max: CGFloat?
     ) -> Bool {
@@ -59,8 +73,9 @@ extension View {
       return min <= ideal && ideal <= max
     }
 
-    if !areInNondecreasingOrder(minWidth, idealWidth, maxWidth)
-      || !areInNondecreasingOrder(minHeight, idealHeight, maxHeight) {
+    if !areInNondecreasingOrder(minWidth, idealWidth, maxWidth) ||
+      !areInNondecreasingOrder(minHeight, idealHeight, maxHeight)
+    {
       fatalError("Contradictory frame constraints specified.")
     }
 
@@ -71,6 +86,7 @@ extension View {
         minHeight: minHeight,
         idealHeight: idealHeight, maxHeight: maxHeight,
         alignment: alignment
-      ))
+      )
+    )
   }
 }

@@ -54,9 +54,9 @@ import CombineShim
 extension AppStorage: ObservedProperty {}
 
 extension AppStorage {
-  public init(wrappedValue: Value,
-              _ key: String,
-              store: _StorageProvider? = nil) where Value == Bool {
+  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+    where Value == Bool
+  {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -64,9 +64,9 @@ extension AppStorage {
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value,
-              _ key: String,
-              store: _StorageProvider? = nil) where Value == Int {
+  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+    where Value == Int
+  {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -74,9 +74,9 @@ extension AppStorage {
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value,
-              _ key: String,
-              store: _StorageProvider? = nil) where Value == Double {
+  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+    where Value == Double
+  {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -84,9 +84,9 @@ extension AppStorage {
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value,
-              _ key: String,
-              store: _StorageProvider? = nil) where Value == String {
+  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+    where Value == String
+  {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -94,10 +94,9 @@ extension AppStorage {
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value,
-              _ key: String,
-              store: _StorageProvider? = nil)
-    where Value: RawRepresentable, Value.RawValue == Int {
+  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+    where Value: RawRepresentable, Value.RawValue == Int
+  {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -110,10 +109,9 @@ extension AppStorage {
     }
   }
 
-  public init(wrappedValue: Value,
-              _ key: String,
-              store: _StorageProvider? = nil)
-    where Value: RawRepresentable, Value.RawValue == String {
+  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+    where Value: RawRepresentable, Value.RawValue == String
+  {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -128,9 +126,9 @@ extension AppStorage {
 }
 
 extension AppStorage where Value: ExpressibleByNilLiteral {
-  public init(wrappedValue: Value,
-              _ key: String,
-              store: _StorageProvider? = nil) where Value == Bool? {
+  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+    where Value == Bool?
+  {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -138,9 +136,9 @@ extension AppStorage where Value: ExpressibleByNilLiteral {
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value,
-              _ key: String,
-              store: _StorageProvider? = nil) where Value == Int? {
+  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+    where Value == Int?
+  {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -148,9 +146,9 @@ extension AppStorage where Value: ExpressibleByNilLiteral {
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value,
-              _ key: String,
-              store: _StorageProvider? = nil) where Value == Double? {
+  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+    where Value == Double?
+  {
     defaultValue = wrappedValue
     self.key = key
     provider = store
@@ -158,9 +156,9 @@ extension AppStorage where Value: ExpressibleByNilLiteral {
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value,
-              _ key: String,
-              store: _StorageProvider? = nil) where Value == String? {
+  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+    where Value == String?
+  {
     defaultValue = wrappedValue
     self.key = key
     provider = store

@@ -31,7 +31,6 @@ public let tokamakStyles = """
   height: 100%;
   padding: 0;
 }
-
 ._tokamak-disclosuregroup-label {
   cursor: pointer;
 }
@@ -75,6 +74,44 @@ public let tokamakStyles = """
   width: calc(100% + .1em);
   height: 1.2em;
   border-radius: .1em;
+}
+._tokamak-geometryreader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+._tokamak-navigationview {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+}
+._tokamak-navigationview-content {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  flex-grow: 1;
+  height: 100%;
+}
+
+._tokamak-securefield,
+._tokamak-textfield-default,
+._tokamak-textfield-roundedborder,
+._tokamak-picker {
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme:dark) {
+  ._tokamak-text-redacted::after {
+    background-color: rgb(100, 100, 100);
+  }
+
+  ._tokamak-disclosuregroup-chevron {
+    border-right-color: rgba(255, 255, 255, 0.25);
+    border-top-color: rgba(255, 255, 255, 0.25);
+  }
 }
 """
 

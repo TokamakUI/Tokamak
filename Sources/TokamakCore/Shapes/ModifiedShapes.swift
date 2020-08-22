@@ -16,6 +16,7 @@
 //
 
 public struct _StrokedShape<S>: Shape where S: Shape {
+  @Environment(\.self) public var environment
   public var shape: S
   public var style: StrokeStyle
 

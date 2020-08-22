@@ -39,13 +39,18 @@ extension InsettableShape {
     lineWidth: CGFloat = 1,
     antialiased: Bool = true
   ) -> some View where S: ShapeStyle {
-    strokeBorder(content, style: StrokeStyle(lineWidth: lineWidth),
-                 antialiased: antialiased)
+    strokeBorder(
+      content,
+      style: StrokeStyle(lineWidth: lineWidth),
+      antialiased: antialiased
+    )
   }
 
   @inlinable
   public func strokeBorder(lineWidth: CGFloat = 1, antialiased: Bool = true) -> some View {
-    strokeBorder(style: StrokeStyle(lineWidth: lineWidth),
-                 antialiased: antialiased)
+    strokeBorder(
+      style: StrokeStyle(lineWidth: lineWidth),
+      antialiased: antialiased
+    )
   }
 }

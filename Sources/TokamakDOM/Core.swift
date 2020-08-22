@@ -27,6 +27,7 @@ public typealias ObservableObject = TokamakCore.ObservableObject
 public typealias ObservedObject = TokamakCore.ObservedObject
 public typealias Published = TokamakCore.Published
 public typealias State = TokamakCore.State
+public typealias StateObject = TokamakCore.StateObject
 
 // MARK: Modifiers & Styles
 
@@ -87,6 +88,7 @@ public typealias Button = TokamakCore.Button
 public typealias DisclosureGroup = TokamakCore.DisclosureGroup
 public typealias Divider = TokamakCore.Divider
 public typealias ForEach = TokamakCore.ForEach
+public typealias GeometryReader = TokamakCore.GeometryReader
 public typealias GridItem = TokamakCore.GridItem
 public typealias Group = TokamakCore.Group
 public typealias HStack = TokamakCore.HStack

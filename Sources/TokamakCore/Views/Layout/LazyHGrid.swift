@@ -22,11 +22,13 @@ public struct LazyHGrid<Content>: View where Content: View {
   let pinnedViews: PinnedScrollableViews
   let content: Content
 
-  public init(rows: [GridItem],
-              alignment: VerticalAlignment = .center,
-              spacing: CGFloat? = nil,
-              pinnedViews: PinnedScrollableViews = .init(),
-              @ViewBuilder content: () -> Content) {
+  public init(
+    rows: [GridItem],
+    alignment: VerticalAlignment = .center,
+    spacing: CGFloat? = nil,
+    pinnedViews: PinnedScrollableViews = .init(),
+    @ViewBuilder content: () -> Content
+  ) {
     self.rows = rows
     self.alignment = alignment
     self.spacing = spacing ?? 8

@@ -22,10 +22,6 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
   override func mount(with reconciler: StackReconciler<R>) {
     let childBody = reconciler.render(compositeView: self)
 
-    if let appearanceAction = view.view as? AppearanceActionType {
-      appearanceAction.appear?()
-    }
-
     let child: MountedElement<R> = childBody.makeMountedView(parentTarget, environmentValues)
     mountedChildren = [child]
     child.mount(with: reconciler)
@@ -43,6 +39,13 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
 
       targetRef.target = hostDescendant.target
       view.view = targetRef
+    }
+
+    // FIXME: this has to be implemented in a render-specific way, otherwise it's equivalent to
+    // `_onMount` and `_onUnmount` at the moment,
+    // see https://github.com/swiftwasm/Tokamak/issues/175 for more details
+    if let appearanceAction = view.view as? AppearanceActionType {
+      appearanceAction.appear?()
     }
   }
 

@@ -1,9 +1,12 @@
 --indent 2
 --indentcase false
 --trimwhitespace always
---empty tuple
+--voidtype tuple
 --nospaceoperators ..<,...
 --ifdef noindent
 --stripunusedargs closure-only
+--maxwidth 100
+--wraparguments before-first
+--funcattributes prev-line
 --disable andOperator
---swiftversion 5.2
+--swiftversion 5.3
