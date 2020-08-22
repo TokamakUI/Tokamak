@@ -17,11 +17,11 @@ public enum _SliderStep {
   case discrete(Double.Stride)
 }
 
-private func convert<T>(_ binding: Binding<T>) -> Binding<Double> where T: BinaryFloatingPoint {
+private func convert<T: BinaryFloatingPoint>(_ binding: Binding<T>) -> Binding<Double> {
   Binding(get: { Double(binding.wrappedValue) }, set: { binding.wrappedValue = T($0) })
 }
 
-private func convert<T>(_ range: ClosedRange<T>) -> ClosedRange<Double> where T: BinaryFloatingPoint {
+private func convert<T: BinaryFloatingPoint>(_ range: ClosedRange<T>) -> ClosedRange<Double> {
   Double(range.lowerBound)...Double(range.upperBound)
 }
 
