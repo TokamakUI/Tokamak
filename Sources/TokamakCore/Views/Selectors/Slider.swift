@@ -35,8 +35,6 @@ public struct Slider<Label, ValueLabel>: View where Label: View, ValueLabel: Vie
   let valueBinding: Binding<Double>
   let bounds: ClosedRange<Double>
   let step: _SliderStep
-  // FIXME: IMPLEMENT “For example, on iOS, a Slider is considered to be actively
-  // editing while the user is touching the knob and sliding it around the track.”
   let onEditingChanged: (Bool) -> ()
 
   public var body: Never {

@@ -46,7 +46,7 @@ Table columns:
 | 🚧  | [Toggle](https://developer.apple.com/documentation/swiftui/toggle)           |     |
 | 🚧  | [Picker](https://developer.apple.com/documentation/swiftui/picker)           |     |
 |     | [DatePicker](https://developer.apple.com/documentation/swiftui/datepicker)   |     |
-| ✅  | [Slider](https://developer.apple.com/documentation/swiftui/slider)           |     |
+| 🚧  | [Slider](https://developer.apple.com/documentation/swiftui/slider)           |     |
 |     | [Stepper](https://developer.apple.com/documentation/swiftui/stepper)         |     |
 |     | [ColorPicker](https://developer.apple.com/documentation/swiftui/colorpicker) |  β  |
 

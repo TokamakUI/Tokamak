@@ -36,6 +36,8 @@ extension Slider: ViewDeferredToRenderer {
         width: 100%;
       """,
     ]
+
+    // FIXME: The `label` property is never displayed. This might be OK since iOS also doesn’t display the label, but we should make this decision explicit. macOS puts it next to the minValueLabel.
     return AnyView(
       HStack {
         proxy.minValueLabel
@@ -46,6 +48,7 @@ extension Slider: ViewDeferredToRenderer {
             "input": { event in
               proxy.valueBinding.wrappedValue = Double(event.target.object!.value.string!)!
             },
+            // FIXME: This does not handle keyboard input. Maybe it should set editing based on focus? Need to check against native platforms.
             "pointerdown": { _ in proxy.onEditingChanged(true) },
             "pointerup": { _ in proxy.onEditingChanged(false) },
             "pointercancel": { _ in proxy.onEditingChanged(false) },
