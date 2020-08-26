@@ -102,6 +102,7 @@ public typealias Picker = TokamakCore.Picker
 public typealias ScrollView = TokamakCore.ScrollView
 public typealias Section = TokamakCore.Section
 public typealias SecureField = TokamakCore.SecureField
+public typealias Slider = TokamakCore.Slider
 public typealias Spacer = TokamakCore.Spacer
 public typealias Text = TokamakCore.Text
 public typealias TextField = TokamakCore.TextField

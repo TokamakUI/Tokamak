@@ -38,7 +38,9 @@ extension ScrollView: ViewDeferredToRenderer, SpacerContainer {
       """,
       "class": !showsIndicators ? "_tokamak-scrollview-hideindicators" : "",
     ]) {
-      content
+      VStack {
+        content
+      }
     })
   }
 }

@@ -119,6 +119,7 @@ struct TokamakDemoView: View {
           }
           Section(header: Text("Selectors")) {
             NavItem("Picker", destination: PickerDemo())
+            NavItem("Slider", destination: SliderDemo())
             NavItem("Toggle", destination: ToggleDemo())
           }
           Section(header: Text("Text")) {
