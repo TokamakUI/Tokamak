@@ -60,7 +60,7 @@ extension Slider: ViewDeferredToRenderer {
           ]
         )
         proxy.maxValueLabel
-      }
+      }.frame(minWidth: 0, maxWidth: .infinity)
     )
   }
 }
