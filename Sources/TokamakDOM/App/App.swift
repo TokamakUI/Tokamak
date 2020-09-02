@@ -24,6 +24,7 @@ extension App {
   public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
     _launch(app, rootEnvironment, TokamakDOM.body)
   }
+
   /// The default implementation of `launch` for a `TokamakDOM` app.
   ///
   /// Creates a host `div` node and appends it to the body.
@@ -31,7 +32,11 @@ extension App {
   /// The body is styled with `margin: 0;` to match the `SwiftUI` layout
   /// system as closely as possible
   ///
-  public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues, _ body: JSObjectRef) {
+  public static func _launch(
+    _ app: Self,
+    _ rootEnvironment: EnvironmentValues,
+    _ body: JSObjectRef
+  ) {
     if body.style.object!.all == "" {
       body.style = "margin: 0;"
     }

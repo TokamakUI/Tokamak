@@ -81,6 +81,7 @@ struct TokamakDemoView: View {
             NavItem("ButtonStyle", destination: ButtonStyleDemo())
           }
           Section(header: Text("Containers")) {
+            NavItem("Stacks", destination: StackDemo())
             NavItem("ForEach", destination: ForEachDemo())
             if #available(iOS 14.0, *) {
               #if os(macOS)

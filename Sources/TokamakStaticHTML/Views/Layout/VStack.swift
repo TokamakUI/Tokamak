@@ -36,8 +36,9 @@ extension VStack: ViewDeferredToRenderer, SpacerContainer {
       display: flex; flex-direction: column; align-items: \(alignment.cssValue);
       \(hasSpacer ? "height: 100%;" : "")
       \(fillCrossAxis ? "width: 100%;" : "")
+      --tokamak-stack-gap: \(spacing ?? 0)px
       """,
-      "class": "_tokamak-stack",
+      "class": "_tokamak-stack _tokamak-vstack",
     ]) { content })
   }
 }

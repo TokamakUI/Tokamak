@@ -41,6 +41,8 @@
 		B5C76E4B24C73ED5003EABB2 /* AppStorageDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C76E4924C73ED4003EABB2 /* AppStorageDemo.swift */; };
 		B5DBA22B24D509B4003D3347 /* RedactDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DBA22A24D509B4003D3347 /* RedactDemo.swift */; };
 		B5DBA22C24D509B4003D3347 /* RedactDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DBA22A24D509B4003D3347 /* RedactDemo.swift */; };
+		D1316F202500352200224A67 /* StackDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1316F1F2500352200224A67 /* StackDemo.swift */; };
+		D1316F212500352200224A67 /* StackDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1316F1F2500352200224A67 /* StackDemo.swift */; };
 		D1B4229024B3B9BB00682F74 /* ListDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4228E24B3B9BB00682F74 /* ListDemo.swift */; };
 		D1B4229124B3B9BB00682F74 /* ListDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4228E24B3B9BB00682F74 /* ListDemo.swift */; };
 		D1B4229224B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */; };
@@ -110,6 +112,7 @@
 		B56F22E224BD1C26001738DF /* GridDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridDemo.swift; sourceTree = "<group>"; };
 		B5C76E4924C73ED4003EABB2 /* AppStorageDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppStorageDemo.swift; sourceTree = "<group>"; };
 		B5DBA22A24D509B4003D3347 /* RedactDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedactDemo.swift; sourceTree = "<group>"; };
+		D1316F1F2500352200224A67 /* StackDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackDemo.swift; sourceTree = "<group>"; };
 		D1B4228E24B3B9BB00682F74 /* ListDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDemo.swift; sourceTree = "<group>"; };
 		D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutlineGroupDemo.swift; sourceTree = "<group>"; };
 		D1C726F224CB63C6003B576D /* ButtonStyleDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStyleDemo.swift; sourceTree = "<group>"; };
@@ -176,13 +179,13 @@
 		85ED189924AD425E0085DFA0 /* TokamakDemo */ = {
 			isa = PBXGroup;
 			children = (
-				D1D6B62224D817350041E1D9 /* GeometryReaderDemo.swift */,
-				D1C726F224CB63C6003B576D /* ButtonStyleDemo.swift */,
 				B5C76E4924C73ED4003EABB2 /* AppStorageDemo.swift */,
+				D1C726F224CB63C6003B576D /* ButtonStyleDemo.swift */,
 				B56F22DF24BC89FD001738DF /* ColorDemo.swift */,
 				85ED189E24AD425E0085DFA0 /* Counter.swift */,
 				85ED18A024AD425E0085DFA0 /* EnvironmentDemo.swift */,
 				85ED189C24AD425E0085DFA0 /* ForEachDemo.swift */,
+				D1D6B62224D817350041E1D9 /* GeometryReaderDemo.swift */,
 				B56F22E224BD1C26001738DF /* GridDemo.swift */,
 				D1B4228E24B3B9BB00682F74 /* ListDemo.swift */,
 				D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */,
@@ -192,6 +195,7 @@
 				3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */,
 				8500293E24D2FF3E001A2E84 /* SliderDemo.swift */,
 				85ED189A24AD425E0085DFA0 /* SpacerDemo.swift */,
+				D1316F1F2500352200224A67 /* StackDemo.swift */,
 				85ED189B24AD425E0085DFA0 /* TextDemo.swift */,
 				85ED189F24AD425E0085DFA0 /* TextFieldDemo.swift */,
 				85CBD5DE24B3BF090066468A /* ToggleDemo.swift */,
@@ -350,6 +354,7 @@
 				85ED18A324AD425E0085DFA0 /* SpacerDemo.swift in Sources */,
 				D1B4229024B3B9BB00682F74 /* ListDemo.swift in Sources */,
 				D1EE7EA724C0DD2100C0D127 /* PickerDemo.swift in Sources */,
+				D1316F202500352200224A67 /* StackDemo.swift in Sources */,
 				8500293F24D2FF3E001A2E84 /* SliderDemo.swift in Sources */,
 				85ED18A924AD425E0085DFA0 /* TokamakDemo.swift in Sources */,
 				B5C76E4A24C73ED5003EABB2 /* AppStorageDemo.swift in Sources */,
@@ -368,6 +373,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85ED18AA24AD425E0085DFA0 /* TokamakDemo.swift in Sources */,
+				D1316F212500352200224A67 /* StackDemo.swift in Sources */,
 				B56F22E424BD1C26001738DF /* GridDemo.swift in Sources */,
 				D1B4229324B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */,
 				D1D6B62424D817350041E1D9 /* GeometryReaderDemo.swift in Sources */,

@@ -12,9 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// FIXME: `._tokamak-stack` children margin should be replaced with
+// [`gap`](https://developer.mozilla.org/en-US/docs/Web/CSS/gap) when it's supported by all
+// browsers with enough adoption
 public let tokamakStyles = """
+._tokamak-stack {
+  display: flex;
+  flex-direction: row;
+}
 ._tokamak-stack > * {
   flex-shrink: 0;
+}
+._tokamak-hstack > * {
+  margin: 0px var(--tokamak-stack-gap);
+}
+._tokamak-vstack > * {
+  margin: var(--tokamak-stack-gap) 0px;
 }
 ._tokamak-scrollview-hideindicators {
   scrollbar-color: transparent;

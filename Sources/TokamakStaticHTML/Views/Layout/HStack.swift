@@ -33,11 +33,12 @@ extension HStack: ViewDeferredToRenderer, SpacerContainer {
   public var deferredBody: AnyView {
     AnyView(HTML("div", [
       "style": """
-      display: flex; flex-direction: row; align-items: \(alignment.cssValue);
+      align-items: \(alignment.cssValue);
       \(hasSpacer ? "width: 100%;" : "")
       \(fillCrossAxis ? "height: 100%;" : "")
+      --tokamak-stack-gap: \(spacing ?? 0)px
       """,
-      "class": "_tokamak-stack",
+      "class": "_tokamak-stack _tokamak-hstack",
     ]) { content })
   }
 }

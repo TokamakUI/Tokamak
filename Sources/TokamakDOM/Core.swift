@@ -78,6 +78,7 @@ public typealias Color = TokamakCore.Color
 public typealias Font = TokamakCore.Font
 
 public typealias CGAffineTransform = TokamakCore.CGAffineTransform
+public typealias CGFloat = TokamakCore.CGFloat
 public typealias CGPoint = TokamakCore.CGPoint
 public typealias CGRect = TokamakCore.CGRect
 public typealias CGSize = TokamakCore.CGSize
