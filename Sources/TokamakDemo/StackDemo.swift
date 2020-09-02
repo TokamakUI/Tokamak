@@ -15,10 +15,6 @@
 import TokamakShim
 
 struct StackDemo: View {
-  @State private var email: String = ""
-  @State private var password: String = ""
-
-  @State private var isSubmitted = false
   @State private var horizontalSpacing: CGFloat = 0
   @State private var verticalSpacing: CGFloat = 0
 
