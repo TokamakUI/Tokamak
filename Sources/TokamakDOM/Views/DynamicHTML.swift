@@ -19,6 +19,7 @@ import JavaScriptKit
 import TokamakCore
 import TokamakStaticHTML
 
+public typealias HTML = TokamakStaticHTML.HTML
 public typealias Listener = (JSObjectRef) -> ()
 
 protocol AnyDynamicHTML: AnyHTML {
