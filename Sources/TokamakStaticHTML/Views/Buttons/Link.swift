@@ -20,7 +20,7 @@ import TokamakCore
 extension Link: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     let proxy = _LinkProxy(self)
-    return AnyView(HTML("a", ["href": proxy.destination.absoluteString]) {
+    return AnyView(HTML("a", ["href": proxy.destination.absoluteString, "class": "_tokamak-link"]) {
       proxy.label
     })
   }

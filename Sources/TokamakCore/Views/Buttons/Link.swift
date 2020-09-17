@@ -20,11 +20,11 @@ import struct Foundation.URL
 public struct Link<Label>: View where Label: View {
   let destination: URL
   let label: Label
-  
+
   public init(destination: URL, @ViewBuilder label: () -> Label) {
     (self.destination, self.label) = (destination, label())
   }
-  
+
   public var body: Never {
     neverBody("Link")
   }

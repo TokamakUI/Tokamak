@@ -82,7 +82,7 @@ extension Font: StylesConvertible {
       "font-family": _name == _FontNames.system.rawValue ? _design.description : _name,
       "font-weight": "\(_bold ? Font.Weight.bold.value : _weight.value)",
       "font-style": _italic ? "italic" : "normal",
-      "font-size": "\(_size)",
+      "font-size": "\(_size)pt",
       "line-height": _leading.description,
       "font-variant": _smallCaps ? "small-caps" : "normal",
     ]
