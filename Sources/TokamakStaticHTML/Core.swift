@@ -69,6 +69,7 @@ public typealias Spacer = TokamakCore.Spacer
 public typealias Text = TokamakCore.Text
 public typealias VStack = TokamakCore.VStack
 public typealias ZStack = TokamakCore.ZStack
+public typealias Link = TokamakCore.Link
 
 // MARK: Special Views
 
@@ -86,6 +87,8 @@ public typealias AppStorage = TokamakCore.AppStorage
 public typealias SceneStorage = TokamakCore.SceneStorage
 
 // MARK: Misc
+
+public typealias ViewBuilder = TokamakCore.ViewBuilder
 
 // FIXME: I would put this inside TokamakCore, but for
 // some reason it doesn't get exported with the typealias

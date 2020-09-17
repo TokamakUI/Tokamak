@@ -4,6 +4,16 @@
 
 import PackageDescription
 
+#if os(WASI)
+let otherDeps = [
+  .package(url: "https://github.com/kateinoigakukun/JavaScriptKit.git", from: "0.5.0"),
+]
+let otherDepsInclude: [Target.Dependency] = ["JavaScriptKit"]
+#else
+let otherDeps = [Package.Dependency]()
+let otherDepsInclude = [Target.Dependency]()
+#endif
+
 let package = Package(
   name: "Tokamak",
   platforms: [
@@ -37,10 +47,9 @@ let package = Package(
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     // .package(url: /* package url */, from: "1.0.0"),
-    .package(url: "https://github.com/kateinoigakukun/JavaScriptKit.git", from: "0.5.0"),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", from: "2.1.2"),
     .package(url: "https://github.com/MaxDesiatov/OpenCombine.git", from: "0.0.1"),
-  ],
+  ] + otherDeps,
   targets: [
     // Targets are the basic building blocks of a package. A target can define
     // a module or a test suite.
@@ -66,7 +75,7 @@ let package = Package(
     ),
     .target(
       name: "TokamakDOM",
-      dependencies: ["CombineShim", "JavaScriptKit", "TokamakCore", "TokamakStaticHTML"]
+      dependencies: ["CombineShim", "TokamakCore", "TokamakStaticHTML"] + otherDepsInclude
     ),
     .target(
       name: "TokamakShim",
@@ -74,7 +83,7 @@ let package = Package(
     ),
     .target(
       name: "TokamakDemo",
-      dependencies: ["JavaScriptKit", "TokamakShim"]
+      dependencies: ["TokamakShim"] + otherDepsInclude
     ),
     .target(
       name: "TokamakStaticDemo",
