@@ -30,6 +30,10 @@ public struct HTMLAttribute: Hashable {
     self.value = value
     self.isUpdatedAsProperty = isUpdatedAsProperty
   }
+
+  static func property(_ value: String) -> HTMLAttribute {
+    .init(value, isUpdatedAsProperty: true)
+  }
 }
 
 extension HTMLAttribute: CustomStringConvertible {
