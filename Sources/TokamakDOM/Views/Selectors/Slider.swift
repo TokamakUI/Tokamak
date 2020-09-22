@@ -31,7 +31,7 @@ extension Slider: ViewDeferredToRenderer {
       "min": String(proxy.bounds.lowerBound),
       "max": String(proxy.bounds.upperBound),
       "step": step,
-      "value": String(proxy.valueBinding.wrappedValue),
+      .value: String(proxy.valueBinding.wrappedValue),
       "style": """
         display: block;
         width: 100%;

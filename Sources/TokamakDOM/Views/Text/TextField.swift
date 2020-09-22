@@ -46,7 +46,7 @@ extension TextField: ViewDeferredToRenderer where Label == Text {
 
     return AnyView(DynamicHTML("input", [
       "type": proxy.textFieldStyle is RoundedBorderTextFieldStyle ? "search" : "text",
-      .property("value"): proxy.textBinding.wrappedValue,
+      .value: proxy.textBinding.wrappedValue,
       "placeholder": proxy.label.rawText,
       "style": css(for: proxy.textFieldStyle),
       "class": className(for: proxy.textFieldStyle),
