@@ -31,7 +31,7 @@ public struct HTMLAttribute: Hashable {
     self.isUpdatedAsProperty = isUpdatedAsProperty
   }
 
-  static func property(_ value: String) -> HTMLAttribute {
+  public static func property(_ value: String) -> HTMLAttribute {
     .init(value, isUpdatedAsProperty: true)
   }
 }
