@@ -91,7 +91,7 @@ extension Font: StylesConvertible {
 
 private struct TextSpan: AnyHTML {
   let content: String
-  let attributes: [String: String]
+  let attributes: [HTMLAttribute: String]
 
   var innerHTML: String? { content }
   var tag: String { "span" }
@@ -120,7 +120,7 @@ extension Text: AnyHTML {
   }
 
   public var tag: String { "span" }
-  public var attributes: [String: String] {
+  public var attributes: [HTMLAttribute: String] {
     let proxy = _TextProxy(self)
     return Self.attributes(
       from: proxy.modifiers,
@@ -133,7 +133,7 @@ extension Text {
   static func attributes(
     from modifiers: [_Modifier],
     environment: EnvironmentValues
-  ) -> [String: String] {
+  ) -> [HTMLAttribute: String] {
     let isRedacted = environment.redactionReasons.contains(.placeholder)
 
     var font: Font?

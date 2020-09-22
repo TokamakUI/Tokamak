@@ -36,7 +36,7 @@ extension _PickerContainer: ViewDeferredToRenderer {
 
 extension _PickerElement: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    let attributes: [String: String]
+    let attributes: [HTMLAttribute: String]
     if let value = valueIndex {
       attributes = ["value": "\(value)"]
     } else {
