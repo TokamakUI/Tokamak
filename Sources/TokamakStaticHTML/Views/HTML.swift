@@ -17,6 +17,11 @@
 
 import TokamakCore
 
+/** Represents an attribute of an HTML tag. To consume updates from updated attributes, the DOM
+ renderer needs to know whether the attribute should be assigned via a DOM element property or the
+ [`setAttribute`](https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute) function.
+ The `isUpdatedAsProperty` flag is used to disambiguate between these two cases.
+ */
 public struct HTMLAttribute: Hashable {
   public let value: String
   public let isUpdatedAsProperty: Bool
