@@ -17,10 +17,37 @@
 
 import TokamakCore
 
+/** Represents an attribute of an HTML tag. To consume updates from updated attributes, the DOM
+ renderer needs to know whether the attribute should be assigned via a DOM element property or the
+ [`setAttribute`](https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute) function.
+ The `isUpdatedAsProperty` flag is used to disambiguate between these two cases.
+ */
+public struct HTMLAttribute: Hashable {
+  public let value: String
+  public let isUpdatedAsProperty: Bool
+
+  public init(_ value: String, isUpdatedAsProperty: Bool) {
+    self.value = value
+    self.isUpdatedAsProperty = isUpdatedAsProperty
+  }
+
+  public static let value = HTMLAttribute("value", isUpdatedAsProperty: true)
+}
+
+extension HTMLAttribute: CustomStringConvertible {
+  public var description: String { value }
+}
+
+extension HTMLAttribute: ExpressibleByStringLiteral {
+  public init(stringLiteral: String) {
+    self.init(stringLiteral, isUpdatedAsProperty: false)
+  }
+}
+
 public protocol AnyHTML {
   var innerHTML: String? { get }
   var tag: String { get }
-  var attributes: [String: String] { get }
+  var attributes: [HTMLAttribute: String] { get }
 }
 
 extension AnyHTML {
@@ -36,7 +63,7 @@ extension AnyHTML {
 
 public struct HTML<Content>: View, AnyHTML {
   public let tag: String
-  public let attributes: [String: String]
+  public let attributes: [HTMLAttribute: String]
   let content: Content
 
   public let innerHTML: String?
@@ -49,7 +76,7 @@ public struct HTML<Content>: View, AnyHTML {
 extension HTML where Content: StringProtocol {
   public init(
     _ tag: String,
-    _ attributes: [String: String] = [:],
+    _ attributes: [HTMLAttribute: String] = [:],
     content: Content
   ) {
     self.tag = tag
@@ -62,7 +89,7 @@ extension HTML where Content: StringProtocol {
 extension HTML: ParentView where Content: View {
   public init(
     _ tag: String,
-    _ attributes: [String: String] = [:],
+    _ attributes: [HTMLAttribute: String] = [:],
     @ViewBuilder content: () -> Content
   ) {
     self.tag = tag
@@ -79,7 +106,7 @@ extension HTML: ParentView where Content: View {
 extension HTML where Content == EmptyView {
   public init(
     _ tag: String,
-    _ attributes: [String: String] = [:]
+    _ attributes: [HTMLAttribute: String] = [:]
   ) {
     self = HTML(tag, attributes) { EmptyView() }
   }

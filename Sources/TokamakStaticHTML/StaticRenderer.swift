@@ -59,7 +59,7 @@ extension HTMLTarget {
 struct HTMLBody: AnyHTML {
   let tag: String = "body"
   let innerHTML: String? = nil
-  let attributes: [String: String] = [
+  let attributes: [HTMLAttribute: String] = [
     "style": "margin: 0;" + rootNodeStyles,
   ]
 }

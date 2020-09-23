@@ -25,7 +25,11 @@ extension AnyHTML {
     // then use the standard lib to get the difference?
 
     for (attribute, value) in attributes {
-      _ = dom.ref[dynamicMember: attribute] = .string(value)
+      if attribute.isUpdatedAsProperty {
+        dom.ref[dynamicMember: attribute.value] = .string(value)
+      } else {
+        _ = dom.ref.setAttribute!(attribute.value, value)
+      }
     }
 
     if let dynamicSelf = self as? AnyDynamicHTML {

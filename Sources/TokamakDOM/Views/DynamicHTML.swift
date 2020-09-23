@@ -20,6 +20,7 @@ import TokamakCore
 import TokamakStaticHTML
 
 public typealias HTML = TokamakStaticHTML.HTML
+
 public typealias Listener = (JSObjectRef) -> ()
 
 protocol AnyDynamicHTML: AnyHTML {
@@ -28,7 +29,7 @@ protocol AnyDynamicHTML: AnyHTML {
 
 public struct DynamicHTML<Content>: View, AnyDynamicHTML {
   public let tag: String
-  public let attributes: [String: String]
+  public let attributes: [HTMLAttribute: String]
   public let listeners: [String: Listener]
   let content: Content
 
@@ -42,7 +43,7 @@ public struct DynamicHTML<Content>: View, AnyDynamicHTML {
 extension DynamicHTML where Content: StringProtocol {
   public init(
     _ tag: String,
-    _ attributes: [String: String] = [:],
+    _ attributes: [HTMLAttribute: String] = [:],
     listeners: [String: Listener] = [:],
     content: Content
   ) {
@@ -57,7 +58,7 @@ extension DynamicHTML where Content: StringProtocol {
 extension DynamicHTML: ParentView where Content: View {
   public init(
     _ tag: String,
-    _ attributes: [String: String] = [:],
+    _ attributes: [HTMLAttribute: String] = [:],
     listeners: [String: Listener] = [:],
     @ViewBuilder content: () -> Content
   ) {
@@ -76,7 +77,7 @@ extension DynamicHTML: ParentView where Content: View {
 extension DynamicHTML where Content == EmptyView {
   public init(
     _ tag: String,
-    _ attributes: [String: String] = [:],
+    _ attributes: [HTMLAttribute: String] = [:],
     listeners: [String: Listener] = [:]
   ) {
     self = DynamicHTML(tag, attributes, listeners: listeners) { EmptyView() }

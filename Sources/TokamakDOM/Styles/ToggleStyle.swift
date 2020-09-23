@@ -28,7 +28,7 @@ public struct DefaultToggleStyle: ToggleStyle {
 
 public struct CheckboxToggleStyle: ToggleStyle {
   public func makeBody(configuration: ToggleStyleConfiguration) -> some View {
-    var attrs = ["type": "checkbox"]
+    var attrs: [HTMLAttribute: String] = ["type": "checkbox"]
     if configuration.isOn {
       attrs["checked"] = "checked"
     }

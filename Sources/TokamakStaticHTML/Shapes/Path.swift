@@ -28,7 +28,7 @@ extension Path: ViewDeferredToRenderer {
     storage: Storage,
     strokeStyle: StrokeStyle = .zero
   ) -> AnyView {
-    let stroke = [
+    let stroke: [HTMLAttribute: String] = [
       "stroke-width": "\(strokeStyle.lineWidth)",
     ]
     let uniqueKeys = { (first: String, _: String) in first }
@@ -58,7 +58,7 @@ extension Path: ViewDeferredToRenderer {
     case let .roundedRect(roundedRect):
       // When cornerRadius is nil we use 50% rx.
       let size = roundedRect.rect.size
-      let cornerRadius = { () -> [String: String] in
+      let cornerRadius = { () -> [HTMLAttribute: String] in
         if let cornerSize = roundedRect.cornerSize {
           return [
             "rx": "\(cornerSize.width)",
