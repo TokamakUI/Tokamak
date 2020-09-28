@@ -15,7 +15,7 @@
 import JavaScriptKit
 
 extension ColorScheme {
-  init(matchMediaDarkScheme: JSObjectRef) {
+  init(matchMediaDarkScheme: JSObject) {
     self = matchMediaDarkScheme.matches.boolean == true ? .dark : .light
   }
 }

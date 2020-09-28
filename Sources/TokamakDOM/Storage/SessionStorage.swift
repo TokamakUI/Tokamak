@@ -19,20 +19,16 @@ import CombineShim
 import JavaScriptKit
 import TokamakCore
 
-public class SessionStorage: WebStorage, _StorageProvider {
-  let storage = JSObjectRef.global.sessionStorage.object!
+private let sessionStorage = JSObject.global.sessionStorage.object!
 
-  required init() {
-    subscription = Self.rootPublisher.sink { _ in
-      self.publisher.send()
-    }
-  }
+public class SessionStorage: WebStorage, _StorageProvider {
+  let storage = sessionStorage
+
+  required init() {}
 
   public static var standard: _StorageProvider {
     Self()
   }
 
-  var subscription: AnyCancellable?
-  static let rootPublisher = ObservableObjectPublisher()
   public let publisher = ObservableObjectPublisher()
 }

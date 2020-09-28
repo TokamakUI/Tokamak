@@ -42,18 +42,18 @@ extension AnyHTML {
 }
 
 final class DOMNode: Target {
-  let ref: JSObjectRef
+  let ref: JSObject
   private var listeners: [String: JSClosure]
   var view: AnyView
 
-  init<V: View>(_ view: V, _ ref: JSObjectRef, _ listeners: [String: Listener] = [:]) {
+  init<V: View>(_ view: V, _ ref: JSObject, _ listeners: [String: Listener] = [:]) {
     self.ref = ref
     self.listeners = [:]
     self.view = AnyView(view)
     reinstall(listeners)
   }
 
-  init(_ ref: JSObjectRef) {
+  init(_ ref: JSObject) {
     self.ref = ref
     view = AnyView(EmptyView())
     listeners = [:]
@@ -64,13 +64,13 @@ final class DOMNode: Target {
   func reinstall(_ listeners: [String: Listener]) {
     for (event, jsClosure) in self.listeners {
       _ = ref.removeEventListener!(event, jsClosure)
+      jsClosure.release()
     }
     self.listeners = [:]
 
     for (event, listener) in listeners {
       let jsClosure = JSClosure {
         listener($0[0].object!)
-        return .undefined
       }
       _ = ref.addEventListener!(event, jsClosure)
       self.listeners[event] = jsClosure

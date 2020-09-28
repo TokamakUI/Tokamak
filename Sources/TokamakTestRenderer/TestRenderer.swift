@@ -28,7 +28,7 @@ public func testScheduler(closure: @escaping () -> ()) {
     closure()
     return .undefined
   }
-  _ = JSObjectRef.global.setTimeout!(fn, 0)
+  _ = JSObject.global.setTimeout!(fn, 0)
   #else
   DispatchQueue.main.async(execute: closure)
   #endif
