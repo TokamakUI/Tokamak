@@ -121,7 +121,14 @@ final class JSScheduler: Scheduler {
   private var scheduledTimers = [ObjectIdentifier: JSTimer]()
 
   func schedule(options: SchedulerOptions?, _ action: @escaping () -> ()) {
-    schedule(after: now, tolerance: minimumTolerance, options: options, action)
+    var timer: JSTimer!
+    timer = .init(millisecondsDelay: 0) { [weak self, weak timer] in
+      action()
+      if let timer = timer {
+        self?.scheduledTimers[ObjectIdentifier(timer)] = nil
+      }
+    }
+    scheduledTimers[ObjectIdentifier(timer)] = timer
   }
 
   func schedule(
