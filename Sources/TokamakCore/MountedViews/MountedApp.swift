@@ -47,7 +47,7 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     reconciler.reconcile(
       self,
       with: element,
-      getElementType: { type(of: $0) },
+      getElementType: type(of:),
       updateChild: {
         $0.environmentValues = environmentValues
         $0.scene = _AnyScene(element)
