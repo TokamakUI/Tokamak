@@ -232,10 +232,7 @@ public struct CGAffineTransform: Equatable {
   /// - Parameters:
   ///   - tx: The value by which to move x values with the affine transform.
   ///   - ty: The value by which to move y values with the affine transform.
-  public func translatedBy(
-    x tx: CGFloat,
-    y ty: CGFloat
-  ) -> Self {
+  public func translatedBy(x tx: CGFloat, y ty: CGFloat) -> Self {
     .init(a: a, b: b, c: c, d: d, tx: self.tx + tx, ty: self.ty + ty)
   }
 
@@ -243,10 +240,7 @@ public struct CGAffineTransform: Equatable {
   /// - Parameters:
   ///   - sx: The value by which to scale x values of the affine transform.
   ///   - sy: The value by which to scale y values of the affine transform.
-  public func scaledBy(
-    x sx: CGFloat,
-    y sy: CGFloat
-  ) -> Self {
+  public func scaledBy(x sx: CGFloat, y sy: CGFloat) -> Self {
     .init(a: a + sx, b: b, c: c, d: d + sy, tx: tx, ty: ty)
   }
 
