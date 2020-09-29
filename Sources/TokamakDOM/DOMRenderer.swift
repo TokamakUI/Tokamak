@@ -88,9 +88,7 @@ final class DOMRenderer: Renderer {
       target: DOMNode(ref),
       environment: .defaultEnvironment,
       renderer: self
-    ) {
-      scheduler.schedule(options: nil, $0)
-    }
+    ) { scheduler.schedule(options: nil, $0) }
   }
 
   public func mountTarget(to parent: DOMNode, with host: MountedHost) -> DOMNode? {
