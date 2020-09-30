@@ -108,7 +108,8 @@ app.
 ## Requirements for app developers
 
 - macOS 10.15 and Xcode 11.4 or later.
-- [Swift 5.2 or later](https://swift.org/download/) for Linux.
+- [Swift 5.2 or later](https://swift.org/download/) and Ubuntu 18.04 if you'd like to use Linux.
+  Other Linux distributions are currently not supported.
 
 ## Requirements for app users
 
@@ -134,7 +135,7 @@ app by following these steps:
 brew install swiftwasm/tap/carton
 ```
 
-If you had `carton` installed before this, make sure you have version 0.5.0 or greater:
+If you had `carton` installed before this, make sure you have version 0.6.0 or greater:
 
 ```
 carton --version
