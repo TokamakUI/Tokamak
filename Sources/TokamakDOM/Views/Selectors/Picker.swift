@@ -22,10 +22,12 @@ extension _PickerContainer: ViewDeferredToRenderer {
       label
       Text(" ")
       DynamicHTML("select", ["class": "_tokamak-picker"], listeners: ["change": {
+        print("SelectionValue is \(SelectionValue.self)")
         guard
           let valueString = $0.target.object!.value.string,
           let value = Int(valueString) as? SelectionValue
         else { return }
+        print("assigned \(value) to selection")
         selection = value
       }]) {
         content
@@ -36,6 +38,7 @@ extension _PickerContainer: ViewDeferredToRenderer {
 
 extension _PickerElement: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
+    print("valueIndex is \(valueIndex ?? -1)")
     let attributes: [HTMLAttribute: String]
     if let value = valueIndex {
       attributes = [.value: "\(value)"]

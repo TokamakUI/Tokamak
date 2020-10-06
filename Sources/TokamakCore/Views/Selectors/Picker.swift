@@ -59,26 +59,65 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
   }
 
   public var body: some View {
-    let children = self.children
+    var indices = [SelectionValue: Int]()
+    var values = [SelectionValue]()
 
-    return _PickerContainer(selection: selection, label: label) {
-      // Need to implement a special behavior here. If one of the children is `ForEach`
+    return _PickerContainer(
+      selection: Binding<Int>(
+        get: { indices[selection.wrappedValue]! },
+        set: { selection.wrappedValue = values[$0] }
+      ),
+      label: label
+    ) {
+      // A special behavior is implemented here. If one of the children is `ForEach`
       // and its `Data.Element` type is the same as `SelectionValue` type, then we can
       // update the binding.
-      ForEach(0..<children.count) { index in
-        if let forEach = mapAnyView(children[index], transform: { (v: ForEachProtocol) in v }),
-          forEach.elementType == SelectionValue.self
-        {
-          let nestedChildren = forEach.children
+      if let forEach = cast(content) {
+        map(forEach, &indices, &values)
+      } else {
+        // cache the `children` computed property
+        let children = self.children
 
-          ForEach(0..<nestedChildren.count) { nestedIndex in
-            _PickerElement(valueIndex: nestedIndex, content: nestedChildren[nestedIndex])
+        ForEach(0..<children.count) { index in
+          if let forEach = cast(children[index]) {
+            map(forEach, &indices, &values)
+          } else {
+            _PickerElement(valueIndex: nil, content: children[index])
           }
-        } else {
-          _PickerElement(valueIndex: nil, content: children[index])
         }
       }
     }
+  }
+
+  @ViewBuilder
+  private func map(
+    _ forEach: ForEachProtocol,
+    _ indices: inout [SelectionValue: Int],
+    _ values: inout [SelectionValue]
+  ) -> some View {
+    let nestedChildren = forEach.children
+
+    ForEach(0..<nestedChildren.count) { nestedIndex -> _PickerElement in
+      if let value = forEach.element(at: nestedIndex) as? SelectionValue {
+        indices[value] = nestedIndex
+        values.append(value)
+      }
+      return _PickerElement(valueIndex: nestedIndex, content: nestedChildren[nestedIndex])
+    }
+  }
+
+  private func cast<V: View>(_ view: V) -> ForEachProtocol? {
+    let forEach: ForEachProtocol?
+
+    if let view = view as? AnyView {
+      forEach = mapAnyView(view) { (v: ForEachProtocol) in v }
+    } else {
+      forEach = view as? ForEachProtocol
+    }
+
+    guard forEach?.elementType == SelectionValue.self else { return nil }
+
+    return forEach
   }
 }
 

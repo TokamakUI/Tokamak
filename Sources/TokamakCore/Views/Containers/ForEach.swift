@@ -80,49 +80,8 @@ public extension ForEach where Data == Range<Int>, ID == Int {
 
 extension ForEach: ParentView {
   public var children: [AnyView] {
-    data.map { AnyView(IDView(content($0), id: $0[keyPath: id])) }
+    data.map { AnyView(content($0)) }
   }
 }
 
 extension ForEach: GroupView {}
-
-struct _IDKey: EnvironmentKey {
-  static let defaultValue: AnyHashable? = nil
-}
-
-extension EnvironmentValues {
-  public var _id: AnyHashable? {
-    get {
-      self[_IDKey.self]
-    }
-    set {
-      self[_IDKey.self] = newValue
-    }
-  }
-}
-
-public protocol _AnyIDView {
-  var anyId: AnyHashable { get }
-}
-
-struct IDView<Content, ID>: View, _AnyIDView where Content: View, ID: Hashable {
-  let content: Content
-  let id: ID
-  var anyId: AnyHashable { AnyHashable(id) }
-
-  init(_ content: Content, id: ID) {
-    self.content = content
-    self.id = id
-  }
-
-  var body: some View {
-    content
-      .environment(\._id, AnyHashable(id))
-  }
-}
-
-extension View {
-  public func id<ID>(_ id: ID) -> some View where ID: Hashable {
-    IDView(self, id: id)
-  }
-}

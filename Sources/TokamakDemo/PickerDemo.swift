@@ -20,15 +20,36 @@ struct PickerDemo: View {
   @State private var selection = 0
 
   var body: some View {
-    Picker(
-      selection: $selection,
-      label: Text("Text style")
-        .font(.system(textStyles[selection]))
-    ) {
-      Text("Pick a text style...")
-      ForEach(0..<textStyles.count) {
-        Text(String(describing: textStyles[$0]))
+    // VStack {
+    //   Picker(
+    //     selection: $selection,
+    //     label: Text("Text style")
+    //       .font(.system(textStyles[selection]))
+    //   ) {
+    //     Text("Pick a text style...")
+    //     ForEach(0..<textStyles.count) {
+    //       Text(String(describing: textStyles[$0]))
+    //     }
+    //   }
+    PickerTest()
+    // }
+  }
+}
+
+struct PickerTest: View {
+  @State private var selection: String = ""
+  let items: [String] = ["Item 1",
+                         "Item 2",
+                         "Item 3",
+                         "Item 4"]
+  var body: some View {
+    VStack {
+      Picker("MyPicker:", selection: self.$selection) {
+        ForEach(self.items, id: \.self) {
+          Text($0)
+        }
       }
+      Text("You selected: \(self.selection)")
     }
   }
 }
