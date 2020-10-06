@@ -18,7 +18,7 @@ import TokamakDOM
 private let location = JSObject.global.location.object!
 private let window = JSObject.global.window.object!
 
-final class HashState: ObservableObject {
+private final class HashState: ObservableObject {
   var onHashChange: JSClosure!
 
   @Published var currentHash = location.hash.string!
@@ -33,12 +33,13 @@ final class HashState: ObservableObject {
   }
 
   deinit {
+    window.onhashchange = .undefined
     onHashChange.release()
   }
 }
 
 struct URLHashDemo: View {
-  @StateObject var hashState = HashState()
+  @StateObject private var hashState = HashState()
 
   var body: some View {
     VStack {
