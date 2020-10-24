@@ -29,19 +29,3 @@ public struct _AnyToken {
     kind = type
   }
 }
-
-/// Allows a `Renderer` to override a token's resolver. As an example, this extension will make all `Color`
-/// values red:
-///
-///     extension _SystemColorBox: TokenDeferredToRenderer {
-///       public func deferredResolve(in environment: EnvironmentValues) -> _AnyToken {
-///         .init(
-///           AnyColorBox.self,
-///           AnyColorBox.ResolvedValue(red: 1, green: 0, blue: 0, opacity: 1, space: .sRGB)
-///         )
-///       }
-///     }
-///
-public protocol TokenDeferredToRenderer {
-  func deferredResolve(in environment: EnvironmentValues) -> _AnyToken
-}

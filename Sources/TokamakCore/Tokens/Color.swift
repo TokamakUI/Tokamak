@@ -48,7 +48,7 @@ public class AnyColorBox: AnyTokenBox {
 }
 
 public class _ConcreteColorBox: AnyColorBox {
-  let rgba: AnyColorBox._RGBA
+  public let rgba: AnyColorBox._RGBA
 
   public static func == (lhs: _ConcreteColorBox, rhs: _ConcreteColorBox) -> Bool {
     lhs.rgba == rhs.rgba
@@ -68,7 +68,7 @@ public class _ConcreteColorBox: AnyColorBox {
 }
 
 public class _EnvironmentDependentColorBox: AnyColorBox {
-  let resolver: (EnvironmentValues) -> Color
+  public let resolver: (EnvironmentValues) -> Color
 
   public static func == (lhs: _EnvironmentDependentColorBox,
                          rhs: _EnvironmentDependentColorBox) -> Bool
@@ -90,7 +90,7 @@ public class _EnvironmentDependentColorBox: AnyColorBox {
 }
 
 public class _SystemColorBox: AnyColorBox {
-  enum SystemColor: Equatable, Hashable {
+  public enum SystemColor: Equatable, Hashable {
     case clear
     case black
     case white
@@ -106,7 +106,7 @@ public class _SystemColorBox: AnyColorBox {
     case secondary
   }
 
-  let value: SystemColor
+  public let value: SystemColor
 
   public static func == (lhs: _SystemColorBox, rhs: _SystemColorBox) -> Bool {
     lhs.value == rhs.value
@@ -116,7 +116,7 @@ public class _SystemColorBox: AnyColorBox {
     hasher.combine(value)
   }
 
-  init(_ value: SystemColor) {
+  fileprivate init(_ value: SystemColor) {
     self.value = value
   }
 
@@ -212,13 +212,7 @@ public struct _ColorProxy {
   let subject: Color
   public init(_ subject: Color) { self.subject = subject }
   public func resolve(in environment: EnvironmentValues) -> AnyColorBox.ResolvedValue {
-    if let deferredProvider = subject.provider as? TokenDeferredToRenderer,
-      let value = deferredProvider.deferredResolve(in: environment).value as? AnyColorBox
-      .ResolvedValue
-    {
-      return value
-    }
-    return subject.provider.resolve(in: environment)
+    subject.provider.resolve(in: environment)
   }
 }
 

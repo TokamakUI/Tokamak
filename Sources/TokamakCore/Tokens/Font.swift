@@ -12,43 +12,158 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+public class AnyFontBox: AnyTokenBox, Hashable, Equatable {
+  public struct _Font: Hashable, Equatable {
+    public var _name: String
+    public var _size: CGFloat
+    public var _design: Font.Design
+    public var _weight: Font.Weight
+    public var _smallCaps: Bool
+    public var _italic: Bool
+    public var _bold: Bool
+    public var _monospaceDigit: Bool
+    public var _leading: Font.Leading
+
+    public init(
+      name: _FontNames,
+      size: CGFloat,
+      design: Font.Design = .default,
+      weight: Font.Weight = .regular,
+      smallCaps: Bool = false,
+      italic: Bool = false,
+      bold: Bool = false,
+      monospaceDigit: Bool = false,
+      leading: Font.Leading = .standard
+    ) {
+      _name = name.rawValue
+      _size = size
+      _design = design
+      _weight = weight
+      _smallCaps = smallCaps
+      _italic = italic
+      _bold = bold
+      _monospaceDigit = monospaceDigit
+      _leading = leading
+    }
+  }
+
+  public static func == (lhs: AnyFontBox, rhs: AnyFontBox) -> Bool { false }
+  public func hash(into hasher: inout Hasher) {
+    fatalError("implement \(#function) in subclass")
+  }
+
+  public func resolve(in environment: EnvironmentValues) -> _Font {
+    fatalError("implement \(#function) in subclass")
+  }
+}
+
+public class _ConcreteFontBox: AnyFontBox {
+  public let font: ResolvedValue
+
+  public static func == (lhs: _ConcreteFontBox, rhs: _ConcreteFontBox) -> Bool {
+    lhs.font == rhs.font
+  }
+
+  override public func hash(into hasher: inout Hasher) {
+    hasher.combine(font)
+  }
+
+  init(_ font: ResolvedValue) {
+    self.font = font
+  }
+
+  override public func resolve(in environment: EnvironmentValues) -> ResolvedValue {
+    font
+  }
+}
+
+public class _ModifiedFontBox: AnyFontBox {
+  public let provider: AnyFontBox
+  public let modifier: (inout ResolvedValue) -> ()
+
+  public static func == (lhs: _ModifiedFontBox, rhs: _ModifiedFontBox) -> Bool {
+    lhs.resolve(in: EnvironmentValues()) == rhs.resolve(in: EnvironmentValues())
+  }
+
+  override public func hash(into hasher: inout Hasher) {
+    hasher.combine(provider.resolve(in: EnvironmentValues()))
+  }
+
+  init(previously provider: AnyFontBox, modifier: @escaping (inout ResolvedValue) -> ()) {
+    self.provider = provider
+    self.modifier = modifier
+  }
+
+  override public func resolve(in environment: EnvironmentValues) -> ResolvedValue {
+    var font = provider.resolve(in: environment)
+    modifier(&font)
+    return font
+  }
+}
+
+public class _SystemFontBox: AnyFontBox {
+  public enum SystemFont: Equatable, Hashable {
+    case largeTitle
+    case title
+    case title2
+    case title3
+    case headline
+    case subheadline
+    case body
+    case callout
+    case footnote
+    case caption
+    case caption2
+  }
+
+  public let value: SystemFont
+
+  public static func == (lhs: _SystemFontBox, rhs: _SystemFontBox) -> Bool {
+    lhs.value == rhs.value
+  }
+
+  override public func hash(into hasher: inout Hasher) {
+    hasher.combine(value)
+  }
+
+  init(_ value: SystemFont) {
+    self.value = value
+  }
+
+  override public func resolve(in environment: EnvironmentValues) -> ResolvedValue {
+    switch value {
+    case .largeTitle: return .init(name: .system, size: 34)
+    case .title: return .init(name: .system, size: 28)
+    case .title2: return .init(name: .system, size: 22)
+    case .title3: return .init(name: .system, size: 20)
+    case .headline: return .init(name: .system, size: 17, design: .default, weight: .semibold)
+    case .subheadline: return .init(name: .system, size: 15)
+    case .body: return .init(name: .system, size: 17)
+    case .callout: return .init(name: .system, size: 16)
+    case .footnote: return .init(name: .system, size: 13)
+    case .caption: return .init(name: .system, size: 12)
+    case .caption2: return .init(name: .system, size: 11)
+    }
+  }
+}
+
 public struct Font: Hashable {
-  public let _name: String
-  public let _size: CGFloat
-  public let _design: Design
-  public let _weight: Weight
-  public let _smallCaps: Bool
-  public let _italic: Bool
-  public let _bold: Bool
-  public let _monospaceDigit: Bool
-  public let _leading: Leading
+  let provider: AnyFontBox
+
+  fileprivate init(_ provider: AnyFontBox) {
+    self.provider = provider
+  }
 
   public func italic() -> Self {
-    .init(
-      _name: _name,
-      _size: _size,
-      _design: _design,
-      _weight: _weight,
-      _smallCaps: _smallCaps,
-      _italic: true,
-      _bold: _bold,
-      _monospaceDigit: _monospaceDigit,
-      _leading: _leading
-    )
+    .init(_ModifiedFontBox(previously: provider) {
+      $0._italic = true
+    })
   }
 
   public func smallCaps() -> Self {
-    .init(
-      _name: _name,
-      _size: _size,
-      _design: _design,
-      _weight: _weight,
-      _smallCaps: true,
-      _italic: _italic,
-      _bold: _bold,
-      _monospaceDigit: _monospaceDigit,
-      _leading: _leading
-    )
+    .init(_ModifiedFontBox(previously: provider) {
+      $0._smallCaps = true
+    })
   }
 
   public func lowercaseSmallCaps() -> Self {
@@ -60,59 +175,27 @@ public struct Font: Hashable {
   }
 
   public func monospacedDigit() -> Self {
-    .init(
-      _name: _name,
-      _size: _size,
-      _design: _design,
-      _weight: _weight,
-      _smallCaps: _smallCaps,
-      _italic: _italic,
-      _bold: _bold,
-      _monospaceDigit: true,
-      _leading: _leading
-    )
+    .init(_ModifiedFontBox(previously: provider) {
+      $0._monospaceDigit = true
+    })
   }
 
   public func weight(_ weight: Weight) -> Self {
-    .init(
-      _name: _name,
-      _size: _size,
-      _design: _design,
-      _weight: weight,
-      _smallCaps: _smallCaps,
-      _italic: _italic,
-      _bold: _bold,
-      _monospaceDigit: _monospaceDigit,
-      _leading: _leading
-    )
+    .init(_ModifiedFontBox(previously: provider) {
+      $0._weight = weight
+    })
   }
 
   public func bold() -> Self {
-    .init(
-      _name: _name,
-      _size: _size,
-      _design: _design,
-      _weight: _weight,
-      _smallCaps: _smallCaps,
-      _italic: _italic,
-      _bold: true,
-      _monospaceDigit: _monospaceDigit,
-      _leading: _leading
-    )
+    .init(_ModifiedFontBox(previously: provider) {
+      $0._bold = true
+    })
   }
 
   public func leading(_ leading: Leading) -> Self {
-    .init(
-      _name: _name,
-      _size: _size,
-      _design: _design,
-      _weight: _weight,
-      _smallCaps: _smallCaps,
-      _italic: _italic,
-      _bold: true,
-      _monospaceDigit: _monospaceDigit,
-      _leading: leading
-    )
+    .init(_ModifiedFontBox(previously: provider) {
+      $0._leading = leading
+    })
   }
 }
 
@@ -149,15 +232,19 @@ extension Font {
                             design: Design = .default) -> Self
   {
     .init(
-      _name: _FontNames.system.rawValue,
-      _size: size,
-      _design: design,
-      _weight: weight,
-      _smallCaps: false,
-      _italic: false,
-      _bold: false,
-      _monospaceDigit: false,
-      _leading: .standard
+      _ConcreteFontBox(
+        .init(
+          name: .system,
+          size: size,
+          design: design,
+          weight: weight,
+          smallCaps: false,
+          italic: false,
+          bold: false,
+          monospaceDigit: false,
+          leading: .standard
+        )
+      )
     )
   }
 
@@ -170,20 +257,22 @@ extension Font {
 }
 
 extension Font {
-  public static let largeTitle: Self = .system(size: 34)
-  public static let title: Self = .system(size: 28)
-  public static let title2: Self = .system(size: 22)
-  public static let title3: Self = .system(size: 20)
-  public static let headline: Font = .system(size: 17, weight: .semibold, design: .default)
-  public static let subheadline: Self = .system(size: 15)
-  public static let body: Self = .system(size: 17)
-  public static let callout: Self = .system(size: 16)
-  public static let footnote: Self = .system(size: 13)
-  public static let caption: Self = .system(size: 12)
-  public static let caption2: Font = .system(size: 11)
+  public static let largeTitle: Self = .init(_SystemFontBox(.largeTitle))
+  public static let title: Self = .init(_SystemFontBox(.title))
+  public static let title2: Self = .init(_SystemFontBox(.title2))
+  public static let title3: Self = .init(_SystemFontBox(.title3))
+  public static let headline: Font = .init(_SystemFontBox(.headline))
+  public static let subheadline: Self = .init(_SystemFontBox(.subheadline))
+  public static let body: Self = .init(_SystemFontBox(.body))
+  public static let callout: Self = .init(_SystemFontBox(.callout))
+  public static let footnote: Self = .init(_SystemFontBox(.footnote))
+  public static let caption: Self = .init(_SystemFontBox(.caption))
+  public static let caption2: Self = .init(_SystemFontBox(.caption2))
 
   public static func system(_ style: TextStyle, design: Design = .default) -> Self {
-    .system(size: style.font._size, weight: style.font._weight, design: design)
+    .init(_ModifiedFontBox(previously: style.font.provider) {
+      $0._design = design
+    })
   }
 
   public enum TextStyle: Hashable, CaseIterable {
@@ -214,6 +303,14 @@ extension Font {
       case .caption2: return .caption2
       }
     }
+  }
+}
+
+public struct _FontProxy {
+  let subject: Font
+  public init(_ subject: Font) { self.subject = subject }
+  public func resolve(in environment: EnvironmentValues) -> AnyFontBox.ResolvedValue {
+    subject.provider.resolve(in: environment)
   }
 }
 
