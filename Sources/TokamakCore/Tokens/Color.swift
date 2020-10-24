@@ -22,6 +22,19 @@ public class AnyColorBox: AnyTokenBox {
     public let blue: Double
     public let opacity: Double
     public let space: Color.RGBColorSpace
+    public init(
+      red: Double,
+      green: Double,
+      blue: Double,
+      opacity: Double,
+      space: Color.RGBColorSpace
+    ) {
+      self.red = red
+      self.green = green
+      self.blue = blue
+      self.opacity = opacity
+      self.space = space
+    }
   }
 
   public static func == (lhs: AnyColorBox, rhs: AnyColorBox) -> Bool { false }
@@ -199,7 +212,13 @@ public struct _ColorProxy {
   let subject: Color
   public init(_ subject: Color) { self.subject = subject }
   public func resolve(in environment: EnvironmentValues) -> AnyColorBox.ResolvedValue {
-    subject.provider.resolve(in: environment)
+    if let deferredProvider = subject.provider as? TokenDeferredToRenderer,
+      let value = deferredProvider.deferredResolve(in: environment).value as? AnyColorBox
+      .ResolvedValue
+    {
+      return value
+    }
+    return subject.provider.resolve(in: environment)
   }
 }
 
