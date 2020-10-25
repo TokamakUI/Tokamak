@@ -13,7 +13,9 @@
 // limitations under the License.
 
 /// Override `TokamakCore`'s default `Font` resolvers with a Renderer-specific one.
-/// You can override a specific font box (such as `_SystemFontBox`, or all boxes with `AnyFontBox`.
+/// You can override a specific font box
+/// (such as `_SystemFontBox`, or all boxes with `AnyFontBox`).
+///
 /// This extension makes all fonts monospaced:
 ///
 ///     extension AnyFontBox: AnyFontBoxDeferredToRenderer {
