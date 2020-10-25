@@ -17,7 +17,9 @@
 /// This extension makes all fonts monospaced:
 ///
 ///     extension AnyFontBox: AnyFontBoxDeferredToRenderer {
-///       public func deferredResolve(in environment: EnvironmentValues) -> AnyFontBox.ResolvedValue {
+///       public func deferredResolve(
+///         in environment: EnvironmentValues
+///       ) -> AnyFontBox.ResolvedValue {
 ///         var font = resolve(in: environment)
 ///         font._design = .monospaced
 ///         return font

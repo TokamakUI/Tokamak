@@ -20,7 +20,9 @@
 /// This extension makes all system colors red:
 ///
 ///     extension _SystemColorBox: AnyColorBoxDeferredToRenderer {
-///       public func deferredResolve(in environment: EnvironmentValues) -> AnyColorBox.ResolvedValue {
+///       public func deferredResolve(
+///         in environment: EnvironmentValues
+///       ) -> AnyColorBox.ResolvedValue {
 ///         return .init(red: 1, green: 0, blue: 0, opacity: 1, space: .sRGB)
 ///       }
 ///     }
