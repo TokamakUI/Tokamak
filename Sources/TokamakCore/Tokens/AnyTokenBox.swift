@@ -16,16 +16,7 @@
 //
 
 /// Allows "late-binding tokens" to be resolved in an environment by a `Renderer` (or `TokamakCore`)
-public protocol AnyTokenBox: AnyObject, Equatable, Hashable {
+public protocol AnyTokenBox: AnyObject, Hashable {
   associatedtype ResolvedValue
   func resolve(in environment: EnvironmentValues) -> ResolvedValue
-}
-
-public struct _AnyToken {
-  let value: Any
-  let kind: Any.Type
-  public init<T: AnyTokenBox>(_ type: T.Type, _ value: T.ResolvedValue) {
-    self.value = value
-    kind = type
-  }
 }

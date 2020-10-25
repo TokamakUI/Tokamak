@@ -15,6 +15,20 @@
 //  Created by Max Desiatov on 16/10/2018.
 //
 
+/// Override `TokamakCore`'s default `Color` resolvers with a Renderer-specific one.
+/// You can override a specific color box (such as `_SystemColorBox`, or all boxes with `AnyColorBox`.
+/// This extension makes all system colors red:
+///
+///     extension _SystemColorBox: AnyColorBoxDeferredToRenderer {
+///       public func deferredResolve(in environment: EnvironmentValues) -> AnyColorBox.ResolvedValue {
+///         return .init(red: 1, green: 0, blue: 0, opacity: 1, space: .sRGB)
+///       }
+///     }
+///
+public protocol AnyColorBoxDeferredToRenderer: AnyColorBox {
+  func deferredResolve(in environment: EnvironmentValues) -> AnyColorBox.ResolvedValue
+}
+
 public class AnyColorBox: AnyTokenBox {
   public struct _RGBA: Hashable, Equatable {
     public let red: Double
@@ -212,7 +226,11 @@ public struct _ColorProxy {
   let subject: Color
   public init(_ subject: Color) { self.subject = subject }
   public func resolve(in environment: EnvironmentValues) -> AnyColorBox.ResolvedValue {
-    subject.provider.resolve(in: environment)
+    if let deferred = subject.provider as? AnyColorBoxDeferredToRenderer {
+      return deferred.deferredResolve(in: environment)
+    } else {
+      return subject.provider.resolve(in: environment)
+    }
   }
 }
 

@@ -12,6 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/// Override `TokamakCore`'s default `Font` resolvers with a Renderer-specific one.
+/// You can override a specific font box (such as `_SystemFontBox`, or all boxes with `AnyFontBox`.
+/// This extension makes all fonts monospaced:
+///
+///     extension AnyFontBox: AnyFontBoxDeferredToRenderer {
+///       public func deferredResolve(in environment: EnvironmentValues) -> AnyFontBox.ResolvedValue {
+///         var font = resolve(in: environment)
+///         font._design = .monospaced
+///         return font
+///       }
+///     }
+///
+public protocol AnyFontBoxDeferredToRenderer: AnyFontBox {
+  func deferredResolve(in environment: EnvironmentValues) -> AnyFontBox.ResolvedValue
+}
+
 public class AnyFontBox: AnyTokenBox, Hashable, Equatable {
   public struct _Font: Hashable, Equatable {
     public var _name: String
@@ -310,7 +326,11 @@ public struct _FontProxy {
   let subject: Font
   public init(_ subject: Font) { self.subject = subject }
   public func resolve(in environment: EnvironmentValues) -> AnyFontBox.ResolvedValue {
-    subject.provider.resolve(in: environment)
+    if let deferred = subject.provider as? AnyFontBoxDeferredToRenderer {
+      return deferred.deferredResolve(in: environment)
+    } else {
+      return subject.provider.resolve(in: environment)
+    }
   }
 }
 
