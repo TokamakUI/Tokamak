@@ -18,11 +18,11 @@
 import TokamakCore
 
 protocol ShapeAttributes {
-  func attributes(_ style: ShapeStyle) -> [String: String]
+  func attributes(_ style: ShapeStyle) -> [HTMLAttribute: String]
 }
 
 extension _StrokedShape: ShapeAttributes {
-  func attributes(_ style: ShapeStyle) -> [String: String] {
+  func attributes(_ style: ShapeStyle) -> [HTMLAttribute: String] {
     if let color = style as? Color {
       return ["style": "stroke: \(color.cssValue(environment)); fill: none;"]
     } else {

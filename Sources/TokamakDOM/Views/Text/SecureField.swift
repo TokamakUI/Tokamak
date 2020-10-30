@@ -22,7 +22,7 @@ extension SecureField: ViewDeferredToRenderer where Label == Text {
     let proxy = _SecureFieldProxy(self)
     return AnyView(DynamicHTML("input", [
       "type": "password",
-      "value": proxy.textBinding.wrappedValue,
+      .value: proxy.textBinding.wrappedValue,
       "placeholder": proxy.label.rawText,
       "class": "_tokamak-securefield",
     ], listeners: [

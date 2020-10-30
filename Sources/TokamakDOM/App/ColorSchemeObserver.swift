@@ -23,10 +23,9 @@ enum ColorSchemeObserver {
   private static var closure: JSClosure?
   private static var cancellable: AnyCancellable?
 
-  static func observe(_ rootElement: JSObjectRef) {
+  static func observe(_ rootElement: JSObject) {
     let closure = JSClosure {
       publisher.value = .init(matchMediaDarkScheme: $0[0].object!)
-      return .undefined
     }
     _ = matchMediaDarkScheme.addListener!(closure)
     Self.closure = closure

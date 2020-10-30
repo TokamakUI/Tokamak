@@ -76,22 +76,24 @@ extension Font.Leading: CustomStringConvertible {
   }
 }
 
-extension Font: StylesConvertible {
-  public var styles: [String: String] {
-    [
-      "font-family": _name == _FontNames.system.rawValue ? _design.description : _name,
-      "font-weight": "\(_bold ? Font.Weight.bold.value : _weight.value)",
-      "font-style": _italic ? "italic" : "normal",
-      "font-size": "\(_size)pt",
-      "line-height": _leading.description,
-      "font-variant": _smallCaps ? "small-caps" : "normal",
+extension Font {
+  public func styles(in environment: EnvironmentValues) -> [String: String] {
+    let proxy = _FontProxy(self).resolve(in: environment)
+    return [
+      "font-family": proxy._name == _FontNames.system.rawValue ? proxy._design.description : proxy
+        ._name,
+      "font-weight": "\(proxy._bold ? Font.Weight.bold.value : proxy._weight.value)",
+      "font-style": proxy._italic ? "italic" : "normal",
+      "font-size": "\(proxy._size)",
+      "line-height": proxy._leading.description,
+      "font-variant": proxy._smallCaps ? "small-caps" : "normal",
     ]
   }
 }
 
 private struct TextSpan: AnyHTML {
   let content: String
-  let attributes: [String: String]
+  let attributes: [HTMLAttribute: String]
 
   var innerHTML: String? { content }
   var tag: String { "span" }
@@ -120,7 +122,7 @@ extension Text: AnyHTML {
   }
 
   public var tag: String { "span" }
-  public var attributes: [String: String] {
+  public var attributes: [HTMLAttribute: String] {
     let proxy = _TextProxy(self)
     return Self.attributes(
       from: proxy.modifiers,
@@ -133,7 +135,7 @@ extension Text {
   static func attributes(
     from modifiers: [_Modifier],
     environment: EnvironmentValues
-  ) -> [String: String] {
+  ) -> [HTMLAttribute: String] {
     let isRedacted = environment.redactionReasons.contains(.placeholder)
 
     var font: Font?
@@ -175,13 +177,16 @@ extension Text {
       ?? underline?.1?.cssValue(environment)
       ?? "inherit"
 
+    let resolvedFont = font == nil ? nil : _FontProxy(font!).resolve(in: environment)
+
     return [
       "style": """
-      \(font?.styles.filter { weight != nil ? $0.key != "font-weight" : true }.inlineStyles ?? "")
+      \(font?.styles(in: environment).filter { weight != nil ? $0.key != "font-weight" : true }
+        .inlineStyles ?? "")
       \(font == nil ? "font-family: \(Font.Design.default.description);" : "")
       color: \((color ?? .primary).cssValue(environment));
       font-style: \(italic ? "italic" : "normal");
-      font-weight: \(weight?.value ?? font?._weight.value ?? 400);
+      font-weight: \(weight?.value ?? resolvedFont?._weight.value ?? 400);
       letter-spacing: \(kerning);
       vertical-align: \(baseline == nil ? "baseline" : "\(baseline!)em");
       text-decoration: \(textDecoration);

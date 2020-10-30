@@ -20,19 +20,18 @@ import JavaScriptKit
 import TokamakCore
 
 protocol WebStorage {
-  var storage: JSObjectRef { get }
+  var storage: JSObject { get }
   init()
 
   func setItem<Value>(key: String, value: Value?)
   func getItem<Value>(key: String, _ initialize: (String) -> Value?) -> Value?
 
-  static var rootPublisher: ObservableObjectPublisher { get }
   var publisher: ObservableObjectPublisher { get }
 }
 
 extension WebStorage {
   func setItem<Value>(key: String, value: Value?) {
-    Self.rootPublisher.send()
+    publisher.send()
     if let value = value {
       _ = storage.setItem!(key, String(describing: value))
     }

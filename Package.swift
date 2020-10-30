@@ -37,9 +37,12 @@ let package = Package(
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     // .package(url: /* package url */, from: "1.0.0"),
+    .package(
+      url: "https://github.com/swiftwasm/JavaScriptKit.git",
+      .upToNextMinor(from: "0.8.0")
+    ),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", from: "2.1.2"),
     .package(url: "https://github.com/MaxDesiatov/OpenCombine.git", from: "0.0.1"),
-    .package(url: "https://github.com/kateinoigakukun/JavaScriptKit.git", from: "0.5.0"),
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define

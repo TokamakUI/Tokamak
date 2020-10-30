@@ -33,7 +33,7 @@ private extension DOMViewModifier {
 }
 
 extension _FrameLayout: DOMViewModifier {
-  public var attributes: [String: String] {
+  public var attributes: [HTMLAttribute: String] {
     ["style": """
     \(unwrapToStyle(\.width, property: "width"))
     \(unwrapToStyle(\.height, property: "height"))
@@ -47,7 +47,7 @@ extension _FrameLayout: DOMViewModifier {
 }
 
 extension _FlexFrameLayout: DOMViewModifier {
-  public var attributes: [String: String] {
+  public var attributes: [HTMLAttribute: String] {
     ["style": """
     \(unwrapToStyle(\.minWidth, property: "min-width"))
     width: \(unwrapToStyle(\.idealWidth, defaultValue: fillWidth ? "100%" : "auto"));
@@ -88,7 +88,7 @@ private extension EdgeInsets {
 
 extension _PaddingLayout: DOMViewModifier {
   public var isOrderDependent: Bool { true }
-  public var attributes: [String: String] {
+  public var attributes: [HTMLAttribute: String] {
     var padding = [(String, CGFloat)]()
     let insets = self.insets ?? .init(_all: 10)
     for edge in Edge.allCases {

@@ -19,24 +19,24 @@ import CombineShim
 import JavaScriptKit
 import TokamakCore
 
+private let rootPublisher = ObservableObjectPublisher()
+private let localStorage = JSObject.global.localStorage.object!
+
 public class LocalStorage: WebStorage, _StorageProvider {
-  let storage = JSObjectRef.global.localStorage.object!
+  static let closure = JSClosure { _ in
+    rootPublisher.send()
+  }
+
+  let storage = localStorage
 
   required init() {
-    _ = JSObjectRef.global.window.object!.addEventListener!("storage", JSClosure { _ in
-      self.publisher.send()
-      return .undefined
-    })
-    subscription = Self.rootPublisher.sink { _ in
-      self.publisher.send()
-    }
+    _ = JSObject.global.window.object!.addEventListener!("storage", Self.closure)
+    publisher = rootPublisher
   }
 
   public static var standard: _StorageProvider {
     Self()
   }
 
-  var subscription: AnyCancellable?
-  static let rootPublisher = ObservableObjectPublisher()
-  public let publisher = ObservableObjectPublisher()
+  public let publisher: ObservableObjectPublisher
 }

@@ -16,7 +16,7 @@ import JavaScriptKit
 import TokamakCore
 import TokamakStaticHTML
 
-private let ResizeObserver = JSObjectRef.global.ResizeObserver.function!
+private let ResizeObserver = JSObject.global.ResizeObserver.function!
 
 extension GeometryReader: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
@@ -32,10 +32,10 @@ struct _GeometryReader<Content: View>: View {
     var closure: JSClosure?
 
     /// A reference to a DOM node being observed for size updates.
-    var observedNodeRef: JSObjectRef?
+    var observedNodeRef: JSObject?
 
     /// A reference to a `ResizeObserver` instance.
-    var observerRef: JSObjectRef?
+    var observerRef: JSObject?
 
     /// The last known size of the `observedNodeRef` DOM node.
     @Published var size: CGSize?
@@ -55,18 +55,16 @@ struct _GeometryReader<Content: View>: View {
     }
     ._domRef($state.observedNodeRef)
     ._onMount {
-      let closure = JSClosure { [weak state] args in
+      let closure = JSClosure { [weak state] args -> () in
         // FIXME: `JSArrayRef` is not a `RandomAccessCollection` for some reason, which forces
         // us to use a string subscript
         guard
           let rect = args[0].object?[dynamicMember: "0"].object?.contentRect.object,
           let width = rect.width.number,
           let height = rect.height.number
-        else { return .undefined }
+        else { return }
 
         state?.size = .init(width: width, height: height)
-
-        return .undefined
       }
       state.closure = closure
 

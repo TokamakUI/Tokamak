@@ -108,7 +108,8 @@ app.
 ## Requirements for app developers
 
 - macOS 10.15 and Xcode 11.4 or later.
-- [Swift 5.2 or later](https://swift.org/download/) for Linux.
+- [Swift 5.2 or later](https://swift.org/download/) and Ubuntu 18.04 if you'd like to use Linux.
+  Other Linux distributions are currently not supported.
 
 ## Requirements for app users
 
@@ -134,7 +135,7 @@ app by following these steps:
 brew install swiftwasm/tap/carton
 ```
 
-If you had `carton` installed before this, make sure you have version 0.5.0 or greater:
+If you had `carton` installed before this, make sure you have version 0.6.1 or greater:
 
 ```
 carton --version
@@ -235,8 +236,11 @@ unacceptable behavior to conduct@tokamak.dev.
 
 ### Sponsorship
 
-If this library saved you any amount of time or money, please consider [sponsoring
-the work of its maintainer](https://github.com/sponsors/MaxDesiatov). While some of the
+If this library saved you any amount of time or money, please consider sponsoring
+the work of its maintainers on their sponsorship pages: 
+[@carson-katri](https://github.com/sponsors/carson-katri),
+[@kateinoigakukun](https://github.com/sponsors/kateinoigakukun), and
+[@MaxDesiatov](https://github.com/sponsors/MaxDesiatov). While some of the
 sponsorship tiers give you priority support or even consulting time, any amount is
 appreciated and helps in maintaining the project.
 

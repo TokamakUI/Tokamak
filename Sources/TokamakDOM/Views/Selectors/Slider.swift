@@ -14,6 +14,7 @@
 
 import JavaScriptKit
 import TokamakCore
+import TokamakStaticHTML
 
 extension Slider: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
@@ -25,12 +26,12 @@ extension Slider: ViewDeferredToRenderer {
     case let .discrete(value):
       step = String(value)
     }
-    let attributes = [
+    let attributes: [HTMLAttribute: String] = [
       "type": "range",
       "min": String(proxy.bounds.lowerBound),
       "max": String(proxy.bounds.upperBound),
       "step": step,
-      "value": String(proxy.valueBinding.wrappedValue),
+      .value: String(proxy.valueBinding.wrappedValue),
       "style": """
         display: block;
         width: 100%;

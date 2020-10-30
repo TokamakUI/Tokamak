@@ -35,7 +35,7 @@ extension App {
   public static func _launch(
     _ app: Self,
     _ rootEnvironment: EnvironmentValues,
-    _ body: JSObjectRef
+    _ body: JSObject
   ) {
     if body.style.object!.all == "" {
       body.style = "margin: 0;"

@@ -17,7 +17,7 @@ import TokamakCore
 extension Divider: AnyHTML {
   public var innerHTML: String? { nil }
   public var tag: String { "hr" }
-  public var attributes: [String: String] {
+  public var attributes: [HTMLAttribute: String] {
     [
       "style": """
       width: 100%; height: 0; margin: 0;
