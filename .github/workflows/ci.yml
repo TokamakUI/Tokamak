@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: swiftwasm/swiftwasm-action@v5.3
+      - uses: swiftwasm/swiftwasm-action@main
         with:
           shell-action: swift build --triple wasm32-unknown-wasi --product TokamakDemo
 
