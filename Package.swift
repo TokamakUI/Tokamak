@@ -29,6 +29,10 @@ let package = Package(
       name: "TokamakStaticHTML",
       targets: ["TokamakStaticHTML"]
     ),
+    .library(
+      name: "TokamakPublish",
+      targets: ["TokamakPublish"]
+    ),
     .executable(
       name: "TokamakStaticDemo",
       targets: ["TokamakStaticDemo"]
@@ -79,6 +83,10 @@ let package = Package(
           condition: .when(platforms: [.wasi])
         )
       ]
+    ),
+    .target(
+      name: "TokamakPublish",
+      dependencies: ["TokamakStaticHTML"]
     ),
     .target(
       name: "TokamakShim",
