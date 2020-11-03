@@ -25,8 +25,11 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo xcode-select --switch /Applications/Xcode_12_beta.app/Contents/Developer/
-          # swift test
+          sudo xcode-select --switch /Applications/Xcode_12.1.app/Contents/Developer/
+          # avoid building unrelated products for testing by specifying the test product explicitly
+          swift build --product TokamakPackageTests
+          `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest
+
           xcodebuild -version
           cd "NativeDemo"
           xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
