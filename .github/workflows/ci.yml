@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 jobs:
-  linux_build:
+  swiftwasm_build:
     runs-on: ubuntu-20.04
 
     steps:
