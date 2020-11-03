@@ -77,7 +77,7 @@ let package = Package(
           name: "JavaScriptKit",
           package: "JavaScriptKit",
           condition: .when(platforms: [.wasi])
-        )
+        ),
       ]
     ),
     .target(
@@ -92,7 +92,7 @@ let package = Package(
           name: "JavaScriptKit",
           package: "JavaScriptKit",
           condition: .when(platforms: [.wasi])
-        )
+        ),
       ]
     ),
     .target(
@@ -107,7 +107,7 @@ let package = Package(
     ),
     .testTarget(
       name: "TokamakTests",
-      dependencies: ["TokamakDemo", "TokamakTestRenderer"]
+      dependencies: ["TokamakTestRenderer"]
     ),
   ]
 )
