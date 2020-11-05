@@ -77,7 +77,7 @@ let package = Package(
           name: "JavaScriptKit",
           package: "JavaScriptKit",
           condition: .when(platforms: [.wasi])
-        ),
+        )
       ]
     ),
     .target(
@@ -92,7 +92,7 @@ let package = Package(
           name: "JavaScriptKit",
           package: "JavaScriptKit",
           condition: .when(platforms: [.wasi])
-        ),
+        )
       ]
     ),
     .target(
