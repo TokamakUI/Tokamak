@@ -39,7 +39,7 @@ let package = Package(
     // .package(url: /* package url */, from: "1.0.0"),
     .package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
-      .upToNextMinor(from: "0.7.2")
+      .upToNextMinor(from: "0.8.0")
     ),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", from: "2.1.2"),
     .package(url: "https://github.com/MaxDesiatov/OpenCombine.git", from: "0.0.1"),
@@ -69,7 +69,16 @@ let package = Package(
     ),
     .target(
       name: "TokamakDOM",
-      dependencies: ["CombineShim", "JavaScriptKit", "TokamakCore", "TokamakStaticHTML"]
+      dependencies: [
+        "CombineShim",
+        "TokamakCore",
+        "TokamakStaticHTML",
+        .product(
+          name: "JavaScriptKit",
+          package: "JavaScriptKit",
+          condition: .when(platforms: [.wasi])
+        )
+      ]
     ),
     .target(
       name: "TokamakShim",
@@ -77,7 +86,14 @@ let package = Package(
     ),
     .target(
       name: "TokamakDemo",
-      dependencies: ["JavaScriptKit", "TokamakShim"]
+      dependencies: [
+        "TokamakShim",
+        .product(
+          name: "JavaScriptKit",
+          package: "JavaScriptKit",
+          condition: .when(platforms: [.wasi])
+        )
+      ]
     ),
     .target(
       name: "TokamakStaticDemo",
