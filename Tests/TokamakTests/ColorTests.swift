@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
+@testable import TokamakCore
 import XCTest
 
 final class ColorTests: XCTestCase {
   func testHexColors() {
     let env = EnvironmentValues()
-    guard let color = Color(hex: "#FF00FF")?._evaluate(env) else {
+    guard let color = Color(hex: "#FF00FF")?.provider.resolve(in: env) else {
       XCTFail("Hexadecimal decoding failed")
       return
     }
@@ -29,11 +29,11 @@ final class ColorTests: XCTestCase {
 
     XCTAssertEqual(
       color,
-      Color(hex: "FF00FF")?._evaluate(env),
+      Color(hex: "FF00FF")?.provider.resolve(in: env),
       "The '#' before a hex code produced a different output than without it"
     )
 
-    guard let red = Color(hex: "#FF0000")?._evaluate(env) else {
+    guard let red = Color(hex: "#FF0000")?.provider.resolve(in: env) else {
       XCTFail("Hexadecimal decoding failed")
       return
     }
@@ -42,7 +42,7 @@ final class ColorTests: XCTestCase {
     XCTAssertEqual(red.green, 0)
     XCTAssertEqual(red.blue, 0)
 
-    guard let green = Color(hex: "#00FF00")?._evaluate(env) else {
+    guard let green = Color(hex: "#00FF00")?.provider.resolve(in: env) else {
       XCTFail("Hexadecimal decoding failed")
       return
     }
@@ -51,7 +51,7 @@ final class ColorTests: XCTestCase {
     XCTAssertEqual(green.green, 1)
     XCTAssertEqual(green.blue, 0)
 
-    guard let blue = Color(hex: "#0000FF")?._evaluate(env) else {
+    guard let blue = Color(hex: "#0000FF")?.provider.resolve(in: env) else {
       XCTFail("Hexadecimal decoding failed")
       return
     }
