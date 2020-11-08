@@ -1,3 +1,31 @@
+# 0.5.0 (9 November 2020)
+
+This a compatibility release with small feature additions. Namely the `Link` view is now available,
+and our JavaScriptKit dependency has been updated. The latter change now allows you to open
+`Package.swift` package manifests of your Tokamak projects with working auto-complete in the
+source code. Also, our dark mode implementation now more closely follows SwiftUI behavior.
+
+Many thanks to [@carson-katri](https://github.com/carson-katri) and
+[@kateinoigakukun](https://github.com/kateinoigakukun) for their contributions to this release!
+
+**Closed issues:**
+
+- Can't build Tokamak project - carton dev command ([#296](https://github.com/TokamakUI/Tokamak/issues/296))
+- Colors should change depending on light/dark color scheme ([#290](https://github.com/TokamakUI/Tokamak/issues/290))
+- Pattern for handling global dom events ([#284](https://github.com/TokamakUI/Tokamak/issues/284))
+- 0.4.0 upgrade / regression? ([#283](https://github.com/TokamakUI/Tokamak/issues/283))
+
+**Merged pull requests:**
+
+- Xcode compatibility ([#297](https://github.com/TokamakUI/Tokamak/pull/297)) via [@kateinoigakukun](https://github.com/kateinoigakukun)
+- Allow tests to be run on macOS ([#295](https://github.com/TokamakUI/Tokamak/pull/295)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add Link view, update JavaScriptKit to 0.8.0 ([#276](https://github.com/TokamakUI/Tokamak/pull/276)) via [@carson-katri](https://github.com/carson-katri)
+- Add `AnyColorBox` and `AnyFontBox` ([#291](https://github.com/TokamakUI/Tokamak/pull/291)) via [@carson-katri](https://github.com/carson-katri)
+- Replace Danger with SwiftLint to improve warnings ([#293](https://github.com/TokamakUI/Tokamak/pull/293)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Use v5.3 tag of `swiftwasm-action` in `ci.yml` ([#292](https://github.com/TokamakUI/Tokamak/pull/292)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add @carson-katri and @kateinoigakukun to `FUNDING.yml` ([#289](https://github.com/TokamakUI/Tokamak/pull/289)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add `URLHashDemo` w/ `window.onhashchange` closure ([#288](https://github.com/TokamakUI/Tokamak/pull/288)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
 # 0.4.0 (30 September 2020)
 
 This is mainly a bugfix and compatibility release with a small feature addition. Namely, `Slider`
