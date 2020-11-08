@@ -103,6 +103,10 @@ public let tokamakStyles = """
   color-scheme: light dark;
 }
 
+._tokamak-link {
+  text-decoration: none;
+}
+
 @media (prefers-color-scheme:dark) {
   ._tokamak-text-redacted::after {
     background-color: rgb(100, 100, 100);

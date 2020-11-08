@@ -19,6 +19,8 @@
 import Darwin
 #elseif canImport(Glibc)
 import Glibc
+#elseif os(WASI)
+import WASILibc
 #endif
 
 /// The outline of a 2D shape.

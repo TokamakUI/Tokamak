@@ -147,6 +147,7 @@ struct TokamakDemoView: View {
           #if os(WASI)
           Section(header: Text("TokamakDOM")) {
             NavItem("DOM reference", destination: DOMRefDemo())
+            NavItem("URL hash changes", destination: URLHashDemo())
           }
           #endif
         }

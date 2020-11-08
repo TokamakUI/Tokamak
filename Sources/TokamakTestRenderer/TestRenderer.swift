@@ -24,11 +24,11 @@ import TokamakCore
 
 public func testScheduler(closure: @escaping () -> ()) {
   #if os(WASI)
-  let fn = JSClosure { _ in
+  let fn = JSClosure { _ -> JSValue in
     closure()
     return .undefined
   }
-  _ = JSObjectRef.global.setTimeout!(fn, 0)
+  _ = JSObject.global.setTimeout!(fn, 0)
   #else
   DispatchQueue.main.async(execute: closure)
   #endif

@@ -3,20 +3,20 @@
     "pins": [
       {
         "package": "JavaScriptKit",
-        "repositoryURL": "https://github.com/kateinoigakukun/JavaScriptKit.git",
+        "repositoryURL": "https://github.com/swiftwasm/JavaScriptKit.git",
         "state": {
           "branch": null,
-          "revision": "c90e82fe1d576a2ccd1aae798380bf80be7885fb",
-          "version": "0.5.0"
+          "revision": "8ba4135d5fd6a734c3771ef3fac66896bbcb0214",
+          "version": "0.8.0"
         }
       },
       {
         "package": "OpenCombine",
-        "repositoryURL": "https://github.com/MaxDesiatov/OpenCombine.git",
+        "repositoryURL": "https://github.com/TokamakUI/OpenCombine.git",
         "state": {
           "branch": null,
-          "revision": "29ab27e488a1c9afef217b1435b3293d4a77b1ae",
-          "version": "0.0.1"
+          "revision": "4977ca158f19738f0cd420a1e5668712f4e28709",
+          "version": "0.12.0-alpha1"
         }
       },
       {

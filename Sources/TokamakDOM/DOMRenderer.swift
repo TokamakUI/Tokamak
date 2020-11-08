@@ -55,7 +55,7 @@ private extension AnyView {
   }
 }
 
-let global = JSObjectRef.global
+let global = JSObject.global
 let window = global.window.object!
 let matchMediaDarkScheme = window.matchMedia!("(prefers-color-scheme: dark)").object!
 let log = global.console.object!.log.function!
@@ -63,15 +63,7 @@ let document = global.document.object!
 let body = document.body.object!
 let head = document.head.object!
 
-private let timeoutScheduler = { (closure: @escaping () -> ()) in
-  let fn = JSClosure { _ in
-    closure()
-    return .undefined
-  }
-  _ = JSObjectRef.global.setTimeout!(fn, 0)
-}
-
-func appendRootStyle(_ rootNode: JSObjectRef) {
+func appendRootStyle(_ rootNode: JSObject) {
   rootNode.style = .string(rootNodeStyles)
   let rootStyle = document.createElement!("style").object!
   rootStyle.innerHTML = .string(tokamakStyles)
@@ -81,19 +73,22 @@ func appendRootStyle(_ rootNode: JSObjectRef) {
 final class DOMRenderer: Renderer {
   private(set) var reconciler: StackReconciler<DOMRenderer>?
 
-  private let rootRef: JSObjectRef
+  private let rootRef: JSObject
 
-  init<A: App>(_ app: A, _ ref: JSObjectRef, _ rootEnvironment: EnvironmentValues? = nil) {
+  private let scheduler: JSScheduler
+
+  init<A: App>(_ app: A, _ ref: JSObject, _ rootEnvironment: EnvironmentValues? = nil) {
     rootRef = ref
     appendRootStyle(ref)
 
+    let scheduler = JSScheduler()
+    self.scheduler = scheduler
     reconciler = StackReconciler(
       app: app,
       target: DOMNode(ref),
       environment: .defaultEnvironment,
-      renderer: self,
-      scheduler: timeoutScheduler
-    )
+      renderer: self
+    ) { scheduler.schedule(options: nil, $0) }
   }
 
   public func mountTarget(to parent: DOMNode, with host: MountedHost) -> DOMNode? {

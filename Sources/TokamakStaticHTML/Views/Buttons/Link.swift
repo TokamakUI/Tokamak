@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2018-2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,11 +11,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 9/9/20.
+//
 
-import JavaScriptKit
+import TokamakCore
 
-extension ColorScheme {
-  init(matchMediaDarkScheme: JSObject) {
-    self = matchMediaDarkScheme.matches.boolean == true ? .dark : .light
+extension Link: ViewDeferredToRenderer {
+  public var deferredBody: AnyView {
+    let proxy = _LinkProxy(self)
+    return AnyView(HTML("a", ["href": proxy.destination.absoluteString, "class": "_tokamak-link"]) {
+      proxy.label
+    })
   }
 }

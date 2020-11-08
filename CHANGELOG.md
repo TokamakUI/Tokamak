@@ -1,4 +1,42 @@
-# 0.3.0 (19 August, 2020)
+# 0.4.0 (30 September 2020)
+
+This is mainly a bugfix and compatibility release with a small feature addition. Namely, `Slider`
+view is introduced in the DOM renderer, and binding updates for SVG elements are working now. During
+this development cycle efforts of our team were devoted to recently released [JavaScriptKit
+0.7](https://github.com/swiftwasm/JavaScriptKit/releases/tag/0.7.0) and [`carton`
+0.6](https://github.com/swiftwasm/carton/releases/tag/0.6.0). Both of those releases are pretty big
+updates that improve developer experience significantly, and this version of Tokamak requires those
+as minimum versions.
+
+Many thanks to [@j-f1](https://github.com/j-f1) and
+[@kateinoigakukun](https://github.com/kateinoigakukun) for their contributions to these updates!
+
+**Closed issues:**
+
+- HTML + Binding ([#278](https://github.com/TokamakUI/Tokamak/issues/278))
+
+**Merged pull requests:**
+
+- Fix compatibility with JavaScriptKit 0.7 ([#281](https://github.com/TokamakUI/Tokamak/pull/281))
+  via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Re-export `HTML` type in `TokamakDOM` ([#275](https://github.com/TokamakUI/Tokamak/pull/275)) via
+  [@kateinoigakukun](https://github.com/kateinoigakukun)
+- Use setAttribute, not properties to fix SVG update
+  ([#279](https://github.com/TokamakUI/Tokamak/pull/279)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Allow non-body mount host node ([#271](https://github.com/TokamakUI/Tokamak/pull/271)) via
+  [@kateinoigakukun](https://github.com/kateinoigakukun)
+- Add missing JavaScriptKit import to `README.md`
+  ([#265](https://github.com/TokamakUI/Tokamak/pull/265)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Fix the sizing of sliders ([#268](https://github.com/TokamakUI/Tokamak/pull/268)) via
+  [@j-f1](https://github.com/j-f1)
+- Add `Slider` implementation ([#228](https://github.com/TokamakUI/Tokamak/pull/228)) via
+  [@j-f1](https://github.com/j-f1)
+- Remove Xcode 12 warning from README.md ([#264](https://github.com/TokamakUI/Tokamak/pull/264)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+
+# 0.3.0 (19 August 2020)
 
 This release improves compatibility with the SwiftUI API and fixes bugs in our WebAssembly/DOM renderer, included but not limited to:
 
@@ -120,7 +158,7 @@ The complete list of changes included in this release is available below.
 - Add SwiftUI App Lifecycle ([#195](https://github.com/swiftwasm/Tokamak/pull/195)) via
   [@carson-katri](https://github.com/carson-katri)
 
-# 0.2.0 (21 July, 2020)
+# 0.2.0 (21 July 2020)
 
 This is the first release that supports WebAssembly and browser apps with the new `TokamakDOM`
 module. The API now closely follows SwiftUI, while the new React-like API is no longer available.
