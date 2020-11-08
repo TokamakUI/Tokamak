@@ -19,6 +19,7 @@ DerivedData
 *.hmap
 *.ipa
 .swiftpm/xcode
+*.xcodeproj
 
 # Bundler
 .bundle
