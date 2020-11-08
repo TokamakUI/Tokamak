@@ -1,6 +1,6 @@
 # 0.5.0 (9 November 2020)
 
-This a compatibility release with small feature additions. Namely the `Link` view is now available,
+This is a compatibility release with small feature additions. Namely the `Link` view is now available,
 and our JavaScriptKit dependency has been updated. The latter change now allows you to open
 `Package.swift` package manifests of your Tokamak projects with working auto-complete in the
 source code. Also, our dark mode implementation now more closely follows SwiftUI behavior.
