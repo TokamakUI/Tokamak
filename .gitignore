@@ -40,3 +40,4 @@ Pods/
 
 # SwiftPM
 .build
+/Packages
