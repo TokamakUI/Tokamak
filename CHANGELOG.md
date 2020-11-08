@@ -2,8 +2,8 @@
 
 This is a compatibility release with small feature additions. Namely the `Link` view is now available,
 and our JavaScriptKit dependency has been updated. The latter change now allows you to open
-`Package.swift` package manifests of your Tokamak projects with working auto-complete in the
-source code. Also, our dark mode implementation now more closely follows SwiftUI behavior.
+`Package.swift` package manifests of your Tokamak projects with working auto-complete in Xcode.
+Also, our dark mode implementation now more closely follows SwiftUI behavior.
 
 Many thanks to [@carson-katri](https://github.com/carson-katri) and
 [@kateinoigakukun](https://github.com/kateinoigakukun) for their contributions to this release!
