@@ -12,11 +12,11 @@
       },
       {
         "package": "OpenCombine",
-        "repositoryURL": "https://github.com/MaxDesiatov/OpenCombine.git",
+        "repositoryURL": "https://github.com/OpenCombine/OpenCombine.git",
         "state": {
           "branch": null,
-          "revision": "29ab27e488a1c9afef217b1435b3293d4a77b1ae",
-          "version": "0.0.1"
+          "revision": "9bba5081344163296ddf537048566b95513b8f39",
+          "version": "0.11.0"
         }
       },
       {

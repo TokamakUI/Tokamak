@@ -42,7 +42,7 @@ let package = Package(
       .upToNextMinor(from: "0.8.0")
     ),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", from: "2.1.2"),
-    .package(url: "https://github.com/MaxDesiatov/OpenCombine.git", from: "0.0.1"),
+    .package(url: "https://github.com/OpenCombine/OpenCombine.git", from: "0.11.0"),
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define
