@@ -1,3 +1,12 @@
+# 0.5.1 (9 November 2020)
+
+A bugfix release to improve compatibility with Xcode autocomplete.
+
+**Merged pull requests:**
+
+- Update Package.resolved ([#300](https://github.com/TokamakUI/Tokamak/pull/300)) via [@kateinoigakukun](https://github.com/kateinoigakukun)
+- Allow use of Combine to enable Xcode autocomplete ([#299](https://github.com/TokamakUI/Tokamak/pull/299)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
 # 0.5.0 (9 November 2020)
 
 This is a compatibility release with small feature additions. Namely the `Link` view is now available,
