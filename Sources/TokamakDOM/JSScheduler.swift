@@ -13,7 +13,11 @@
 // limitations under the License.
 
 import JavaScriptKit
+#if canImport(Combine)
+import Combine
+#else
 import OpenCombine
+#endif
 
 final class JSScheduler: Scheduler {
   private final class CancellableTimer: Cancellable {
