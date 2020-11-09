@@ -29,50 +29,50 @@ protocol WebStorage {
   var publisher: ObservableObjectPublisher { get }
 }
 
-public extension WebStorage {
-  internal func setItem<Value>(key: String, value: Value?) {
+extension WebStorage {
+  func setItem<Value>(key: String, value: Value?) {
     publisher.send()
     if let value = value {
       _ = storage.setItem!(key, String(describing: value))
     }
   }
 
-  internal func getItem<Value>(key: String, _ initialize: (String) -> Value?) -> Value? {
+  func getItem<Value>(key: String, _ initialize: (String) -> Value?) -> Value? {
     guard let value = storage.getItem!(key).string else {
       return nil
     }
     return initialize(value)
   }
 
-  func store(key: String, value: Bool?) {
+  public func store(key: String, value: Bool?) {
     setItem(key: key, value: value)
   }
 
-  func store(key: String, value: Int?) {
+  public func store(key: String, value: Int?) {
     setItem(key: key, value: value)
   }
 
-  func store(key: String, value: Double?) {
+  public func store(key: String, value: Double?) {
     setItem(key: key, value: value)
   }
 
-  func store(key: String, value: String?) {
+  public func store(key: String, value: String?) {
     setItem(key: key, value: value)
   }
 
-  func read(key: String) -> Bool? {
+  public func read(key: String) -> Bool? {
     getItem(key: key, Bool.init)
   }
 
-  func read(key: String) -> Int? {
+  public func read(key: String) -> Int? {
     getItem(key: key, Int.init)
   }
 
-  func read(key: String) -> Double? {
+  public func read(key: String) -> Double? {
     getItem(key: key, Double.init)
   }
 
-  func read(key: String) -> String? {
+  public func read(key: String) -> String? {
     getItem(key: key, String.init)
   }
 }
