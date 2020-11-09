@@ -18,20 +18,20 @@
 import CombineShim
 import TokamakCore
 
-extension App {
-  public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
+public extension App {
+  static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
     fatalError("TokamakStaticHTML does not support default `App._launch`")
   }
 
-  public static func _setTitle(_ title: String) {
+  static func _setTitle(_ title: String) {
     StaticHTMLRenderer.title = title
   }
 
-  public var _phasePublisher: AnyPublisher<ScenePhase, Never> {
+  var _phasePublisher: AnyPublisher<ScenePhase, Never> {
     CurrentValueSubject<ScenePhase, Never>(.active).eraseToAnyPublisher()
   }
 
-  public var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
+  var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
     CurrentValueSubject<ColorScheme, Never>(.light).eraseToAnyPublisher()
   }
 }

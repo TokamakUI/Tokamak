@@ -42,8 +42,8 @@ public struct Slider<Label, ValueLabel>: View where Label: View, ValueLabel: Vie
   }
 }
 
-extension Slider where Label == EmptyView, ValueLabel == EmptyView {
-  public init<V>(
+public extension Slider where Label == EmptyView, ValueLabel == EmptyView {
+  init<V>(
     value: Binding<V>,
     in bounds: ClosedRange<V> = 0...1,
     onEditingChanged: @escaping (Bool) -> () = { _ in }
@@ -57,7 +57,7 @@ extension Slider where Label == EmptyView, ValueLabel == EmptyView {
     self.onEditingChanged = onEditingChanged
   }
 
-  public init<V>(
+  init<V>(
     value: Binding<V>,
     in bounds: ClosedRange<V>,
     step: V.Stride = 1,
@@ -73,8 +73,8 @@ extension Slider where Label == EmptyView, ValueLabel == EmptyView {
   }
 }
 
-extension Slider where ValueLabel == EmptyView {
-  public init<V>(
+public extension Slider where ValueLabel == EmptyView {
+  init<V>(
     value: Binding<V>,
     in bounds: ClosedRange<V> = 0...1,
     onEditingChanged: @escaping (Bool) -> () = { _ in },
@@ -89,7 +89,7 @@ extension Slider where ValueLabel == EmptyView {
     self.onEditingChanged = onEditingChanged
   }
 
-  public init<V>(
+  init<V>(
     value: Binding<V>,
     in bounds: ClosedRange<V>,
     step: V.Stride = 1,
@@ -106,8 +106,8 @@ extension Slider where ValueLabel == EmptyView {
   }
 }
 
-extension Slider {
-  public init<V>(
+public extension Slider {
+  init<V>(
     value: Binding<V>,
     in bounds: ClosedRange<V> = 0...1,
     onEditingChanged: @escaping (Bool) -> () = { _ in },
@@ -124,7 +124,7 @@ extension Slider {
     self.onEditingChanged = onEditingChanged
   }
 
-  public init<V>(
+  init<V>(
     value: Binding<V>,
     in bounds: ClosedRange<V>,
     step: V.Stride = 1,

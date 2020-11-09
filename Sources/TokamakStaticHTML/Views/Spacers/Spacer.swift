@@ -24,8 +24,8 @@ public protocol SpacerContainer {
   var fillCrossAxis: Bool { get }
 }
 
-extension SpacerContainer where Self: ParentView {
-  public var hasSpacer: Bool {
+public extension SpacerContainer where Self: ParentView {
+  var hasSpacer: Bool {
     children
       .compactMap {
         mapAnyView($0) { (v: Spacer) in
@@ -45,7 +45,7 @@ extension SpacerContainer where Self: ParentView {
   // Does a child SpacerContainer along the opposite axis have a spacer?
   // (e.g., an HStack with a child VStack which contains a spacer)
   // If so, we need to fill the cross-axis so the child can show the correct layout.
-  public var fillCrossAxis: Bool {
+  var fillCrossAxis: Bool {
     children
       .compactMap {
         mapAnyView($0) { (v: SpacerContainer) in v }

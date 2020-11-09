@@ -21,8 +21,8 @@ public protocol View {
   @ViewBuilder var body: Self.Body { get }
 }
 
-extension Never {
-  public var body: Never {
+public extension Never {
+  var body: Never {
     neverBody("Never")
   }
 }

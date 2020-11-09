@@ -71,8 +71,8 @@ extension ObservableObject {
   }
 }
 
-extension View {
-  public func environmentObject<B>(_ bindable: B) -> some View where B: ObservableObject {
+public extension View {
+  func environmentObject<B>(_ bindable: B) -> some View where B: ObservableObject {
     environment(B.environmentStore, bindable)
   }
 }

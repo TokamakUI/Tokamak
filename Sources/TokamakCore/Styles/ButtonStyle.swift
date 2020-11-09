@@ -97,8 +97,8 @@ extension EnvironmentValues {
   }
 }
 
-extension View {
-  public func buttonStyle<S>(_ style: S) -> some View where S: ButtonStyle {
+public extension View {
+  func buttonStyle<S>(_ style: S) -> some View where S: ButtonStyle {
     environment(\.buttonStyle, _AnyButtonStyle(style))
   }
 }

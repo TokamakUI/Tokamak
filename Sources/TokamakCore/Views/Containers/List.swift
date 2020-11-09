@@ -96,7 +96,7 @@ public struct List<SelectionValue, Content>: View
   }
 }
 
-public struct _ListRow {
+public enum _ListRow {
   static func buildItems<RowView>(
     _ children: [AnyView],
     @ViewBuilder rowView: @escaping (AnyView, Bool) -> RowView
@@ -133,9 +133,9 @@ public struct _ListProxy<SelectionValue, Content>
   public var selection: List<SelectionValue, Content>._Selection { subject.selection }
 }
 
-extension List {
+public extension List {
   // - MARK: Collection initializers
-  public init<Data, RowContent>(
+  init<Data, RowContent>(
     _ data: Data,
     selection: Binding<Set<SelectionValue>>?,
     @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent
@@ -147,11 +147,11 @@ extension List {
     self.init(selection: selection) { ForEach(data) { row in HStack { rowContent(row) } } }
   }
 
-  public init<Data, ID, RowContent>(_ data: Data,
+  init<Data, ID, RowContent>(_ data: Data,
 
-                                    id: KeyPath<Data.Element, ID>,
-                                    selection: Binding<Set<SelectionValue>>?,
-                                    @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
+                             id: KeyPath<Data.Element, ID>,
+                             selection: Binding<Set<SelectionValue>>?,
+                             @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
     where Content == ForEach<Data, ID, HStack<RowContent>>,
     Data: RandomAccessCollection,
     ID: Hashable, RowContent: View
@@ -159,7 +159,7 @@ extension List {
     self.init(selection: selection) { ForEach(data, id: id) { row in HStack { rowContent(row) } } }
   }
 
-  public init<Data, ID, RowContent>(
+  init<Data, ID, RowContent>(
     _ data: Data,
     id: KeyPath<Data.Element, ID>,
     selection: Binding<SelectionValue?>?,
@@ -175,9 +175,9 @@ extension List {
     }
   }
 
-  public init<Data, RowContent>(_ data: Data,
-                                selection: Binding<SelectionValue?>?,
-                                @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
+  init<Data, RowContent>(_ data: Data,
+                         selection: Binding<SelectionValue?>?,
+                         @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
     where Content == ForEach<Data, Data.Element.ID, HStack<RowContent>>,
     Data: RandomAccessCollection, RowContent: View, Data.Element: Identifiable
   {
@@ -191,7 +191,7 @@ extension List {
   }
 
   // - MARK: Range initializers
-  public init<RowContent>(
+  init<RowContent>(
     _ data: Range<Int>,
     selection: Binding<Set<SelectionValue>>?,
     @ViewBuilder rowContent: @escaping (Int) -> RowContent
@@ -205,7 +205,7 @@ extension List {
     }
   }
 
-  public init<RowContent>(
+  init<RowContent>(
     _ data: Range<Int>,
     selection: Binding<SelectionValue?>?,
     @ViewBuilder rowContent: @escaping (Int) -> RowContent
@@ -221,7 +221,7 @@ extension List {
 
   // - MARK: OutlineGroup initializers
 
-  public init<Data, RowContent>(
+  init<Data, RowContent>(
     _ data: Data,
     children: KeyPath<Data.Element, Data?>,
     selection: Binding<Set<SelectionValue>>?,
@@ -242,7 +242,7 @@ extension List {
     }
   }
 
-  public init<Data, ID, RowContent>(
+  init<Data, ID, RowContent>(
     _ data: Data,
     id: KeyPath<Data.Element, ID>,
     children: KeyPath<Data.Element, Data?>,
@@ -264,7 +264,7 @@ extension List {
     }
   }
 
-  public init<Data, RowContent>(
+  init<Data, RowContent>(
     _ data: Data,
     children: KeyPath<Data.Element, Data?>,
     selection: Binding<SelectionValue?>?,
@@ -285,7 +285,7 @@ extension List {
     }
   }
 
-  public init<Data, ID, RowContent>(
+  init<Data, ID, RowContent>(
     _ data: Data,
     id: KeyPath<Data.Element, ID>,
     children: KeyPath<Data.Element, Data?>,
@@ -308,13 +308,13 @@ extension List {
   }
 }
 
-extension List where SelectionValue == Never {
-  public init(@ViewBuilder content: () -> Content) {
+public extension List where SelectionValue == Never {
+  init(@ViewBuilder content: () -> Content) {
     selection = .one(nil)
     self.content = content()
   }
 
-  public init<Data, RowContent>(
+  init<Data, RowContent>(
     _ data: Data,
     @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent
   )
@@ -327,7 +327,7 @@ extension List where SelectionValue == Never {
     }
   }
 
-  public init<Data, RowContent>(
+  init<Data, RowContent>(
     _ data: Data,
     children: KeyPath<Data.Element, Data?>,
     @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent
@@ -347,7 +347,7 @@ extension List where SelectionValue == Never {
     }
   }
 
-  public init<Data, ID, RowContent>(
+  init<Data, ID, RowContent>(
     _ data: Data,
     id: KeyPath<Data.Element, ID>,
     children: KeyPath<Data.Element, Data?>,
@@ -368,7 +368,7 @@ extension List where SelectionValue == Never {
     }
   }
 
-  public init<Data, ID, RowContent>(
+  init<Data, ID, RowContent>(
     _ data: Data,
     id: KeyPath<Data.Element, ID>,
     @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent
@@ -382,7 +382,7 @@ extension List where SelectionValue == Never {
     }
   }
 
-  public init<RowContent>(
+  init<RowContent>(
     _ data: Range<Int>,
     @ViewBuilder rowContent: @escaping (Int) -> RowContent
   )

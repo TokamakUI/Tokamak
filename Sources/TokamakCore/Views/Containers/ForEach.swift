@@ -90,8 +90,8 @@ struct _IDKey: EnvironmentKey {
   static let defaultValue: AnyHashable? = nil
 }
 
-extension EnvironmentValues {
-  public var _id: AnyHashable? {
+public extension EnvironmentValues {
+  var _id: AnyHashable? {
     get {
       self[_IDKey.self]
     }
@@ -121,8 +121,8 @@ struct IDView<Content, ID>: View, _AnyIDView where Content: View, ID: Hashable {
   }
 }
 
-extension View {
-  public func id<ID>(_ id: ID) -> some View where ID: Hashable {
+public extension View {
+  func id<ID>(_ id: ID) -> some View where ID: Hashable {
     IDView(self, id: id)
   }
 }

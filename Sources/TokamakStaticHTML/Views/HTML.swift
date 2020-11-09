@@ -50,8 +50,8 @@ public protocol AnyHTML {
   var attributes: [HTMLAttribute: String] { get }
 }
 
-extension AnyHTML {
-  public var outerHTML: String {
+public extension AnyHTML {
+  var outerHTML: String {
     """
     <\(tag)\(attributes.isEmpty ? "" : " ")\
     \(attributes.map { #"\#($0)="\#($1)""# }.joined(separator: " "))>\
@@ -73,8 +73,8 @@ public struct HTML<Content>: View, AnyHTML {
   }
 }
 
-extension HTML where Content: StringProtocol {
-  public init(
+public extension HTML where Content: StringProtocol {
+  init(
     _ tag: String,
     _ attributes: [HTMLAttribute: String] = [:],
     content: Content
@@ -103,8 +103,8 @@ extension HTML: ParentView where Content: View {
   }
 }
 
-extension HTML where Content == EmptyView {
-  public init(
+public extension HTML where Content == EmptyView {
+  init(
     _ tag: String,
     _ attributes: [HTMLAttribute: String] = [:]
   ) {
@@ -116,8 +116,8 @@ public protocol StylesConvertible {
   var styles: [String: String] { get }
 }
 
-extension Dictionary {
-  public var inlineStyles: String {
+public extension Dictionary {
+  var inlineStyles: String {
     map { "\($0.0): \($0.1);" }
       .joined(separator: " ")
   }

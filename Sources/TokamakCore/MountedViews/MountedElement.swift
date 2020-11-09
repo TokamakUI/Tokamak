@@ -144,7 +144,7 @@ extension TypeInfo {
     // swiftlint:disable force_try
     // Extract the view from the AnyView for modification, apply Environment changes:
     if genericTypes.contains(where: { $0 is EnvironmentModifier.Type }),
-      let modifier = try! property(named: "modifier").get(from: element) as? EnvironmentModifier
+       let modifier = try! property(named: "modifier").get(from: element) as? EnvironmentModifier
     {
       modifier.modifyEnvironment(&modifiedEnv)
     }

@@ -45,7 +45,7 @@ public struct DisclosureGroup<Label, Content>: View where Label: View, Content: 
   }
 }
 
-extension DisclosureGroup where Label == Text {
+public extension DisclosureGroup where Label == Text {
   // FIXME: Implement LocalizedStringKey
 //  public init(_ titleKey: LocalizedStringKey,
 //              @ViewBuilder content: @escaping () -> Content)
@@ -54,14 +54,14 @@ extension DisclosureGroup where Label == Text {
 //              @SwiftUI.ViewBuilder content: @escaping () -> Content)
 
   @_disfavoredOverload
-  public init<S>(_ label: S, @ViewBuilder content: @escaping () -> Content)
+  init<S>(_ label: S, @ViewBuilder content: @escaping () -> Content)
     where S: StringProtocol
   {
     self.init(content: content, label: { Text(label) })
   }
 
   @_disfavoredOverload
-  public init<S>(
+  init<S>(
     _ label: S,
     isExpanded: Binding<Bool>,
     @ViewBuilder content: @escaping () -> Content

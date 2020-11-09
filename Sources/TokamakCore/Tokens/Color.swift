@@ -244,38 +244,38 @@ public struct _ColorProxy {
   }
 }
 
-extension Color {
-  public enum RGBColorSpace {
+public extension Color {
+  enum RGBColorSpace {
     case sRGB
     case sRGBLinear
     case displayP3
   }
 }
 
-extension Color {
+public extension Color {
   private init(systemColor: _SystemColorBox.SystemColor) {
     self.init(_SystemColorBox(systemColor))
   }
 
-  public static let clear: Self = .init(systemColor: .clear)
-  public static let black: Self = .init(systemColor: .black)
-  public static let white: Self = .init(systemColor: .white)
-  public static let gray: Self = .init(systemColor: .gray)
-  public static let red: Self = .init(systemColor: .red)
-  public static let green: Self = .init(systemColor: .green)
-  public static let blue: Self = .init(systemColor: .blue)
-  public static let orange: Self = .init(systemColor: .orange)
-  public static let yellow: Self = .init(systemColor: .yellow)
-  public static let pink: Self = .init(systemColor: .pink)
-  public static let purple: Self = .init(systemColor: .purple)
-  public static let primary: Self = .init(systemColor: .primary)
+  static let clear: Self = .init(systemColor: .clear)
+  static let black: Self = .init(systemColor: .black)
+  static let white: Self = .init(systemColor: .white)
+  static let gray: Self = .init(systemColor: .gray)
+  static let red: Self = .init(systemColor: .red)
+  static let green: Self = .init(systemColor: .green)
+  static let blue: Self = .init(systemColor: .blue)
+  static let orange: Self = .init(systemColor: .orange)
+  static let yellow: Self = .init(systemColor: .yellow)
+  static let pink: Self = .init(systemColor: .pink)
+  static let purple: Self = .init(systemColor: .purple)
+  static let primary: Self = .init(systemColor: .primary)
 
-  public static let secondary: Self = .init(systemColor: .secondary)
-  public static let accentColor: Self = .init(_EnvironmentDependentColorBox {
+  static let secondary: Self = .init(systemColor: .secondary)
+  static let accentColor: Self = .init(_EnvironmentDependentColorBox {
     ($0.accentColor ?? Self.blue)
   })
 
-  public init(_ color: UIColor) {
+  init(_ color: UIColor) {
     self = color.color
   }
 }
@@ -293,8 +293,8 @@ extension Color: ExpressibleByIntegerLiteral {
   }
 }
 
-extension Color {
-  public init?(hex: String) {
+public extension Color {
+  init?(hex: String) {
     let cArray = Array(hex.count > 6 ? String(hex.dropFirst()) : hex)
 
     guard cArray.count == 6 else { return nil }
@@ -338,8 +338,8 @@ public extension EnvironmentValues {
   }
 }
 
-extension View {
-  public func accentColor(_ accentColor: Color?) -> some View {
+public extension View {
+  func accentColor(_ accentColor: Color?) -> some View {
     environment(\.accentColor, accentColor)
   }
 }
@@ -359,8 +359,8 @@ public extension EnvironmentValues {
   }
 }
 
-extension View {
-  public func foregroundColor(_ color: Color?) -> some View {
+public extension View {
+  func foregroundColor(_ color: Color?) -> some View {
     environment(\.foregroundColor, color)
   }
 }

@@ -33,8 +33,8 @@ public struct _RotationEffect: GeometryEffect {
   }
 }
 
-extension View {
-  public func rotationEffect(_ angle: Angle, anchor: UnitPoint = .center) -> some View {
+public extension View {
+  func rotationEffect(_ angle: Angle, anchor: UnitPoint = .center) -> some View {
     modifier(_RotationEffect(angle: angle, anchor: anchor))
   }
 }

@@ -88,20 +88,20 @@ extension Section: View, SectionView where Parent: View, Content: View, Footer: 
   }
 }
 
-extension Section where Parent == EmptyView, Content: View, Footer: View {
-  public init(footer: Footer, @ViewBuilder content: () -> Content) {
+public extension Section where Parent == EmptyView, Content: View, Footer: View {
+  init(footer: Footer, @ViewBuilder content: () -> Content) {
     self.init(header: EmptyView(), footer: footer, content: content)
   }
 }
 
-extension Section where Parent: View, Content: View, Footer == EmptyView {
-  public init(header: Parent, @ViewBuilder content: () -> Content) {
+public extension Section where Parent: View, Content: View, Footer == EmptyView {
+  init(header: Parent, @ViewBuilder content: () -> Content) {
     self.init(header: header, footer: EmptyView(), content: content)
   }
 }
 
-extension Section where Parent == EmptyView, Content: View, Footer == EmptyView {
-  public init(@ViewBuilder content: () -> Content) {
+public extension Section where Parent == EmptyView, Content: View, Footer == EmptyView {
+  init(@ViewBuilder content: () -> Content) {
     self.init(header: EmptyView(), footer: EmptyView(), content: content)
   }
 }

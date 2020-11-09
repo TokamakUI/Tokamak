@@ -42,8 +42,8 @@ public protocol App: _TitledApp {
   init()
 }
 
-extension App {
-  public static func main() {
+public extension App {
+  static func main() {
     let app = Self()
     _launch(app, EnvironmentValues())
   }

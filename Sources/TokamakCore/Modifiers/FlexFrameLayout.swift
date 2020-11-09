@@ -54,8 +54,8 @@ public struct _FlexFrameLayout: ViewModifier {
   }
 }
 
-extension View {
-  public func frame(
+public extension View {
+  func frame(
     minWidth: CGFloat? = nil,
     idealWidth: CGFloat? = nil,
     maxWidth: CGFloat? = nil,

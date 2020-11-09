@@ -67,8 +67,8 @@ extension EnvironmentValues {
   }
 }
 
-extension View {
-  public func _navigationLinkStyle<S: _NavigationLinkStyle>(_ style: S) -> some View {
+public extension View {
+  func _navigationLinkStyle<S: _NavigationLinkStyle>(_ style: S) -> some View {
     environment(\._navigationLinkStyle, _AnyNavigationLinkStyle(style))
   }
 }

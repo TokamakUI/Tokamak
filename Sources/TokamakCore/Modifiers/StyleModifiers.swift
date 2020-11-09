@@ -45,8 +45,8 @@ extension _BackgroundModifier: Equatable where Background: Equatable {
   }
 }
 
-extension View {
-  public func background<Background>(
+public extension View {
+  func background<Background>(
     _ background: Background,
     alignment: Alignment = .center
   ) -> some View where Background: View {
@@ -84,14 +84,14 @@ extension _OverlayModifier: Equatable where Overlay: Equatable {
   }
 }
 
-extension View {
-  public func overlay<Overlay>(_ overlay: Overlay, alignment: Alignment = .center) -> some View
+public extension View {
+  func overlay<Overlay>(_ overlay: Overlay, alignment: Alignment = .center) -> some View
     where Overlay: View
   {
     modifier(_OverlayModifier(overlay: overlay, alignment: alignment))
   }
 
-  public func border<S>(_ content: S, width: CGFloat = 1) -> some View where S: ShapeStyle {
+  func border<S>(_ content: S, width: CGFloat = 1) -> some View where S: ShapeStyle {
     overlay(Rectangle().strokeBorder(content, lineWidth: width))
   }
 }

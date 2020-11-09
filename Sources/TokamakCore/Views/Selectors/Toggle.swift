@@ -32,16 +32,16 @@ public struct Toggle<Label>: View where Label: View {
   }
 }
 
-extension Toggle where Label == Text {
-  public init<S>(_ title: S, isOn: Binding<Bool>) where S: StringProtocol {
+public extension Toggle where Label == Text {
+  init<S>(_ title: S, isOn: Binding<Bool>) where S: StringProtocol {
     self.init(isOn: isOn) {
       Text(title)
     }
   }
 }
 
-extension Toggle where Label == AnyView {
-  public init(_ configuration: ToggleStyleConfiguration) {
+public extension Toggle where Label == AnyView {
+  init(_ configuration: ToggleStyleConfiguration) {
     label = configuration.label
     _isOn = configuration.$isOn
   }

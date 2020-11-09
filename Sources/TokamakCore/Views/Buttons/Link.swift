@@ -30,8 +30,8 @@ public struct Link<Label>: View where Label: View {
   }
 }
 
-extension Link where Label == Text {
-  public init<S: StringProtocol>(_ titleKey: S, destination: URL) {
+public extension Link where Label == Text {
+  init<S: StringProtocol>(_ titleKey: S, destination: URL) {
     self.init(destination: destination) { Text(titleKey) }
   }
 }

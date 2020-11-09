@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-extension View {
+public extension View {
   // FIXME: Implement
-  public func navigationBarTitle<S>(_ title: S) -> some View where S: StringProtocol {
+  func navigationBarTitle<S>(_ title: S) -> some View where S: StringProtocol {
     self
   }
 
   // FIXME: Implement
-  public func navigationTitle<S>(_ title: S) -> some View where S: StringProtocol {
+  func navigationTitle<S>(_ title: S) -> some View where S: StringProtocol {
     self
   }
 }
