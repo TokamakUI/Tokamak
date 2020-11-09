@@ -76,8 +76,8 @@ extension Font.Leading: CustomStringConvertible {
   }
 }
 
-extension Font {
-  public func styles(in environment: EnvironmentValues) -> [String: String] {
+public extension Font {
+  func styles(in environment: EnvironmentValues) -> [String: String] {
     let proxy = _FontProxy(self).resolve(in: environment)
     return [
       "font-family": proxy._name == _FontNames.system.rawValue ? proxy._design.description : proxy
@@ -170,8 +170,7 @@ extension Text {
 
     let hasStrikethrough = strikethrough?.0 ?? false
     let hasUnderline = underline?.0 ?? false
-    let textDecoration = !hasStrikethrough && !hasUnderline ?
-      "none" :
+    let textDecoration = !hasStrikethrough && !hasUnderline ? "none" :
       "\(hasStrikethrough ? "line-through" : "") \(hasUnderline ? "underline" : "")"
     let decorationColor = strikethrough?.1?.cssValue(environment)
       ?? underline?.1?.cssValue(environment)
