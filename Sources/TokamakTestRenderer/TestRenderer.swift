@@ -52,6 +52,7 @@ public final class TestRenderer: Renderer {
   }
 
   public func mountTarget(
+    before _: TestView?,
     to parent: TestView,
     with mountedHost: TestRenderer.MountedHost
   ) -> TestView? {
