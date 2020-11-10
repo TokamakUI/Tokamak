@@ -53,6 +53,11 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
       $0.makeMountedView(target, environmentValues)
     }
 
+    /* Remember that `GroupView`s are always "flattened", their `target` instances are targets of
+     their parent elements. We need the insertion "cursor" `sibling` to be preserved when children
+     are mounted in that case. Thus pass the `sibling` target to the children if `view` is a
+     `GroupView`.
+     */
     let isGroupView = view.type is GroupView.Type
     mountedChildren.forEach { $0.mount(before: isGroupView ? sibling : nil, with: reconciler) }
   }
