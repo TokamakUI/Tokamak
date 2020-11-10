@@ -106,6 +106,10 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
           mountedChild.update(with: reconciler)
           newChild = mountedChild
         } else {
+          /* note the order of operations here: we mount the new child first, use the mounted child
+            as a "cursor" sibling when mounting. Only then we can dispose of the old mounted child
+            by unmounting it.
+           */
           newChild = childView.makeMountedView(target, environmentValues)
           newChild.mount(before: mountedChild.firstDescendantTarget, with: reconciler)
           mountedChild.unmount(with: reconciler)
