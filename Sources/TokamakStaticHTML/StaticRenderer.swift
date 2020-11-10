@@ -65,7 +65,7 @@ struct HTMLBody: AnyHTML {
 }
 
 public final class StaticHTMLRenderer: Renderer {
-  public private(set) var reconciler: StackReconciler<StaticHTMLRenderer>?
+  private var reconciler: StackReconciler<StaticHTMLRenderer>?
 
   var rootTarget: HTMLTarget
 
@@ -112,7 +112,11 @@ public final class StaticHTMLRenderer: Renderer {
     )
   }
 
-  public func mountTarget(to parent: HTMLTarget, with host: MountedHost) -> HTMLTarget? {
+  public func mountTarget(
+    before _: HTMLTarget?,
+    to parent: HTMLTarget,
+    with host: MountedHost
+  ) -> HTMLTarget? {
     guard let html = mapAnyView(
       host.view,
       transform: { (html: AnyHTML) in html }

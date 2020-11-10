@@ -25,7 +25,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
    might not be a host view, but a composite view, we need to pass
    around the target of a host view to its closests descendant host
    views. Thus, a parent target is not always the same as a target of
-   a parent view. */
+   a parent `View`. */
   private let parentTarget: R.TargetType
 
   /// Target of this host view supplied by a renderer after mounting has completed.
@@ -37,8 +37,12 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     super.init(view, environmentValues)
   }
 
-  override func mount(with reconciler: StackReconciler<R>) {
-    guard let target = reconciler.renderer?.mountTarget(to: parentTarget, with: self)
+  override func mount(before sibling: R.TargetType? = nil, with reconciler: StackReconciler<R>) {
+    guard let target = reconciler.renderer?.mountTarget(
+      before: sibling,
+      to: parentTarget,
+      with: self
+    )
     else { return }
 
     self.target = target
@@ -48,7 +52,9 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     mountedChildren = view.children.map {
       $0.makeMountedView(target, environmentValues)
     }
-    mountedChildren.forEach { $0.mount(with: reconciler) }
+
+    let isGroupView = view.type is GroupView.Type
+    mountedChildren.forEach { $0.mount(before: isGroupView ? sibling : nil, with: reconciler) }
   }
 
   override func unmount(with reconciler: StackReconciler<R>) {
@@ -91,18 +97,18 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
       // iterate through every `mountedChildren` element and compare with
       // a corresponding `childrenViews` element, remount if type differs, otherwise
       // run simple update
-      while let child = mountedChildren.first, let firstChild = childrenViews.first {
+      while let mountedChild = mountedChildren.first, let childView = childrenViews.first {
         let newChild: MountedElement<R>
-        if firstChild.typeConstructorName == mountedChildren[0].view.typeConstructorName {
-          child.environmentValues = environmentValues
-          child.view = firstChild
-          child.updateEnvironment()
-          child.update(with: reconciler)
-          newChild = child
+        if childView.typeConstructorName == mountedChildren[0].view.typeConstructorName {
+          mountedChild.environmentValues = environmentValues
+          mountedChild.view = childView
+          mountedChild.updateEnvironment()
+          mountedChild.update(with: reconciler)
+          newChild = mountedChild
         } else {
-          child.unmount(with: reconciler)
-          newChild = firstChild.makeMountedView(target, environmentValues)
-          newChild.mount(with: reconciler)
+          newChild = childView.makeMountedView(target, environmentValues)
+          newChild.mount(before: mountedChild.firstDescendantTarget, with: reconciler)
+          mountedChild.unmount(with: reconciler)
         }
         newChildren.append(newChild)
         mountedChildren.removeFirst()
