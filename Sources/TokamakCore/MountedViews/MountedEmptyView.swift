@@ -16,7 +16,7 @@
 //
 
 final class MountedEmptyView<R: Renderer>: MountedElement<R> {
-  override func mount(with reconciler: StackReconciler<R>) {}
+  override func mount(before sibling: R.TargetType? = nil, with reconciler: StackReconciler<R>) {}
 
   override func unmount(with reconciler: StackReconciler<R>) {}
 

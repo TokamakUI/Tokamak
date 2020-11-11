@@ -19,12 +19,12 @@ import CombineShim
 import Runtime
 
 final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
-  override func mount(with reconciler: StackReconciler<R>) {
+  override func mount(before sibling: R.TargetType? = nil, with reconciler: StackReconciler<R>) {
     let childBody = reconciler.render(compositeView: self)
 
     let child: MountedElement<R> = childBody.makeMountedView(parentTarget, environmentValues)
     mountedChildren = [child]
-    child.mount(with: reconciler)
+    child.mount(before: sibling, with: reconciler)
 
     // `_TargetRef` is a composite view, so it's enough to check for it only here
     if var targetRef = view.view as? TargetRefType {

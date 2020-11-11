@@ -34,7 +34,7 @@ public protocol ParentView {
   var children: [AnyView] { get }
 }
 
-/// A `View` type that is not rendered, but "flattened" rendering all its children instead.
+/// A `View` type that is not rendered but "flattened", rendering all its children instead.
 protocol GroupView: ParentView {}
 
 /** The distinction between "host" (truly primitive) and "composite" (that have meaningful `body`)
