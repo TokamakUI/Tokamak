@@ -1,3 +1,12 @@
+# 0.5.2 (12 November 2020)
+
+This is a bugfix release that fixes in-tree updates in cases where type of a view changes with
+conditional updates. Thanks to [@vi4m](https://github.com/vi4m) for reporting the issue!
+
+**Merged pull requests:**
+
+- Pass sibling to `Renderer.mount`, fix update order ([#301](https://github.com/TokamakUI/Tokamak/pull/301)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
 # 0.5.1 (9 November 2020)
 
 A bugfix release to improve compatibility with Xcode autocomplete.
