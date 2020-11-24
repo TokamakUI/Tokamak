@@ -16,6 +16,7 @@
 //
 
 import JavaScriptKit
+import OpenCombineJS
 import TokamakCore
 import TokamakStaticHTML
 

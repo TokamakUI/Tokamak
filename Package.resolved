@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "OpenCombineJS",
+        "repositoryURL": "https://github.com/swiftwasm/OpenCombineJS.git",
+        "state": {
+          "branch": null,
+          "revision": "b346f955ed21ab44576e204a7554210c77f69b9b",
+          "version": "0.0.1"
+        }
+      },
+      {
         "package": "Runtime",
         "repositoryURL": "https://github.com/MaxDesiatov/Runtime.git",
         "state": {
