@@ -164,8 +164,8 @@ carton dev
    running. You can edit the app source code in your favorite editor and save it, `carton`
    will immediately rebuild the app and reload all browser tabs that have the app open.
 
-You can also clone this repository and run `carton dev` in its root directory. This
-will build the demo app that shows almost all of the currently implemented APIs.
+You can also clone this repository and run `carton dev --product TokamakDemo` in its root
+directory. This will build the demo app that shows almost all of the currently implemented APIs.
 
 ## Troubleshooting
 
