@@ -43,6 +43,7 @@ let package = Package(
     ),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", from: "2.1.2"),
     .package(url: "https://github.com/TokamakUI/OpenCombine.git", from: "0.12.0-alpha2"),
+    .package(url: "https://github.com/swiftwasm/OpenCombineJS.git", from: "0.0.1"),
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define
@@ -71,6 +72,7 @@ let package = Package(
       name: "TokamakDOM",
       dependencies: [
         "CombineShim",
+        "OpenCombineJS",
         "TokamakCore",
         "TokamakStaticHTML",
         .product(
