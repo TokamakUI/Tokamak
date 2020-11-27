@@ -122,8 +122,8 @@ public class _EnvironmentDependentColorBox: AnyColorBox {
   }
 }
 
-public class _SystemColorBox: AnyColorBox {
-  public enum SystemColor: Equatable, Hashable {
+public class _SystemColorBox: AnyColorBox, CustomDebugStringConvertible {
+  public enum SystemColor: String, Equatable, Hashable {
     case clear
     case black
     case white
@@ -137,6 +137,10 @@ public class _SystemColorBox: AnyColorBox {
     case purple
     case primary
     case secondary
+  }
+
+  public var debugDescription: String {
+    value.rawValue
   }
 
   public let value: SystemColor
@@ -260,6 +264,16 @@ public extension Color {
     case sRGB
     case sRGBLinear
     case displayP3
+  }
+}
+
+extension Color: CustomDebugStringConvertible {
+  public var debugDescription: String {
+    if let providerDescription = provider as? CustomDebugStringConvertible {
+      return providerDescription.debugDescription
+    } else {
+      return String(describing: self)
+    }
   }
 }
 
