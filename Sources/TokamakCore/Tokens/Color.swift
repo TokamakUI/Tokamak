@@ -61,7 +61,14 @@ public class AnyColorBox: AnyTokenBox {
     }
   }
 
-  public static func == (lhs: AnyColorBox, rhs: AnyColorBox) -> Bool { false }
+  public static func == (lhs: AnyColorBox, rhs: AnyColorBox) -> Bool {
+    lhs.equals(rhs)
+  }
+
+  public func equals(_ other: AnyColorBox) -> Bool {
+    fatalError("implement \(#function) in subclass")
+  }
+
   public func hash(into hasher: inout Hasher) {
     fatalError("implement \(#function) in subclass")
   }
@@ -74,8 +81,10 @@ public class AnyColorBox: AnyTokenBox {
 public class _ConcreteColorBox: AnyColorBox {
   public let rgba: AnyColorBox._RGBA
 
-  public static func == (lhs: _ConcreteColorBox, rhs: _ConcreteColorBox) -> Bool {
-    lhs.rgba == rhs.rgba
+  override public func equals(_ other: AnyColorBox) -> Bool {
+    guard let other = other as? _ConcreteColorBox
+    else { return false }
+    return rgba == other.rgba
   }
 
   override public func hash(into hasher: inout Hasher) {
@@ -94,10 +103,10 @@ public class _ConcreteColorBox: AnyColorBox {
 public class _EnvironmentDependentColorBox: AnyColorBox {
   public let resolver: (EnvironmentValues) -> Color
 
-  public static func == (lhs: _EnvironmentDependentColorBox,
-                         rhs: _EnvironmentDependentColorBox) -> Bool
-  {
-    lhs.resolver(EnvironmentValues()) == rhs.resolver(EnvironmentValues())
+  override public func equals(_ other: AnyColorBox) -> Bool {
+    guard let other = other as? _EnvironmentDependentColorBox
+    else { return false }
+    return resolver(EnvironmentValues()) == other.resolver(EnvironmentValues())
   }
 
   override public func hash(into hasher: inout Hasher) {
@@ -132,8 +141,10 @@ public class _SystemColorBox: AnyColorBox {
 
   public let value: SystemColor
 
-  public static func == (lhs: _SystemColorBox, rhs: _SystemColorBox) -> Bool {
-    lhs.value == rhs.value
+  override public func equals(_ other: AnyColorBox) -> Bool {
+    guard let other = other as? _SystemColorBox
+    else { return false }
+    return value == other.value
   }
 
   override public func hash(into hasher: inout Hasher) {

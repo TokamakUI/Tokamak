@@ -157,7 +157,7 @@ final class DOMRenderer: Renderer {
   ) {
     defer { completion() }
 
-    guard let html = mapAnyView(host.view, transform: { (html: AnyHTML) in html })
+    guard let _ = mapAnyView(host.view, transform: { (html: AnyHTML) in html })
     else { return }
 
     _ = parent.ref.removeChild!(target.ref)

@@ -74,7 +74,7 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootElement = AnyView(view).makeMountedView(target, environment)
+    rootElement = AnyView(view).makeMountedView(target, environment, nil)
 
     rootElement.mount(with: self)
   }
@@ -90,7 +90,7 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootElement = MountedApp(app, target, environment)
+    rootElement = MountedApp(app, target, environment, nil)
 
     rootElement.mount(with: self)
     if let mountedApp = rootElement as? MountedApp<R> {

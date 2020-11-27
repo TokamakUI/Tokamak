@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public enum ColorScheme: CaseIterable {
+public enum ColorScheme: CaseIterable, Equatable {
   case dark
   case light
 }
