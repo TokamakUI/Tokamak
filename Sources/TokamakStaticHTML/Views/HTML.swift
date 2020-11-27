@@ -32,6 +32,8 @@ public struct HTMLAttribute: Hashable {
   }
 
   public static let value = HTMLAttribute("value", isUpdatedAsProperty: true)
+
+  public static let checked = HTMLAttribute("checked", isUpdatedAsProperty: true)
 }
 
 extension HTMLAttribute: CustomStringConvertible {
