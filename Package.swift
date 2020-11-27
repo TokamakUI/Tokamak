@@ -22,10 +22,6 @@ let package = Package(
       targets: ["TokamakDOM"]
     ),
     .library(
-      name: "TokamakShim",
-      targets: ["TokamakShim"]
-    ),
-    .library(
       name: "TokamakStaticHTML",
       targets: ["TokamakStaticHTML"]
     ),
@@ -33,16 +29,28 @@ let package = Package(
       name: "TokamakStaticDemo",
       targets: ["TokamakStaticDemo"]
     ),
+    .library(
+      name: "TokamakGTK",
+      targets: ["TokamakGTK"]
+    ),
+    .executable(
+      name: "TokamakGTKDemo",
+      targets: ["TokamakGTKDemo"]
+    ),
+    .library(
+      name: "TokamakShim",
+      targets: ["TokamakShim"]
+    ),
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     // .package(url: /* package url */, from: "1.0.0"),
     .package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
-      .upToNextMinor(from: "0.7.2")
+      .upToNextMinor(from: "0.8.0")
     ),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", from: "2.1.2"),
-    .package(url: "https://github.com/MaxDesiatov/OpenCombine.git", from: "0.0.1"),
+    .package(url: "https://github.com/OpenCombine/OpenCombine.git", .branch("observable-object")),
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define
@@ -62,6 +70,34 @@ let package = Package(
       dependencies: ["CombineShim", "Runtime"]
     ),
     .target(
+      name: "TokamakShim",
+      dependencies: [
+        .target(name: "TokamakDOM", condition: .when(platforms: [.wasi])),
+        .target(name: "TokamakGTK", condition: .when(platforms: [.linux]))
+      ]
+    ),
+    .systemLibrary(
+      name: "CGTK",
+      pkgConfig: "gtk+-3.0",
+      providers: [
+        .apt(["libgtk+-3.0", "gtk+-3.0"]),
+        // .yum(["gtk3-devel"]),
+        .brew(["gtk+3"])
+      ]
+    ),
+    .target(
+      name: "TokamakGTKCHelpers",
+      dependencies: ["CGTK"]
+    ),
+    .target(
+      name: "TokamakGTK",
+      dependencies: ["TokamakCore", "CGTK", "TokamakGTKCHelpers"]
+    ),
+    .target(
+      name: "TokamakGTKDemo",
+      dependencies: ["TokamakGTK"]
+    ),
+    .target(
       name: "TokamakStaticHTML",
       dependencies: [
         "TokamakCore",
@@ -70,10 +106,6 @@ let package = Package(
     .target(
       name: "TokamakDOM",
       dependencies: ["CombineShim", "JavaScriptKit", "TokamakCore", "TokamakStaticHTML"]
-    ),
-    .target(
-      name: "TokamakShim",
-      dependencies: [.target(name: "TokamakDOM", condition: .when(platforms: [.wasi]))]
     ),
     .target(
       name: "TokamakDemo",

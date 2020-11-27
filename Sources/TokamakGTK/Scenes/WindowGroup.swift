@@ -11,11 +11,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 10/10/20.
+//
 
-#if canImport(SwiftUI)
-@_exported import SwiftUI
-#elseif os(WASI)
-@_exported import TokamakDOM
-#elseif os(Linux)
-@_exported import TokamakGTK
-#endif
+import TokamakCore
+
+extension WindowGroup: SceneDeferredToRenderer {
+  public var deferredBody: AnyView {
+    AnyView(VStack(alignment: .center) {
+      HStack(alignment: .center) {
+        content
+      }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+    }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity))
+  }
+}

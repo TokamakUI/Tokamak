@@ -11,11 +11,29 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 10/13/20.
+//
 
-#if canImport(SwiftUI)
-@_exported import SwiftUI
-#elseif os(WASI)
-@_exported import TokamakDOM
-#elseif os(Linux)
-@_exported import TokamakGTK
-#endif
+import TokamakCore
+import CGTK
+
+extension ScrollView: ViewDeferredToRenderer {
+  public var deferredBody: AnyView {
+    AnyView(WidgetView(build: { _ in
+      return gtk_scrolled_window_new(nil, nil)
+    }) {
+      if children.count > 1 {
+        VStack {
+          ForEach(Array(children.enumerated()), id: \.offset) { (_, view) in
+            view
+          }
+        }
+      } else {
+        ForEach(Array(children.enumerated()), id: \.offset) { (_, view) in
+          view
+        }
+      }
+    })
+  }
+}

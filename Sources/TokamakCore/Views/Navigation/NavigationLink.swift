@@ -80,12 +80,15 @@ public struct _NavigationLinkProxy<Label, Destination> where Label: View, Destin
     self.subject = subject
   }
 
-  public var label: AnyView {
+  public var label: some View {
     subject.style.makeBody(configuration: .init(
       body: AnyView(subject.label),
       isSelected: isSelected
     ))
+    // subject.label
   }
+
+  public var context: NavigationContext { subject.navigationContext }
 
   public var style: _AnyNavigationLinkStyle { subject.style }
   public var isSelected: Bool {

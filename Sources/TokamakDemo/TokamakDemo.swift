@@ -52,11 +52,11 @@ struct NavItem: View {
       Text(id)
       #elseif os(macOS)
       Text(id).opacity(0.5)
-      #else
+      #elseif os(Linux)
       HStack {
         Text(id)
         Spacer()
-        Text("unavailable").opacity(0.5)
+        Text("unavailable")
       }
       #endif
     }
