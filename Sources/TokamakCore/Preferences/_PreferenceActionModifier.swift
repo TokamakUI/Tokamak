@@ -27,14 +27,9 @@ public struct _PreferenceActionModifier<Key>: ViewModifier
 extension _PreferenceActionModifier: _PreferenceModifier {
   public func modifyPreferenceStore(_ preferenceStore: inout _PreferenceStore) {
     let value = preferenceStore.value(forKey: Key.self)
-    let shortened = value.valueList.dropLast()
-    if shortened.count == 0 { // Send the `defaultValue`.
+    let previousValue = value.reduce(value.valueList.dropLast())
+    if previousValue != value.value {
       action(value.value)
-    } else {
-      let previousValue = value.reduce(Array(shortened))
-      if previousValue != value.value {
-        action(value.value)
-      }
     }
   }
 }
