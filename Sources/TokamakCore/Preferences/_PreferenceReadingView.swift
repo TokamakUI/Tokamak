@@ -47,7 +47,8 @@ extension _PreferenceValue {
   }
 }
 
-/// Delays the retrieval of a `PreferenceKey.Value` by passing the `_PreferenceValue` to a build function.
+/// Delays the retrieval of a `PreferenceKey.Value` by passing the `_PreferenceValue` to a build
+/// function.
 public struct _DelayedPreferenceView<Key, Content>: View, _PreferenceModifyingView
   where Key: PreferenceKey, Content: View
 {
