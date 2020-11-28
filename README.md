@@ -279,8 +279,9 @@ appreciated and helps in maintaining the project.
 
 ## Maintainers
 
-[Carson Katri](https://github.com/carson-katri),
-[Jed Fox](https://jedfox.com), [Max Desiatov](https://desiatov.com).
+In alphabetical order: [Carson Katri](https://github.com/carson-katri),
+[Jed Fox](https://jedfox.com), [Max Desiatov](https://desiatov.com),
+[Yuta Saito](https://github.com/kateinoigakukun/).
 
 ## Acknowledgments
 
