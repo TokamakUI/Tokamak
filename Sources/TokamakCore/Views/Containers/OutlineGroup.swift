@@ -29,13 +29,13 @@ public struct OutlineGroup<Data, ID, Parent, Leaf, Subgroup>
   let content: (Data.Element) -> Leaf
 }
 
-extension OutlineGroup where ID == Data.Element.ID,
+public extension OutlineGroup where ID == Data.Element.ID,
   Parent: View,
   Parent == Leaf,
   Subgroup == DisclosureGroup<Parent, OutlineSubgroupChildren>,
   Data.Element: Identifiable
 {
-  public init<DataElement>(
+  init<DataElement>(
     _ root: DataElement,
     children: KeyPath<DataElement, Data?>,
     @ViewBuilder content: @escaping (DataElement) -> Leaf
@@ -43,7 +43,7 @@ extension OutlineGroup where ID == Data.Element.ID,
     self.init(root, id: \.id, children: children, content: content)
   }
 
-  public init<DataElement>(
+  init<DataElement>(
     _ data: Data,
     children: KeyPath<DataElement, Data?>,
     @ViewBuilder content: @escaping (DataElement) -> Leaf
@@ -52,11 +52,11 @@ extension OutlineGroup where ID == Data.Element.ID,
   }
 }
 
-extension OutlineGroup where Parent: View,
+public extension OutlineGroup where Parent: View,
   Parent == Leaf,
   Subgroup == DisclosureGroup<Parent, OutlineSubgroupChildren>
 {
-  public init<DataElement>(
+  init<DataElement>(
     _ root: DataElement,
     id: KeyPath<DataElement, ID>,
     children: KeyPath<DataElement, Data?>,
@@ -70,7 +70,7 @@ extension OutlineGroup where Parent: View,
     self.content = content
   }
 
-  public init<DataElement>(
+  init<DataElement>(
     _ data: Data,
     id: KeyPath<DataElement, ID>,
     children: KeyPath<DataElement, Data?>,

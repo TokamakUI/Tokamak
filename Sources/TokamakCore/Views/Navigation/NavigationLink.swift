@@ -50,10 +50,10 @@ public struct NavigationLink<Label, Destination>: View where Label: View, Destin
   }
 }
 
-extension NavigationLink where Label == Text {
+public extension NavigationLink where Label == Text {
   /// Creates an instance that presents `destination`, with a `Text` label
   /// generated from a title string.
-  public init<S>(_ title: S, destination: Destination) where S: StringProtocol {
+  init<S>(_ title: S, destination: Destination) where S: StringProtocol {
     self.init(destination: destination) { Text(title) }
   }
 

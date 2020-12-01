@@ -62,7 +62,7 @@ extension Optional: View where Wrapped: View {
   }
 }
 
-@_functionBuilder public struct ViewBuilder {
+@_functionBuilder public enum ViewBuilder {
   public static func buildBlock() -> EmptyView { EmptyView() }
 
   public static func buildBlock<Content>(
@@ -91,16 +91,16 @@ extension Optional: View where Wrapped: View {
 // swiftlint:disable large_tuple
 // swiftlint:disable function_parameter_count
 
-extension ViewBuilder {
-  public static func buildBlock<C0, C1>(_ c0: C0, _ c1: C1) -> TupleView<(C0, C1)>
+public extension ViewBuilder {
+  static func buildBlock<C0, C1>(_ c0: C0, _ c1: C1) -> TupleView<(C0, C1)>
     where C0: View, C1: View
   {
     TupleView(c0, c1)
   }
 }
 
-extension ViewBuilder {
-  public static func buildBlock<C0, C1, C2>(
+public extension ViewBuilder {
+  static func buildBlock<C0, C1, C2>(
     _ c0: C0,
     _ c1: C1,
     _ c2: C2
@@ -109,8 +109,8 @@ extension ViewBuilder {
   }
 }
 
-extension ViewBuilder {
-  public static func buildBlock<C0, C1, C2, C3>(
+public extension ViewBuilder {
+  static func buildBlock<C0, C1, C2, C3>(
     _ c0: C0,
     _ c1: C1,
     _ c2: C2,
@@ -120,8 +120,8 @@ extension ViewBuilder {
   }
 }
 
-extension ViewBuilder {
-  public static func buildBlock<C0, C1, C2, C3, C4>(
+public extension ViewBuilder {
+  static func buildBlock<C0, C1, C2, C3, C4>(
     _ c0: C0,
     _ c1: C1,
     _ c2: C2,
@@ -132,8 +132,8 @@ extension ViewBuilder {
   }
 }
 
-extension ViewBuilder {
-  public static func buildBlock<C0, C1, C2, C3, C4, C5>(
+public extension ViewBuilder {
+  static func buildBlock<C0, C1, C2, C3, C4, C5>(
     _ c0: C0,
     _ c1: C1,
     _ c2: C2,
@@ -147,8 +147,8 @@ extension ViewBuilder {
   }
 }
 
-extension ViewBuilder {
-  public static func buildBlock<C0, C1, C2, C3, C4, C5, C6>(
+public extension ViewBuilder {
+  static func buildBlock<C0, C1, C2, C3, C4, C5, C6>(
     _ c0: C0,
     _ c1: C1,
     _ c2: C2,
@@ -163,8 +163,8 @@ extension ViewBuilder {
   }
 }
 
-extension ViewBuilder {
-  public static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7>(
+public extension ViewBuilder {
+  static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7>(
     _ c0: C0,
     _ c1: C1,
     _ c2: C2,
@@ -180,8 +180,8 @@ extension ViewBuilder {
   }
 }
 
-extension ViewBuilder {
-  public static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7, C8>(
+public extension ViewBuilder {
+  static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7, C8>(
     _ c0: C0,
     _ c1: C1,
     _ c2: C2,
@@ -198,8 +198,8 @@ extension ViewBuilder {
   }
 }
 
-extension ViewBuilder {
-  public static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7, C8, C9>(
+public extension ViewBuilder {
+  static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7, C8, C9>(
     _ c0: C0,
     _ c1: C1,
     _ c2: C2,

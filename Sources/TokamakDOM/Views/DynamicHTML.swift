@@ -40,8 +40,8 @@ public struct DynamicHTML<Content>: View, AnyDynamicHTML {
   }
 }
 
-extension DynamicHTML where Content: StringProtocol {
-  public init(
+public extension DynamicHTML where Content: StringProtocol {
+  init(
     _ tag: String,
     _ attributes: [HTMLAttribute: String] = [:],
     listeners: [String: Listener] = [:],
@@ -74,8 +74,8 @@ extension DynamicHTML: ParentView where Content: View {
   }
 }
 
-extension DynamicHTML where Content == EmptyView {
-  public init(
+public extension DynamicHTML where Content == EmptyView {
+  init(
     _ tag: String,
     _ attributes: [HTMLAttribute: String] = [:],
     listeners: [String: Listener] = [:]

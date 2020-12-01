@@ -29,12 +29,12 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
     mountedChildren = children
   }
 
-  override func mount(with reconciler: StackReconciler<R>) {
+  override func mount(before sibling: R.TargetType? = nil, with reconciler: StackReconciler<R>) {
     let childBody = reconciler.render(mountedScene: self)
 
     let child: MountedElement<R> = childBody.makeMountedElement(parentTarget, environmentValues)
     mountedChildren = [child]
-    child.mount(with: reconciler)
+    child.mount(before: sibling, with: reconciler)
   }
 
   override func unmount(with reconciler: StackReconciler<R>) {
@@ -91,7 +91,7 @@ extension _AnyScene {
   ) -> MountedScene<R> {
     var title: String?
     if let titledSelf = scene as? TitledScene,
-      let text = titledSelf.title
+       let text = titledSelf.title
     {
       title = _TextProxy(text).rawText
     }

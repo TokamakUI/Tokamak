@@ -20,8 +20,8 @@ import JavaScriptKit
 import TokamakCore
 import TokamakStaticHTML
 
-extension App {
-  public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
+public extension App {
+  static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
     _launch(app, rootEnvironment, TokamakDOM.body)
   }
 
@@ -32,7 +32,7 @@ extension App {
   /// The body is styled with `margin: 0;` to match the `SwiftUI` layout
   /// system as closely as possible
   ///
-  public static func _launch(
+  static func _launch(
     _ app: Self,
     _ rootEnvironment: EnvironmentValues,
     _ body: JSObject
@@ -54,18 +54,18 @@ extension App {
     ColorSchemeObserver.observe(div)
   }
 
-  public static func _setTitle(_ title: String) {
+  static func _setTitle(_ title: String) {
     let titleTag = document.createElement!("title").object!
     titleTag.id = "_tokamak-app-title"
     titleTag.innerHTML = .string(title)
     _ = head.appendChild!(titleTag)
   }
 
-  public var _phasePublisher: AnyPublisher<ScenePhase, Never> {
+  var _phasePublisher: AnyPublisher<ScenePhase, Never> {
     ScenePhaseObserver.publisher.eraseToAnyPublisher()
   }
 
-  public var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
+  var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
     ColorSchemeObserver.publisher.eraseToAnyPublisher()
   }
 }

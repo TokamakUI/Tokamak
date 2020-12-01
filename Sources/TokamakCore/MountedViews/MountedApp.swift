@@ -22,12 +22,13 @@ import Runtime
 // is the computed content of the specified `Scene`, instead of having child
 // `View`s
 final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
-  override func mount(with reconciler: StackReconciler<R>) {
+  override func mount(before _: R.TargetType? = nil, with reconciler: StackReconciler<R>) {
+    // `App` elements have no siblings, hence the `before` argument is discarded.
     let childBody = reconciler.render(mountedApp: self)
 
     let child: MountedElement<R> = mountChild(childBody)
     mountedChildren = [child]
-    child.mount(with: reconciler)
+    child.mount(before: nil, with: reconciler)
   }
 
   override func unmount(with reconciler: StackReconciler<R>) {

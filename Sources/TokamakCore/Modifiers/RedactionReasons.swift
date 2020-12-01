@@ -24,12 +24,12 @@ public struct RedactionReasons: OptionSet {
   public static let placeholder: Self = .init(rawValue: 1 << 0)
 }
 
-extension View {
-  public func redacted(reason: RedactionReasons) -> some View {
+public extension View {
+  func redacted(reason: RedactionReasons) -> some View {
     environment(\.redactionReasons, reason)
   }
 
-  public func unredacted() -> some View {
+  func unredacted() -> some View {
     environment(\.redactionReasons, [])
   }
 }
@@ -38,8 +38,8 @@ private struct RedactionReasonsKey: EnvironmentKey {
   static let defaultValue: RedactionReasons = []
 }
 
-extension EnvironmentValues {
-  public var redactionReasons: RedactionReasons {
+public extension EnvironmentValues {
+  var redactionReasons: RedactionReasons {
     get {
       self[RedactionReasonsKey.self]
     }

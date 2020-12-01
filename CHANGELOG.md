@@ -1,3 +1,66 @@
+# 0.5.3 (28 November 2020)
+
+A bugfix release that fixes `Toggle` values not updated when reset from a binding. Additionally, the
+embedded internal implementation of `JSScheduler` is replaced with one from
+[`OpenCombineJS`](https://github.com/swiftwasm/OpenCombineJS). This library is a new dependency of
+Tokamak used in the DOM renderer.
+
+**Closed issues:**
+
+- `Toggle` value not updated when it's reset from a binding ([#287](https://github.com/TokamakUI/Tokamak/issues/287))
+
+**Merged pull requests:**
+
+- Fix update of `checked` property of checkbox input ([#309](https://github.com/TokamakUI/Tokamak/pull/309)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Use latest macOS and Xcode on CI ([#308](https://github.com/TokamakUI/Tokamak/pull/308)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Use `JSScheduler` from `OpenCombineJS` package ([#304](https://github.com/TokamakUI/Tokamak/pull/304)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
+# 0.5.2 (12 November 2020)
+
+This is a bugfix release that fixes in-tree updates in cases where type of a view changes with
+conditional updates. Thanks to [@vi4m](https://github.com/vi4m) for reporting the issue!
+
+**Merged pull requests:**
+
+- Pass sibling to `Renderer.mount`, fix update order ([#301](https://github.com/TokamakUI/Tokamak/pull/301)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
+# 0.5.1 (9 November 2020)
+
+A bugfix release to improve compatibility with Xcode autocomplete.
+
+**Merged pull requests:**
+
+- Update Package.resolved ([#300](https://github.com/TokamakUI/Tokamak/pull/300)) via [@kateinoigakukun](https://github.com/kateinoigakukun)
+- Allow use of Combine to enable Xcode autocomplete ([#299](https://github.com/TokamakUI/Tokamak/pull/299)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
+# 0.5.0 (9 November 2020)
+
+This is a compatibility release with small feature additions. Namely the `Link` view is now available,
+and our JavaScriptKit dependency has been updated. The latter change now allows you to open
+`Package.swift` package manifests of your Tokamak projects with working auto-complete in Xcode.
+Also, our dark mode implementation now more closely follows SwiftUI behavior.
+
+Many thanks to [@carson-katri](https://github.com/carson-katri) and
+[@kateinoigakukun](https://github.com/kateinoigakukun) for their contributions to this release!
+
+**Closed issues:**
+
+- Can't build Tokamak project - carton dev command ([#296](https://github.com/TokamakUI/Tokamak/issues/296))
+- Colors should change depending on light/dark color scheme ([#290](https://github.com/TokamakUI/Tokamak/issues/290))
+- Pattern for handling global dom events ([#284](https://github.com/TokamakUI/Tokamak/issues/284))
+- 0.4.0 upgrade / regression? ([#283](https://github.com/TokamakUI/Tokamak/issues/283))
+
+**Merged pull requests:**
+
+- Xcode compatibility ([#297](https://github.com/TokamakUI/Tokamak/pull/297)) via [@kateinoigakukun](https://github.com/kateinoigakukun)
+- Allow tests to be run on macOS ([#295](https://github.com/TokamakUI/Tokamak/pull/295)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add Link view, update JavaScriptKit to 0.8.0 ([#276](https://github.com/TokamakUI/Tokamak/pull/276)) via [@carson-katri](https://github.com/carson-katri)
+- Add `AnyColorBox` and `AnyFontBox` ([#291](https://github.com/TokamakUI/Tokamak/pull/291)) via [@carson-katri](https://github.com/carson-katri)
+- Replace Danger with SwiftLint to improve warnings ([#293](https://github.com/TokamakUI/Tokamak/pull/293)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Use v5.3 tag of `swiftwasm-action` in `ci.yml` ([#292](https://github.com/TokamakUI/Tokamak/pull/292)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add @carson-katri and @kateinoigakukun to `FUNDING.yml` ([#289](https://github.com/TokamakUI/Tokamak/pull/289)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add `URLHashDemo` w/ `window.onhashchange` closure ([#288](https://github.com/TokamakUI/Tokamak/pull/288)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
 # 0.4.0 (30 September 2020)
 
 This is mainly a bugfix and compatibility release with a small feature addition. Namely, `Slider`

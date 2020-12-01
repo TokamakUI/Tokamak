@@ -31,9 +31,6 @@ public protocol Renderer: AnyObject {
    */
   associatedtype TargetType: Target
 
-  /// Reconciler instance used by this renderer.
-  var reconciler: StackReconciler<Self>? { get }
-
   /** Function called by a reconciler when a new target instance should be
    created and added to the parent (either as a subview or some other way, e.g.
    installed if it's a layout constraint).
@@ -42,6 +39,7 @@ public protocol Renderer: AnyObject {
    - returns: The newly created target.
    */
   func mountTarget(
+    before sibling: TargetType?,
     to parent: TargetType,
     with host: MountedHost
   ) -> TargetType?

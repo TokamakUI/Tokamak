@@ -25,8 +25,8 @@ struct ScenePhaseKey: EnvironmentKey {
   static let defaultValue: ScenePhase = .active
 }
 
-extension EnvironmentValues {
-  public var scenePhase: ScenePhase {
+public extension EnvironmentValues {
+  var scenePhase: ScenePhase {
     get {
       self[ScenePhaseKey.self]
     }
