@@ -95,7 +95,8 @@ let package = Package(
           package: "JavaScriptKit",
           condition: .when(platforms: [.wasi])
         ),
-      ]
+      ],
+      resources: [.copy("logo-header.png")]
     ),
     .target(
       name: "TokamakStaticDemo",
