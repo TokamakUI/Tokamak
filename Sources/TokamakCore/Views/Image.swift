@@ -15,33 +15,29 @@
 //  Created by Jed Fox on 07/01/2020.
 //
 
+import Foundation
+
 public struct Image: View {
   let label: Text?
-  let imageName: String
-  let isSystem: Bool
+  let name: String
+  let bundle: Bundle
 
-  public init(_ name: String) {
+  public init(_ name: String, bundle: Bundle = Bundle.main) {
     label = Text(name)
-    imageName = name
-    isSystem = false
+    self.name = name
+    self.bundle = bundle
   }
 
-  public init(_ name: String, label: Text) {
+  public init(_ name: String, bundle: Bundle = Bundle.main, label: Text) {
     self.label = label
-    imageName = name
-    isSystem = false
+    self.name = name
+    self.bundle = bundle
   }
 
-  public init(decorative name: String) {
+  public init(decorative name: String, bundle: Bundle = Bundle.main) {
     label = nil
-    imageName = name
-    isSystem = false
-  }
-
-  public init(systemName: String) {
-    label = nil
-    imageName = systemName
-    isSystem = true
+    self.name = name
+    self.bundle = bundle
   }
 
   public var body: Never {
@@ -55,7 +51,7 @@ public struct _ImageProxy {
 
   public init(_ subject: Image) { self.subject = subject }
 
-  public var label: String? { subject.label?.content }
-  public var imageName: String { subject.imageName }
-  public var isSystem: Bool { subject.isSystem }
+  public var labelString: String? { subject.label?.storage.rawText }
+  public var name: String { subject.name }
+  public var path: String? { subject.bundle.path(forResource: subject.name, ofType: nil) }
 }

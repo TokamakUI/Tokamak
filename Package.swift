@@ -39,7 +39,7 @@ let package = Package(
     // .package(url: /* package url */, from: "1.0.0"),
     .package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
-      .upToNextMinor(from: "0.8.0")
+      .upToNextMinor(from: "0.9.0")
     ),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", from: "2.1.2"),
     .package(url: "https://github.com/TokamakUI/OpenCombine.git", from: "0.12.0-alpha2"),
