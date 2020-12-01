@@ -20,21 +20,21 @@ import Foundation
 public struct Image: View {
   let label: Text?
   let name: String
-  let bundle: Bundle
+  let bundle: Bundle?
 
-  public init(_ name: String, bundle: Bundle = Bundle.main) {
+  public init(_ name: String, bundle: Bundle? = nil) {
     label = Text(name)
     self.name = name
     self.bundle = bundle
   }
 
-  public init(_ name: String, bundle: Bundle? = Bundle.main, label: Text) {
+  public init(_ name: String, bundle: Bundle? = nil, label: Text) {
     self.label = label
     self.name = name
     self.bundle = bundle
   }
 
-  public init(decorative name: String, bundle: Bundle? = Bundle.main) {
+  public init(decorative name: String, bundle: Bundle? = nil) {
     label = nil
     self.name = name
     self.bundle = bundle
