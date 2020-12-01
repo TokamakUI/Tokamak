@@ -28,13 +28,13 @@ public struct Image: View {
     self.bundle = bundle
   }
 
-  public init(_ name: String, bundle: Bundle = Bundle.main, label: Text) {
+  public init(_ name: String, bundle: Bundle? = Bundle.main, label: Text) {
     self.label = label
     self.name = name
     self.bundle = bundle
   }
 
-  public init(decorative name: String, bundle: Bundle = Bundle.main) {
+  public init(decorative name: String, bundle: Bundle? = Bundle.main) {
     label = nil
     self.name = name
     self.bundle = bundle
@@ -53,5 +53,5 @@ public struct _ImageProxy {
 
   public var labelString: String? { subject.label?.storage.rawText }
   public var name: String { subject.name }
-  public var path: String? { subject.bundle.path(forResource: subject.name, ofType: nil) }
+  public var path: String? { subject.bundle?.path(forResource: subject.name, ofType: nil) }
 }
