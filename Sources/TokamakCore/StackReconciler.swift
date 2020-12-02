@@ -123,6 +123,8 @@ public final class StackReconciler<R: Renderer> {
     }
 
     queuedRerenders.removeAll()
+    queuedPostrenderCallbacks.forEach { $0() }
+    queuedPostrenderCallbacks.removeAll()
   }
 
   private func setupStorage(
@@ -277,5 +279,10 @@ public final class StackReconciler<R: Renderer> {
         newMountedChild.mount(with: self)
       }
     }
+  }
+
+  private var queuedPostrenderCallbacks = [() -> ()]()
+  func afterCurrentRender(perform callback: @escaping () -> ()) {
+    queuedPostrenderCallbacks.append(callback)
   }
 }

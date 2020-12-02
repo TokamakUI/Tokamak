@@ -26,6 +26,20 @@ struct CustomScene: Scene {
   }
 }
 
+struct CountDemo: View {
+  @State private var count = 0
+  var body: some View {
+    VStack {
+      Text("Count: \(count)")
+      Button("Increment") { count += 1 }
+    }
+    .onAppear {
+      print("Appear")
+      count += 1
+    }
+  }
+}
+
 @available(OSX 10.16, iOS 14.0, *)
 struct TokamakDemoApp: App {
   var body: some Scene {

@@ -25,10 +25,6 @@ extension PreferenceKey where Self.Value: ExpressibleByNilLiteral {
   public static var defaultValue: Value { nil }
 }
 
-protocol _AnyPreferenceValue {
-  var valueListCount: Int { get }
-}
-
 public struct _PreferenceValue<Key> where Key: PreferenceKey {
   /// Every value the `Key` has had.
   var valueList: [Key.Value]
@@ -42,10 +38,6 @@ public struct _PreferenceValue<Key> where Key: PreferenceKey {
       Key.reduce(value: &prev) { next }
     }
   }
-}
-
-extension _PreferenceValue: _AnyPreferenceValue {
-  var valueListCount: Int { valueList.count }
 }
 
 public struct _PreferenceStore {
@@ -105,18 +97,5 @@ extension ModifiedContent: _PreferenceModifyingView
   public func modifyPreferenceStore(_ preferenceStore: inout _PreferenceStore) -> AnyView {
     modifier.modifyPreferenceStore(&preferenceStore)
     return AnyView(content)
-  }
-}
-
-public struct PreferredColorSchemeKey: PreferenceKey {
-  public typealias Value = ColorScheme?
-  public static func reduce(value: inout Value, nextValue: () -> Value) {
-    value = nextValue()
-  }
-}
-
-extension View {
-  public func preferredColorScheme(_ colorScheme: ColorScheme?) -> some View {
-    preference(key: PreferredColorSchemeKey.self, value: colorScheme)
   }
 }

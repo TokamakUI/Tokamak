@@ -89,7 +89,7 @@ public struct _NavigationLinkProxy<Label, Destination> where Label: View, Destin
 
   public var style: _AnyNavigationLinkStyle { subject.style }
   public var isSelected: Bool {
-    ObjectIdentifier(subject.destination) == ObjectIdentifier(subject.navigationContext.destination)
+    subject.destination === subject.navigationContext.destination
   }
 
   public func activate() {

@@ -35,7 +35,7 @@ struct PreferenceKeyDemo: View {
       Text(
         "In this demo, the background color of each item is set to the value of the PreferenceKey."
       )
-      Text("Default color: red (this won't show on the innermost because it never 'changed'.")
+      Text("Default color: red (this won't show on the innermost because it never 'changed').")
       Text("Innermost child sets the color to blue.")
       Text("One level up sets the color to green, and so on.")
       SetColor(3, .purple) {

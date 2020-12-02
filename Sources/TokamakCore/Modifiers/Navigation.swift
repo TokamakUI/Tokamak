@@ -12,14 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public extension View {
-  // FIXME: Implement
-  func navigationBarTitle<S>(_ title: S) -> some View where S: StringProtocol {
-    self
+extension View {
+  @available(*, deprecated, renamed: "navigationTitle(_:)")
+  public func navigationBarTitle(_ title: Text) -> some View {
+    navigationTitle(title)
   }
 
-  // FIXME: Implement
-  func navigationTitle<S>(_ title: S) -> some View where S: StringProtocol {
-    self
+  @available(*, deprecated, renamed: "navigationTitle(_:)")
+  public func navigationBarTitle<S: StringProtocol>(_ title: S) -> some View {
+    navigationTitle(title)
+  }
+
+  public func navigationTitle(_ title: Text) -> some View {
+    navigationTitle { title }
+  }
+
+  public func navigationTitle<S: StringProtocol>(_ titleKey: S) -> some View {
+    navigationTitle(Text(titleKey))
+  }
+
+  public func navigationTitle<V>(@ViewBuilder _ title: () -> V) -> some View
+    where V: View
+  {
+    preference(key: NavigationTitleKey.self, value: AnyView(title()))
   }
 }

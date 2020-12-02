@@ -49,19 +49,23 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
       view.view = targetRef
     }
 
-    // FIXME: this has to be implemented in a render-specific way, otherwise it's equivalent to
-    // `_onMount` and `_onUnmount` at the moment,
-    // see https://github.com/swiftwasm/Tokamak/issues/175 for more details
-    if let appearanceAction = view.view as? AppearanceActionType {
-      appearanceAction.appear?()
-    }
+    reconciler.afterCurrentRender(perform: { [weak self] in
+      guard let self = self else { return }
 
-    if let preferenceModifier = view.view as? _PreferenceModifyingView {
-      view = preferenceModifier.modifyPreferenceStore(&preferenceStore)
-      if let parent = parent {
-        parent.preferenceStore.merge(with: preferenceStore)
+      // FIXME: this has to be implemented in a render-specific way, otherwise it's equivalent to
+      // `_onMount` and `_onUnmount` at the moment,
+      // see https://github.com/swiftwasm/Tokamak/issues/175 for more details
+      if let appearanceAction = self.view.view as? AppearanceActionType {
+        appearanceAction.appear?()
       }
-    }
+
+      if let preferenceModifier = self.view.view as? _PreferenceModifyingView {
+        self.view = preferenceModifier.modifyPreferenceStore(&self.preferenceStore)
+        if let parent = parent {
+          parent.preferenceStore.merge(with: self.preferenceStore)
+        }
+      }
+    })
   }
 
   override func unmount(with reconciler: StackReconciler<R>) {
