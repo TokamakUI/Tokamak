@@ -16,7 +16,7 @@
 //
 
 /// Accesses a `PreferenceKey.Value`.
-public struct _PreferenceReadingView<Key, Content>: View, _PreferenceModifyingView
+public struct _PreferenceReadingView<Key, Content>: View, _PreferenceReadingViewProtocol
   where Key: PreferenceKey, Content: View
 {
   public let value: _PreferenceValue<Key>
@@ -30,7 +30,7 @@ public struct _PreferenceReadingView<Key, Content>: View, _PreferenceModifyingVi
     self.transform = transform
   }
 
-  public func modifyPreferenceStore(_ preferenceStore: inout _PreferenceStore) -> AnyView {
+  public func preferenceStore(_ preferenceStore: _PreferenceStore) -> AnyView {
     AnyView(transform(
       preferenceStore.value(forKey: Key.self).value
     ))
@@ -49,7 +49,7 @@ extension _PreferenceValue {
 
 /// Delays the retrieval of a `PreferenceKey.Value` by passing the `_PreferenceValue` to a build
 /// function.
-public struct _DelayedPreferenceView<Key, Content>: View, _PreferenceModifyingView
+public struct _DelayedPreferenceView<Key, Content>: View, _PreferenceReadingViewProtocol
   where Key: PreferenceKey, Content: View
 {
   public let transform: (_PreferenceValue<Key>) -> Content
@@ -57,8 +57,10 @@ public struct _DelayedPreferenceView<Key, Content>: View, _PreferenceModifyingVi
     self.transform = transform
   }
 
-  public func modifyPreferenceStore(_ preferenceStore: inout _PreferenceStore) -> AnyView {
-    AnyView(transform(preferenceStore.value(forKey: Key.self)))
+  public func preferenceStore(_ preferenceStore: _PreferenceStore) -> AnyView {
+    AnyView(
+      transform(preferenceStore.value(forKey: Key.self))
+    )
   }
 }
 

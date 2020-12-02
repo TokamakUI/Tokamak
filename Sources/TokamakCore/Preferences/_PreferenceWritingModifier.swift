@@ -15,24 +15,23 @@
 //  Created by Carson Katri on 11/26/20.
 //
 
-public struct _PreferenceWritingModifier<Key>: ViewModifier
+public struct _PreferenceWritingModifier<Key>: _PreferenceWritingModifierProtocol
   where Key: PreferenceKey
 {
   public let value: Key.Value
   public init(key: Key.Type = Key.self, value: Key.Value) {
     self.value = value
   }
+
+  public func body(_ content: Content, with preferenceStore: inout _PreferenceStore) -> AnyView {
+    preferenceStore.insert(value, forKey: Key.self)
+    return content.view
+  }
 }
 
 extension _PreferenceWritingModifier: Equatable where Key.Value: Equatable {
   public static func == (a: Self, b: Self) -> Bool {
     a.value == b.value
-  }
-}
-
-extension _PreferenceWritingModifier: _PreferenceModifier {
-  public func modifyPreferenceStore(_ preferenceStore: inout _PreferenceStore) {
-    preferenceStore.insert(value, forKey: Key.self)
   }
 }
 

@@ -75,27 +75,52 @@ public struct _PreferenceStore {
   }
 }
 
-public protocol _PreferenceModifier: ViewModifier
-  where Body == Never
-{
-  func modifyPreferenceStore(_ preferenceStore: inout _PreferenceStore)
+/// A protocol that allows a `View` to read values from the current `_PreferenceStore`.
+/// The key difference between `_PreferenceReadingViewProtocol` and
+/// `_PreferenceWritingViewProtocol` is that `_PreferenceReadingViewProtocol`
+/// calls `preferenceStore` during the current render, and `_PreferenceWritingViewProtocol`
+/// waits until the current render finishes.
+public protocol _PreferenceReadingViewProtocol {
+  func preferenceStore(_ preferenceStore: _PreferenceStore) -> AnyView
 }
 
-public protocol _PreferenceModifyingView {
+/// A protocol that allows a `View` to modify values from the current `_PreferenceStore`.
+public protocol _PreferenceWritingViewProtocol {
   func modifyPreferenceStore(_ preferenceStore: inout _PreferenceStore) -> AnyView
 }
 
-extension _PreferenceModifyingView where Self: View {
+/// A protocol that allows a `ViewModifier` to modify values from the current `_PreferenceStore`.
+public protocol _PreferenceWritingModifierProtocol: ViewModifier
+  where Body == AnyView
+{
+  func body(_ content: Self.Content, with preferenceStore: inout _PreferenceStore) -> AnyView
+}
+
+extension _PreferenceReadingViewProtocol where Self: View {
+  public var body: EmptyView {
+    EmptyView()
+  }
+}
+
+extension _PreferenceWritingViewProtocol where Self: View {
   public var body: Never {
     neverBody(String(describing: Self.self))
   }
 }
 
-extension ModifiedContent: _PreferenceModifyingView
-  where Content: View, Modifier: _PreferenceModifier
+extension _PreferenceWritingModifierProtocol {
+  public func body(content: Content) -> AnyView {
+    content.view
+  }
+}
+
+extension ModifiedContent: _PreferenceWritingViewProtocol
+  where Content: View, Modifier: _PreferenceWritingModifierProtocol
 {
   public func modifyPreferenceStore(_ preferenceStore: inout _PreferenceStore) -> AnyView {
-    modifier.modifyPreferenceStore(&preferenceStore)
-    return AnyView(content)
+    AnyView(
+      modifier
+        .body(.init(modifier: modifier, view: AnyView(content)), with: &preferenceStore)
+    )
   }
 }

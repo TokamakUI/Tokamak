@@ -30,9 +30,7 @@ public struct _EnvironmentKeyWritingModifier<Value>: ViewModifier, EnvironmentMo
     self.value = value
   }
 
-  public func body(content: Content) -> some View {
-    content
-  }
+  public typealias Body = Never
 
   func modifyEnvironment(_ values: inout EnvironmentValues) {
     values[keyPath: keyPath] = value

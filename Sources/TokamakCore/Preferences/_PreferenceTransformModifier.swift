@@ -16,7 +16,7 @@
 //
 
 /// Transforms a `PreferenceKey.Value`.
-public struct _PreferenceTransformModifier<Key>: ViewModifier
+public struct _PreferenceTransformModifier<Key>: _PreferenceWritingModifierProtocol
   where Key: PreferenceKey
 {
   public let transform: (inout Key.Value) -> ()
@@ -27,13 +27,12 @@ public struct _PreferenceTransformModifier<Key>: ViewModifier
   ) {
     self.transform = transform
   }
-}
 
-extension _PreferenceTransformModifier: _PreferenceModifier {
-  public func modifyPreferenceStore(_ preferenceStore: inout _PreferenceStore) {
+  public func body(_ content: Content, with preferenceStore: inout _PreferenceStore) -> AnyView {
     var newValue = preferenceStore.value(forKey: Key.self).value
     transform(&newValue)
     preferenceStore.insert(newValue, forKey: Key.self)
+    return content.view
   }
 }
 

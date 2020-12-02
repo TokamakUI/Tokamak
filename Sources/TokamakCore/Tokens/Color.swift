@@ -122,7 +122,7 @@ public class _EnvironmentDependentColorBox: AnyColorBox {
   }
 }
 
-public class _SystemColorBox: AnyColorBox, CustomDebugStringConvertible {
+public class _SystemColorBox: AnyColorBox, CustomStringConvertible {
   public enum SystemColor: String, Equatable, Hashable {
     case clear
     case black
@@ -139,7 +139,7 @@ public class _SystemColorBox: AnyColorBox, CustomDebugStringConvertible {
     case secondary
   }
 
-  public var debugDescription: String {
+  public var description: String {
     value.rawValue
   }
 
@@ -267,10 +267,10 @@ public extension Color {
   }
 }
 
-extension Color: CustomDebugStringConvertible {
-  public var debugDescription: String {
-    if let providerDescription = provider as? CustomDebugStringConvertible {
-      return providerDescription.debugDescription
+extension Color: CustomStringConvertible {
+  public var description: String {
+    if let providerDescription = provider as? CustomStringConvertible {
+      return providerDescription.description
     } else {
       return String(describing: self)
     }

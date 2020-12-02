@@ -76,7 +76,7 @@ public final class StackReconciler<R: Renderer> {
 
     rootElement = AnyView(view).makeMountedView(target, environment, nil)
 
-    rootElement.mount(with: self)
+    performInitialMount()
   }
 
   public init<A: App>(
@@ -92,11 +92,16 @@ public final class StackReconciler<R: Renderer> {
 
     rootElement = MountedApp(app, target, environment, nil)
 
-    rootElement.mount(with: self)
+    performInitialMount()
     if let mountedApp = rootElement as? MountedApp<R> {
       setupPersistentSubscription(for: app._phasePublisher, to: \.scenePhase, of: mountedApp)
       setupPersistentSubscription(for: app._colorSchemePublisher, to: \.colorScheme, of: mountedApp)
     }
+  }
+
+  private func performInitialMount() {
+    rootElement.mount(with: self)
+    performPostrenderCallbacks()
   }
 
   private func queueStorageUpdate(
@@ -123,8 +128,7 @@ public final class StackReconciler<R: Renderer> {
     }
 
     queuedRerenders.removeAll()
-    queuedPostrenderCallbacks.forEach { $0() }
-    queuedPostrenderCallbacks.removeAll()
+    performPostrenderCallbacks()
   }
 
   private func setupStorage(
@@ -284,5 +288,10 @@ public final class StackReconciler<R: Renderer> {
   private var queuedPostrenderCallbacks = [() -> ()]()
   func afterCurrentRender(perform callback: @escaping () -> ()) {
     queuedPostrenderCallbacks.append(callback)
+  }
+
+  private func performPostrenderCallbacks() {
+    queuedPostrenderCallbacks.forEach { $0() }
+    queuedPostrenderCallbacks.removeAll()
   }
 }

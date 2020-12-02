@@ -15,22 +15,21 @@
 //  Created by Carson Katri on 11/26/20.
 //
 
-public struct _PreferenceActionModifier<Key>: ViewModifier
+public struct _PreferenceActionModifier<Key>: _PreferenceWritingModifierProtocol
   where Key: PreferenceKey, Key.Value: Equatable
 {
   public let action: (Key.Value) -> ()
   public init(action: @escaping (Key.Value) -> Swift.Void) {
     self.action = action
   }
-}
 
-extension _PreferenceActionModifier: _PreferenceModifier {
-  public func modifyPreferenceStore(_ preferenceStore: inout _PreferenceStore) {
+  public func body(_ content: Content, with preferenceStore: inout _PreferenceStore) -> AnyView {
     let value = preferenceStore.value(forKey: Key.self)
     let previousValue = value.reduce(value.valueList.dropLast())
     if previousValue != value.value {
       action(value.value)
     }
+    return content.view
   }
 }
 

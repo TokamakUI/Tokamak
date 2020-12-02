@@ -30,6 +30,13 @@ struct PreferenceKeyDemo: View {
   @Environment(\.colorScheme) var colorScheme
 
   var body: some View {
+//    Text("The key color is: \(testKeyValue.description)")
+//        .foregroundColor(testKeyValue)
+//        .backgroundPreferenceValue(TestPreferenceKey.self) { value in
+//            Text("The key passed to the background is \(value.description)")
+//                .foregroundColor(value)
+//        }
+//        .preference(key: TestPreferenceKey.self, value: .green)
     VStack {
       Text("Preferences are like reverse-environment values.")
       Text(
@@ -38,17 +45,36 @@ struct PreferenceKeyDemo: View {
       Text("Default color: red (this won't show on the innermost because it never 'changed').")
       Text("Innermost child sets the color to blue.")
       Text("One level up sets the color to green, and so on.")
-      SetColor(3, .purple) {
-        SetColor(2, .green) {
-          SetColor(1, .blue)
+
+      VStack {
+        Text("Root")
+          .padding(.bottom, 8)
+        SetColor(3, .purple) {
+          SetColor(2, .green) {
+            SetColor(1, .blue)
+          }
         }
       }
-    }
-    .padding()
-    .background(testKeyValue)
-    .onPreferenceChange(TestPreferenceKey.self) {
-      print("Value changed to \($0)")
-      testKeyValue = $0
+      .padding()
+      .background(testKeyValue)
+      .onPreferenceChange(TestPreferenceKey.self) {
+        print("Value changed to \($0)")
+        testKeyValue = $0
+      }
+
+      Text("Preferences can also be accessed and used immediately via a background or overlay:")
+      Text("The foreground color is \(testKeyValue.description)")
+        .foregroundColor(testKeyValue)
+        .backgroundPreferenceValue(TestPreferenceKey.self) {
+          Text("The background color is \($0.description)")
+            .foregroundColor($0)
+        }
+      Text("The background color is \(testKeyValue.description)")
+        .foregroundColor(testKeyValue)
+        .overlayPreferenceValue(TestPreferenceKey.self) {
+          Text("The foreground color is \($0.description)")
+            .foregroundColor($0)
+        }
     }
   }
 
