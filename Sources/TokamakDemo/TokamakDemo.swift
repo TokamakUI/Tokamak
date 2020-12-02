@@ -46,7 +46,7 @@ struct NavItem: View {
   @ViewBuilder
   var body: some View {
     if let dest = destination {
-      NavigationLink(id, destination: dest.navigationTitle(id))
+      NavigationLink(id, destination: dest)
     } else {
       #if os(WASI)
       Text(id)
