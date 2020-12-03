@@ -36,8 +36,8 @@ public struct _PreferenceTransformModifier<Key>: _PreferenceWritingModifierProto
   }
 }
 
-extension View {
-  public func transformPreference<K>(
+public extension View {
+  func transformPreference<K>(
     _ key: K.Type = K.self,
     _ callback: @escaping (inout K.Value) -> ()
   ) -> some View

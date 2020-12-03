@@ -38,8 +38,8 @@ public struct _DelayedPreferenceView<Key, Content>: View, _PreferenceReadingView
   }
 }
 
-extension PreferenceKey {
-  public static func _delay<T>(
+public extension PreferenceKey {
+  static func _delay<T>(
     _ transform: @escaping (_PreferenceValue<Self>) -> T
   ) -> some View
     where T: View
@@ -48,8 +48,8 @@ extension PreferenceKey {
   }
 }
 
-extension View {
-  public func overlayPreferenceValue<Key, T>(
+public extension View {
+  func overlayPreferenceValue<Key, T>(
     _ key: Key.Type = Key.self,
     @ViewBuilder _ transform: @escaping (Key.Value) -> T
   ) -> some View
@@ -58,7 +58,7 @@ extension View {
     Key._delay { self.overlay(transform($0.value)) }
   }
 
-  public func backgroundPreferenceValue<Key, T>(
+  func backgroundPreferenceValue<Key, T>(
     _ key: Key.Type = Key.self,
     @ViewBuilder _ transform: @escaping (Key.Value) -> T
   ) -> some View

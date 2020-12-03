@@ -33,8 +33,8 @@ public struct _PreferenceActionModifier<Key>: _PreferenceWritingModifierProtocol
   }
 }
 
-extension View {
-  public func onPreferenceChange<K>(
+public extension View {
+  func onPreferenceChange<K>(
     _ key: K.Type = K.self,
     perform action: @escaping (K.Value) -> ()
   ) -> some View

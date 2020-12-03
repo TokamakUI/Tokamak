@@ -43,8 +43,8 @@ public struct PreferredColorSchemeKey: PreferenceKey {
   }
 }
 
-extension View {
-  public func preferredColorScheme(_ colorScheme: ColorScheme?) -> some View {
+public extension View {
+  func preferredColorScheme(_ colorScheme: ColorScheme?) -> some View {
     preference(key: PreferredColorSchemeKey.self, value: colorScheme)
   }
 }

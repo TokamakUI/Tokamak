@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-extension View {
+public extension View {
   @available(*, deprecated, renamed: "navigationTitle(_:)")
-  public func navigationBarTitle(_ title: Text) -> some View {
+  func navigationBarTitle(_ title: Text) -> some View {
     navigationTitle(title)
   }
 
   @available(*, deprecated, renamed: "navigationTitle(_:)")
-  public func navigationBarTitle<S: StringProtocol>(_ title: S) -> some View {
+  func navigationBarTitle<S: StringProtocol>(_ title: S) -> some View {
     navigationTitle(title)
   }
 
-  public func navigationTitle(_ title: Text) -> some View {
+  func navigationTitle(_ title: Text) -> some View {
     navigationTitle { title }
   }
 
-  public func navigationTitle<S: StringProtocol>(_ titleKey: S) -> some View {
+  func navigationTitle<S: StringProtocol>(_ titleKey: S) -> some View {
     navigationTitle(Text(titleKey))
   }
 
-  public func navigationTitle<V>(@ViewBuilder _ title: () -> V) -> some View
+  func navigationTitle<V>(@ViewBuilder _ title: () -> V) -> some View
     where V: View
   {
     preference(key: NavigationTitleKey.self, value: AnyView(title()))

@@ -34,7 +34,10 @@ struct PreferenceKeyDemo: View {
       Group {
         Text("Preferences are like reverse-environment values.")
         Text(
-          "In this demo, the background color of each item is set to the value of the PreferenceKey."
+          """
+          In this demo, the background color of each item \
+          is set to the value of the PreferenceKey.
+          """
         )
         Text("Default color: red (this won't show on the innermost because it never 'changed').")
         Text("Innermost child sets the color to blue.")
@@ -79,7 +82,10 @@ struct PreferenceKeyDemo: View {
 
       Group {
         Text(
-          "We can also transform the key. Here we perform several transformations and use an `overlayPreferenceValue`"
+          """
+          We can also transform the key. Here we perform several transformations and use an \
+          `overlayPreferenceValue`
+          """
         )
         Text("1. Set the color to yellow")
         Text("2. Transform if the color is yellow -> green")

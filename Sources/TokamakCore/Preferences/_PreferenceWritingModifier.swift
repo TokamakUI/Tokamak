@@ -35,8 +35,8 @@ extension _PreferenceWritingModifier: Equatable where Key.Value: Equatable {
   }
 }
 
-extension View {
-  public func preference<K>(key: K.Type = K.self, value: K.Value) -> some View
+public extension View {
+  func preference<K>(key: K.Type = K.self, value: K.Value) -> some View
     where K: PreferenceKey
   {
     modifier(_PreferenceWritingModifier<K>(value: value))

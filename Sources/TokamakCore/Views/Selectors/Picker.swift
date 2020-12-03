@@ -67,7 +67,7 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
       // update the binding.
       ForEach(0..<children.count) { index in
         if let forEach = mapAnyView(children[index], transform: { (v: ForEachProtocol) in v }),
-          forEach.elementType == SelectionValue.self
+           forEach.elementType == SelectionValue.self
         {
           let nestedChildren = forEach.children
 

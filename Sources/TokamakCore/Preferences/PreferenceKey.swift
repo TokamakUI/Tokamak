@@ -21,8 +21,8 @@ public protocol PreferenceKey {
   static func reduce(value: inout Value, nextValue: () -> Value)
 }
 
-extension PreferenceKey where Self.Value: ExpressibleByNilLiteral {
-  public static var defaultValue: Value { nil }
+public extension PreferenceKey where Self.Value: ExpressibleByNilLiteral {
+  static var defaultValue: Value { nil }
 }
 
 public struct _PreferenceValue<Key> where Key: PreferenceKey {
@@ -96,14 +96,14 @@ public protocol _PreferenceWritingModifierProtocol: ViewModifier
   func body(_ content: Self.Content, with preferenceStore: inout _PreferenceStore) -> AnyView
 }
 
-extension _PreferenceWritingViewProtocol where Self: View {
-  public var body: Never {
+public extension _PreferenceWritingViewProtocol where Self: View {
+  var body: Never {
     neverBody(String(describing: Self.self))
   }
 }
 
-extension _PreferenceWritingModifierProtocol {
-  public func body(content: Content) -> AnyView {
+public extension _PreferenceWritingModifierProtocol {
+  func body(content: Content) -> AnyView {
     content.view
   }
 }
