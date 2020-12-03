@@ -113,7 +113,7 @@ public final class StackReconciler<R: Renderer> {
     queueUpdate(for: mountedElement)
   }
 
-  private func queueUpdate(for mountedElement: MountedCompositeElement<R>) {
+  internal func queueUpdate(for mountedElement: MountedCompositeElement<R>) {
     let shouldSchedule = queuedRerenders.isEmpty
     queuedRerenders.insert(mountedElement)
 

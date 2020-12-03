@@ -39,7 +39,7 @@ public protocol AnyColorBoxDeferredToRenderer: AnyColorBox {
   func deferredResolve(in environment: EnvironmentValues) -> AnyColorBox.ResolvedValue
 }
 
-public class AnyColorBox: AnyTokenBox {
+public class AnyColorBox: AnyTokenBox, Equatable {
   public struct _RGBA: Hashable, Equatable {
     public let red: Double
     public let green: Double
@@ -65,6 +65,7 @@ public class AnyColorBox: AnyTokenBox {
     lhs.equals(rhs)
   }
 
+  /// We use a function separate from `==` so that subclasses can override the equality checks.
   public func equals(_ other: AnyColorBox) -> Bool {
     fatalError("implement \(#function) in subclass")
   }

@@ -81,7 +81,7 @@ public struct _PreferenceStore {
 /// calls `preferenceStore` during the current render, and `_PreferenceWritingViewProtocol`
 /// waits until the current render finishes.
 public protocol _PreferenceReadingViewProtocol {
-  func preferenceStore(_ preferenceStore: _PreferenceStore) -> AnyView
+  func preferenceStore(_ preferenceStore: _PreferenceStore)
 }
 
 /// A protocol that allows a `View` to modify values from the current `_PreferenceStore`.
@@ -94,12 +94,6 @@ public protocol _PreferenceWritingModifierProtocol: ViewModifier
   where Body == AnyView
 {
   func body(_ content: Self.Content, with preferenceStore: inout _PreferenceStore) -> AnyView
-}
-
-extension _PreferenceReadingViewProtocol where Self: View {
-  public var body: EmptyView {
-    EmptyView()
-  }
 }
 
 extension _PreferenceWritingViewProtocol where Self: View {

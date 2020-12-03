@@ -24,10 +24,6 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     on parent: MountedElement<R>? = nil,
     with reconciler: StackReconciler<R>
   ) {
-    if let preferenceReader = view.view as? _PreferenceReadingViewProtocol {
-      view = preferenceReader.preferenceStore(preferenceStore)
-    }
-
     let childBody = reconciler.render(compositeView: self)
 
     let child: MountedElement<R> = childBody.makeMountedView(
@@ -68,6 +64,10 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
         if let parent = parent {
           parent.preferenceStore.merge(with: self.preferenceStore)
         }
+      }
+
+      if let preferenceReader = self.view.view as? _PreferenceReadingViewProtocol {
+        preferenceReader.preferenceStore(self.preferenceStore)
       }
     })
   }

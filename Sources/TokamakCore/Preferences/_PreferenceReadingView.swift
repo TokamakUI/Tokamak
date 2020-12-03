@@ -15,52 +15,26 @@
 //  Created by Carson Katri on 11/26/20.
 //
 
-/// Accesses a `PreferenceKey.Value`.
-public struct _PreferenceReadingView<Key, Content>: View, _PreferenceReadingViewProtocol
-  where Key: PreferenceKey, Content: View
-{
-  public let value: _PreferenceValue<Key>
-  public let transform: (Key.Value) -> Content
-
-  public init(
-    value: _PreferenceValue<Key>,
-    transform: @escaping (Key.Value) -> Content
-  ) {
-    self.value = value
-    self.transform = transform
-  }
-
-  public func preferenceStore(_ preferenceStore: _PreferenceStore) -> AnyView {
-    AnyView(transform(
-      preferenceStore.value(forKey: Key.self).value
-    ))
-  }
-}
-
-extension _PreferenceValue {
-  public func _force<T>(
-    _ transform: @escaping (Key.Value) -> T
-  ) -> _PreferenceReadingView<Key, T>
-    where T: View
-  {
-    _PreferenceReadingView(value: self, transform: transform)
-  }
-}
-
 /// Delays the retrieval of a `PreferenceKey.Value` by passing the `_PreferenceValue` to a build
 /// function.
 public struct _DelayedPreferenceView<Key, Content>: View, _PreferenceReadingViewProtocol
   where Key: PreferenceKey, Content: View
 {
+  @State private var resolvedValue: _PreferenceValue<Key> = _PreferenceValue(
+    valueList: [Key.defaultValue]
+  )
   public let transform: (_PreferenceValue<Key>) -> Content
+
   public init(transform: @escaping (_PreferenceValue<Key>) -> Content) {
     self.transform = transform
   }
 
-  public func preferenceStore(_ preferenceStore: _PreferenceStore) -> AnyView {
-    AnyView(
-      transform(preferenceStore.value(forKey: Key.self))
-    )
+  public func preferenceStore(_ preferenceStore: _PreferenceStore) {
+    resolvedValue = preferenceStore.value(forKey: Key.self)
+  }
+
+  public var body: some View {
+    transform(resolvedValue)
   }
 }
 
@@ -81,7 +55,7 @@ extension View {
   ) -> some View
     where Key: PreferenceKey, T: View
   {
-    Key._delay { self.overlay($0._force(transform)) }
+    Key._delay { self.overlay(transform($0.value)) }
   }
 
   public func backgroundPreferenceValue<Key, T>(
@@ -90,6 +64,6 @@ extension View {
   ) -> some View
     where Key: PreferenceKey, T: View
   {
-    Key._delay { self.background($0._force(transform)) }
+    Key._delay { self.background(transform($0.value)) }
   }
 }
