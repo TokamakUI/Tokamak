@@ -1,4 +1,4 @@
-<img alt="Tokamak logo" src="docs/logo-header.png" width="640px"/>
+<img alt="Tokamak logo" src="Sources/TokamakDemo/logo-header.png" width="640px"/>
 
 ## SwiftUI-compatible framework for building browser apps with WebAssembly
 

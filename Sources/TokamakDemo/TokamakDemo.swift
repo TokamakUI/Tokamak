@@ -68,6 +68,9 @@ struct TokamakDemoView: View {
     NavigationView { () -> AnyView in
       let list = title(
         List {
+          Image("logo-header.png", label: Text("Tokamak Demo"))
+            .frame(height: 50)
+            .padding(.bottom, 20)
           Section(header: Text("Buttons")) {
             NavItem(
               "Counter",
