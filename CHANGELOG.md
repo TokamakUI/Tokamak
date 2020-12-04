@@ -1,3 +1,18 @@
+# 0.6.0 (4 December 2020)
+
+This release introduces support for the `Image` view, which can load images bundled as SwiftPM
+resources. It also adds the `PreferenceKey` protocol and `preference(key:value:)`,
+`onPreferenceChange`, `backgroundPreferenceValue`, `transformPreference`, and
+`overlayPreferenceValue` modifiers. Many thanks to [@carson-katri](https://github.com/carson-katri)
+and [@j-f1](https://github.com/j-f1) for implementing this!
+
+**Merged pull requests:**
+
+- Add [@kateinoigakukun](https://github.com/kateinoigakukun) to the list of maintainers ([#310](https://github.com/TokamakUI/Tokamak/pull/310)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add `Image` implementation, bump JSKit to 0.9.0 ([#155](https://github.com/TokamakUI/Tokamak/pull/155)) via [@j-f1](https://github.com/j-f1)
+- Add Preferences ([#307](https://github.com/TokamakUI/Tokamak/pull/307)) via [@carson-katri](https://github.com/carson-katri)
+- Remove unused Dangerfile.swift ([#311](https://github.com/TokamakUI/Tokamak/pull/311)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
 # 0.5.3 (28 November 2020)
 
 A bugfix release that fixes `Toggle` values not updated when reset from a binding. Additionally, the

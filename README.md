@@ -135,7 +135,7 @@ app by following these steps:
 brew install swiftwasm/tap/carton
 ```
 
-If you had `carton` installed before this, make sure you have version 0.8.2 or greater:
+If you had `carton` installed before this, make sure you have version 0.9.0 or greater:
 
 ```
 carton --version
