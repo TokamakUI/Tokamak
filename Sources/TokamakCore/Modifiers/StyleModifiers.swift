@@ -28,7 +28,11 @@ public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
   }
 
   public func body(content: Content) -> some View {
-    content
+    // FIXME: Clip to bounds of foreground.
+    ZStack(alignment: alignment) {
+      background
+      content
+    }
   }
 
   mutating func setContent(from values: EnvironmentValues) {
@@ -67,6 +71,7 @@ public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
   }
 
   public func body(content: Content) -> some View {
+    // FIXME: Clip to content shape.
     ZStack(alignment: alignment) {
       content
       overlay

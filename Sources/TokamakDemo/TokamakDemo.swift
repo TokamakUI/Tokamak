@@ -129,6 +129,9 @@ struct TokamakDemoView: View {
           Section(header: Text("Misc")) {
             NavItem("Path", destination: PathDemo())
             NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8)))
+            if #available(macOS 11.0, iOS 14.0, *) {
+              NavItem("Preferences", destination: PreferenceKeyDemo())
+            }
             NavItem("Color", destination: ColorDemo())
             if #available(OSX 11.0, iOS 14.0, *) {
               NavItem("AppStorage", destination: AppStorageDemo())

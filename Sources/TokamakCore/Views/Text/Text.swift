@@ -116,6 +116,10 @@ public extension Text {
     .init(storage: storage, modifiers: modifiers + [.font(font)])
   }
 
+  func foregroundColor(_ color: Color?) -> Text {
+    .init(storage: storage, modifiers: modifiers + [.color(color)])
+  }
+
   func fontWeight(_ weight: Font.Weight?) -> Text {
     .init(storage: storage, modifiers: modifiers + [.weight(weight)])
   }

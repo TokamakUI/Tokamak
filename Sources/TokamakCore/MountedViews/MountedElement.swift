@@ -88,20 +88,31 @@ public class MountedElement<R: Renderer> {
   var mountedChildren = [MountedElement<R>]()
   var environmentValues: EnvironmentValues
 
-  init(_ app: _AnyApp, _ environmentValues: EnvironmentValues) {
+  unowned var parent: MountedElement<R>?
+  /// `didSet` on this field propagates the preference changes up the view tree.
+  var preferenceStore: _PreferenceStore = .init() {
+    didSet {
+      parent?.preferenceStore.merge(with: preferenceStore)
+    }
+  }
+
+  init(_ app: _AnyApp, _ environmentValues: EnvironmentValues, _ parent: MountedElement<R>?) {
     element = .app(app)
+    self.parent = parent
     self.environmentValues = environmentValues
     updateEnvironment()
   }
 
-  init(_ scene: _AnyScene, _ environmentValues: EnvironmentValues) {
+  init(_ scene: _AnyScene, _ environmentValues: EnvironmentValues, _ parent: MountedElement<R>?) {
     element = .scene(scene)
+    self.parent = parent
     self.environmentValues = environmentValues
     updateEnvironment()
   }
 
-  init(_ view: AnyView, _ environmentValues: EnvironmentValues) {
+  init(_ view: AnyView, _ environmentValues: EnvironmentValues, _ parent: MountedElement<R>?) {
     element = .view(view)
+    self.parent = parent
     self.environmentValues = environmentValues
     updateEnvironment()
   }
@@ -122,7 +133,11 @@ public class MountedElement<R: Renderer> {
     return info
   }
 
-  func mount(before sibling: R.TargetType? = nil, with reconciler: StackReconciler<R>) {
+  func mount(
+    before sibling: R.TargetType? = nil,
+    on parent: MountedElement<R>? = nil,
+    with reconciler: StackReconciler<R>
+  ) {
     fatalError("implement \(#function) in subclass")
   }
 
@@ -217,14 +232,15 @@ extension TypeInfo {
 extension AnyView {
   func makeMountedView<R: Renderer>(
     _ parentTarget: R.TargetType,
-    _ environmentValues: EnvironmentValues
+    _ environmentValues: EnvironmentValues,
+    _ parent: MountedElement<R>?
   ) -> MountedElement<R> {
     if type == EmptyView.self {
-      return MountedEmptyView(self, environmentValues)
+      return MountedEmptyView(self, environmentValues, parent)
     } else if bodyType == Never.self && !(type is ViewDeferredToRenderer.Type) {
-      return MountedHostView(self, parentTarget, environmentValues)
+      return MountedHostView(self, parentTarget, environmentValues, parent)
     } else {
-      return MountedCompositeView(self, parentTarget, environmentValues)
+      return MountedCompositeView(self, parentTarget, environmentValues, parent)
     }
   }
 }

@@ -65,4 +65,9 @@ extension EnvironmentValues {
   }
 }
 
-public let _navigationDestinationKey = \EnvironmentValues.navigationDestination
+struct NavigationTitleKey: PreferenceKey {
+  typealias Value = AnyView?
+  static func reduce(value: inout AnyView?, nextValue: () -> AnyView?) {
+    value = nextValue()
+  }
+}

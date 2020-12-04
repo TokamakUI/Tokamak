@@ -22,8 +22,13 @@ public struct _ViewModifier_Content<Modifier>: View where Modifier: ViewModifier
   public let modifier: Modifier
   public let view: AnyView
 
-  public var body: Never {
-    neverBody("_ViewModifier_Content")
+  public init(modifier: Modifier, view: AnyView) {
+    self.modifier = modifier
+    self.view = view
+  }
+
+  public var body: AnyView {
+    view
   }
 }
 
@@ -35,6 +40,8 @@ public extension View {
 
 public extension ViewModifier where Body == Never {
   func body(content: Content) -> Body {
-    fatalError("\(self) is a primitive `ViewModifier`, you're not supposed to run `body(content:)`")
+    fatalError(
+      "\(Self.self) is a primitive `ViewModifier`, you're not supposed to run `body(content:)`"
+    )
   }
 }

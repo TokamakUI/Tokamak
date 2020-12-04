@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public enum ColorScheme: CaseIterable {
+public enum ColorScheme: CaseIterable, Equatable {
   case dark
   case light
 }
@@ -33,5 +33,18 @@ public extension EnvironmentValues {
 public extension View {
   func colorScheme(_ colorScheme: ColorScheme) -> some View {
     environment(\.colorScheme, colorScheme)
+  }
+}
+
+public struct PreferredColorSchemeKey: PreferenceKey {
+  public typealias Value = ColorScheme?
+  public static func reduce(value: inout Value, nextValue: () -> Value) {
+    value = nextValue()
+  }
+}
+
+public extension View {
+  func preferredColorScheme(_ colorScheme: ColorScheme?) -> some View {
+    preference(key: PreferredColorSchemeKey.self, value: colorScheme)
   }
 }
