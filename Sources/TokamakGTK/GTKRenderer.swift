@@ -42,11 +42,6 @@ final class GTKRenderer: Renderer {
   ) {
     self.gtkAppRef = gtk_application_new(nil, G_APPLICATION_FLAGS_NONE)
 
-    // We setup 2 semaphores, one tracks the app's 'activation' status (was the 'activate' signal called)
-    // the other tracks the app's lifecycle (was the app closed).
-    let activationSema = DispatchSemaphore(value: 0)
-    let lifecycleSema = DispatchSemaphore(value: 0)
-
     gtkAppRef.withMemoryRebound(to: GApplication.self, capacity: 1) { gApp in
       gApp.connect(signal: "activate") {
         let window: UnsafeMutablePointer<GtkWidget>
@@ -55,33 +50,26 @@ final class GTKRenderer: Renderer {
           gtk_window_set_default_size($0, 200, 100)
         }
         gtk_widget_show_all(window)
-
+        
         GTKRenderer.sharedWindow = window
 
-        activationSema.signal()
+        self.reconciler = StackReconciler(
+          app: app,
+          target: Widget(window),
+          environment: .defaultEnvironment,
+          renderer: self,
+          scheduler: { next in
+            DispatchQueue.main.async {
+              next()
+              gtk_widget_show_all(window)
+            }
+          }
+        )
       }
 
-      DispatchQueue.global(qos: .background).async {
-        let status = g_application_run(gApp, 0, nil)
-        lifecycleSema.signal()
-        print(status)
-      }
+      let status = g_application_run(gApp, 0, nil)
+      exit(status)
     }
-
-    activationSema.wait()
-
-    self.reconciler = StackReconciler(
-      app: app,
-      target: Widget(GTKRenderer.sharedWindow),
-      environment: .defaultEnvironment,
-      renderer: self
-    ) {
-      $0()
-      gtk_widget_show_all(GTKRenderer.sharedWindow)
-    }
-
-    lifecycleSema.wait()
-    exit(0)
   }
 
   public func mountTarget(to parent: Widget, with host: MountedHost) -> Widget? {

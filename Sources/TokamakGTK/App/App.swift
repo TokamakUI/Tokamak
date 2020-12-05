@@ -18,7 +18,7 @@
 import TokamakCore
 import CGTK
 import Dispatch
-import OpenCombine
+import CombineShim
 
 extension App {
   public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {

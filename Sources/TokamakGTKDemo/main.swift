@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 10/10/20.
 //
 
-import TokamakShim
+import TokamakGTK
 import Foundation
 
 struct Counter: View {

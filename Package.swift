@@ -91,7 +91,7 @@ let package = Package(
     ),
     .target(
       name: "TokamakGTK",
-      dependencies: ["TokamakCore", "CGTK", "TokamakGTKCHelpers"]
+      dependencies: ["TokamakCore", "CGTK", "TokamakGTKCHelpers", "CombineShim"]
     ),
     .target(
       name: "TokamakGTKDemo",
