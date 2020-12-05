@@ -76,10 +76,10 @@ public class MountedElement<R: Renderer> {
   var typeConstructorName: String {
     switch element {
     case .app: fatalError("""
-    `App` values aren't supposed to be reconciled, thus the type constructor name is not stored \
-    for `App` elements. Please report this crash as a bug at \
-    https://github.com/swiftwasm/Tokamak/issues/new
-    """)
+      `App` values aren't supposed to be reconciled, thus the type constructor name is not stored \
+      for `App` elements. Please report this crash as a bug at \
+      https://github.com/swiftwasm/Tokamak/issues/new
+      """)
     case let .scene(scene): return scene.typeConstructorName
     case let .view(view): return view.typeConstructorName
     }
@@ -88,20 +88,31 @@ public class MountedElement<R: Renderer> {
   var mountedChildren = [MountedElement<R>]()
   var environmentValues: EnvironmentValues
 
-  init(_ app: _AnyApp, _ environmentValues: EnvironmentValues) {
+  unowned var parent: MountedElement<R>?
+  /// `didSet` on this field propagates the preference changes up the view tree.
+  var preferenceStore: _PreferenceStore = .init() {
+    didSet {
+      parent?.preferenceStore.merge(with: preferenceStore)
+    }
+  }
+
+  init(_ app: _AnyApp, _ environmentValues: EnvironmentValues, _ parent: MountedElement<R>?) {
     element = .app(app)
+    self.parent = parent
     self.environmentValues = environmentValues
     updateEnvironment()
   }
 
-  init(_ scene: _AnyScene, _ environmentValues: EnvironmentValues) {
+  init(_ scene: _AnyScene, _ environmentValues: EnvironmentValues, _ parent: MountedElement<R>?) {
     element = .scene(scene)
+    self.parent = parent
     self.environmentValues = environmentValues
     updateEnvironment()
   }
 
-  init(_ view: AnyView, _ environmentValues: EnvironmentValues) {
+  init(_ view: AnyView, _ environmentValues: EnvironmentValues, _ parent: MountedElement<R>?) {
     element = .view(view)
+    self.parent = parent
     self.environmentValues = environmentValues
     updateEnvironment()
   }
@@ -122,7 +133,11 @@ public class MountedElement<R: Renderer> {
     return info
   }
 
-  func mount(with reconciler: StackReconciler<R>) {
+  func mount(
+    before sibling: R.TargetType? = nil,
+    on parent: MountedElement<R>? = nil,
+    with reconciler: StackReconciler<R>
+  ) {
     fatalError("implement \(#function) in subclass")
   }
 
@@ -132,6 +147,19 @@ public class MountedElement<R: Renderer> {
 
   func update(with reconciler: StackReconciler<R>) {
     fatalError("implement \(#function) in subclass")
+  }
+
+  /** Traverses the tree of elements from `self` to all first descendants looking for the nearest
+   `target` in a `MountedHostView`, skipping `GroupView`. The result is then used as a "cursor"
+   passed to the `mount` function of a `Renderer` implementation, allowing correct in-tree updates.
+   */
+  var firstDescendantTarget: R.TargetType? {
+    guard let hostView = self as? MountedHostView<R>, !(hostView.view.type is GroupView.Type)
+    else {
+      return mountedChildren.first?.firstDescendantTarget
+    }
+
+    return hostView.target
   }
 }
 
@@ -144,7 +172,7 @@ extension TypeInfo {
     // swiftlint:disable force_try
     // Extract the view from the AnyView for modification, apply Environment changes:
     if genericTypes.contains(where: { $0 is EnvironmentModifier.Type }),
-      let modifier = try! property(named: "modifier").get(from: element) as? EnvironmentModifier
+       let modifier = try! property(named: "modifier").get(from: element) as? EnvironmentModifier
     {
       modifier.modifyEnvironment(&modifiedEnv)
     }
@@ -204,14 +232,15 @@ extension TypeInfo {
 extension AnyView {
   func makeMountedView<R: Renderer>(
     _ parentTarget: R.TargetType,
-    _ environmentValues: EnvironmentValues
+    _ environmentValues: EnvironmentValues,
+    _ parent: MountedElement<R>?
   ) -> MountedElement<R> {
     if type == EmptyView.self {
-      return MountedEmptyView(self, environmentValues)
+      return MountedEmptyView(self, environmentValues, parent)
     } else if bodyType == Never.self && !(type is ViewDeferredToRenderer.Type) {
-      return MountedHostView(self, parentTarget, environmentValues)
+      return MountedHostView(self, parentTarget, environmentValues, parent)
     } else {
-      return MountedCompositeView(self, parentTarget, environmentValues)
+      return MountedCompositeView(self, parentTarget, environmentValues, parent)
     }
   }
 }

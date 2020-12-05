@@ -74,9 +74,9 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootElement = AnyView(view).makeMountedView(target, environment)
+    rootElement = AnyView(view).makeMountedView(target, environment, nil)
 
-    rootElement.mount(with: self)
+    performInitialMount()
   }
 
   public init<A: App>(
@@ -90,13 +90,18 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootElement = MountedApp(app, target, environment)
+    rootElement = MountedApp(app, target, environment, nil)
 
-    rootElement.mount(with: self)
+    performInitialMount()
     if let mountedApp = rootElement as? MountedApp<R> {
       setupPersistentSubscription(for: app._phasePublisher, to: \.scenePhase, of: mountedApp)
       setupPersistentSubscription(for: app._colorSchemePublisher, to: \.colorScheme, of: mountedApp)
     }
+  }
+
+  private func performInitialMount() {
+    rootElement.mount(with: self)
+    performPostrenderCallbacks()
   }
 
   private func queueStorageUpdate(
@@ -108,7 +113,7 @@ public final class StackReconciler<R: Renderer> {
     queueUpdate(for: mountedElement)
   }
 
-  private func queueUpdate(for mountedElement: MountedCompositeElement<R>) {
+  internal func queueUpdate(for mountedElement: MountedCompositeElement<R>) {
     let shouldSchedule = queuedRerenders.isEmpty
     queuedRerenders.insert(mountedElement)
 
@@ -123,6 +128,7 @@ public final class StackReconciler<R: Renderer> {
     }
 
     queuedRerenders.removeAll()
+    performPostrenderCallbacks()
   }
 
   private func setupStorage(
@@ -277,5 +283,15 @@ public final class StackReconciler<R: Renderer> {
         newMountedChild.mount(with: self)
       }
     }
+  }
+
+  private var queuedPostrenderCallbacks = [() -> ()]()
+  func afterCurrentRender(perform callback: @escaping () -> ()) {
+    queuedPostrenderCallbacks.append(callback)
+  }
+
+  private func performPostrenderCallbacks() {
+    queuedPostrenderCallbacks.forEach { $0() }
+    queuedPostrenderCallbacks.removeAll()
   }
 }

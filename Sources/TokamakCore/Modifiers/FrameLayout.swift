@@ -28,8 +28,8 @@ public struct _FrameLayout: ViewModifier {
   }
 }
 
-extension View {
-  public func frame(
+public extension View {
+  func frame(
     width: CGFloat? = nil,
     height: CGFloat? = nil,
     alignment: Alignment = .center

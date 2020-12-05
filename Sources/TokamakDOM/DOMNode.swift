@@ -24,12 +24,25 @@ extension AnyHTML {
     // @carson-katri: For diffing, could you build a Set from the keys and values of the dictionary,
     // then use the standard lib to get the difference?
 
+    // `checked` attribute on checkboxes is a special one as its value doesn't matter. We only
+    // need to check whether it exists or not, and set the property if it doesn't.
+    var containsChecked = false
     for (attribute, value) in attributes {
       if attribute.isUpdatedAsProperty {
         dom.ref[dynamicMember: attribute.value] = .string(value)
       } else {
         _ = dom.ref.setAttribute!(attribute.value, value)
       }
+
+      if attribute == .checked {
+        containsChecked = true
+      }
+    }
+
+    if !containsChecked && dom.ref.type == "checkbox" &&
+        dom.ref.tagName.string!.lowercased() == "input"
+    {
+      dom.ref.checked = .boolean(false)
     }
 
     if let dynamicSelf = self as? AnyDynamicHTML {

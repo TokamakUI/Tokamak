@@ -46,8 +46,8 @@ public struct TextField<Label>: View where Label: View {
   }
 }
 
-extension TextField where Label == Text {
-  public init<S>(
+public extension TextField where Label == Text {
+  init<S>(
     _ title: S,
     text: Binding<String>,
     onEditingChanged: @escaping (Bool) -> () = { _ in },

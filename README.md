@@ -1,4 +1,4 @@
-<img alt="Tokamak logo" src="docs/logo-header.png" width="640px"/>
+<img alt="Tokamak logo" src="Sources/TokamakDemo/logo-header.png" width="640px"/>
 
 ## SwiftUI-compatible framework for building browser apps with WebAssembly
 
@@ -135,7 +135,7 @@ app by following these steps:
 brew install swiftwasm/tap/carton
 ```
 
-If you had `carton` installed before this, make sure you have version 0.6.1 or greater:
+If you had `carton` installed before this, make sure you have version 0.9.0 or greater:
 
 ```
 carton --version
@@ -164,8 +164,41 @@ carton dev
    running. You can edit the app source code in your favorite editor and save it, `carton`
    will immediately rebuild the app and reload all browser tabs that have the app open.
 
-You can also clone this repository and run `carton dev` in its root directory. This
-will build the demo app that shows almost all of the currently implemented APIs.
+You can also clone this repository and run `carton dev --product TokamakDemo` in its root
+directory. This will build the demo app that shows almost all of the currently implemented APIs.
+
+## Troubleshooting
+
+### `unable to find utility "xctest"` error when building
+
+This error can only happen on macOS, so make sure you have Xcode installed as listed [in the
+requirements](#requirements-for-app-developers). If you do have Xcode installed but still get the
+error, please refer to [this StackOverflow answer](https://stackoverflow.com/a/61725799/442427).
+
+### Syntax highlighting and autocomplete don't work in Xcode
+
+Open `Package.swift` of your project that depends on Tokamak with Xcode and build it for macOS.
+As Xcode currently doesn't support cross-compilation for non-Apple platforms, your project can't
+be indexed if it doesn't build for macOS, even if it isn't fully function on macOS when running.
+If you need to exclude some WebAssembly-specific code in your own app that doesn't compile on macOS,
+you can rely on `#if os(WASI)` compiler directives.
+
+All relevant modules of Tokamak (including `TokamakDOM`) should compile on macOS. You may see issues
+with `TokamakShim` on macOS Catalina, where relevant SwiftUI APIs aren't supported, but replacing
+`import TokamakShim` with `import TokamakDOM` should resolve the issue until you're able to update
+to macOS Big Sur.
+
+If you stumble upon code in Tokamak that doesn't build on macOS and prevents syntax highlighting or
+autocomplete from working in Xcode, please [report it as a
+bug](https://github.com/TokamakUI/Tokamak/issues/new).
+
+### Syntax highlighting and autocomplete don't work in VSCode
+
+Make sure you have [the SourceKit LSP
+extension](https://marketplace.visualstudio.com/items?itemName=pvasek.sourcekit-lsp--dev-unofficial)
+installed. If you don't trust this unofficial release, please follow [the manual building and
+installation guide](https://github.com/apple/sourcekit-lsp/tree/main/Editors/vscode). Apple currently
+doesn't provide an official build of the extension on the VSCode Marketplace unfortunately.
 
 ## Contributing
 
@@ -237,7 +270,7 @@ unacceptable behavior to conduct@tokamak.dev.
 ### Sponsorship
 
 If this library saved you any amount of time or money, please consider sponsoring
-the work of its maintainers on their sponsorship pages: 
+the work of its maintainers on their sponsorship pages:
 [@carson-katri](https://github.com/sponsors/carson-katri),
 [@kateinoigakukun](https://github.com/sponsors/kateinoigakukun), and
 [@MaxDesiatov](https://github.com/sponsors/MaxDesiatov). While some of the
@@ -246,8 +279,9 @@ appreciated and helps in maintaining the project.
 
 ## Maintainers
 
-[Carson Katri](https://github.com/carson-katri),
-[Jed Fox](https://jedfox.com), [Max Desiatov](https://desiatov.com).
+In alphabetical order: [Carson Katri](https://github.com/carson-katri),
+[Jed Fox](https://jedfox.com), [Max Desiatov](https://desiatov.com),
+[Yuta Saito](https://github.com/kateinoigakukun/).
 
 ## Acknowledgments
 

@@ -24,7 +24,7 @@ import TokamakCore
 
 public func testScheduler(closure: @escaping () -> ()) {
   #if os(WASI)
-  let fn = JSClosure { _ in
+  let fn = JSClosure { _ -> JSValue in
     closure()
     return .undefined
   }
@@ -52,6 +52,7 @@ public final class TestRenderer: Renderer {
   }
 
   public func mountTarget(
+    before _: TestView?,
     to parent: TestView,
     with mountedHost: TestRenderer.MountedHost
   ) -> TestView? {

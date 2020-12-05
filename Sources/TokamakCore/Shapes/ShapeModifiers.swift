@@ -15,8 +15,8 @@
 //  Created by Carson Katri on 6/29/20.
 //
 
-extension InsettableShape {
-  public func strokeBorder<S>(
+public extension InsettableShape {
+  func strokeBorder<S>(
     _ content: S,
     style: StrokeStyle,
     antialiased: Bool = true
@@ -27,14 +27,14 @@ extension InsettableShape {
   }
 
   @inlinable
-  public func strokeBorder(style: StrokeStyle, antialiased: Bool = true) -> some View {
+  func strokeBorder(style: StrokeStyle, antialiased: Bool = true) -> some View {
     inset(by: style.lineWidth / 2)
       .stroke(style: style)
       .fill(style: FillStyle(antialiased: antialiased))
   }
 
   @inlinable
-  public func strokeBorder<S>(
+  func strokeBorder<S>(
     _ content: S,
     lineWidth: CGFloat = 1,
     antialiased: Bool = true
@@ -47,7 +47,7 @@ extension InsettableShape {
   }
 
   @inlinable
-  public func strokeBorder(lineWidth: CGFloat = 1, antialiased: Bool = true) -> some View {
+  func strokeBorder(lineWidth: CGFloat = 1, antialiased: Bool = true) -> some View {
     strokeBorder(
       style: StrokeStyle(lineWidth: lineWidth),
       antialiased: antialiased

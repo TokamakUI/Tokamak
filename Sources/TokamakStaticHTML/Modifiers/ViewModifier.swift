@@ -20,8 +20,8 @@ public protocol DOMViewModifier {
   var isOrderDependent: Bool { get }
 }
 
-extension DOMViewModifier {
-  public var isOrderDependent: Bool { false }
+public extension DOMViewModifier {
+  var isOrderDependent: Bool { false }
 }
 
 extension ModifiedContent: DOMViewModifier

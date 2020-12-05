@@ -22,12 +22,18 @@ import Runtime
 // is the computed content of the specified `Scene`, instead of having child
 // `View`s
 final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
-  override func mount(with reconciler: StackReconciler<R>) {
+  override func mount(
+    before _: R.TargetType? = nil,
+    on _: MountedElement<R>? = nil,
+    with reconciler: StackReconciler<R>
+  ) {
+    // `App` elements have no siblings, hence the `before` argument is discarded.
+    // They also have no parents, so the `parent` argument is discarded as well.
     let childBody = reconciler.render(mountedApp: self)
 
     let child: MountedElement<R> = mountChild(childBody)
     mountedChildren = [child]
-    child.mount(with: reconciler)
+    child.mount(before: nil, on: self, with: reconciler)
   }
 
   override func unmount(with reconciler: StackReconciler<R>) {
@@ -35,7 +41,8 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
   }
 
   private func mountChild(_ childBody: _AnyScene) -> MountedElement<R> {
-    let mountedScene: MountedScene<R> = childBody.makeMountedScene(parentTarget, environmentValues)
+    let mountedScene: MountedScene<R> = childBody
+      .makeMountedScene(parentTarget, environmentValues, self)
     if let title = mountedScene.title {
       // swiftlint:disable force_cast
       (app.type as! _TitledApp.Type)._setTitle(title)

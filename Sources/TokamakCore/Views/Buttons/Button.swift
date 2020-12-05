@@ -63,8 +63,8 @@ public struct _Button<Label>: View where Label: View {
   }
 }
 
-extension Button where Label == Text {
-  public init<S>(_ title: S, action: @escaping () -> ()) where S: StringProtocol {
+public extension Button where Label == Text {
+  init<S>(_ title: S, action: @escaping () -> ()) where S: StringProtocol {
     self.init(action: action) {
       Text(title)
     }

@@ -47,8 +47,8 @@ extension ModifiedContent: ViewModifier where Content: ViewModifier, Modifier: V
   }
 }
 
-extension ViewModifier {
-  public func concat<T>(_ modifier: T) -> ModifiedContent<Self, T> where T: ViewModifier {
+public extension ViewModifier {
+  func concat<T>(_ modifier: T) -> ModifiedContent<Self, T> where T: ViewModifier {
     .init(content: self, modifier: modifier)
   }
 }

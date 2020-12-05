@@ -16,7 +16,7 @@ import TokamakCore
 
 extension Color {
   func cssValue(_ environment: EnvironmentValues) -> String {
-    let rgba = _evaluate(environment)
+    let rgba = _ColorProxy(self).resolve(in: environment)
     return "rgba(\(rgba.red * 255), \(rgba.green * 255), \(rgba.blue * 255), \(rgba.opacity))"
   }
 }

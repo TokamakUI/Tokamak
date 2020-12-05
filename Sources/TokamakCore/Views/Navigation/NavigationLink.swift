@@ -50,10 +50,10 @@ public struct NavigationLink<Label, Destination>: View where Label: View, Destin
   }
 }
 
-extension NavigationLink where Label == Text {
+public extension NavigationLink where Label == Text {
   /// Creates an instance that presents `destination`, with a `Text` label
   /// generated from a title string.
-  public init<S>(_ title: S, destination: Destination) where S: StringProtocol {
+  init<S>(_ title: S, destination: Destination) where S: StringProtocol {
     self.init(destination: destination) { Text(title) }
   }
 
@@ -92,7 +92,7 @@ public struct _NavigationLinkProxy<Label, Destination> where Label: View, Destin
 
   public var style: _AnyNavigationLinkStyle { subject.style }
   public var isSelected: Bool {
-    ObjectIdentifier(subject.destination) == ObjectIdentifier(subject.navigationContext.destination)
+    subject.destination === subject.navigationContext.destination
   }
 
   public func activate() {

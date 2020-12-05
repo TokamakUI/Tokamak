@@ -53,8 +53,8 @@ import CombineShim
 
 extension AppStorage: ObservedProperty {}
 
-extension AppStorage {
-  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+public extension AppStorage {
+  init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
     where Value == Bool
   {
     defaultValue = wrappedValue
@@ -64,7 +64,7 @@ extension AppStorage {
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+  init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
     where Value == Int
   {
     defaultValue = wrappedValue
@@ -74,7 +74,7 @@ extension AppStorage {
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+  init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
     where Value == Double
   {
     defaultValue = wrappedValue
@@ -84,7 +84,7 @@ extension AppStorage {
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+  init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
     where Value == String
   {
     defaultValue = wrappedValue
@@ -94,7 +94,7 @@ extension AppStorage {
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+  init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
     where Value: RawRepresentable, Value.RawValue == Int
   {
     defaultValue = wrappedValue
@@ -109,7 +109,7 @@ extension AppStorage {
     }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+  init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
     where Value: RawRepresentable, Value.RawValue == String
   {
     defaultValue = wrappedValue
@@ -125,8 +125,8 @@ extension AppStorage {
   }
 }
 
-extension AppStorage where Value: ExpressibleByNilLiteral {
-  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+public extension AppStorage where Value: ExpressibleByNilLiteral {
+  init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
     where Value == Bool?
   {
     defaultValue = wrappedValue
@@ -136,7 +136,7 @@ extension AppStorage where Value: ExpressibleByNilLiteral {
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+  init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
     where Value == Int?
   {
     defaultValue = wrappedValue
@@ -146,7 +146,7 @@ extension AppStorage where Value: ExpressibleByNilLiteral {
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+  init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
     where Value == Double?
   {
     defaultValue = wrappedValue
@@ -156,7 +156,7 @@ extension AppStorage where Value: ExpressibleByNilLiteral {
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
+  init(wrappedValue: Value, _ key: String, store: _StorageProvider? = nil)
     where Value == String?
   {
     defaultValue = wrappedValue
@@ -172,8 +172,8 @@ struct DefaultAppStorageEnvironmentKey: EnvironmentKey {
   static let defaultValue: _StorageProvider? = nil
 }
 
-extension EnvironmentValues {
-  public var _defaultAppStorage: _StorageProvider? {
+public extension EnvironmentValues {
+  var _defaultAppStorage: _StorageProvider? {
     get {
       self[DefaultAppStorageEnvironmentKey.self]
     }
@@ -183,8 +183,8 @@ extension EnvironmentValues {
   }
 }
 
-extension View {
-  public func defaultAppStorage(_ store: _StorageProvider) -> some View {
+public extension View {
+  func defaultAppStorage(_ store: _StorageProvider) -> some View {
     environment(\._defaultAppStorage, store)
   }
 }

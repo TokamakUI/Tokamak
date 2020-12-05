@@ -1,23 +1,22 @@
 name: CI
 
 on:
-  push:
-    branches: [main]
   pull_request:
+  push:
     branches: [main]
 
 jobs:
-  linux_build:
+  swiftwasm_build:
     runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
-      - uses: swiftwasm/swiftwasm-action@master
+      - uses: swiftwasm/swiftwasm-action@v5.3
         with:
-          shell-action: swift build --triple wasm32-unknown-wasi --product TokamakDemo
+          shell-action: carton bundle --product TokamakDemo
 
   macos_build:
-    runs-on: macos-10.15
+    runs-on: macos-11.0
 
     steps:
       - uses: actions/checkout@v2
@@ -25,8 +24,11 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo xcode-select --switch /Applications/Xcode_12_beta.app/Contents/Developer/
-          # swift test
+          sudo xcode-select --switch /Applications/Xcode_12.2.app/Contents/Developer/
+          # avoid building unrelated products for testing by specifying the test product explicitly
+          swift build --product TokamakPackageTests
+          `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest
+
           xcodebuild -version
           cd "NativeDemo"
           xcodebuild -scheme iOS -destination 'generic/platform=iOS' \

@@ -6,17 +6,26 @@
         "repositoryURL": "https://github.com/swiftwasm/JavaScriptKit.git",
         "state": {
           "branch": null,
-          "revision": "8ba4135d5fd6a734c3771ef3fac66896bbcb0214",
-          "version": "0.8.0"
+          "revision": "b7a02434c6e973c08c3fd5069105ef44dd82b891",
+          "version": "0.9.0"
         }
       },
       {
         "package": "OpenCombine",
-        "repositoryURL": "https://github.com/OpenCombine/OpenCombine.git",
+        "repositoryURL": "https://github.com/TokamakUI/OpenCombine.git",
         "state": {
-          "branch": "observable-object",
-          "revision": "b6aea2957a5746021c4dd2e1e5bee35f7175a7c4",
-          "version": null
+          "branch": null,
+          "revision": "bccff3e7c84bc559e1aa0aa9ca878400360d439d",
+          "version": "0.12.0-alpha2"
+        }
+      },
+      {
+        "package": "OpenCombineJS",
+        "repositoryURL": "https://github.com/swiftwasm/OpenCombineJS.git",
+        "state": {
+          "branch": null,
+          "revision": "b346f955ed21ab44576e204a7554210c77f69b9b",
+          "version": "0.0.1"
         }
       },
       {

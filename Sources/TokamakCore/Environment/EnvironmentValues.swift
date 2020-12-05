@@ -49,8 +49,8 @@ struct IsEnabledKey: EnvironmentKey {
   static let defaultValue = true
 }
 
-extension EnvironmentValues {
-  public var isEnabled: Bool {
+public extension EnvironmentValues {
+  var isEnabled: Bool {
     get {
       self[IsEnabledKey.self]
     }
@@ -72,8 +72,8 @@ struct _EnvironmentValuesWritingModifier: ViewModifier, EnvironmentModifier {
   }
 }
 
-extension View {
-  public func environmentValues(_ values: EnvironmentValues) -> some View {
+public extension View {
+  func environmentValues(_ values: EnvironmentValues) -> some View {
     modifier(_EnvironmentValuesWritingModifier(environmentValues: values))
   }
 }

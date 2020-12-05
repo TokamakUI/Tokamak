@@ -45,8 +45,8 @@ public struct SecureField<Label>: View where Label: View {
   }
 }
 
-extension SecureField where Label == Text {
-  public init<S>(
+public extension SecureField where Label == Text {
+  init<S>(
     _ title: S, text: Binding<String>,
     onCommit: @escaping () -> () = {}
   ) where S: StringProtocol {

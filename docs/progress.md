@@ -9,7 +9,6 @@ Table columns:
   - 🚧: some features work
   - ✅: feature-complete
 - Name of view
-- Beta indicator: β indicates the SwiftUI view is currently in beta on Apple platforms
 
 ## Views and Controls
 
@@ -19,14 +18,14 @@ Table columns:
 | --- | ---------------------------------------------------------------------------- | :-: |
 | 🚧  | [Text](https://developer.apple.com/documentation/swiftui/text)               |     |
 | 🚧  | [TextField](https://developer.apple.com/documentation/swiftui/textfield)     |     |
-| 🚧  | [SecureField](https://developer.apple.com/documentation/swiftui/securefield) |
-|     | [TextEditor](https://developer.apple.com/documentation/swiftui/texteditor)   |  β  |
+| 🚧  | [SecureField](https://developer.apple.com/documentation/swiftui/securefield) |     |
+|     | [TextEditor](https://developer.apple.com/documentation/swiftui/texteditor)   |     |
 
 ### Images
 
 |     |                                                                  |     |
 | --- | ---------------------------------------------------------------- | :-: |
-|     | [Image](https://developer.apple.com/documentation/swiftui/image) |     |
+| 🚧  | [Image](https://developer.apple.com/documentation/swiftui/image) |     |
 
 ### Buttons
 
@@ -36,8 +35,8 @@ Table columns:
 | 🚧  | [NavigationLink](https://developer.apple.com/documentation/swiftui/navigationlink)               |     |
 |     | [EditButton](https://developer.apple.com/documentation/swiftui/editbutton)                       |     |
 |     | [PasteButton](https://developer.apple.com/documentation/swiftui/pastebutton)                     |     |
-|     | [SignInWithAppleButton](https://developer.apple.com/documentation/swiftui/signinwithapplebutton) |  β  |
-|     | [Menu](https://developer.apple.com/documentation/swiftui/menu)                                   |  β  |
+|     | [SignInWithAppleButton](https://developer.apple.com/documentation/swiftui/signinwithapplebutton) |     |
+|     | [Menu](https://developer.apple.com/documentation/swiftui/menu)                                   |     |
 
 ### Value Selectors
 
@@ -48,16 +47,16 @@ Table columns:
 |     | [DatePicker](https://developer.apple.com/documentation/swiftui/datepicker)   |     |
 | 🚧  | [Slider](https://developer.apple.com/documentation/swiftui/slider)           |     |
 |     | [Stepper](https://developer.apple.com/documentation/swiftui/stepper)         |     |
-|     | [ColorPicker](https://developer.apple.com/documentation/swiftui/colorpicker) |  β  |
+|     | [ColorPicker](https://developer.apple.com/documentation/swiftui/colorpicker) |     |
 
 ### Value Indicators
 
 |     |                                                                                |     |
 | --- | ------------------------------------------------------------------------------ | :-: |
-|     | [ProgressView](https://developer.apple.com/documentation/swiftui/progressview) |  β  |
-|     | [Gauge](https://developer.apple.com/documentation/swiftui/gauge)               |  β  |
-|     | [Label](https://developer.apple.com/documentation/swiftui/label)               |  β  |
-|     | [Link](https://developer.apple.com/documentation/swiftui/link)                 |  β  |
+|     | [ProgressView](https://developer.apple.com/documentation/swiftui/progressview) |     |
+|     | [Gauge](https://developer.apple.com/documentation/swiftui/gauge)               |     |
+|     | [Label](https://developer.apple.com/documentation/swiftui/label)               |     |
+|     | [Link](https://developer.apple.com/documentation/swiftui/link)                 |     |
 
 ## View Layout and Presentation
 
@@ -68,16 +67,16 @@ Table columns:
 | 🚧  | [HStack](https://developer.apple.com/documentation/swiftui/hstack)         |     |
 | 🚧  | [VStack](https://developer.apple.com/documentation/swiftui/vstack)         |     |
 | 🚧  | [ZStack](https://developer.apple.com/documentation/swiftui/zstack)         |     |
-|     | [LazyHStack](https://developer.apple.com/documentation/swiftui/lazyhstack) |  β  |
-|     | [LazyVStack](https://developer.apple.com/documentation/swiftui/lazyvstack) |  β  |
+|     | [LazyHStack](https://developer.apple.com/documentation/swiftui/lazyhstack) |     |
+|     | [LazyVStack](https://developer.apple.com/documentation/swiftui/lazyvstack) |     |
 
 ### Grids
 
-|     |                                                                          |     |
-| --- | ------------------------------------------------------------------------ | :-: |
-|🚧| [LazyHGrid](https://developer.apple.com/documentation/swiftui/lazyhgrid) |  β  |
-|🚧| [LazyVGrid](https://developer.apple.com/documentation/swiftui/lazyvgrid) |  β  |
-|🚧| [GridItem](https://developer.apple.com/documentation/swiftui/griditem)   |  β  |
+|     |                                                                       |     |
+| --- | --------------------------------------------------------------------- | :-: |
+|🚧| [LazyHGrid](https://developer.apple.com/documentation/swiftui/lazyhgrid) |    |
+|🚧| [LazyVGrid](https://developer.apple.com/documentation/swiftui/lazyvgrid) |    |
+|🚧| [GridItem](https://developer.apple.com/documentation/swiftui/griditem)   |    |
 
 ### Lists and Scroll Views
 
@@ -86,9 +85,9 @@ Table columns:
 | 🚧  | [List](https://developer.apple.com/documentation/swiftui/list)                             |     |
 | 🚧  | [ForEach](https://developer.apple.com/documentation/swiftui/foreach)                       |     |
 | 🚧  | [ScrollView](https://developer.apple.com/documentation/swiftui/scrollview)                 |     |
-|     | [ScrollViewReader](https://developer.apple.com/documentation/swiftui/scrollviewreader)     |  β  |
-|     | [ScrollViewProxy](https://developer.apple.com/documentation/swiftui/scrollviewproxy)       |  β  |
-|     | [DynamicViewContent](https://developer.apple.com/documentation/swiftui/dynamicviewcontent) |  β  |
+|     | [ScrollViewReader](https://developer.apple.com/documentation/swiftui/scrollviewreader)     |     |
+|     | [ScrollViewProxy](https://developer.apple.com/documentation/swiftui/scrollviewproxy)       |     |
+|     | [DynamicViewContent](https://developer.apple.com/documentation/swiftui/dynamicviewcontent) |     |
 
 ### Container Views
 
@@ -101,10 +100,10 @@ Table columns:
 
 ### Hierarchical Views
 
-|     |                                                                                      |     |
-| --- | ------------------------------------------------------------------------------------ | :-: |
-|🚧| [OutlineGroup](https://developer.apple.com/documentation/swiftui/outlinegroup)       |  β  |
-|🚧| [DisclosureGroup](https://developer.apple.com/documentation/swiftui/disclosuregroup) |  β  |
+|     |                                                                                   |     |
+| --- | --------------------------------------------------------------------------------- | :-: |
+|🚧| [OutlineGroup](https://developer.apple.com/documentation/swiftui/outlinegroup)       |    |
+|🚧| [DisclosureGroup](https://developer.apple.com/documentation/swiftui/disclosuregroup) |    |
 
 ### Spacers and Dividers
 

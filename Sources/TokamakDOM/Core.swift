@@ -22,6 +22,8 @@ import TokamakCore
 public typealias Environment = TokamakCore.Environment
 public typealias EnvironmentObject = TokamakCore.EnvironmentObject
 
+public typealias PreferenceKey = TokamakCore.PreferenceKey
+
 public typealias Binding = TokamakCore.Binding
 public typealias ObservableObject = TokamakCore.ObservableObject
 public typealias ObservedObject = TokamakCore.ObservedObject
@@ -92,6 +94,7 @@ public typealias GeometryReader = TokamakCore.GeometryReader
 public typealias GridItem = TokamakCore.GridItem
 public typealias Group = TokamakCore.Group
 public typealias HStack = TokamakCore.HStack
+public typealias Image = TokamakCore.Image
 public typealias LazyHGrid = TokamakCore.LazyHGrid
 public typealias LazyVGrid = TokamakCore.LazyVGrid
 public typealias List = TokamakCore.List
@@ -131,8 +134,8 @@ public typealias ViewBuilder = TokamakCore.ViewBuilder
 
 // FIXME: I would put this inside TokamakCore, but for
 // some reason it doesn't get exported with the typealias
-extension Text {
-  public static func + (lhs: Self, rhs: Self) -> Self {
+public extension Text {
+  static func + (lhs: Self, rhs: Self) -> Self {
     _concatenating(lhs: lhs, rhs: rhs)
   }
 }

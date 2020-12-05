@@ -48,8 +48,8 @@ extension EnvironmentValues {
   }
 }
 
-extension View {
-  public func textFieldStyle(_ style: TextFieldStyle) -> some View {
+public extension View {
+  func textFieldStyle(_ style: TextFieldStyle) -> some View {
     environment(\.textFieldStyle, style)
   }
 }

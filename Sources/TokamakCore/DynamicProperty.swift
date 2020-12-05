@@ -21,6 +21,6 @@ public protocol DynamicProperty {
   mutating func update()
 }
 
-extension DynamicProperty {
-  public mutating func update() {}
+public extension DynamicProperty {
+  mutating func update() {}
 }

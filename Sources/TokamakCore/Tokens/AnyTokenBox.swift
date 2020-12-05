@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2018-2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,13 +11,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 10/24/2020.
+//
 
-import Danger
-
-SwiftLint.lint(inline: true, configFile: ".swiftlint.yml", strict: true)
-
-let danger = Danger()
-
-print("Calling SwiftFormat...")
-
-danger.utils.exec("swiftformat", arguments: ["."])
+/// Allows "late-binding tokens" to be resolved in an environment by a `Renderer` (or `TokamakCore`)
+public protocol AnyTokenBox: AnyObject, Hashable {
+  associatedtype ResolvedValue
+  func resolve(in environment: EnvironmentValues) -> ResolvedValue
+}

@@ -71,8 +71,12 @@ final class GTKRenderer: Renderer {
       exit(status)
     }
   }
-
-  public func mountTarget(to parent: Widget, with host: MountedHost) -> Widget? {
+  
+  public func mountTarget(
+    before sibling: Widget?,
+    to parent: Widget,
+    with host: MountedHost
+  ) -> Widget? {
     guard let anyWidget = mapAnyView(
       host.view,
       transform: { (widget: AnyWidget) in widget }

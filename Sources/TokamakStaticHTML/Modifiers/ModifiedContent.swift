@@ -30,11 +30,11 @@ extension ModifiedContent: AnyModifiedContent where Modifier: DOMViewModifier, C
   }
 }
 
-extension ModifiedContent: ViewDeferredToRenderer where Content: View {
+extension ModifiedContent: ViewDeferredToRenderer where Content: View, Modifier: ViewModifier {
   public var deferredBody: AnyView {
     if let domModifier = modifier as? DOMViewModifier {
       if let adjacentModifier = content as? AnyModifiedContent,
-        !(adjacentModifier.anyModifier.isOrderDependent || domModifier.isOrderDependent)
+         !(adjacentModifier.anyModifier.isOrderDependent || domModifier.isOrderDependent)
       {
         // Flatten non-order-dependent modifiers
         var attr = domModifier.attributes
@@ -51,8 +51,10 @@ extension ModifiedContent: ViewDeferredToRenderer where Content: View {
           content
         })
       }
-    } else {
+    } else if Modifier.Body.self == Never.self {
       return AnyView(content)
+    } else {
+      return AnyView(modifier.body(content: .init(modifier: modifier, view: AnyView(content))))
     }
   }
 }

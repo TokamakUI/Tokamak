@@ -16,6 +16,7 @@
 //
 
 import JavaScriptKit
+import OpenCombineJS
 import TokamakCore
 import TokamakStaticHTML
 
@@ -71,7 +72,7 @@ func appendRootStyle(_ rootNode: JSObject) {
 }
 
 final class DOMRenderer: Renderer {
-  private(set) var reconciler: StackReconciler<DOMRenderer>?
+  private var reconciler: StackReconciler<DOMRenderer>?
 
   private let rootRef: JSObject
 
@@ -91,12 +92,16 @@ final class DOMRenderer: Renderer {
     ) { scheduler.schedule(options: nil, $0) }
   }
 
-  public func mountTarget(to parent: DOMNode, with host: MountedHost) -> DOMNode? {
+  public func mountTarget(
+    before sibling: DOMNode?,
+    to parent: DOMNode,
+    with host: MountedHost
+  ) -> DOMNode? {
     guard let anyHTML = mapAnyView(
       host.view,
       transform: { (html: AnyHTML) in html }
     ) else {
-      // handle cases like `TupleView`
+      // handle `GroupView` cases (such as `TupleView`, `Group` etc)
       if mapAnyView(host.view, transform: { (view: ParentView) in view }) != nil {
         return parent
       }
@@ -104,27 +109,36 @@ final class DOMRenderer: Renderer {
       return nil
     }
 
-    _ = parent.ref.insertAdjacentHTML!("beforeend", JSValue(stringLiteral: anyHTML.outerHTML))
+    let maybeNode: JSObject?
+    if let sibling = sibling {
+      _ = sibling.ref.insertAdjacentHTML!("beforebegin", anyHTML.outerHTML)
+      maybeNode = sibling.ref.previousSibling.object
+    } else {
+      _ = parent.ref.insertAdjacentHTML!("beforeend", anyHTML.outerHTML)
 
-    guard
-      let children = parent.ref.childNodes.object,
-      let length = children.length.number,
-      length > 0,
-      let lastChild = children[Int(length) - 1].object
-    else { return nil }
+      guard
+        let children = parent.ref.childNodes.object,
+        let length = children.length.number,
+        length > 0
+      else { return nil }
+
+      maybeNode = children[Int(length) - 1].object
+    }
+
+    guard let resultingNode = maybeNode else { return nil }
 
     let fillAxes = host.view.fillAxes
     if fillAxes.contains(.horizontal) {
-      lastChild.style.object!.width = "100%"
+      resultingNode.style.object!.width = "100%"
     }
     if fillAxes.contains(.vertical) {
-      lastChild.style.object!.height = "100%"
+      resultingNode.style.object!.height = "100%"
     }
 
     if let dynamicHTML = anyHTML as? AnyDynamicHTML {
-      return DOMNode(host.view, lastChild, dynamicHTML.listeners)
+      return DOMNode(host.view, resultingNode, dynamicHTML.listeners)
     } else {
-      return DOMNode(host.view, lastChild, [:])
+      return DOMNode(host.view, resultingNode, [:])
     }
   }
 

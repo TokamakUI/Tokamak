@@ -77,8 +77,8 @@ public struct Text: View {
   }
 }
 
-extension Text._Storage {
-  public var rawText: String {
+public extension Text._Storage {
+  var rawText: String {
     switch self {
     case let .segmentedText(segments):
       return segments
@@ -116,6 +116,10 @@ public extension Text {
     .init(storage: storage, modifiers: modifiers + [.font(font)])
   }
 
+  func foregroundColor(_ color: Color?) -> Text {
+    .init(storage: storage, modifiers: modifiers + [.color(color)])
+  }
+
   func fontWeight(_ weight: Font.Weight?) -> Text {
     .init(storage: storage, modifiers: modifiers + [.weight(weight)])
   }
@@ -149,8 +153,8 @@ public extension Text {
   }
 }
 
-extension Text {
-  public static func _concatenating(lhs: Self, rhs: Self) -> Self {
+public extension Text {
+  static func _concatenating(lhs: Self, rhs: Self) -> Self {
     .init(storage: .segmentedText([
       (lhs.storage, lhs.modifiers),
       (rhs.storage, rhs.modifiers),

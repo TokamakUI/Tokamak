@@ -69,8 +69,8 @@ extension EnvironmentValues {
   }
 }
 
-extension View {
-  public func toggleStyle<S>(_ style: S) -> some View where S: ToggleStyle {
+public extension View {
+  func toggleStyle<S>(_ style: S) -> some View where S: ToggleStyle {
     environment(\.toggleStyle, _AnyToggleStyle(style))
   }
 }
