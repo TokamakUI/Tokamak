@@ -2,7 +2,7 @@
 
 ## SwiftUI-compatible framework for building browser apps with WebAssembly
 
-![CI status](https://github.com/swiftwasm/Tokamak/workflows/CI/badge.svg?branch=main)
+[![CI status](https://github.com/swiftwasm/Tokamak/workflows/CI/badge.svg?branch=main)](https://github.com/TokamakUI/Tokamak/actions?query=workflow%3ACI) [![Discord](https://img.shields.io/discord/780838335798706197?label=Discord)](https://discord.gg/ashJW8T8yp)
 
 At the moment Tokamak implements a very basic subset of SwiftUI. Its DOM renderer supports a few
 view types and modifiers (you can check the current list in [the progress
@@ -21,8 +21,8 @@ Don't forget to check [the "Contributing"
 section](https://github.com/swiftwasm/Tokamak#contributing) first.
 
 If you'd like to participate in the growing [SwiftWasm](https://swiftwasm.org) community, you're
-also very welcome to join the `#webassembly` channel in [the SwiftPM
-Slack](https://swift-package-manager.herokuapp.com/).
+also very welcome to join [our Discord server](https://discord.gg/ashJW8T8yp), or the `#webassembly`
+channel in [the SwiftPM Slack](https://swift-package-manager.herokuapp.com/).
 
 ### Example code
 
