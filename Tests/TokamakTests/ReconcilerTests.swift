@@ -15,6 +15,7 @@
 //  Created by Max Desiatov on 07/12/2018.
 //
 
+#if !os(WASI)
 import TokamakTestRenderer
 import XCTest
 
@@ -198,3 +199,4 @@ final class ReconcilerTests: XCTestCase {
     wait(for: [e], timeout: 1)
   }
 }
+#endif
