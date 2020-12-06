@@ -51,12 +51,12 @@ Table columns:
 
 ### Value Indicators
 
-|     |                                                                                |     |
-| --- | ------------------------------------------------------------------------------ | :-: |
-|     | [ProgressView](https://developer.apple.com/documentation/swiftui/progressview) |     |
-|     | [Gauge](https://developer.apple.com/documentation/swiftui/gauge)               |     |
-|     | [Label](https://developer.apple.com/documentation/swiftui/label)               |     |
-|     | [Link](https://developer.apple.com/documentation/swiftui/link)                 |     |
+|    |                                                                                |     |
+|--- | ------------------------------------------------------------------------------ | :-: |
+|    | [ProgressView](https://developer.apple.com/documentation/swiftui/progressview) |     |
+|    | [Gauge](https://developer.apple.com/documentation/swiftui/gauge)               |     |
+|    | [Label](https://developer.apple.com/documentation/swiftui/label)               |     |
+| ✅ | [Link](https://developer.apple.com/documentation/swiftui/link)                 |     |
 
 ## View Layout and Presentation
 
