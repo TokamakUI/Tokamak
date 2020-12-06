@@ -1,3 +1,7 @@
+# 0.6.1 (6 December 2020)
+
+This release fixes autocomplete in Xcode for projects that depend on Tokamak.
+
 # 0.6.0 (4 December 2020)
 
 This release introduces support for the `Image` view, which can load images bundled as SwiftPM
