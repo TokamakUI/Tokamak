@@ -17,7 +17,6 @@
 
 import TokamakShim
 
-@available(OSX 11.0, iOS 14.0, *)
 struct AppStorageButtons: View {
   @AppStorage("count") var count: Int = 0
   @SceneStorage("count") var sceneCount: Int = 0
@@ -30,7 +29,6 @@ struct AppStorageButtons: View {
   }
 }
 
-@available(OSX 11.0, iOS 14.0, *)
 struct AppStorageDemo: View {
   @AppStorage("count") var count: Int = 0
   @SceneStorage("count") var sceneCount: Int = 0

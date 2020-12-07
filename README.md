@@ -107,7 +107,8 @@ app.
 
 ## Requirements for app developers
 
-- macOS 10.15 and Xcode 11.4 or later.
+- macOS 10.15 and Xcode 11.4 or later. macOS 11.0 and Xcode 12.0 or later are required if you're
+  building a multi-platform app with Tokamak that also needs to support SwiftUI on macOS.
 - [Swift 5.2 or later](https://swift.org/download/) and Ubuntu 18.04 if you'd like to use Linux.
   Other Linux distributions are currently not supported.
 
@@ -204,7 +205,7 @@ doesn't provide an official build of the extension on the VSCode Marketplace unf
 
 ### Modular structure
 
-Tokamak is built with modularity in mind, providing a cross-platform `TokamakCore` module and
+Tokamak is built with modularity in mind, providing a multi-platform `TokamakCore` module and
 separate modules for platform-specific renderers. Currently, the only available renderer modules are
 `TokamakDOM` and `TokamakStaticHTML`, the latter can be used for static websites and server-side
 rendering. If you'd like to implement your own custom renderer, please refer to our [renderers
