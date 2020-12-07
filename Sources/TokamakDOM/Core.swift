@@ -108,6 +108,7 @@ public typealias SecureField = TokamakCore.SecureField
 public typealias Slider = TokamakCore.Slider
 public typealias Spacer = TokamakCore.Spacer
 public typealias Text = TokamakCore.Text
+public typealias TextEditor = TokamakCore.TextEditor
 public typealias TextField = TokamakCore.TextField
 public typealias Toggle = TokamakCore.Toggle
 public typealias VStack = TokamakCore.VStack
