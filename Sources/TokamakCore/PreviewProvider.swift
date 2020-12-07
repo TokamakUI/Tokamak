@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/// This protocol has no functionality currently, and is only provided for compatibility purposes.
 public protocol PreviewProvider {
   associatedtype Previews: View
 
