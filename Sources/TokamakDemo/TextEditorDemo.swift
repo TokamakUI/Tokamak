@@ -11,42 +11,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Carson Katri on 7/31/20.
-//
 
 import TokamakShim
 
-struct RedactionDemo: View {
-  func title(_ text: String) -> some View {
-    Group {
-      Text(text)
-        .font(.headline)
-      Divider()
-    }
-  }
-
-  var content: some View {
-    VStack {
-      Text("Hello, world!")
-      Text("Unredacted text")
-        .unredacted()
-    }
-  }
+struct TextEditorDemo: View {
+  @State var text = ""
 
   var body: some View {
-    HStack {
-      VStack {
-        title("Unredacted")
-        content
-          .padding()
-      }
-      VStack {
-        title("Redacted")
-        content
-          .redacted(reason: .placeholder)
-          .padding()
-      }
-    }
+    Text("Word count: \(text.split(separator: " ").count)")
+    TextEditor(text: $text)
+      .frame(width: 300, height: 300)
   }
 }

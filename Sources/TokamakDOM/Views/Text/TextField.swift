@@ -32,10 +32,8 @@ extension TextField: ViewDeferredToRenderer where Label == Text {
 
   func className(for style: TextFieldStyle) -> String {
     switch style {
-    case is DefaultTextFieldStyle:
-      return "_tokamak-textfield-default"
-    case is RoundedBorderTextFieldStyle:
-      return "_tokamak-textfield-roundedborder"
+    case is DefaultTextFieldStyle, is RoundedBorderTextFieldStyle:
+      return "_tokamak-formcontrol"
     default:
       return ""
     }

@@ -24,7 +24,6 @@ struct TestPreferenceKey: PreferenceKey {
   }
 }
 
-@available(macOS 11, iOS 14, *)
 struct PreferenceKeyDemo: View {
   @State private var testKeyValue: Color = .yellow
   @Environment(\.colorScheme) var colorScheme
@@ -144,7 +143,6 @@ struct PreferenceKeyDemo: View {
   }
 }
 
-@available(macOS 11, iOS 14, *)
 extension PreferenceKeyDemo.SetColor where Content == EmptyView {
   init(_ level: Int, _ color: Color) {
     self.init(level, color) { EmptyView() }

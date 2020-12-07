@@ -21,7 +21,7 @@ extension _PickerContainer: ViewDeferredToRenderer {
     AnyView(HTML("label") {
       label
       Text(" ")
-      DynamicHTML("select", ["class": "_tokamak-picker"], listeners: ["change": {
+      DynamicHTML("select", ["class": "_tokamak-formcontrol"], listeners: ["change": {
         guard
           let valueString = $0.target.object!.value.string,
           let value = Int(valueString) as? SelectionValue
