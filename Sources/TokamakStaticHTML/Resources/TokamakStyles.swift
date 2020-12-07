@@ -96,11 +96,7 @@ public let tokamakStyles = """
   height: 100%;
 }
 
-._tokamak-securefield,
-._tokamak-textfield-default,
-._tokamak-textfield-roundedborder,
-._tokamak-picker,
-._tokamak-texteditor {
+._tokamak-formcontrol {
   color-scheme: light dark;
 }
 

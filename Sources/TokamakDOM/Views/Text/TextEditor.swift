@@ -19,7 +19,7 @@ extension TextEditor: ViewDeferredToRenderer {
     let proxy = _TextEditorProxy(self)
 
     return AnyView(DynamicHTML("textarea", [
-      "class": "_tokamak-texteditor",
+      "class": "_tokamak-formcontrol",
     ], listeners: [
       "input": { event in
         if let newValue = event.target.object?.value.string {

@@ -24,7 +24,7 @@ extension SecureField: ViewDeferredToRenderer where Label == Text {
       "type": "password",
       .value: proxy.textBinding.wrappedValue,
       "placeholder": proxy.label.rawText,
-      "class": "_tokamak-securefield",
+      "class": "_tokamak-formcontrol",
     ], listeners: [
       "keypress": { event in if event.key == "Enter" { proxy.onCommit() } },
       "input": { event in
