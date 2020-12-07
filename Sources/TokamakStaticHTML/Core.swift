@@ -97,3 +97,5 @@ public extension Text {
     _concatenating(lhs: lhs, rhs: rhs)
   }
 }
+
+public typealias PreviewProvider = TokamakCore.PreviewProvider
