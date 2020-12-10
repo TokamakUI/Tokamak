@@ -20,7 +20,9 @@ import TokamakCore
 // MARK: Environment & State
 
 public typealias Environment = TokamakCore.Environment
+public typealias EnvironmentKey = TokamakCore.EnvironmentKey
 public typealias EnvironmentObject = TokamakCore.EnvironmentObject
+public typealias EnvironmentValues = TokamakCore.EnvironmentValues
 
 public typealias PreferenceKey = TokamakCore.PreferenceKey
 
@@ -61,6 +63,10 @@ public typealias ButtonStyle = TokamakCore.ButtonStyle
 public typealias ButtonStyleConfiguration = TokamakCore.ButtonStyleConfiguration
 public typealias DefaultButtonStyle = TokamakCore.DefaultButtonStyle
 
+public typealias FillStyle = TokamakCore.FillStyle
+public typealias ShapeStyle = TokamakCore.ShapeStyle
+public typealias StrokeStyle = TokamakCore.StrokeStyle
+
 public typealias ColorScheme = TokamakCore.ColorScheme
 
 // MARK: Shapes
@@ -79,13 +85,18 @@ public typealias RoundedRectangle = TokamakCore.RoundedRectangle
 public typealias Color = TokamakCore.Color
 public typealias Font = TokamakCore.Font
 
+public typealias Angle = TokamakCore.Angle
 public typealias CGAffineTransform = TokamakCore.CGAffineTransform
 public typealias CGPoint = TokamakCore.CGPoint
 public typealias CGRect = TokamakCore.CGRect
 public typealias CGSize = TokamakCore.CGSize
+public typealias UnitPoint = TokamakCore.UnitPoint
+
+public typealias Edge = TokamakCore.Edge
 
 // MARK: Views
 
+public typealias Alignment = TokamakCore.Alignment
 public typealias Button = TokamakCore.Button
 public typealias DisclosureGroup = TokamakCore.DisclosureGroup
 public typealias Divider = TokamakCore.Divider
@@ -119,6 +130,9 @@ public typealias ZStack = TokamakCore.ZStack
 public typealias View = TokamakCore.View
 public typealias AnyView = TokamakCore.AnyView
 public typealias EmptyView = TokamakCore.EmptyView
+
+// MARK: Text
+public typealias TextAlignment = TokamakCore.TextAlignment
 
 // MARK: App & Scene
 
