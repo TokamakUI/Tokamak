@@ -54,6 +54,9 @@ extension _PickerContainer: AnyWidget {
         if (gtk_combo_box_get_active(plainComboBox) != 0) {
           plainComboBox.withMemoryRebound(to: GtkComboBoxText.self, capacity: 1) { comboBoxText in
             let activeElement = gtk_combo_box_text_get_active_text(comboBoxText)!
+            defer {
+                g_free(activeElement)
+            }
             let element = elements.first {
               guard let text = mapAnyView($0.anyContent, transform: { (view: Text) in view }) else { return false }
               return _TextProxy(text).rawText == String(cString: activeElement)
@@ -61,7 +64,6 @@ extension _PickerContainer: AnyWidget {
             if let selectedValue = element?.anyId as? SelectionValue {
               selection = selectedValue
             }
-            g_free(activeElement)
           }
         }
       }
