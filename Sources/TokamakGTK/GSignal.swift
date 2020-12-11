@@ -22,10 +22,12 @@ extension UnsafeMutablePointer where Pointee == GtkWidget {
   @discardableResult func connect(
     signal: UnsafePointer<gchar>,
     data: gpointer? = nil,
-    handler: @convention(c) @escaping (UnsafeMutablePointer<GtkWidget>?, UnsafeRawPointer) -> Bool
+    handler: @convention(c) @escaping (UnsafeMutablePointer<GtkWidget>?, UnsafeRawPointer) -> Bool,
+    destroy: @convention(c) @escaping (UnsafeRawPointer, UnsafeRawPointer) -> Void
   ) -> Int {
     let handler = unsafeBitCast(handler, to: GCallback.self)
-    return Int(g_signal_connect_data(self, signal, handler, data, nil, GConnectFlags(rawValue: 0)))
+    let destroy = unsafeBitCast(destroy, to: GClosureNotify.self)
+    return Int(g_signal_connect_data(self, signal, handler, data, destroy, GConnectFlags(rawValue: 0)))
   }
 
   /// Connect with a context-capturing closure.
@@ -34,12 +36,14 @@ extension UnsafeMutablePointer where Pointee == GtkWidget {
     closure: @escaping () -> Void
   ) -> Int {
     let closureBox = Unmanaged.passRetained(ClosureBox(closure)).toOpaque()
-    return connect(signal: signal, data: closureBox) { _, closureBox in
+    return connect(signal: signal, data: closureBox, handler: { _, closureBox in
       let unpackedAction = Unmanaged<ClosureBox<Void>>.fromOpaque(closureBox)
       unpackedAction.takeUnretainedValue().closure()
-      unpackedAction.release()
       return true
-    }
+    }, destroy: { closureBox, _ in
+        let unpackedAction = Unmanaged<ClosureBox<Void>>.fromOpaque(closureBox)
+        unpackedAction.release()
+    })
   }
 
   /// Connect with a context-capturing closure (with the GtkWidget passed through)
@@ -48,14 +52,16 @@ extension UnsafeMutablePointer where Pointee == GtkWidget {
     closure: @escaping (UnsafeMutablePointer<GtkWidget>?) -> Void
   ) -> Int {
     let closureBox = Unmanaged.passRetained(SingleParamClosureBox(closure)).retain().toOpaque()
-    return connect(signal: signal, data: closureBox) { widget, closureBox in
+    return connect(signal: signal, data: closureBox, handler: { widget, closureBox in
       let unpackedAction = Unmanaged<SingleParamClosureBox<UnsafeMutablePointer<GtkWidget>?, Void>>.fromOpaque(closureBox)
       if let widget = widget {
         unpackedAction.takeUnretainedValue().closure(widget)
       }
-      unpackedAction.release()
       return true
-    }
+    }, destroy: { closureBox, _ in
+      let unpackedAction = Unmanaged<SingleParamClosureBox<UnsafeMutablePointer<GtkWidget>?, Void>>.fromOpaque(closureBox)
+      unpackedAction.release()
+    })
   }
 
   func disconnect(
