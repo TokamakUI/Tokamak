@@ -42,7 +42,7 @@ extension _PickerContainer: AnyWidget {
     comboBox.withMemoryRebound(to: GtkComboBox.self, capacity: 1) {
       guard let activeElement = elements.firstIndex(where: {
         guard let selectedValue = $0.anyId as? SelectionValue else { return false }
-        return selectedValue == selection 
+        return selectedValue == selection
       }) else { return }
       gtk_combo_box_set_active($0, Int32(activeElement))
     }
@@ -51,14 +51,15 @@ extension _PickerContainer: AnyWidget {
   func setupSignal(for comboBox: UnsafeMutablePointer<GtkWidget>) {
     comboBox.connect(signal: "changed") { box in
       box?.withMemoryRebound(to: GtkComboBox.self, capacity: 1) { plainComboBox in
-        if (gtk_combo_box_get_active(plainComboBox) != 0) {
+        if gtk_combo_box_get_active(plainComboBox) != 0 {
           plainComboBox.withMemoryRebound(to: GtkComboBoxText.self, capacity: 1) { comboBoxText in
             let activeElement = gtk_combo_box_text_get_active_text(comboBoxText)!
             defer {
-                g_free(activeElement)
+              g_free(activeElement)
             }
             let element = elements.first {
-              guard let text = mapAnyView($0.anyContent, transform: { (view: Text) in view }) else { return false }
+              guard let text = mapAnyView($0.anyContent, transform: { (view: Text) in view })
+              else { return false }
               return _TextProxy(text).rawText == String(cString: activeElement)
             }
             if let selectedValue = element?.anyId as? SelectionValue {

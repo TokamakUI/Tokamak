@@ -16,8 +16,8 @@
 //
 
 import CGTK
-import TokamakCore
 import Dispatch
+import TokamakCore
 
 extension EnvironmentValues {
   /// Returns default settings for the GTK environment
@@ -40,7 +40,7 @@ final class GTKRenderer: Renderer {
     _ app: A,
     _ rootEnvironment: EnvironmentValues? = nil
   ) {
-    self.gtkAppRef = gtk_application_new(nil, G_APPLICATION_FLAGS_NONE)
+    gtkAppRef = gtk_application_new(nil, G_APPLICATION_FLAGS_NONE)
 
     gtkAppRef.withMemoryRebound(to: GApplication.self, capacity: 1) { gApp in
       gApp.connect(signal: "activate") {
@@ -50,7 +50,7 @@ final class GTKRenderer: Renderer {
           gtk_window_set_default_size($0, 200, 100)
         }
         gtk_widget_show_all(window)
-        
+
         GTKRenderer.sharedWindow = window
 
         self.reconciler = StackReconciler(
@@ -71,7 +71,7 @@ final class GTKRenderer: Renderer {
       exit(status)
     }
   }
-  
+
   public func mountTarget(
     before sibling: Widget?,
     to parent: Widget,
@@ -96,7 +96,7 @@ final class GTKRenderer: Renderer {
     case let .application(app):
       widget = ctor(app)
     case let .widget(parentWidget):
-      widget = ctor(self.gtkAppRef)
+      widget = ctor(gtkAppRef)
       parentWidget.withMemoryRebound(to: GtkContainer.self, capacity: 1) {
         gtk_container_add($0, widget)
         if let stack = mapAnyView(parent.view, transform: { (view: StackProtocol) in view }) {

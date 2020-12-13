@@ -16,7 +16,9 @@ public protocol _PickerContainerProtocol {
   var elements: [_AnyIDView] { get }
 }
 
-public struct _PickerContainer<Label: View, SelectionValue: Hashable, Content: View>: View, _PickerContainerProtocol {
+public struct _PickerContainer<Label: View, SelectionValue: Hashable, Content: View>: View,
+  _PickerContainerProtocol
+{
   @Binding public var selection: SelectionValue
   public let label: Label
   public let content: Content
@@ -110,10 +112,10 @@ extension Picker: ParentView {
 
 extension Picker: _PickerContainerProtocol {
   public var elements: [_AnyIDView] {
-    return (content as? ForEachProtocol)?.children
-    .compactMap {
-      mapAnyView($0, transform: { (v: _AnyIDView) in v })
-    } ?? []
+    (content as? ForEachProtocol)?.children
+      .compactMap {
+        mapAnyView($0, transform: { (v: _AnyIDView) in v })
+      } ?? []
     // .filter { $0.elementType == SelectionValue.self }
     // .map(\.children) ?? []
   }

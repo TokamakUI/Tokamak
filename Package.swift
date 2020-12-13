@@ -74,7 +74,7 @@ let package = Package(
       name: "TokamakShim",
       dependencies: [
         .target(name: "TokamakDOM", condition: .when(platforms: [.wasi])),
-        .target(name: "TokamakGTK", condition: .when(platforms: [.linux]))
+        .target(name: "TokamakGTK", condition: .when(platforms: [.linux])),
       ]
     ),
     .systemLibrary(
@@ -83,7 +83,7 @@ let package = Package(
       providers: [
         .apt(["libgtk+-3.0", "gtk+-3.0"]),
         // .yum(["gtk3-devel"]),
-        .brew(["gtk+3"])
+        .brew(["gtk+3"]),
       ]
     ),
     .target(

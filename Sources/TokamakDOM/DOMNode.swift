@@ -40,7 +40,7 @@ extension AnyHTML {
     }
 
     if !containsChecked && dom.ref.type == "checkbox" &&
-        dom.ref.tagName.string!.lowercased() == "input"
+      dom.ref.tagName.string!.lowercased() == "input"
     {
       dom.ref.checked = .boolean(false)
     }

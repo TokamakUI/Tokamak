@@ -15,8 +15,8 @@
 //  Created by Carson Katri on 10/10/20.
 //
 
-import TokamakCore
 import CGTK
+import TokamakCore
 
 struct SceneContainerView<Content: View>: View, AnyWidget {
   let content: Content
@@ -38,6 +38,6 @@ struct SceneContainerView<Content: View>: View, AnyWidget {
     // gtk_widget_show_all(window)
     return window
   }
-  
+
   func update(widget: Widget) {}
 }

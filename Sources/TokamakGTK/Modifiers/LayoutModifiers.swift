@@ -15,8 +15,8 @@
 //  Created by Carson Katri on 10/13/20.
 //
 
-import TokamakCore
 import CGTK
+import TokamakCore
 
 extension _FrameLayout: WidgetModifier {
   public func modify(widget: UnsafeMutablePointer<GtkWidget>) {

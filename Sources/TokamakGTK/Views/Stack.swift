@@ -15,9 +15,9 @@
 //  Created by Carson Katri on 10/10/20.
 //
 
-import TokamakCore
 import CGTK
 import Foundation
+import TokamakCore
 
 protocol StackProtocol {
   var alignment: Alignment { get }
@@ -40,7 +40,7 @@ struct Box<Content: View>: View, ParentView, AnyWidget, StackProtocol {
     }
     return grid
   }
-  
+
   func update(widget: Widget) {}
 
   var body: Never {

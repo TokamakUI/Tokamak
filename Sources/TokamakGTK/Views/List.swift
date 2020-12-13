@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
 import CGTK
+import TokamakCore
 
 extension List: ViewDeferredToRenderer {
   @ViewBuilder
   func iterateAsRow(_ content: [AnyView]) -> some View {
-    ForEach(Array(content.enumerated()), id: \.offset) { (_, row) in
+    ForEach(Array(content.enumerated()), id: \.offset) { _, row in
       if let parentView = mapAnyView(row, transform: { (view: ParentView) in view }) {
         AnyView(iterateAsRow(parentView.children))
       } else {
@@ -33,7 +33,7 @@ extension List: ViewDeferredToRenderer {
 
   public var deferredBody: AnyView {
     let proxy = _ListProxy(self)
-    return AnyView(ScrollView{
+    return AnyView(ScrollView {
       WidgetView(build: { _ in
         gtk_list_box_new()
       }) {
@@ -41,7 +41,7 @@ extension List: ViewDeferredToRenderer {
           iterateAsRow(content.children)
         } else {
           WidgetView(build: { _ in
-              gtk_list_box_row_new()
+            gtk_list_box_row_new()
           }) {
             proxy.content
           }
@@ -89,8 +89,8 @@ extension PlainListStyle: ListStyleDeferredToRenderer {
       }
     )
   }
-  
-  public func listBody<ListBody>(_ content: ListBody) -> AnyView where ListBody : View {
+
+  public func listBody<ListBody>(_ content: ListBody) -> AnyView where ListBody: View {
     AnyView(
       WidgetView(build: { _ in
         gtk_list_box_new()

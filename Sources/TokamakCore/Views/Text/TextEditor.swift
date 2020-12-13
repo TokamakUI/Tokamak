@@ -12,24 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakShim
+public struct TextEditor: View {
+  let textBinding: Binding<String>
 
-public struct ToggleDemo: View {
-  @State var checked = false
+  public init(text: Binding<String>) {
+    textBinding = text
+  }
 
   public var body: some View {
-    VStack {
-      Toggle("Check me!", isOn: $checked)
-      Toggle("Toggle binding that should mirror the toggle above", isOn: $checked)
-      Toggle(isOn: Binding(get: { true }, set: { _ in })) {
-        Group { Text("I’m always checked!").italic() }.foregroundColor(.red)
-      }
-    }
+    neverBody("TextEditor")
   }
 }
 
-struct ToggleDemo_Previews: PreviewProvider {
-  static var previews: some View {
-    ToggleDemo()
-  }
+public struct _TextEditorProxy {
+  public let subject: TextEditor
+
+  public init(_ subject: TextEditor) { self.subject = subject }
+
+  public var textBinding: Binding<String> { subject.textBinding }
 }

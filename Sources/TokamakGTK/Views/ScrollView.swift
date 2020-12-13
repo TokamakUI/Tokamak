@@ -15,22 +15,22 @@
 //  Created by Carson Katri on 10/13/20.
 //
 
-import TokamakCore
 import CGTK
+import TokamakCore
 
 extension ScrollView: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     AnyView(WidgetView(build: { _ in
-      return gtk_scrolled_window_new(nil, nil)
+      gtk_scrolled_window_new(nil, nil)
     }) {
       if children.count > 1 {
         VStack {
-          ForEach(Array(children.enumerated()), id: \.offset) { (_, view) in
+          ForEach(Array(children.enumerated()), id: \.offset) { _, view in
             view
           }
         }
       } else {
-        ForEach(Array(children.enumerated()), id: \.offset) { (_, view) in
+        ForEach(Array(children.enumerated()), id: \.offset) { _, view in
           view
         }
       }

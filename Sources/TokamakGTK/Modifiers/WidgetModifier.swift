@@ -15,8 +15,8 @@
 //  Created by Carson Katri on 10/13/20.
 //
 
-import TokamakCore
 import CGTK
+import TokamakCore
 
 protocol WidgetModifier {
   func modify(widget: UnsafeMutablePointer<GtkWidget>)
@@ -25,32 +25,36 @@ protocol WidgetModifier {
 extension ModifiedContent: ViewDeferredToRenderer where Content: View {
   public var deferredBody: AnyView {
     if let widgetModifier = modifier as? WidgetModifier {
-       if let anyView = content as? ViewDeferredToRenderer,
-          let anyWidget = mapAnyView(anyView.deferredBody, transform: { (widget: AnyWidget) in widget }) {
-          return AnyView(WidgetView {
-            let contentWidget = anyWidget.new($0)
-            widgetModifier.modify(widget: contentWidget)
-            return contentWidget
-          } content: {
-            if let parentView = anyWidget as? ParentView {
-              ForEach(Array(parentView.children.enumerated()), id: \.offset) { (_, view) in
-                view
-              }
+      if let anyView = content as? ViewDeferredToRenderer,
+         let anyWidget = mapAnyView(
+           anyView.deferredBody,
+           transform: { (widget: AnyWidget) in widget }
+         )
+      {
+        return AnyView(WidgetView {
+          let contentWidget = anyWidget.new($0)
+          widgetModifier.modify(widget: contentWidget)
+          return contentWidget
+        } content: {
+          if let parentView = anyWidget as? ParentView {
+            ForEach(Array(parentView.children.enumerated()), id: \.offset) { _, view in
+              view
             }
-          })
-        } else if let anyWidget = content as? AnyWidget {
-          return AnyView(WidgetView {
-            let contentWidget = anyWidget.new($0)
-            widgetModifier.modify(widget: contentWidget)
-            return contentWidget
-          } content: {
-            if let parentView = anyWidget as? ParentView {
-              ForEach(Array(parentView.children.enumerated()), id: \.offset) { (_, view) in
-                view
-              }
+          }
+        })
+      } else if let anyWidget = content as? AnyWidget {
+        return AnyView(WidgetView {
+          let contentWidget = anyWidget.new($0)
+          widgetModifier.modify(widget: contentWidget)
+          return contentWidget
+        } content: {
+          if let parentView = anyWidget as? ParentView {
+            ForEach(Array(parentView.children.enumerated()), id: \.offset) { _, view in
+              view
             }
-          })
-        }
+          }
+        })
+      }
     }
     return AnyView(content)
   }

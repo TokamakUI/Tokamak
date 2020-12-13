@@ -19,7 +19,7 @@ Table columns:
 | 🚧  | [Text](https://developer.apple.com/documentation/swiftui/text)               |     |
 | 🚧  | [TextField](https://developer.apple.com/documentation/swiftui/textfield)     |     |
 | 🚧  | [SecureField](https://developer.apple.com/documentation/swiftui/securefield) |     |
-|     | [TextEditor](https://developer.apple.com/documentation/swiftui/texteditor)   |     |
+| ✅  | [TextEditor](https://developer.apple.com/documentation/swiftui/texteditor)   |     |
 
 ### Images
 
@@ -56,7 +56,7 @@ Table columns:
 |     | [ProgressView](https://developer.apple.com/documentation/swiftui/progressview) |     |
 |     | [Gauge](https://developer.apple.com/documentation/swiftui/gauge)               |     |
 |     | [Label](https://developer.apple.com/documentation/swiftui/label)               |     |
-|     | [Link](https://developer.apple.com/documentation/swiftui/link)                 |     |
+| ✅  | [Link](https://developer.apple.com/documentation/swiftui/link)                 |     |
 
 ## View Layout and Presentation
 
@@ -72,11 +72,11 @@ Table columns:
 
 ### Grids
 
-|     |                                                                       |     |
-| --- | --------------------------------------------------------------------- | :-: |
-|🚧| [LazyHGrid](https://developer.apple.com/documentation/swiftui/lazyhgrid) |    |
-|🚧| [LazyVGrid](https://developer.apple.com/documentation/swiftui/lazyvgrid) |    |
-|🚧| [GridItem](https://developer.apple.com/documentation/swiftui/griditem)   |    |
+|     |                                                                          |     |
+| --- | ------------------------------------------------------------------------ | :-: |
+| 🚧  | [LazyHGrid](https://developer.apple.com/documentation/swiftui/lazyhgrid) |     |
+| 🚧  | [LazyVGrid](https://developer.apple.com/documentation/swiftui/lazyvgrid) |     |
+| 🚧  | [GridItem](https://developer.apple.com/documentation/swiftui/griditem)   |     |
 
 ### Lists and Scroll Views
 
@@ -96,14 +96,14 @@ Table columns:
 |     | [Form](https://developer.apple.com/documentation/swiftui/form)         |     |
 | ✅  | [Group](https://developer.apple.com/documentation/swiftui/group)       |     |
 |     | [GroupBox](https://developer.apple.com/documentation/swiftui/groupbox) |     |
-| 🚧 | [Section](https://developer.apple.com/documentation/swiftui/section)   |     |
+| 🚧  | [Section](https://developer.apple.com/documentation/swiftui/section)   |     |
 
 ### Hierarchical Views
 
-|     |                                                                                   |     |
-| --- | --------------------------------------------------------------------------------- | :-: |
-|🚧| [OutlineGroup](https://developer.apple.com/documentation/swiftui/outlinegroup)       |    |
-|🚧| [DisclosureGroup](https://developer.apple.com/documentation/swiftui/disclosuregroup) |    |
+|     |                                                                                      |     |
+| --- | ------------------------------------------------------------------------------------ | :-: |
+| 🚧  | [OutlineGroup](https://developer.apple.com/documentation/swiftui/outlinegroup)       |     |
+| 🚧  | [DisclosureGroup](https://developer.apple.com/documentation/swiftui/disclosuregroup) |     |
 
 ### Spacers and Dividers
 

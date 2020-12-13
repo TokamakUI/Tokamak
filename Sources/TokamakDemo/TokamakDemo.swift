@@ -128,6 +128,7 @@ struct TokamakDemoView: View {
           Section(header: Text("Text")) {
             NavItem("Text", destination: TextDemo())
             NavItem("TextField", destination: TextFieldDemo())
+            NavItem("TextEditor", destination: TextEditorDemo())
           }
           Section(header: Text("Misc")) {
             NavItem("Path", destination: PathDemo())

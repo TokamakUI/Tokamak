@@ -30,6 +30,12 @@ jobs:
           `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest
 
           xcodebuild -version
+
+          # make sure Tokamak can be built on macOS so that Xcode autocomplete works
+          xcodebuild -scheme TokamakDemo -destination 'generic/platform=macOS' \
+            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
+            xcpretty --color
+
           cd "NativeDemo"
           xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
             CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \

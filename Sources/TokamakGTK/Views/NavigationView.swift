@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
 import CGTK
+import TokamakCore
 
 protocol GtkStackProtocol {}
 
@@ -35,9 +35,9 @@ protocol GtkStackProtocol {}
 //     }
 //     return box
 //   }
-  
+
 //   func update(widget: Widget) {}
-  
+
 //   // public var deferredBody: AnyView {
 //   //   AnyView(HTML("div", [
 //   //     "class": "_tokamak-navigationview",
@@ -61,7 +61,7 @@ extension NavigationView: ViewDeferredToRenderer {
     let proxy = _NavigationViewProxy(self)
     return AnyView(HStack {
       proxy.content
-      .environmentObject(proxy.context)
+        .environmentObject(proxy.context)
       proxy.destination
     }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity))
   }
@@ -89,7 +89,7 @@ extension NavigationLink: ViewDeferredToRenderer {
 //       print("Activated")
 //     })
 //   }
-  
+
 //   func update(widget: Widget) {
 //     if case let .widget(w) = widget.storage {
 //       w.disconnect(gtype: gtk_button_get_type(), signal: "clicked")
@@ -111,7 +111,7 @@ extension NavigationLink: ViewDeferredToRenderer {
 //     bindAction(to: btn)
 //     return btn
 //   }
-  
+
 //   func update(widget: Widget) {
 //     if case let .widget(w) = widget.storage {
 //       w.disconnect(gtype: gtk_button_get_type(), signal: "clicked")

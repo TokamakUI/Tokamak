@@ -21,14 +21,16 @@ import TokamakGTKCHelpers
 extension UnsafeMutablePointer where Pointee == GtkContainer {
   /// Iterate over the children
   func forEach(
-    _ closure: @escaping (UnsafeMutablePointer<GtkWidget>?) -> Void
+    _ closure: @escaping (UnsafeMutablePointer<GtkWidget>?) -> ()
   ) {
     let closureBox = Unmanaged.passRetained(SingleParamClosureBox(closure)).toOpaque()
-    let handler: @convention(c) (UnsafeMutablePointer<GtkWidget>?, UnsafeRawPointer) -> Bool = { (ref: UnsafeMutablePointer<GtkWidget>?, data: UnsafeRawPointer) -> Bool in
-      let unpackedAction = Unmanaged<SingleParamClosureBox<UnsafeMutablePointer<GtkWidget>?, Void>>.fromOpaque(data)
-      unpackedAction.takeRetainedValue().closure(ref)
-      return true
-    }
+    let handler: @convention(c) (UnsafeMutablePointer<GtkWidget>?, UnsafeRawPointer)
+      -> Bool = { (ref: UnsafeMutablePointer<GtkWidget>?, data: UnsafeRawPointer) -> Bool in
+        let unpackedAction = Unmanaged<SingleParamClosureBox<UnsafeMutablePointer<GtkWidget>?, ()>>
+          .fromOpaque(data)
+        unpackedAction.takeRetainedValue().closure(ref)
+        return true
+      }
     let cHandler = unsafeBitCast(handler, to: GtkCallback.self)
     gtk_container_foreach(self, cHandler, closureBox)
   }
@@ -38,6 +40,7 @@ extension UnsafeMutablePointer where Pointee == GtkWidget {
   func isContainer() -> Bool {
     tokamak_gtk_widget_is_container(self) == gtk_true()
   }
+
   func isStack() -> Bool {
     tokamak_gtk_widget_is_stack(self) == gtk_true()
   }

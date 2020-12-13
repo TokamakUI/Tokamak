@@ -25,14 +25,15 @@ extension AnyWidget {
   var expand: Bool { false }
 }
 
-struct WidgetView<Content: View> : View, AnyWidget, ParentView {
+struct WidgetView<Content: View>: View, AnyWidget, ParentView {
   let build: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>
   let content: Content
   let expand: Bool
 
   init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>,
        expand: Bool = false,
-       @ViewBuilder content: () -> Content) {
+       @ViewBuilder content: () -> Content)
+  {
     self.build = build
     self.expand = expand
     self.content = content()
@@ -41,6 +42,7 @@ struct WidgetView<Content: View> : View, AnyWidget, ParentView {
   func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
     build(application)
   }
+
   func update(widget: Widget) {
     // Rebuild from scratch
     if case let .widget(w) = widget.storage {
@@ -53,13 +55,14 @@ struct WidgetView<Content: View> : View, AnyWidget, ParentView {
   }
 
   var children: [AnyView] {
-    return [AnyView(content)]
+    [AnyView(content)]
   }
 }
 
 extension WidgetView where Content == EmptyView {
   init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>,
-       expand: Bool = false) {
+       expand: Bool = false)
+  {
     self.init(build: build, expand: expand) { EmptyView() }
   }
 }
@@ -73,32 +76,32 @@ final class Widget: Target {
   let storage: Storage
   var view: AnyView
 
-/*
-let window: UnsafeMutablePointer<GtkWidget>
-window = gtk_application_window_new(app)
-label = gtk_label_new("Hello GNOME!")
-window.withMemoryRebound(to: GtkContainer.self, capacity: 1) {
-    gtk_container_add($0, label)
-}
-window.withMemoryRebound(to: GtkWindow.self, capacity: 1) {
-    gtk_window_set_title($0, "Welcome to GNOME")
-    gtk_window_set_default_size($0, 200, 100)
-}
-gtk_widget_show_all(window)
-*/
+  /*
+   let window: UnsafeMutablePointer<GtkWidget>
+   window = gtk_application_window_new(app)
+   label = gtk_label_new("Hello GNOME!")
+   window.withMemoryRebound(to: GtkContainer.self, capacity: 1) {
+       gtk_container_add($0, label)
+   }
+   window.withMemoryRebound(to: GtkWindow.self, capacity: 1) {
+       gtk_window_set_title($0, "Welcome to GNOME")
+       gtk_window_set_default_size($0, 200, 100)
+   }
+   gtk_widget_show_all(window)
+   */
 
   init<V: View>(_ view: V, _ ref: UnsafeMutablePointer<GtkWidget>) {
-    self.storage = .widget(ref)
+    storage = .widget(ref)
     self.view = AnyView(view)
   }
 
   init(_ ref: UnsafeMutablePointer<GtkWidget>) {
-    self.storage = .widget(ref)
-    self.view = AnyView(EmptyView())
+    storage = .widget(ref)
+    view = AnyView(EmptyView())
   }
 
   init(_ ref: UnsafeMutablePointer<GtkApplication>) {
-    self.storage = .application(ref)
+    storage = .application(ref)
     view = AnyView(EmptyView())
   }
 

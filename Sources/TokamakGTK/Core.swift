@@ -15,8 +15,8 @@
 //  Created by Carson Katri on 10/10/20.
 //
 
-import TokamakCore
 import CGTK
+import TokamakCore
 
 // MARK: Environment & State
 
@@ -132,8 +132,8 @@ public typealias ViewBuilder = TokamakCore.ViewBuilder
 
 // FIXME: I would put this inside TokamakCore, but for
 // some reason it doesn't get exported with the typealias
-extension Text {
-  public static func + (lhs: Self, rhs: Self) -> Self {
+public extension Text {
+  static func + (lhs: Self, rhs: Self) -> Self {
     _concatenating(lhs: lhs, rhs: rhs)
   }
 }

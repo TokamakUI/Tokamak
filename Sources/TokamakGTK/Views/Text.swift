@@ -15,16 +15,16 @@
 //  Created by Carson Katri on 10/10/20.
 //
 
-import TokamakCore
 import CGTK
 import Foundation
+import TokamakCore
 
 extension Text: AnyWidget {
   func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
     let proxy = _TextProxy(self)
     return gtk_label_new(proxy.rawText)
   }
-  
+
   func update(widget: Widget) {
     if case let .widget(w) = widget.storage {
       w.withMemoryRebound(to: GtkLabel.self, capacity: 1) {
@@ -32,4 +32,4 @@ extension Text: AnyWidget {
       }
     }
   }
-} 
+}

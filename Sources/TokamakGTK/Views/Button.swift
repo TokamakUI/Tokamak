@@ -15,9 +15,9 @@
 //  Created by Carson Katri on 10/10/20.
 //
 
-import TokamakCore
 import CGTK
 import Foundation
+import TokamakCore
 
 extension _Button: AnyWidget, ParentView {
   func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
@@ -25,7 +25,7 @@ extension _Button: AnyWidget, ParentView {
     bindAction(to: btn)
     return btn
   }
-  
+
   func update(widget: Widget) {
     if case let .widget(w) = widget.storage {
       w.disconnect(gtype: gtk_button_get_type(), signal: "clicked")
@@ -38,6 +38,6 @@ extension _Button: AnyWidget, ParentView {
   }
 
   public var children: [AnyView] {
-    [AnyView(self.label)]
+    [AnyView(label)]
   }
 }

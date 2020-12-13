@@ -15,8 +15,8 @@
 //  Created by Carson Katri on 10/10/20.
 //
 
-import TokamakGTK
 import Foundation
+import TokamakGTK
 
 struct Counter: View {
   @State private var count: Int = 0
@@ -45,7 +45,7 @@ struct PickerDemo: View {
   }
 }
 
-struct TokamakGTKDemo : App {
+struct TokamakGTKDemo: App {
   var body: some Scene {
     WindowGroup("Test Scene") {
       List {

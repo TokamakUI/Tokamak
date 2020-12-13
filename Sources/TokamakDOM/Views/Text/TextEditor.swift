@@ -11,22 +11,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Jed Fox on 06/28/2020.
-//
 
 import TokamakCore
 
-extension SecureField: ViewDeferredToRenderer where Label == Text {
+extension TextEditor: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    let proxy = _SecureFieldProxy(self)
-    return AnyView(DynamicHTML("input", [
-      "type": "password",
-      .value: proxy.textBinding.wrappedValue,
-      "placeholder": proxy.label.rawText,
-      "class": "_tokamak-formcontrol",
+    let proxy = _TextEditorProxy(self)
+
+    return AnyView(DynamicHTML("textarea", [
+      "class": "_tokamak-formcontrol _tokamak-texteditor",
     ], listeners: [
-      "keypress": { event in if event.key == "Enter" { proxy.onCommit() } },
       "input": { event in
         if let newValue = event.target.object?.value.string {
           proxy.textBinding.wrappedValue = newValue
