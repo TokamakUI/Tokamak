@@ -15,7 +15,7 @@ jobs:
         with:
           shell-action: carton bundle --product TokamakDemo
 
-  macos_build:
+  core_macos_build:
     runs-on: macos-11.0
 
     steps:
@@ -40,3 +40,18 @@ jobs:
           xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
             CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
             xcpretty --color
+
+  gtk_macos_build:
+    runs-on: macos-11.0
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the GTK renderer on macOS
+        shell: bash
+        run: |
+          set -ex
+          sudo xcode-select --switch /Applications/Xcode_12.2.app/Contents/Developer/
+
+          brew install gtk+3
+
+          make build
