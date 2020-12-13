@@ -6,7 +6,7 @@ SWIFT_C_FLAGS ?= -Xcc $(shell echo $(C_FLAGS) | sed -e "s/ / -Xcc /g")
 all: build
 
 build:
-	swift build $(SWIFT_C_FLAGS) $(SWIFT_LINKER_FLAGS)
+	swift build --product TokamakGTKDemo $(SWIFT_C_FLAGS) $(SWIFT_LINKER_FLAGS)
 
 run: build
 	.build/debug/TokamakGTKDemo
