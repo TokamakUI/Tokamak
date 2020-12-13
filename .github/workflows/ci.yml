@@ -29,6 +29,8 @@ jobs:
           swift build --product TokamakPackageTests
           `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest
 
+          rm -rf Sources/TokamakGTKCHelpers/*.c
+
           xcodebuild -version
 
           # make sure Tokamak can be built on macOS so that Xcode autocomplete works
