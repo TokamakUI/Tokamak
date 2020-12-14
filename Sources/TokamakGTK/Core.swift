@@ -93,6 +93,7 @@ public typealias GeometryReader = TokamakCore.GeometryReader
 public typealias GridItem = TokamakCore.GridItem
 public typealias Group = TokamakCore.Group
 public typealias HStack = TokamakCore.HStack
+public typealias Image = TokamakCore.Image
 public typealias LazyHGrid = TokamakCore.LazyHGrid
 public typealias LazyVGrid = TokamakCore.LazyVGrid
 public typealias List = TokamakCore.List

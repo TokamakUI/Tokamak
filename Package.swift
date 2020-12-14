@@ -96,7 +96,8 @@ let package = Package(
     ),
     .target(
       name: "TokamakGTKDemo",
-      dependencies: ["TokamakGTK"]
+      dependencies: ["TokamakGTK"],
+      resources: [.copy("logo-header.png")]
     ),
     .target(
       name: "TokamakStaticHTML",
