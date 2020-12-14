@@ -43,3 +43,14 @@ extension _FlexFrameLayout: WidgetModifier {
     gtk_widget_set_size_request(widget, Int32(idealWidth ?? -1), Int32(idealHeight ?? -1))
   }
 }
+
+extension _BackgroundModifier: WidgetModifier where Background == Color {
+    public func modify(widget: UnsafeMutablePointer<GtkWidget>) {
+        let resolved = _ColorProxy(self.background).resolve(in: environment)
+        var color = GdkRGBA(red: resolved.red,
+                            green: resolved.green,
+                            blue: resolved.blue,
+                            alpha: resolved.opacity)
+        gtk_widget_override_background_color(widget, GtkStateFlags(rawValue: 0), &color)
+    }
+}
