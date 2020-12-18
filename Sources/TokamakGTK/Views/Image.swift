@@ -21,8 +21,6 @@ import TokamakCore
 
 extension Image: AnyWidget {
   func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
-//    var sko: GdkRGBA = .init(red: 1, green: 0, blue: 0, alpha: 1)
-
     let proxy = _ImageProxy(self)
     let imagePath = proxy.path ?? proxy.name
     let img = gtk_image_new_from_file(imagePath)!
