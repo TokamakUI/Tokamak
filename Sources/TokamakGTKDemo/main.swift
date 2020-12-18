@@ -18,8 +18,6 @@
 import Foundation
 import TokamakGTK
 
-let bundle = Bundle.module
-
 struct Counter: View {
   @State private var count: Int = 0
   var body: some View {
@@ -29,7 +27,6 @@ struct Counter: View {
         Button("Decrement") { count -= 1 }
         Button("Increment") { count += 1 }
       }
-        Image(bundle.bundlePath + "/logo-header.png", label: Text("Tokamak Demo"))
     }
   }
 }
@@ -49,13 +46,16 @@ struct PickerDemo: View {
 }
 
 struct TokamakGTKDemo: App {
+  @State private var count: Int = 0
+
   var body: some Scene {
     WindowGroup("Test Scene") {
       List {
+        Image("logo-header.png", bundle: Bundle.module, label: Text("Tokamak Demo"))
         Counter()
         PickerDemo()
         ForEach(1..<100) {
-          Text("Item #\($0)")
+          Text("Item #\($0) \(count)")
         }
       }
     }
