@@ -91,10 +91,12 @@ DOM access:
 ```swift
 import JavaScriptKit
 
-_ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
-"""#)
-_ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
+let document = JSObject.global.document
+let script = document.createElement("script")
+script.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js")
+document.head.appendChild(script)
+
+_ = document.head.insertAdjacentHTML("beforeend", #"""
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
