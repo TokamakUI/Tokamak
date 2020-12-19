@@ -132,6 +132,7 @@ public typealias AnyView = TokamakCore.AnyView
 public typealias EmptyView = TokamakCore.EmptyView
 
 // MARK: Text
+
 public typealias TextAlignment = TokamakCore.TextAlignment
 
 // MARK: App & Scene
