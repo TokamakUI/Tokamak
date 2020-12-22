@@ -95,6 +95,7 @@ extension Path: ViewDeferredToRenderer {
     elements: [Element],
     strokeStyle: StrokeStyle = .zero
   ) -> AnyView {
+    if elements.isEmpty { return AnyView(EmptyView()) }
     var d = [String]()
     for element in elements {
       switch element {
