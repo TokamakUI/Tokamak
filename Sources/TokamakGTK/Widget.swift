@@ -27,16 +27,19 @@ extension AnyWidget {
 
 struct WidgetView<Content: View>: View, AnyWidget, ParentView {
   let build: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>
+  let update: (Widget) -> Void
   let content: Content
   let expand: Bool
 
   init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>,
+       update: @escaping (Widget) -> Void = { _ in },
        expand: Bool = false,
        @ViewBuilder content: () -> Content)
   {
     self.build = build
     self.expand = expand
     self.content = content()
+    self.update = update
   }
 
   func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
@@ -44,9 +47,8 @@ struct WidgetView<Content: View>: View, AnyWidget, ParentView {
   }
 
   func update(widget: Widget) {
-    // Rebuild from scratch
-    if case let .widget(w) = widget.storage {
-      widget.destroy()
+    if case .widget = widget.storage {
+      update(widget)
     }
   }
 

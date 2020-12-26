@@ -24,38 +24,44 @@ protocol WidgetModifier {
 
 extension ModifiedContent: ViewDeferredToRenderer where Content: View {
   public var deferredBody: AnyView {
-    if let widgetModifier = modifier as? WidgetModifier {
-      if let anyView = content as? ViewDeferredToRenderer,
-         let anyWidget = mapAnyView(
-           anyView.deferredBody,
-           transform: { (widget: AnyWidget) in widget }
-         )
-      {
-        return AnyView(WidgetView {
-          let contentWidget = anyWidget.new($0)
-          widgetModifier.modify(widget: contentWidget)
-          return contentWidget
-        } content: {
-          if let parentView = anyWidget as? ParentView {
-            ForEach(Array(parentView.children.enumerated()), id: \.offset) { _, view in
-              view
-            }
-          }
-        })
-      } else if let anyWidget = content as? AnyWidget {
-        return AnyView(WidgetView {
-          let contentWidget = anyWidget.new($0)
-          widgetModifier.modify(widget: contentWidget)
-          return contentWidget
-        } content: {
-          if let parentView = anyWidget as? ParentView {
-            ForEach(Array(parentView.children.enumerated()), id: \.offset) { _, view in
-              view
-            }
-          }
-        })
+    guard let widgetModifier = modifier as? WidgetModifier else {
+      return AnyView(content)
+    }
+    let anyWidget: AnyWidget
+    if let anyView = content as? ViewDeferredToRenderer,
+       let _anyWidget = mapAnyView(
+        anyView.deferredBody,
+        transform: { (widget: AnyWidget) in widget }
+       )
+    {
+      anyWidget = _anyWidget
+    } else if let _anyWidget = content as? AnyWidget {
+      anyWidget = _anyWidget
+    } else {
+      return AnyView(content)
+    }
+    return AnyView(WidgetView {
+      let contentWidget = anyWidget.new($0)
+      widgetModifier.modify(widget: contentWidget)
+      return contentWidget
+    }
+    update: { widget in
+      anyWidget.update(widget: widget)
+
+      // Is it correct to apply the modifier again after updating?
+      // I assume so since the modifier parameters may have changed.
+      if case .widget(let w) = widget.storage {
+        widgetModifier.modify(widget: w)
       }
     }
-    return AnyView(content)
+    content: {
+      if let parentView = anyWidget as? ParentView, parentView.children.count > 1 {
+        ForEach(Array(parentView.children.enumerated()), id: \.offset) { _, view in
+          view
+        }
+      } else if let parentView = anyWidget as? ParentView, parentView.children.count == 1 {
+        parentView.children[0]
+      }
+    })
   }
 }
