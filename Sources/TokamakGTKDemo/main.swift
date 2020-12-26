@@ -46,8 +46,6 @@ struct PickerDemo: View {
 }
 
 struct TokamakGTKDemo: App {
-  @State private var count: Int = 0
-
   var body: some Scene {
     WindowGroup("Test Scene") {
       List {
@@ -55,7 +53,7 @@ struct TokamakGTKDemo: App {
         Counter()
         PickerDemo()
         ForEach(1..<100) {
-          Text("Item #\($0) \(count)")
+          Text("Item #\($0)")
         }
       }
     }
