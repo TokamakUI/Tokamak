@@ -27,3 +27,4 @@ jobs:
           refactor,
           SwiftUI compatibility,
           test suite,
+          GTK renderer,
