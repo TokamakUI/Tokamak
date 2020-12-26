@@ -49,6 +49,7 @@ struct TokamakGTKDemo: App {
   var body: some Scene {
     WindowGroup("Test Scene") {
       List {
+        Image("logo-header.png", bundle: Bundle.module, label: Text("Tokamak Demo"))
         Counter()
         PickerDemo()
         ForEach(1..<100) {
