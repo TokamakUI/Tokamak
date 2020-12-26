@@ -103,12 +103,14 @@ public extension EnvironmentValues {
 
 public protocol _AnyIDView {
   var anyId: AnyHashable { get }
+  var anyContent: AnyView { get }
 }
 
 struct IDView<Content, ID>: View, _AnyIDView where Content: View, ID: Hashable {
   let content: Content
   let id: ID
   var anyId: AnyHashable { AnyHashable(id) }
+  var anyContent: AnyView { AnyView(content) }
 
   init(_ content: Content, id: ID) {
     self.content = content

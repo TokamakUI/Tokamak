@@ -17,6 +17,26 @@
       "label": "carton dev",
       "type": "shell",
       "command": "carton dev --product TokamakDemo"
+    },
+    {
+      "label": "make",
+      "type": "shell",
+      "command": "make",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "make run",
+      "type": "shell",
+      "command": "make run",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     }
   ]
 }

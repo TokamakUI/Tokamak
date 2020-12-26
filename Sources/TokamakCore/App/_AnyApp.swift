@@ -23,7 +23,7 @@ public struct _AnyApp: App {
   let bodyClosure: (Any) -> _AnyScene
   let bodyType: Any.Type
 
-  init<A: App>(_ app: A) {
+  public init<A: App>(_ app: A) {
     self.app = app
     type = A.self
     // swiftlint:disable:next force_cast

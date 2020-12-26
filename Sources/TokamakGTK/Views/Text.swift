@@ -11,11 +11,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 10/10/20.
+//
 
-#if canImport(SwiftUI)
-@_exported import SwiftUI
-#elseif os(WASI)
-@_exported import TokamakDOM
-#elseif os(Linux)
-@_exported import TokamakGTK
-#endif
+import CGTK
+import Foundation
+import TokamakCore
+
+extension Text: AnyWidget {
+  func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
+    let proxy = _TextProxy(self)
+    return gtk_label_new(proxy.rawText)
+  }
+
+  func update(widget: Widget) {
+    if case let .widget(w) = widget.storage {
+      w.withMemoryRebound(to: GtkLabel.self, capacity: 1) {
+        gtk_label_set_text($0, _TextProxy(self).rawText)
+      }
+    }
+  }
+}

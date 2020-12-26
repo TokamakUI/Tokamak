@@ -22,16 +22,24 @@ let package = Package(
       targets: ["TokamakDOM"]
     ),
     .library(
-      name: "TokamakShim",
-      targets: ["TokamakShim"]
-    ),
-    .library(
       name: "TokamakStaticHTML",
       targets: ["TokamakStaticHTML"]
     ),
     .executable(
       name: "TokamakStaticDemo",
       targets: ["TokamakStaticDemo"]
+    ),
+    .library(
+      name: "TokamakGTK",
+      targets: ["TokamakGTK"]
+    ),
+    .executable(
+      name: "TokamakGTKDemo",
+      targets: ["TokamakGTKDemo"]
+    ),
+    .library(
+      name: "TokamakShim",
+      targets: ["TokamakShim"]
     ),
   ],
   dependencies: [
@@ -63,6 +71,34 @@ let package = Package(
       dependencies: ["CombineShim", "Runtime"]
     ),
     .target(
+      name: "TokamakShim",
+      dependencies: [
+        .target(name: "TokamakDOM", condition: .when(platforms: [.wasi])),
+        .target(name: "TokamakGTK", condition: .when(platforms: [.linux])),
+      ]
+    ),
+    .systemLibrary(
+      name: "CGTK",
+      pkgConfig: "gtk+-3.0",
+      providers: [
+        .apt(["libgtk+-3.0", "gtk+-3.0"]),
+        // .yum(["gtk3-devel"]),
+        .brew(["gtk+3"]),
+      ]
+    ),
+    .target(
+      name: "TokamakGTKCHelpers",
+      dependencies: ["CGTK"]
+    ),
+    .target(
+      name: "TokamakGTK",
+      dependencies: ["TokamakCore", "CGTK", "TokamakGTKCHelpers", "CombineShim"]
+    ),
+    .target(
+      name: "TokamakGTKDemo",
+      dependencies: ["TokamakGTK"]
+    ),
+    .target(
       name: "TokamakStaticHTML",
       dependencies: [
         "TokamakCore",
@@ -81,10 +117,6 @@ let package = Package(
           condition: .when(platforms: [.wasi])
         ),
       ]
-    ),
-    .target(
-      name: "TokamakShim",
-      dependencies: [.target(name: "TokamakDOM", condition: .when(platforms: [.wasi]))]
     ),
     .target(
       name: "TokamakDemo",

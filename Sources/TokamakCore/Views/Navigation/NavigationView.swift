@@ -15,7 +15,7 @@
 //  Created by Jed Fox on 06/30/2020.
 //
 
-final class NavigationContext: ObservableObject {
+public final class NavigationContext: ObservableObject {
   @Published var destination = NavigationLinkDestination(EmptyView())
 }
 
@@ -39,14 +39,16 @@ public struct _NavigationViewProxy<Content: View> {
 
   public init(_ subject: NavigationView<Content>) { self.subject = subject }
 
+  public var context: NavigationContext { subject.context }
+
   public var content: some View {
     subject.content
-      .environmentObject(subject.context)
+      .environmentObject(context)
   }
 
   public var destination: some View {
     subject.context.destination.view
-      .environmentObject(subject.context)
+      .environmentObject(context)
   }
 }
 
