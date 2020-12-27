@@ -33,12 +33,16 @@ extension WidgetAttributeModifier {
 
     let renderedStyle = attributes.reduce("", { $0 + "\($1.0):\($1.1);"})
 
-    gtk_css_provider_load_from_data (provider,
-                                     "* { \(renderedStyle) }", -1, nil)
+    gtk_css_provider_load_from_data(provider,
+                                    "* { \(renderedStyle) }",
+                                    -1,
+                                    nil)
 
-    gtk_style_context_add_provider(context, OpaquePointer(provider), 1 /* GTK_STYLE_PROVIDER_PRIORITY_FALLBACK */)
+    gtk_style_context_add_provider(context,
+                                   OpaquePointer(provider),
+                                   1 /* GTK_STYLE_PROVIDER_PRIORITY_FALLBACK */)
 
-    g_object_unref (provider)
+    g_object_unref(provider)
   }
 }
 
