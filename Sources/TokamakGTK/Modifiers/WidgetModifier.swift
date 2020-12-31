@@ -22,6 +22,30 @@ protocol WidgetModifier {
   func modify(widget: UnsafeMutablePointer<GtkWidget>)
 }
 
+protocol WidgetAttributeModifier: WidgetModifier {
+  var attributes: [String: String] { get }
+}
+
+extension WidgetAttributeModifier {
+  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
+    let context = gtk_widget_get_style_context(widget)
+    let provider = gtk_css_provider_new()
+
+    let renderedStyle = attributes.reduce("", { $0 + "\($1.0):\($1.1);"})
+
+    gtk_css_provider_load_from_data(provider,
+                                    "* { \(renderedStyle) }",
+                                    -1,
+                                    nil)
+
+    gtk_style_context_add_provider(context,
+                                   OpaquePointer(provider),
+                                   1 /* GTK_STYLE_PROVIDER_PRIORITY_FALLBACK */)
+
+    g_object_unref(provider)
+  }
+}
+
 extension ModifiedContent: ViewDeferredToRenderer where Content: View {
   public var deferredBody: AnyView {
     guard let widgetModifier = modifier as? WidgetModifier else {

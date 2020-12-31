@@ -19,15 +19,13 @@ import CGTK
 import TokamakCore
 
 extension _FrameLayout: WidgetModifier {
-  public func modify(widget: UnsafeMutablePointer<GtkWidget>) {
+  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
     gtk_widget_set_size_request(widget, Int32(width ?? -1), Int32(height ?? -1))
-    // gtk_widget_set_halign(widget, alignment.horizontal.gtkValue)
-    // gtk_widget_set_valign(widget, alignment.vertical.gtkValue)
   }
 }
 
 extension _FlexFrameLayout: WidgetModifier {
-  public func modify(widget: UnsafeMutablePointer<GtkWidget>) {
+  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
     gtk_widget_set_halign(widget, alignment.horizontal.gtkValue)
     gtk_widget_set_valign(widget, alignment.vertical.gtkValue)
     if maxWidth == .infinity {
@@ -44,13 +42,32 @@ extension _FlexFrameLayout: WidgetModifier {
   }
 }
 
-extension _BackgroundModifier: WidgetModifier where Background == Color {
-    public func modify(widget: UnsafeMutablePointer<GtkWidget>) {
-        let resolved = _ColorProxy(self.background).resolve(in: environment)
-        var color = GdkRGBA(red: resolved.red,
-                            green: resolved.green,
-                            blue: resolved.blue,
-                            alpha: resolved.opacity)
-        gtk_widget_override_background_color(widget, GtkStateFlags(rawValue: 0), &color)
-    }
+extension Color {
+  func cssValue(_ environment: EnvironmentValues) -> String {
+    let rgba = _ColorProxy(self).resolve(in: environment)
+    return "rgba(\(rgba.red * 255), \(rgba.green * 255), \(rgba.blue * 255), \(rgba.opacity))"
+  }
+}
+
+// Border modifier
+extension _OverlayModifier: WidgetAttributeModifier, WidgetModifier
+  where Overlay == _ShapeView<_StrokedShape<TokamakCore.Rectangle._Inset>, Color>
+{
+  var attributes: [String: String] {
+    let style = overlay.shape.style.dashPhase == 0 ? "solid" : "dashed"
+
+    return [
+      "border-style": style,
+      "border-width": "\(overlay.shape.style.lineWidth)px",
+      "border-color": overlay.style.cssValue(environment),
+      "border-radius": "inherit"
+    ]
+  }
+}
+
+extension _BackgroundModifier: WidgetAttributeModifier, WidgetModifier where Background == Color {
+  var attributes: [String: String] {
+    let cssValue = background.cssValue(environment)
+    return ["background": cssValue]
+  }
 }
