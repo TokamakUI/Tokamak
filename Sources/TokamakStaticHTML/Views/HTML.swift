@@ -56,7 +56,7 @@ public extension AnyHTML {
   var outerHTML: String {
     """
     <\(tag)\(attributes.isEmpty ? "" : " ")\
-    \(attributes.map { #"\#($0)="\#($1)""# }.joined(separator: " "))>\
+    \(attributes.map { #"\#($0)="\#($1)""# }.sorted().joined(separator: " "))>\
     \(innerHTML ?? "")\
     </\(tag)>
     """
