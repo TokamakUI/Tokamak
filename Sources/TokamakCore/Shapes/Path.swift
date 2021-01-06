@@ -458,7 +458,6 @@ public extension Path {
   ) {}
 
   mutating func addPath(_ path: Path, transform: CGAffineTransform = .identity) {
-    // TODO: handle transform
     append(path.storage, transform: transform)
   }
 
