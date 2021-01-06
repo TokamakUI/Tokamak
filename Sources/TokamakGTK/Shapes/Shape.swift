@@ -23,6 +23,7 @@ extension _ShapeView: ViewDeferredToRenderer {
 
   func bindAction(to drawingArea: UnsafeMutablePointer<GtkWidget>) {
     drawingArea.connect2(signal: "draw", closure: { widget, cr in
+      cairo_save(cr)
 
       let width = gtk_widget_get_allocated_width (widget)
       let height = gtk_widget_get_allocated_height (widget)
@@ -67,7 +68,7 @@ extension _ShapeView: ViewDeferredToRenderer {
 //        cairo_set_fill_rule(cr, cairo_fill_rule_t(rawValue: 0) /* CAIRO_FILL_RULE_WINDING */)
       }
 
-      dump(elements)
+//      dump(elements)
 
       var current: CGPoint = .zero
       var start: CGPoint = .zero
@@ -98,11 +99,17 @@ extension _ShapeView: ViewDeferredToRenderer {
         }
       }
 
+      // It kind of appears to be ok to reset the clip (in order to draw outside the frame)...
+      // This could be error prone, however, and a source of future bugs...
+      cairo_reset_clip(cr)
+
       if stroke {
         cairo_stroke(cr)
       } else {
         cairo_fill(cr)
       }
+
+      cairo_restore(cr)
     })
   }
 }
