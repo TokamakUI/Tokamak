@@ -88,6 +88,8 @@ extension Path: ViewDeferredToRenderer {
         storage: trimmed.path.storage,
         strokeStyle: strokeStyle
       ) // TODO: Trim the path
+    case let .path(pathBox):
+      return svgFrom(elements: pathBox.elements, strokeStyle: strokeStyle)
     }
   }
 
@@ -117,15 +119,6 @@ extension Path: ViewDeferredToRenderer {
     ]))
   }
 
-  func svgFrom(
-    subpaths: [_SubPath],
-    strokeStyle: StrokeStyle = .zero
-  ) -> AnyView {
-    AnyView(ForEach(Array(subpaths.enumerated()), id: \.offset) { _, path in
-      path.path.svgBody(strokeStyle: strokeStyle)
-    })
-  }
-
   var storageSize: CGSize {
     switch storage {
     case .empty:
@@ -138,6 +131,8 @@ extension Path: ViewDeferredToRenderer {
       return path.path.size
     case let .trimmed(path):
       return path.path.size
+    case let .path(pathBox):
+      return elementsSize
     }
   }
 
@@ -162,20 +157,13 @@ extension Path: ViewDeferredToRenderer {
     return CGSize(width: abs(maxX - min(0, minX)), height: abs(maxY - min(0, minY)))
   }
 
-  var size: CGSize {
-    .init(
-      width: max(storageSize.width, elementsSize.width),
-      height: max(storageSize.height, elementsSize.height)
-    )
-  }
+  var size: CGSize { storageSize }
 
   @ViewBuilder
   func svgBody(
     strokeStyle: StrokeStyle = .zero
   ) -> some View {
     svgFrom(storage: storage, strokeStyle: strokeStyle)
-    svgFrom(elements: elements, strokeStyle: strokeStyle)
-    svgFrom(subpaths: subpaths, strokeStyle: strokeStyle)
   }
 
   public var deferredBody: AnyView {
