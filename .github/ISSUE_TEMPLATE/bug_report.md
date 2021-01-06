@@ -7,7 +7,7 @@ assignees: MaxDesiatov
 
 ---
 
-Replace the placeholders below with details that help us to reproduce the bug.
+<!-- Replace the placeholders below with details that help us to reproduce the bug. -->
 
 **Describe the bug**
 A clear and concise description of what the bug is.
@@ -19,7 +19,7 @@ Steps to reproduce the behavior:
 3. Scroll down to '....'
 4. See error
 
-If this is a layout/rendering issue, please provide a self-contained code snippet that reproduces it.
+<!-- If this is a layout/rendering issue, please provide a self-contained code snippet that reproduces it. -->
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
