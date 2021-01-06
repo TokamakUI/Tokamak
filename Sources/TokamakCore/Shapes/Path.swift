@@ -78,44 +78,36 @@ public struct Path: Equatable, LosslessStringConvertible {
         ]
 
       case .ellipse(let rect):
-        // TODO: Figure out actual algorithm - for now I just added a rounded rect with corner size
-        // of a quater of the rect
-        let cornerSize = CGSize(width: rect.size.width, height: rect.size.height)
-        return [
-          .move(to: CGPoint(x: rect.size.width, y: rect.size.height / 2).offset(by: rect.origin)),
-          .line(
-            to: CGPoint(x: rect.size.width, y: rect.size.height - cornerSize.height)
-              .offset(by: rect.origin)
-          ),
-          .quadCurve(
-            to: CGPoint(x: rect.size.width - cornerSize.width, y: rect.size.height)
-              .offset(by: rect.origin),
-            control: CGPoint(x: rect.size.width, y: rect.size.height)
-              .offset(by: rect.origin)
-          ),
-          .line(to: CGPoint(x: cornerSize.width, y: rect.size.height).offset(by: rect.origin)),
-          .quadCurve(
-            to: CGPoint(x: 0, y: rect.size.height - cornerSize.height)
-              .offset(by: rect.origin),
-            control: CGPoint(x: 0, y: rect.size.height)
-              .offset(by: rect.origin)
-          ),
-          .line(to: CGPoint(x: 0, y: cornerSize.height).offset(by: rect.origin)),
-          .quadCurve(
-            to: CGPoint(x: cornerSize.width, y: 0)
-              .offset(by: rect.origin),
-            control: CGPoint.zero
-              .offset(by: rect.origin)
-          ),
-          .line(to: CGPoint(x: rect.size.width - cornerSize.width, y: 0).offset(by: rect.origin)),
-          .quadCurve(
-            to: CGPoint(x: rect.size.width, y: cornerSize.height)
-              .offset(by: rect.origin),
-            control: CGPoint(x: rect.size.width, y: 0)
-              .offset(by: rect.origin)
-          ),
-          .closeSubpath
-        ]
+        // Scale down from a circle of max(width, height) in order to limit
+        // precision loss. Scaling up from a unit circle also looked alright,
+        // but scaling down is likely a bit better.
+        let size = max(rect.size.width, rect.size.height)
+        guard size > 0 else { return [] }
+        let transform: CGAffineTransform
+        if rect.size.width > rect.size.height {
+          transform = CGAffineTransform(scaleX: 1,
+                                        y: rect.size.height / rect.size.width)
+        } else if rect.size.height > rect.size.width {
+          transform = CGAffineTransform(scaleX: rect.size.width / rect.size.height,
+                                        y: 1)
+        } else {
+          transform = .identity
+        }
+        let elements =  [
+          [.move(to: CGPoint(x: size, y: size / 2))],
+          getArc(center: CGPoint(x: size / 2,
+                                 y: size / 2),
+                 radius: size / 2,
+                 startAngle: Angle(radians: 0),
+                 endAngle: Angle(radians: 2 * Double.pi),
+                 clockwise: false),
+          [.closeSubpath]
+        ].flatMap({ $0 })
+        return elements.map {
+          transform
+            .translatedBy(x: rect.origin.x, y: rect.origin.y)
+            .transform(element: $0)
+        }
 
       case .roundedRect(let roundedRect):
         // TODO: Check that zero is the default value in SwiftUI
