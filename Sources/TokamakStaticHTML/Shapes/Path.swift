@@ -88,8 +88,8 @@ extension Path: ViewDeferredToRenderer {
         storage: trimmed.path.storage,
         strokeStyle: strokeStyle
       ) // TODO: Trim the path
-    case let .path(pathBox):
-      return svgFrom(elements: pathBox.elements, strokeStyle: strokeStyle)
+    case .path:
+      return svgFrom(elements: elements, strokeStyle: strokeStyle)
     }
   }
 
