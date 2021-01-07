@@ -64,8 +64,8 @@ extension _ShapeView: ViewDeferredToRenderer {
     drawingArea.connect(signal: "draw", closure: { widget, cr in
       cairo_save(cr)
 
-      let width = gtk_widget_get_allocated_width (widget)
-      let height = gtk_widget_get_allocated_height (widget)
+      let width = gtk_widget_get_allocated_width(widget)
+      let height = gtk_widget_get_allocated_height(widget)
 
       let c = (style as? Color) ?? foregroundColor ?? Color.black
 
@@ -78,10 +78,12 @@ extension _ShapeView: ViewDeferredToRenderer {
                           green: Double(rgba.green),
                           blue: Double(rgba.blue),
                           alpha: Double(rgba.opacity))
-      
-      gdk_cairo_set_source_rgba (cr, &color)
 
-      let path = shape.path(in: CGRect(origin: .zero, size: CGSize(width: Double(width), height: Double(height))))
+      gdk_cairo_set_source_rgba(cr, &color)
+
+      let path = shape.path(in: CGRect(origin: .zero,
+                                       size: CGSize(width: Double(width),
+                                                    height: Double(height))))
       let elements: [Path.Element]
       let stroke: Bool
       if case let .stroked(strokedPath) = path.storage {
@@ -106,8 +108,6 @@ extension _ShapeView: ViewDeferredToRenderer {
         // This is already the default
 //        cairo_set_fill_rule(cr, cairo_fill_rule_t(rawValue: 0) /* CAIRO_FILL_RULE_WINDING */)
       }
-
-//      dump(elements)
 
       createPath(from: elements, in: cr)
 
