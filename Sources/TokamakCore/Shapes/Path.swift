@@ -162,7 +162,8 @@ public struct Path: Equatable, LosslessStringConvertible {
       let minY = yPos.first ?? 0
       let maxY = yPos.last ?? 0
 
-      return CGRect(origin: CGPoint(x: minX, y: minY), size: CGSize(width: maxX - minX, height: maxY - minY))
+      return CGRect(origin: CGPoint(x: minX, y: minY),
+                    size: CGSize(width: maxX - minX, height: maxY - minY))
     }
   }
 
@@ -288,7 +289,8 @@ public extension Path.Storage {
         return
           [
             [
-              .move(to: CGPoint(x: rect.size.width, y: rect.size.height / 2).offset(by: rect.origin)),
+              .move(to: CGPoint(x: rect.size.width, y: rect.size.height / 2)
+                      .offset(by: rect.origin)),
               .line(
                 to: CGPoint(x: rect.size.width, y: rect.size.height - cornerSize.height)
                   .offset(by: rect.origin)
@@ -301,7 +303,8 @@ public extension Path.Storage {
                    startAngle: Angle(radians: 0),
                    endAngle: Angle(radians: Double.pi / 2),
                    clockwise: false),
-            [.line(to: CGPoint(x: cornerSize.width, y: rect.size.height).offset(by: rect.origin))],
+            [.line(to: CGPoint(x: cornerSize.width, y: rect.size.height)
+                    .offset(by: rect.origin))],
             getArc(center: CGPoint(x: cornerSize.width,
                                    y: rect.size.height - cornerSize.height)
                     .offset(by: rect.origin),
@@ -309,7 +312,8 @@ public extension Path.Storage {
                    startAngle: Angle(radians: Double.pi / 2),
                    endAngle: Angle(radians: Double.pi),
                    clockwise: false),
-            [.line(to: CGPoint(x: 0, y: cornerSize.height).offset(by: rect.origin))],
+            [.line(to: CGPoint(x: 0, y: cornerSize.height)
+                    .offset(by: rect.origin))],
             getArc(center: CGPoint(x: cornerSize.width,
                                    y: cornerSize.height)
                     .offset(by: rect.origin),
@@ -317,7 +321,8 @@ public extension Path.Storage {
                    startAngle: Angle(radians: Double.pi),
                    endAngle: Angle(radians: 3 * Double.pi / 2),
                    clockwise: false),
-            [.line(to: CGPoint(x: rect.size.width - cornerSize.width, y: 0).offset(by: rect.origin))],
+            [.line(to: CGPoint(x: rect.size.width - cornerSize.width, y: 0)
+                    .offset(by: rect.origin))],
             getArc(center: CGPoint(x: rect.size.width - cornerSize.width,
                                    y: cornerSize.height)
                     .offset(by: rect.origin),
