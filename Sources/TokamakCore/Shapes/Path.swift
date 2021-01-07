@@ -59,7 +59,7 @@ public struct Path: Equatable, LosslessStringConvertible {
     case empty
     case rect(CGRect)
     case ellipse(CGRect)
-    case roundedRect(FixedRoundedRect)
+    indirect case roundedRect(FixedRoundedRect)
     indirect case stroked(StrokedPath)
     indirect case trimmed(TrimmedPath)
     case path(PathBox)
