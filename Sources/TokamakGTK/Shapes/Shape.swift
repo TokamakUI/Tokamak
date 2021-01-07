@@ -30,7 +30,7 @@ extension _ShapeView: ViewDeferredToRenderer {
   }
 
   func bindAction(to drawingArea: UnsafeMutablePointer<GtkWidget>) {
-    drawingArea.connect2(signal: "draw", closure: { widget, cr in
+    drawingArea.connect(signal: "draw", closure: { widget, cr in
       cairo_save(cr)
 
       let width = gtk_widget_get_allocated_width (widget)
