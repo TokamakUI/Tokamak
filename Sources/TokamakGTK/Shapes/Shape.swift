@@ -19,6 +19,37 @@ import CGTK
 import CGDK
 import TokamakCore
 
+func createPath(from elements: [Path.Element], in cr: OpaquePointer) {
+  var current: CGPoint = .zero
+  var start: CGPoint = .zero
+  for element in elements {
+    switch element {
+    case let .move(to: p):
+      cairo_move_to(cr, p.x, p.y)
+      current = p
+      start = p
+
+    case let .line(to: p):
+      cairo_line_to(cr, p.x, p.y)
+      current = p
+
+    case .closeSubpath:
+      cairo_close_path(cr)
+      current = start
+
+    case let .curve(to: p, control1: c1, control2: c2):
+      cairo_curve_to(cr, c1.x, c1.y, c2.x, c2.y, p.x, p.y)
+      current = p
+
+    case let .quadCurve(to: p, control: c):
+      let c1 = CGPoint(x: (current.x + 2 * c.x) / 3, y: (current.y + 2 * c.y) / 3)
+      let c2 = CGPoint(x: (p.x + 2 * c.x) / 3, y: (p.y + 2 * c.y) / 3)
+      cairo_curve_to(cr, c1.x, c1.y, c2.x, c2.y, p.x, p.y)
+      current = p
+    }
+  }
+}
+
 extension _ShapeView: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     return AnyView(WidgetView(build: { _ in
@@ -78,34 +109,7 @@ extension _ShapeView: ViewDeferredToRenderer {
 
 //      dump(elements)
 
-      var current: CGPoint = .zero
-      var start: CGPoint = .zero
-      for element in elements {
-        switch element {
-        case let .move(to: p):
-          cairo_move_to(cr, p.x, p.y)
-          current = p
-          start = p
-
-        case let .line(to: p):
-          cairo_line_to(cr, p.x, p.y)
-          current = p
-
-        case .closeSubpath:
-          cairo_close_path(cr)
-          current = start
-
-        case let .curve(to: p, control1: c1, control2: c2):
-          cairo_curve_to(cr, c1.x, c1.y, c2.x, c2.y, p.x, p.y)
-          current = p
-
-        case let .quadCurve(to: p, control: c):
-          let c1 = CGPoint(x: (current.x + 2 * c.x) / 3, y: (current.y + 2 * c.y) / 3)
-          let c2 = CGPoint(x: (p.x + 2 * c.x) / 3, y: (p.y + 2 * c.y) / 3)
-          cairo_curve_to(cr, c1.x, c1.y, c2.x, c2.y, p.x, p.y)
-          current = p
-        }
-      }
+      createPath(from: elements, in: cr)
 
       // It kind of appears to be ok to reset the clip (in order to draw outside the frame)...
       // This could be error prone, however, and a source of future bugs...

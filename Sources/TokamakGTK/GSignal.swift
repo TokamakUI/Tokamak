@@ -44,7 +44,9 @@ extension UnsafeMutablePointer where Pointee == GtkWidget {
   func connect(
     signal: UnsafePointer<gchar>,
     data: gpointer? = nil,
-    handler: @convention(c) @escaping (UnsafeMutablePointer<GtkWidget>?, OpaquePointer, UnsafeRawPointer) -> Bool,
+    handler: @convention(c) @escaping (UnsafeMutablePointer<GtkWidget>?,
+                                       OpaquePointer,
+                                       UnsafeRawPointer) -> Bool,
     destroy: @convention(c) @escaping (UnsafeRawPointer, UnsafeRawPointer) -> ()
   ) -> Int {
     let handler = unsafeBitCast(handler, to: GCallback.self)
@@ -97,7 +99,8 @@ extension UnsafeMutablePointer where Pointee == GtkWidget {
     })
   }
 
-  /// Connect with a context-capturing closure (with the GtkWidget and an OpaquePointer passed through)
+  /// Connect with a context-capturing closure (with the GtkWidget and an
+  /// OpaquePointer passed through)
   @discardableResult
   func connect(
     signal: UnsafePointer<gchar>,
@@ -105,14 +108,16 @@ extension UnsafeMutablePointer where Pointee == GtkWidget {
   ) -> Int {
     let closureBox = Unmanaged.passRetained(DualParamClosureBox(closure)).retain().toOpaque()
     return connect(signal: signal, data: closureBox, handler: { widget, context, closureBox in
-      let unpackedAction = Unmanaged<DualParamClosureBox<UnsafeMutablePointer<GtkWidget>?, OpaquePointer, ()>>
+      let unpackedAction = Unmanaged<DualParamClosureBox<UnsafeMutablePointer<GtkWidget>?,
+                                                         OpaquePointer, ()>>
         .fromOpaque(closureBox)
       if let widget = widget {
         unpackedAction.takeUnretainedValue().closure(widget, context)
       }
       return true
     }, destroy: { closureBox, _ in
-      let unpackedAction = Unmanaged<DualParamClosureBox<UnsafeMutablePointer<GtkWidget>?, OpaquePointer, ()>>
+      let unpackedAction = Unmanaged<DualParamClosureBox<UnsafeMutablePointer<GtkWidget>?,
+                                                         OpaquePointer, ()>>
         .fromOpaque(closureBox)
       unpackedAction.release()
     })
