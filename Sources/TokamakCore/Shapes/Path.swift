@@ -240,10 +240,14 @@ public extension Path.Storage {
       }
 
     case .roundedRect(let roundedRect):
-      // TODO: Check that zero is the default value in SwiftUI
-      let cornerSize = roundedRect.cornerSize ?? .zero
-      let cornerStyle = roundedRect.style
+      // A cornerSize of nil means that we are drawing a Capsule
+      // In other words the corner size should be half of the min
+      // of the size and width
       let rect = roundedRect.rect
+      let cornerSize = roundedRect.cornerSize ??
+        CGSize(width: min(rect.size.width, rect.size.height) / 2,
+               height: min(rect.size.width, rect.size.height) / 2)
+      let cornerStyle = roundedRect.style
       switch cornerStyle {
       case .continuous:
         return [
