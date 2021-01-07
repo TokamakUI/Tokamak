@@ -16,7 +16,6 @@
 //
 
 import CGTK
-import CGDK
 
 extension UnsafeMutablePointer where Pointee == GtkWidget {
   /// Connect with a c function pointer.
