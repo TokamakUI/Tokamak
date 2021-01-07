@@ -21,8 +21,6 @@ import TokamakCore
 
 extension _ShapeView: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    dump(self.environment)
-
     return AnyView(WidgetView(build: { _ in
       let w = gtk_drawing_area_new()
       bindAction(to: w!)

@@ -63,155 +63,6 @@ public struct Path: Equatable, LosslessStringConvertible {
     indirect case stroked(StrokedPath)
     indirect case trimmed(TrimmedPath)
     case path(PathBox)
-
-    var elements: [Element] {
-      switch self {
-      case .empty:
-        return []
-      case .rect(let rect):
-        return [
-          .move(to: rect.origin),
-          .line(to: CGPoint(x: rect.size.width, y: 0).offset(by: rect.origin)),
-          .line(to: CGPoint(x: rect.size.width, y: rect.size.height).offset(by: rect.origin)),
-          .line(to: CGPoint(x: 0, y: rect.size.height).offset(by: rect.origin)),
-          .closeSubpath
-        ]
-
-      case .ellipse(let rect):
-        // Scale down from a circle of max(width, height) in order to limit
-        // precision loss. Scaling up from a unit circle also looked alright,
-        // but scaling down is likely a bit better.
-        let size = max(rect.size.width, rect.size.height)
-        guard size > 0 else { return [] }
-        let transform: CGAffineTransform
-        if rect.size.width > rect.size.height {
-          transform = CGAffineTransform(scaleX: 1,
-                                        y: rect.size.height / rect.size.width)
-        } else if rect.size.height > rect.size.width {
-          transform = CGAffineTransform(scaleX: rect.size.width / rect.size.height,
-                                        y: 1)
-        } else {
-          transform = .identity
-        }
-        let elements =  [
-          [.move(to: CGPoint(x: size, y: size / 2))],
-          getArc(center: CGPoint(x: size / 2,
-                                 y: size / 2),
-                 radius: size / 2,
-                 startAngle: Angle(radians: 0),
-                 endAngle: Angle(radians: 2 * Double.pi),
-                 clockwise: false),
-          [.closeSubpath]
-        ].flatMap({ $0 })
-        return elements.map {
-          transform
-            .translatedBy(x: rect.origin.x, y: rect.origin.y)
-            .transform(element: $0)
-        }
-
-      case .roundedRect(let roundedRect):
-        // TODO: Check that zero is the default value in SwiftUI
-        let cornerSize = roundedRect.cornerSize ?? .zero
-        let cornerStyle = roundedRect.style
-        let rect = roundedRect.rect
-        switch cornerStyle {
-        case .continuous:
-          return [
-            .move(to: CGPoint(x: rect.size.width, y: rect.size.height / 2).offset(by: rect.origin)),
-            .line(
-              to: CGPoint(x: rect.size.width, y: rect.size.height - cornerSize.height)
-                .offset(by: rect.origin)
-            ),
-            .quadCurve(
-              to: CGPoint(x: rect.size.width - cornerSize.width, y: rect.size.height)
-                .offset(by: rect.origin),
-              control: CGPoint(x: rect.size.width, y: rect.size.height)
-                .offset(by: rect.origin)
-            ),
-            .line(to: CGPoint(x: cornerSize.width, y: rect.size.height).offset(by: rect.origin)),
-            .quadCurve(
-              to: CGPoint(x: 0, y: rect.size.height - cornerSize.height)
-                .offset(by: rect.origin),
-              control: CGPoint(x: 0, y: rect.size.height)
-                .offset(by: rect.origin)
-            ),
-            .line(to: CGPoint(x: 0, y: cornerSize.height).offset(by: rect.origin)),
-            .quadCurve(
-              to: CGPoint(x: cornerSize.width, y: 0)
-                .offset(by: rect.origin),
-              control: CGPoint.zero
-                .offset(by: rect.origin)
-            ),
-            .line(to: CGPoint(x: rect.size.width - cornerSize.width, y: 0).offset(by: rect.origin)),
-            .quadCurve(
-              to: CGPoint(x: rect.size.width, y: cornerSize.height)
-                .offset(by: rect.origin),
-              control: CGPoint(x: rect.size.width, y: 0)
-                .offset(by: rect.origin)
-            ),
-            .closeSubpath
-          ]
-
-        case .circular:
-          // TODO: This currently only supports circular corners and not ellipsoidal...
-          // This could be implemented by transforming the elements returned by
-          // the getArc calls.
-          return
-            [
-              [
-                .move(to: CGPoint(x: rect.size.width, y: rect.size.height / 2).offset(by: rect.origin)),
-                .line(
-                  to: CGPoint(x: rect.size.width, y: rect.size.height - cornerSize.height)
-                    .offset(by: rect.origin)
-                )
-              ],
-              getArc(center: CGPoint(x: rect.size.width - cornerSize.width,
-                                     y: rect.size.height - cornerSize.height)
-                      .offset(by: rect.origin),
-                     radius: cornerSize.width,
-                     startAngle: Angle(radians: 0),
-                     endAngle: Angle(radians: Double.pi / 2),
-                     clockwise: false),
-              [.line(to: CGPoint(x: cornerSize.width, y: rect.size.height).offset(by: rect.origin))],
-              getArc(center: CGPoint(x: cornerSize.width,
-                                     y: rect.size.height - cornerSize.height)
-                      .offset(by: rect.origin),
-                     radius: cornerSize.width,
-                     startAngle: Angle(radians: Double.pi / 2),
-                     endAngle: Angle(radians: Double.pi),
-                     clockwise: false),
-              [.line(to: CGPoint(x: 0, y: cornerSize.height).offset(by: rect.origin))],
-              getArc(center: CGPoint(x: cornerSize.width,
-                                     y: cornerSize.height)
-                      .offset(by: rect.origin),
-                     radius: cornerSize.width,
-                     startAngle: Angle(radians: Double.pi),
-                     endAngle: Angle(radians: 3 * Double.pi / 2),
-                     clockwise: false),
-              [.line(to: CGPoint(x: rect.size.width - cornerSize.width, y: 0).offset(by: rect.origin))],
-              getArc(center: CGPoint(x: rect.size.width - cornerSize.width,
-                                     y: cornerSize.height)
-                      .offset(by: rect.origin),
-                     radius: cornerSize.width,
-                     startAngle: Angle(radians: 3 * Double.pi / 2),
-                     endAngle: Angle(radians: 2 * Double.pi),
-                     clockwise: false),
-              [.closeSubpath]
-            ].flatMap({ $0 })
-        }
-
-      case .stroked(let stroked):
-        // TODO: This is not actually how stroking is implemented
-        return stroked.path.storage.elements
-
-      case .trimmed(let trimmed):
-        // TODO: This is not actually how stroking is implemented
-        return trimmed.path.storage.elements
-
-      case .path(let box):
-        return box.elements
-      }
-    }
   }
 
   public enum Element: Equatable {
@@ -292,8 +143,26 @@ public struct Path: Equatable, LosslessStringConvertible {
     case let .roundedRect(fixedRoundedRect): return fixedRoundedRect.rect
     case let .stroked(strokedPath): return strokedPath.path.boundingRect
     case let .trimmed(trimmedPath): return trimmedPath.path.boundingRect
-      // XXX TODO
-    case let .path(pathBox): return .zero
+    case let .path(pathBox):
+      // Note: Copied from TokamakStaticHTML/Shapes/Path.swift
+      // Should the control points be included in the positions array?
+      let positions = pathBox.elements.compactMap { elem -> CGPoint? in
+        switch elem {
+        case let .move(to: pos): return pos
+        case let .line(to: pos): return pos
+        case let .curve(to: pos, control1: _, control2: _): return pos
+        case let .quadCurve(to: pos, control: _): return pos
+        case .closeSubpath: return nil
+        }
+      }
+      let xPos = positions.map(\.x).sorted(by: <)
+      let minX = xPos.first ?? 0
+      let maxX = xPos.last ?? 0
+      let yPos = positions.map(\.y).sorted(by: <)
+      let minY = yPos.first ?? 0
+      let maxY = yPos.last ?? 0
+
+      return CGRect(origin: CGPoint(x: minX, y: minY), size: CGSize(width: maxX - minX, height: maxY - minY))
     }
   }
 
@@ -321,6 +190,157 @@ public struct Path: Equatable, LosslessStringConvertible {
 public enum RoundedCornerStyle: Hashable, Equatable {
   case circular
   case continuous
+}
+
+public extension Path.Storage {
+  var elements: [Path.Element] {
+    switch self {
+    case .empty:
+      return []
+    case .rect(let rect):
+      return [
+        .move(to: rect.origin),
+        .line(to: CGPoint(x: rect.size.width, y: 0).offset(by: rect.origin)),
+        .line(to: CGPoint(x: rect.size.width, y: rect.size.height).offset(by: rect.origin)),
+        .line(to: CGPoint(x: 0, y: rect.size.height).offset(by: rect.origin)),
+        .closeSubpath
+      ]
+
+    case .ellipse(let rect):
+      // Scale down from a circle of max(width, height) in order to limit
+      // precision loss. Scaling up from a unit circle also looked alright,
+      // but scaling down is likely a bit better.
+      let size = max(rect.size.width, rect.size.height)
+      guard size > 0 else { return [] }
+      let transform: CGAffineTransform
+      if rect.size.width > rect.size.height {
+        transform = CGAffineTransform(scaleX: 1,
+                                      y: rect.size.height / rect.size.width)
+      } else if rect.size.height > rect.size.width {
+        transform = CGAffineTransform(scaleX: rect.size.width / rect.size.height,
+                                      y: 1)
+      } else {
+        transform = .identity
+      }
+      let elements =  [
+        [.move(to: CGPoint(x: size, y: size / 2))],
+        getArc(center: CGPoint(x: size / 2,
+                               y: size / 2),
+               radius: size / 2,
+               startAngle: Angle(radians: 0),
+               endAngle: Angle(radians: 2 * Double.pi),
+               clockwise: false),
+        [.closeSubpath]
+      ].flatMap({ $0 })
+      return elements.map {
+        transform
+          .translatedBy(x: rect.origin.x, y: rect.origin.y)
+          .transform(element: $0)
+      }
+
+    case .roundedRect(let roundedRect):
+      // TODO: Check that zero is the default value in SwiftUI
+      let cornerSize = roundedRect.cornerSize ?? .zero
+      let cornerStyle = roundedRect.style
+      let rect = roundedRect.rect
+      switch cornerStyle {
+      case .continuous:
+        return [
+          .move(to: CGPoint(x: rect.size.width, y: rect.size.height / 2).offset(by: rect.origin)),
+          .line(
+            to: CGPoint(x: rect.size.width, y: rect.size.height - cornerSize.height)
+              .offset(by: rect.origin)
+          ),
+          .quadCurve(
+            to: CGPoint(x: rect.size.width - cornerSize.width, y: rect.size.height)
+              .offset(by: rect.origin),
+            control: CGPoint(x: rect.size.width, y: rect.size.height)
+              .offset(by: rect.origin)
+          ),
+          .line(to: CGPoint(x: cornerSize.width, y: rect.size.height).offset(by: rect.origin)),
+          .quadCurve(
+            to: CGPoint(x: 0, y: rect.size.height - cornerSize.height)
+              .offset(by: rect.origin),
+            control: CGPoint(x: 0, y: rect.size.height)
+              .offset(by: rect.origin)
+          ),
+          .line(to: CGPoint(x: 0, y: cornerSize.height).offset(by: rect.origin)),
+          .quadCurve(
+            to: CGPoint(x: cornerSize.width, y: 0)
+              .offset(by: rect.origin),
+            control: CGPoint.zero
+              .offset(by: rect.origin)
+          ),
+          .line(to: CGPoint(x: rect.size.width - cornerSize.width, y: 0).offset(by: rect.origin)),
+          .quadCurve(
+            to: CGPoint(x: rect.size.width, y: cornerSize.height)
+              .offset(by: rect.origin),
+            control: CGPoint(x: rect.size.width, y: 0)
+              .offset(by: rect.origin)
+          ),
+          .closeSubpath
+        ]
+
+      case .circular:
+        // TODO: This currently only supports circular corners and not ellipsoidal...
+        // This could be implemented by transforming the elements returned by
+        // the getArc calls.
+        return
+          [
+            [
+              .move(to: CGPoint(x: rect.size.width, y: rect.size.height / 2).offset(by: rect.origin)),
+              .line(
+                to: CGPoint(x: rect.size.width, y: rect.size.height - cornerSize.height)
+                  .offset(by: rect.origin)
+              )
+            ],
+            getArc(center: CGPoint(x: rect.size.width - cornerSize.width,
+                                   y: rect.size.height - cornerSize.height)
+                    .offset(by: rect.origin),
+                   radius: cornerSize.width,
+                   startAngle: Angle(radians: 0),
+                   endAngle: Angle(radians: Double.pi / 2),
+                   clockwise: false),
+            [.line(to: CGPoint(x: cornerSize.width, y: rect.size.height).offset(by: rect.origin))],
+            getArc(center: CGPoint(x: cornerSize.width,
+                                   y: rect.size.height - cornerSize.height)
+                    .offset(by: rect.origin),
+                   radius: cornerSize.width,
+                   startAngle: Angle(radians: Double.pi / 2),
+                   endAngle: Angle(radians: Double.pi),
+                   clockwise: false),
+            [.line(to: CGPoint(x: 0, y: cornerSize.height).offset(by: rect.origin))],
+            getArc(center: CGPoint(x: cornerSize.width,
+                                   y: cornerSize.height)
+                    .offset(by: rect.origin),
+                   radius: cornerSize.width,
+                   startAngle: Angle(radians: Double.pi),
+                   endAngle: Angle(radians: 3 * Double.pi / 2),
+                   clockwise: false),
+            [.line(to: CGPoint(x: rect.size.width - cornerSize.width, y: 0).offset(by: rect.origin))],
+            getArc(center: CGPoint(x: rect.size.width - cornerSize.width,
+                                   y: cornerSize.height)
+                    .offset(by: rect.origin),
+                   radius: cornerSize.width,
+                   startAngle: Angle(radians: 3 * Double.pi / 2),
+                   endAngle: Angle(radians: 2 * Double.pi),
+                   clockwise: false),
+            [.closeSubpath]
+          ].flatMap({ $0 })
+      }
+
+    case .stroked(let stroked):
+      // TODO: This is not actually how stroking is implemented
+      return stroked.path.storage.elements
+
+    case .trimmed(let trimmed):
+      // TODO: This is not actually how stroking is implemented
+      return trimmed.path.storage.elements
+
+    case .path(let box):
+      return box.elements
+    }
+  }
 }
 
 public extension Path {
