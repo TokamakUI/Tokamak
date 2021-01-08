@@ -102,12 +102,7 @@ extension _ShapeView: ViewDeferredToRenderer {
         stroke = false
       }
 
-      if fillStyle.isEOFilled {
-        cairo_set_fill_rule(cr, cairo_fill_rule_t(rawValue: 1) /* CAIRO_FILL_RULE_EVEN_ODD */)
-      } else {
-        // This is already the default
-//        cairo_set_fill_rule(cr, cairo_fill_rule_t(rawValue: 0) /* CAIRO_FILL_RULE_WINDING */)
-      }
+      cairo_set_fill_rule(cr, fillStyle.cairo)
 
       createPath(from: elements, in: cr)
 
@@ -130,11 +125,11 @@ extension CGLineJoin {
   var cairo: cairo_line_join_t {
     switch self {
     case .miter:
-      return cairo_line_join_t(rawValue: 0)
+      return cairo_line_join_t(rawValue: 0) /* CAIRO_LINE_JOIN_MITER */
     case .round:
-      return cairo_line_join_t(rawValue: 1)
+      return cairo_line_join_t(rawValue: 1) /* CAIRO_LINE_JOIN_ROUND */
     case .bevel:
-      return cairo_line_join_t(rawValue: 2)
+      return cairo_line_join_t(rawValue: 2) /* CAIRO_LINE_JOIN_BEVEL */
     }
   }
 }
@@ -143,11 +138,21 @@ extension CGLineCap {
   var cairo: cairo_line_cap_t {
     switch self {
     case .butt:
-      return cairo_line_cap_t(rawValue: 0)
+      return cairo_line_cap_t(rawValue: 0) /* CAIRO_LINE_CAP_BUTT */
     case .round:
-      return cairo_line_cap_t(rawValue: 1)
+      return cairo_line_cap_t(rawValue: 1) /* CAIRO_LINE_CAP_ROUND */
     case .square:
-      return cairo_line_cap_t(rawValue: 2)
+      return cairo_line_cap_t(rawValue: 2) /* CAIRO_LINE_CAP_SQUARE */
+    }
+  }
+}
+
+extension FillStyle {
+  var cairo: cairo_fill_rule_t {
+    if isEOFilled {
+      return cairo_fill_rule_t(rawValue: 1) /* CAIRO_FILL_RULE_EVEN_ODD */
+    } else {
+      return cairo_fill_rule_t(rawValue: 0) /* CAIRO_FILL_RULE_WINDING */
     }
   }
 }

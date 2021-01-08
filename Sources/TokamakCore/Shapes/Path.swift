@@ -25,9 +25,9 @@ import WASILibc
 
 /// The outline of a 2D shape.
 public struct Path: Equatable, LosslessStringConvertible {
-  public class PathBox: Equatable {
+  public class _PathBox: Equatable {
     var elements: [Element] = []
-    public static func == (lhs: Path.PathBox, rhs: Path.PathBox) -> Bool {
+    public static func == (lhs: Path._PathBox, rhs: Path._PathBox) -> Bool {
       return lhs.elements == rhs.elements
     }
     init() {
@@ -62,7 +62,7 @@ public struct Path: Equatable, LosslessStringConvertible {
     indirect case roundedRect(FixedRoundedRect)
     indirect case stroked(StrokedPath)
     indirect case trimmed(TrimmedPath)
-    case path(PathBox)
+    case path(_PathBox)
   }
 
   public enum Element: Equatable {
@@ -383,7 +383,7 @@ public extension Path {
       pathBox.elements.append(contentsOf: elements_)
 
     default:
-      storage = .path(PathBox(elements: storage.elements + elements_))
+      storage = .path(_PathBox(elements: storage.elements + elements_))
     }
   }
 
@@ -495,7 +495,7 @@ public extension Path {
   func applying(_ transform: CGAffineTransform) -> Path {
     guard transform != .identity else { return self }
     let elements = self.elements.map { transform.transform(element: $0) }
-    let box = PathBox(elements: elements)
+    let box = _PathBox(elements: elements)
     return Path(storage: .path(box), sizing: .fixed)
   }
 
