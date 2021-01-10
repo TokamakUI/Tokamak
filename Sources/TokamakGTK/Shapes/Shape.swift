@@ -73,7 +73,7 @@ extension _ShapeView: ViewDeferredToRenderer {
       var environment = EnvironmentValues()
       environment[_ColorSchemeKey] = .light
 
-      var color = _ColorProxy(c).resolve(in: environment).cairo
+      var color = c.resolveToCairo(in: environment)
 
       gdk_cairo_set_source_rgba(cr, &color)
 
@@ -159,5 +159,11 @@ extension AnyColorBox.ResolvedValue {
             green: Double(green),
             blue: Double(blue),
             alpha: Double(opacity))
+  }
+}
+
+extension Color {
+  func resolveToCairo(in environment: EnvironmentValues) -> GdkRGBA {
+    _ColorProxy(self).resolve(in: environment).cairo
   }
 }
