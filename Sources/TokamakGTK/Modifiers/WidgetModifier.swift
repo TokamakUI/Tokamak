@@ -64,12 +64,14 @@ extension ModifiedContent: ViewDeferredToRenderer where Content: View {
     } else {
       return AnyView(content)
     }
-    return AnyView(WidgetView {
+
+    let build: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> = {
       let contentWidget = anyWidget.new($0)
       widgetModifier.modify(widget: contentWidget)
       return contentWidget
     }
-    update: { widget in
+
+    let update: (Widget) -> Void = { widget in
       anyWidget.update(widget: widget)
 
       // Is it correct to apply the modifier again after updating?
@@ -78,14 +80,41 @@ extension ModifiedContent: ViewDeferredToRenderer where Content: View {
         widgetModifier.modify(widget: w)
       }
     }
-    content: {
-      if let parentView = anyWidget as? ParentView, parentView.children.count > 1 {
-        ForEach(Array(parentView.children.enumerated()), id: \.offset) { _, view in
-          view
-        }
-      } else if let parentView = anyWidget as? ParentView, parentView.children.count == 1 {
-        parentView.children[0]
-      }
-    })
+
+    // All this could be done using a single result builder for the content parameter,
+    // but since we are already wrapping in an AnyView, there's no reason to also
+    // wrap the contents in the inferred _ConditionalContent wrappers too.
+    // So instead, the conditional logic is moved out of the result builder world.
+    // This gives slightly lighter View type hierarchies.
+    if let parentView = anyWidget as? ParentView, parentView.children.count > 1 {
+      return AnyView(
+        WidgetView(
+          build: build,
+          update: update,
+          content: {
+            ForEach(Array(parentView.children.enumerated()), id: \.offset) { _, view in
+              view
+            }
+          })
+      )
+    } else if let parentView = anyWidget as? ParentView, parentView.children.count == 1 {
+      return AnyView(
+        WidgetView(
+          build: build,
+          update: update,
+          content: {
+            parentView.children[0]
+          })
+      )
+    } else {
+      return AnyView(
+        WidgetView(
+          build: build,
+          update: update,
+          content: {
+            EmptyView()
+          })
+      )
+    }
   }
 }
