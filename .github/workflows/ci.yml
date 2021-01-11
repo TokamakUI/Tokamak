@@ -67,6 +67,7 @@ jobs:
         shell: bash
         run: |
           set -ex
+          sudo apt-get update
           sudo apt-get install libgtk+-3.0 gtk+-3.0
 
           make build
@@ -80,6 +81,7 @@ jobs:
         shell: bash
         run: |
           set -ex
+          sudo apt-get update
           sudo apt-get install libgtk+-3.0 gtk+-3.0
 
           make build
