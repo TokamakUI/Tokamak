@@ -69,10 +69,6 @@ extension _ShapeView: ViewDeferredToRenderer {
 
       let c = (style as? Color) ?? foregroundColor ?? Color.black
 
-      // XXX TODO, don't know why my environment doesn't work.
-      var environment = EnvironmentValues()
-      environment[_ColorSchemeKey] = .light
-
       var color = c.resolveToCairo(in: environment)
 
       gdk_cairo_set_source_rgba(cr, &color)
