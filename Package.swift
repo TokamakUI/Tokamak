@@ -51,7 +51,7 @@ let package = Package(
     ),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", from: "2.1.2"),
     .package(url: "https://github.com/TokamakUI/OpenCombine.git", from: "0.12.0-alpha3"),
-    .package(url: "https://github.com/swiftwasm/OpenCombineJS.git", .branch("update-dependencies")),
+    .package(url: "https://github.com/swiftwasm/OpenCombineJS.git", .upToNextMinor(from: "0.0.2")),
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define

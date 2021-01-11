@@ -23,9 +23,9 @@
         "package": "OpenCombineJS",
         "repositoryURL": "https://github.com/swiftwasm/OpenCombineJS.git",
         "state": {
-          "branch": "update-dependencies",
-          "revision": "59476ca222f89aad7452f31db99dbf77456f9673",
-          "version": null
+          "branch": null,
+          "revision": "5e8636b15bcb4b8900696d95daaab941458ed2cf",
+          "version": "0.0.2"
         }
       },
       {
