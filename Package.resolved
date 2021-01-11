@@ -14,18 +14,18 @@
         "package": "OpenCombine",
         "repositoryURL": "https://github.com/TokamakUI/OpenCombine.git",
         "state": {
-          "branch": null,
-          "revision": "bccff3e7c84bc559e1aa0aa9ca878400360d439d",
-          "version": "0.12.0-alpha2"
+          "branch": "observableobject-mirror",
+          "revision": "63e4acc32fb181abb9c3dcda98fc8d396524ab83",
+          "version": null
         }
       },
       {
         "package": "OpenCombineJS",
         "repositoryURL": "https://github.com/swiftwasm/OpenCombineJS.git",
         "state": {
-          "branch": null,
-          "revision": "b346f955ed21ab44576e204a7554210c77f69b9b",
-          "version": "0.0.1"
+          "branch": "update-dependencies",
+          "revision": "558e0389cd502f019642214edcbe968584626830",
+          "version": null
         }
       },
       {
