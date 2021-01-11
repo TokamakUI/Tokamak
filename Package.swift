@@ -50,10 +50,7 @@ let package = Package(
       .upToNextMinor(from: "0.9.0")
     ),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", from: "2.1.2"),
-    .package(
-      url: "https://github.com/TokamakUI/OpenCombine.git",
-      .branch("observableobject-mirror")
-    ),
+    .package(url: "https://github.com/TokamakUI/OpenCombine.git", from: "0.12.0-alpha3"),
     .package(url: "https://github.com/swiftwasm/OpenCombineJS.git", .branch("update-dependencies")),
   ],
   targets: [
