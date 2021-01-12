@@ -38,6 +38,30 @@ extension UnsafeMutablePointer where Pointee == GtkWidget {
     ))
   }
 
+  /// Connect with a c function pointer, but with an extra opaque pointer.
+  @discardableResult
+  func connect(
+    signal: UnsafePointer<gchar>,
+    data: gpointer? = nil,
+    handler: @convention(c) @escaping (
+      UnsafeMutablePointer<GtkWidget>?,
+      OpaquePointer,
+      UnsafeRawPointer
+    ) -> Bool,
+    destroy: @convention(c) @escaping (UnsafeRawPointer, UnsafeRawPointer) -> ()
+  ) -> Int {
+    let handler = unsafeBitCast(handler, to: GCallback.self)
+    let destroy = unsafeBitCast(destroy, to: GClosureNotify.self)
+    return Int(g_signal_connect_data(
+      self,
+      signal,
+      handler,
+      data,
+      destroy,
+      GConnectFlags(rawValue: 0)
+    ))
+  }
+
   /// Connect with a context-capturing closure.
   @discardableResult
   func connect(
@@ -76,6 +100,36 @@ extension UnsafeMutablePointer where Pointee == GtkWidget {
     })
   }
 
+  /// Connect with a context-capturing closure (with the GtkWidget and an
+  /// OpaquePointer passed through)
+  @discardableResult
+  func connect(
+    signal: UnsafePointer<gchar>,
+    closure: @escaping (UnsafeMutablePointer<GtkWidget>?, OpaquePointer) -> ()
+  ) -> Int {
+    let closureBox = Unmanaged.passRetained(DualParamClosureBox(closure)).retain().toOpaque()
+    return connect(signal: signal, data: closureBox, handler: { widget, context, closureBox in
+      let unpackedAction = Unmanaged<DualParamClosureBox<
+        UnsafeMutablePointer<GtkWidget>?,
+        OpaquePointer,
+        ()
+      >>
+        .fromOpaque(closureBox)
+      if let widget = widget {
+        unpackedAction.takeUnretainedValue().closure(widget, context)
+      }
+      return true
+    }, destroy: { closureBox, _ in
+      let unpackedAction = Unmanaged<DualParamClosureBox<
+        UnsafeMutablePointer<GtkWidget>?,
+        OpaquePointer,
+        ()
+      >>
+        .fromOpaque(closureBox)
+      unpackedAction.release()
+    })
+  }
+
   func disconnect(
     gtype: GType,
     signal: UnsafePointer<gchar>
@@ -99,4 +153,10 @@ final class SingleParamClosureBox<T, U> {
   let closure: (T) -> U
 
   init(_ closure: @escaping (T) -> U) { self.closure = closure }
+}
+
+final class DualParamClosureBox<T, U, V> {
+  let closure: (T, U) -> V
+
+  init(_ closure: @escaping (T, U) -> V) { self.closure = closure }
 }

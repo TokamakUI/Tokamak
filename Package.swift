@@ -86,13 +86,22 @@ let package = Package(
         .brew(["gtk+3"]),
       ]
     ),
+    .systemLibrary(
+      name: "CGDK",
+      pkgConfig: "gdk-3.0",
+      providers: [
+        .apt(["libgtk+-3.0", "gtk+-3.0"]),
+        // .yum(["gtk3-devel"]),
+        .brew(["gtk+3"]),
+      ]
+    ),
     .target(
       name: "TokamakGTKCHelpers",
       dependencies: ["CGTK"]
     ),
     .target(
       name: "TokamakGTK",
-      dependencies: ["TokamakCore", "CGTK", "TokamakGTKCHelpers", "CombineShim"]
+      dependencies: ["TokamakCore", "CGTK", "CGDK", "TokamakGTKCHelpers", "CombineShim"]
     ),
     .target(
       name: "TokamakGTKDemo",
