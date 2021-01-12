@@ -88,6 +88,8 @@ extension Path: ViewDeferredToRenderer {
         storage: trimmed.path.storage,
         strokeStyle: strokeStyle
       ) // TODO: Trim the path
+    case .path:
+      return svgFrom(elements: elements, strokeStyle: strokeStyle)
     }
   }
 
@@ -117,65 +119,13 @@ extension Path: ViewDeferredToRenderer {
     ]))
   }
 
-  func svgFrom(
-    subpaths: [_SubPath],
-    strokeStyle: StrokeStyle = .zero
-  ) -> AnyView {
-    AnyView(ForEach(Array(subpaths.enumerated()), id: \.offset) { _, path in
-      path.path.svgBody(strokeStyle: strokeStyle)
-    })
-  }
-
-  var storageSize: CGSize {
-    switch storage {
-    case .empty:
-      return .zero
-    case let .rect(rect), let .ellipse(rect):
-      return rect.size
-    case let .roundedRect(rect):
-      return rect.rect.size
-    case let .stroked(path):
-      return path.path.size
-    case let .trimmed(path):
-      return path.path.size
-    }
-  }
-
-  var elementsSize: CGSize {
-    // Curves may clip without an explicit size
-    let positions = elements.compactMap { elem -> CGPoint? in
-      switch elem {
-      case let .move(to: pos): return pos
-      case let .line(to: pos): return pos
-      case let .curve(to: pos, control1: _, control2: _): return pos
-      case let .quadCurve(to: pos, control: _): return pos
-      case .closeSubpath: return nil
-      }
-    }
-    let xPos = positions.map(\.x).sorted(by: <)
-    let minX = xPos.first ?? 0
-    let maxX = xPos.last ?? 0
-    let yPos = positions.map(\.y).sorted(by: <)
-    let minY = yPos.first ?? 0
-    let maxY = yPos.last ?? 0
-
-    return CGSize(width: abs(maxX - min(0, minX)), height: abs(maxY - min(0, minY)))
-  }
-
-  var size: CGSize {
-    .init(
-      width: max(storageSize.width, elementsSize.width),
-      height: max(storageSize.height, elementsSize.height)
-    )
-  }
+  var size: CGSize { boundingRect.size }
 
   @ViewBuilder
   func svgBody(
     strokeStyle: StrokeStyle = .zero
   ) -> some View {
     svgFrom(storage: storage, strokeStyle: strokeStyle)
-    svgFrom(elements: elements, strokeStyle: strokeStyle)
-    svgFrom(subpaths: subpaths, strokeStyle: strokeStyle)
   }
 
   public var deferredBody: AnyView {
