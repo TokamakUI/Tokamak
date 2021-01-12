@@ -31,16 +31,20 @@ extension WidgetAttributeModifier {
     let context = gtk_widget_get_style_context(widget)
     let provider = gtk_css_provider_new()
 
-    let renderedStyle = attributes.reduce("", { $0 + "\($1.0):\($1.1);"})
+    let renderedStyle = attributes.reduce("") { $0 + "\($1.0):\($1.1);" }
 
-    gtk_css_provider_load_from_data(provider,
-                                    "* { \(renderedStyle) }",
-                                    -1,
-                                    nil)
+    gtk_css_provider_load_from_data(
+      provider,
+      "* { \(renderedStyle) }",
+      -1,
+      nil
+    )
 
-    gtk_style_context_add_provider(context,
-                                   OpaquePointer(provider),
-                                   1 /* GTK_STYLE_PROVIDER_PRIORITY_FALLBACK */)
+    gtk_style_context_add_provider(
+      context,
+      OpaquePointer(provider),
+      1 /* GTK_STYLE_PROVIDER_PRIORITY_FALLBACK */
+    )
 
     g_object_unref(provider)
   }
@@ -54,8 +58,8 @@ extension ModifiedContent: ViewDeferredToRenderer where Content: View {
     let anyWidget: AnyWidget
     if let anyView = content as? ViewDeferredToRenderer,
        let _anyWidget = mapAnyView(
-        anyView.deferredBody,
-        transform: { (widget: AnyWidget) in widget }
+         anyView.deferredBody,
+         transform: { (widget: AnyWidget) in widget }
        )
     {
       anyWidget = _anyWidget
@@ -71,12 +75,12 @@ extension ModifiedContent: ViewDeferredToRenderer where Content: View {
       return contentWidget
     }
 
-    let update: (Widget) -> Void = { widget in
+    let update: (Widget) -> () = { widget in
       anyWidget.update(widget: widget)
 
       // Is it correct to apply the modifier again after updating?
       // I assume so since the modifier parameters may have changed.
-      if case .widget(let w) = widget.storage {
+      if case let .widget(w) = widget.storage {
         widgetModifier.modify(widget: w)
       }
     }
@@ -95,7 +99,8 @@ extension ModifiedContent: ViewDeferredToRenderer where Content: View {
             ForEach(Array(parentView.children.enumerated()), id: \.offset) { _, view in
               view
             }
-          })
+          }
+        )
       )
     } else if let parentView = anyWidget as? ParentView, parentView.children.count == 1 {
       return AnyView(
@@ -104,7 +109,8 @@ extension ModifiedContent: ViewDeferredToRenderer where Content: View {
           update: update,
           content: {
             parentView.children[0]
-          })
+          }
+        )
       )
     } else {
       return AnyView(
@@ -113,7 +119,8 @@ extension ModifiedContent: ViewDeferredToRenderer where Content: View {
           update: update,
           content: {
             EmptyView()
-          })
+          }
+        )
       )
     }
   }

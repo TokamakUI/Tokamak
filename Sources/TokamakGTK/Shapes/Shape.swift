@@ -15,8 +15,8 @@
 //  Created by Morten Bek Ditlevsen on 29/12/2020.
 //
 
-import CGTK
 import CGDK
+import CGTK
 import TokamakCore
 
 func createPath(from elements: [Path.Element], in cr: OpaquePointer) {
@@ -52,12 +52,11 @@ func createPath(from elements: [Path.Element], in cr: OpaquePointer) {
 
 extension _ShapeView: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
-    return AnyView(WidgetView(build: { _ in
+    AnyView(WidgetView(build: { _ in
       let w = gtk_drawing_area_new()
       bindAction(to: w!)
       return w!
-    }) {
-    })
+    }) {})
   }
 
   func bindAction(to drawingArea: UnsafeMutablePointer<GtkWidget>) {
@@ -73,9 +72,13 @@ extension _ShapeView: ViewDeferredToRenderer {
 
       gdk_cairo_set_source_rgba(cr, &color)
 
-      let path = shape.path(in: CGRect(origin: .zero,
-                                       size: CGSize(width: Double(width),
-                                                    height: Double(height))))
+      let path = shape.path(in: CGRect(
+        origin: .zero,
+        size: CGSize(
+          width: Double(width),
+          height: Double(height)
+        )
+      ))
       let elements: [Path.Element]
       let stroke: Bool
       if case let .stroked(strokedPath) = path.storage {
@@ -151,10 +154,12 @@ extension FillStyle {
 
 extension AnyColorBox.ResolvedValue {
   var cairo: GdkRGBA {
-    GdkRGBA(red: Double(red),
-            green: Double(green),
-            blue: Double(blue),
-            alpha: Double(opacity))
+    GdkRGBA(
+      red: Double(red),
+      green: Double(green),
+      blue: Double(blue),
+      alpha: Double(opacity)
+    )
   }
 }
 
