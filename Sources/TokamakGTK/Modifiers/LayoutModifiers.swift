@@ -60,7 +60,7 @@ extension _OverlayModifier: WidgetAttributeModifier, WidgetModifier
       "border-style": style,
       "border-width": "\(overlay.shape.style.lineWidth)px",
       "border-color": overlay.style.cssValue(environment),
-      "border-radius": "inherit"
+      "border-radius": "inherit",
     ]
   }
 }

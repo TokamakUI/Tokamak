@@ -57,3 +57,31 @@ jobs:
           brew install gtk+3
 
           make build
+
+  gtk_ubuntu_18_04_build:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the GTK renderer on Ubuntu 18.04
+        shell: bash
+        run: |
+          set -ex
+          sudo apt-get update
+          sudo apt-get install libgtk+-3.0 gtk+-3.0
+
+          make build
+
+  gtk_ubuntu_20_04_build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the GTK renderer on Ubuntu 20.04
+        shell: bash
+        run: |
+          set -ex
+          sudo apt-get update
+          sudo apt-get install libgtk+-3.0 gtk+-3.0
+
+          make build

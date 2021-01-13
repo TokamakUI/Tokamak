@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/TokamakUI/OpenCombine.git",
         "state": {
           "branch": null,
-          "revision": "bccff3e7c84bc559e1aa0aa9ca878400360d439d",
-          "version": "0.12.0-alpha2"
+          "revision": "eea5e707b571da14fce588000046b8ec4c62018b",
+          "version": "0.12.0-alpha3"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/swiftwasm/OpenCombineJS.git",
         "state": {
           "branch": null,
-          "revision": "b346f955ed21ab44576e204a7554210c77f69b9b",
-          "version": "0.0.1"
+          "revision": "5e8636b15bcb4b8900696d95daaab941458ed2cf",
+          "version": "0.0.2"
         }
       },
       {

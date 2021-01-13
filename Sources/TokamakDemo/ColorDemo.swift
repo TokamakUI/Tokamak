@@ -20,8 +20,8 @@ import TokamakShim
 public struct ColorDemo: View {
   var color: Color {
     guard let v0d = Double(v0),
-      let v1d = Double(v1),
-      let v2d = Double(v2)
+          let v1d = Double(v1),
+          let v2d = Double(v2)
     else {
       return .white
     }

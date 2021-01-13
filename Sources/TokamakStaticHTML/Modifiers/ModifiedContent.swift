@@ -34,7 +34,7 @@ extension ModifiedContent: ViewDeferredToRenderer where Content: View, Modifier:
   public var deferredBody: AnyView {
     if let domModifier = modifier as? DOMViewModifier {
       if let adjacentModifier = content as? AnyModifiedContent,
-        !(adjacentModifier.anyModifier.isOrderDependent || domModifier.isOrderDependent)
+         !(adjacentModifier.anyModifier.isOrderDependent || domModifier.isOrderDependent)
       {
         // Flatten non-order-dependent modifiers
         var attr = domModifier.attributes
