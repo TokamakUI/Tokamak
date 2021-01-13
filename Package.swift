@@ -50,8 +50,8 @@ let package = Package(
       .upToNextMinor(from: "0.9.0")
     ),
     .package(url: "https://github.com/MaxDesiatov/Runtime.git", from: "2.1.2"),
-    .package(url: "https://github.com/TokamakUI/OpenCombine.git", from: "0.12.0-alpha2"),
-    .package(url: "https://github.com/swiftwasm/OpenCombineJS.git", from: "0.0.1"),
+    .package(url: "https://github.com/TokamakUI/OpenCombine.git", from: "0.12.0-alpha3"),
+    .package(url: "https://github.com/swiftwasm/OpenCombineJS.git", .upToNextMinor(from: "0.0.2")),
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define
@@ -86,13 +86,22 @@ let package = Package(
         .brew(["gtk+3"]),
       ]
     ),
+    .systemLibrary(
+      name: "CGDK",
+      pkgConfig: "gdk-3.0",
+      providers: [
+        .apt(["libgtk+-3.0", "gtk+-3.0"]),
+        // .yum(["gtk3-devel"]),
+        .brew(["gtk+3"]),
+      ]
+    ),
     .target(
       name: "TokamakGTKCHelpers",
       dependencies: ["CGTK"]
     ),
     .target(
       name: "TokamakGTK",
-      dependencies: ["TokamakCore", "CGTK", "TokamakGTKCHelpers", "CombineShim"]
+      dependencies: ["TokamakCore", "CGTK", "CGDK", "TokamakGTKCHelpers", "CombineShim"]
     ),
     .target(
       name: "TokamakGTKDemo",

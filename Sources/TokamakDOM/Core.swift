@@ -108,6 +108,7 @@ public typealias HStack = TokamakCore.HStack
 public typealias Image = TokamakCore.Image
 public typealias LazyHGrid = TokamakCore.LazyHGrid
 public typealias LazyVGrid = TokamakCore.LazyVGrid
+public typealias Link = TokamakCore.Link
 public typealias List = TokamakCore.List
 public typealias NavigationLink = TokamakCore.NavigationLink
 public typealias NavigationView = TokamakCore.NavigationView
