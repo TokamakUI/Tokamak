@@ -284,7 +284,7 @@ appreciated and helps in maintaining the project.
 
 In alphabetical order: [Carson Katri](https://github.com/carson-katri),
 [Jed Fox](https://jedfox.com), [Max Desiatov](https://desiatov.com),
-[Yuta Saito](https://github.com/kateinoigakukun/).
+[Morten Bek Ditlevsen](https://github.com/mortenbekditlevsen/), [Yuta Saito](https://github.com/kateinoigakukun/).
 
 ## Acknowledgments
 
