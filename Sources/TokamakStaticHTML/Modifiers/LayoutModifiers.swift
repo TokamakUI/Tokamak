@@ -104,7 +104,9 @@ extension _PaddingLayout: DOMViewModifier {
 
 extension _ShadowLayout: DOMViewModifier {
   public var attributes: [HTMLAttribute: String] {
-    ["style": "box-shadow: \(x)px \(y)px \(radius)px 0px \(color.cssValue(.defaultEnvironment));"]
+    [
+      "style": "box-shadow: \(x)px \(y)px \(radius * 2)px 0px \(color.cssValue(.defaultEnvironment));",
+    ]
   }
 
   public var isOrderDependent: Bool { true }
