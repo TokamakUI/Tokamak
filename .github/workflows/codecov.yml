@@ -1,0 +1,28 @@
+
+name: Codecov
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  codecov:
+    container:
+      image: swift:5.3.2-bionic
+    runs-on: ubuntu-latest
+    steps:
+    - run: apt-get update && apt-get install -y gtk+-3.0 libgtk+-3.0
+    - uses: actions/checkout@v2
+    - run: LLVM_PROFILE_FILE='.build/codecov/default%m.profraw' swift build --enable-test-discovery -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
+    - run: swift test --enable-test-discovery --enable-code-coverage
+    - uses: mattpolzin/swift-codecov-action@0.6.0
+      with:
+        MINIMUM_COVERAGE: 98
+    - name: comment PR
+      uses: unsplash/comment-on-pr@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+      with:
+        msg: "Check out this message!"
+        check_for_duplicate_msg: false
