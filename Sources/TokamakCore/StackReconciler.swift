@@ -123,11 +123,13 @@ public final class StackReconciler<R: Renderer> {
   }
 
   private func updateStateAndReconcile() {
-    for mountedView in queuedRerenders {
+    let queued = queuedRerenders
+    queuedRerenders.removeAll()
+    
+    for mountedView in queued {
       mountedView.update(with: self)
     }
 
-    queuedRerenders.removeAll()
     performPostrenderCallbacks()
   }
 
