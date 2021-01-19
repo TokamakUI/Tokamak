@@ -1,6 +1,16 @@
+// Copyright 2020 Tokamak contributors
 //
-//  File.swift
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Morten Bek Ditlevsen on 27/12/2020.
 //
@@ -15,69 +25,30 @@ extension TextField: ViewDeferredToRenderer where Label == Text {
       let proxy = _TextFieldProxy(self)
       let entry = gtk_entry_new()!
       entry.withMemoryRebound(to: GtkEntry.self, capacity: 1) {
-        gtk_entry_set_text($0, _TextFieldProxy(self).textBinding.wrappedValue)
+        gtk_entry_set_text($0, proxy.textBinding.wrappedValue)
+        gtk_entry_set_placeholder_text($0, proxy.label.rawText)
       }
+      bindAction(to: entry)
       return entry
-    }, update: { _ in
+    }, update: { a in
+      guard case let .widget(widget) = a.storage else { return }
+
+      let proxy = _TextFieldProxy(self)
+      widget.withMemoryRebound(to: GtkEntry.self, capacity: 1) {
+        gtk_entry_set_text($0, proxy.textBinding.wrappedValue)
+        gtk_entry_set_placeholder_text($0, proxy.label.rawText)
+      }
 
     }) {})
   }
 
-//  func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
-//    let proxy = _TextFieldProxy(self)
-//    let entry = gtk_entry_new()!
-//    entry.withMemoryRebound(to: GtkEntry.self, capacity: 1) {
-//      gtk_entry_set_text($0, _TextFieldProxy(self).textBinding.wrappedValue)
-//    }
-//    return entry
-//  }
-//
-//  func update(widget: Widget) {
-//    if case let .widget(w) = widget.storage {
-//      w.withMemoryRebound(to: GtkEntry.self, capacity: 1) {
-//        gtk_entry_set_text($0, _TextFieldProxy(self).textBinding.wrappedValue)
-//      }
-//    }
-//  }
-
-//  func css(for style: TextFieldStyle) -> String {
-//    if style is PlainTextFieldStyle {
-//      return """
-//      background: transparent;
-//      border: none;
-//      """
-//    } else {
-//      return ""
-//    }
-//  }
-//
-//  func className(for style: TextFieldStyle) -> String {
-//    switch style {
-//    case is DefaultTextFieldStyle, is RoundedBorderTextFieldStyle:
-//      return "_tokamak-formcontrol"
-//    default:
-//      return ""
-//    }
-//  }
-
-//  public var deferredBody: AnyView {
-//    let proxy = _TextFieldProxy(self)
-//
-//    return AnyView(DynamicHTML("input", [
-//      "type": proxy.textFieldStyle is RoundedBorderTextFieldStyle ? "search" : "text",
-//      .value: proxy.textBinding.wrappedValue,
-//      "placeholder": proxy.label.rawText,
-//      "style": css(for: proxy.textFieldStyle),
-//      "class": className(for: proxy.textFieldStyle),
-//    ], listeners: [
-//      "focus": { _ in proxy.onEditingChanged(true) },
-//      "blur": { _ in proxy.onEditingChanged(false) },
-//      "keypress": { event in if event.key == "Enter" { proxy.onCommit() } },
-//      "input": { event in
-//        if let newValue = event.target.object?.value.string {
-//          proxy.textBinding.wrappedValue = newValue
-//        }
-//      },
-//    ]))
-//  }
+  func bindAction(to entry: UnsafeMutablePointer<GtkWidget>) {
+    entry.connect(signal: "changed", closure: { _ in
+      entry.withMemoryRebound(to: GtkEntry.self, capacity: 1) {
+        let proxy = _TextFieldProxy(self)
+        let updated = String(cString: gtk_entry_get_text($0))
+        proxy.textBinding.wrappedValue = updated
+      }
+    })
+  }
 }
