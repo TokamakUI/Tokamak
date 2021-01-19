@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: apt-get update && apt-get install -y gtk+-3.0 libgtk+-3.0
-    - uses: actions/checkout@v2
+    - name: Checkout Branch
+      uses: actions/checkout@v2
     - run: swift build --enable-test-discovery -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
     - run: swift test --enable-test-discovery --enable-code-coverage --skip-build
     - name: Coverage Report
@@ -21,6 +22,22 @@ jobs:
       id: cov
       with:
         MINIMUM_COVERAGE: 20
+    - run: cp ./codecov.txt ./codecov-b.txt
+      if: ${{ always() }}
+    - name: Checkout Main
+      if: ${{ always() }}
+      uses: actions/checkout@v2
+      with:
+        ref: main
+    - run: swift build --enable-test-discovery -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
+      if: ${{ always() }}
+    - run: swift test --enable-test-discovery --enable-code-coverage --skip-build
+      if: ${{ always() }}
+    - name: Main Branch Coverage
+      if: ${{ always() }}
+      uses: mattpolzin/swift-codecov-action@0.6.1
+    - run: echo "COVDIFF='$(git diff ./coverage.txt ./coverage-b.txt)'" >> $GITHUB_ENV
+      if: ${{ always() }}
     - name: Find Comment
       if: ${{ always() }}
       uses: peter-evans/find-comment@v1.1.1
@@ -37,6 +54,7 @@ jobs:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
           The current code coverage percentage is ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%).
+          ${{ env.COVDIFF }}
     - name: Update comment
       if: ${{ always() && steps.fc.outputs.comment-id != 0 }}
       uses: peter-evans/create-or-update-comment@v1.4.4
@@ -46,4 +64,5 @@ jobs:
         edit-mode: replace
         body: |
           The current code coverage percentage is ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%).
+          ${{ env.COVDIFF }}
 
