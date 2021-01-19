@@ -59,25 +59,29 @@ private func bindAction(to entry: UnsafeMutablePointer<GtkWidget>, textBinding: 
 extension SecureField: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
     let proxy = _SecureFieldProxy(self)
-    return AnyView(WidgetView(build: { _ in
-      build(textBinding: proxy.textBinding, label: proxy.label, visible: false)
-    },
-    update: { w in
-      guard case let .widget(entry) = w.storage else { return }
-      update(entry: entry, textBinding: proxy.textBinding, label: proxy.label)
-    }) {})
+    return AnyView(WidgetView(
+      build: { _ in
+        build(textBinding: proxy.textBinding, label: proxy.label, visible: false)
+      },
+      update: { w in
+        guard case let .widget(entry) = w.storage else { return }
+        update(entry: entry, textBinding: proxy.textBinding, label: proxy.label)
+      }
+    ) {})
   }
 }
 
 extension TextField: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
     let proxy = _TextFieldProxy(self)
-    return AnyView(WidgetView(build: { _ in
-      build(textBinding: proxy.textBinding, label: proxy.label)
-    },
-    update: { a in
-      guard case let .widget(widget) = a.storage else { return }
-      update(entry: widget, textBinding: proxy.textBinding, label: proxy.label)
-    }) {})
+    return AnyView(WidgetView(
+      build: { _ in
+        build(textBinding: proxy.textBinding, label: proxy.label)
+      },
+      update: { a in
+        guard case let .widget(widget) = a.storage else { return }
+        update(entry: widget, textBinding: proxy.textBinding, label: proxy.label)
+      }
+    ) {})
   }
 }
