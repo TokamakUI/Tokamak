@@ -44,7 +44,7 @@ jobs:
             xcpretty --color
 
   gtk_macos_build:
-    runs-on: macos-11.0
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v2
