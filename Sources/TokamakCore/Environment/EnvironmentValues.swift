@@ -16,7 +16,7 @@ import CombineShim
 
 public struct EnvironmentValues: CustomStringConvertible {
   public var description: String {
-    String(describing: values)
+    "EnvironmentValues: \(values.count)"
   }
 
   private var values: [ObjectIdentifier: Any] = [:]
