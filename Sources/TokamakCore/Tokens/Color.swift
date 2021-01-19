@@ -273,7 +273,7 @@ extension Color: CustomStringConvertible {
     if let providerDescription = provider as? CustomStringConvertible {
       return providerDescription.description
     } else {
-      return String(describing: self)
+      return "Color: \(provider.self)"
     }
   }
 }

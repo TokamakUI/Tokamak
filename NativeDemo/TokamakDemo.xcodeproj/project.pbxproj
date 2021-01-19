@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3DCDE44424CA6AD400910F17 /* SidebarDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */; };
 		3DCDE44524CA6AD400910F17 /* SidebarDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */; };
+		4550BD5225B642B80088F4EA /* ShadowDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4550BD5125B642B80088F4EA /* ShadowDemo.swift */; };
+		4550BD5325B642B80088F4EA /* ShadowDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4550BD5125B642B80088F4EA /* ShadowDemo.swift */; };
 		8500293F24D2FF3E001A2E84 /* SliderDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8500293E24D2FF3E001A2E84 /* SliderDemo.swift */; };
 		8500294024D2FF3E001A2E84 /* SliderDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8500293E24D2FF3E001A2E84 /* SliderDemo.swift */; };
 		854A1A9124B3E3630027BC32 /* ToggleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CBD5DE24B3BF090066468A /* ToggleDemo.swift */; };
@@ -91,6 +93,7 @@
 
 /* Begin PBXFileReference section */
 		3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidebarDemo.swift; sourceTree = "<group>"; };
+		4550BD5125B642B80088F4EA /* ShadowDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowDemo.swift; sourceTree = "<group>"; };
 		8500293E24D2FF3E001A2E84 /* SliderDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderDemo.swift; sourceTree = "<group>"; };
 		8587DF5524D4B9A40033EF43 /* TokamakDemo Native.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "TokamakDemo Native.entitlements"; sourceTree = "<group>"; };
 		85CBD5DE24B3BF090066468A /* ToggleDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleDemo.swift; sourceTree = "<group>"; };
@@ -204,6 +207,7 @@
 				85ED189F24AD425E0085DFA0 /* TextFieldDemo.swift */,
 				85CBD5DE24B3BF090066468A /* ToggleDemo.swift */,
 				85ED189D24AD425E0085DFA0 /* TokamakDemo.swift */,
+				4550BD5125B642B80088F4EA /* ShadowDemo.swift */,
 			);
 			name = TokamakDemo;
 			path = ../Sources/TokamakDemo;
@@ -361,6 +365,7 @@
 				D120FDDB257E7145008FFBAD /* TextEditorDemo.swift in Sources */,
 				B5F2BE032571443D00FB3653 /* PreferenceKeyDemo.swift in Sources */,
 				8500293F24D2FF3E001A2E84 /* SliderDemo.swift in Sources */,
+				4550BD5225B642B80088F4EA /* ShadowDemo.swift in Sources */,
 				85ED18A924AD425E0085DFA0 /* TokamakDemo.swift in Sources */,
 				B5C76E4A24C73ED5003EABB2 /* AppStorageDemo.swift in Sources */,
 				3DCDE44424CA6AD400910F17 /* SidebarDemo.swift in Sources */,
@@ -391,6 +396,7 @@
 				D120FDDC257E7145008FFBAD /* TextEditorDemo.swift in Sources */,
 				B5F2BE042571443D00FB3653 /* PreferenceKeyDemo.swift in Sources */,
 				8500294024D2FF3E001A2E84 /* SliderDemo.swift in Sources */,
+				4550BD5325B642B80088F4EA /* ShadowDemo.swift in Sources */,
 				85ED18B624AD42D70085DFA0 /* NSAppDelegate.swift in Sources */,
 				B5C76E4B24C73ED5003EABB2 /* AppStorageDemo.swift in Sources */,
 				3DCDE44524CA6AD400910F17 /* SidebarDemo.swift in Sources */,

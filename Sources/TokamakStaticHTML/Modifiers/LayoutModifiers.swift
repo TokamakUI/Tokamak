@@ -101,3 +101,11 @@ extension _PaddingLayout: DOMViewModifier {
       .joined(separator: " ")]
   }
 }
+
+extension _ShadowLayout: DOMViewModifier {
+  public var attributes: [HTMLAttribute: String] {
+    ["style": "box-shadow: \(x)px \(y)px \(radius * 2)px 0px \(color.cssValue(environment));"]
+  }
+
+  public var isOrderDependent: Bool { true }
+}

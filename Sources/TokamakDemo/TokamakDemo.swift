@@ -120,6 +120,9 @@ struct TokamakDemoView: View {
             }.padding(20))
             NavItem("GeometryReader", destination: GeometryReaderDemo())
           }
+          Section(header: Text("Modifiers")) {
+            NavItem("Shadow", destination: ShadowDemo())
+          }
           Section(header: Text("Selectors")) {
             NavItem("Picker", destination: PickerDemo())
             NavItem("Slider", destination: SliderDemo())

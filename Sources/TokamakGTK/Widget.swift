@@ -27,12 +27,12 @@ extension AnyWidget {
 
 struct WidgetView<Content: View>: View, AnyWidget, ParentView {
   let build: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>
-  let update: (Widget) -> Void
+  let update: (Widget) -> ()
   let content: Content
   let expand: Bool
 
   init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>,
-       update: @escaping (Widget) -> Void = { _ in },
+       update: @escaping (Widget) -> () = { _ in },
        expand: Bool = false,
        @ViewBuilder content: () -> Content)
   {
