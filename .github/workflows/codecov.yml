@@ -17,15 +17,17 @@ jobs:
     - run: swift build --enable-test-discovery -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
     - run: swift test --enable-test-discovery --enable-code-coverage --skip-build
     - name: Coverage Report
-      uses: mattpolzin/swift-codecov-action@0.6.0
+      uses: mattpolzin/swift-codecov-action@0.6.1
       id: cov
       with:
         MINIMUM_COVERAGE: 98
     - name: Find Comment
       if: ${{ always() }}
-      uses: peter-evans/find-comment@v1
+      uses: peter-evans/find-comment@v1.1.1
       id: fc
       with:
+        token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+        issue-number: ${{ github.event.pull_request.number }}
         body-includes: The current coverage percentage is 
     - name: Create comment
       if: ${{ always() && steps.fc.outputs.comment-id == 0 }}
@@ -34,7 +36,7 @@ jobs:
         token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
         issue-number: ${{ github.event.pull_request.number }}
         body: |
-          The current code coverage percentage is ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.output.minimum_coverage }}%).
+          The current code coverage percentage is ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%).
     - name: Update comment
       if: ${{ always() && steps.fc.outputs.comment-id != 0 }}
       uses: peter-evans/create-or-update-comment@v1
@@ -42,5 +44,5 @@ jobs:
         token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
         comment-id: ${{ steps.fc.outputs.comment-id }}
         body: |
-          The current code coverage percentage is ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.output.minimum_coverage }}%).
+          The current code coverage percentage is ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%).
 
