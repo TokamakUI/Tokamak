@@ -31,7 +31,7 @@ jobs:
         body-includes: 'The current code coverage percentage is'
     - name: Create comment
       if: ${{ always() && steps.fc.outputs.comment-id == 0 }}
-      uses: peter-evans/create-or-update-comment@v1
+      uses: peter-evans/create-or-update-comment@v1.4.4
       with:
         token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
         issue-number: ${{ github.event.pull_request.number }}
@@ -39,10 +39,11 @@ jobs:
           The current code coverage percentage is ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%).
     - name: Update comment
       if: ${{ always() && steps.fc.outputs.comment-id != 0 }}
-      uses: peter-evans/create-or-update-comment@v1
+      uses: peter-evans/create-or-update-comment@v1.4.4
       with: 
         token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
         comment-id: ${{ steps.fc.outputs.comment-id }}
+        edit-mode: replace
         body: |
           The current code coverage percentage is ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%).
 
