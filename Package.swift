@@ -154,5 +154,9 @@ let package = Package(
       name: "TokamakTests",
       dependencies: ["TokamakTestRenderer"]
     ),
+    .testTarget(
+      name: "TokamakStaticHTMLTests",
+      dependencies: ["TokamakStaticHTML"]
+    ),
   ]
 )
