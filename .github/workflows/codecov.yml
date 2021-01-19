@@ -20,7 +20,7 @@ jobs:
       uses: mattpolzin/swift-codecov-action@0.6.1
       id: cov
       with:
-        MINIMUM_COVERAGE: 98
+        MINIMUM_COVERAGE: 20
     - name: Find Comment
       if: ${{ always() }}
       uses: peter-evans/find-comment@v1.1.1
@@ -28,7 +28,7 @@ jobs:
       with:
         token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
         issue-number: ${{ github.event.pull_request.number }}
-        body-includes: The current coverage percentage is 
+        body-includes: 'The current code coverage percentage is'
     - name: Create comment
       if: ${{ always() && steps.fc.outputs.comment-id == 0 }}
       uses: peter-evans/create-or-update-comment@v1
