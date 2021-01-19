@@ -19,36 +19,65 @@ import CGTK
 import Foundation
 import TokamakCore
 
-extension TextField: ViewDeferredToRenderer where Label == Text {
+private func build(
+  textBinding: Binding<String>,
+  label: _TextProxy,
+  visible: Bool = true
+) -> UnsafeMutablePointer<GtkWidget> {
+  let entry = gtk_entry_new()!
+  entry.withMemoryRebound(to: GtkEntry.self, capacity: 1) {
+    gtk_entry_set_text($0, textBinding.wrappedValue)
+    gtk_entry_set_placeholder_text($0, label.rawText)
+    if !visible {
+      gtk_entry_set_visibility($0, gtk_false())
+    }
+  }
+  bindAction(to: entry, textBinding: textBinding)
+  return entry
+}
+
+private func update(
+  entry: UnsafeMutablePointer<GtkWidget>,
+  textBinding: Binding<String>,
+  label: _TextProxy
+) {
+  entry.withMemoryRebound(to: GtkEntry.self, capacity: 1) {
+    gtk_entry_set_text($0, textBinding.wrappedValue)
+    gtk_entry_set_placeholder_text($0, label.rawText)
+  }
+}
+
+private func bindAction(to entry: UnsafeMutablePointer<GtkWidget>, textBinding: Binding<String>) {
+  entry.connect(signal: "changed", closure: { _ in
+    entry.withMemoryRebound(to: GtkEntry.self, capacity: 1) {
+      let updated = String(cString: gtk_entry_get_text($0))
+      textBinding.wrappedValue = updated
+    }
+  })
+}
+
+extension SecureField: ViewDeferredToRenderer where Label == Text {
   public var deferredBody: AnyView {
-    AnyView(WidgetView(build: { _ in
-      let proxy = _TextFieldProxy(self)
-      let entry = gtk_entry_new()!
-      entry.withMemoryRebound(to: GtkEntry.self, capacity: 1) {
-        gtk_entry_set_text($0, proxy.textBinding.wrappedValue)
-        gtk_entry_set_placeholder_text($0, proxy.label.rawText)
-      }
-      bindAction(to: entry)
-      return entry
-    }, update: { a in
-      guard case let .widget(widget) = a.storage else { return }
-
-      let proxy = _TextFieldProxy(self)
-      widget.withMemoryRebound(to: GtkEntry.self, capacity: 1) {
-        gtk_entry_set_text($0, proxy.textBinding.wrappedValue)
-        gtk_entry_set_placeholder_text($0, proxy.label.rawText)
-      }
-
+    let proxy = _SecureFieldProxy(self)
+    return AnyView(WidgetView(build: { _ in
+      build(textBinding: proxy.textBinding, label: proxy.label, visible: false)
+    },
+    update: { w in
+      guard case let .widget(entry) = w.storage else { return }
+      update(entry: entry, textBinding: proxy.textBinding, label: proxy.label)
     }) {})
   }
+}
 
-  func bindAction(to entry: UnsafeMutablePointer<GtkWidget>) {
-    entry.connect(signal: "changed", closure: { _ in
-      entry.withMemoryRebound(to: GtkEntry.self, capacity: 1) {
-        let proxy = _TextFieldProxy(self)
-        let updated = String(cString: gtk_entry_get_text($0))
-        proxy.textBinding.wrappedValue = updated
-      }
-    })
+extension TextField: ViewDeferredToRenderer where Label == Text {
+  public var deferredBody: AnyView {
+    let proxy = _TextFieldProxy(self)
+    return AnyView(WidgetView(build: { _ in
+      build(textBinding: proxy.textBinding, label: proxy.label)
+    },
+    update: { a in
+      guard case let .widget(widget) = a.storage else { return }
+      update(entry: widget, textBinding: proxy.textBinding, label: proxy.label)
+    }) {})
   }
 }
