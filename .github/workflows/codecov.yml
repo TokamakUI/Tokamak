@@ -15,7 +15,7 @@ jobs:
     - run: apt-get update && apt-get install -y gtk+-3.0 libgtk+-3.0
     - uses: actions/checkout@v2
     - run: LLVM_PROFILE_FILE='.build/codecov/default%m.profraw' swift build --enable-test-discovery -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
-    - run: swift test --enable-test-discovery --enable-code-coverage
+    - run: swift test --enable-test-discovery --enable-code-coverage --skip-build
     - uses: mattpolzin/swift-codecov-action@0.6.0
       with:
         MINIMUM_COVERAGE: 98
