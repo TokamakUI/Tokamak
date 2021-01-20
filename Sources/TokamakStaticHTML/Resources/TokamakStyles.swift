@@ -113,30 +113,32 @@ public let tokamakStyles = """
   backdrop-filter: saturate(180%) blur(20px);
 }
 
-._tokamak-toolbar-leading {
-  flex: 1;
-  margin-right: auto;
+._tokamak-toolbar-content {
+  flex: 1 1 auto;
   display: flex;
+  height: 100%;
+}
+._tokamak-toolbar-leading > *, ._tokamak-toolbar-center > * {
+  margin-right: 8px;
+}
+._tokamak-toolbar-trailing > * {
+  margin-left: 8px;
+}
+._tokamak-toolbar-leading {
+  margin-right: auto;
   align-items: center;
   justify-content: flex-start;
   padding-left: 16px;
-  height: 100%;
 }
 ._tokamak-toolbar-center {
-  flex: 1;
-  display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
 }
 ._tokamak-toolbar-trailing {
-  flex: 1;
   margin-left: auto;
-  display: flex;
   align-items: center;
   justify-content: flex-end;
   padding-right: 16px;
-  height: 100%;
 }
 
 ._tokamak-toolbar-button {

@@ -27,25 +27,24 @@ extension NavigationView: ViewDeferredToRenderer {
           ]) {
             Group {
               if toolbarContent.isEmpty {
-                HTML("div", ["class": "_tokamak-toolbar-leading"]) {
+                HTML("div", ["class": "_tokamak-toolbar-content _tokamak-toolbar-leading"]) {
                   title.font(.headline)
                 }
               } else {
-                HTML("div", ["class": "_tokamak-toolbar-leading"]) {
+                HTML("div", ["class": "_tokamak-toolbar-content _tokamak-toolbar-leading"]) {
                   items(from: toolbarContent, at: .navigationBarLeading)
                   items(from: toolbarContent, at: .navigation)
                   title
                     .font(.headline)
-                    .padding(.trailing)
                   items(from: toolbarContent, at: .navigationBarTrailing)
                   items(from: toolbarContent, at: .automatic, .primaryAction)
                   items(from: toolbarContent, at: .destructiveAction)
                     .foregroundColor(.red)
                 }
-                HTML("div", ["class": "_tokamak-toolbar-center"]) {
+                HTML("div", ["class": "_tokamak-toolbar-content _tokamak-toolbar-center"]) {
                   items(from: toolbarContent, at: .principal, .status)
                 }
-                HTML("div", ["class": "_tokamak-toolbar-trailing"]) {
+                HTML("div", ["class": "_tokamak-toolbar-content _tokamak-toolbar-trailing"]) {
                   items(from: toolbarContent, at: .cancellationAction)
                   items(from: toolbarContent, at: .confirmationAction)
                     .foregroundColor(.accentColor)
