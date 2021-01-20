@@ -22,7 +22,7 @@ jobs:
       id: cov
       with:
         MINIMUM_COVERAGE: 20
-    - run: cp ./codecov.txt ./codecov-b.txt
+    - run: cp ./codecov.txt ../codecov-b.txt
       if: ${{ always() }}
     - name: Checkout Main
       if: ${{ always() }}
@@ -36,7 +36,11 @@ jobs:
     - name: Main Branch Coverage
       if: ${{ always() }}
       uses: mattpolzin/swift-codecov-action@0.6.1
-    - run: echo "COVDIFF='$(git diff ./coverage.txt ./coverage-b.txt)'" >> $GITHUB_ENV
+    - run: echo "$(diff ./codecov.txt ../codecov-b.txt)"
+      if: ${{ always() }}
+    - run: |
+        echo "::set-output name=covdiff::$(diff ./codecov.txt ../codecov-b.txt)"
+      id: covdiff
       if: ${{ always() }}
     - name: Find Comment
       if: ${{ always() }}
@@ -54,7 +58,7 @@ jobs:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
           The current code coverage percentage is ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%).
-          ${{ env.COVDIFF }}
+          ${{ steps.covdiff.outputs.covdiff }}
     - name: Update comment
       if: ${{ always() && steps.fc.outputs.comment-id != 0 }}
       uses: peter-evans/create-or-update-comment@v1.4.4
@@ -64,5 +68,5 @@ jobs:
         edit-mode: replace
         body: |
           The current code coverage percentage is ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%).
-          ${{ env.COVDIFF }}
+          ${{ steps.covdiff.outputs.covdiff }}
 
