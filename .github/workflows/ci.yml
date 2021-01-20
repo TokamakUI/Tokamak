@@ -42,6 +42,7 @@ jobs:
           xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
             CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
             xcpretty --color
+          cd ..
 
           ./benchmark.sh
 
