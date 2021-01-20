@@ -62,6 +62,19 @@ extension Optional: View where Wrapped: View {
   }
 }
 
+protocol AnyOptional {
+  var value: Any? { get }
+}
+
+extension Optional: AnyOptional {
+  var value: Any? {
+    switch self {
+    case let .some(value): return value
+    case .none: return nil
+    }
+  }
+}
+
 @_functionBuilder public enum ViewBuilder {
   public static func buildBlock() -> EmptyView { EmptyView() }
 
