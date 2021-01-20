@@ -50,22 +50,30 @@ extension WidgetAttributeModifier {
   }
 }
 
+func getAnyWidget<Content>(_ content: Content) -> AnyWidget? where Content: View {
+  if let anyView = content as? ViewDeferredToRenderer {
+    guard let _anyWidget = mapAnyView(
+      anyView.deferredBody,
+      transform: { (widget: AnyWidget) in widget }
+    ) else{
+      return nil
+    }
+    return _anyWidget
+
+  } else if let _anyWidget = content as? AnyWidget {
+    return _anyWidget
+  } else {
+    return getAnyWidget(content.body)
+  }
+}
+
 extension ModifiedContent: ViewDeferredToRenderer where Content: View {
   public var deferredBody: AnyView {
     guard let widgetModifier = modifier as? WidgetModifier else {
       return AnyView(content)
     }
-    let anyWidget: AnyWidget
-    if let anyView = content as? ViewDeferredToRenderer,
-       let _anyWidget = mapAnyView(
-         anyView.deferredBody,
-         transform: { (widget: AnyWidget) in widget }
-       )
-    {
-      anyWidget = _anyWidget
-    } else if let _anyWidget = content as? AnyWidget {
-      anyWidget = _anyWidget
-    } else {
+
+    guard let anyWidget = getAnyWidget(content) else {
       return AnyView(content)
     }
 
