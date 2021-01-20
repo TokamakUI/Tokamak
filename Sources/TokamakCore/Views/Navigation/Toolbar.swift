@@ -16,16 +16,15 @@
 //
 
 struct ToolbarKey: PreferenceKey {
-  static let defaultValue = ToolbarValue(EmptyView())
+  static let defaultValue = ToolbarValue([])
   static func reduce(value: inout ToolbarValue, nextValue: () -> ToolbarValue) {
-    print(value.content.type)
     value = nextValue()
   }
 
   final class ToolbarValue: Equatable {
-    let content: AnyView
-    init<V>(_ view: V) where V: View {
-      content = AnyView(view)
+    let items: [AnyToolbarItem]
+    init(_ items: [AnyToolbarItem]) {
+      self.items = items
     }
 
     static func == (lhs: ToolbarValue, rhs: ToolbarValue) -> Bool {
@@ -48,7 +47,7 @@ public struct _ToolbarItemGroupProxy<ID, Items> {
   public var _items: [AnyView] { subject._items }
 }
 
-public struct ToolbarItemPlacement: Equatable {
+public struct ToolbarItemPlacement: Hashable {
   let rawValue: Int8
   public static let automatic: ToolbarItemPlacement = .init(rawValue: 1 << 0)
   public static let principal: ToolbarItemPlacement = .init(rawValue: 1 << 1)
@@ -66,12 +65,13 @@ public struct ToolbarItemPlacement: Equatable {
 public protocol AnyToolbarItem {
   var placement: ToolbarItemPlacement { get }
   var anyContent: AnyView { get }
+  var showsByDefault: Bool { get }
 }
 
 public struct ToolbarItem<ID, Content>: View, AnyToolbarItem where Content: View {
   public let id: ID
   public let placement: ToolbarItemPlacement
-  let showsByDefault: Bool
+  public let showsByDefault: Bool
   let content: Content
   public var anyContent: AnyView { AnyView(content) }
   public init(
@@ -112,14 +112,6 @@ public struct _ToolbarItemProxy<ID, Content> where Content: View {
   public var content: Content { subject.content }
 }
 
-public protocol _AnyToolbarContainer {
-  var anyContent: AnyView { get }
-}
-
-public protocol ToolbarDeferredToRenderer {
-  var deferredToolbar: AnyView { get }
-}
-
 extension View {
   @_disfavoredOverload
   public func toolbar<Content>(
@@ -133,13 +125,17 @@ extension View {
   public func toolbar<Items>(@ToolbarContentBuilder <()> items: () -> ToolbarItemGroup<(), Items>)
     -> some View
   {
-    preference(key: ToolbarKey.self, value: ToolbarKey.ToolbarValue(items()))
+    preference(key: ToolbarKey.self, value: ToolbarKey.ToolbarValue(items()._items.compactMap {
+      $0.view as? AnyToolbarItem
+    }))
   }
 
   public func toolbar<Items>(
     id: String,
     @ToolbarContentBuilder <String> items: () -> ToolbarItemGroup<String, Items>
   ) -> some View {
-    preference(key: ToolbarKey.self, value: ToolbarKey.ToolbarValue(items()))
+    preference(key: ToolbarKey.self, value: ToolbarKey.ToolbarValue(items()._items.compactMap {
+      $0.view as? AnyToolbarItem
+    }))
   }
 }

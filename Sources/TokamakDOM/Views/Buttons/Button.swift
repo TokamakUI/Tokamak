@@ -47,7 +47,6 @@ extension _Button: ViewDeferredToRenderer where Label == Text {
             isPressed: isPressed
           ).subject
         )
-        .colorScheme(.light)
       })
     }
   }

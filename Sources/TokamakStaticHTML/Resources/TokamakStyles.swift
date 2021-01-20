@@ -107,14 +107,69 @@ public let tokamakStyles = """
   height: 50px;
   display: flex;
   align-items: center;
-  padding-left: 16px;
-  background: rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  background: rgba(200, 200, 200, 0.2);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);
 }
 
-._tokamak-formcontrol {
+._tokamak-toolbar-leading {
+  flex: 1;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 16px;
+  height: 100%;
+}
+._tokamak-toolbar-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+._tokamak-toolbar-trailing {
+  flex: 1;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 16px;
+  height: 100%;
+}
+
+._tokamak-toolbar-button {
+  padding: 2px 4px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  height: 25px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+}
+._tokamak-toolbar-button:hover {
+  border-color: transparent;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+._tokamak-toolbar-button:active {
+  border-color: transparent;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+._tokamak-toolbar-textfield input {
+  padding: 4px 4px 4px 8px;
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.05);
+  width: 100%;
+  height: 100%;
+}
+
+._tokamak-formcontrol, ._tokamak-formcontrol-reset {
   color-scheme: light dark;
+}
+._tokamak-formcontrol-reset {
+  background: none;
+  border: none;
 }
 
 ._tokamak-link {
@@ -137,7 +192,20 @@ public let tokamakStyles = """
   }
 
   ._tokamak-toolbar {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(100, 100, 100, 0.2);
+  }
+  ._tokamak-toolbar-button {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  ._tokamak-toolbar-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  ._tokamak-toolbar-button:active {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  ._tokamak-toolbar-textfield input {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #FFFFFF;
   }
 }
 """

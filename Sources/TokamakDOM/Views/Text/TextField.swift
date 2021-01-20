@@ -18,8 +18,8 @@
 import TokamakCore
 import TokamakStaticHTML
 
-extension TextField: ViewDeferredToRenderer where Label == Text {
-  func css(for style: TextFieldStyle) -> String {
+extension TextField: ViewDeferredToRenderer where Label == _TextFieldStyleLabel {
+  func css(for style: _AnyTextFieldStyle) -> String {
     if style is PlainTextFieldStyle {
       return """
       background: transparent;
@@ -30,12 +30,12 @@ extension TextField: ViewDeferredToRenderer where Label == Text {
     }
   }
 
-  func className(for style: TextFieldStyle) -> String {
+  func className(for style: _AnyTextFieldStyle) -> String {
     switch style {
     case is DefaultTextFieldStyle, is RoundedBorderTextFieldStyle:
       return "_tokamak-formcontrol"
     default:
-      return ""
+      return "_tokamak-formcontrol-reset"
     }
   }
 
@@ -45,7 +45,9 @@ extension TextField: ViewDeferredToRenderer where Label == Text {
     return AnyView(DynamicHTML("input", [
       "type": proxy.textFieldStyle is RoundedBorderTextFieldStyle ? "search" : "text",
       .value: proxy.textBinding.wrappedValue,
-      "placeholder": proxy.label.rawText,
+      "placeholder": mapAnyView(proxy.label.body, transform: { (v: Text) in
+        _TextProxy(v).rawText
+      }) ?? "",
       "style": css(for: proxy.textFieldStyle),
       "class": className(for: proxy.textFieldStyle),
     ], listeners: [

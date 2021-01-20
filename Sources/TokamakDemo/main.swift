@@ -21,20 +21,39 @@ struct CustomScene: Scene {
   var body: some Scene {
     print("In CustomScene.body scenePhase is \(scenePhase)")
     return WindowGroup("Tokamak Demo") {
-//      TokamakDemoView()
-      NavigationView {
-        List {
-          NavigationLink("Test", destination: Text("Some content"))
-        }
-        .listStyle(SidebarListStyle())
-        .navigationTitle("Tokamak")
-        .toolbar {
-          ToolbarItem(placement: .primaryAction) {
-            Button("Add") {}
-          }
-        }
-//        Text("Choose an item")
-      }
+      TokamakDemoView()
+//      NavigationView {
+//        List {
+//          NavigationLink("Test", destination: Text("Some content"))
+//        }
+//        .listStyle(SidebarListStyle())
+//        .navigationTitle("Tokamak")
+//        .toolbar {
+//          ToolbarItem(placement: .cancellationAction) {
+//            Button("Cancel") {}
+//          }
+//          ToolbarItem(placement: .confirmationAction) {
+//            Button("Confirm") {}
+//          }
+//          ToolbarItem(placement: .destructiveAction) {
+//            Button("Delete") {}
+//          }
+//          ToolbarItem(placement: .navigation) {
+//            Text("Some nav-text")
+//              .italic()
+//          }
+      ////          ToolbarItem(placement: .principal) {
+      ////            Button("‹") {}
+      ////          }
+//          ToolbarItem(placement: .principal) {
+//            TextField("Search", text: .constant(""))
+//              .frame(width: 300)
+//          }
+      ////          ToolbarItem(placement: .principal) {
+      ////            Button("›") {}
+      ////          }
+//        }
+//      }
     }
   }
 }

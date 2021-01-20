@@ -34,8 +34,7 @@ public struct NavigationView<Content>: View where Content: View {
 }
 
 private struct ToolbarReader<Content>: View where Content: View {
-  let content: (_ title: AnyView?, _ toolbarContent: AnyView?) -> Content
-  @State private var toolbarContent: AnyView?
+  let content: (_ title: AnyView?, _ toolbarContent: [AnyToolbarItem]?) -> Content
 
   var body: some View {
     ToolbarKey._delay {
@@ -43,17 +42,11 @@ private struct ToolbarReader<Content>: View where Content: View {
         NavigationTitleKey._delay {
           $0
             ._force {
-              content($0, bar.content.type != EmptyView.self || $0 != nil ? bar.content : nil)
+              content($0, bar.items.isEmpty && $0 == nil ? nil : bar.items)
             }
         }
       }
     }
-//    NavigationTitleKey._delay {
-//      $0._force { content($0, toolbarContent?.type != EmptyView.self || $0 != nil ? toolbarContent : nil) }
-//    }
-//    .onPreferenceChange(ToolbarKey.self) {
-//      toolbarContent = $0.content
-//    }
   }
 }
 
@@ -68,7 +61,8 @@ public struct _NavigationViewProxy<Content: View> {
   /// Builds the content of the `NavigationView` by passing in the title and toolbar if present.
   /// If `toolbarContent` is `nil`, you shouldn't render a toolbar.
   public func makeToolbar<DeferredBar>(
-    @ViewBuilder _ content: @escaping (_ title: AnyView?, _ toolbarContent: AnyView?) -> DeferredBar
+    @ViewBuilder _ content: @escaping (_ title: AnyView?, _ toolbarContent: [AnyToolbarItem]?)
+      -> DeferredBar
   ) -> some View where DeferredBar: View {
     ToolbarReader(content: content)
   }
