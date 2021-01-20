@@ -154,5 +154,14 @@ let package = Package(
       name: "TokamakTests",
       dependencies: ["TokamakTestRenderer"]
     ),
+    // FIXME: re-enable when `ViewDeferredToRenderer` conformance conflicts issue is resolved
+    // Currently, when multiple modules that have conflicting `ViewDeferredToRenderer`
+    // implementations are linked in the same binary, only a single one is used with no defined
+    // behavior for that. We need to replace `ViewDeferredToRenderer` with a different solution
+    // that isn't prone to these hard to debug errors.
+    // .testTarget(
+    //   name: "TokamakStaticHTMLTests",
+    //   dependencies: ["TokamakStaticHTML"]
+    // ),
   ]
 )
