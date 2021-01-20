@@ -342,6 +342,44 @@ public extension Color {
   }
 }
 
+public class _TransparentColorBox: AnyColorBox {
+  public let base: AnyColorBox
+  public let opacity: Double
+
+  override public func equals(_ other: AnyColorBox) -> Bool {
+    guard let other = other as? _TransparentColorBox
+    else { return false }
+    return base.equals(other.base) && opacity == other.opacity
+  }
+
+  override public func hash(into hasher: inout Hasher) {
+    hasher.combine(base)
+    hasher.combine(opacity)
+  }
+
+  init(_ base: AnyColorBox, opacity: Double) {
+    self.base = base
+    self.opacity = opacity
+  }
+
+  override public func resolve(in environment: EnvironmentValues) -> ResolvedValue {
+    let resolvedBase = base.resolve(in: environment)
+    return .init(
+      red: resolvedBase.red,
+      green: resolvedBase.green,
+      blue: resolvedBase.blue,
+      opacity: opacity,
+      space: resolvedBase.space
+    )
+  }
+}
+
+public extension Color {
+  func opacity(_ opacity: Double) -> Self {
+    .init(_TransparentColorBox(provider, opacity: opacity))
+  }
+}
+
 extension Color: ShapeStyle {}
 extension Color: View {
   public var body: some View {

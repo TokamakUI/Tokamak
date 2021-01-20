@@ -20,12 +20,37 @@ extension NavigationView: ViewDeferredToRenderer {
     return AnyView(HTML("div", [
       "class": "_tokamak-navigationview",
     ]) {
-      proxy.content
-      HTML("div", [
-        "class": "_tokamak-navigationview-content",
-      ]) {
-        proxy.destination
+      proxy.makeToolbar { title, toolbarContent in
+        if let toolbarContent = toolbarContent {
+          HTML("div", [
+            "class": "_tokamak-toolbar",
+          ]) {
+            title
+              .font(.headline)
+            toolbarContent
+          }
+          .buttonStyle(ToolbarButtonStyle())
+        }
+        HTML("div", [
+          "class": toolbarContent != nil ? "_tokamak-navigationview-with-toolbar-content" : "",
+        ]) {
+          proxy.content
+        }
+        HTML("div", [
+          "class": "_tokamak-navigationview-destination",
+          "style": toolbarContent != nil ? "padding-top: 50px;" : "",
+        ]) {
+          proxy.destination
+        }
       }
     })
+  }
+}
+
+struct ToolbarButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .padding()
+      .background(Color.primary.opacity(0.2))
   }
 }

@@ -57,10 +57,10 @@ extension ModifiedContent: ViewDeferredToRenderer where Content: View {
     }
     let anyWidget: AnyWidget
     if let anyView = content as? ViewDeferredToRenderer,
-       let _anyWidget = mapAnyView(
-         anyView.deferredBody,
-         transform: { (widget: AnyWidget) in widget }
-       )
+      let _anyWidget = mapAnyView(
+        anyView.deferredBody,
+        transform: { (widget: AnyWidget) in widget }
+      )
     {
       anyWidget = _anyWidget
     } else if let _anyWidget = content as? AnyWidget {

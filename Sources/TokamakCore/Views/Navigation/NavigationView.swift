@@ -33,6 +33,30 @@ public struct NavigationView<Content>: View where Content: View {
   }
 }
 
+private struct ToolbarReader<Content>: View where Content: View {
+  let content: (_ title: AnyView?, _ toolbarContent: AnyView?) -> Content
+  @State private var toolbarContent: AnyView?
+
+  var body: some View {
+    ToolbarKey._delay {
+      $0._force { bar in
+        NavigationTitleKey._delay {
+          $0
+            ._force {
+              content($0, bar.content.type != EmptyView.self || $0 != nil ? bar.content : nil)
+            }
+        }
+      }
+    }
+//    NavigationTitleKey._delay {
+//      $0._force { content($0, toolbarContent?.type != EmptyView.self || $0 != nil ? toolbarContent : nil) }
+//    }
+//    .onPreferenceChange(ToolbarKey.self) {
+//      toolbarContent = $0.content
+//    }
+  }
+}
+
 /// This is a helper class that works around absence of "package private" access control in Swift
 public struct _NavigationViewProxy<Content: View> {
   public let subject: NavigationView<Content>
@@ -40,6 +64,14 @@ public struct _NavigationViewProxy<Content: View> {
   public init(_ subject: NavigationView<Content>) { self.subject = subject }
 
   public var context: NavigationContext { subject.context }
+
+  /// Builds the content of the `NavigationView` by passing in the title and toolbar if present.
+  /// If `toolbarContent` is `nil`, you shouldn't render a toolbar.
+  public func makeToolbar<DeferredBar>(
+    @ViewBuilder _ content: @escaping (_ title: AnyView?, _ toolbarContent: AnyView?) -> DeferredBar
+  ) -> some View where DeferredBar: View {
+    ToolbarReader(content: content)
+  }
 
   public var content: some View {
     subject.content
@@ -70,6 +102,13 @@ extension EnvironmentValues {
 struct NavigationTitleKey: PreferenceKey {
   typealias Value = AnyView?
   static func reduce(value: inout AnyView?, nextValue: () -> AnyView?) {
+    value = nextValue()
+  }
+}
+
+struct NavigationBarItemKey: PreferenceKey {
+  static let defaultValue: NavigationBarItem = .init(displayMode: .automatic)
+  static func reduce(value: inout NavigationBarItem, nextValue: () -> NavigationBarItem) {
     value = nextValue()
   }
 }

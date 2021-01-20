@@ -19,7 +19,7 @@ import TokamakShim
 
 func title<V>(_ view: V, title: String) -> AnyView where V: View {
   if #available(OSX 10.16, iOS 14.0, *) {
-    return AnyView(view.navigationTitle(title))
+    return AnyView(view)
   } else {
     #if !os(macOS)
     return AnyView(view.navigationBarTitle(title))
@@ -162,7 +162,11 @@ struct TokamakDemoView: View {
         title: "Demos"
       )
       if #available(iOS 14.0, *) {
-        return AnyView(list.listStyle(SidebarListStyle()))
+        return AnyView(
+          list
+            .listStyle(SidebarListStyle())
+            .navigationTitle("Tokamak Demo")
+        )
       } else {
         return AnyView(list)
       }

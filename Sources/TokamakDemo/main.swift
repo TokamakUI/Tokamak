@@ -21,7 +21,20 @@ struct CustomScene: Scene {
   var body: some Scene {
     print("In CustomScene.body scenePhase is \(scenePhase)")
     return WindowGroup("Tokamak Demo") {
-      TokamakDemoView()
+//      TokamakDemoView()
+      NavigationView {
+        List {
+          NavigationLink("Test", destination: Text("Some content"))
+        }
+        .listStyle(SidebarListStyle())
+        .navigationTitle("Tokamak")
+        .toolbar {
+          ToolbarItem(placement: .primaryAction) {
+            Button("Add") {}
+          }
+        }
+//        Text("Choose an item")
+      }
     }
   }
 }

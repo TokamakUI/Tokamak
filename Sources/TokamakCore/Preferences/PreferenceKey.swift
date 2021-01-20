@@ -40,6 +40,14 @@ public struct _PreferenceValue<Key> where Key: PreferenceKey {
   }
 }
 
+extension _PreferenceValue {
+  public func _force<V>(
+    _ transform: @escaping (Key.Value) -> V
+  ) -> _PreferenceReadingView<Key, V> where V: View {
+    _PreferenceReadingView(value: self, transform: transform)
+  }
+}
+
 public struct _PreferenceStore {
   /// The backing values of the `_PreferenceStore`.
   private var values: [String: Any]

@@ -89,11 +89,28 @@ public let tokamakStyles = """
   width: 100%;
   height: 100%;
 }
-._tokamak-navigationview-content {
+._tokamak-navigationview-with-toolbar-content ._tokamak-scrollview {
+  padding-top: 50px;
+}
+._tokamak-navigationview-destination {
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   flex-grow: 1;
   height: 100%;
+}
+
+._tokamak-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
 }
 
 ._tokamak-formcontrol {
@@ -117,6 +134,10 @@ public let tokamakStyles = """
   ._tokamak-disclosuregroup-chevron {
     border-right-color: rgba(255, 255, 255, 0.25);
     border-top-color: rgba(255, 255, 255, 0.25);
+  }
+
+  ._tokamak-toolbar {
+    background: rgba(255, 255, 255, 0.2);
   }
 }
 """

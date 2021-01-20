@@ -77,6 +77,13 @@ public typealias View = TokamakCore.View
 public typealias AnyView = TokamakCore.AnyView
 public typealias EmptyView = TokamakCore.EmptyView
 
+// MARK: Toolbars
+
+public typealias ToolbarItem = TokamakCore.ToolbarItem
+public typealias ToolbarItemGroup = TokamakCore.ToolbarItemGroup
+public typealias ToolbarItemPlacement = TokamakCore.ToolbarItemPlacement
+public typealias ToolbarContentBuilder = TokamakCore.ToolbarContentBuilder
+
 // MARK: App & Scene
 
 public typealias App = TokamakCore.App
