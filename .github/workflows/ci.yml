@@ -24,7 +24,7 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo xcode-select --switch /Applications/Xcode_12.2.app/Contents/Developer/
+          sudo xcode-select --switch /Applications/Xcode_12.3.app/Contents/Developer/
           # avoid building unrelated products for testing by specifying the test product explicitly
           swift build --product TokamakPackageTests
           `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest
@@ -42,6 +42,9 @@ jobs:
           xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
             CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
             xcpretty --color
+          cd ..
+
+          ./benchmark.sh
 
   gtk_macos_build:
     runs-on: macos-11.0
@@ -52,7 +55,7 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo xcode-select --switch /Applications/Xcode_12.2.app/Contents/Developer/
+          sudo xcode-select --switch /Applications/Xcode_12.3.app/Contents/Developer/
 
           brew install gtk+3
 

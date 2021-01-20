@@ -19,7 +19,7 @@ public struct TextEditor: View {
     textBinding = text
   }
 
-  public var body: some View {
+  public var body: Never {
     neverBody("TextEditor")
   }
 }
