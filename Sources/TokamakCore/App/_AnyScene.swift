@@ -63,13 +63,8 @@ public struct _AnyScene: Scene {
         // swiftlint:disable:next force_cast
         bodyClosure = { .scene(_AnyScene(($0 as! S).body)) }
       }
-      // FIXME: no idea if using `mangledName` is reliable, but seems to be the only way to get
-      // a name of a type constructor in runtime. Should definitely check if these are different
-      // across modules, otherwise can cause problems with scenes with same names in different
-      // modules.
 
-      // swiftlint:disable:next force_try
-      typeConstructorName = try! typeInfo(of: type).mangledName
+      typeConstructorName = TokamakCore.typeConstructorName(type)
     }
   }
 

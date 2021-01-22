@@ -48,13 +48,7 @@ public struct AnyView: View {
     } else {
       type = V.self
 
-      // FIXME: no idea if using `mangledName` is reliable, but seems to be the only way to get
-      // a name of a type constructor in runtime. Should definitely check if these are different
-      // across modules, otherwise can cause problems with views with same names in different
-      // modules.
-
-      // swiftlint:disable:next force_try
-      typeConstructorName = try! typeInfo(of: type).mangledName
+      typeConstructorName = TokamakCore.typeConstructorName(type)
 
       bodyType = V.Body.self
       self.view = view
