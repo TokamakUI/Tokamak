@@ -17,7 +17,7 @@
  they are treated the same, thus the `Button` part of the type (the type constructor)
  is returned.
  */
-func typeConstructorName(_ type: Any.Type) -> String {
+public func typeConstructorName(_ type: Any.Type) -> String {
   // FIXME: no idea if this calculation is reliable, but seems to be the only way to get
   // a name of a type constructor in runtime. Should definitely check if these are different
   // across modules, otherwise can cause problems with views with same names in different

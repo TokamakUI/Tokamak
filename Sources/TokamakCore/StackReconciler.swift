@@ -203,7 +203,7 @@ public final class StackReconciler<R: Renderer> {
     }.store(in: &mountedApp.persistentSubscriptions)
   }
 
-  func render<T>(
+  private func render<T>(
     compositeElement: MountedCompositeElement<R>,
     body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
     result: KeyPath<MountedCompositeElement<R>, (Any) -> T>
