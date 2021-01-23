@@ -20,12 +20,12 @@ import XCTest
 
 @testable import TokamakCore
 
-struct Counter: View {
+private struct Counter: View {
   @State var count: Int
 
   let limit: Int
 
-  @ViewBuilder public var body: some View {
+  public var body: some View {
     if count < limit {
       VStack {
         Button("Increment") { count += 1 }
@@ -37,7 +37,7 @@ struct Counter: View {
   }
 }
 
-extension Text {
+private extension Text {
   var verbatim: String? {
     guard case let .verbatim(text) = storage else { return nil }
     return text

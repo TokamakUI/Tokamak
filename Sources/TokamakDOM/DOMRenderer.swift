@@ -24,8 +24,11 @@ extension EnvironmentValues {
   /// Returns default settings for the DOM environment
   static var defaultEnvironment: Self {
     var environment = EnvironmentValues()
+
+    // `.toggleStyle` property is internal
     environment[_ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
-    environment[_ColorSchemeKey] = .init(matchMediaDarkScheme: matchMediaDarkScheme)
+
+    environment.colorScheme = .init(matchMediaDarkScheme: matchMediaDarkScheme)
     environment._defaultAppStorage = LocalStorage.standard
     _DefaultSceneStorageProvider.default = SessionStorage.standard
 

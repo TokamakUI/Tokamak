@@ -20,7 +20,9 @@ protocol GtkStackProtocol {}
 // extension NavigationView: AnyWidget, ParentView, GtkStackProtocol {
 //   var expand: Bool { true }
 
-//   func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
+//   func new(
+//     _ application: UnsafeMutablePointer<GtkApplication>
+//   ) -> UnsafeMutablePointer<GtkWidget> {
 //     let box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0)!
 //     let stack = gtk_stack_new()!
 //     let sidebar = gtk_stack_sidebar_new()!
@@ -77,7 +79,9 @@ extension NavigationLink: ViewDeferredToRenderer {
 }
 
 // extension NavigationLink: AnyWidget, ParentView {
-//   func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
+//   func new(
+//     _ application: UnsafeMutablePointer<GtkApplication>
+//   ) -> UnsafeMutablePointer<GtkWidget> {
 //     let btn = gtk_button_new()!
 //     bindAction(to: btn)
 //     return btn
@@ -105,7 +109,9 @@ extension NavigationLink: ViewDeferredToRenderer {
 // }
 
 // extension NavigationLink: AnyWidget, ParentView {
-//   func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
+//   func new(
+//     _ application: UnsafeMutablePointer<GtkApplication>
+//   ) -> UnsafeMutablePointer<GtkWidget> {
 //     print("Creating NavLink widget")
 //     let btn = gtk_button_new()!
 //     bindAction(to: btn)
