@@ -18,7 +18,7 @@
 import Runtime
 
 /// The container for any of the possible `MountedElement` types
-enum MountedElementKind {
+private enum MountedElementKind {
   case app(_AnyApp)
   case scene(_AnyScene)
   case view(AnyView)

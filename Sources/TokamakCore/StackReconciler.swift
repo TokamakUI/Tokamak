@@ -203,7 +203,7 @@ public final class StackReconciler<R: Renderer> {
     }.store(in: &mountedApp.persistentSubscriptions)
   }
 
-  func render<T>(
+  private func render<T>(
     compositeElement: MountedCompositeElement<R>,
     body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
     result: KeyPath<MountedCompositeElement<R>, (Any) -> T>
@@ -266,14 +266,8 @@ public final class StackReconciler<R: Renderer> {
     case let (mountedChild?, childBody):
       let childBodyType = getElementType(childBody)
 
-      // FIXME: no idea if using `mangledName` is reliable, but seems to be the only way to get
-      // a name of a type constructor in runtime. Should definitely check if these are different
-      // across modules, otherwise can cause problems with views with same names in different
-      // modules.
-
       // new child has the same type as existing child
-      // swiftlint:disable:next force_try
-      if try! mountedChild.typeConstructorName == typeInfo(of: childBodyType).mangledName {
+      if mountedChild.typeConstructorName == typeConstructorName(childBodyType) {
         updateChild(mountedChild)
         mountedChild.update(with: self)
       } else {
