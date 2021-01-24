@@ -120,6 +120,13 @@ let package = Package(
       ]
     ),
     .target(
+      name: "TokamakCoreBenchmark",
+      dependencies: [
+        "Benchmark",
+        "TokamakCore",
+      ]
+    ),
+    .target(
       name: "TokamakStaticHTMLBenchmark",
       dependencies: [
         "Benchmark",
