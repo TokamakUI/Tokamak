@@ -16,7 +16,6 @@
 //
 
 import CombineShim
-import Runtime
 
 /** A class that reconciles a "raw" tree of element values (such as `App`, `Scene` and `View`,
  all coming from `body` or `deferredBody` properties) with a tree of mounted element instances
@@ -139,10 +138,9 @@ public final class StackReconciler<R: Renderer> {
     of compositeElement: MountedCompositeElement<R>,
     body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>
   ) {
-    // swiftlint:disable force_try
     // `ValueStorage` property already filtered out, so safe to assume the value's type
     // swiftlint:disable:next force_cast
-    var storage = try! property.get(from: compositeElement[keyPath: bodyKeypath]) as! ValueStorage
+    var storage = property.get(from: compositeElement[keyPath: bodyKeypath]) as! ValueStorage
 
     if compositeElement.storage.count == id {
       compositeElement.storage.append(storage.anyInitialValue)
@@ -152,7 +150,7 @@ public final class StackReconciler<R: Renderer> {
       storage.getter = { compositeElement.storage[id] }
 
       guard var writableStorage = storage as? WritableValueStorage else {
-        return try! property.set(value: storage, on: &compositeElement[keyPath: bodyKeypath])
+        return property.set(value: storage, on: &compositeElement[keyPath: bodyKeypath])
       }
 
       // Avoiding an indirect reference cycle here: this closure can be owned by callbacks
@@ -162,7 +160,7 @@ public final class StackReconciler<R: Renderer> {
         self?.queueStorageUpdate(for: element, id: id) { $0 = newValue }
       }
 
-      try! property.set(value: writableStorage, on: &compositeElement[keyPath: bodyKeypath])
+      property.set(value: writableStorage, on: &compositeElement[keyPath: bodyKeypath])
     }
   }
 
@@ -173,7 +171,7 @@ public final class StackReconciler<R: Renderer> {
   ) {
     // `ObservedProperty` property already filtered out, so safe to assume the value's type
     // swiftlint:disable force_cast
-    let observed = try! property.get(
+    let observed = property.get(
       from: compositeElement[keyPath: bodyKeypath]
     ) as! ObservedProperty
     // swiftlint:enable force_cast
@@ -209,23 +207,23 @@ public final class StackReconciler<R: Renderer> {
     result: KeyPath<MountedCompositeElement<R>, (Any) -> T>
   ) -> T {
     compositeElement.updateEnvironment()
-    let info = try! typeInfo(of: compositeElement.type)
+    if let info = typeInfo(of: compositeElement.type) {
+      var stateIdx = 0
+      let dynamicProps = info.dynamicProperties(
+        &compositeElement.environmentValues,
+        source: &compositeElement[keyPath: bodyKeypath]
+      )
 
-    var stateIdx = 0
-    let dynamicProps = info.dynamicProperties(
-      &compositeElement.environmentValues,
-      source: &compositeElement[keyPath: bodyKeypath]
-    )
-
-    compositeElement.transientSubscriptions = []
-    for property in dynamicProps {
-      // Setup state/subscriptions
-      if property.type is ValueStorage.Type {
-        setupStorage(id: stateIdx, for: property, of: compositeElement, body: bodyKeypath)
-        stateIdx += 1
-      }
-      if property.type is ObservedProperty.Type {
-        setupTransientSubscription(for: property, of: compositeElement, body: bodyKeypath)
+      compositeElement.transientSubscriptions = []
+      for property in dynamicProps {
+        // Setup state/subscriptions
+        if property.type is ValueStorage.Type {
+          setupStorage(id: stateIdx, for: property, of: compositeElement, body: bodyKeypath)
+          stateIdx += 1
+        }
+        if property.type is ObservedProperty.Type {
+          setupTransientSubscription(for: property, of: compositeElement, body: bodyKeypath)
+        }
       }
     }
 

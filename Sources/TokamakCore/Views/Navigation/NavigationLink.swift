@@ -72,7 +72,7 @@ public extension NavigationLink where Label == Text {
   //  ) where S : StringProtocol, V : Hashable
 }
 
-/// This is a helper class that works around absence of "package private" access control in Swift
+/// This is a helper type that works around absence of "package private" access control in Swift
 public struct _NavigationLinkProxy<Label, Destination> where Label: View, Destination: View {
   public let subject: NavigationLink<Label, Destination>
 

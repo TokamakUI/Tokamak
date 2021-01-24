@@ -90,7 +90,7 @@ public extension Text._Storage {
   }
 }
 
-/// This is a helper class that works around absence of "package private" access control in Swift
+/// This is a helper type that works around absence of "package private" access control in Swift
 public struct _TextProxy {
   public let subject: Text
 
