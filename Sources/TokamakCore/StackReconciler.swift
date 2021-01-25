@@ -1,4 +1,4 @@
-// Copyright 2018-2020 Tokamak contributors
+// Copyright 2018-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -208,11 +208,12 @@ public final class StackReconciler<R: Renderer> {
     body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
     result: KeyPath<MountedCompositeElement<R>, (Any) -> T>
   ) -> T {
-    let info = compositeElement.updateEnvironment()
+    compositeElement.updateEnvironment()
+    let info = try! typeInfo(of: compositeElement.type)
 
     var stateIdx = 0
     let dynamicProps = info.dynamicProperties(
-      compositeElement.environmentValues,
+      &compositeElement.environmentValues,
       source: &compositeElement[keyPath: bodyKeypath]
     )
 
