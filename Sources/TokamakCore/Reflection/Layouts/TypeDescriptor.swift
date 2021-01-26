@@ -26,8 +26,8 @@ protocol TypeDescriptor {
   associatedtype FieldOffsetVectorOffsetType: FixedWidthInteger
 
   var flags: ContextDescriptorFlags { get set }
-  var mangledName: RelativePointer<Int32, CChar> { get set }
-  var fieldDescriptor: RelativePointer<Int32, FieldDescriptor> { get set }
+  var mangledName: MetadataOffset<CChar> { get set }
+  var fieldDescriptor: MetadataOffset<FieldDescriptor> { get set }
   var numberOfFields: Int32 { get set }
   var offsetToTheFieldOffsetVector: RelativeVectorPointer<Int32, FieldOffsetVectorOffsetType> {
     get set

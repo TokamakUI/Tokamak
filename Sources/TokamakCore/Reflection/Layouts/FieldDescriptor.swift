@@ -49,8 +49,8 @@ struct FieldDescriptor {
 
 struct FieldRecord {
   var fieldRecordFlags: Int32
-  var _mangledTypeName: RelativePointer<Int32, UInt8>
-  var _fieldName: RelativePointer<Int32, UInt8>
+  var _mangledTypeName: MetadataOffset<UInt8>
+  var _fieldName: MetadataOffset<UInt8>
 
   var isVar: Bool {
     (fieldRecordFlags & 0x2) == 0x2
@@ -60,9 +60,10 @@ struct FieldRecord {
     String(cString: _fieldName.advanced())
   }
 
-  mutating func type(genericContext: UnsafeRawPointer?,
-                     genericArguments: UnsafeRawPointer?) -> Any.Type
-  {
+  mutating func type(
+    genericContext: UnsafeRawPointer?,
+    genericArguments: UnsafeRawPointer?
+  ) -> Any.Type {
     let typeName = _mangledTypeName.advanced()
     return _getTypeByMangledNameInContext(
       typeName,

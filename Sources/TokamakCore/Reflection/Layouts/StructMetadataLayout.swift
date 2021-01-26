@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-struct StructMetadataLayout: NominalMetadataLayoutType {
+struct StructMetadataLayout {
   var _kind: Int
   var typeDescriptor: UnsafeMutablePointer<StructTypeDescriptor>
 }

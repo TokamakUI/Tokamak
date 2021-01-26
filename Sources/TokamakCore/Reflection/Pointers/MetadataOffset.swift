@@ -20,11 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-protocol MetadataLayoutType {
-  var _kind: Int { get set }
+struct MetadataOffset<Pointee> {
+  var offset: Int32
+
+  mutating func pointee() -> Pointee {
+    advanced().pointee
+  }
+
+  mutating func advanced() -> UnsafeMutablePointer<Pointee> {
+    #if arch(wasm32)
+    return unsafeBitCast(offset, to: UnsafeMutablePointer<Pointee>.self)
+    #else
+    let offset = self.offset
+    return withUnsafePointer(to: &self) { p in
+      p.raw.advanced(by: numericCast(offset))
+        .assumingMemoryBound(to: Pointee.self)
+        .mutable
+    }
+    #endif
+  }
 }
 
-protocol NominalMetadataLayoutType: MetadataLayoutType {
-  associatedtype Descriptor: TypeDescriptor
-  var typeDescriptor: UnsafeMutablePointer<Descriptor> { get set }
+extension MetadataOffset: CustomStringConvertible {
+  var description: String {
+    "\(offset)"
+  }
 }
