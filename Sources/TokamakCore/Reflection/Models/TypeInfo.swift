@@ -21,23 +21,26 @@
 // SOFTWARE.
 
 public struct TypeInfo {
-  public var kind: Kind = .struct
-  public var name: String = ""
-  public var type: Any.Type = Any.self
-  public var mangledName: String = ""
-  public var properties: [PropertyInfo] = []
-  public var size: Int = 0
-  public var alignment: Int = 0
-  public var stride: Int = 0
-  public var genericTypes: [Any.Type] = []
+  public let kind: Kind
+  public let name: String
+  public let type: Any.Type
+  public let mangledName: String
+  public let properties: [PropertyInfo]
+  public let size: Int
+  public let alignment: Int
+  public let stride: Int
+  public let genericTypes: [Any.Type]
 
   init(metadata: StructMetadata) {
     kind = metadata.kind
+    name = String(describing: metadata.type)
+    type = metadata.type
     size = metadata.size
     alignment = metadata.alignment
     stride = metadata.stride
-    type = metadata.type
-    name = String(describing: metadata.type)
+    properties = metadata.properties()
+    mangledName = metadata.mangledName()
+    genericTypes = Array(metadata.genericArguments())
   }
 
   public func property(named: String) -> PropertyInfo? {
@@ -50,6 +53,5 @@ public func typeInfo(of type: Any.Type) -> TypeInfo? {
     return nil
   }
 
-  var result = StructMetadata(type: type)
-  return result.toTypeInfo()
+  return StructMetadata(type: type).toTypeInfo()
 }

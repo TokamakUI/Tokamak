@@ -21,6 +21,6 @@
 // SOFTWARE.
 
 struct StructMetadataLayout {
-  var _kind: Int
-  var typeDescriptor: UnsafeMutablePointer<StructTypeDescriptor>
+  let _kind: Int
+  let typeDescriptor: UnsafePointer<StructTypeDescriptor>
 }

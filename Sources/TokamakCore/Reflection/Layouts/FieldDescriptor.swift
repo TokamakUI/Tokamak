@@ -35,36 +35,28 @@ func _getTypeByMangledNameInContext(
 
 /// https://github.com/apple/swift/blob/f2c42509628bed66bf5b8ee02fae778a2ba747a1/include/swift/Reflection/Records.h#L160
 struct FieldDescriptor {
-  var mangledTypeNameOffset: Int32
-  var superClassOffset: Int32
-  var _kind: UInt16
-  var fieldRecordSize: Int16
-  var numFields: Int32
-  var fields: Vector<FieldRecord>
+  let mangledTypeNameOffset: Int32
+  let superClassOffset: Int32
+  let _kind: UInt16
+  let fieldRecordSize: Int16
+  let numFields: Int32
+  let fields: FieldRecord
 
   var kind: FieldDescriptorKind {
     FieldDescriptorKind(rawValue: _kind)!
   }
 }
 
-struct FieldRecord {
-  var fieldRecordFlags: Int32
-  var _mangledTypeName: MetadataOffset<UInt8>
-  var _fieldName: MetadataOffset<UInt8>
-
-  var isVar: Bool {
-    (fieldRecordFlags & 0x2) == 0x2
+extension UnsafePointer where Pointee == FieldRecord {
+  func fieldName() -> String {
+    String(cString: advance(offset: \._fieldName))
   }
 
-  mutating func fieldName() -> String {
-    String(cString: _fieldName.advanced())
-  }
-
-  mutating func type(
+  func type(
     genericContext: UnsafeRawPointer?,
     genericArguments: UnsafeRawPointer?
   ) -> Any.Type {
-    let typeName = _mangledTypeName.advanced()
+    let typeName = advance(offset: \._mangledTypeName)
     return _getTypeByMangledNameInContext(
       typeName,
       getSymbolicMangledNameLength(typeName),
@@ -72,19 +64,29 @@ struct FieldRecord {
       genericArguments?.assumingMemoryBound(to: UnsafeRawPointer?.self)
     )!
   }
+}
 
-  func getSymbolicMangledNameLength(_ base: UnsafeRawPointer) -> UInt {
-    var end = base
-    while let current = Optional(end.load(as: UInt8.self)), current != 0 {
-      end += 1
-      if current >= 0x1 && current <= 0x17 {
-        end += 4
-      } else if current >= 0x18 && current <= 0x1F {
-        end += MemoryLayout<Int>.size
-      }
+private func getSymbolicMangledNameLength(_ base: UnsafeRawPointer) -> UInt {
+  var end = base
+  while let current = Optional(end.load(as: UInt8.self)), current != 0 {
+    end += 1
+    if current >= 0x1 && current <= 0x17 {
+      end += 4
+    } else if current >= 0x18 && current <= 0x1F {
+      end += MemoryLayout<Int>.size
     }
+  }
 
-    return UInt(end - base)
+  return UInt(end - base)
+}
+
+struct FieldRecord {
+  let fieldRecordFlags: Int32
+  let _mangledTypeName: MetadataOffset<UInt8>
+  let _fieldName: MetadataOffset<UInt8>
+
+  var isVar: Bool {
+    (fieldRecordFlags & 0x2) == 0x2
   }
 }
 

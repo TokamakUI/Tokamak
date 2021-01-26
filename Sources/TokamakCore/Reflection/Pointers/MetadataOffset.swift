@@ -21,22 +21,13 @@
 // SOFTWARE.
 
 struct MetadataOffset<Pointee> {
-  var offset: Int32
+  let offset: Int32
 
-  mutating func pointee() -> Pointee {
-    advanced().pointee
-  }
-
-  mutating func advanced() -> UnsafeMutablePointer<Pointee> {
+  func apply(to ptr: UnsafeRawPointer) -> UnsafePointer<Pointee> {
     #if arch(wasm32)
-    return unsafeBitCast(offset, to: UnsafeMutablePointer<Pointee>.self)
+    return unsafeBitCast(offset, to: UnsafePointer<Pointee>.self)
     #else
-    let offset = self.offset
-    return withUnsafePointer(to: &self) { p in
-      p.raw.advanced(by: numericCast(offset))
-        .assumingMemoryBound(to: Pointee.self)
-        .mutable
-    }
+    return ptr.advanced(by: numericCast(offset)).assumingMemoryBound(to: Pointee.self)
     #endif
   }
 }

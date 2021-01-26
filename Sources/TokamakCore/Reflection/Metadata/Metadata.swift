@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-func metadataPointer(type: Any.Type) -> UnsafeMutablePointer<Int> {
-  unsafeBitCast(type, to: UnsafeMutablePointer<Int>.self)
+func metadataPointer(type: Any.Type) -> UnsafePointer<Int> {
+  unsafeBitCast(type, to: UnsafePointer<Int>.self)
 }
 
 func metadata(of type: Any.Type) -> StructMetadata {

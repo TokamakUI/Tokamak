@@ -21,14 +21,10 @@
 // SOFTWARE.
 
 struct StructMetadata {
-  var pointer: UnsafeMutablePointer<StructMetadataLayout>
+  let pointer: UnsafePointer<StructMetadataLayout>
 
-  mutating func toTypeInfo() -> TypeInfo {
-    var info = TypeInfo(metadata: self)
-    info.properties = properties()
-    info.mangledName = mangledName()
-    info.genericTypes = Array(genericArguments())
-    return info
+  func toTypeInfo() -> TypeInfo {
+    TypeInfo(metadata: self)
   }
 
   var genericArgumentOffset: Int {
@@ -41,38 +37,36 @@ struct StructMetadata {
     (pointer.pointee.typeDescriptor.pointee.flags & 0x80) != 0
   }
 
-  mutating func mangledName() -> String {
-    String(cString: pointer.pointee.typeDescriptor.pointee.mangledName.advanced())
+  func mangledName() -> String {
+    let base = pointer.pointee.typeDescriptor
+    let offset = MemoryLayout<StructTypeDescriptor>
+      .offset(of: \StructTypeDescriptor.mangledName)!
+    return String(cString: base.pointee.mangledName.apply(to: base.raw.advanced(by: offset)))
   }
 
-  mutating func numberOfFields() -> Int {
+  func numberOfFields() -> Int {
     Int(pointer.pointee.typeDescriptor.pointee.numberOfFields)
   }
 
-  mutating func fieldOffsets() -> [Int] {
+  func fieldOffsets() -> [Int] {
     pointer.pointee.typeDescriptor.pointee
       .offsetToTheFieldOffsetVector
       .vector(metadata: pointer.raw.assumingMemoryBound(to: Int.self), n: numberOfFields())
       .map(numericCast)
   }
 
-  mutating func properties() -> [PropertyInfo] {
+  func properties() -> [PropertyInfo] {
     let offsets = fieldOffsets()
-    let fieldDescriptor = pointer.pointee.typeDescriptor.pointee
-      .fieldDescriptor
-      .advanced()
-
+    let fieldDescriptor = pointer.pointee.typeDescriptor.advance(offset: \.fieldDescriptor)
     let genericVector = genericArgumentVector()
 
+    let fields = fieldDescriptor.vector(at: \.fields)
     return (0..<numberOfFields()).map { i in
-      let record = fieldDescriptor
-        .pointee
-        .fields
-        .element(at: i)
+      let record = fields.advanced(by: i)
 
       return PropertyInfo(
-        name: record.pointee.fieldName(),
-        type: record.pointee.type(
+        name: record.fieldName(),
+        type: record.type(
           genericContext: pointer.pointee.typeDescriptor,
           genericArguments: genericVector
         ),
@@ -83,7 +77,7 @@ struct StructMetadata {
     }
   }
 
-  func genericArguments() -> UnsafeMutableBufferPointer<Any.Type> {
+  func genericArguments() -> UnsafeBufferPointer<Any.Type> {
     guard isGeneric else { return .init(start: nil, count: 0) }
 
     let count = pointer.pointee
@@ -95,9 +89,9 @@ struct StructMetadata {
     return genericArgumentVector().buffer(n: Int(count))
   }
 
-  func genericArgumentVector() -> UnsafeMutablePointer<Any.Type> {
+  func genericArgumentVector() -> UnsafePointer<Any.Type> {
     pointer
-      .advanced(by: genericArgumentOffset, wordSize: MemoryLayout<UnsafeRawPointer>.size)
+      .raw.advanced(by: genericArgumentOffset * MemoryLayout<UnsafeRawPointer>.size)
       .assumingMemoryBound(to: Any.Type.self)
   }
 
@@ -123,17 +117,17 @@ struct StructMetadata {
 
   /// The ValueWitnessTable for the type.
   /// A pointer to the table is located one pointer sized word behind the metadata pointer.
-  var valueWitnessTable: UnsafeMutablePointer<ValueWitnessTable> {
+  var valueWitnessTable: UnsafePointer<ValueWitnessTable> {
     pointer
       .raw
       .advanced(by: -MemoryLayout<UnsafeRawPointer>.size)
-      .assumingMemoryBound(to: UnsafeMutablePointer<ValueWitnessTable>.self)
+      .assumingMemoryBound(to: UnsafePointer<ValueWitnessTable>.self)
       .pointee
   }
 }
 
 extension StructMetadata {
   init(type: Any.Type) {
-    self = Self(pointer: unsafeBitCast(type, to: UnsafeMutablePointer<StructMetadataLayout>.self))
+    self = Self(pointer: unsafeBitCast(type, to: UnsafePointer<StructMetadataLayout>.self))
   }
 }

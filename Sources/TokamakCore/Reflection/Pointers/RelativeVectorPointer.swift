@@ -21,16 +21,10 @@
 // SOFTWARE.
 
 struct RelativeVectorPointer<Offset: FixedWidthInteger, Pointee> {
-  var offset: Offset
-  mutating func vector(metadata: UnsafePointer<Int>, n: Int) -> UnsafeBufferPointer<Pointee> {
+  let offset: Offset
+  func vector(metadata: UnsafePointer<Int>, n: Int) -> UnsafeBufferPointer<Pointee> {
     metadata.advanced(by: numericCast(offset))
       .raw.assumingMemoryBound(to: Pointee.self)
       .buffer(n: n)
-  }
-}
-
-extension RelativeVectorPointer: CustomStringConvertible {
-  var description: String {
-    "\(offset)"
   }
 }

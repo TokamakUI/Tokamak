@@ -23,12 +23,12 @@
 typealias FieldTypeAccessor = @convention(c) (UnsafePointer<Int>) -> UnsafePointer<Int>
 
 struct StructTypeDescriptor {
-  var flags: Int32
-  var parent: Int32
-  var mangledName: MetadataOffset<CChar>
-  var accessFunctionPtr: MetadataOffset<UnsafeRawPointer>
-  var fieldDescriptor: MetadataOffset<FieldDescriptor>
-  var numberOfFields: Int32
-  var offsetToTheFieldOffsetVector: RelativeVectorPointer<Int32, Int32>
-  var genericContextHeader: TargetTypeGenericContextDescriptorHeader
+  let flags: Int32
+  let parent: Int32
+  let mangledName: MetadataOffset<CChar>
+  let accessFunctionPtr: MetadataOffset<UnsafeRawPointer>
+  let fieldDescriptor: MetadataOffset<FieldDescriptor>
+  let numberOfFields: Int32
+  let offsetToTheFieldOffsetVector: RelativeVectorPointer<Int32, Int32>
+  let genericContextHeader: TargetTypeGenericContextDescriptorHeader
 }

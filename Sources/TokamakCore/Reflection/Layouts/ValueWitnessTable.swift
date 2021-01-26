@@ -21,17 +21,17 @@
 // SOFTWARE.
 
 struct ValueWitnessTable {
-  var initializeBufferWithCopyOfBuffer: UnsafeRawPointer
-  var destroy: UnsafeRawPointer
-  var initializeWithCopy: UnsafeRawPointer
-  var assignWithCopy: UnsafeRawPointer
-  var initializeWithTake: UnsafeRawPointer
-  var assignWithTake: UnsafeRawPointer
-  var getEnumTagSinglePayload: UnsafeRawPointer
-  var storeEnumTagSinglePayload: UnsafeRawPointer
-  var size: Int
-  var stride: Int
-  var flags: Int
+  let initializeBufferWithCopyOfBuffer: UnsafeRawPointer
+  let destroy: UnsafeRawPointer
+  let initializeWithCopy: UnsafeRawPointer
+  let assignWithCopy: UnsafeRawPointer
+  let initializeWithTake: UnsafeRawPointer
+  let assignWithTake: UnsafeRawPointer
+  let getEnumTagSinglePayload: UnsafeRawPointer
+  let storeEnumTagSinglePayload: UnsafeRawPointer
+  let size: Int
+  let stride: Int
+  let flags: Int
 }
 
 enum ValueWitnessFlags {

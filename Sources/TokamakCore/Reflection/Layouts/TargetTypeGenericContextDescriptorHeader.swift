@@ -21,14 +21,14 @@
 // SOFTWARE.
 
 struct TargetTypeGenericContextDescriptorHeader {
-  var instantiationCache: Int32
-  var defaultInstantiationPattern: Int32
-  var base: TargetGenericContextDescriptorHeader
+  let instantiationCache: Int32
+  let defaultInstantiationPattern: Int32
+  let base: TargetGenericContextDescriptorHeader
 }
 
 struct TargetGenericContextDescriptorHeader {
-  var numberOfParams: UInt16
-  var numberOfRequirements: UInt16
-  var numberOfKeyArguments: UInt16
-  var numberOfExtraArguments: UInt16
+  let numberOfParams: UInt16
+  let numberOfRequirements: UInt16
+  let numberOfKeyArguments: UInt16
+  let numberOfExtraArguments: UInt16
 }

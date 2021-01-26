@@ -26,7 +26,7 @@ import XCTest
 final class MetadataTests: XCTestCase {
   func testGenericStruct() {
     struct A<B, C, D, E, F, G, H> { let b: B }
-    var md = StructMetadata(type: A<Int, String, Bool, Int, Int, Int, Int>.self)
+    let md = StructMetadata(type: A<Int, String, Bool, Int, Int, Int, Int>.self)
     let args = md.genericArguments()
     let props = md.properties()
     XCTAssert(args.count == 7)
@@ -44,7 +44,7 @@ final class MetadataTests: XCTestCase {
       var e: Int
     }
 
-    var md = StructMetadata(type: A.self)
+    let md = StructMetadata(type: A.self)
     let info = md.toTypeInfo()
     XCTAssert(info.genericTypes.count == 0)
     XCTAssert(info.kind == .struct)
@@ -65,7 +65,7 @@ final class MetadataTests: XCTestCase {
         var e: Int
       }
 
-      var md = StructMetadata(type: NestedA.self)
+      let md = StructMetadata(type: NestedA.self)
       let info = md.toTypeInfo()
       XCTAssert(info.genericTypes.count == 0)
       XCTAssert(info.kind == .struct)

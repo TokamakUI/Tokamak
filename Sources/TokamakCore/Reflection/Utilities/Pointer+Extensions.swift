@@ -32,6 +32,16 @@ extension UnsafePointer {
   func buffer(n: Int) -> UnsafeBufferPointer<Pointee> {
     UnsafeBufferPointer(start: self, count: n)
   }
+
+  func vector<T>(at keyPath: KeyPath<Pointee, T>) -> UnsafePointer<T> {
+    let offset = MemoryLayout<Pointee>.offset(of: keyPath)!
+    return raw.advanced(by: offset).assumingMemoryBound(to: T.self)
+  }
+
+  func advance<T>(offset keyPath: KeyPath<Pointee, MetadataOffset<T>>) -> UnsafePointer<T> {
+    let offset = MemoryLayout<Pointee>.offset(of: keyPath)!
+    return pointee[keyPath: keyPath].apply(to: raw.advanced(by: offset))
+  }
 }
 
 extension UnsafePointer where Pointee: Equatable {
@@ -47,13 +57,5 @@ extension UnsafePointer where Pointee: Equatable {
 extension UnsafeMutablePointer {
   var raw: UnsafeMutableRawPointer {
     UnsafeMutableRawPointer(self)
-  }
-
-  func buffer(n: Int) -> UnsafeMutableBufferPointer<Pointee> {
-    UnsafeMutableBufferPointer(start: self, count: n)
-  }
-
-  func advanced(by n: Int, wordSize: Int) -> UnsafeMutableRawPointer {
-    raw.advanced(by: n * wordSize)
   }
 }

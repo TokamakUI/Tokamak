@@ -36,17 +36,6 @@ func withValuePointer<Value, Result>(
   }
 }
 
-func withClassValuePointer<Value, Result>(
-  of value: inout Value,
-  _ body: (UnsafeMutableRawPointer) -> Result
-) -> Result {
-  withUnsafePointer(to: &value) {
-    let pointer = $0
-      .withMemoryRebound(to: UnsafeMutableRawPointer.self, capacity: 1) { $0.pointee }
-    return body(pointer)
-  }
-}
-
 func withExistentialValuePointer<Value, Result>(
   of value: inout Value,
   _ body: (UnsafeMutableRawPointer) -> Result
