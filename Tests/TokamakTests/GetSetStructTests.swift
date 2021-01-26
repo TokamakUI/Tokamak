@@ -28,7 +28,7 @@ class GetSetStructTests: XCTestCase {
   // swiftlint:disable force_cast
   func testGet() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let firstname = try info.property(named: "firstname")
+    let firstname = try XCTUnwrap(info.property(named: "firstname"))
     let person = Person()
     let name = try XCTUnwrap(firstname.get(from: person) as? String)
     XCTAssert(name == "Wes")
@@ -37,7 +37,7 @@ class GetSetStructTests: XCTestCase {
   func testGetSimple() throws {
     struct Test { let a: Int = 2 }
     let info = try XCTUnwrap(typeInfo(of: Test.self))
-    let a = try info.property(named: "a")
+    let a = try XCTUnwrap(info.property(named: "a"))
     let value = Test()
     let result = try XCTUnwrap(a.get(from: value) as? Int)
     XCTAssert(result == 2)
@@ -45,7 +45,7 @@ class GetSetStructTests: XCTestCase {
 
   func testGetUntypedValue() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let firstname = try info.property(named: "firstname")
+    let firstname = try XCTUnwrap(info.property(named: "firstname"))
     let person = Person()
     let name: Any = firstname.get(from: person)
     XCTAssert((name as! String) == "Wes")
@@ -53,7 +53,7 @@ class GetSetStructTests: XCTestCase {
 
   func testGetUntypedObject() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let firstname = try info.property(named: "firstname")
+    let firstname = try XCTUnwrap(info.property(named: "firstname"))
     let person: Any = Person()
     let name = try XCTUnwrap(firstname.get(from: person) as? String)
     XCTAssert(name == "Wes")
@@ -61,7 +61,7 @@ class GetSetStructTests: XCTestCase {
 
   func testGetUntyped() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let firstname = try info.property(named: "firstname")
+    let firstname = try XCTUnwrap(info.property(named: "firstname"))
     let person: Any = Person()
     let name: Any = firstname.get(from: person)
     XCTAssert((name as! String) == "Wes")
@@ -69,7 +69,7 @@ class GetSetStructTests: XCTestCase {
 
   func testGetStruct() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let pet = try info.property(named: "pet")
+    let pet = try XCTUnwrap(info.property(named: "pet"))
     let person = Person()
     let value = try XCTUnwrap(pet.get(from: person) as? Pet)
     XCTAssert(value.name == "Marley")
@@ -77,7 +77,7 @@ class GetSetStructTests: XCTestCase {
 
   func testGetStructUntypedValue() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let pet = try info.property(named: "pet")
+    let pet = try XCTUnwrap(info.property(named: "pet"))
     let person = Person()
     let value: Any = pet.get(from: person)
     XCTAssert((value as! Pet).name == "Marley")
@@ -85,7 +85,7 @@ class GetSetStructTests: XCTestCase {
 
   func testGetStructUntypedObject() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let pet = try info.property(named: "pet")
+    let pet = try XCTUnwrap(info.property(named: "pet"))
     let person: Any = Person()
     let value = try XCTUnwrap(pet.get(from: person) as? Pet)
     XCTAssert(value.name == "Marley")
@@ -93,7 +93,7 @@ class GetSetStructTests: XCTestCase {
 
   func testGetStructUntyped() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let pet = try info.property(named: "pet")
+    let pet = try XCTUnwrap(info.property(named: "pet"))
     let person: Any = Person()
     let value: Any = pet.get(from: person)
     XCTAssert((value as! Pet).name == "Marley")
@@ -101,7 +101,7 @@ class GetSetStructTests: XCTestCase {
 
   func testGetArray() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let favoriteNumbers = try info.property(named: "favoriteNumbers")
+    let favoriteNumbers = try XCTUnwrap(info.property(named: "favoriteNumbers"))
     let person = Person()
     let value = try XCTUnwrap(favoriteNumbers.get(from: person) as? [Int])
     XCTAssert(value == [1, 2, 3, 4, 5])
@@ -109,7 +109,7 @@ class GetSetStructTests: XCTestCase {
 
   func testGetArrayUntypedValue() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let favoriteNumbers = try info.property(named: "favoriteNumbers")
+    let favoriteNumbers = try XCTUnwrap(info.property(named: "favoriteNumbers"))
     let person = Person()
     let value: Any = favoriteNumbers.get(from: person)
     XCTAssert(value as! [Int] == [1, 2, 3, 4, 5])
@@ -117,7 +117,7 @@ class GetSetStructTests: XCTestCase {
 
   func testGetArrayUntypedObject() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let favoriteNumbers = try info.property(named: "favoriteNumbers")
+    let favoriteNumbers = try XCTUnwrap(info.property(named: "favoriteNumbers"))
     let person: Any = Person()
     let value = try XCTUnwrap(favoriteNumbers.get(from: person) as? [Int])
     XCTAssert(value == [1, 2, 3, 4, 5])
@@ -125,7 +125,7 @@ class GetSetStructTests: XCTestCase {
 
   func testGetArrayUntyped() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let favoriteNumbers = try info.property(named: "favoriteNumbers")
+    let favoriteNumbers = try XCTUnwrap(info.property(named: "favoriteNumbers"))
     let person: Any = Person()
     let value: Any = favoriteNumbers.get(from: person)
     XCTAssert(value as! [Int] == [1, 2, 3, 4, 5])
@@ -133,7 +133,7 @@ class GetSetStructTests: XCTestCase {
 
   func testSet() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let firstname = try info.property(named: "firstname")
+    let firstname = try XCTUnwrap(info.property(named: "firstname"))
     var person = Person()
     firstname.set(value: "John", on: &person)
     XCTAssert(person.firstname == "John")
@@ -141,7 +141,7 @@ class GetSetStructTests: XCTestCase {
 
   func testSetUntypedValue() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let firstname = try info.property(named: "firstname")
+    let firstname = try XCTUnwrap(info.property(named: "firstname"))
     var person = Person()
     let new: Any = "John"
     firstname.set(value: new, on: &person)
@@ -150,7 +150,7 @@ class GetSetStructTests: XCTestCase {
 
   func testSetUntypedObject() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let firstname = try info.property(named: "firstname")
+    let firstname = try XCTUnwrap(info.property(named: "firstname"))
     var person: Any = Person()
     firstname.set(value: "John", on: &person)
     XCTAssert((person as! Person).firstname == "John")
@@ -158,7 +158,7 @@ class GetSetStructTests: XCTestCase {
 
   func testSetUntyped() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let firstname = try info.property(named: "firstname")
+    let firstname = try XCTUnwrap(info.property(named: "firstname"))
     var person: Any = Person()
     let new: Any = "John"
     firstname.set(value: new, on: &person)
@@ -167,7 +167,7 @@ class GetSetStructTests: XCTestCase {
 
   func testSetArray() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let favoriteNumbers = try info.property(named: "favoriteNumbers")
+    let favoriteNumbers = try XCTUnwrap(info.property(named: "favoriteNumbers"))
     var person = Person()
     let new = [5, 4, 3, 2, 1]
     favoriteNumbers.set(value: new, on: &person)
@@ -176,7 +176,7 @@ class GetSetStructTests: XCTestCase {
 
   func testSetArrayUntypedValue() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let favoriteNumbers = try info.property(named: "favoriteNumbers")
+    let favoriteNumbers = try XCTUnwrap(info.property(named: "favoriteNumbers"))
     var person = Person()
     let new = [5, 4, 3, 2, 1]
     favoriteNumbers.set(value: new, on: &person)
@@ -185,7 +185,7 @@ class GetSetStructTests: XCTestCase {
 
   func testSetArrayUntypedObject() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let favoriteNumbers = try info.property(named: "favoriteNumbers")
+    let favoriteNumbers = try XCTUnwrap(info.property(named: "favoriteNumbers"))
     var person: Any = Person()
     let new = [5, 4, 3, 2, 1]
     favoriteNumbers.set(value: new, on: &person)
@@ -194,7 +194,7 @@ class GetSetStructTests: XCTestCase {
 
   func testSetArrayUntyped() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let favoriteNumbers = try info.property(named: "favoriteNumbers")
+    let favoriteNumbers = try XCTUnwrap(info.property(named: "favoriteNumbers"))
     var person: Any = Person()
     let new = [5, 4, 3, 2, 1]
     favoriteNumbers.set(value: new, on: &person)
@@ -203,7 +203,7 @@ class GetSetStructTests: XCTestCase {
 
   func testSetStruct() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let pet = try info.property(named: "pet")
+    let pet = try XCTUnwrap(info.property(named: "pet"))
     var person = Person()
     let new = Pet(name: "Rex", age: 9)
     pet.set(value: new, on: &person)
@@ -212,7 +212,7 @@ class GetSetStructTests: XCTestCase {
 
   func testSetStructUntypedValue() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let pet = try info.property(named: "pet")
+    let pet = try XCTUnwrap(info.property(named: "pet"))
     var person = Person()
     let new = Pet(name: "Rex", age: 9)
     pet.set(value: new, on: &person)
@@ -221,7 +221,7 @@ class GetSetStructTests: XCTestCase {
 
   func testSetStructUntypedObject() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let pet = try info.property(named: "pet")
+    let pet = try XCTUnwrap(info.property(named: "pet"))
     var person: Any = Person()
     let new = Pet(name: "Rex", age: 9)
     pet.set(value: new, on: &person)
@@ -230,27 +230,16 @@ class GetSetStructTests: XCTestCase {
 
   func testSetStructUntyped() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let pet = try info.property(named: "pet")
+    let pet = try XCTUnwrap(info.property(named: "pet"))
     var person: Any = Person()
     let new = Pet(name: "Rex", age: 9)
     pet.set(value: new, on: &person)
     XCTAssert((person as! Person).pet.name == "Rex")
   }
 
-  func testSetCasting() throws {
-    #if !os(WASI)
-    let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let age = try info.property(named: "age")
-    var person = Person()
-    let newValue: NSNumber = 40
-    age.set(value: newValue, on: &person)
-    XCTAssert(person.age == 40)
-    #endif
-  }
-
   func testSetCastingFailure() throws {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
-    let age = try info.property(named: "age")
+    let age = try XCTUnwrap(XCTUnwrap(info.property(named: "age")))
     var person = Person()
     let newValue = "this will not work"
     age.set(value: newValue, on: &person)

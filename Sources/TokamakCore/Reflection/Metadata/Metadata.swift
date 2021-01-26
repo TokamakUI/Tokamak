@@ -25,14 +25,7 @@ func metadataPointer(type: Any.Type) -> UnsafeMutablePointer<Int> {
 }
 
 func metadata(of type: Any.Type) -> MetadataInfo {
-  let kind = Kind(type: type)
+  guard Kind(type: type) == .struct else { fatalError("Reflection is supported only for structs") }
 
-  switch kind {
-  case .struct:
-    return StructMetadata(type: type)
-  case .existential:
-    return ProtocolMetadata(type: type)
-  default:
-    fatalError()
-  }
+  return StructMetadata(type: type)
 }

@@ -26,13 +26,9 @@ public struct TypeInfo {
   public var type: Any.Type = Any.self
   public var mangledName: String = ""
   public var properties: [PropertyInfo] = []
-  public var inheritance: [Any.Type] = []
   public var size: Int = 0
   public var alignment: Int = 0
   public var stride: Int = 0
-  public var cases: [Case] = []
-  public var numberOfEnumCases: Int = 0
-  public var numberOfPayloadEnumCases: Int = 0
   public var genericTypes: [Any.Type] = []
 
   init<Metadata: MetadataType>(metadata: Metadata) {
@@ -44,16 +40,8 @@ public struct TypeInfo {
     name = String(describing: metadata.type)
   }
 
-  public var superClass: Any.Type? {
-    inheritance.first
-  }
-
-  public func property(named: String) throws -> PropertyInfo {
-    if let prop = properties.first(where: { $0.name == named }) {
-      return prop
-    }
-
-    throw RuntimeError.noPropertyNamed(name: named)
+  public func property(named: String) -> PropertyInfo? {
+    properties.first(where: { $0.name == named })
   }
 }
 
@@ -65,8 +53,6 @@ public func typeInfo(of type: Any.Type) -> TypeInfo? {
   switch kind {
   case .struct:
     typeInfoConvertible = StructMetadata(type: type)
-  case .existential:
-    typeInfoConvertible = ProtocolMetadata(type: type)
   default:
     return nil
   }
