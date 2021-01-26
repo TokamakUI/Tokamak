@@ -20,7 +20,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-struct EnumMetadataLayout: NominalMetadataLayoutType {
-  var _kind: Int
-  var typeDescriptor: UnsafeMutablePointer<EnumTypeDescriptor>
+@testable import TokamakCore
+import XCTest
+
+class ValuePointerTests: XCTestCase {
+  func testStructValuePointer() throws {
+    var person = PersonStruct()
+    withValuePointer(of: &person) { p in
+      XCTAssert(p.assumingMemoryBound(to: String.self).pointee == "Wes")
+    }
+  }
+
+  func testProtocolStructValuePointer() throws {
+    var person: PersonProtocol = PersonStruct()
+    withValuePointer(of: &person) { p in
+      XCTAssert(p.assumingMemoryBound(to: String.self).pointee == "Wes")
+    }
+  }
+
+  func testAnyStructValuePointer() throws {
+    var person: Any = PersonStruct()
+    withValuePointer(of: &person) { p in
+      XCTAssert(p.assumingMemoryBound(to: String.self).pointee == "Wes")
+    }
+  }
+}
+
+private protocol PersonProtocol {
+  var fistname: String { get set }
+  var lastname: String { get set }
+  var age: Int { get set }
+}
+
+private struct PersonStruct: PersonProtocol {
+  var fistname = "Wes"
+  var lastname = "Wickwire"
+  var age = 25
 }

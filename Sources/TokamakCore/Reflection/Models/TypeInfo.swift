@@ -65,14 +65,8 @@ public func typeInfo(of type: Any.Type) -> TypeInfo? {
   switch kind {
   case .struct:
     typeInfoConvertible = StructMetadata(type: type)
-  case .class:
-    typeInfoConvertible = ClassMetadata(type: type)
   case .existential:
     typeInfoConvertible = ProtocolMetadata(type: type)
-  case .tuple:
-    typeInfoConvertible = TupleMetadata(type: type)
-  case .enum, .optional:
-    typeInfoConvertible = EnumMetadata(type: type)
   default:
     return nil
   }

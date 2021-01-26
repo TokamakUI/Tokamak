@@ -20,41 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-struct ClassTypeDescriptor: TypeDescriptor {
-  var flags: ContextDescriptorFlags
-  var parent: Int32
-  var mangledName: RelativePointer<Int32, CChar>
-  var fieldTypesAccessor: RelativePointer<Int32, Int>
-  var fieldDescriptor: RelativePointer<Int32, FieldDescriptor>
-  var superClass: RelativePointer<Int32, Any.Type>
-  var negativeSizeAndBoundsUnion: NegativeSizeAndBoundsUnion
-  var metadataPositiveSizeInWords: Int32
-  var numImmediateMembers: Int32
-  var numberOfFields: Int32
-  var offsetToTheFieldOffsetVector: RelativeVectorPointer<Int32, Int>
-  var genericContextHeader: TargetTypeGenericContextDescriptorHeader
+@testable import TokamakCore
+import XCTest
 
-  struct NegativeSizeAndBoundsUnion: Union {
-    var raw: Int32
+class ValueWitnessTableTests: XCTestCase {
+  func testSize() throws {
+    let info = try XCTUnwrap(typeInfo(of: Person.self))
+    XCTAssert(info.size == MemoryLayout<Person>.size)
+  }
 
-    var metadataNegativeSizeInWords: Int32 {
-      raw
-    }
+  func testAlignment() throws {
+    let info = try XCTUnwrap(typeInfo(of: Person.self))
+    XCTAssert(info.alignment == MemoryLayout<Person>.alignment)
+  }
 
-    mutating func resilientMetadataBounds()
-      -> UnsafeMutablePointer<RelativePointer<Int32, TargetStoredClassMetadataBounds>>
-    {
-      bind()
-    }
+  func testStride() throws {
+    let info = try XCTUnwrap(typeInfo(of: Person.self))
+    XCTAssert(info.stride == MemoryLayout<Person>.stride)
   }
 }
 
-struct TargetStoredClassMetadataBounds {
-  var immediateMembersOffset: Int
-  var bounds: TargetMetadataBounds
-}
-
-struct TargetMetadataBounds {
-  var negativeSizeWords: UInt32
-  var positiveSizeWords: UInt32
+private struct Person {
+  let firstname: String
+  let lastname: String
+  let age: Int
 }

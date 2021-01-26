@@ -24,40 +24,6 @@
 import XCTest
 
 final class MetadataTests: XCTestCase {
-  func testClass() {
-    var md = ClassMetadata(type: MyClass<Int>.self)
-    let info = md.toTypeInfo()
-    #if os(WASI)
-    XCTAssert(md.genericArgumentOffset == 18)
-    #else
-    XCTAssert(md.genericArgumentOffset == 15)
-    #endif
-    XCTAssert(info.properties.first { $0.name == "baseProperty" } != nil)
-    XCTAssert(info.inheritance[0] == BaseClass.self)
-    XCTAssert(info.superClass == BaseClass.self)
-    XCTAssert(info.mangledName != "")
-    XCTAssert(info.kind == .class)
-    XCTAssert(info.type == MyClass<Int>.self)
-    XCTAssert(info.properties.count == 3)
-    XCTAssert(info.size == MemoryLayout<MyClass<Int>>.size)
-    XCTAssert(info.alignment == MemoryLayout<MyClass<Int>>.alignment)
-    XCTAssert(info.stride == MemoryLayout<MyClass<Int>>.stride)
-    XCTAssert(info.genericTypes.count == 1)
-    XCTAssert(info.genericTypes[0] == Int.self)
-  }
-
-  func testResilientClass() {
-    #if canImport(Darwin)
-    class DerivedResilient: JSONEncoder {}
-    let md1 = ClassMetadata(type: BaseClass.self)
-    let md2 = ClassMetadata(type: JSONDecoder.self)
-    let md3 = ClassMetadata(type: DerivedResilient.self)
-    XCTAssertFalse(md1.hasResilientSuperclass)
-    XCTAssertFalse(md2.hasResilientSuperclass)
-    XCTAssertTrue(md3.hasResilientSuperclass)
-    #endif
-  }
-
   func testGenericStruct() {
     struct A<B, C, D, E, F, G, H> { let b: B }
     var md = StructMetadata(type: A<Int, String, Bool, Int, Int, Int, Int>.self)
@@ -124,125 +90,11 @@ final class MetadataTests: XCTestCase {
     XCTAssert(info.alignment == MemoryLayout<MyProtocol>.alignment)
     XCTAssert(info.stride == MemoryLayout<MyProtocol>.stride)
   }
-
-  func testTuple() {
-    let type = (a: Int, b: Bool, c: String).self
-    var md = TupleMetadata(type: type)
-    let info = md.toTypeInfo()
-    XCTAssert(info.kind == .tuple)
-    XCTAssert(info.type == (a: Int, b: Bool, c: String).self)
-    XCTAssert(info.properties.count == 3)
-    XCTAssert(info.size == MemoryLayout<(a: Int, b: Bool, c: String)>.size)
-    XCTAssert(info.alignment == MemoryLayout<(a: Int, b: Bool, c: String)>.alignment)
-    XCTAssert(info.stride == MemoryLayout<(a: Int, b: Bool, c: String)>.stride)
-  }
-
-  func testTupleNoLabels() {
-    let type = (Int, Bool, String).self
-    let md = TupleMetadata(type: type)
-    XCTAssert(md.labels() == ["", "", ""])
-    XCTAssert(md.numberOfElements() == 3)
-  }
-
-  func testFunction() throws {
-    let info = try functionInfo(of: myFunc)
-    XCTAssert(info.numberOfArguments == 3)
-    XCTAssert(info.argumentTypes[0] == Int.self)
-    XCTAssert(info.argumentTypes[1] == Bool.self)
-    XCTAssert(info.argumentTypes[2] == String.self)
-    XCTAssert(info.returnType == String.self)
-    XCTAssert(!info.throws)
-  }
-
-  func testFunctionThrows() {
-    let t = ((Int) throws -> String).self
-    let md = FunctionMetadata(type: t)
-    let info = md.info()
-    XCTAssert(info.numberOfArguments == 1)
-    XCTAssert(info.argumentTypes[0] == Int.self)
-    XCTAssert(info.returnType == String.self)
-    XCTAssert(info.throws)
-  }
-
-  func testVoidFunction() {
-    let t = type(of: voidFunction)
-    let md = FunctionMetadata(type: t)
-    let info = md.info()
-    XCTAssert(info.numberOfArguments == 0)
-  }
-
-  func testEnum() {
-    var md = EnumMetadata(type: MyEnum<String>.self)
-    let info = md.toTypeInfo()
-    XCTAssert(info.cases[0].name == "a")
-    XCTAssert(info.cases[1].name == "b")
-    XCTAssert(info.cases[2].name == "c")
-    XCTAssert(info.cases[3].name == "d")
-  }
-
-  func testEnumTestEnumWithPayload() {
-    enum Foo {
-      case a, b, c
-      case hasPayload(Int)
-      case hasTuplePayload(Bool, Int)
-    }
-
-    var md = EnumMetadata(type: Foo.self)
-    let info = md.toTypeInfo()
-
-    guard let hasPayload = info.cases.first(where: { $0.name == "hasPayload" }),
-          let hasTuplePayload = info.cases.first(where: { $0.name == "hasTuplePayload" })
-    else {
-      return XCTFail("Missing payload cases")
-    }
-
-    XCTAssertEqual(md.numberOfCases, 5)
-    XCTAssertEqual(md.numberOfPayloadCases, 2)
-    XCTAssert(hasPayload.payloadType == Int.self)
-    XCTAssert(hasTuplePayload.payloadType == (Bool, Int).self)
-  }
-
-  #if canImport(Foundation)
-  func testObjcEnum() {
-    var md = EnumMetadata(type: ComparisonResult.self)
-    let info = md.toTypeInfo()
-    XCTAssertEqual(info.numberOfEnumCases, 3)
-    XCTAssertEqual(info.numberOfPayloadEnumCases, 0)
-  }
-  #endif
-
-  func testOptional() throws {
-    let info = try XCTUnwrap(typeInfo(of: Double?.self))
-    XCTAssert(info.cases[0].name == "some")
-    XCTAssert(info.cases[1].name == "none")
-  }
-}
-
-private enum MyEnum<T>: Int {
-  case a, b, c, d
-}
-
-func voidFunction() {}
-
-func myFunc(a: Int, b: Bool, c: String) -> String {
-  ""
 }
 
 private protocol MyProtocol {
   var a: Int { get set }
   func doSomething(value: Int) -> Bool
-}
-
-private class BaseClass {
-  var baseProperty: Int = 0
-}
-
-private class MyClass<T>: BaseClass {
-  var property: String = ""
-  var gen: T
-  init(g: T) {
-    gen = g
-  }
 }
 
 private struct MyStruct<T> {
