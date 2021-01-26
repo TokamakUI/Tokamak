@@ -24,7 +24,7 @@ func metadataPointer(type: Any.Type) -> UnsafeMutablePointer<Int> {
   unsafeBitCast(type, to: UnsafeMutablePointer<Int>.self)
 }
 
-func metadata(of type: Any.Type) -> MetadataInfo {
+func metadata(of type: Any.Type) -> StructMetadata {
   guard Kind(type: type) == .struct else { fatalError("Reflection is supported only for structs") }
 
   return StructMetadata(type: type)

@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 public struct TypeInfo {
-  public var kind: Kind = .class
+  public var kind: Kind = .struct
   public var name: String = ""
   public var type: Any.Type = Any.self
   public var mangledName: String = ""
@@ -31,7 +31,7 @@ public struct TypeInfo {
   public var stride: Int = 0
   public var genericTypes: [Any.Type] = []
 
-  init<Metadata: MetadataType>(metadata: Metadata) {
+  init(metadata: StructMetadata) {
     kind = metadata.kind
     size = metadata.size
     alignment = metadata.alignment
@@ -46,16 +46,10 @@ public struct TypeInfo {
 }
 
 public func typeInfo(of type: Any.Type) -> TypeInfo? {
-  let kind = Kind(type: type)
-
-  var typeInfoConvertible: TypeInfoConvertible
-
-  switch kind {
-  case .struct:
-    typeInfoConvertible = StructMetadata(type: type)
-  default:
+  guard Kind(type: type) == .struct else {
     return nil
   }
 
-  return typeInfoConvertible.toTypeInfo()
+  var result = StructMetadata(type: type)
+  return result.toTypeInfo()
 }

@@ -29,8 +29,6 @@ func withValuePointer<Value, Result>(
   switch kind {
   case .struct:
     return withUnsafePointer(to: &value) { body($0.mutable.raw) }
-  case .class:
-    return withClassValuePointer(of: &value, body)
   case .existential:
     return withExistentialValuePointer(of: &value, body)
   default:
