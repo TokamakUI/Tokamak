@@ -48,7 +48,7 @@ extension HTMLTarget {
   var outerHTML: String {
     """
     <\(html.tag)\(html.attributes.isEmpty ? "" : " ")\
-    \(html.attributes.map { #"\#($0)="\#($1)""# }.joined(separator: " "))>\
+    \(html.attributes.sorted { $0.0.value > $1.0.value }.map { #"\#($0)="\#($1)""# }.joined(separator: " "))>\
     \(html.innerHTML ?? "")\
     \(children.map(\.outerHTML).joined(separator: "\n"))\
     </\(html.tag)>
