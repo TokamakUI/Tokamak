@@ -15,8 +15,6 @@
 //  Created by Max Desiatov on 28/11/2018.
 //
 
-import Runtime
-
 /// The container for any of the possible `MountedElement` types
 private enum MountedElementKind {
   case app(_AnyApp)
@@ -162,16 +160,11 @@ public class MountedElement<R: Renderer> {
 
 extension EnvironmentValues {
   mutating func inject(into element: inout Any, _ type: Any.Type) {
-    // swiftlint:disable:next force_try
-    let info = try! typeInfo(of: type)
+    guard let info = typeInfo(of: type) else { return }
 
-    // swiftlint:disable force_try
     // Extract the view from the AnyView for modification, apply Environment changes:
-    if info.genericTypes.contains(where: { $0 is EnvironmentModifier.Type }),
-       let modifier = try! info.property(named: "modifier")
-       .get(from: element) as? EnvironmentModifier
-    {
-      modifier.modifyEnvironment(&self)
+    if let container = element as? ModifierContainer {
+      container.environmentModifier?.modifyEnvironment(&self)
     }
 
     // Inject @Environment values
@@ -179,21 +172,20 @@ extension EnvironmentValues {
     // `DynamicProperty`s can have `@Environment` properties contained in them,
     // so we have to inject into them as well.
     for dynamicProp in info.properties.filter({ $0.type is DynamicProperty.Type }) {
-      let propInfo = try! typeInfo(of: dynamicProp.type)
-      var propWrapper = try! dynamicProp.get(from: element) as! DynamicProperty
+      guard let propInfo = typeInfo(of: dynamicProp.type) else { return }
+      var propWrapper = dynamicProp.get(from: element) as! DynamicProperty
       for prop in propInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-        var wrapper = try! prop.get(from: propWrapper) as! EnvironmentReader
+        var wrapper = prop.get(from: propWrapper) as! EnvironmentReader
         wrapper.setContent(from: self)
-        try! prop.set(value: wrapper, on: &propWrapper)
+        prop.set(value: wrapper, on: &propWrapper)
       }
-      try! dynamicProp.set(value: propWrapper, on: &element)
+      dynamicProp.set(value: propWrapper, on: &element)
     }
     for prop in info.properties.filter({ $0.type is EnvironmentReader.Type }) {
-      var wrapper = try! prop.get(from: element) as! EnvironmentReader
+      var wrapper = prop.get(from: element) as! EnvironmentReader
       wrapper.setContent(from: self)
-      try! prop.set(value: wrapper, on: &element)
+      prop.set(value: wrapper, on: &element)
     }
-    // swiftlint:enable force_try
     // swiftlint:enable force_cast
   }
 }
@@ -209,10 +201,10 @@ extension TypeInfo {
     var dynamicProps = [PropertyInfo]()
     for prop in properties where prop.type is DynamicProperty.Type {
       dynamicProps.append(prop)
-      // swiftlint:disable force_try
-      let propInfo = try! typeInfo(of: prop.type)
+      guard let propInfo = typeInfo(of: prop.type) else { continue }
+
       environment.inject(into: &source, prop.type)
-      var extracted = try! prop.get(from: source)
+      var extracted = prop.get(from: source)
       dynamicProps.append(
         contentsOf: propInfo.dynamicProperties(
           &environment,
@@ -222,8 +214,7 @@ extension TypeInfo {
       // swiftlint:disable:next force_cast
       var extractedDynamicProp = extracted as! DynamicProperty
       extractedDynamicProp.update()
-      try! prop.set(value: extractedDynamicProp, on: &source)
-      // swiftlint:enable force_try
+      prop.set(value: extractedDynamicProp, on: &source)
     }
     return dynamicProps
   }

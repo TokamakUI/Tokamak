@@ -53,7 +53,6 @@ let package = Package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
       .upToNextMinor(from: "0.9.0")
     ),
-    .package(url: "https://github.com/MaxDesiatov/Runtime.git", from: "2.1.2"),
     .package(url: "https://github.com/TokamakUI/OpenCombine.git", from: "0.12.0-alpha3"),
     .package(url: "https://github.com/swiftwasm/OpenCombineJS.git", .upToNextMinor(from: "0.0.2")),
     .package(name: "Benchmark", url: "https://github.com/google/swift-benchmark", from: "0.1.0"),
@@ -73,7 +72,7 @@ let package = Package(
     ),
     .target(
       name: "TokamakCore",
-      dependencies: ["CombineShim", "Runtime"]
+      dependencies: ["CombineShim"]
     ),
     .target(
       name: "TokamakShim",

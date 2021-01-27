@@ -29,15 +29,6 @@
         }
       },
       {
-        "package": "Runtime",
-        "repositoryURL": "https://github.com/MaxDesiatov/Runtime.git",
-        "state": {
-          "branch": null,
-          "revision": "a617ead8a125a97e69d6100e4d27922006e82e0a",
-          "version": "2.1.2"
-        }
-      },
-      {
         "package": "swift-argument-parser",
         "repositoryURL": "https://github.com/apple/swift-argument-parser",
         "state": {
