@@ -129,5 +129,14 @@ struct StructMetadata {
 extension StructMetadata {
   init(type: Any.Type) {
     self = Self(pointer: unsafeBitCast(type, to: UnsafePointer<StructMetadataLayout>.self))
+    print(
+      """
+      state is \(_checkMetadataState(
+        .init(desiredState: .layoutComplete, isBlocking: false),
+        self
+      )
+      )
+      """
+    )
   }
 }
