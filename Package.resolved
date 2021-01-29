@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/swiftwasm/JavaScriptKit.git",
         "state": {
           "branch": null,
-          "revision": "b7a02434c6e973c08c3fd5069105ef44dd82b891",
-          "version": "0.9.0"
+          "revision": "ebd9ca04215397f0e3cb72d6e96406a980a424e5",
+          "version": "0.10.0"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/swiftwasm/OpenCombineJS.git",
         "state": {
           "branch": null,
-          "revision": "5e8636b15bcb4b8900696d95daaab941458ed2cf",
-          "version": "0.0.2"
+          "revision": "1a11bbe487ca1b6f925b8dc809e11055e4a68131",
+          "version": "0.1.0"
         }
       },
       {
