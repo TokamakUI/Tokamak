@@ -15,31 +15,35 @@ jobs:
     - run: apt-get update && apt-get install -y gtk+-3.0 libgtk+-3.0
     - name: Checkout Branch
       uses: actions/checkout@v2
-    - run: swift build --enable-test-discovery -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
-    - run: swift test --enable-test-discovery --enable-code-coverage --skip-build
-    - name: Coverage Report
+    - name: Build Test Target
+      run: swift build --enable-test-discovery -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
+    - name: Run Tests
+      run: swift test --enable-test-discovery --enable-code-coverage --skip-build
+    - name: Generate Branch Coverage Report
       uses: mattpolzin/swift-codecov-action@0.6.1
       id: cov
       with:
         MINIMUM_COVERAGE: 20
-    - run: cp ./codecov.txt ../codecov-b.txt
+    - name: Store Branch Report
+      run: cp ./codecov.txt ../codecov-b.txt
       if: ${{ always() }}
     - name: Checkout Main
       if: ${{ always() }}
       uses: actions/checkout@v2
       with:
         ref: main
-    - run: swift build --enable-test-discovery -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
+    - name: Build Test Target
+      run: swift build --enable-test-discovery -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
       if: ${{ always() }}
-    - run: swift test --enable-test-discovery --enable-code-coverage --skip-build
+    - name: Run Tests
+      run: swift test --enable-test-discovery --enable-code-coverage --skip-build
       if: ${{ always() }}
-    - name: Main Branch Coverage
+    - name: Generate Main Coverage Report
       if: ${{ always() }}
       uses: mattpolzin/swift-codecov-action@0.6.1
-    - run: echo "$(diff ./codecov.txt ../codecov-b.txt)"
-      if: ${{ always() }}
-    - run: |
-        echo "::set-output name=covdiff::$(diff ./codecov.txt ../codecov-b.txt)"
+    - name: Diff Test Coverage
+      shell: bash
+      run: diff_cov_output="$(diff ./codecov.txt ../codecov-b.txt)"
       id: covdiff
       if: ${{ always() }}
     - name: Find Comment
