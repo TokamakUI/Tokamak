@@ -1,6 +1,7 @@
 #!/bin/bash
 
-diff_cov_output="$(diff ../codecov-main.txt ./codecov.txt)"
+diff_cov_output="$(diff ../codecov-main.txt ./codecov.txt | sed -n '/^[-=][^-=]/p' )"
+diff_cov_output="\`\`\`diff $diff_cov_output \`\`\`"
 diff_cov_output="${diff_cov_output//'%'/'%25'}"
 diff_cov_output="${diff_cov_output//$'\n'/'%0A'}"
 diff_cov_output="${diff_cov_output//$'\r'/'%0D'}"
