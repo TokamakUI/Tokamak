@@ -43,7 +43,7 @@ jobs:
       uses: mattpolzin/swift-codecov-action@0.6.1
     - name: Diff Test Coverage
       shell: bash
-      run: diff_cov_output="$(diff ./codecov.txt ../codecov-b.txt)"
+      run: pwd
       id: covdiff
       if: ${{ always() }}
     - name: Find Comment
