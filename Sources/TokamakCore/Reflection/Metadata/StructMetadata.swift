@@ -129,5 +129,15 @@ struct StructMetadata {
 extension StructMetadata {
   init(type: Any.Type) {
     self = Self(pointer: unsafeBitCast(type, to: UnsafePointer<StructMetadataLayout>.self))
+    assert(
+      _checkMetadataState(
+        .init(desiredState: .layoutComplete, isBlocking: false),
+        self
+      ).state.rawValue < MetadataState.layoutComplete.rawValue,
+      """
+      Struct metadata for \(type) is in incomplete state, \
+      proceeding would result in an undefined behavior.
+      """
+    )
   }
 }
