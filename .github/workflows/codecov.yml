@@ -13,23 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: apt-get update && apt-get install -y gtk+-3.0 libgtk+-3.0
-    - name: Checkout Main
-      if: ${{ always() }}
-      uses: actions/checkout@v2
-      with:
-        ref: main
-    - name: Build Test Target
-      run: swift build --enable-test-discovery -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
-      if: ${{ always() }}
-    - name: Run Tests
-      run: swift test --enable-test-discovery --enable-code-coverage --skip-build
-      if: ${{ always() }}
-    - name: Generate Main Coverage Report
-      if: ${{ always() }}
-      uses: mattpolzin/swift-codecov-action@0.6.1
-    - name: Store Main Report
-      run: cp ./codecov.txt ../codecov-main.txt
-      if: ${{ always() }}
     - name: Checkout Branch
       uses: actions/checkout@v2
     - name: Build Test Target
@@ -41,36 +24,8 @@ jobs:
       id: cov
       with:
         MINIMUM_COVERAGE: 20
-    - name: Diff Test Coverage
-      shell: bash
-      run: ./cov_diff.sh
-      id: covdiff
+    - name: Post Results
       if: ${{ always() }}
-    - name: Find Comment
-      if: ${{ always() }}
-      uses: peter-evans/find-comment@v1.1.1
-      id: fc
-      with:
-        token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-        issue-number: ${{ github.event.pull_request.number }}
-        body-includes: 'The current code coverage percentage is'
-    - name: Create comment
-      if: ${{ always() && steps.fc.outputs.comment-id == 0 }}
-      uses: peter-evans/create-or-update-comment@v1.4.4
-      with:
-        token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-        issue-number: ${{ github.event.pull_request.number }}
-        body: |
-          The current code coverage percentage is ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%).
-          ${{ steps.covdiff.outputs.covdiff }}
-    - name: Update comment
-      if: ${{ always() && steps.fc.outputs.comment-id != 0 }}
-      uses: peter-evans/create-or-update-comment@v1.4.4
-      with: 
-        token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-        comment-id: ${{ steps.fc.outputs.comment-id }}
-        edit-mode: replace
-        body: |
-          The current code coverage percentage is ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%).
-          ${{ steps.covdiff.outputs.covdiff }}
+      run: |
+        echo "::warning file=Package.swift,line=1,col=1::The current code coverage percentage is ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%)."
 
