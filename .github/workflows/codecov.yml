@@ -24,8 +24,12 @@ jobs:
       id: cov
       with:
         MINIMUM_COVERAGE: 20
-    - name: Post Results
-      if: ${{ always() }}
+    - name: Post Positive Results
+      if: ${{ success() }}
       run: |
-        echo "::warning file=Package.swift,line=1,col=1::The current code coverage percentage is ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%)."
+        echo "::warning file=Package.swift,line=1,col=1::The current code coverage percentage is passing with ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%)."
+    - name: Post Negative Results
+      if: ${{ failure() }}
+      run: |
+        echo "::error file=Package.swift,line=1,col=1::The current code coverage percentage is failing with ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%)."
 
