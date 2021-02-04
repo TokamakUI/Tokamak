@@ -16,54 +16,54 @@
 import XCTest
 
 final class ColorTests: XCTestCase {
-//  func testHexColors() {
-//    let env = EnvironmentValues()
-//    guard let color = Color(hex: "#FF00FF")?.provider.resolve(in: env) else {
-//      XCTFail("Hexadecimal decoding failed")
-//      return
-//    }
-//
-//    XCTAssertEqual(color.red, 1)
-//    XCTAssertEqual(color.green, 0)
-//    XCTAssertEqual(color.blue, 1)
-//
-//    XCTAssertEqual(
-//      color,
-//      Color(hex: "FF00FF")?.provider.resolve(in: env),
-//      "The '#' before a hex code produced a different output than without it"
-//    )
-//
-//    guard let red = Color(hex: "#FF0000")?.provider.resolve(in: env) else {
-//      XCTFail("Hexadecimal decoding failed")
-//      return
-//    }
-//
-//    XCTAssertEqual(red.red, 1)
-//    XCTAssertEqual(red.green, 0)
-//    XCTAssertEqual(red.blue, 0)
-//
-//    guard let green = Color(hex: "#00FF00")?.provider.resolve(in: env) else {
-//      XCTFail("Hexadecimal decoding failed")
-//      return
-//    }
-//
-//    XCTAssertEqual(green.red, 0)
-//    XCTAssertEqual(green.green, 1)
-//    XCTAssertEqual(green.blue, 0)
-//
-//    guard let blue = Color(hex: "#0000FF")?.provider.resolve(in: env) else {
-//      XCTFail("Hexadecimal decoding failed")
-//      return
-//    }
-//
-//    XCTAssertEqual(blue.red, 0)
-//    XCTAssertEqual(blue.green, 0)
-//    XCTAssertEqual(blue.blue, 1)
-//
-//    let broken = Color(hex: "#P000FF")
-//    XCTAssertEqual(broken, nil)
-//
-//    let short = Color(hex: "F01")
-//    XCTAssertEqual(short, nil)
-//  }
+  func testHexColors() {
+    let env = EnvironmentValues()
+    guard let color = Color(hex: "#FF00FF")?.provider.resolve(in: env) else {
+      XCTFail("Hexadecimal decoding failed")
+      return
+    }
+
+    XCTAssertEqual(color.red, 1)
+    XCTAssertEqual(color.green, 0)
+    XCTAssertEqual(color.blue, 1)
+
+    XCTAssertEqual(
+      color,
+      Color(hex: "FF00FF")?.provider.resolve(in: env),
+      "The '#' before a hex code produced a different output than without it"
+    )
+
+    guard let red = Color(hex: "#FF0000")?.provider.resolve(in: env) else {
+      XCTFail("Hexadecimal decoding failed")
+      return
+    }
+
+    XCTAssertEqual(red.red, 1)
+    XCTAssertEqual(red.green, 0)
+    XCTAssertEqual(red.blue, 0)
+
+    guard let green = Color(hex: "#00FF00")?.provider.resolve(in: env) else {
+      XCTFail("Hexadecimal decoding failed")
+      return
+    }
+
+    XCTAssertEqual(green.red, 0)
+    XCTAssertEqual(green.green, 1)
+    XCTAssertEqual(green.blue, 0)
+
+    guard let blue = Color(hex: "#0000FF")?.provider.resolve(in: env) else {
+      XCTFail("Hexadecimal decoding failed")
+      return
+    }
+
+    XCTAssertEqual(blue.red, 0)
+    XCTAssertEqual(blue.green, 0)
+    XCTAssertEqual(blue.blue, 1)
+
+    let broken = Color(hex: "#P000FF")
+    XCTAssertEqual(broken, nil)
+
+    let short = Color(hex: "F01")
+    XCTAssertEqual(short, nil)
+  }
 }
