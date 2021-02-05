@@ -80,7 +80,9 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
   }
 
   override func update(with reconciler: StackReconciler<R>) {
+    print("C.render")
     let element = reconciler.render(compositeView: self)
+    print("C.recon")
     reconciler.reconcile(
       self,
       with: element,
@@ -91,5 +93,6 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
       },
       mountChild: { $0.makeMountedView(parentTarget, environmentValues, self) }
     )
+    print("C.done")
   }
 }

@@ -206,27 +206,35 @@ public final class StackReconciler<R: Renderer> {
     body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
     result: KeyPath<MountedCompositeElement<R>, (Any) -> T>
   ) -> T {
+    print("SR.env")
     compositeElement.updateEnvironment()
+    print("SR.type")
     if let info = typeInfo(of: compositeElement.type) {
       var stateIdx = 0
+      print("SR.dynamicProps")
       let dynamicProps = info.dynamicProperties(
         &compositeElement.environmentValues,
         source: &compositeElement[keyPath: bodyKeypath]
       )
+      print("SR.dynamicProps.done")
 
       compositeElement.transientSubscriptions = []
       for property in dynamicProps {
+        print("SR.begin")
         // Setup state/subscriptions
         if property.type is ValueStorage.Type {
+          print("SR.setup storage")
           setupStorage(id: stateIdx, for: property, of: compositeElement, body: bodyKeypath)
           stateIdx += 1
         }
         if property.type is ObservedProperty.Type {
+          print("SR.setup sub")
           setupTransientSubscription(for: property, of: compositeElement, body: bodyKeypath)
         }
+        print("SR.done")
       }
     }
-
+    print("SR.type.done")
     return compositeElement[keyPath: result](compositeElement[keyPath: bodyKeypath])
   }
 
