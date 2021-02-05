@@ -50,8 +50,12 @@ public struct TypeInfo {
 
 public func typeInfo(of type: Any.Type) -> TypeInfo? {
   guard Kind(type: type) == .struct else {
+    print("TypeInfo: nil")
     return nil
   }
 
-  return StructMetadata(type: type).toTypeInfo()
+  print("TypeInfo: \(type)")
+  let result = StructMetadata(type: type).toTypeInfo()
+  print("TypeInfo.done")
+  return result
 }

@@ -83,15 +83,25 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     }
   }
 
+  private var __mountedChild = 0
+
   override func update(with reconciler: StackReconciler<R>) {
     guard let target = target else { return }
 
+    let myStack = __stack
+    __stack += 1
+
+    print("Host.upEnv")
     updateEnvironment()
     target.view = view
+    print(
+      "Host.renderer?.update \(reconciler.renderer == nil ? "nil" : "\(Swift.type(of: reconciler.renderer!))")"
+    )
     reconciler.renderer?.update(target: target, with: self)
 
     var childrenViews = view.children
 
+    print("Host(\(mountedChildren.isEmpty),\(childrenViews.isEmpty)")
     switch (mountedChildren.isEmpty, childrenViews.isEmpty) {
     // if existing children present and new children array is empty
     // then unmount all existing children
@@ -113,10 +123,17 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
       // run simple update
       while let mountedChild = mountedChildren.first, let childView = childrenViews.first {
         let newChild: MountedElement<R>
+        print(
+          "BEGIN todo: \(myStack).\(mountedChildren.count) \(childView.typeConstructorName == mountedChildren[0].view.typeConstructorName ? "a - \(childView.typeConstructorName)" : "b")"
+        )
+        __mountedChild += 1
         if childView.typeConstructorName == mountedChildren[0].view.typeConstructorName {
           mountedChild.environmentValues = environmentValues
           mountedChild.view = childView
           mountedChild.updateEnvironment()
+          print(
+            "update -> \(Swift.type(of: mountedChild)), recon -> \(Swift.type(of: reconciler)))"
+          )
           mountedChild.update(with: reconciler)
           newChild = mountedChild
         } else {
@@ -131,6 +148,8 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
         newChildren.append(newChild)
         mountedChildren.removeFirst()
         childrenViews.removeFirst()
+
+        print("END mountedChild todo: \(myStack).\(mountedChildren.count)")
       }
 
       // more mounted views left than views were to be rendered:
@@ -150,6 +169,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
         }
       }
 
+      __stack -= 1
       mountedChildren = newChildren
 
     // both arrays are empty, nothing to reconcile
@@ -157,3 +177,5 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     }
   }
 }
+
+private var __stack = 0

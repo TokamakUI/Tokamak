@@ -126,6 +126,7 @@ public class MountedElement<R: Renderer> {
     case .view:
       environmentValues.inject(into: &view.view, type)
     }
+    print("updateEnvironment done")
   }
 
   func mount(
@@ -160,10 +161,12 @@ public class MountedElement<R: Renderer> {
 
 extension EnvironmentValues {
   mutating func inject(into element: inout Any, _ type: Any.Type) {
+    print("Inj.typeInfo")
     guard let info = typeInfo(of: type) else { return }
 
     // Extract the view from the AnyView for modification, apply Environment changes:
     if let container = element as? ModifierContainer {
+      print("Inj.container")
       container.environmentModifier?.modifyEnvironment(&self)
     }
 
@@ -174,19 +177,26 @@ extension EnvironmentValues {
     for dynamicProp in info.properties.filter({ $0.type is DynamicProperty.Type }) {
       guard let propInfo = typeInfo(of: dynamicProp.type) else { return }
       var propWrapper = dynamicProp.get(from: element) as! DynamicProperty
+      print("Inj.prop.pi \(propInfo.properties.count)")
       for prop in propInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
         var wrapper = prop.get(from: propWrapper) as! EnvironmentReader
+        print("*****Inj.prop.pi.prop.setC *****")
         wrapper.setContent(from: self)
+        print("*****Inj.prop.pi.prop.set *****")
         prop.set(value: wrapper, on: &propWrapper)
       }
+      print("***** Inj.prop.dynamic.set \(dynamicProp.type) *****")
       dynamicProp.set(value: propWrapper, on: &element)
     }
     for prop in info.properties.filter({ $0.type is EnvironmentReader.Type }) {
       var wrapper = prop.get(from: element) as! EnvironmentReader
+      print("***** Inj.prop.env.setC \(wrapper) *****")
       wrapper.setContent(from: self)
+      print("***** Inj.prop.env.set \(prop.type) *****")
       prop.set(value: wrapper, on: &element)
     }
     // swiftlint:enable force_cast
+    print("Inj.done")
   }
 }
 
