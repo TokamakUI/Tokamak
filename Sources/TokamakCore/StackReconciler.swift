@@ -150,7 +150,7 @@ public final class StackReconciler<R: Renderer> {
       storage.getter = { compositeElement.storage[id] }
 
       guard var writableStorage = storage as? WritableValueStorage else {
-        return property.set(value: storage, on: &compositeElement[keyPath: bodyKeypath])
+        return // property.set(value: storage, on: &compositeElement[keyPath: bodyKeypath])
       }
 
       // Avoiding an indirect reference cycle here: this closure can be owned by callbacks
@@ -160,7 +160,7 @@ public final class StackReconciler<R: Renderer> {
         self?.queueStorageUpdate(for: element, id: id) { $0 = newValue }
       }
 
-      property.set(value: writableStorage, on: &compositeElement[keyPath: bodyKeypath])
+      // property.set(value: writableStorage, on: &compositeElement[keyPath: bodyKeypath])
     }
   }
 

@@ -17,7 +17,7 @@
 
 import CombineShim
 
-@propertyWrapper public struct EnvironmentObject<ObjectType>: DynamicProperty
+@propertyWrapper public final class EnvironmentObject<ObjectType>: DynamicProperty
   where ObjectType: ObservableObject
 {
   @dynamicMemberLookup public struct Wrapper {
@@ -36,11 +36,10 @@ import CombineShim
   }
 
   var _store: ObjectType?
-  var _seed: Int = 0
 
-  mutating func setContent(from values: EnvironmentValues) {
-    _store = values[ObjectIdentifier(ObjectType.self)]
-  }
+  // mutating func setContent(from values: EnvironmentValues) {
+  //   _store = values[ObjectIdentifier(ObjectType.self)]
+  // }
 
   public var wrappedValue: ObjectType {
     guard let store = _store else { error() }
@@ -63,10 +62,19 @@ import CombineShim
   public init() {}
 }
 
-extension EnvironmentObject: ObservedProperty, EnvironmentReader {}
+extension EnvironmentObject: ObservedProperty, EnvironmentReader {
+  var environment: EnvironmentValues! {
+    get {
+      fatalError()
+    }
+    set {
+      _store = newValue[ObjectIdentifier(ObjectType.self)]
+    }
+  }
+}
 
 extension ObservableObject {
-  static var environmentStore: WritableKeyPath<EnvironmentValues, Self?> {
+  static var environmentStore: ReferenceWritableKeyPath<EnvironmentValues, Self?> {
     \.[ObjectIdentifier(self)]
   }
 }

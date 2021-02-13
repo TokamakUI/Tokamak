@@ -9,9 +9,9 @@ public struct _ShadowLayout: ViewModifier, EnvironmentReader {
     content
   }
 
-  mutating func setContent(from values: EnvironmentValues) {
-    environment = values
-  }
+  // mutating func setContent(from values: EnvironmentValues) {
+  //   environment = values
+  // }
 }
 
 public extension View {

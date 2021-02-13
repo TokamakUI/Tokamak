@@ -18,28 +18,28 @@ public protocol EnvironmentKey {
 }
 
 protocol EnvironmentModifier {
-  func modifyEnvironment(_ values: inout EnvironmentValues)
+  func modifyEnvironment(_ values: EnvironmentValues)
 }
 
 public struct _EnvironmentKeyWritingModifier<Value>: ViewModifier, EnvironmentModifier {
-  public let keyPath: WritableKeyPath<EnvironmentValues, Value>
+  public let keyPath: ReferenceWritableKeyPath<EnvironmentValues, Value>
   public let value: Value
 
-  public init(keyPath: WritableKeyPath<EnvironmentValues, Value>, value: Value) {
+  public init(keyPath: ReferenceWritableKeyPath<EnvironmentValues, Value>, value: Value) {
     self.keyPath = keyPath
     self.value = value
   }
 
   public typealias Body = Never
 
-  func modifyEnvironment(_ values: inout EnvironmentValues) {
+  func modifyEnvironment(_ values: EnvironmentValues) {
     values[keyPath: keyPath] = value
   }
 }
 
 public extension View {
   func environment<V>(
-    _ keyPath: WritableKeyPath<EnvironmentValues, V>,
+    _ keyPath: ReferenceWritableKeyPath<EnvironmentValues, V>,
     _ value: V
   ) -> some View {
     modifier(_EnvironmentKeyWritingModifier(keyPath: keyPath, value: value))

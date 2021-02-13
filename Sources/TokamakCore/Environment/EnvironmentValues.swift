@@ -14,7 +14,7 @@
 
 import CombineShim
 
-public struct EnvironmentValues: CustomStringConvertible {
+public final class EnvironmentValues: CustomStringConvertible {
   public var description: String {
     "EnvironmentValues: \(values.count)"
   }
@@ -67,8 +67,8 @@ struct _EnvironmentValuesWritingModifier: ViewModifier, EnvironmentModifier {
     content
   }
 
-  func modifyEnvironment(_ values: inout EnvironmentValues) {
-    values = environmentValues
+  func modifyEnvironment(_ values: EnvironmentValues) {
+    // values = environmentValues
   }
 }
 

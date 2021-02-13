@@ -35,9 +35,9 @@ public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
     }
   }
 
-  mutating func setContent(from values: EnvironmentValues) {
-    environment = values
-  }
+  // mutating func setContent(from values: EnvironmentValues) {
+  //   environment = values
+  // }
 }
 
 extension _BackgroundModifier: Equatable where Background: Equatable {
@@ -78,9 +78,9 @@ public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
     }
   }
 
-  mutating func setContent(from values: EnvironmentValues) {
-    environment = values
-  }
+  // mutating func setContent(from values: EnvironmentValues) {
+  //   environment = values
+  // }
 }
 
 extension _OverlayModifier: Equatable where Overlay: Equatable {

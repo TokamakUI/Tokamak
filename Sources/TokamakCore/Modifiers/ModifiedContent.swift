@@ -34,9 +34,18 @@ extension ModifiedContent: ModifierContainer {
 }
 
 extension ModifiedContent: EnvironmentReader where Modifier: EnvironmentReader {
-  mutating func setContent(from values: EnvironmentValues) {
-    modifier.setContent(from: values)
+  var environment: EnvironmentValues! {
+    get {
+      modifier.environment
+    }
+    set {
+      modifier.environment = newValue
+    }
   }
+
+  // mutating func setContent(from values: EnvironmentValues) {
+  //   modifier.setContent(from: values)
+  // }
 }
 
 extension ModifiedContent: View, ParentView where Content: View, Modifier: ViewModifier {

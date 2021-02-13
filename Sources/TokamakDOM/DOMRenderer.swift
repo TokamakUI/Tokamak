@@ -22,7 +22,7 @@ import TokamakStaticHTML
 
 extension EnvironmentValues {
   /// Returns default settings for the DOM environment
-  static var defaultEnvironment: Self {
+  static var defaultEnvironment: EnvironmentValues {
     var environment = EnvironmentValues()
 
     // `.toggleStyle` property is internal

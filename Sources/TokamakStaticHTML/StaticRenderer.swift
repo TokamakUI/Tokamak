@@ -19,7 +19,7 @@ import TokamakCore
 
 extension EnvironmentValues {
   /// Returns default settings for the static HTML environment
-  static var defaultEnvironment: Self {
+  static var defaultEnvironment: EnvironmentValues {
     var environment = EnvironmentValues()
     environment[_ColorSchemeKey] = .light
 
