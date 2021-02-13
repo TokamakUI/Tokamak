@@ -47,7 +47,7 @@ public final class StackReconciler<R: Renderer> {
 
   /** A root of the mounted elements tree to which all other mounted elements are attached to.
    */
-  private let rootElement: MountedElement<R>
+  public let rootElement: MountedElement<R>
 
   /** A renderer instance to delegate to. Usually the renderer owns the reconciler instance, thus
    the reference has to be weak to avoid a reference cycle.
@@ -83,13 +83,16 @@ public final class StackReconciler<R: Renderer> {
     target: R.TargetType,
     environment: EnvironmentValues,
     renderer: R,
-    scheduler: @escaping (@escaping () -> ()) -> ()
+    scheduler: @escaping (@escaping () -> ()) -> (),
+    afterRenderCallback: @escaping (MountedElement<R>) -> () = { _ in }
   ) {
     self.renderer = renderer
     self.scheduler = scheduler
     rootTarget = target
 
     rootElement = MountedApp(app, target, environment, nil)
+
+    queuedPostrenderCallbacks.append { afterRenderCallback(self.rootElement) }
 
     performInitialMount()
     if let mountedApp = rootElement as? MountedApp<R> {
@@ -281,6 +284,11 @@ public final class StackReconciler<R: Renderer> {
   }
 
   private var queuedPostrenderCallbacks = [() -> ()]()
+
+  public func _afterCurrentRender(perform callback: @escaping () -> ()) {
+    afterCurrentRender(perform: callback)
+  }
+
   func afterCurrentRender(perform callback: @escaping () -> ()) {
     queuedPostrenderCallbacks.append(callback)
   }

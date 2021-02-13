@@ -53,6 +53,7 @@ func createPath(from elements: [Path.Element], in cr: OpaquePointer) {
 extension _ShapeView: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
     AnyView(WidgetView(build: { _ in
+        print("SHAPE?")
       let w = gtk_drawing_area_new()
       bindAction(to: w!)
       return w!

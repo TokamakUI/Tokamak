@@ -69,10 +69,10 @@ extension ModifiedContent: ViewDeferredToRenderer where Content: View {
       return AnyView(content)
     }
 
-    let build: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> = {
-      let contentWidget = anyWidget.new($0)
-      widgetModifier.modify(widget: contentWidget)
-      return contentWidget
+    let build: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>? = {
+        guard let contentWidget = anyWidget.new($0) else { return nil }
+        widgetModifier.modify(widget: contentWidget)
+        return contentWidget
     }
 
     let update: (Widget) -> () = { widget in

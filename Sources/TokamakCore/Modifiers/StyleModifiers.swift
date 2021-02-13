@@ -58,6 +58,30 @@ public extension View {
   }
 }
 
+public struct _Overlay<Content, Overlay>: View
+where Overlay: View, Content: View
+{
+  public var environment: EnvironmentValues!
+    public var content: Content
+  public var overlay: Overlay
+  public var alignment: Alignment
+
+    public init(content: Content, overlay: Overlay, alignment: Alignment = .center) {
+    self.overlay = overlay
+        self.content = content
+    self.alignment = alignment
+  }
+
+    public var body: some View {
+    neverBody("_Overlay")
+//    // FIXME: Clip to content shape.
+//    ZStack(alignment: alignment) {
+//      content
+//      overlay
+//    }
+  }
+}
+
 public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
   where Overlay: View
 {
@@ -71,11 +95,12 @@ public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
   }
 
   public func body(content: Content) -> some View {
-    // FIXME: Clip to content shape.
-    ZStack(alignment: alignment) {
-      content
-      overlay
-    }
+    _Overlay(content: content, overlay: overlay, alignment: alignment)
+//    // FIXME: Clip to content shape.
+//    ZStack(alignment: alignment) {
+//      content
+//      overlay
+//    }
   }
 
   mutating func setContent(from values: EnvironmentValues) {
@@ -93,7 +118,8 @@ public extension View {
   func overlay<Overlay>(_ overlay: Overlay, alignment: Alignment = .center) -> some View
     where Overlay: View
   {
-    modifier(_OverlayModifier(overlay: overlay, alignment: alignment))
+    _Overlay(content: self, overlay: overlay, alignment: alignment)
+//    modifier(_OverlayModifier(overlay: overlay, alignment: alignment))
   }
 
   func border<S>(_ content: S, width: CGFloat = 1) -> some View where S: ShapeStyle {

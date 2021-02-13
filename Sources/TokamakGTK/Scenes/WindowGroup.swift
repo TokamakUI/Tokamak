@@ -19,10 +19,12 @@ import TokamakCore
 
 extension WindowGroup: SceneDeferredToRenderer {
   public var deferredBody: AnyView {
-    AnyView(VStack(alignment: .center) {
-      HStack(alignment: .center) {
-        content
-      }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-    }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity))
+    AnyView(
+//      VStack(alignment: .center) {
+//        HStack(alignment: .center) {
+          content
+//        }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+//    }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+    )
   }
 }

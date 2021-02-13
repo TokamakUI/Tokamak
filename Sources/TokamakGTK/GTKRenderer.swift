@@ -31,6 +31,33 @@ extension EnvironmentValues {
   }
 }
 
+func layout<T>(_ element: MountedElement<T>) {
+  print("ELEMENT", element)
+  if let hostView = element as? MountedHostView<T>, let anyWidget = mapAnyView(
+    hostView.view,
+    transform: { (widget: AnyWidget) in widget }
+  ) {
+    anyWidget.layout(size: CGSize(width: 200, height: 100), element: hostView)
+    return
+  }
+  for child in element.mountedChildren {
+    layout(child)
+  }
+}
+
+extension MountedElement {
+//    public func size(for proposedSize: CGSize) -> CGSize {
+//        if let hostView = element as? MountedHostView<T>, let anyWidget = mapAnyView(
+//          hostView.view,
+//          transform: { (widget: AnyWidget) in widget }
+//        ) {
+//          print("WIDGET", anyWidget)
+//          print("TARGET", hostView.target)
+//        }
+//
+//    }
+}
+
 final class GTKRenderer: Renderer {
   private(set) var reconciler: StackReconciler<GTKRenderer>?
   private var gtkAppRef: UnsafeMutablePointer<GtkApplication>
@@ -49,13 +76,19 @@ final class GTKRenderer: Renderer {
         window.withMemoryRebound(to: GtkWindow.self, capacity: 1) {
           gtk_window_set_default_size($0, 200, 100)
         }
+        let fixed = gtk_fixed_new()!
+        window.withMemoryRebound(to: GtkContainer.self, capacity: 1) {
+          gtk_container_add($0, fixed)
+        }
         gtk_widget_show_all(window)
-
+//        gtk_widget_show(fixed)
         GTKRenderer.sharedWindow = window
+
+        let rootWidget = Widget(fixed, fixed: fixed)
 
         self.reconciler = StackReconciler(
           app: app,
-          target: Widget(window),
+          target: rootWidget,
           environment: .defaultEnvironment,
           renderer: self,
           scheduler: { next in
@@ -63,8 +96,12 @@ final class GTKRenderer: Renderer {
               next()
               gtk_widget_show_all(window)
             }
+          },
+          afterRenderCallback: { elm in
+            layout(elm)
           }
         )
+
       }
 
       let status = g_application_run(gApp, 0, nil)
@@ -77,6 +114,7 @@ final class GTKRenderer: Renderer {
     to parent: Widget,
     with host: MountedHost
   ) -> Widget? {
+    print("HOST", host)
     guard let anyWidget = mapAnyView(
       host.view,
       transform: { (widget: AnyWidget) in widget }
@@ -86,31 +124,49 @@ final class GTKRenderer: Renderer {
         return parent
       }
 
+        print("HOSTVIEW", host.view)
       return nil
     }
 
+    // TODO: GET PROPOSED SIZE FROM PARENT
+//    let size = anyWidget.size(for: CGSize(width: 100, height: 100))
+
     let ctor = anyWidget.new
 
-    let widget: UnsafeMutablePointer<GtkWidget>
+//    print("PARENT", parent)
+//    print("ANYWIDGET", anyWidget)
+//    print("HOST", host.view)
+    let widget: UnsafeMutablePointer<GtkWidget>?
+    let context: WidgetContext = parent.context
     switch parent.storage {
     case let .application(app):
       widget = ctor(app)
+//      print("SKOOO")
     case let .widget(parentWidget):
       widget = ctor(gtkAppRef)
-      parentWidget.withMemoryRebound(to: GtkContainer.self, capacity: 1) {
-        gtk_container_add($0, widget)
-        if let stack = mapAnyView(parent.view, transform: { (view: StackProtocol) in view }) {
-          gtk_widget_set_valign(widget, stack.alignment.vertical.gtkValue)
-          gtk_widget_set_halign(widget, stack.alignment.horizontal.gtkValue)
-          if anyWidget.expand {
-            gtk_widget_set_hexpand(widget, gtk_true())
-            gtk_widget_set_vexpand(widget, gtk_true())
-          }
-        }
-      }
+    case .dummy:
+        widget = ctor(gtkAppRef)
     }
-    gtk_widget_show(widget)
-    return Widget(host.view, widget)
+
+    if let w = widget {
+        context.parent.withMemoryRebound(to: GtkFixed.self, capacity: 1) {
+          gtk_fixed_put($0, w, 0, 0)
+            gtk_widget_set_size_request(w, 10, 10)
+//          if let stack = mapAnyView(parent.view, transform: { (view: StackProtocol) in view }) {
+//            gtk_widget_set_valign(w, stack.alignment.vertical.gtkValue)
+//            gtk_widget_set_halign(w, stack.alignment.horizontal.gtkValue)
+//            if anyWidget.expand {
+//              gtk_widget_set_hexpand(w, gtk_true())
+//              gtk_widget_set_vexpand(w, gtk_true())
+//            }
+//          }
+//
+        }
+        gtk_widget_show(w)
+    }
+    print("SKOO", host.view)
+
+    return Widget(host.view, widget, context: context)
   }
 
   func update(target: Widget, with host: MountedHost) {

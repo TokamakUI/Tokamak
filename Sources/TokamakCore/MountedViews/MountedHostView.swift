@@ -27,7 +27,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
   private let parentTarget: R.TargetType
 
   /// Target of this host view supplied by a renderer after mounting has completed.
-  private(set) var target: R.TargetType?
+  private(set) public var target: R.TargetType?
 
   init(
     _ view: AnyView,

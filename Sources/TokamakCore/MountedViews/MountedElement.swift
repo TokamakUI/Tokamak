@@ -84,7 +84,7 @@ public class MountedElement<R: Renderer> {
     }
   }
 
-  var mountedChildren = [MountedElement<R>]()
+  public var mountedChildren = [MountedElement<R>]()
   var environmentValues: EnvironmentValues
 
   unowned var parent: MountedElement<R>?
