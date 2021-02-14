@@ -6,6 +6,15 @@ on:
     branches: [main]
 
 jobs:
+  swiftwasm_bundle:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: swiftwasm/swiftwasm-action@v5.3
+        with:
+          shell-action: carton bundle --product TokamakDemo
+
   swiftwasm_test:
     runs-on: ubuntu-20.04
 
@@ -13,7 +22,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: swiftwasm/swiftwasm-action@v5.3
         with:
-          shell-action: carton test && carton bundle --product TokamakDemo
+          shell-action: carton test
 
   core_macos_build:
     runs-on: macos-11.0
