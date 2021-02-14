@@ -149,7 +149,6 @@ public extension List {
 
   init<Data, ID, RowContent>(
     _ data: Data,
-
     id: KeyPath<Data.Element, ID>,
     selection: Binding<Set<SelectionValue>>?,
     @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent
