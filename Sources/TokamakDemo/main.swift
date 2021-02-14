@@ -7,7 +7,7 @@ struct TokamakApp: App {
         List {
           ForEach(["Item 1"], id: \.self) { childRow in
             NavigationLink(
-              destination: Text(childRow).padding([.leading, .trailing])
+              destination: Text(childRow)
             ) {
               Text(childRow)
             }
