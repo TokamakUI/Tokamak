@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/16/20.
 //
 
-import CombineShim
+import OpenCombineShim
 
 /// Provides the ability to set the title of the Scene.
 public protocol _TitledApp {
