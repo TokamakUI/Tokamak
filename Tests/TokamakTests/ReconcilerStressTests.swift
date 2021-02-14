@@ -34,17 +34,6 @@ private struct SpookyHanger: App {
       }
     }
   }
-
-  static func _setTitle(_ title: String) {}
-
-  /// Implemented by the renderer to mount the `App`
-  static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {}
-
-  /// Implemented by the renderer to update the `App` on `ScenePhase` changes
-  var _phasePublisher: AnyPublisher<ScenePhase, Never> { Empty().eraseToAnyPublisher() }
-
-  /// Implemented by the renderer to update the `App` on `ColorScheme` changes
-  var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> { Empty().eraseToAnyPublisher() }
 }
 
 final class ReconcilerStressTests: XCTestCase {
