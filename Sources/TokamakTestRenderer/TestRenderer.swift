@@ -15,23 +15,11 @@
 //  Created by Max Desiatov on 21/12/2018.
 //
 
-#if os(WASI)
-import JavaScriptKit
-#else
-import Dispatch
-#endif
 import TokamakCore
 
 public func testScheduler(closure: @escaping () -> ()) {
-  #if os(WASI)
-  let fn = JSClosure { _ -> JSValue in
-    closure()
-    return .undefined
-  }
-  _ = JSObject.global.setTimeout!(fn, 0)
-  #else
-  DispatchQueue.main.async(execute: closure)
-  #endif
+  // immediate scheduler on all platforms for easier debugging and support on all platforms
+  closure()
 }
 
 public final class TestRenderer: Renderer {
