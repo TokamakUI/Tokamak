@@ -25,8 +25,8 @@ import WASILibc
 
 public typealias CGFloat = Double
 public struct CGPoint: Equatable {
-  public let x: CGFloat
-  public let y: CGFloat
+  public var x: CGFloat
+  public var y: CGFloat
 
   public init(x: CGFloat, y: CGFloat) {
     self.x = x
@@ -55,8 +55,8 @@ public struct CGPoint: Equatable {
 }
 
 public struct CGSize: Equatable {
-  public let width: CGFloat
-  public let height: CGFloat
+  public var width: CGFloat
+  public var height: CGFloat
 
   public init(width: CGFloat, height: CGFloat) {
     self.width = width
@@ -69,8 +69,8 @@ public struct CGSize: Equatable {
 }
 
 public struct CGRect: Equatable {
-  public let origin: CGPoint
-  public let size: CGSize
+  public var origin: CGPoint
+  public var size: CGSize
 
   public init(origin: CGPoint, size: CGSize) {
     self.origin = origin
@@ -194,7 +194,9 @@ public struct CGAffineTransform: Equatable {
     let t2m = [[t2.a, t2.b, 0],
                [t2.c, t2.d, 0],
                [t2.tx, t2.ty, 1]]
-    var res = [[CGFloat]]()
+    var res: [[CGFloat]] = [[0, 0, 0],
+                            [0, 0, 0],
+                            [0, 0, 0]]
     for i in 0..<3 {
       for j in 0..<3 {
         res[i][j] = 0
