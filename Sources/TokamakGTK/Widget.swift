@@ -29,7 +29,7 @@ protocol AnyWidget {
   func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?
   func update(widget: Widget)
   func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize
-    func layout<T>(size: CGSize, element: MountedHostView<T>)
+  func layout<T>(size: CGSize, element: MountedHostView<T>)
 }
 
 extension AnyWidget {
@@ -38,16 +38,25 @@ extension AnyWidget {
     print("USING DEFAULT SIZE FOR", self)
     return proposedSize.orDefault
   }
-    func layout<T>(size: CGSize, element: MountedHostView<T>) {
-        print("LAYING OUT", self, size)
-        print("TARGET", element.target)
-        if let widget = element.target as? Widget {
-            if case let .widget(w) = widget.storage {
-                gtk_widget_set_size_request(w, Int32(size.width), Int32(size.height))
-                print("SIZE SET")
-            }
-        }
+
+  func layout<T>(size: CGSize, element: MountedHostView<T>) {
+    print("LAYING OUT", self, size)
+//    print("TARGET", element.target)
+//    if let widget = element.target as? Widget {
+//      if case let .widget(w) = widget.storage {
+//        gtk_widget_set_size_request(w, Int32(size.width), Int32(size.height))
+//        print("SIZE SET")
+//      }
+//    }
+
+    if let widget = element.target as? Widget {
+      let resolvedTransform = widget.context.resolvedTransform
+      if case let .widget(w) = widget.storage {
+        gtk_fixed_move(widget.context.parent, w, Int32(resolvedTransform.x), Int32(resolvedTransform.y))
+        gtk_widget_set_size_request(w, Int32(size.width), Int32(size.height))
+      }
     }
+  }
 }
 
 struct WidgetView<Content: View>: View, AnyWidget, ParentView {
@@ -96,16 +105,45 @@ extension WidgetView where Content == EmptyView {
 }
 
 class WidgetContext {
-  let parent: UnsafeMutablePointer<GtkWidget> // GtkFixed
-  var transformStack: [CGAffineTransform] = []
+  let parent: UnsafeMutablePointer<GtkFixed>
+  var transformStack: [CGPoint] = [.zero]
 
-  var resolvedTransform: CGAffineTransform {
-    transformStack.reduce(CGAffineTransform.identity) { (a, b) -> CGAffineTransform in
-      a.concatenating(b)
+  var resolvedTransform: CGPoint {
+    print("RESOLVED")
+    var a = CGPoint.zero
+    for b in transformStack {
+      print(b)
+//      a = a.concatenating(b)
+      a.x += b.x
+      a.y += b.y
+    }
+    return a
+  }
+
+  var currentTransform: CGPoint {
+    get { transformStack.last! }
+    set {
+      transformStack[transformStack.count - 1] = newValue
     }
   }
-  init(parent: UnsafeMutablePointer<GtkWidget>) {
+
+  init(parent: UnsafeMutablePointer<GtkFixed>) {
     self.parent = parent
+  }
+
+  func push() {
+    print("PUSH")
+    transformStack.append(.zero)
+  }
+
+  func translate(x: CGFloat, y: CGFloat) {
+    currentTransform.x += x
+    currentTransform.y += y
+  }
+
+  func pop() {
+    print("POP")
+    transformStack.removeLast()
   }
 }
 
@@ -144,7 +182,7 @@ final class Widget: Target {
     self.context = context
   }
 
-  init(_ ref: UnsafeMutablePointer<GtkWidget>, fixed: UnsafeMutablePointer<GtkWidget>) {
+  init(_ ref: UnsafeMutablePointer<GtkWidget>, fixed: UnsafeMutablePointer<GtkFixed>) {
     storage = .widget(ref)
     view = AnyView(EmptyView())
     self.context = WidgetContext(parent: fixed)

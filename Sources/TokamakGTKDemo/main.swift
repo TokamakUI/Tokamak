@@ -51,8 +51,10 @@ struct TokamakGTKDemo: App {
   var body: some Scene {
     WindowGroup("Test Scene") {
         VStack {
-            Rectangle()
-            Text("SKO") // .overlay(Rectangle().stroke())
+          Text("SKI")
+          Rectangle()
+          Text("SKA")
+          Text("SKO").overlay(Rectangle())
         }
 //      List {
 //        Image("logo-header.png", bundle: Bundle.module, label: Text("Tokamak Demo"))

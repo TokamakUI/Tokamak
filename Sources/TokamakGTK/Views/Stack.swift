@@ -23,7 +23,7 @@ protocol StackProtocol {
   var alignment: Alignment { get }
 }
 
-extension _Overlay: AnyWidget where Content: AnyWidget, Overlay: AnyWidget {
+extension _Overlay: AnyWidget where Content: AnyWidget, Overlay: View {
     func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>? {
       nil
     }
@@ -31,16 +31,24 @@ extension _Overlay: AnyWidget where Content: AnyWidget, Overlay: AnyWidget {
     func update(widget: Widget) {}
 
     func layout<T>(size: CGSize, element: MountedHostView<T>) {
-        content.layout(size: size, element: element)
-        let childSize = overlay.size(for: ProposedSize(width: size.width, height: size.height), element: element)
-        overlay.layout(size: childSize, element: element)
+      print("LAYOUT _OVERLAY CONTENT", overlay)
+      content.layout(size: size, element: element)
+      
+//        let childSize = overlay.size(for: ProposedSize(width: size.width, height: size.height), element: element)
+//        overlay.layout(size: childSize, element: element)
     }
 
   func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
     print("SIZING _OVERLAY CONTENT")
+//    return .zero
     return content.size(for: proposedSize, element: element)
   }
+}
 
+extension _Overlay: ParentView {
+  public var children: [AnyView] {
+    [AnyView(content), AnyView(overlay)]
+  }
 }
 
 struct Box<Content: View>: View, ParentView, AnyWidget, StackProtocol {
@@ -67,6 +75,7 @@ struct Box<Content: View>: View, ParentView, AnyWidget, StackProtocol {
 
     func getChildren<T>(hostView: MountedElement<T>) -> [MountedHostView<T>] {
         var children: [MountedHostView<T>] = []
+      print("MOUNTEDCHILDREN COUNT", hostView.mountedChildren.count)
         for childElement in hostView.mountedChildren {
             guard let childView = childElement as? MountedHostView<T> else {
                 print("CHILD", childElement)
@@ -81,7 +90,7 @@ struct Box<Content: View>: View, ParentView, AnyWidget, StackProtocol {
                 print("CHILD 2", anyWidget)
                 children.append(childView)
             } else {
-                print("CHILD 3", childView)
+              print("CHILD 3", type(of: childView))
                 children.append(contentsOf: getChildren(hostView: childView))
             }
         }
@@ -105,15 +114,22 @@ struct Box<Content: View>: View, ParentView, AnyWidget, StackProtocol {
 
             let size = anyWidget.size(for: proposedSize, element: childView)
             print(size)
-            if let widget = element.target as? Widget, let childWidget = childView.target as? Widget {
-                if case let .widget(w) = childWidget.storage {
-                    widget.context.parent.withMemoryRebound(to: GtkFixed.self, capacity: 1) {
-                        gtk_fixed_move($0, w, 0, i)
-                    }
-                }
-            }
+//            if let widget = element.target as? Widget, let childWidget = childView.target as? Widget {
+//                if case let .widget(w) = childWidget.storage {
+//                    widget.context.parent.withMemoryRebound(to: GtkFixed.self, capacity: 1) {
+//                        gtk_fixed_move($0, w, 0, i)
+//                    }
+//                }
+//            }
+
+          if let widget = childView.target as? Widget {
+            widget.context.push()
+            widget.context.translate(x: CGFloat(0), y: CGFloat(i))
             anyWidget.layout(size: size, element: childView)
-            i += Int32(size.height)
+            widget.context.pop()
+
+          }
+          i += Int32(size.height)
 
         }
 

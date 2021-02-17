@@ -25,8 +25,8 @@ import WASILibc
 
 public typealias CGFloat = Double
 public struct CGPoint: Equatable {
-  public let x: CGFloat
-  public let y: CGFloat
+  public var x: CGFloat
+  public var y: CGFloat
 
   public init(x: CGFloat, y: CGFloat) {
     self.x = x

@@ -33,42 +33,53 @@ extension Text: AnyWidget {
     }
   }
 
-    func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
-        print("OVERRIDE SIZE FOR TEXT")
-        guard let widget = element.target as? Widget else { return proposedSize.orDefault }
-        guard case let .widget(w) = widget.storage else { return proposedSize.orDefault }
-
-        var minSize = GtkRequisition()
-        var naturalSize = GtkRequisition()
-        gtk_widget_get_preferred_size (w, &minSize, &naturalSize)
-        print("MIN", minSize)
-
-        var width: TokamakCore.CGFloat = 0
-        var height: TokamakCore.CGFloat = 0
-        if let proposedWidth = proposedSize.width {
-            if proposedWidth < TokamakCore.CGFloat(minSize.width) {
-                width = TokamakCore.CGFloat(minSize.width)
-            } else if proposedWidth > TokamakCore.CGFloat(naturalSize.width) {
-                width = TokamakCore.CGFloat(naturalSize.width)
-            } else {
-                width = proposedWidth
-            }
-        } else {
-            width = TokamakCore.CGFloat(naturalSize.width)
-        }
-        if let proposedHeight = proposedSize.height {
-            if proposedHeight < TokamakCore.CGFloat(minSize.height) {
-                height = TokamakCore.CGFloat(minSize.height)
-            } else if proposedHeight > TokamakCore.CGFloat(naturalSize.height) {
-                height = TokamakCore.CGFloat(naturalSize.height)
-            } else {
-                height = proposedHeight
-            }
-        } else {
-            height = TokamakCore.CGFloat(naturalSize.height)
-        }
-
-        return CGSize(width: width, height: height)
+  func layout<T>(size: CGSize, element: MountedHostView<T>) {
+    print("OVERRIDE LAYOUT FOR TEXT")
+    if let widget = element.target as? Widget {
+      let resolvedTransform = widget.context.resolvedTransform
+      if case let .widget(w) = widget.storage {
+        gtk_fixed_move(widget.context.parent, w, Int32(resolvedTransform.x), Int32(resolvedTransform.y))
+        gtk_widget_set_size_request(w, Int32(size.width), Int32(size.height))
+      }
     }
+  }
+
+  func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
+    print("OVERRIDE SIZE FOR TEXT")
+    guard let widget = element.target as? Widget else { return proposedSize.orDefault }
+    guard case let .widget(w) = widget.storage else { return proposedSize.orDefault }
+
+    var minSize = GtkRequisition()
+    var naturalSize = GtkRequisition()
+    gtk_widget_get_preferred_size (w, &minSize, &naturalSize)
+    print("MIN", minSize)
+
+    var width: TokamakCore.CGFloat = 0
+    var height: TokamakCore.CGFloat = 0
+    if let proposedWidth = proposedSize.width {
+      if proposedWidth < TokamakCore.CGFloat(minSize.width) {
+        width = TokamakCore.CGFloat(minSize.width)
+      } else if proposedWidth > TokamakCore.CGFloat(naturalSize.width) {
+        width = TokamakCore.CGFloat(naturalSize.width)
+      } else {
+        width = proposedWidth
+      }
+    } else {
+      width = TokamakCore.CGFloat(naturalSize.width)
+    }
+    if let proposedHeight = proposedSize.height {
+      if proposedHeight < TokamakCore.CGFloat(minSize.height) {
+        height = TokamakCore.CGFloat(minSize.height)
+      } else if proposedHeight > TokamakCore.CGFloat(naturalSize.height) {
+        height = TokamakCore.CGFloat(naturalSize.height)
+      } else {
+        height = proposedHeight
+      }
+    } else {
+      height = TokamakCore.CGFloat(naturalSize.height)
+    }
+
+    return CGSize(width: width, height: height)
+  }
     
 }

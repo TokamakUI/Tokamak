@@ -84,7 +84,10 @@ final class GTKRenderer: Renderer {
 //        gtk_widget_show(fixed)
         GTKRenderer.sharedWindow = window
 
-        let rootWidget = Widget(fixed, fixed: fixed)
+        var rootWidget: Widget!
+        fixed.withMemoryRebound(to: GtkFixed.self, capacity: 1) {
+          rootWidget = Widget(fixed, fixed: $0)
+        }
 
         self.reconciler = StackReconciler(
           app: app,
