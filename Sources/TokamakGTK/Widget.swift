@@ -106,25 +106,18 @@ extension WidgetView where Content == EmptyView {
 
 class WidgetContext {
   let parent: UnsafeMutablePointer<GtkFixed>
-  var transformStack: [CGPoint] = [.zero]
+  var transformStack: [CGPoint] = []
+  var current: CGPoint = .zero
 
   var resolvedTransform: CGPoint {
-    print("RESOLVED")
     var a = CGPoint.zero
-    for b in transformStack {
-      print(b)
+    for b in transformStack + [current] {
 //      a = a.concatenating(b)
       a.x += b.x
       a.y += b.y
     }
+    print("RESOLVED", a)
     return a
-  }
-
-  var currentTransform: CGPoint {
-    get { transformStack.last! }
-    set {
-      transformStack[transformStack.count - 1] = newValue
-    }
   }
 
   init(parent: UnsafeMutablePointer<GtkFixed>) {
@@ -133,17 +126,18 @@ class WidgetContext {
 
   func push() {
     print("PUSH")
-    transformStack.append(.zero)
+    transformStack.append(current)
+    current = .zero
   }
 
   func translate(x: CGFloat, y: CGFloat) {
-    currentTransform.x += x
-    currentTransform.y += y
+    current.x += x
+    current.y += y
   }
 
   func pop() {
     print("POP")
-    transformStack.removeLast()
+    current = transformStack.removeLast()
   }
 }
 
