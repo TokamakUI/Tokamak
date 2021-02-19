@@ -33,9 +33,9 @@ extension Text: AnyWidget {
     }
   }
 
-  public func layout<T>(size: CGSize, element: MountedHostView<T>) {
+  public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
     print("OVERRIDE LAYOUT FOR TEXT")
-    if let widget = element.target as? Widget {
+    if let widget = hostView.target as? Widget {
       let resolvedTransform = widget.context.resolvedTransform
       if case let .widget(w) = widget.storage {
         gtk_fixed_move(widget.context.parent, w, Int32(resolvedTransform.x), Int32(resolvedTransform.y))
@@ -44,17 +44,14 @@ extension Text: AnyWidget {
     }
   }
 
-  public func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
-    print("OVERRIDE SIZE FOR TEXT", self, element)
-    guard let widget = element.target as? Widget else { return proposedSize.orDefault }
-    print("WIDGET", widget.storage)
+  public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
+    print("OVERRIDE SIZE FOR TEXT")
+    guard let widget = hostView.target as? Widget else { return proposedSize.orDefault }
     guard case let .widget(w) = widget.storage else { return proposedSize.orDefault }
-    print("STORAGE", w)
 
     var minSize = GtkRequisition()
     var naturalSize = GtkRequisition()
     gtk_widget_get_preferred_size (w, &minSize, &naturalSize)
-    print("MIN", minSize)
 
     var width: TokamakCore.CGFloat = 0
     var height: TokamakCore.CGFloat = 0

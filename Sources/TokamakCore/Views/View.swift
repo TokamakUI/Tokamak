@@ -36,38 +36,27 @@ public protocol View {
 }
 
 public protocol BuiltinView {
-  func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize
-  func layout<T>(size: CGSize, element: MountedHostView<T>)
+  func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize
+  func layout<T>(size: CGSize, hostView: MountedHostView<T>)
 }
-
-//public extension BuiltinView {
-//  func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
-//    print("USING DEFAULT SIZE FOR", self)
-//    return proposedSize.orDefault
-//  }
-//  func layout<T>(size: CGSize, element: MountedHostView<T>) {
-//    print("USING DEFAULT SIZE LAYOUT", self)
-//  }
-//}
 
 public extension View {
-  func _size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
+  func _size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
     if let builtIn = self as? BuiltinView {
-      return builtIn.size(for: proposedSize, element: element)
+      return builtIn.size(for: proposedSize, hostView: hostView)
     } else {
-      return body._size(for: proposedSize, element: element)
+      return body._size(for: proposedSize, hostView: hostView)
     }
   }
 
-  func _layout<T>(size: CGSize, element: MountedHostView<T>) {
+  func _layout<T>(size: CGSize, hostView: MountedHostView<T>) {
     if let builtIn = self as? BuiltinView {
-      builtIn.layout(size: size, element: element)
+      builtIn.layout(size: size, hostView: hostView)
     } else {
-      body._layout(size: size, element: element)
+      body._layout(size: size, hostView: hostView)
     }
   }
 }
-
 
 public extension Never {
   var body: Never {

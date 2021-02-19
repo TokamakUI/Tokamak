@@ -37,7 +37,7 @@ func layout<T>(_ element: MountedElement<T>) {
     hostView.view,
     transform: { (view: View) in view }
   ) {
-    view._layout(size: CGSize(width: 200, height: 100), element: hostView)
+    view._layout(size: CGSize(width: 200, height: 100), hostView: hostView)
     return
   }
   for child in element.mountedChildren {

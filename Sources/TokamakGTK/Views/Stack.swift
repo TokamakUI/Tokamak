@@ -25,22 +25,17 @@ protocol StackProtocol {
 
 func getChildren<T>(hostView: MountedElement<T>) -> [MountedHostView<T>] {
   var children: [MountedHostView<T>] = []
-  print("MOUNTEDCHILDREN COUNT", hostView.mountedChildren.count)
   for childElement in hostView.mountedChildren {
     guard let childView = childElement as? MountedHostView<T> else {
-      print("CHILD", childElement)
       children.append(contentsOf: getChildren(hostView: childElement))
-
       continue
     }
     if let anyWidget = mapAnyView(
       childView.view,
       transform: { (widget: AnyWidget) in widget }
     ) {
-      print("CHILD 2", anyWidget)
       children.append(childView)
     } else {
-      print("CHILD 3", type(of: childView))
       children.append(contentsOf: getChildren(hostView: childView))
     }
   }
@@ -55,21 +50,20 @@ extension _Overlay: AnyWidget, BuiltinView where Content: View, Overlay: View {
 
   func update(widget: Widget) {}
 
-  public func layout<T>(size: CGSize, element: MountedHostView<T>) {
+  public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
     print("LAYOUT _OVERLAY CONTENT", size, content)
-    let children = getChildren(hostView: element)
-    content._layout(size: size, element: children[0])
+    let children = getChildren(hostView: hostView)
+    content._layout(size: size, hostView: children[0])
 
-    let childSize = overlay._size(for: ProposedSize(width: size.width, height: size.height), element: element)
+    let childSize = overlay._size(for: ProposedSize(width: size.width, height: size.height), hostView: hostView)
     print("CHILDSIZE", childSize)
-    overlay._layout(size: childSize, element: children[1])
+    overlay._layout(size: childSize, hostView: children[1])
   }
 
-  public func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
+  public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
     print("SIZING _OVERLAY CONTENT")
-    //    return .zero
-    let children = getChildren(hostView: element)
-    return content._size(for: proposedSize, element: children[0])
+    let children = getChildren(hostView: hostView)
+    return content._size(for: proposedSize, hostView: children[0])
   }
 }
 
@@ -101,10 +95,9 @@ struct Box<Content: View>: View, ParentView, AnyWidget, BuiltinView, StackProtoc
     [AnyView(content)]
   }
 
-  func layout<T>(size: CGSize, element: MountedHostView<T>) {
-    let children = getChildren(hostView: element)
+  func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
+    let children = getChildren(hostView: hostView)
     guard !children.isEmpty else { return }
-    print("CHILDREN", children, size)
     var i: Int32 = 0
     let proposedSize = ProposedSize(width: size.width, height: size.height / CGFloat(children.count))
     for childElement in children {
@@ -116,30 +109,20 @@ struct Box<Content: View>: View, ParentView, AnyWidget, BuiltinView, StackProtoc
         continue
       }
 
-      let size = view._size(for: proposedSize, element: childView)
+      let size = view._size(for: proposedSize, hostView: childView)
       print(size)
-      //            if let widget = element.target as? Widget, let childWidget = childView.target as? Widget {
-      //                if case let .widget(w) = childWidget.storage {
-      //                    widget.context.parent.withMemoryRebound(to: GtkFixed.self, capacity: 1) {
-      //                        gtk_fixed_move($0, w, 0, i)
-      //                    }
-      //                }
-      //            }
 
       if let widget = childView.target as? Widget {
         widget.context.push()
         widget.context.translate(x: CGFloat(0), y: CGFloat(i))
-        view._layout(size: size, element: childView)
+        view._layout(size: size, hostView: childView)
         widget.context.pop()
       }
       i += Int32(size.height)
-
     }
-
   }
 
-
-  func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
+  func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
     // TODO: Measure size of children, perform layout and return answer
     if let parentView = content as? ParentView {
       print("CONTENT IS PARENT")
@@ -152,7 +135,6 @@ struct Box<Content: View>: View, ParentView, AnyWidget, BuiltinView, StackProtoc
     return .zero
   }
 }
-
 
 extension VStack: ViewDeferredToRenderer {
   public var deferredBody: AnyView {
