@@ -15,11 +15,59 @@
 //  Created by Max Desiatov on 07/04/2020.
 //
 
+public struct ProposedSize {
+  public var width: CGFloat?
+  public var height: CGFloat?
+
+  public var orDefault: CGSize {
+    CGSize(width: width ?? 10, height: height ?? 10)
+  }
+
+  public init(width: CGFloat? = nil, height: CGFloat? = nil) {
+    self.width = width
+    self.height = height
+  }
+}
+
 public protocol View {
   associatedtype Body: View
 
   @ViewBuilder var body: Self.Body { get }
 }
+
+public protocol BuiltinView {
+  func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize
+  func layout<T>(size: CGSize, element: MountedHostView<T>)
+}
+
+//public extension BuiltinView {
+//  func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
+//    print("USING DEFAULT SIZE FOR", self)
+//    return proposedSize.orDefault
+//  }
+//  func layout<T>(size: CGSize, element: MountedHostView<T>) {
+//    print("USING DEFAULT SIZE LAYOUT", self)
+//  }
+//}
+
+public extension View {
+  func _size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
+    if let builtIn = self as? BuiltinView {
+      return builtIn.size(for: proposedSize, element: element)
+    } else {
+      return body._size(for: proposedSize, element: element)
+    }
+  }
+
+  func _layout<T>(size: CGSize, element: MountedHostView<T>) {
+    if let builtIn = self as? BuiltinView {
+      builtIn.layout(size: size, element: element)
+    } else {
+      body._layout(size: size, element: element)
+    }
+  }
+}
+
 
 public extension Never {
   var body: Never {

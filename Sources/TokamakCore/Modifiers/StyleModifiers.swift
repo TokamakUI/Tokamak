@@ -62,23 +62,24 @@ public struct _Overlay<Content, Overlay>: View
 where Overlay: View, Content: View
 {
   public var environment: EnvironmentValues!
-    public var content: Content
+  public var content: Content
   public var overlay: Overlay
   public var alignment: Alignment
 
-    public init(content: Content, overlay: Overlay, alignment: Alignment = .center) {
+  public init(content: Content, overlay: Overlay, alignment: Alignment = .center) {
     self.overlay = overlay
-        self.content = content
+    self.content = content
     self.alignment = alignment
   }
 
-    public var body: some View {
+  public var body: some View {
     neverBody("_Overlay")
 //    // FIXME: Clip to content shape.
 //    ZStack(alignment: alignment) {
 //      content
 //      overlay
 //    }
+      
   }
 }
 

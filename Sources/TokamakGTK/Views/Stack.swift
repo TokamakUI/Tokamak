@@ -23,25 +23,53 @@ protocol StackProtocol {
   var alignment: Alignment { get }
 }
 
-extension _Overlay: AnyWidget where Content: AnyWidget, Overlay: View {
-    func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>? {
-      nil
+func getChildren<T>(hostView: MountedElement<T>) -> [MountedHostView<T>] {
+  var children: [MountedHostView<T>] = []
+  print("MOUNTEDCHILDREN COUNT", hostView.mountedChildren.count)
+  for childElement in hostView.mountedChildren {
+    guard let childView = childElement as? MountedHostView<T> else {
+      print("CHILD", childElement)
+      children.append(contentsOf: getChildren(hostView: childElement))
+
+      continue
     }
-
-    func update(widget: Widget) {}
-
-    func layout<T>(size: CGSize, element: MountedHostView<T>) {
-      print("LAYOUT _OVERLAY CONTENT", overlay)
-      content.layout(size: size, element: element)
-      
-//        let childSize = overlay.size(for: ProposedSize(width: size.width, height: size.height), element: element)
-//        overlay.layout(size: childSize, element: element)
+    if let anyWidget = mapAnyView(
+      childView.view,
+      transform: { (widget: AnyWidget) in widget }
+    ) {
+      print("CHILD 2", anyWidget)
+      children.append(childView)
+    } else {
+      print("CHILD 3", type(of: childView))
+      children.append(contentsOf: getChildren(hostView: childView))
     }
+  }
+  return children
+}
 
-  func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
+extension _Overlay: AnyWidget, BuiltinView where Content: View, Overlay: View {
+
+  func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>? {
+    nil
+  }
+
+  func update(widget: Widget) {}
+
+  public func layout<T>(size: CGSize, element: MountedHostView<T>) {
+    print("LAYOUT _OVERLAY CONTENT", size, content)
+    let children = getChildren(hostView: element)
+    content._layout(size: size, element: children[0])
+
+    let childSize = overlay._size(for: ProposedSize(width: size.width, height: size.height), element: element)
+    print("CHILDSIZE", childSize)
+    overlay._layout(size: childSize, element: children[1])
+  }
+
+  public func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
     print("SIZING _OVERLAY CONTENT")
-//    return .zero
-    return content.size(for: proposedSize, element: element)
+    //    return .zero
+    let children = getChildren(hostView: element)
+    return content._size(for: proposedSize, element: children[0])
   }
 }
 
@@ -51,7 +79,7 @@ extension _Overlay: ParentView {
   }
 }
 
-struct Box<Content: View>: View, ParentView, AnyWidget, StackProtocol {
+struct Box<Content: View>: View, ParentView, AnyWidget, BuiltinView, StackProtocol {
   let content: Content
   let orientation: GtkOrientation
   let spacing: TokamakCore.CGFloat
@@ -73,67 +101,42 @@ struct Box<Content: View>: View, ParentView, AnyWidget, StackProtocol {
     [AnyView(content)]
   }
 
-    func getChildren<T>(hostView: MountedElement<T>) -> [MountedHostView<T>] {
-        var children: [MountedHostView<T>] = []
-      print("MOUNTEDCHILDREN COUNT", hostView.mountedChildren.count)
-        for childElement in hostView.mountedChildren {
-            guard let childView = childElement as? MountedHostView<T> else {
-                print("CHILD", childElement)
-                children.append(contentsOf: getChildren(hostView: childElement))
+  func layout<T>(size: CGSize, element: MountedHostView<T>) {
+    let children = getChildren(hostView: element)
+    guard !children.isEmpty else { return }
+    print("CHILDREN", children, size)
+    var i: Int32 = 0
+    let proposedSize = ProposedSize(width: size.width, height: size.height / CGFloat(children.count))
+    for childElement in children {
+      guard let childView = childElement as? MountedHostView<T>,
+            let view = mapAnyView(
+              childView.view,
+              transform: { (view: View) in view }
+            ) else {
+        continue
+      }
 
-                continue
-            }
-            if let anyWidget = mapAnyView(
-                childView.view,
-              transform: { (widget: AnyWidget) in widget }
-            ) {
-                print("CHILD 2", anyWidget)
-                children.append(childView)
-            } else {
-              print("CHILD 3", type(of: childView))
-                children.append(contentsOf: getChildren(hostView: childView))
-            }
-        }
-        return children
-    }
+      let size = view._size(for: proposedSize, element: childView)
+      print(size)
+      //            if let widget = element.target as? Widget, let childWidget = childView.target as? Widget {
+      //                if case let .widget(w) = childWidget.storage {
+      //                    widget.context.parent.withMemoryRebound(to: GtkFixed.self, capacity: 1) {
+      //                        gtk_fixed_move($0, w, 0, i)
+      //                    }
+      //                }
+      //            }
 
-    func layout<T>(size: CGSize, element: MountedHostView<T>) {
-        let children = getChildren(hostView: element)
-        guard !children.isEmpty else { return }
-        print("CHILDREN", children, size)
-        var i: Int32 = 0
-        let proposedSize = ProposedSize(width: size.width, height: size.height / CGFloat(children.count))
-        for childElement in children {
-            guard let childView = childElement as? MountedHostView<T>,
-                  let anyWidget = mapAnyView(
-                      childView.view,
-                    transform: { (widget: AnyWidget) in widget }
-                  ) else {
-                continue
-            }
-
-            let size = anyWidget.size(for: proposedSize, element: childView)
-            print(size)
-//            if let widget = element.target as? Widget, let childWidget = childView.target as? Widget {
-//                if case let .widget(w) = childWidget.storage {
-//                    widget.context.parent.withMemoryRebound(to: GtkFixed.self, capacity: 1) {
-//                        gtk_fixed_move($0, w, 0, i)
-//                    }
-//                }
-//            }
-
-          if let widget = childView.target as? Widget {
-            widget.context.push()
-            widget.context.translate(x: CGFloat(0), y: CGFloat(i))
-            anyWidget.layout(size: size, element: childView)
-            widget.context.pop()
-
-          }
-          i += Int32(size.height)
-
-        }
+      if let widget = childView.target as? Widget {
+        widget.context.push()
+        widget.context.translate(x: CGFloat(0), y: CGFloat(i))
+        view._layout(size: size, element: childView)
+        widget.context.pop()
+      }
+      i += Int32(size.height)
 
     }
+
+  }
 
 
   func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {

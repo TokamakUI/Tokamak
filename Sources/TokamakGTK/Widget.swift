@@ -15,32 +15,23 @@
 import CGTK
 import TokamakCore
 
-struct ProposedSize {
-    var width: CGFloat?
-    var height: CGFloat?
-
-    var orDefault: CGSize {
-        CGSize(width: width ?? 10, height: height ?? 10)
-    }
-}
-
-protocol AnyWidget {
+protocol AnyWidget: BuiltinView {
   var expand: Bool { get }
   func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?
   func update(widget: Widget)
-  func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize
-  func layout<T>(size: CGSize, element: MountedHostView<T>)
+//  func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize
+//  func layout<T>(size: CGSize, element: MountedHostView<T>)
 }
 
 extension AnyWidget {
   var expand: Bool { false }
-  func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
+  public func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
     print("USING DEFAULT SIZE FOR", self)
     return proposedSize.orDefault
   }
 
-  func layout<T>(size: CGSize, element: MountedHostView<T>) {
-    print("LAYING OUT", self, size)
+  public func layout<T>(size: CGSize, element: MountedHostView<T>) {
+    print("XXX LAYING OUT", self, size)
 //    print("TARGET", element.target)
 //    if let widget = element.target as? Widget {
 //      if case let .widget(w) = widget.storage {
@@ -54,6 +45,7 @@ extension AnyWidget {
       if case let .widget(w) = widget.storage {
         gtk_fixed_move(widget.context.parent, w, Int32(resolvedTransform.x), Int32(resolvedTransform.y))
         gtk_widget_set_size_request(w, Int32(size.width), Int32(size.height))
+        gtk_widget_queue_draw(w)
       }
     }
   }

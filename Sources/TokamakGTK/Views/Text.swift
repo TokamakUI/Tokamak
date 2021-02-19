@@ -33,7 +33,7 @@ extension Text: AnyWidget {
     }
   }
 
-  func layout<T>(size: CGSize, element: MountedHostView<T>) {
+  public func layout<T>(size: CGSize, element: MountedHostView<T>) {
     print("OVERRIDE LAYOUT FOR TEXT")
     if let widget = element.target as? Widget {
       let resolvedTransform = widget.context.resolvedTransform
@@ -44,10 +44,12 @@ extension Text: AnyWidget {
     }
   }
 
-  func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
-    print("OVERRIDE SIZE FOR TEXT")
+  public func size<T>(for proposedSize: ProposedSize, element: MountedHostView<T>) -> CGSize {
+    print("OVERRIDE SIZE FOR TEXT", self, element)
     guard let widget = element.target as? Widget else { return proposedSize.orDefault }
+    print("WIDGET", widget.storage)
     guard case let .widget(w) = widget.storage else { return proposedSize.orDefault }
+    print("STORAGE", w)
 
     var minSize = GtkRequisition()
     var naturalSize = GtkRequisition()

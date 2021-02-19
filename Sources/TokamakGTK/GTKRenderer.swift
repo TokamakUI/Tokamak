@@ -33,11 +33,11 @@ extension EnvironmentValues {
 
 func layout<T>(_ element: MountedElement<T>) {
   print("ELEMENT", element)
-  if let hostView = element as? MountedHostView<T>, let anyWidget = mapAnyView(
+  if let hostView = element as? MountedHostView<T>, let view = mapAnyView(
     hostView.view,
-    transform: { (widget: AnyWidget) in widget }
+    transform: { (view: View) in view }
   ) {
-    anyWidget.layout(size: CGSize(width: 200, height: 100), element: hostView)
+    view._layout(size: CGSize(width: 200, height: 100), element: hostView)
     return
   }
   for child in element.mountedChildren {
