@@ -54,14 +54,14 @@ extension UnsafePointer where Pointee == FieldRecord {
 
   func type(
     genericContext: UnsafeRawPointer?,
-    genericArguments: UnsafeRawPointer?
+    genericArguments: UnsafeRawPointer
   ) -> Any.Type {
     let typeName = advance(offset: \._mangledTypeName)
     return _getTypeByMangledNameInContext(
       typeName,
       getSymbolicMangledNameLength(typeName),
       genericContext,
-      genericArguments?.assumingMemoryBound(to: UnsafeRawPointer?.self)
+      genericArguments
     )!
   }
 }
