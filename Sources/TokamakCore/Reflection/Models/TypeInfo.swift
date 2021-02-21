@@ -29,7 +29,6 @@ public struct TypeInfo {
   public let size: Int
   public let alignment: Int
   public let stride: Int
-  public let genericTypes: [Any.Type]
 
   init(metadata: StructMetadata) {
     kind = metadata.kind
@@ -40,7 +39,6 @@ public struct TypeInfo {
     stride = metadata.stride
     properties = metadata.properties()
     mangledName = metadata.mangledName()
-    genericTypes = Array(metadata.genericArguments())
   }
 
   public func property(named: String) -> PropertyInfo? {
