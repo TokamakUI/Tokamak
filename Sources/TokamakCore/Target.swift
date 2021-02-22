@@ -15,6 +15,14 @@
 //  Created by Max Desiatov on 10/02/2019.
 //
 
+public protocol RenderingContext: AnyObject {
+  func push()
+  func pop()
+  func translate(x: CGFloat, y: CGFloat)
+  var resolvedTransform: CGPoint { get }
+}
+
 public protocol Target: AnyObject {
   var view: AnyView { get set }
+  var context: RenderingContext { get }
 }

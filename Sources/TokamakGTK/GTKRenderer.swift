@@ -45,19 +45,6 @@ func layout<T>(_ element: MountedElement<T>) {
   }
 }
 
-extension MountedElement {
-//    public func size(for proposedSize: CGSize) -> CGSize {
-//        if let hostView = element as? MountedHostView<T>, let anyWidget = mapAnyView(
-//          hostView.view,
-//          transform: { (widget: AnyWidget) in widget }
-//        ) {
-//          print("WIDGET", anyWidget)
-//          print("TARGET", hostView.target)
-//        }
-//
-//    }
-}
-
 final class GTKRenderer: Renderer {
   private(set) var reconciler: StackReconciler<GTKRenderer>?
   private var gtkAppRef: UnsafeMutablePointer<GtkApplication>
@@ -118,29 +105,36 @@ final class GTKRenderer: Renderer {
     with host: MountedHost
   ) -> Widget? {
     print("HOST", host)
-    guard let anyWidget = mapAnyView(
+    guard let builtinView = mapAnyView(
       host.view,
-      transform: { (widget: AnyWidget) in widget }
+      transform: { (view: BuiltinView) in view }
     ) else {
       // handle cases like `TupleView`
       if mapAnyView(host.view, transform: { (view: ParentView) in view }) != nil {
         return parent
       }
 
-        print("HOSTVIEW", host.view)
+      print("HOSTVIEW", host.view)
       return nil
     }
 
     // TODO: GET PROPOSED SIZE FROM PARENT
 //    let size = anyWidget.size(for: CGSize(width: 100, height: 100))
 
-    let ctor = anyWidget.new
+
+    let ctor: ((UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?)
+
+    if let anyWidget = builtinView as? AnyWidget {
+      ctor = anyWidget.new
+    } else {
+      ctor = { _ in return nil }
+    }
 
 //    print("PARENT", parent)
 //    print("ANYWIDGET", anyWidget)
 //    print("HOST", host.view)
     let widget: UnsafeMutablePointer<GtkWidget>?
-    let context: WidgetContext = parent.context
+    let context: WidgetContext = parent.context as! WidgetContext
     switch parent.storage {
     case let .application(app):
       widget = ctor(app)
@@ -148,26 +142,16 @@ final class GTKRenderer: Renderer {
     case let .widget(parentWidget):
       widget = ctor(gtkAppRef)
     case .dummy:
-        widget = ctor(gtkAppRef)
+      widget = ctor(gtkAppRef)
     }
 
     if let w = widget {
         context.parent.withMemoryRebound(to: GtkFixed.self, capacity: 1) {
           gtk_fixed_put($0, w, 0, 0)
-            gtk_widget_set_size_request(w, 10, 10)
-//          if let stack = mapAnyView(parent.view, transform: { (view: StackProtocol) in view }) {
-//            gtk_widget_set_valign(w, stack.alignment.vertical.gtkValue)
-//            gtk_widget_set_halign(w, stack.alignment.horizontal.gtkValue)
-//            if anyWidget.expand {
-//              gtk_widget_set_hexpand(w, gtk_true())
-//              gtk_widget_set_vexpand(w, gtk_true())
-//            }
-//          }
-//
+          gtk_widget_set_size_request(w, 10, 10)
         }
         gtk_widget_show(w)
     }
-    print("SKOO", host.view)
 
     return Widget(host.view, widget, context: context)
   }

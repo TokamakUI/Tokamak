@@ -19,12 +19,11 @@ protocol AnyWidget: BuiltinView {
   var expand: Bool { get }
   func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?
   func update(widget: Widget)
-//  func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize
-//  func layout<T>(size: CGSize, hostView: MountedHostView<T>)
 }
 
 extension AnyWidget {
   var expand: Bool { false }
+
   public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
     print("USING DEFAULT SIZE FOR", self)
     return proposedSize.orDefault
@@ -32,20 +31,13 @@ extension AnyWidget {
 
   public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
     print("XXX LAYING OUT", self, size)
-//    print("TARGET", element.target)
-//    if let widget = element.target as? Widget {
-//      if case let .widget(w) = widget.storage {
-//        gtk_widget_set_size_request(w, Int32(size.width), Int32(size.height))
-//        print("SIZE SET")
-//      }
-//    }
 
     if let widget = hostView.target as? Widget {
-      let resolvedTransform = widget.context.resolvedTransform
+      let context = widget.context as! WidgetContext
+      let resolvedTransform = context.resolvedTransform
       if case let .widget(w) = widget.storage {
-        gtk_fixed_move(widget.context.parent, w, Int32(resolvedTransform.x), Int32(resolvedTransform.y))
+        gtk_fixed_move(context.parent, w, Int32(resolvedTransform.x), Int32(resolvedTransform.y))
         gtk_widget_set_size_request(w, Int32(size.width), Int32(size.height))
-        gtk_widget_queue_draw(w)
       }
     }
   }
@@ -96,7 +88,7 @@ extension WidgetView where Content == EmptyView {
   }
 }
 
-class WidgetContext {
+class WidgetContext: RenderingContext {
   let parent: UnsafeMutablePointer<GtkFixed>
   var transformStack: [CGPoint] = []
   var current: CGPoint = .zero
@@ -141,7 +133,7 @@ final class Widget: Target {
   }
 
   let storage: Storage
-  let context: WidgetContext
+  let context: RenderingContext
   var view: AnyView
 
   /*

@@ -55,6 +55,10 @@ struct TokamakGTKDemo: App {
           Rectangle()
           Text("SKA")
           Text("SKO").overlay(Rectangle())
+          HStack {
+            Text("A")
+            Text("B")
+          }
         }
 //      List {
 //        Image("logo-header.png", bundle: Bundle.module, label: Text("Tokamak Demo"))

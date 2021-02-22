@@ -33,17 +33,6 @@ extension Text: AnyWidget {
     }
   }
 
-  public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
-    print("OVERRIDE LAYOUT FOR TEXT")
-    if let widget = hostView.target as? Widget {
-      let resolvedTransform = widget.context.resolvedTransform
-      if case let .widget(w) = widget.storage {
-        gtk_fixed_move(widget.context.parent, w, Int32(resolvedTransform.x), Int32(resolvedTransform.y))
-        gtk_widget_set_size_request(w, Int32(size.width), Int32(size.height))
-      }
-    }
-  }
-
   public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
     print("OVERRIDE SIZE FOR TEXT")
     guard let widget = hostView.target as? Widget else { return proposedSize.orDefault }

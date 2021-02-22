@@ -158,6 +158,29 @@ public class MountedElement<R: Renderer> {
   }
 }
 
+public extension MountedElement {
+  /** Get the child MountedHostViews whose AnyView wraps a BuiltinView
+   */
+  func getChildren() -> [MountedHostView<R>] {
+    var children: [MountedHostView<R>] = []
+    for childElement in self.mountedChildren {
+      guard let childView = childElement as? MountedHostView<R> else {
+        children.append(contentsOf: childElement.getChildren())
+        continue
+      }
+      if let _ = mapAnyView(
+        childView.view,
+        transform: { (view: BuiltinView) in view }
+      ) {
+        children.append(childView)
+      } else {
+        children.append(contentsOf: childView.getChildren())
+      }
+    }
+    return children
+  }
+}
+
 extension EnvironmentValues {
   mutating func inject(into element: inout Any, _ type: Any.Type) {
     guard let info = typeInfo(of: type) else { return }

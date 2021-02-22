@@ -83,6 +83,32 @@ where Overlay: View, Content: View
   }
 }
 
+extension _Overlay: BuiltinView where Content: View, Overlay: View {
+
+  public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
+    print("LAYOUT _OVERLAY CONTENT", size, content)
+    let children = hostView.getChildren()
+    content._layout(size: size, hostView: children[0])
+
+    let childSize = overlay._size(for: ProposedSize(width: size.width, height: size.height), hostView: hostView)
+    print("CHILDSIZE", childSize)
+    overlay._layout(size: childSize, hostView: children[1])
+  }
+
+  public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
+    print("SIZING _OVERLAY CONTENT")
+    let children = hostView.getChildren()
+    return content._size(for: proposedSize, hostView: children[0])
+  }
+}
+
+extension _Overlay: ParentView {
+  public var children: [AnyView] {
+    [AnyView(content), AnyView(overlay)]
+  }
+}
+
+
 public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
   where Overlay: View
 {
