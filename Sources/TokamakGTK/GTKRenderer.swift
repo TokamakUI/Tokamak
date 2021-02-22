@@ -138,8 +138,7 @@ final class GTKRenderer: Renderer {
     switch parent.storage {
     case let .application(app):
       widget = ctor(app)
-//      print("SKOOO")
-    case let .widget(parentWidget):
+    case .widget:
       widget = ctor(gtkAppRef)
     case .dummy:
       widget = ctor(gtkAppRef)

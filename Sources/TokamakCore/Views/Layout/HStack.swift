@@ -61,9 +61,8 @@ extension HStack: BuiltinView {
     guard !children.isEmpty else { return }
     var i: Int32 = 0
     let proposedSize = ProposedSize(width: size.width / CGFloat(children.count), height: size.height)
-    for childElement in children {
-      guard let childView = childElement as? MountedHostView<T>,
-            let view = mapAnyView(
+    for childView in children {
+      guard let view = mapAnyView(
               childView.view,
               transform: { (view: View) in view }
             ) else {
@@ -71,7 +70,6 @@ extension HStack: BuiltinView {
       }
 
       let size = view._size(for: proposedSize, hostView: childView)
-      print(size)
 
       if let context = childView.target?.context {
         context.push()
@@ -79,7 +77,7 @@ extension HStack: BuiltinView {
         view._layout(size: size, hostView: childView)
         context.pop()
       }
-      
+
       i += Int32(size.height)
     }
   }

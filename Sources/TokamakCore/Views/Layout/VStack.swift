@@ -57,9 +57,8 @@ extension VStack: BuiltinView {
     guard !children.isEmpty else { return }
     var i: Int32 = 0
     let proposedSize = ProposedSize(width: size.width, height: size.height / CGFloat(children.count))
-    for childElement in children {
-      guard let childView = childElement as? MountedHostView<T>,
-            let view = mapAnyView(
+    for childView in children {
+      guard let view = mapAnyView(
               childView.view,
               transform: { (view: View) in view }
             ) else {

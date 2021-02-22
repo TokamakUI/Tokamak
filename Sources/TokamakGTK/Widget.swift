@@ -16,13 +16,11 @@ import CGTK
 import TokamakCore
 
 protocol AnyWidget: BuiltinView {
-  var expand: Bool { get }
   func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?
   func update(widget: Widget)
 }
 
 extension AnyWidget {
-  var expand: Bool { false }
 
   public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
     print("USING DEFAULT SIZE FOR", self)
@@ -47,16 +45,12 @@ struct WidgetView<Content: View>: View, AnyWidget, ParentView {
   let build: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?
   let update: (Widget) -> ()
   let content: Content
-  let expand: Bool
 
   init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?,
        update: @escaping (Widget) -> () = { _ in },
-       expand: Bool = false,
        @ViewBuilder content: () -> Content)
   {
-    print("SKO")
     self.build = build
-    self.expand = expand
     self.content = content()
     self.update = update
   }
@@ -81,10 +75,9 @@ struct WidgetView<Content: View>: View, AnyWidget, ParentView {
 }
 
 extension WidgetView where Content == EmptyView {
-  init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>,
-       expand: Bool = false)
+  init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>)
   {
-    self.init(build: build, expand: expand) { EmptyView() }
+    self.init(build: build) { EmptyView() }
   }
 }
 
