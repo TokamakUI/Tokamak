@@ -71,8 +71,13 @@ let package = Package(
       )]
     ),
     .target(
+      name: "CReflection",
+      exclude: ["swift/ABI/MetadataKind.def", "swift/ABI/ValueWitness.def"],
+      cxxSettings: [.headerSearchPath(".")]
+    ),
+    .target(
       name: "TokamakCore",
-      dependencies: ["CombineShim"]
+      dependencies: ["CombineShim", "CReflection"]
     ),
     .target(
       name: "TokamakShim",
@@ -181,5 +186,6 @@ let package = Package(
     //   name: "TokamakStaticHTMLTests",
     //   dependencies: ["TokamakStaticHTML"]
     // ),
-  ]
+  ],
+  cxxLanguageStandard: .cxx14
 )
