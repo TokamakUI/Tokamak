@@ -46,28 +46,27 @@
 /// from ObjC classes?
 #ifndef OPENCOMBINE_SWIFT_CLASS_IS_SWIFT_MASK
 
-# if !defined(__APPLE__)
+#if !defined(__APPLE__)
 // Non-Apple platforms always use 1.
-#  define OPENCOMBINE_SWIFT_CLASS_IS_SWIFT_MASK 1ULL
-# else
-// Apple platforms with Swift in the OS (a.k.a. post-ABI-stability) use 2.
-namespace tokamak { extern unsigned long long classIsSwiftMask; }
-# define OPENCOMBINE_SWIFT_CLASS_IS_SWIFT_MASK classIsSwiftMask
-# endif
+#define OPENCOMBINE_SWIFT_CLASS_IS_SWIFT_MASK 1ULL
+#else
+// Builds for Swift-in-the-OS always use 2.
+#define OPENCOMBINE_SWIFT_CLASS_IS_SWIFT_MASK 2ULL
+#endif
 #endif
 
 // Define mappings for calling conventions.
 
 #if __has_attribute(swiftcall)
-# define OPENCOMBINE_SWIFT_CALLING_CONVENTION __attribute__((swiftcall))
-# define OPENCOMBINE_SWIFT_CONTEXT __attribute__((swift_context))
-# define OPENCOMBINE_SWIFT_ERROR_RESULT __attribute__((swift_error_result))
-# define OPENCOMBINE_SWIFT_INDIRECT_RESULT __attribute__((swift_indirect_result))
+#define OPENCOMBINE_SWIFT_CALLING_CONVENTION __attribute__((swiftcall))
+#define OPENCOMBINE_SWIFT_CONTEXT __attribute__((swift_context))
+#define OPENCOMBINE_SWIFT_ERROR_RESULT __attribute__((swift_error_result))
+#define OPENCOMBINE_SWIFT_INDIRECT_RESULT __attribute__((swift_indirect_result))
 #else
-# define OPENCOMBINE_SWIFT_CALLING_CONVENTION
-# define OPENCOMBINE_SWIFT_CONTEXT
-# define OPENCOMBINE_SWIFT_ERROR_RESULT
-# define OPENCOMBINE_SWIFT_INDIRECT_RESULT
+#define OPENCOMBINE_SWIFT_CALLING_CONVENTION
+#define OPENCOMBINE_SWIFT_CONTEXT
+#define OPENCOMBINE_SWIFT_ERROR_RESULT
+#define OPENCOMBINE_SWIFT_INDIRECT_RESULT
 #endif
 
 #endif // OPENCOMBINE_SWIFT_RUNTIME_CONFIG_H
