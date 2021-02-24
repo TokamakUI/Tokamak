@@ -99,47 +99,6 @@ final class EnumerateFieldsTests: TestCase {
     XCTAssertEqual(loadField(fields[1], from: value, as: String.self), "🦊")
     XCTAssertEqual(loadField(fields[2], from: value, as: Bool.self), true)
   }
-
-  func testTuple() {
-    enumerateFields(of: Void.self, allowResilientSuperclasses: false) { _ in
-      XCTFail("should not be called")
-      return true
-    }
-
-    typealias Tuple =
-      (Int, String, label1: Double, Bool, s̈pin̈al_tap̈: IndexPath, label3: Float)
-    var fields = [FieldInfo]()
-    enumerateFields(
-      of: Tuple.self,
-      allowResilientSuperclasses: true
-    ) { field in
-      fields.append(field)
-      return true
-    }
-    #if arch(wasm32)
-    XCTAssertEqual(fields, [.init("", 0, Int.self),
-                            .init("", 4, String.self),
-                            .init("label1", 16, Double.self),
-                            .init("", 24, Bool.self),
-                            .init("s̈pin̈al_tap̈", 28, IndexPath.self),
-                            .init("label3", 40, Float.self)])
-    #else
-    XCTAssertEqual(fields, [.init("", 0, Int.self),
-                            .init("", 8, String.self),
-                            .init("label1", 24, Double.self),
-                            .init("", 32, Bool.self),
-                            .init("s̈pin̈al_tap̈", 40, IndexPath.self),
-                            .init("label3", 60, Float.self)])
-    #endif
-    if hasFailed { return }
-    let value: Tuple = (1234, "🌚", 59.1, false, [9, 3, 1], 10.1)
-    XCTAssertEqual(loadField(fields[0], from: value, as: Int.self), 1234)
-    XCTAssertEqual(loadField(fields[1], from: value, as: String.self), "🌚")
-    XCTAssertEqual(loadField(fields[2], from: value, as: Double.self), 59.1)
-    XCTAssertEqual(loadField(fields[3], from: value, as: Bool.self), false)
-    XCTAssertEqual(loadField(fields[4], from: value, as: IndexPath.self), [9, 3, 1])
-    XCTAssertEqual(loadField(fields[5], from: value, as: Float.self), 10.1)
-  }
 }
 
 private func loadField<FieldType>(_ field: FieldInfo,

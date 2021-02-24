@@ -1729,10 +1729,6 @@ public:
   /// Return true if the value is negative.
   bool isNegative() const { return Data & IsNegativeFlag; }
 
-  /// Return the minimum number of bits necessary to store the value in
-  /// two's complement, including a leading sign bit.
-  unsigned getBitWidth() const { return Data >> BitWidthShift; }
-
   size_t getOpaqueValue() const { return Data; }
   static IntegerLiteralFlags getFromOpaqueValue(size_t value) {
     return IntegerLiteralFlags(value);

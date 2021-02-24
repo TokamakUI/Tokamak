@@ -27,20 +27,14 @@ public struct TypeInfo {
   public let mangledName: String
   public let properties: [PropertyInfo]
   public let size: Int
-  public let alignment: Int
-  public let stride: Int
-  public let genericTypes: [Any.Type]
 
   init(metadata: StructMetadata) {
     kind = metadata.kind
     name = String(describing: metadata.type)
     type = metadata.type
     size = metadata.size
-    alignment = metadata.alignment
-    stride = metadata.stride
     properties = metadata.properties()
     mangledName = metadata.mangledName()
-    genericTypes = Array(metadata.genericArguments())
   }
 
   public func property(named: String) -> PropertyInfo? {

@@ -100,23 +100,5 @@ bool opencombine_enumerate_fields(const void *opaqueMetadataPtr,
     return enumerateFields(structMetadata, structMetadata->getDescription());
   }
 
-  if (const auto *tupleMetadata = llvm::dyn_cast<TupleTypeMetadata>(metadata))
-  {
-    const char *labels = tupleMetadata->Labels;
-    for (TupleTypeMetadata::StoredSize i = 0; i < tupleMetadata->NumElements; ++i)
-    {
-      const TupleTypeMetadata::Element &element = tupleMetadata->getElement(i);
-      string_view nextLabel = nextTupleLabel(labels);
-      std::string label(nextLabel.data(), nextLabel.size());
-      if (!enumerator(enumeratorContext,
-                      label.c_str(),
-                      element.Offset,
-                      element.Type))
-      {
-        return false;
-      }
-    }
-  }
-
   return false;
 }
