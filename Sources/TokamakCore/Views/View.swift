@@ -27,6 +27,11 @@ public struct ProposedSize {
     self.width = width
     self.height = height
   }
+
+  public init(_ size: CGSize) {
+    self.width = size.width
+    self.height = size.height
+  }
 }
 
 public protocol View {

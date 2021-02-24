@@ -118,10 +118,6 @@ final class GTKRenderer: Renderer {
       return nil
     }
 
-    // TODO: GET PROPOSED SIZE FROM PARENT
-//    let size = anyWidget.size(for: CGSize(width: 100, height: 100))
-
-
     let ctor: ((UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?)
 
     if let anyWidget = builtinView as? AnyWidget {
@@ -130,9 +126,6 @@ final class GTKRenderer: Renderer {
       ctor = { _ in return nil }
     }
 
-//    print("PARENT", parent)
-//    print("ANYWIDGET", anyWidget)
-//    print("HOST", host.view)
     let widget: UnsafeMutablePointer<GtkWidget>?
     let context: WidgetContext = parent.context as! WidgetContext
     switch parent.storage {

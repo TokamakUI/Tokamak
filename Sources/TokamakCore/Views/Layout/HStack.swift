@@ -57,41 +57,12 @@ extension HStack: ParentView {
 extension HStack: BuiltinView {
 
   public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
-    let children = hostView.getChildren()
-    guard !children.isEmpty else { return }
-    var i: Int32 = 0
-    let proposedSize = ProposedSize(width: size.width / CGFloat(children.count), height: size.height)
-    for childView in children {
-      guard let view = mapAnyView(
-              childView.view,
-              transform: { (view: View) in view }
-            ) else {
-        continue
-      }
-
-      let size = view._size(for: proposedSize, hostView: childView)
-
-      if let context = childView.target?.context {
-        context.push()
-        context.translate(x: CGFloat(i), y: CGFloat(0))
-        view._layout(size: size, hostView: childView)
-        context.pop()
-      }
-
-      i += Int32(size.height)
-    }
+    let helper = StackHelper()
+    return helper.layout(size: size, hostView: hostView, axis: .horizontal)
   }
 
   public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
-    // TODO: Measure size of children, perform layout and return answer
-    if let parentView = content as? ParentView {
-      print("CONTENT IS PARENT")
-      for child in children {
-        print("CHILD", child)
-      }
-    } else {
-      print("CONTENT IS NOT PARENT")
-    }
-    return proposedSize.orDefault
+    let helper = StackHelper()
+    return helper.size(for: proposedSize, hostView: hostView, axis: .horizontal)
   }
 }
