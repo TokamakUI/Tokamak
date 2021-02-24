@@ -32,6 +32,7 @@ public struct HStack<Content>: View where Content: View {
   public let alignment: VerticalAlignment
   public let spacing: CGFloat?
   public let content: Content
+  fileprivate let helper = StackHelper(axis: .horizontal)
 
   public init(
     alignment: VerticalAlignment = .center,
@@ -57,12 +58,10 @@ extension HStack: ParentView {
 extension HStack: BuiltinView {
 
   public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
-    let helper = StackHelper()
-    return helper.layout(size: size, hostView: hostView, axis: .horizontal)
+    helper.layout(size: size, hostView: hostView)
   }
 
   public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
-    let helper = StackHelper()
-    return helper.size(for: proposedSize, hostView: hostView, axis: .horizontal)
+    helper.size(for: proposedSize, hostView: hostView)
   }
 }

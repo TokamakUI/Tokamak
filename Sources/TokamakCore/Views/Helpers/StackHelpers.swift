@@ -9,16 +9,21 @@
 
 import Foundation
 
-struct StackHelper {
+class StackHelper {
+  let axis: Axis
+
+  init(axis: Axis) {
+    self.axis = axis
+  }
 //  var alignment: VerticalAlignment = .center
 //  let spacing: CGFloat? = 0
 
-  public func layout<T>(size: CGSize, hostView: MountedHostView<T>, axis: Axis) {
+  public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
     print("LAYOUT", size)
 
     guard let context = hostView.target?.context else { return }
     let children = hostView.getChildren()
-    let sizes = _layout(proposed: ProposedSize(size), children: children, axis: axis)
+    let sizes = _layout(proposed: ProposedSize(size), children: children)
     var currentAlongAxis: CGFloat = 0
     for idx in children.indices {
       let childSize = sizes[idx]
@@ -37,17 +42,17 @@ struct StackHelper {
     }
   }
 
-  public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>, axis: Axis) -> CGSize {
+  public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
     print("PROPOSED", proposedSize)
     let children = hostView.getChildren()
-    let sizes = _layout(proposed: proposedSize, children: children, axis: axis)
+    let sizes = _layout(proposed: proposedSize, children: children)
     let width: CGFloat = sizes.map(\.width).reduce(0, +)
     let height: CGFloat = sizes.map(\.height).reduce(0, +)
     print("SIZE", width, height)
     return CGSize(width: width, height: height)
   }
 
-  private func _layout<T>(proposed: ProposedSize, children: [MountedHostView<T>], axis: Axis) -> [CGSize] {
+  private func _layout<T>(proposed: ProposedSize, children: [MountedHostView<T>]) -> [CGSize] {
     var remainingAlongAxis = axis == .horizontal ? proposed.width! : proposed.height! // TODO
     var remaining = children
     var sizes: [CGSize] = []
