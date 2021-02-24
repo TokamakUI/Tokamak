@@ -69,10 +69,16 @@ namespace
 
 } // end anonymous namespace
 
-bool opencombine_enumerate_fields(const void *opaqueMetadataPtr,
+size_t tokamak_get_size(const void *opaqueMetadataPtr) {
+  const Metadata *metadata = static_cast<const Metadata *>(opaqueMetadataPtr);
+
+  return metadata->vw_size();
+}
+
+bool tokamak_enumerate_fields(const void *opaqueMetadataPtr,
                                   bool allowResilientSuperclasses,
                                   void *enumeratorContext,
-                                  OpenCombineFieldEnumerator enumerator)
+                                  TokamakFieldEnumerator enumerator)
 {
   auto enumerateFields = [&](const auto *metadata,
                              const TypeContextDescriptor *description) -> bool {

@@ -38,13 +38,13 @@ func enumerateFields(
   withoutActuallyEscaping(enumerator) { enumerator in
     var context = enumerator
     enumerateFields(
-      typeMetadata: unsafeBitCast(type, to: UnsafeRawPointer.self),
+      typeMetadata: UnsafeRawPointer(bitPattern: unsafeBitCast(type, to: Int.self))!,
       allowResilientSuperclasses: allowResilientSuperclasses,
       enumeratorContext: &context,
       enumerator: { rawContext, fieldName, fieldOffset, rawMetadataPtr in
         rawContext
           .unsafelyUnwrapped
-          .assumingMemoryBound(to: FieldEnumerator.self)
+          .bindMemory(to: FieldEnumerator.self, capacity: 1)
           .pointee(
             fieldName,
             fieldOffset,

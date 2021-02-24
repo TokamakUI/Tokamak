@@ -20,32 +20,48 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import CReflection
+
 public struct TypeInfo {
-  public let kind: Kind
-  public let name: String
   public let type: Any.Type
-  public let mangledName: String
   public let properties: [PropertyInfo]
   public let size: Int
-
-  init(metadata: StructMetadata) {
-    kind = metadata.kind
-    name = String(describing: metadata.type)
-    type = metadata.type
-    size = metadata.size
-    properties = metadata.properties()
-    mangledName = metadata.mangledName()
-  }
 
   public func property(named: String) -> PropertyInfo? {
     properties.first(where: { $0.name == named })
   }
 }
 
-public func typeInfo(of type: Any.Type) -> TypeInfo? {
-  guard Kind(type: type) == .struct else {
-    return nil
+public func typeInfo(of type: Any.Type) -> TypeInfo {
+  let metadataPointer = UnsafeRawPointer(bitPattern: unsafeBitCast(type, to: Int.self))!
+
+  assert(
+    _checkMetadataState(
+      .init(desiredState: .layoutComplete, isBlocking: false),
+      metadataPointer
+    ).state.rawValue < MetadataState.layoutComplete.rawValue,
+    """
+    Struct metadata for \(type) is in incomplete state, \
+    proceeding would result in an undefined behavior.
+    """
+  )
+
+  var properties = [PropertyInfo]()
+
+  enumerateFields(
+    of: type,
+    allowResilientSuperclasses: false
+  ) {
+    properties.append(
+      .init(
+        name: String(cString: $0),
+        type: $2,
+        offset: $1,
+        ownerType: type
+      )
+    )
+    return true
   }
 
-  return StructMetadata(type: type).toTypeInfo()
+  return TypeInfo(type: type, properties: properties, size: tokamak_get_size(metadataPointer))
 }

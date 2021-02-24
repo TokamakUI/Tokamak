@@ -34,9 +34,9 @@ struct MetadataRequest {
 }
 
 struct MetadataResponse {
-  let metadata: UnsafePointer<StructMetadata>
+  let metadata: UnsafeRawPointer
   let state: MetadataState
 }
 
 @_silgen_name("swift_checkMetadataState")
-func _checkMetadataState(_ request: MetadataRequest, _ type: StructMetadata) -> MetadataResponse
+func _checkMetadataState(_ request: MetadataRequest, _ type: UnsafeRawPointer) -> MetadataResponse
