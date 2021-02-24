@@ -25,11 +25,11 @@
 
 import CReflection
 
-internal typealias FieldEnumerator =
+typealias FieldEnumerator =
   (_ fieldName: UnsafePointer<CChar>, _ fieldOffset: Int, _ fieldType: Any.Type) -> Bool
 
-internal func enumerateFields(
-  ofType type: Any.Type,
+func enumerateFields(
+  of type: Any.Type,
   allowResilientSuperclasses: Bool,
   enumerator: FieldEnumerator
 ) {

@@ -56,25 +56,24 @@ struct StructMetadata {
   }
 
   func properties() -> [PropertyInfo] {
-    let offsets = fieldOffsets()
-    let fieldDescriptor = pointer.pointee.typeDescriptor.advance(offset: \.fieldDescriptor)
-    let genericVector = genericArgumentVector()
+    var result = [PropertyInfo]()
 
-    let fields = fieldDescriptor.vector(at: \.fields)
-    return (0..<numberOfFields()).map { i in
-      let record = fields.advanced(by: i)
-
-      return PropertyInfo(
-        name: record.fieldName(),
-        type: record.type(
-          genericContext: pointer.pointee.typeDescriptor,
-          genericArguments: genericVector
-        ),
-        isVar: record.pointee.isVar,
-        offset: offsets[i],
-        ownerType: type
+    enumerateFields(
+      of: type,
+      allowResilientSuperclasses: false
+    ) {
+      result.append(
+        .init(
+          name: String(cString: $0),
+          type: $2,
+          offset: $1,
+          ownerType: type
+        )
       )
+      return true
     }
+
+    return result
   }
 
   func genericArguments() -> UnsafeBufferPointer<Any.Type> {

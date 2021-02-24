@@ -36,7 +36,7 @@ final class EnumerateFieldsTests: TestCase {
   func testStructLetsAndVars() {
     var fields = [FieldInfo]()
     enumerateFields(
-      ofType: CommonValue.self,
+      of: CommonValue.self,
       allowResilientSuperclasses: false
     ) { field in
       fields.append(field)
@@ -77,7 +77,7 @@ final class EnumerateFieldsTests: TestCase {
   func testGenericStruct() {
     var fields = [FieldInfo]()
     enumerateFields(
-      ofType: GenericValue<Int, String>.self,
+      of: GenericValue<Int, String>.self,
       allowResilientSuperclasses: false
     ) { field in
       fields.append(field)
@@ -101,7 +101,7 @@ final class EnumerateFieldsTests: TestCase {
   }
 
   func testTuple() {
-    enumerateFields(ofType: Void.self, allowResilientSuperclasses: false) { _ in
+    enumerateFields(of: Void.self, allowResilientSuperclasses: false) { _ in
       XCTFail("should not be called")
       return true
     }
@@ -110,7 +110,7 @@ final class EnumerateFieldsTests: TestCase {
       (Int, String, label1: Double, Bool, s̈pin̈al_tap̈: IndexPath, label3: Float)
     var fields = [FieldInfo]()
     enumerateFields(
-      ofType: Tuple.self,
+      of: Tuple.self,
       allowResilientSuperclasses: true
     ) { field in
       fields.append(field)

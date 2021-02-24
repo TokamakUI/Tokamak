@@ -25,7 +25,7 @@
 
 import CReflection
 
-internal struct FieldInfo: Equatable, CustomDebugStringConvertible {
+struct FieldInfo: Equatable, CustomDebugStringConvertible {
   let name: String
   let offset: Int
   let type: Any.Type
@@ -47,12 +47,13 @@ internal struct FieldInfo: Equatable, CustomDebugStringConvertible {
   }
 }
 
-internal typealias FieldEnumerator = (FieldInfo) -> Bool
+typealias FieldEnumerator = (FieldInfo) -> Bool
 
-internal func enumerateFields(ofType type: Any.Type,
-                              allowResilientSuperclasses: Bool,
-                              enumerator: FieldEnumerator)
-{
+func enumerateFields(
+  of type: Any.Type,
+  allowResilientSuperclasses: Bool,
+  enumerator: FieldEnumerator
+) {
   withoutActuallyEscaping(enumerator) { enumerator in
     var context = enumerator
     enumerateFields(

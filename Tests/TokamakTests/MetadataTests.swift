@@ -53,8 +53,6 @@ final class MetadataTests: XCTestCase {
     XCTAssert(info.size == MemoryLayout<A>.size)
     XCTAssert(info.alignment == MemoryLayout<A>.alignment)
     XCTAssert(info.stride == MemoryLayout<A>.stride)
-    XCTAssert(!info.properties[0].isVar)
-    XCTAssert(info.properties[4].isVar)
   }
 
   // https://github.com/wickwirew/Runtime/issues/42
@@ -74,8 +72,6 @@ final class MetadataTests: XCTestCase {
       XCTAssert(info.size == MemoryLayout<NestedA>.size)
       XCTAssert(info.alignment == MemoryLayout<NestedA>.alignment)
       XCTAssert(info.stride == MemoryLayout<NestedA>.stride)
-      XCTAssert(!info.properties[0].isVar)
-      XCTAssert(info.properties[4].isVar)
     }
 
     nest()

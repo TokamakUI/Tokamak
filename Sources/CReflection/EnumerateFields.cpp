@@ -74,7 +74,6 @@ bool opencombine_enumerate_fields(const void *opaqueMetadataPtr,
                                   void *enumeratorContext,
                                   OpenCombineFieldEnumerator enumerator)
 {
-
   auto enumerateFields = [&](const auto *metadata,
                              const TypeContextDescriptor *description) -> bool {
     const auto *fieldOffsets = metadata->getFieldOffsets();
