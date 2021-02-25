@@ -54,11 +54,20 @@ struct TokamakGTKDemo: App {
           Text("SKI")
           Capsule()
           Text("SKA")
+            .background(Color.blue)
+            .padding(10)
+            .background(Color.yellow)
+            .padding(10)
+            .background(Color.red)
+            .padding(10)
+            .background(Color.green)
           Text("SKO").border(Color.red)
           HStack {
             Text("A").frame(width: 50, height: 50).border(Color.red)
             Text("B").frame(width: 100, height: 100).border(Color.red)
           }
+          .padding(10)
+          .background(Color.gray)
         }
 //      List {
 //        Image("logo-header.png", bundle: Bundle.module, label: Text("Tokamak Demo"))

@@ -15,6 +15,51 @@
 //  Created by Carson Katri on 6/29/20.
 //
 
+public struct _Background<Content, Background>: View
+where Background: View, Content: View
+{
+  public var environment: EnvironmentValues!
+  public var content: Content
+  public var background: Background
+  public var alignment: Alignment
+
+  public init(content: Content, background: Background, alignment: Alignment = .center) {
+    self.background = background
+    self.content = content
+    self.alignment = alignment
+  }
+
+  public var body: some View {
+    neverBody("_Background")
+  }
+}
+
+extension _Background: BuiltinView where Content: View, Background: View {
+
+  public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
+    print("LAYOUT _BACKGROUND CONTENT", size, content)
+    let children = hostView.getChildren()
+
+    let childSize = background._size(for: ProposedSize(size), hostView: children[0])
+    print("CHILDSIZE", childSize)
+    background._layout(size: childSize, hostView: children[0])
+
+    content._layout(size: size, hostView: children[1])
+  }
+
+  public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
+    print("SIZING _BACKGROUND CONTENT")
+    let children = hostView.getChildren()
+    return content._size(for: proposedSize, hostView: children[1])
+  }
+}
+
+extension _Background: ParentView {
+  public var children: [AnyView] {
+    [AnyView(background), AnyView(content)]
+  }
+}
+
 public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
   where Background: View
 {
@@ -28,17 +73,35 @@ public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
   }
 
   public func body(content: Content) -> some View {
-    // FIXME: Clip to bounds of foreground.
-    ZStack(alignment: alignment) {
-      background
-      content
-    }
+    _Background(content: content, background: background, alignment: alignment)
   }
 
   mutating func setContent(from values: EnvironmentValues) {
     environment = values
   }
 }
+
+//extension _BackgroundModifier {
+//  public func size<T, C: View>(for proposedSize: ProposedSize, hostView: MountedHostView<T>, content: C) -> CGSize {
+//    print("BACKGROUND SIZE")
+//    let children = hostView.getChildren()
+//    print("CHILDREN", children.map(\.view))
+//    let childSize = content._size(for: proposedSize, hostView: children[1])
+//    return childSize
+//  }
+//
+//  public func layout<T, C: View>(size: CGSize, hostView: MountedHostView<T>, content: C) {
+//    guard let context = hostView.target?.context else { return }
+//    print("BACKGROUND LAYOUT")
+//    let children = hostView.getChildren()
+//
+//    context.push()
+//
+//    background._layout(size: size, hostView: children[0])
+//    content._layout(size: size, hostView: children[1])
+//    context.pop()
+//  }
+//}
 
 extension _BackgroundModifier: Equatable where Background: Equatable {
   public static func == (
@@ -54,7 +117,9 @@ public extension View {
     _ background: Background,
     alignment: Alignment = .center
   ) -> some View where Background: View {
-    modifier(_BackgroundModifier(background: background, alignment: alignment))
+    _Background(content: self, background: background, alignment: alignment)
+
+//    modifier(_BackgroundModifier(background: background, alignment: alignment))
   }
 }
 
@@ -79,7 +144,6 @@ where Overlay: View, Content: View
 //      content
 //      overlay
 //    }
-      
   }
 }
 
@@ -90,7 +154,7 @@ extension _Overlay: BuiltinView where Content: View, Overlay: View {
     let children = hostView.getChildren()
     content._layout(size: size, hostView: children[0])
 
-    let childSize = overlay._size(for: ProposedSize(width: size.width, height: size.height), hostView: hostView)
+    let childSize = overlay._size(for: ProposedSize(size), hostView: children[1])
     print("CHILDSIZE", childSize)
     overlay._layout(size: childSize, hostView: children[1])
   }
@@ -123,11 +187,6 @@ public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
 
   public func body(content: Content) -> some View {
     _Overlay(content: content, overlay: overlay, alignment: alignment)
-//    // FIXME: Clip to content shape.
-//    ZStack(alignment: alignment) {
-//      content
-//      overlay
-//    }
   }
 
   mutating func setContent(from values: EnvironmentValues) {
