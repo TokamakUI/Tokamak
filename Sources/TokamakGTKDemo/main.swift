@@ -52,12 +52,12 @@ struct TokamakGTKDemo: App {
     WindowGroup("Test Scene") {
         VStack {
           Text("SKI")
-          Rectangle()
+          Capsule()
           Text("SKA")
-          Text("SKO").overlay(Rectangle().stroke(Color.red))
+          Text("SKO").border(Color.red)
           HStack {
-            Text("A").frame(width: 50, height: 50).overlay(Rectangle().stroke(Color.red))
-            Text("B").frame(width: 100, height: 100).overlay(Rectangle().stroke(Color.red))
+            Text("A").frame(width: 50, height: 50).border(Color.red)
+            Text("B").frame(width: 100, height: 100).border(Color.red)
           }
         }
 //      List {

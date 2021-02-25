@@ -56,26 +56,26 @@ extension Color {
     return "rgba(\(rgba.red * 255), \(rgba.green * 255), \(rgba.blue * 255), \(rgba.opacity))"
   }
 }
-
-// Border modifier
-extension _OverlayModifier: WidgetAttributeModifier, WidgetModifier
-  where Overlay == _ShapeView<_StrokedShape<TokamakCore.Rectangle._Inset>, Color>
-{
-  var attributes: [String: String] {
-    let style = overlay.shape.style.dashPhase == 0 ? "solid" : "dashed"
-
-    return [
-      "border-style": style,
-      "border-width": "\(overlay.shape.style.lineWidth)px",
-      "border-color": overlay.style.cssValue(environment),
-      "border-radius": "inherit",
-    ]
-  }
-}
-
-extension _BackgroundModifier: WidgetAttributeModifier, WidgetModifier where Background == Color {
-  var attributes: [String: String] {
-    let cssValue = background.cssValue(environment)
-    return ["background": cssValue]
-  }
-}
+//
+//// Border modifier
+//extension _OverlayModifier: WidgetAttributeModifier, WidgetModifier
+//  where Overlay == _ShapeView<_StrokedShape<TokamakCore.Rectangle._Inset>, Color>
+//{
+//  var attributes: [String: String] {
+//    let style = overlay.shape.style.dashPhase == 0 ? "solid" : "dashed"
+//
+//    return [
+//      "border-style": style,
+//      "border-width": "\(overlay.shape.style.lineWidth)px",
+//      "border-color": overlay.style.cssValue(environment),
+//      "border-radius": "inherit",
+//    ]
+//  }
+//}
+//
+//extension _BackgroundModifier: WidgetAttributeModifier, WidgetModifier where Background == Color {
+//  var attributes: [String: String] {
+//    let cssValue = background.cssValue(environment)
+//    return ["background": cssValue]
+//  }
+//}
