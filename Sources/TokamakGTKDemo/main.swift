@@ -54,10 +54,10 @@ struct TokamakGTKDemo: App {
           Text("SKI")
           Rectangle()
           Text("SKA")
-          Text("SKO").overlay(Rectangle())
+          Text("SKO").overlay(Rectangle().stroke(Color.red))
           HStack {
-            Text("A")
-            Text("B")
+            Text("A").frame(width: 50, height: 50).overlay(Rectangle().stroke(Color.red))
+            Text("B").frame(width: 100, height: 100).overlay(Rectangle().stroke(Color.red))
           }
         }
 //      List {

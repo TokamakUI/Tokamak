@@ -18,11 +18,19 @@
 import CGTK
 import TokamakCore
 
-extension _FrameLayout: WidgetModifier {
-  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
-    gtk_widget_set_size_request(widget, Int32(width ?? -1), Int32(height ?? -1))
-  }
-}
+//extension _FrameLayout: BuiltinView {
+//  func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
+//    let children = hostView.getChildren()
+//    let childSize = 
+//  }
+//  func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
+//
+//  }
+//
+////  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
+////    gtk_widget_set_size_request(widget, Int32(width ?? -1), Int32(height ?? -1))
+////  }
+//}
 
 extension _FlexFrameLayout: WidgetModifier {
   func modify(widget: UnsafeMutablePointer<GtkWidget>) {

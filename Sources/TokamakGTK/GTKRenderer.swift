@@ -104,7 +104,7 @@ final class GTKRenderer: Renderer {
     to parent: Widget,
     with host: MountedHost
   ) -> Widget? {
-    print("HOST", host)
+    print("HOST VIEW", host.view)
     guard let builtinView = mapAnyView(
       host.view,
       transform: { (view: BuiltinView) in view }

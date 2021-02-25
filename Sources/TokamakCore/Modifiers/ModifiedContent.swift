@@ -49,6 +49,23 @@ extension ModifiedContent: View, ParentView where Content: View, Modifier: ViewM
   }
 }
 
+extension ModifiedContent: BuiltinView where Content: View, Modifier: ViewModifier {
+  public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
+//    let children = hostView.getChildren()
+//    let childSize = content._size(for: proposedSize, hostView: children[0])
+//    print("MODIFIEDCONTENT childSize", childSize)
+//    return CGSize(width: childSize.width + 50, height: childSize.height + 50)
+    return modifier.size(for: proposedSize, hostView: hostView, content: content)
+  }
+
+  public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
+//    let children = hostView.getChildren()
+//    print("MODIFIEDCONTENT layout")
+//    content._layout(size: size, hostView: children[0])
+    return modifier.layout(size: size, hostView: hostView, content: content)
+  }
+}
+
 extension ModifiedContent: ViewModifier where Content: ViewModifier, Modifier: ViewModifier {
   public func body(content: _ViewModifier_Content<Self>) -> Never {
     neverBody("ModifiedContent<ViewModifier, ViewModifier>")
