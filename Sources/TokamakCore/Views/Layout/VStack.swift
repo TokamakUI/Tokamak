@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /// An alignment position along the horizontal axis.
-public enum HorizontalAlignment: Equatable {
-  case leading
-  case center
-  case trailing
-}
+//public enum HorizontalAlignment: Equatable {
+//  case leading
+//  case center
+//  case trailing
+//}
 
 /// A view that arranges its children in a vertical line.
 ///

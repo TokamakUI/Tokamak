@@ -32,23 +32,23 @@ import TokamakCore
 ////  }
 //}
 
-extension _FlexFrameLayout: WidgetModifier {
-  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
-    gtk_widget_set_halign(widget, alignment.horizontal.gtkValue)
-    gtk_widget_set_valign(widget, alignment.vertical.gtkValue)
-    if maxWidth == .infinity {
-      print("Setting hexpand")
-      gtk_widget_set_hexpand(widget, gtk_true())
-      gtk_widget_set_halign(widget, GTK_ALIGN_FILL)
-    }
-    if maxHeight == .infinity {
-      print("Setting vexpand")
-      gtk_widget_set_vexpand(widget, gtk_true())
-      gtk_widget_set_valign(widget, GTK_ALIGN_FILL)
-    }
-    gtk_widget_set_size_request(widget, Int32(idealWidth ?? -1), Int32(idealHeight ?? -1))
-  }
-}
+//extension _FlexFrameLayout: WidgetModifier {
+//  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
+//    gtk_widget_set_halign(widget, alignment.horizontal.gtkValue)
+//    gtk_widget_set_valign(widget, alignment.vertical.gtkValue)
+//    if maxWidth == .infinity {
+//      print("Setting hexpand")
+//      gtk_widget_set_hexpand(widget, gtk_true())
+//      gtk_widget_set_halign(widget, GTK_ALIGN_FILL)
+//    }
+//    if maxHeight == .infinity {
+//      print("Setting vexpand")
+//      gtk_widget_set_vexpand(widget, gtk_true())
+//      gtk_widget_set_valign(widget, GTK_ALIGN_FILL)
+//    }
+//    gtk_widget_set_size_request(widget, Int32(idealWidth ?? -1), Int32(idealHeight ?? -1))
+//  }
+//}
 
 extension Color {
   func cssValue(_ environment: EnvironmentValues) -> String {

@@ -28,6 +28,14 @@ public struct _FrameLayout: ViewModifier {
   }
 }
 
+extension RenderingContext {
+  func align(_ childSize: CGSize, in parentSize: CGSize, alignment: Alignment) {
+    let parentPoint = alignment.point(for: parentSize)
+    let childPoint = alignment.point(for: childSize)
+    translate(x: parentPoint.x - childPoint.x, y: parentPoint.y - childPoint.y)
+  }
+}
+
 extension _FrameLayout {
   public func size<T, C: View>(for proposedSize: ProposedSize, hostView: MountedHostView<T>, content: C) -> CGSize {
     print("FRAMELAYOUT SIZE")
@@ -49,7 +57,7 @@ extension _FrameLayout {
 
     let childSize = content._size(for: ProposedSize(size), hostView: children[0])
 
-//    context.align(childSize, in: size, alignment: alignment)
+    context.align(childSize, in: size, alignment: alignment)
 
     content._layout(size: childSize, hostView: children[0])
     context.pop()

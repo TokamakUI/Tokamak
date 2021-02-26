@@ -50,7 +50,7 @@ extension _PaddingLayout {
     }
     let childSize = content._size(for: prop, hostView: children[0])
 
-//    context.align(childSize, in: size, alignment: alignment)
+    context.align(childSize, in: size, alignment: .center)
 
     content._layout(size: childSize, hostView: children[0])
     context.pop()

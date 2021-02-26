@@ -68,6 +68,16 @@ struct TokamakGTKDemo: App {
           }
           .padding(10)
           .background(Color.gray)
+          ZStack {
+            Rectangle().frame(width: 50, height: 10)
+            Rectangle().frame(width: 10, height: 50)
+          }
+
+          ZStack(alignment: .topLeading) {
+            Rectangle().frame(width: 50, height: 10)
+            Rectangle().frame(width: 10, height: 50)
+          }
+
         }
 //      List {
 //        Image("logo-header.png", bundle: Bundle.module, label: Text("Tokamak Demo"))
