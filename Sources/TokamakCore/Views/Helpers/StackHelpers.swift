@@ -46,8 +46,15 @@ class StackHelper {
     print("PROPOSED", proposedSize)
     let children = hostView.getChildren()
     let sizes = _layout(proposed: proposedSize, children: children)
-    let width: CGFloat = sizes.map(\.width).reduce(0, +)
-    let height: CGFloat = sizes.map(\.height).reduce(0, +)
+    let width: CGFloat
+    let height: CGFloat
+    if axis == .horizontal {
+      width = sizes.map(\.width).reduce(0, +)
+      height = sizes.map(\.height).reduce(0, max)
+    } else {
+      width = sizes.map(\.width).reduce(0, max)
+      height = sizes.map(\.height).reduce(0, +)
+    }
     print("SIZE", width, height)
     return CGSize(width: width, height: height)
   }
