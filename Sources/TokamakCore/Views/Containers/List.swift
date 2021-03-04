@@ -18,7 +18,6 @@
 public struct List<SelectionValue, Content>: View
   where SelectionValue: Hashable, Content: View
 {
-  @_spi(TokamakCore)
   public enum _Selection {
     case one(Binding<SelectionValue?>?)
     case many(Binding<Set<SelectionValue>>?)
@@ -121,7 +120,6 @@ public enum _ListRow {
 }
 
 /// This is a helper type that works around absence of "package private" access control in Swift
-@_spi(TokamakCore)
 public struct _ListProxy<SelectionValue, Content>
   where SelectionValue: Hashable, Content: View
 {

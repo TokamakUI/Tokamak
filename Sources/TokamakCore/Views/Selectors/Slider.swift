@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@_spi(TokamakCore)
 public enum _SliderStep {
   case any
   case discrete(Double.Stride)
@@ -155,7 +154,6 @@ extension Slider: ParentView {
 }
 
 /// This is a helper type that works around absence of "package private" access control in Swift
-@_spi(TokamakCore)
 public struct _SliderProxy<Label, ValueLabel> where Label: View, ValueLabel: View {
   public let subject: Slider<Label, ValueLabel>
 

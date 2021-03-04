@@ -35,7 +35,6 @@ public struct NavigationView<Content>: View where Content: View {
 }
 
 /// This is a helper type that works around absence of "package private" access control in Swift
-@_spi(TokamakCore)
 public struct _NavigationViewProxy<Content: View> {
   public let subject: NavigationView<Content>
 

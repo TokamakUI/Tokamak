@@ -103,7 +103,6 @@ public extension EnvironmentValues {
   }
 }
 
-@_spi(TokamakCore)
 public protocol _AnyIDView {
   var anyId: AnyHashable { get }
   var anyContent: AnyView { get }

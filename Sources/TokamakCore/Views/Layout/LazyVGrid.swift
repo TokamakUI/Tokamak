@@ -42,7 +42,6 @@ public struct LazyVGrid<Content>: View where Content: View {
   }
 }
 
-@_spi(TokamakCore)
 public struct _LazyVGridProxy<Content> where Content: View {
   public let subject: LazyVGrid<Content>
 

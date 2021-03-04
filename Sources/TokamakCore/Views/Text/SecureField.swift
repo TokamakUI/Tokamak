@@ -65,7 +65,6 @@ extension SecureField: ParentView {
 }
 
 /// This is a helper type that works around absence of "package private" access control in Swift
-@_spi(TokamakCore)
 public struct _SecureFieldProxy {
   public let subject: SecureField<Text>
 

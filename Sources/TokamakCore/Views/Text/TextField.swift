@@ -76,7 +76,6 @@ extension TextField: ParentView {
 }
 
 /// This is a helper type that works around absence of "package private" access control in Swift
-@_spi(TokamakCore)
 public struct _TextFieldProxy {
   public let subject: TextField<Text>
 

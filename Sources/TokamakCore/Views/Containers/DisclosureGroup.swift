@@ -71,7 +71,6 @@ public extension DisclosureGroup where Label == Text {
   }
 }
 
-@_spi(TokamakCore)
 public struct _DisclosureGroupProxy<Label, Content>
   where Label: View, Content: View
 {

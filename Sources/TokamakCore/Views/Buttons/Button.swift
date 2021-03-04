@@ -47,7 +47,6 @@ public struct Button<Label>: View where Label: View {
   }
 }
 
-@_spi(TokamakCore)
 public struct _Button<Label>: View where Label: View {
   public let label: Label
   public let action: () -> ()
