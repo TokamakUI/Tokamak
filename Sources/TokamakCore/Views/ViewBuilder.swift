@@ -27,7 +27,6 @@ public struct EmptyView: View {
 }
 
 // swiftlint:disable:next type_name
-@_spi(TokamakCore)
 public struct _ConditionalContent<TrueContent, FalseContent>: View
   where TrueContent: View, FalseContent: View
 {
