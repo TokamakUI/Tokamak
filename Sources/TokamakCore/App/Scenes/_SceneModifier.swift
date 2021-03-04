@@ -25,7 +25,6 @@ public struct _SceneModifier_Content<Modifier>: Scene where Modifier: _SceneModi
   public let modifier: Modifier
   public let scene: _AnyScene
 
-    
   @_spi(TokamakCore)
   public var body: Never {
     neverScene("_SceneModifier_Content")

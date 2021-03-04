@@ -44,7 +44,7 @@ public struct NavigationLink<Label, Destination>: View where Label: View, Destin
   //    tag: V, selection: Binding<V?>,
   //    @ViewBuilder label: () -> Label
   //   ) where V : Hashable
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("NavigationLink")

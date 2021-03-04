@@ -49,7 +49,7 @@ public struct ScrollView<Content>: View where Content: View {
     self.showsIndicators = showsIndicators
     self.content = content()
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("ScrollView")

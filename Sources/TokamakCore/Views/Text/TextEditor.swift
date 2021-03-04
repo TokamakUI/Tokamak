@@ -18,7 +18,7 @@ public struct TextEditor: View {
   public init(text: Binding<String>) {
     textBinding = text
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("TextEditor")

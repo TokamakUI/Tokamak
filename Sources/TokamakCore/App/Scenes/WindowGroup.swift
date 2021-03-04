@@ -62,7 +62,7 @@ public struct WindowGroup<Content>: Scene, TitledScene where Content: View {
     self.title = Text(title)
     self.content = content()
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverScene("WindowGroup")

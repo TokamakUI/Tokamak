@@ -35,7 +35,7 @@ public struct LazyVGrid<Content>: View where Content: View {
     self.pinnedViews = pinnedViews
     self.content = content()
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("LazyVGrid")

@@ -39,7 +39,7 @@ public struct SecureField<Label>: View where Label: View {
   let label: Label
   let textBinding: Binding<String>
   let onCommit: () -> ()
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("SecureField")

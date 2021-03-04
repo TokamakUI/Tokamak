@@ -40,7 +40,7 @@ public struct TextField<Label>: View where Label: View {
   let onEditingChanged: (Bool) -> ()
   let onCommit: () -> ()
   @Environment(\.textFieldStyle) var style
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("TextField")

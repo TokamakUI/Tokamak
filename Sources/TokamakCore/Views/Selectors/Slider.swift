@@ -36,7 +36,7 @@ public struct Slider<Label, ValueLabel>: View where Label: View, ValueLabel: Vie
   let bounds: ClosedRange<Double>
   let step: _SliderStep
   let onEditingChanged: (Bool) -> ()
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("Slider")

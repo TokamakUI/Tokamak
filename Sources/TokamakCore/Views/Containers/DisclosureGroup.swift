@@ -39,7 +39,7 @@ public struct DisclosureGroup<Label, Content>: View where Label: View, Content: 
     self.label = label()
     self.content = content
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("DisclosureGroup")

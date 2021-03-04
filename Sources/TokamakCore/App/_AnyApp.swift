@@ -30,7 +30,7 @@ public struct _AnyApp: App {
     bodyClosure = { _AnyScene(($0 as! A).body) }
     bodyType = A.Body.self
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverScene("_AnyApp")
@@ -40,22 +40,22 @@ public struct _AnyApp: App {
   public init() {
     fatalError("`_AnyApp` cannot be initialized without an underlying `App` type.")
   }
-    
+
   @_spi(TokamakCore)
   public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
     fatalError("`_AnyApp` cannot be launched. Access underlying `app` value.")
   }
-    
+
   @_spi(TokamakCore)
   public static func _setTitle(_ title: String) {
     fatalError("`title` cannot be set for `AnyApp`. Access underlying `app` value.")
   }
-    
+
   @_spi(TokamakCore)
   public var _phasePublisher: AnyPublisher<ScenePhase, Never> {
     fatalError("`_AnyApp` cannot monitor scenePhase. Access underlying `app` value.")
   }
-    
+
   @_spi(TokamakCore)
   public var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
     fatalError("`_AnyApp` cannot monitor colorScheme. Access underlying `app` value.")

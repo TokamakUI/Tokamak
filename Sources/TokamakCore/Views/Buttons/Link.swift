@@ -24,7 +24,7 @@ public struct Link<Label>: View where Label: View {
   public init(destination: URL, @ViewBuilder label: () -> Label) {
     (self.destination, self.label) = (destination, label())
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("Link")

@@ -17,7 +17,7 @@
 public struct ButtonStyleConfiguration {
   public struct Label: View {
     let content: AnyView
-    
+
     @_spi(TokamakCore)
     public var body: Never {
       neverBody("ButtonStyleConfiguration.Label")

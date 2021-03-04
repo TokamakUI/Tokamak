@@ -71,7 +71,7 @@ extension NavigationView: ViewDeferredToRenderer {
 }
 
 extension NavigationLink: ViewDeferredToRenderer {
-@_spi(TokamakCore)
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     let proxy = _NavigationLinkProxy(self)
     return AnyView(Button(action: { proxy.activate() }) {

@@ -18,9 +18,9 @@
 /// A horizontal line for separating content.
 public struct Divider: View {
   @Environment(\.self) public var environment
-    
+
   public init() {}
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("Divider")

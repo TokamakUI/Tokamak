@@ -57,7 +57,7 @@ public struct _Button<Label>: View where Label: View {
     self.label = label
     self.action = action
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("_Button")

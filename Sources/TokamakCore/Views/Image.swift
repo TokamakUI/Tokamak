@@ -39,7 +39,7 @@ public struct Image: View {
     self.name = name
     self.bundle = bundle
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("Image")

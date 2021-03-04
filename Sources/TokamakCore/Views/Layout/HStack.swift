@@ -42,7 +42,7 @@ public struct HStack<Content>: View where Content: View {
     self.spacing = spacing
     self.content = content()
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("HStack")

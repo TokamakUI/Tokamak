@@ -27,7 +27,7 @@ public struct NavigationView<Content>: View where Content: View {
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("NavigationView")

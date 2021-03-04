@@ -23,7 +23,7 @@ struct _TupleScene<T>: Scene, GroupScene {
     self.value = value
     self.children = children
   }
-    
+
   var body: Never {
     neverScene("_TupleScene")
   }

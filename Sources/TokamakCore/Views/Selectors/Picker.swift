@@ -36,7 +36,7 @@ public struct _PickerContainer<Label: View, SelectionValue: Hashable, Content: V
     self.elements = elements
     self.content = content()
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("_PickerLabel")
@@ -47,7 +47,7 @@ public struct _PickerElement: View {
   public let valueIndex: Int?
   public let content: AnyView
   @Environment(\.pickerStyle) public var style
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("_PickerElement")
@@ -125,4 +125,3 @@ extension Picker: _PickerContainerProtocol {
     // .map(\.children) ?? []
   }
 }
-

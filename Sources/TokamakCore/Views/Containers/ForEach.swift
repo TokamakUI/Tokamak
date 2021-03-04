@@ -47,7 +47,7 @@ public struct ForEach<Data, ID, Content>: View where Data: RandomAccessCollectio
     self.id = id
     self.content = content
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("ForEach")

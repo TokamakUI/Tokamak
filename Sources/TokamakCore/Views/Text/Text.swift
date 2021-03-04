@@ -71,7 +71,7 @@ public struct Text: View {
   public init<S>(_ content: S) where S: StringProtocol {
     self.init(storage: .verbatim(String(content)))
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("Text")

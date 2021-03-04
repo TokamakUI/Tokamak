@@ -67,7 +67,7 @@ public struct AnyView: View {
       }
     }
   }
-    
+
   @_spi(TokamakCore)
   public var body: Never {
     neverBody("AnyView")
