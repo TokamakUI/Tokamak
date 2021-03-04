@@ -33,7 +33,6 @@ public protocol AnyFontBoxDeferredToRenderer: AnyFontBox {
 }
 
 public class AnyFontBox: AnyTokenBox, Hashable, Equatable {
-  @_spi(TokamakCore)
   public struct _Font: Hashable, Equatable {
     public var _name: String
     public var _size: CGFloat

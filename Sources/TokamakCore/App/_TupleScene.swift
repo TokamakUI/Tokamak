@@ -24,7 +24,6 @@ struct _TupleScene<T>: Scene, GroupScene {
     self.children = children
   }
     
-  @_spi(TokamakCore)
   var body: Never {
     neverScene("_TupleScene")
   }
