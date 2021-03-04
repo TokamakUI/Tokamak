@@ -42,13 +42,15 @@ public struct HStack<Content>: View where Content: View {
     self.spacing = spacing
     self.content = content()
   }
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("HStack")
   }
 }
 
 extension HStack: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (content as? GroupView)?.children ?? [AnyView(content)]
   }

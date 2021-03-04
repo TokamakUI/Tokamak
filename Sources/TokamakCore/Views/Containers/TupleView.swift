@@ -19,6 +19,7 @@
 ///
 /// Mainly for use with `@ViewBuilder`.
 public struct TupleView<T>: View {
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("TupleView")
   }

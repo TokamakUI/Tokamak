@@ -17,6 +17,7 @@ import TokamakCore
 import TokamakStaticHTML
 
 extension Slider: ViewDeferredToRenderer {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     let proxy = _SliderProxy(self)
     let step: String

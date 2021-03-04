@@ -27,13 +27,15 @@ public struct NavigationView<Content>: View where Content: View {
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()
   }
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("NavigationView")
   }
 }
 
 /// This is a helper type that works around absence of "package private" access control in Swift
+@_spi(TokamakCore)
 public struct _NavigationViewProxy<Content: View> {
   public let subject: NavigationView<Content>
 

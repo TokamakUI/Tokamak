@@ -70,6 +70,7 @@ extension DisclosureGroup: ViewDeferredToRenderer {
     }
   }
 
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     AnyView(HTML("div", [
       "class": "_tokamak-disclosuregroup",

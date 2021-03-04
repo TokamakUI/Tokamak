@@ -241,6 +241,7 @@ public struct Color: Hashable, Equatable {
   }
 
   /// Create a `Color` dependent on the current `ColorScheme`.
+  @_spi(TokamakCore)
   public static func _withScheme(_ resolver: @escaping (ColorScheme) -> Self) -> Self {
     .init(_EnvironmentDependentColorBox {
       resolver($0.colorScheme)

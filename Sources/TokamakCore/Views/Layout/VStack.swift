@@ -39,13 +39,15 @@ public struct VStack<Content>: View where Content: View {
     self.spacing = spacing
     self.content = content()
   }
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("VStack")
   }
 }
 
 extension VStack: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (content as? GroupView)?.children ?? [AnyView(content)]
   }

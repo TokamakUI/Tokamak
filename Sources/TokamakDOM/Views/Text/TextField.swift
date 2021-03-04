@@ -38,7 +38,8 @@ extension TextField: ViewDeferredToRenderer where Label == Text {
       return ""
     }
   }
-
+    
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     let proxy = _TextFieldProxy(self)
 

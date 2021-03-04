@@ -17,6 +17,8 @@
 public struct ButtonStyleConfiguration {
   public struct Label: View {
     let content: AnyView
+    
+    @_spi(TokamakCore)
     public var body: Never {
       neverBody("ButtonStyleConfiguration.Label")
     }
@@ -34,6 +36,7 @@ public struct DefaultButtonStyle: ButtonStyle {
 }
 
 /// This is a helper type that works around absence of "package private" access control in Swift
+@_spi(TokamakCore)
 public struct _ButtonStyleConfigurationProxy {
   public struct Label {
     public typealias Subject = ButtonStyleConfiguration.Label

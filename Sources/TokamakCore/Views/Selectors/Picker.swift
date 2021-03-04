@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@_spi(TokamakCore)
 public protocol _PickerContainerProtocol {
   var elements: [_AnyIDView] { get }
 }
 
+@_spi(TokamakCore)
 public struct _PickerContainer<Label: View, SelectionValue: Hashable, Content: View>: View,
   _PickerContainerProtocol
 {
@@ -36,17 +38,20 @@ public struct _PickerContainer<Label: View, SelectionValue: Hashable, Content: V
     self.elements = elements
     self.content = content()
   }
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("_PickerLabel")
   }
 }
 
+@_spi(TokamakCore)
 public struct _PickerElement: View {
   public let valueIndex: Int?
   public let content: AnyView
   @Environment(\.pickerStyle) public var style
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("_PickerElement")
   }
@@ -105,12 +110,14 @@ public extension Picker where Label == Text {
 }
 
 extension Picker: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (content as? GroupView)?.children ?? [AnyView(content)]
   }
 }
 
 extension Picker: _PickerContainerProtocol {
+  @_spi(TokamakCore)
   public var elements: [_AnyIDView] {
     (content as? ForEachProtocol)?.children
       .compactMap {

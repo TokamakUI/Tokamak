@@ -48,6 +48,7 @@ public extension Toggle where Label == AnyView {
 }
 
 extension Toggle: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (label as? GroupView)?.children ?? [AnyView(label)]
   }

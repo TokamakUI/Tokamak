@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@_spi(TokamakCore)
 public enum _SliderStep {
   case any
   case discrete(Double.Stride)
@@ -36,7 +37,8 @@ public struct Slider<Label, ValueLabel>: View where Label: View, ValueLabel: Vie
   let bounds: ClosedRange<Double>
   let step: _SliderStep
   let onEditingChanged: (Bool) -> ()
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("Slider")
   }
@@ -144,6 +146,7 @@ public extension Slider {
 }
 
 extension Slider: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     ((label as? GroupView)?.children ?? [AnyView(label)])
       + ((minValueLabel as? GroupView)?.children ?? [AnyView(minValueLabel)])
@@ -152,6 +155,7 @@ extension Slider: ParentView {
 }
 
 /// This is a helper type that works around absence of "package private" access control in Swift
+@_spi(TokamakCore)
 public struct _SliderProxy<Label, ValueLabel> where Label: View, ValueLabel: View {
   public let subject: Slider<Label, ValueLabel>
 

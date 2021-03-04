@@ -47,7 +47,8 @@ public struct ForEach<Data, ID, Content>: View where Data: RandomAccessCollectio
     self.id = id
     self.content = content
   }
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("ForEach")
   }
@@ -79,6 +80,7 @@ public extension ForEach where Data == Range<Int>, ID == Int {
 }
 
 extension ForEach: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     data.map { AnyView(IDView(content($0), id: $0[keyPath: id])) }
   }
@@ -101,6 +103,7 @@ public extension EnvironmentValues {
   }
 }
 
+@_spi(TokamakCore)
 public protocol _AnyIDView {
   var anyId: AnyHashable { get }
   var anyContent: AnyView { get }

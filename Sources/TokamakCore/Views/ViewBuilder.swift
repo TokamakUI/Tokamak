@@ -19,13 +19,15 @@
 public struct EmptyView: View {
   @inlinable
   public init() {}
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("EmptyView")
   }
 }
 
 // swiftlint:disable:next type_name
+@_spi(TokamakCore)
 public struct _ConditionalContent<TrueContent, FalseContent>: View
   where TrueContent: View, FalseContent: View
 {
@@ -35,7 +37,8 @@ public struct _ConditionalContent<TrueContent, FalseContent>: View
   }
 
   let storage: Storage
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("_ConditionContent")
   }

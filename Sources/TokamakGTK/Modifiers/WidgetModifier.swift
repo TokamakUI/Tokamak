@@ -51,6 +51,7 @@ extension WidgetAttributeModifier {
 }
 
 extension ModifiedContent: ViewDeferredToRenderer where Content: View {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     guard let widgetModifier = modifier as? WidgetModifier else {
       return AnyView(content)

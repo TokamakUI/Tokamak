@@ -39,13 +39,15 @@ public struct Image: View {
     self.name = name
     self.bundle = bundle
   }
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("Image")
   }
 }
 
 /// This is a helper type that works around absence of "package private" access control in Swift
+@_spi(TokamakCore)
 public struct _ImageProxy {
   public let subject: Image
 

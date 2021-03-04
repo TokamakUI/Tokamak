@@ -46,6 +46,7 @@ public struct GeometryReader<Content>: View where Content: View {
     self.content = content
   }
 
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("GeometryReader")
   }

@@ -19,6 +19,7 @@ import TokamakStaticHTML
 private let ResizeObserver = JSObject.global.ResizeObserver.function!
 
 extension GeometryReader: ViewDeferredToRenderer {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     AnyView(_GeometryReader(content: content))
   }

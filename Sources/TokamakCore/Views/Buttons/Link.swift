@@ -24,7 +24,8 @@ public struct Link<Label>: View where Label: View {
   public init(destination: URL, @ViewBuilder label: () -> Label) {
     (self.destination, self.label) = (destination, label())
   }
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("Link")
   }
@@ -36,6 +37,7 @@ public extension Link where Label == Text {
   }
 }
 
+@_spi(TokamakCore)
 public struct _LinkProxy<Label> where Label: View {
   public let subject: Link<Label>
 

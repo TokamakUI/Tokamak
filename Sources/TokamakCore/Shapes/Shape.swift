@@ -58,7 +58,8 @@ public struct _ShapeView<Content, Style>: View where Content: Shape, Style: Shap
     self.style = style
     self.fillStyle = fillStyle
   }
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("_ShapeView")
   }

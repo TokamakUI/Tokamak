@@ -25,6 +25,7 @@ import WASILibc
 
 /// The outline of a 2D shape.
 public struct Path: Equatable, LosslessStringConvertible {
+  @_spi(TokamakCore)
   public class _PathBox: Equatable {
     var elements: [Element] = []
     public static func == (lhs: Path._PathBox, rhs: Path._PathBox) -> Bool {

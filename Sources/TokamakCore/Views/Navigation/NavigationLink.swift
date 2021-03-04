@@ -44,7 +44,8 @@ public struct NavigationLink<Label, Destination>: View where Label: View, Destin
   //    tag: V, selection: Binding<V?>,
   //    @ViewBuilder label: () -> Label
   //   ) where V : Hashable
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("NavigationLink")
   }
@@ -73,6 +74,7 @@ public extension NavigationLink where Label == Text {
 }
 
 /// This is a helper type that works around absence of "package private" access control in Swift
+@_spi(TokamakCore)
 public struct _NavigationLinkProxy<Label, Destination> where Label: View, Destination: View {
   public let subject: NavigationLink<Label, Destination>
 

@@ -67,7 +67,8 @@ public struct AnyView: View {
       }
     }
   }
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("AnyView")
   }
@@ -80,6 +81,7 @@ public func mapAnyView<T, V>(_ anyView: AnyView, transform: (V) -> T) -> T? {
 }
 
 extension AnyView: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (view as? ParentView)?.children ?? []
   }

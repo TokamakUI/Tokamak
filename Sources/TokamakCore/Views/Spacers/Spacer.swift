@@ -28,7 +28,8 @@ public struct Spacer: View {
   public init(minLength: CGFloat? = nil) {
     self.minLength = minLength
   }
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("Spacer")
   }

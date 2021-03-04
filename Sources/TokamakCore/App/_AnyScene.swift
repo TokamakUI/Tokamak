@@ -65,7 +65,8 @@ public struct _AnyScene: Scene {
       typeConstructorName = TokamakCore.typeConstructorName(type)
     }
   }
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverScene("_AnyScene")
   }

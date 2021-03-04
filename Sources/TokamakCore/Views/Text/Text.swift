@@ -71,7 +71,8 @@ public struct Text: View {
   public init<S>(_ content: S) where S: StringProtocol {
     self.init(storage: .verbatim(String(content)))
   }
-
+    
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("Text")
   }
@@ -91,6 +92,7 @@ public extension Text._Storage {
 }
 
 /// This is a helper type that works around absence of "package private" access control in Swift
+@_spi(TokamakCore)
 public struct _TextProxy {
   public let subject: Text
 

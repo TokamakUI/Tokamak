@@ -36,6 +36,7 @@ extension LazyVGrid: ViewDeferredToRenderer {
     _LazyVGridProxy(self).columns.last
   }
 
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     var styles = """
     display: grid;
