@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import JavaScriptKit
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 
 public extension View {
   /** Allows capturing DOM references of host views. The resulting reference is written
