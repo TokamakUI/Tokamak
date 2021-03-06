@@ -23,7 +23,7 @@ protocol StackProtocol {
   var alignment: Alignment { get }
 }
 
-struct Box<Content: View>: PrimitiveView, ParentView, AnyWidget, StackProtocol {
+struct Box<Content: View>: View, ParentView, AnyWidget, StackProtocol {
   let content: Content
   let orientation: GtkOrientation
   let spacing: TokamakCore.CGFloat
@@ -42,6 +42,10 @@ struct Box<Content: View>: PrimitiveView, ParentView, AnyWidget, StackProtocol {
   }
 
   func update(widget: Widget) {}
+
+  var body: Never {
+    neverBody("Box")
+  }
 
   public var children: [AnyView] {
     [AnyView(content)]

@@ -27,13 +27,18 @@ protocol AnyDynamicHTML: AnyHTML {
   var listeners: [String: Listener] { get }
 }
 
-public struct DynamicHTML<Content>: PrimitiveView, AnyDynamicHTML {
+public struct DynamicHTML<Content>: View, AnyDynamicHTML {
   public let tag: String
   public let attributes: [HTMLAttribute: String]
   public let listeners: [String: Listener]
   let content: Content
 
   public var innerHTML: String?
+
+  @_spi(TokamakCore)
+  public var body: Never {
+    neverBody("HTML")
+  }
 }
 
 public extension DynamicHTML where Content: StringProtocol {

@@ -18,8 +18,12 @@
 import CGTK
 import TokamakCore
 
-struct SceneContainerView<Content: View>: PrimitiveView, AnyWidget {
+struct SceneContainerView<Content: View>: View, AnyWidget {
   let content: Content
+
+  var body: Never {
+    neverBody("SceneContainerView")
+  }
 
   func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
     print("Making window")

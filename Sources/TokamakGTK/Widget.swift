@@ -25,7 +25,7 @@ extension AnyWidget {
   var expand: Bool { false }
 }
 
-struct WidgetView<Content: View>: PrimitiveView, AnyWidget, ParentView {
+struct WidgetView<Content: View>: View, AnyWidget, ParentView {
   let build: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>
   let update: (Widget) -> ()
   let content: Content
@@ -50,6 +50,10 @@ struct WidgetView<Content: View>: PrimitiveView, AnyWidget, ParentView {
     if case .widget = widget.storage {
       update(widget)
     }
+  }
+
+  var body: Never {
+    neverBody("WidgetView")
   }
 
   var children: [AnyView] {
