@@ -345,7 +345,7 @@ public extension Color {
 
 extension Color: ShapeStyle {}
 extension Color: View {
-  @_spi(BubbleCore)
+  @_spi(TokamakCore)
   public var body: some View {
     _ShapeView(shape: Rectangle(), style: self)
   }
