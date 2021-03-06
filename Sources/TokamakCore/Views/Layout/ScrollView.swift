@@ -35,7 +35,7 @@
 ///         Text("\($0)")
 ///       }
 ///     }
-public struct ScrollView<Content>: View where Content: View {
+public struct ScrollView<Content>: PrimitiveView where Content: View {
   public let content: Content
   public let axes: Axis.Set
   public let showsIndicators: Bool
@@ -48,11 +48,6 @@ public struct ScrollView<Content>: View where Content: View {
     self.axes = axes
     self.showsIndicators = showsIndicators
     self.content = content()
-  }
-
-  @_spi(TokamakCore)
-  public var body: Never {
-    neverBody("ScrollView")
   }
 }
 

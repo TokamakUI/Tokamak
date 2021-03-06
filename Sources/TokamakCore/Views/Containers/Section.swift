@@ -33,6 +33,7 @@ extension Section: View, SectionView where Parent: View, Content: View, Footer: 
   }
 
   @ViewBuilder
+  @_spi(TokamakCore)
   public var body: TupleView<(Parent, Content, Footer)> {
     header
     content

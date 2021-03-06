@@ -16,7 +16,7 @@
 //
 
 /// A type-erased view.
-public struct AnyView: View {
+public struct AnyView: PrimitiveView {
   /// The type of the underlying `view`.
   let type: Any.Type
 
@@ -66,11 +66,6 @@ public struct AnyView: View {
         bodyClosure = { AnyView(($0 as! V).body) }
       }
     }
-  }
-
-  @_spi(TokamakCore)
-  public var body: Never {
-    neverBody("AnyView")
   }
 }
 

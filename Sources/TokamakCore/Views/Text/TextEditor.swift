@@ -12,16 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public struct TextEditor: View {
+public struct TextEditor: PrimitiveView {
   let textBinding: Binding<String>
 
   public init(text: Binding<String>) {
     textBinding = text
-  }
-
-  @_spi(TokamakCore)
-  public var body: Never {
-    neverBody("TextEditor")
   }
 }
 

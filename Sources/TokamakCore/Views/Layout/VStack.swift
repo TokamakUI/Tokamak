@@ -25,7 +25,7 @@ public enum HorizontalAlignment: Equatable {
 ///       Text("Hello")
 ///       Text("World")
 ///     }
-public struct VStack<Content>: View where Content: View {
+public struct VStack<Content>: PrimitiveView where Content: View {
   public let alignment: HorizontalAlignment
   public let spacing: CGFloat?
   public let content: Content
@@ -38,11 +38,6 @@ public struct VStack<Content>: View where Content: View {
     self.alignment = alignment
     self.spacing = spacing
     self.content = content()
-  }
-
-  @_spi(TokamakCore)
-  public var body: Never {
-    neverBody("VStack")
   }
 }
 

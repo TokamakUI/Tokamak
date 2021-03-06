@@ -31,7 +31,8 @@ protocol ForEachProtocol: GroupView {
 ///         Text("\($0)")
 ///       }
 ///     }
-public struct ForEach<Data, ID, Content>: View where Data: RandomAccessCollection, ID: Hashable,
+public struct ForEach<Data, ID, Content>: PrimitiveView where Data: RandomAccessCollection,
+  ID: Hashable,
   Content: View
 {
   let data: Data
@@ -46,11 +47,6 @@ public struct ForEach<Data, ID, Content>: View where Data: RandomAccessCollectio
     self.data = data
     self.id = id
     self.content = content
-  }
-
-  @_spi(TokamakCore)
-  public var body: Never {
-    neverBody("ForEach")
   }
 }
 

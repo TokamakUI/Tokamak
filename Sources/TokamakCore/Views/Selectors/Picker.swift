@@ -16,7 +16,7 @@ public protocol _PickerContainerProtocol {
   var elements: [_AnyIDView] { get }
 }
 
-public struct _PickerContainer<Label: View, SelectionValue: Hashable, Content: View>: View,
+public struct _PickerContainer<Label: View, SelectionValue: Hashable, Content: View>: PrimitiveView,
   _PickerContainerProtocol
 {
   @Binding public var selection: SelectionValue
@@ -36,22 +36,12 @@ public struct _PickerContainer<Label: View, SelectionValue: Hashable, Content: V
     self.elements = elements
     self.content = content()
   }
-
-  @_spi(TokamakCore)
-  public var body: Never {
-    neverBody("_PickerLabel")
-  }
 }
 
-public struct _PickerElement: View {
+public struct _PickerElement: PrimitiveView {
   public let valueIndex: Int?
   public let content: AnyView
   @Environment(\.pickerStyle) public var style
-
-  @_spi(TokamakCore)
-  public var body: Never {
-    neverBody("_PickerElement")
-  }
 }
 
 public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View {
@@ -69,6 +59,7 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
     self.content = content()
   }
 
+  @_spi(TokamakCore)
   public var body: some View {
     let children = self.children
 

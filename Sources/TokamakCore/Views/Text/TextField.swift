@@ -34,17 +34,12 @@
 ///         print("Set username")
 ///       })
 ///     }
-public struct TextField<Label>: View where Label: View {
+public struct TextField<Label>: PrimitiveView where Label: View {
   let label: Label
   let textBinding: Binding<String>
   let onEditingChanged: (Bool) -> ()
   let onCommit: () -> ()
   @Environment(\.textFieldStyle) var style
-
-  @_spi(TokamakCore)
-  public var body: Never {
-    neverBody("TextField")
-  }
 }
 
 public extension TextField where Label == Text {

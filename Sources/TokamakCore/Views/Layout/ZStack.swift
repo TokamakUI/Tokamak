@@ -43,7 +43,7 @@ public struct Alignment: Equatable {
 ///       Text("Top")
 ///     }
 ///
-public struct ZStack<Content>: View where Content: View {
+public struct ZStack<Content>: PrimitiveView where Content: View {
   public let alignment: Alignment
   public let spacing: CGFloat?
   public let content: Content
@@ -56,11 +56,6 @@ public struct ZStack<Content>: View where Content: View {
     self.alignment = alignment
     self.spacing = spacing
     self.content = content()
-  }
-
-  @_spi(TokamakCore)
-  public var body: Never {
-    neverBody("ZStack")
   }
 }
 

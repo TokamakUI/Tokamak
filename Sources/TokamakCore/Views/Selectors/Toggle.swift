@@ -25,6 +25,7 @@ public struct Toggle<Label>: View where Label: View {
     self.label = label()
   }
 
+  @_spi(BubbleCore)
   public var body: AnyView {
     toggleStyle.makeBody(
       configuration: ToggleStyleConfiguration(label: AnyView(label), isOn: $isOn)

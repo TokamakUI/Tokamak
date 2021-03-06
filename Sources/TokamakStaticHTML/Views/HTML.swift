@@ -63,17 +63,12 @@ public extension AnyHTML {
   }
 }
 
-public struct HTML<Content>: View, AnyHTML {
+public struct HTML<Content>: PrimitiveView, AnyHTML {
   public let tag: String
   public let attributes: [HTMLAttribute: String]
   let content: Content
 
   public let innerHTML: String?
-
-  @_spi(TokamakCore)
-  public var body: Never {
-    neverBody("HTML")
-  }
 }
 
 public extension HTML where Content: StringProtocol {

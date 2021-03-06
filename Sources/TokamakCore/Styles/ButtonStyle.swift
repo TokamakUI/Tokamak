@@ -15,13 +15,8 @@
 //  Created by Gene Z. Ragan on 07/22/2020.
 
 public struct ButtonStyleConfiguration {
-  public struct Label: View {
+  public struct Label: PrimitiveView {
     let content: AnyView
-
-    @_spi(TokamakCore)
-    public var body: Never {
-      neverBody("ButtonStyleConfiguration.Label")
-    }
   }
 
   public let label: Label

@@ -28,7 +28,7 @@ private func convert<T: BinaryFloatingPoint>(_ range: ClosedRange<T>) -> ClosedR
 /// A control for selecting a value from a bounded linear range of values.
 ///
 /// Available when `Label` and `ValueLabel` conform to `View`.
-public struct Slider<Label, ValueLabel>: View where Label: View, ValueLabel: View {
+public struct Slider<Label, ValueLabel>: PrimitiveView where Label: View, ValueLabel: View {
   let label: Label
   let minValueLabel: ValueLabel
   let maxValueLabel: ValueLabel
@@ -36,11 +36,6 @@ public struct Slider<Label, ValueLabel>: View where Label: View, ValueLabel: Vie
   let bounds: ClosedRange<Double>
   let step: _SliderStep
   let onEditingChanged: (Bool) -> ()
-
-  @_spi(TokamakCore)
-  public var body: Never {
-    neverBody("Slider")
-  }
 }
 
 public extension Slider where Label == EmptyView, ValueLabel == EmptyView {

@@ -46,7 +46,7 @@ public struct FillStyle: Equatable, ShapeStyle {
   }
 }
 
-public struct _ShapeView<Content, Style>: View where Content: Shape, Style: ShapeStyle {
+public struct _ShapeView<Content, Style>: PrimitiveView where Content: Shape, Style: ShapeStyle {
   @Environment(\.self) public var environment
   @Environment(\.foregroundColor) public var foregroundColor
   public var shape: Content
@@ -57,11 +57,6 @@ public struct _ShapeView<Content, Style>: View where Content: Shape, Style: Shap
     self.shape = shape
     self.style = style
     self.fillStyle = fillStyle
-  }
-
-  @_spi(TokamakCore)
-  public var body: Never {
-    neverBody("_ShapeView")
   }
 }
 

@@ -19,18 +19,13 @@ public final class NavigationContext: ObservableObject {
   @Published var destination = NavigationLinkDestination(EmptyView())
 }
 
-public struct NavigationView<Content>: View where Content: View {
+public struct NavigationView<Content>: PrimitiveView where Content: View {
   let content: Content
 
   @StateObject var context = NavigationContext()
 
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()
-  }
-
-  @_spi(TokamakCore)
-  public var body: Never {
-    neverBody("NavigationView")
   }
 }
 

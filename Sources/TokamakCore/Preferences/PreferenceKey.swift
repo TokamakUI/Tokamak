@@ -96,12 +96,6 @@ public protocol _PreferenceWritingModifierProtocol: ViewModifier
   func body(_ content: Self.Content, with preferenceStore: inout _PreferenceStore) -> AnyView
 }
 
-public extension _PreferenceWritingViewProtocol where Self: View {
-  var body: Never {
-    neverBody(String(describing: Self.self))
-  }
-}
-
 public extension _PreferenceWritingModifierProtocol {
   func body(content: Content) -> AnyView {
     content.view
