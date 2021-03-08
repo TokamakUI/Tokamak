@@ -66,6 +66,7 @@ public struct _AnyScene: Scene {
     }
   }
 
+  @_spi(TokamakCore)
   public var body: Never {
     neverScene("_AnyScene")
   }

@@ -51,6 +51,7 @@ func createPath(from elements: [Path.Element], in cr: OpaquePointer) {
 }
 
 extension _ShapeView: ViewDeferredToRenderer {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     AnyView(WidgetView(build: { _ in
       let w = gtk_drawing_area_new()

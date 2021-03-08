@@ -18,11 +18,7 @@
 /// A `View` created from a `Tuple` of `View` values.
 ///
 /// Mainly for use with `@ViewBuilder`.
-public struct TupleView<T>: View {
-  public var body: Never {
-    neverBody("TupleView")
-  }
-
+public struct TupleView<T>: PrimitiveView {
   public let value: T
 
   let _children: [AnyView]

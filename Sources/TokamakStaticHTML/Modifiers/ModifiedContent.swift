@@ -30,6 +30,7 @@ extension ModifiedContent: AnyModifiedContent where Modifier: DOMViewModifier, C
 }
 
 extension ModifiedContent: ViewDeferredToRenderer where Content: View, Modifier: ViewModifier {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     if let domModifier = modifier as? DOMViewModifier {
       if let adjacentModifier = content as? AnyModifiedContent,

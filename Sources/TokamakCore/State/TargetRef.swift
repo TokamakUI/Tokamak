@@ -33,6 +33,7 @@ public struct _TargetRef<V: View, T>: View, TargetRefType {
 public extension View {
   /** Allows capturing target instance of aclosest descendant host view. The resulting instance
    is written to a given `binding`. */
+  @_spi(TokamakCore)
   func _targetRef<T: Target>(_ binding: Binding<T?>) -> _TargetRef<Self, T> {
     .init(binding: binding, view: self)
   }

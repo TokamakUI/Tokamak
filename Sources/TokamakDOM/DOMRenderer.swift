@@ -17,7 +17,7 @@
 
 import JavaScriptKit
 import OpenCombineJS
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 import TokamakStaticHTML
 
 extension EnvironmentValues {

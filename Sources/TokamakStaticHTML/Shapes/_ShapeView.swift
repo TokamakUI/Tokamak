@@ -32,6 +32,7 @@ extension _StrokedShape: ShapeAttributes {
 }
 
 extension _ShapeView: ViewDeferredToRenderer {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     let path = shape.path(in: .zero).deferredBody
     if let shapeAttributes = shape as? ShapeAttributes {

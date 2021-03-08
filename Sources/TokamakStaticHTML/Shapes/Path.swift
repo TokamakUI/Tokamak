@@ -128,6 +128,7 @@ extension Path: ViewDeferredToRenderer {
     svgFrom(storage: storage, strokeStyle: strokeStyle)
   }
 
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     let sizeStyle = sizing == .flexible ?
       """

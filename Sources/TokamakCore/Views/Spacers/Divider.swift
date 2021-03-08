@@ -16,10 +16,8 @@
 //
 
 /// A horizontal line for separating content.
-public struct Divider: View {
+public struct Divider: PrimitiveView {
   @Environment(\.self) public var environment
+
   public init() {}
-  public var body: Never {
-    neverBody("Divider")
-  }
 }

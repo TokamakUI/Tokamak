@@ -70,6 +70,7 @@ public struct HTML<Content>: View, AnyHTML {
 
   public let innerHTML: String?
 
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("HTML")
   }
@@ -100,6 +101,7 @@ extension HTML: ParentView where Content: View {
     innerHTML = nil
   }
 
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     [AnyView(content)]
   }
