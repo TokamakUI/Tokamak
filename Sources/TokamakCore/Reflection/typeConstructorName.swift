@@ -18,9 +18,5 @@
  is returned.
  */
 public func typeConstructorName(_ type: Any.Type) -> String {
-  // FIXME: no idea if this calculation is reliable, but seems to be the only way to get
-  // a name of a type constructor in runtime. Should definitely check if these are different
-  // across modules, otherwise can cause problems with views with same names in different
-  // modules.
   String(String(reflecting: type).prefix { $0 != "<" })
 }
