@@ -36,7 +36,7 @@ public protocol PrimitiveView: View where Body == Never {}
 public extension PrimitiveView {
   @_spi(TokamakCore)
   var body: Never {
-    neverBody(String(describing: Self.self))
+    neverBody(String(reflecting: Self.self))
   }
 }
 

@@ -22,5 +22,5 @@ public func typeConstructorName(_ type: Any.Type) -> String {
   // a name of a type constructor in runtime. Should definitely check if these are different
   // across modules, otherwise can cause problems with views with same names in different
   // modules.
-  String(String(describing: type).prefix { $0 != "<" })
+  String(String(reflecting: type).prefix { $0 != "<" })
 }
