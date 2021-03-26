@@ -26,19 +26,9 @@ extension DatePicker: ViewDeferredToRenderer {
 
     let attributes: [HTMLAttribute: String] = [
       "type": type.inputType,
-      "min": proxy.min
-        .map { type.format(date: JSDate(millisecondsSinceEpoch: $0.timeIntervalSince1970 * 1000))
-        } ??
-        "",
-      "max": proxy.max
-        .map { type.format(date: JSDate(millisecondsSinceEpoch: $0.timeIntervalSince1970 * 1000))
-        } ??
-        "",
-      .value: type
-        .format(date: JSDate(
-          millisecondsSinceEpoch: proxy.valueBinding.wrappedValue
-            .timeIntervalSince1970 * 1000
-        )),
+      "min": proxy.min.map { type.format(date: $0) } ?? "",
+      "max": proxy.max.map { type.format(date: $0) } ?? "",
+      .value: type.format(date: proxy.valueBinding.wrappedValue),
     ]
 
     return AnyView(
@@ -50,12 +40,11 @@ extension DatePicker: ViewDeferredToRenderer {
           attributes,
           listeners: [
             "input": { event in
-              proxy.valueBinding
-                .wrappedValue =
-                Date(timeIntervalSince1970: JSDate(
-                  unsafelyWrapping: JSDate.constructor
-                    .new(event.target.object!.value.string!)
-                ).valueOf() / 1000)
+              let str = event.target.object!.value.string!
+              let ms = JSDate(unsafelyWrapping: JSDate.constructor.new(str)).valueOf()
+              if ms.isFinite {
+                proxy.valueBinding.wrappedValue = Date(timeIntervalSince1970: ms / 1000)
+              }
             },
           ]
         )
@@ -75,7 +64,8 @@ extension DatePickerComponents {
     }
   }
 
-  func format(date: JSDate) -> String {
+  func format(date: Date) -> String {
+    let date = JSDate(millisecondsSinceEpoch: date.timeIntervalSince1970 * 1000)
     switch (self.contains(.hourAndMinute), self.contains(.date)) {
     case (true, true):
       return String(date.toISOString().dropLast(8)) // remove seconds, milliseconds and Z
