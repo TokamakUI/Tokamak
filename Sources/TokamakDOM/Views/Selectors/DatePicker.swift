@@ -43,8 +43,28 @@ extension DatePicker: ViewDeferredToRenderer {
           attributes,
           listeners: [
             "input": { event in
+              let current = JSDate(
+                millisecondsSinceEpoch: proxy.valueBinding.wrappedValue
+                  .timeIntervalSince1970 * 1000
+              )
               let str = event.target.object!.value.string!
-              let ms = JSDate(unsafelyWrapping: JSDate.constructor.new(str)).valueOf()
+              let decomposed = type.parse(date: str)
+              if let date = decomposed.date {
+                let components = date.components(separatedBy: "-")
+                if components.count == 3 {
+                  current.fullYear = Int(components[0]) ?? 0
+                  current.month = (Int(components[1]) ?? 0) - 1
+                  current.date = Int(components[2]) ?? 0
+                }
+              }
+              if let time = decomposed.time {
+                let components = time.components(separatedBy: ":")
+                if components.count == 2 {
+                  current.hours = Int(components[0]) ?? 0
+                  current.minutes = Int(components[1]) ?? 0
+                }
+              }
+              let ms = current.valueOf()
               if ms.isFinite {
                 proxy.valueBinding.wrappedValue = Date(timeIntervalSince1970: ms / 1000)
               }
@@ -58,7 +78,7 @@ extension DatePicker: ViewDeferredToRenderer {
 
 extension DatePickerComponents {
   var inputType: String {
-    switch (self.contains(.hourAndMinute), self.contains(.date)) {
+    switch (contains(.hourAndMinute), contains(.date)) {
     case (true, true): return "datetime-local"
     case (true, false): return "time"
     case (false, true): return "date"
@@ -69,19 +89,40 @@ extension DatePickerComponents {
 
   func format(date: Date) -> String {
     let date = JSDate(millisecondsSinceEpoch: date.timeIntervalSince1970 * 1000)
-    switch (self.contains(.hourAndMinute), self.contains(.date)) {
+    var partial: [String] = []
+    if contains(.date) {
+      let y = date.fullYear
+      let year: String
+      if y < 0 {
+        year = "-" + "00000\(-y)".suffix(6)
+      } else if y > 9999 {
+        year = "+" + "00000\(y)".suffix(6)
+      } else {
+        year = String("000\(y)".suffix(4))
+      }
+      partial.append("\(year)-\("0\(date.month + 1)".suffix(2))-\("0\(date.date)".suffix(2))")
+    }
+    if contains(.hourAndMinute) {
+      partial.append("\("0\(date.hours)".suffix(2)):\("0\(date.minutes)".suffix(2))")
+    }
+    return partial.joined(separator: "T")
+  }
+
+  /// Decomposes a formatted string into a date and a time component
+  func parse(date: String) -> (date: String?, time: String?) {
+    switch (contains(.hourAndMinute), contains(.date)) {
     case (true, true):
-      return String(date.toISOString().dropLast(8)) // remove seconds, milliseconds and Z
+      let components = date.components(separatedBy: "T")
+      if components.count == 2 {
+        return (components[0], components[1])
+      }
+      return (nil, nil)
     case (true, false):
-      let datetime = date.toISOString().dropLast(8)
-      return String(
-        datetime
-          .dropFirst(datetime.count - 5)
-      ) // year can be 4 or 7 characters according to the spec
+      return (nil, date)
     case (false, true):
-      return String(date.toISOString().dropLast(14)) // remove time component
+      return (date, nil)
     case (false, false):
-      fatalError("invalid date components: must select at least date or hourAndMinute")
+      return (nil, nil)
     }
   }
 }
