@@ -17,9 +17,9 @@
 
 import struct Foundation.Date
 
-/// A control for selecting a value from a bounded linear range of values.
+/// A control for selecting an absolute date.
 ///
-/// Available when `Label` and `ValueLabel` conform to `View`.
+/// Available when `Label` conform to `View`.
 public struct DatePicker<Label>: PrimitiveView where Label: View {
   let label: Label
   let valueBinding: Binding<Date>
