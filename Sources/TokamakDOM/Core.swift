@@ -98,6 +98,7 @@ public typealias Edge = TokamakCore.Edge
 
 public typealias Alignment = TokamakCore.Alignment
 public typealias Button = TokamakCore.Button
+public typealias DatePicker = TokamakCore.DatePicker
 public typealias DisclosureGroup = TokamakCore.DisclosureGroup
 public typealias Divider = TokamakCore.Divider
 public typealias ForEach = TokamakCore.ForEach

@@ -124,6 +124,7 @@ struct TokamakDemoView: View {
             NavItem("Shadow", destination: ShadowDemo())
           }
           Section(header: Text("Selectors")) {
+            NavItem("DatePicker", destination: DatePickerDemo())
             NavItem("Picker", destination: PickerDemo())
             NavItem("Slider", destination: SliderDemo())
             NavItem("Toggle", destination: ToggleDemo())
