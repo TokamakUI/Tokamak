@@ -33,6 +33,7 @@ public struct HStack<Content>: PrimitiveView where Content: View {
   public let spacing: CGFloat?
   public let content: Content
 
+  @inlinable
   public init(
     alignment: VerticalAlignment = .center,
     spacing: CGFloat? = nil,

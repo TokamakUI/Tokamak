@@ -25,6 +25,7 @@ public struct _EnvironmentKeyWritingModifier<Value>: ViewModifier, EnvironmentMo
   public let keyPath: WritableKeyPath<EnvironmentValues, Value>
   public let value: Value
 
+  @inlinable
   public init(keyPath: WritableKeyPath<EnvironmentValues, Value>, value: Value) {
     self.keyPath = keyPath
     self.value = value
@@ -38,6 +39,7 @@ public struct _EnvironmentKeyWritingModifier<Value>: ViewModifier, EnvironmentMo
 }
 
 public extension View {
+  @inlinable
   func environment<V>(
     _ keyPath: WritableKeyPath<EnvironmentValues, V>,
     _ value: V

@@ -367,6 +367,7 @@ public extension EnvironmentValues {
 }
 
 public extension View {
+  @inlinable
   func accentColor(_ accentColor: Color?) -> some View {
     environment(\.accentColor, accentColor)
   }
@@ -388,6 +389,7 @@ public extension EnvironmentValues {
 }
 
 public extension View {
+  @inlinable
   func foregroundColor(_ color: Color?) -> some View {
     environment(\.foregroundColor, color)
   }

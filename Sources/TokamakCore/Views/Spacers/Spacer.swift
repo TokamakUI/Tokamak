@@ -25,6 +25,7 @@
 public struct Spacer: PrimitiveView {
   public var minLength: CGFloat?
 
+  @inlinable
   public init(minLength: CGFloat? = nil) {
     self.minLength = minLength
   }

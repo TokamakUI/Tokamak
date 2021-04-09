@@ -104,24 +104,27 @@ public protocol _AnyIDView {
   var anyContent: AnyView { get }
 }
 
+@usableFromInline
 struct IDView<Content, ID>: View, _AnyIDView where Content: View, ID: Hashable {
-  let content: Content
-  let id: ID
-  var anyId: AnyHashable { AnyHashable(id) }
-  var anyContent: AnyView { AnyView(content) }
+  @usableFromInline let content: Content
+  @usableFromInline let id: ID
+  @usableFromInline var anyId: AnyHashable { AnyHashable(id) }
+  @usableFromInline var anyContent: AnyView { AnyView(content) }
 
+  @inlinable
   init(_ content: Content, id: ID) {
     self.content = content
     self.id = id
   }
 
-  var body: some View {
+  @usableFromInline var body: some View {
     content
       .environment(\._id, AnyHashable(id))
   }
 }
 
 public extension View {
+  @inlinable
   func id<ID>(_ id: ID) -> some View where ID: Hashable {
     IDView(self, id: id)
   }

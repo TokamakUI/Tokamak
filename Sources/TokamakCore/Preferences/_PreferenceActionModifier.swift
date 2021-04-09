@@ -19,6 +19,7 @@ public struct _PreferenceActionModifier<Key>: _PreferenceWritingModifierProtocol
   where Key: PreferenceKey, Key.Value: Equatable
 {
   public let action: (Key.Value) -> ()
+  @inlinable
   public init(action: @escaping (Key.Value) -> Swift.Void) {
     self.action = action
   }
