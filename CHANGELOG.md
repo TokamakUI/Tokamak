@@ -2,7 +2,7 @@
 
 This release introduces new view types such as `DatePicker`, new modifiers such as `shadow`,
 improves test coverage, updates dependencies, and fixes multiple bugs and crashes. Additionally,
-a previous for GTK renderer is added as a proof of concept.
+a proof of concept GTK renderer is now available in the `TokamakGTK` module.
 
 Many thanks to (in alphabetical order)
 [@carson-katri](https://github.com/carson-katri), [@filip-sakel](https://github.com/filip-sakel),
