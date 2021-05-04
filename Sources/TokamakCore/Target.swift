@@ -22,6 +22,36 @@ public protocol RenderingContext: AnyObject {
   var resolvedTransform: CGPoint { get }
 }
 
+public protocol BasicRenderingContext: RenderingContext {
+  var transformStack: [CGPoint] { get set }
+  var current: CGPoint { get set }
+}
+
+public extension BasicRenderingContext {
+  var resolvedTransform: CGPoint {
+    var resolved = CGPoint.zero
+    for offset in transformStack + [current] {
+      resolved.x += offset.x
+      resolved.y += offset.y
+    }
+    return resolved
+  }
+
+  func push() {
+    transformStack.append(current)
+    current = .zero
+  }
+
+  func translate(x: CGFloat, y: CGFloat) {
+    current.x += x
+    current.y += y
+  }
+
+  func pop() {
+    current = transformStack.removeLast()
+  }
+}
+
 public protocol Target: AnyObject {
   var view: AnyView { get set }
   var context: RenderingContext { get }
