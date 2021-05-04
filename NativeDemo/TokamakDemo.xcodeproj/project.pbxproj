@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		207C05702610E16E00BBBE54 /* DatePickerDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207C056F2610E16E00BBBE54 /* DatePickerDemo.swift */; };
+		207C05712610E16E00BBBE54 /* DatePickerDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207C056F2610E16E00BBBE54 /* DatePickerDemo.swift */; };
 		3DCDE44424CA6AD400910F17 /* SidebarDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */; };
 		3DCDE44524CA6AD400910F17 /* SidebarDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */; };
 		4550BD5225B642B80088F4EA /* ShadowDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4550BD5125B642B80088F4EA /* ShadowDemo.swift */; };
@@ -92,6 +94,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		207C056F2610E16E00BBBE54 /* DatePickerDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerDemo.swift; sourceTree = "<group>"; };
 		3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidebarDemo.swift; sourceTree = "<group>"; };
 		4550BD5125B642B80088F4EA /* ShadowDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowDemo.swift; sourceTree = "<group>"; };
 		8500293E24D2FF3E001A2E84 /* SliderDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderDemo.swift; sourceTree = "<group>"; };
@@ -191,6 +194,7 @@
 				B5C76E4924C73ED4003EABB2 /* AppStorageDemo.swift */,
 				B56F22DF24BC89FD001738DF /* ColorDemo.swift */,
 				85ED189E24AD425E0085DFA0 /* Counter.swift */,
+				207C056F2610E16E00BBBE54 /* DatePickerDemo.swift */,
 				85ED18A024AD425E0085DFA0 /* EnvironmentDemo.swift */,
 				85ED189C24AD425E0085DFA0 /* ForEachDemo.swift */,
 				B56F22E224BD1C26001738DF /* GridDemo.swift */,
@@ -352,6 +356,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85ED186A24AD38F20085DFA0 /* UIAppDelegate.swift in Sources */,
+				207C05702610E16E00BBBE54 /* DatePickerDemo.swift in Sources */,
 				B56F22E324BD1C26001738DF /* GridDemo.swift in Sources */,
 				D1B4229224B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */,
 				D1D6B62324D817350041E1D9 /* GeometryReaderDemo.swift in Sources */,
@@ -383,6 +388,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85ED18AA24AD425E0085DFA0 /* TokamakDemo.swift in Sources */,
+				207C05712610E16E00BBBE54 /* DatePickerDemo.swift in Sources */,
 				B56F22E424BD1C26001738DF /* GridDemo.swift in Sources */,
 				D1B4229324B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */,
 				D1D6B62424D817350041E1D9 /* GeometryReaderDemo.swift in Sources */,

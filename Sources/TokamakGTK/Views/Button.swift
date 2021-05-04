@@ -20,7 +20,9 @@ import Foundation
 import TokamakCore
 
 extension _Button: AnyWidget, ParentView {
-  func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>? {
+  func new(_ application: UnsafeMutablePointer<GtkApplication>)
+    -> UnsafeMutablePointer<GtkWidget>?
+  {
     let btn = gtk_button_new()!
     bindAction(to: btn)
     return btn

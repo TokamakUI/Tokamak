@@ -16,7 +16,9 @@ import CGTK
 import TokamakCore
 
 extension _PickerContainer: AnyWidget {
-  func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>? {
+  func new(_ application: UnsafeMutablePointer<GtkApplication>)
+    -> UnsafeMutablePointer<GtkWidget>?
+  {
     let comboBox = gtk_combo_box_text_new()!
     comboBox.withMemoryRebound(to: GtkComboBoxText.self, capacity: 1) { gtkComboBox in
       for element in elements {

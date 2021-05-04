@@ -50,7 +50,8 @@ extension WidgetAttributeModifier {
   }
 }
 
-//extension ModifiedContent: ViewDeferredToRenderer where Content: View {
+// extension ModifiedContent: ViewDeferredToRenderer where Content: View {
+//  @_spi(TokamakCore)
 //  public var deferredBody: AnyView {
 //    guard let widgetModifier = modifier as? WidgetModifier else {
 //      return AnyView(content)
@@ -69,10 +70,10 @@ extension WidgetAttributeModifier {
 //      return AnyView(content)
 //    }
 //
-//    let build: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>? = {
-//        guard let contentWidget = anyWidget.new($0) else { return nil }
-//        widgetModifier.modify(widget: contentWidget)
-//        return contentWidget
+//    let build: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> = {
+//      let contentWidget = anyWidget.new($0)
+//      widgetModifier.modify(widget: contentWidget)
+//      return contentWidget
 //    }
 //
 //    let update: (Widget) -> () = { widget in
@@ -124,4 +125,4 @@ extension WidgetAttributeModifier {
 //      )
 //    }
 //  }
-//}
+// }

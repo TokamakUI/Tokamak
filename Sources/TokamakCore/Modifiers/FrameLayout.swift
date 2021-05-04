@@ -36,19 +36,24 @@ extension RenderingContext {
   }
 }
 
-extension _FrameLayout {
-  public func size<T, C: View>(for proposedSize: ProposedSize, hostView: MountedHostView<T>, content: C) -> CGSize {
+public extension _FrameLayout {
+  func size<T, C: View>(for proposedSize: ProposedSize, hostView: MountedHostView<T>,
+                        content: C) -> CGSize
+  {
     print("FRAMELAYOUT SIZE")
     if let width = self.width, let height = self.height {
       print("W", width, "H", height)
       return CGSize(width: width, height: height)
     }
     let children = hostView.getChildren()
-    let childSize = content._size(for: ProposedSize(width: width ?? proposedSize.width, height: height ?? proposedSize.height), hostView: children[0])
+    let childSize = content._size(
+      for: ProposedSize(width: width ?? proposedSize.width, height: height ?? proposedSize.height),
+      hostView: children[0]
+    )
     return CGSize(width: width ?? childSize.width, height: height ?? childSize.height)
   }
 
-  public func layout<T, C: View>(size: CGSize, hostView: MountedHostView<T>, content: C) {
+  func layout<T, C: View>(size: CGSize, hostView: MountedHostView<T>, content: C) {
     guard let context = hostView.target?.context else { return }
     print("FRAMELAYOUT LAYOUT")
     let children = hostView.getChildren()

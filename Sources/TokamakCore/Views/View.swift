@@ -29,8 +29,8 @@ public struct ProposedSize {
   }
 
   public init(_ size: CGSize) {
-    self.width = size.width
-    self.height = size.height
+    width = size.width
+    height = size.height
   }
 }
 
@@ -64,12 +64,23 @@ public extension View {
 }
 
 public extension Never {
+  @_spi(TokamakCore)
   var body: Never {
-    neverBody("Never")
+    fatalError()
   }
 }
 
-extension Never: View {}
+extension Never: PrimitiveView {}
+
+/// A `View` that offers primitive functionality, which renders its `body` inaccessible.
+public protocol PrimitiveView: View where Body == Never {}
+
+public extension PrimitiveView {
+  @_spi(TokamakCore)
+  var body: Never {
+    neverBody(String(reflecting: Self.self))
+  }
+}
 
 /// A `View` type that renders with subviews, usually specified in the `Content` type argument
 public protocol ParentView {

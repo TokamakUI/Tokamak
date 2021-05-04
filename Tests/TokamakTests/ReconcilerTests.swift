@@ -15,7 +15,7 @@
 //  Created by Max Desiatov on 07/12/2018.
 //
 
-import TokamakTestRenderer
+@_spi(TokamakCore) import TokamakTestRenderer
 import XCTest
 
 @testable import TokamakCore

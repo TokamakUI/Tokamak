@@ -16,11 +16,11 @@
 //
 
 /// An alignment position along the vertical axis.
-//public enum VerticalAlignment: Equatable {
+// public enum VerticalAlignment: Equatable {
 //  case top
 //  case center
 //  case bottom
-//}
+// }
 
 /// A view that arranges its children in a horizontal line.
 ///
@@ -28,7 +28,7 @@
 ///       Text("Hello")
 ///       Text("World")
 ///     }
-public struct HStack<Content>: View where Content: View {
+public struct HStack<Content>: PrimitiveView where Content: View {
   public let alignment: VerticalAlignment
   public let spacing: CGFloat?
   public let content: Content
@@ -43,20 +43,16 @@ public struct HStack<Content>: View where Content: View {
     self.spacing = spacing
     self.content = content()
   }
-
-  public var body: Never {
-    neverBody("HStack")
-  }
 }
 
 extension HStack: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (content as? GroupView)?.children ?? [AnyView(content)]
   }
 }
 
 extension HStack: BuiltinView {
-
   public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
     helper.layout(size: size, hostView: hostView)
   }

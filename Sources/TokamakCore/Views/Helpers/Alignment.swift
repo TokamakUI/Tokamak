@@ -17,10 +17,10 @@ public struct Alignment {
   public static let center = Self(horizontal: .center, vertical: .center)
   public static let leading = Self(horizontal: .leading, vertical: .center)
   public static let trailing = Self(horizontal: .trailing, vertical: .center)
-  public static let top = Self(horizontal: .center , vertical: .top)
+  public static let top = Self(horizontal: .center, vertical: .top)
   public static let topLeading = Self(horizontal: .leading, vertical: .top)
   public static let topTrailing = Self(horizontal: .trailing, vertical: .top)
-  public static let bottom = Self(horizontal: .center , vertical: .bottom)
+  public static let bottom = Self(horizontal: .center, vertical: .bottom)
   public static let bottomLeading = Self(horizontal: .leading, vertical: .bottom)
   public static let bottomTrailing = Self(horizontal: .trailing, vertical: .bottom)
 }
@@ -54,7 +54,7 @@ enum VTop: AlignmentID {
 }
 
 enum VCenter: AlignmentID {
-  static func defaultValue(in context: CGSize) -> CGFloat { context.height/2 }
+  static func defaultValue(in context: CGSize) -> CGFloat { context.height / 2 }
 }
 
 enum VBottom: AlignmentID {
@@ -66,15 +66,15 @@ enum HLeading: AlignmentID {
 }
 
 enum HCenter: AlignmentID {
-  static func defaultValue(in context: CGSize) -> CGFloat { context.width/2 }
+  static func defaultValue(in context: CGSize) -> CGFloat { context.width / 2 }
 }
 
 enum HTrailing: AlignmentID {
   static func defaultValue(in context: CGSize) -> CGFloat { context.width }
 }
 
-extension Alignment {
-  public func point(for size: CGSize) -> CGPoint {
+public extension Alignment {
+  func point(for size: CGSize) -> CGPoint {
     let x = horizontal.alignmentID.defaultValue(in: size)
     let y = vertical.alignmentID.defaultValue(in: size)
     return CGPoint(x: x, y: y)

@@ -18,10 +18,10 @@
 import CGTK
 import TokamakCore
 
-//extension _FrameLayout: BuiltinView {
+// extension _FrameLayout: BuiltinView {
 //  func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
 //    let children = hostView.getChildren()
-//    let childSize = 
+//    let childSize =
 //  }
 //  func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
 //
@@ -30,9 +30,9 @@ import TokamakCore
 ////  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
 ////    gtk_widget_set_size_request(widget, Int32(width ?? -1), Int32(height ?? -1))
 ////  }
-//}
+// }
 
-//extension _FlexFrameLayout: WidgetModifier {
+// extension _FlexFrameLayout: WidgetModifier {
 //  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
 //    gtk_widget_set_halign(widget, alignment.horizontal.gtkValue)
 //    gtk_widget_set_valign(widget, alignment.vertical.gtkValue)
@@ -48,7 +48,7 @@ import TokamakCore
 //    }
 //    gtk_widget_set_size_request(widget, Int32(idealWidth ?? -1), Int32(idealHeight ?? -1))
 //  }
-//}
+// }
 
 extension Color {
   func cssValue(_ environment: EnvironmentValues) -> String {
@@ -56,11 +56,12 @@ extension Color {
     return "rgba(\(rgba.red * 255), \(rgba.green * 255), \(rgba.blue * 255), \(rgba.opacity))"
   }
 }
+
 //
 //// Border modifier
-//extension _OverlayModifier: WidgetAttributeModifier, WidgetModifier
+// extension _OverlayModifier: WidgetAttributeModifier, WidgetModifier
 //  where Overlay == _ShapeView<_StrokedShape<TokamakCore.Rectangle._Inset>, Color>
-//{
+// {
 //  var attributes: [String: String] {
 //    let style = overlay.shape.style.dashPhase == 0 ? "solid" : "dashed"
 //
@@ -71,11 +72,11 @@ extension Color {
 //      "border-radius": "inherit",
 //    ]
 //  }
-//}
+// }
 //
-//extension _BackgroundModifier: WidgetAttributeModifier, WidgetModifier where Background == Color {
+// extension _BackgroundModifier: WidgetAttributeModifier, WidgetModifier where Background == Color {
 //  var attributes: [String: String] {
 //    let cssValue = background.cssValue(environment)
 //    return ["background": cssValue]
 //  }
-//}
+// }

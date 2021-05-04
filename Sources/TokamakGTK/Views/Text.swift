@@ -20,7 +20,9 @@ import Foundation
 import TokamakCore
 
 extension Text: AnyWidget {
-  func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>? {
+  func new(_ application: UnsafeMutablePointer<GtkApplication>)
+    -> UnsafeMutablePointer<GtkWidget>?
+  {
     let proxy = _TextProxy(self)
     return gtk_label_new(proxy.rawText)
   }
@@ -40,7 +42,7 @@ extension Text: AnyWidget {
 
     var minSize = GtkRequisition()
     var naturalSize = GtkRequisition()
-    gtk_widget_get_preferred_size (w, &minSize, &naturalSize)
+    gtk_widget_get_preferred_size(w, &minSize, &naturalSize)
 
     var width: TokamakCore.CGFloat = 0
     var height: TokamakCore.CGFloat = 0
@@ -69,5 +71,4 @@ extension Text: AnyWidget {
 
     return CGSize(width: width, height: height)
   }
-    
 }

@@ -91,7 +91,6 @@ final class GTKRenderer: Renderer {
             layout(elm)
           }
         )
-
       }
 
       let status = g_application_run(gApp, 0, nil)
@@ -118,15 +117,16 @@ final class GTKRenderer: Renderer {
       return nil
     }
 
-    let ctor: ((UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?)
+    let ctor: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?
 
     if let anyWidget = builtinView as? AnyWidget {
       ctor = anyWidget.new
     } else {
-      ctor = { _ in return nil }
+      ctor = { _ in nil }
     }
 
     let widget: UnsafeMutablePointer<GtkWidget>?
+    // swiftlint:disable:next force_cast
     let context: WidgetContext = parent.context as! WidgetContext
     switch parent.storage {
     case let .application(app):
@@ -138,11 +138,11 @@ final class GTKRenderer: Renderer {
     }
 
     if let w = widget {
-        context.parent.withMemoryRebound(to: GtkFixed.self, capacity: 1) {
-          gtk_fixed_put($0, w, 0, 0)
-          gtk_widget_set_size_request(w, 10, 10)
-        }
-        gtk_widget_show(w)
+      context.parent.withMemoryRebound(to: GtkFixed.self, capacity: 1) {
+        gtk_fixed_put($0, w, 0, 0)
+        gtk_widget_set_size_request(w, 10, 10)
+      }
+      gtk_widget_show(w)
     }
 
     return Widget(host.view, widget, context: context)

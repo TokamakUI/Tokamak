@@ -163,7 +163,7 @@ public extension MountedElement {
    */
   func getChildren() -> [MountedHostView<R>] {
     var children: [MountedHostView<R>] = []
-    for childElement in self.mountedChildren {
+    for childElement in mountedChildren {
       guard let childView = childElement as? MountedHostView<R> else {
         children.append(contentsOf: childElement.getChildren())
         continue

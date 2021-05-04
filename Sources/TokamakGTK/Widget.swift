@@ -21,7 +21,6 @@ protocol AnyWidget: BuiltinView {
 }
 
 extension AnyWidget {
-
   public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
     print("USING DEFAULT SIZE FOR", self)
     return proposedSize.orDefault
@@ -31,6 +30,7 @@ extension AnyWidget {
     print("XXX LAYING OUT", self, size)
 
     if let widget = hostView.target as? Widget {
+      // swiftlint:disable:next force_cast
       let context = widget.context as! WidgetContext
       let resolvedTransform = context.resolvedTransform
       if case let .widget(w) = widget.storage {
@@ -46,16 +46,19 @@ struct WidgetView<Content: View>: View, AnyWidget, ParentView {
   let update: (Widget) -> ()
   let content: Content
 
-  init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?,
-       update: @escaping (Widget) -> () = { _ in },
-       @ViewBuilder content: () -> Content)
-  {
+  init(
+    build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?,
+    update: @escaping (Widget) -> () = { _ in },
+    @ViewBuilder content: () -> Content
+  ) {
     self.build = build
     self.content = content()
     self.update = update
   }
 
-  func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>? {
+  func new(_ application: UnsafeMutablePointer<GtkApplication>)
+    -> UnsafeMutablePointer<GtkWidget>?
+  {
     build(application)
   }
 
@@ -75,8 +78,7 @@ struct WidgetView<Content: View>: View, AnyWidget, ParentView {
 }
 
 extension WidgetView where Content == EmptyView {
-  init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>)
-  {
+  init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>) {
     self.init(build: build) { EmptyView() }
   }
 }
@@ -145,9 +147,9 @@ final class Widget: Target {
 
   init<V: View>(_ view: V, _ ref: UnsafeMutablePointer<GtkWidget>?, context: WidgetContext) {
     if let ref = ref {
-        storage = .widget(ref)
+      storage = .widget(ref)
     } else {
-        storage = .dummy
+      storage = .dummy
     }
     self.view = AnyView(view)
     self.context = context
@@ -156,7 +158,7 @@ final class Widget: Target {
   init(_ ref: UnsafeMutablePointer<GtkWidget>, fixed: UnsafeMutablePointer<GtkFixed>) {
     storage = .widget(ref)
     view = AnyView(EmptyView())
-    self.context = WidgetContext(parent: fixed)
+    context = WidgetContext(parent: fixed)
   }
 
   init(_ ref: UnsafeMutablePointer<GtkApplication>, context: WidgetContext) {
@@ -172,7 +174,7 @@ final class Widget: Target {
     case let .widget(widget):
       gtk_widget_destroy(widget)
     case .dummy:
-        ()
+      ()
     }
   }
 }

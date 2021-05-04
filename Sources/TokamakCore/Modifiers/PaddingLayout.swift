@@ -26,14 +26,19 @@ public struct _PaddingLayout: ViewModifier {
   }
 }
 
-extension _PaddingLayout {
-  public func size<T, C: View>(for proposedSize: ProposedSize, hostView: MountedHostView<T>, content: C) -> CGSize {
+public extension _PaddingLayout {
+  func size<T, C: View>(for proposedSize: ProposedSize, hostView: MountedHostView<T>,
+                        content: C) -> CGSize
+  {
     let children = hostView.getChildren()
     let childSize = content._size(for: proposedSize, hostView: children[0])
-    return CGSize(width: childSize.width + (insets?.leading ?? 0) + (insets?.trailing ?? 0), height: childSize.height + (insets?.top ?? 0) + (insets?.bottom ?? 0))
+    return CGSize(
+      width: childSize.width + (insets?.leading ?? 0) + (insets?.trailing ?? 0),
+      height: childSize.height + (insets?.top ?? 0) + (insets?.bottom ?? 0)
+    )
   }
 
-  public func layout<T, C: View>(size: CGSize, hostView: MountedHostView<T>, content: C) {
+  func layout<T, C: View>(size: CGSize, hostView: MountedHostView<T>, content: C) {
     guard let context = hostView.target?.context else { return }
     print("FRAMELAYOUT LAYOUT")
     let children = hostView.getChildren()
@@ -56,7 +61,6 @@ extension _PaddingLayout {
     context.pop()
   }
 }
-
 
 public extension View {
   func padding(_ insets: EdgeInsets) -> some View {

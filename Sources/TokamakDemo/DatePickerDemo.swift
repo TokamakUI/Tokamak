@@ -12,14 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Gene Z. Ragan on 07/22/2020.
+//  Created by Emil Pedersen on 2021-03-27.
 //
 
-import TokamakCore
+import struct Foundation.Date
+import TokamakShim
 
-extension ButtonStyleConfiguration.Label: ViewDeferredToRenderer {
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
-    _ButtonStyleConfigurationProxy.Label(self).content
+struct DatePickerDemo: View {
+  @State private var date = Date()
+
+  var body: some View {
+    VStack {
+      DatePicker(selection: $date, displayedComponents: .date) {
+        Text("Appointment date:")
+      }
+      DatePicker(selection: $date, displayedComponents: .hourAndMinute) {
+        Text("Appointment time:")
+      }
+      DatePicker(selection: $date) {
+        Text("Confirm:")
+      }
+    }
   }
 }

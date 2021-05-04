@@ -55,7 +55,7 @@ extension ModifiedContent: BuiltinView where Content: View, Modifier: ViewModifi
 //    let childSize = content._size(for: proposedSize, hostView: children[0])
 //    print("MODIFIEDCONTENT childSize", childSize)
 //    return CGSize(width: childSize.width + 50, height: childSize.height + 50)
-    return modifier.size(for: proposedSize, hostView: hostView, content: content)
+    modifier.size(for: proposedSize, hostView: hostView, content: content)
   }
 
   public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {

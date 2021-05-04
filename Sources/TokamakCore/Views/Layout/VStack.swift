@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /// An alignment position along the horizontal axis.
-//public enum HorizontalAlignment: Equatable {
+// public enum HorizontalAlignment: Equatable {
 //  case leading
 //  case center
 //  case trailing
-//}
+// }
 
 /// A view that arranges its children in a vertical line.
 ///
@@ -25,7 +25,7 @@
 ///       Text("Hello")
 ///       Text("World")
 ///     }
-public struct VStack<Content>: View where Content: View {
+public struct VStack<Content>: PrimitiveView where Content: View {
   public let alignment: HorizontalAlignment
   public let spacing: CGFloat?
   public let content: Content
@@ -40,13 +40,10 @@ public struct VStack<Content>: View where Content: View {
     self.spacing = spacing
     self.content = content()
   }
-
-  public var body: Never {
-    neverBody("VStack")
-  }
 }
 
 extension VStack: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (content as? GroupView)?.children ?? [AnyView(content)]
   }

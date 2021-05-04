@@ -16,7 +16,7 @@
 //
 
 public struct _Background<Content, Background>: View
-where Background: View, Content: View
+  where Background: View, Content: View
 {
   public var environment: EnvironmentValues!
   public var content: Content
@@ -35,7 +35,6 @@ where Background: View, Content: View
 }
 
 extension _Background: BuiltinView where Content: View, Background: View {
-
   public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
     print("LAYOUT _BACKGROUND CONTENT", size, content)
     let children = hostView.getChildren()
@@ -81,7 +80,7 @@ public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
   }
 }
 
-//extension _BackgroundModifier {
+// extension _BackgroundModifier {
 //  public func size<T, C: View>(for proposedSize: ProposedSize, hostView: MountedHostView<T>, content: C) -> CGSize {
 //    print("BACKGROUND SIZE")
 //    let children = hostView.getChildren()
@@ -101,7 +100,7 @@ public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
 //    content._layout(size: size, hostView: children[1])
 //    context.pop()
 //  }
-//}
+// }
 
 extension _BackgroundModifier: Equatable where Background: Equatable {
   public static func == (
@@ -124,7 +123,7 @@ public extension View {
 }
 
 public struct _Overlay<Content, Overlay>: View
-where Overlay: View, Content: View
+  where Overlay: View, Content: View
 {
   public var environment: EnvironmentValues!
   public var content: Content
@@ -148,7 +147,6 @@ where Overlay: View, Content: View
 }
 
 extension _Overlay: BuiltinView where Content: View, Overlay: View {
-
   public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
     print("LAYOUT _OVERLAY CONTENT", size, content)
     let children = hostView.getChildren()
@@ -171,7 +169,6 @@ extension _Overlay: ParentView {
     [AnyView(content), AnyView(overlay)]
   }
 }
-
 
 public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
   where Overlay: View

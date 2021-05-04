@@ -51,15 +51,15 @@ func createPath(from elements: [Path.Element], in cr: OpaquePointer) {
 }
 
 extension _ShapeView: AnyWidget, BuiltinView {
-
-  func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>? {
+  func new(_ application: UnsafeMutablePointer<GtkApplication>)
+    -> UnsafeMutablePointer<GtkWidget>?
+  {
     let w = gtk_drawing_area_new()
     bindAction(to: w!)
     return w!
   }
 
-  func update(widget: Widget) {
-  }
+  func update(widget: Widget) {}
 
   func bindAction(to drawingArea: UnsafeMutablePointer<GtkWidget>) {
     drawingArea.connect(signal: "draw", closure: { widget, cr in

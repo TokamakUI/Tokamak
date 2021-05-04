@@ -22,7 +22,9 @@ final class NavigationLinkDestination {
   }
 }
 
-public struct NavigationLink<Label, Destination>: View where Label: View, Destination: View {
+public struct NavigationLink<Label, Destination>: PrimitiveView where Label: View,
+  Destination: View
+{
   @State var destination: NavigationLinkDestination
   let label: Label
 
@@ -44,10 +46,6 @@ public struct NavigationLink<Label, Destination>: View where Label: View, Destin
   //    tag: V, selection: Binding<V?>,
   //    @ViewBuilder label: () -> Label
   //   ) where V : Hashable
-
-  public var body: Never {
-    neverBody("NavigationLink")
-  }
 }
 
 public extension NavigationLink where Label == Text {

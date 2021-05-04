@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /// An alignment in both axes.
-//public struct Alignment: Equatable {
+// public struct Alignment: Equatable {
 //  public var horizontal: HorizontalAlignment
 //  public var vertical: VerticalAlignment
 //
@@ -34,7 +34,7 @@
 //  public static let bottomLeading = Self(horizontal: .leading, vertical: .bottom)
 //  public static let bottom = Self(horizontal: .center, vertical: .bottom)
 //  public static let bottomTrailing = Self(horizontal: .trailing, vertical: .bottom)
-//}
+// }
 
 /// A view that overlays its children, aligning them in both axes.
 ///
@@ -43,7 +43,7 @@
 ///       Text("Top")
 ///     }
 ///
-public struct ZStack<Content>: View where Content: View {
+public struct ZStack<Content>: PrimitiveView where Content: View {
   public let alignment: Alignment
   public let spacing: CGFloat?
   public let content: Content
@@ -57,13 +57,10 @@ public struct ZStack<Content>: View where Content: View {
     self.spacing = spacing
     self.content = content()
   }
-
-  public var body: Never {
-    neverBody("ZStack")
-  }
 }
 
 extension ZStack: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (content as? GroupView)?.children ?? [AnyView(content)]
   }
@@ -88,7 +85,6 @@ extension ZStack: BuiltinView {
       childView._layout(size: childSize, hostView: child)
       context.pop()
     }
-
   }
 
   public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {

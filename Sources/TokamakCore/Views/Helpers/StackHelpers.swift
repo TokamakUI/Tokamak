@@ -15,6 +15,7 @@ class StackHelper {
   init(axis: Axis) {
     self.axis = axis
   }
+
 //  var alignment: VerticalAlignment = .center
 //  let spacing: CGFloat? = 0
 
@@ -29,7 +30,10 @@ class StackHelper {
       let childSize = sizes[idx]
       let child = children[idx]
       context.push()
-      context.translate(x: axis == .horizontal ? currentAlongAxis : 0, y: axis == .vertical ? currentAlongAxis : 0)
+      context.translate(
+        x: axis == .horizontal ? currentAlongAxis : 0,
+        y: axis == .vertical ? currentAlongAxis : 0
+      )
       guard let childView = mapAnyView(
         child.view,
         transform: { (view: View) in view }
@@ -60,7 +64,7 @@ class StackHelper {
   }
 
   private func _layout<T>(proposed: ProposedSize, children: [MountedHostView<T>]) -> [CGSize] {
-    var remainingAlongAxis = axis == .horizontal ? proposed.width! : proposed.height! // TODO
+    var remainingAlongAxis = axis == .horizontal ? proposed.width! : proposed.height! // TODO:
     var remaining = children
     var sizes: [CGSize] = []
     while !remaining.isEmpty {
@@ -73,7 +77,13 @@ class StackHelper {
         continue
       }
 
-      let size = childView._size(for: ProposedSize(width: axis == .horizontal ? alongAxis : proposed.width, height: axis == .vertical ? alongAxis : proposed.height), hostView: child)
+      let size = childView._size(
+        for: ProposedSize(
+          width: axis == .horizontal ? alongAxis : proposed.width,
+          height: axis == .vertical ? alongAxis : proposed.height
+        ),
+        hostView: child
+      )
       sizes.append(size)
       remainingAlongAxis -= axis == .horizontal ? size.width : size.height
       // todo check what happens when remaining width < 0

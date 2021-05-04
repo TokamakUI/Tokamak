@@ -16,17 +16,13 @@
 //
 
 /// A `View` with no effect on rendering.
-public struct EmptyView: View {
+public struct EmptyView: PrimitiveView {
   @inlinable
   public init() {}
-
-  public var body: Never {
-    neverBody("EmptyView")
-  }
 }
 
 // swiftlint:disable:next type_name
-public struct _ConditionalContent<TrueContent, FalseContent>: View
+public struct _ConditionalContent<TrueContent, FalseContent>: PrimitiveView
   where TrueContent: View, FalseContent: View
 {
   enum Storage {
@@ -35,10 +31,6 @@ public struct _ConditionalContent<TrueContent, FalseContent>: View
   }
 
   let storage: Storage
-
-  public var body: Never {
-    neverBody("_ConditionContent")
-  }
 }
 
 extension _ConditionalContent: GroupView {
