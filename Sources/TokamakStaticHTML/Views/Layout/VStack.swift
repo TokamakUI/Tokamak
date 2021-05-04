@@ -23,6 +23,7 @@ extension HorizontalAlignment {
       return "center"
     case .trailing:
       return "flex-end"
+    default: fatalError("Unsupported \(debugDescription)")
     }
   }
 }

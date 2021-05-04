@@ -23,6 +23,7 @@ extension VerticalAlignment {
       return "center"
     case .bottom:
       return "end"
+    default: fatalError("Unsupported \(debugDescription)")
     }
   }
 }

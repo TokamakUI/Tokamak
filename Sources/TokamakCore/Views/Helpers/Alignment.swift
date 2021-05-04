@@ -10,7 +10,7 @@
 // NOTE: The top/bottom definitions depend on the Y-axis of the destination
 // coordinate system. Perhaps this ought to be configurable somehow.
 
-public struct Alignment {
+public struct Alignment: CustomDebugStringConvertible {
   public var horizontal: HorizontalAlignment
   public var vertical: VerticalAlignment
 
@@ -23,9 +23,13 @@ public struct Alignment {
   public static let bottom = Self(horizontal: .center, vertical: .bottom)
   public static let bottomLeading = Self(horizontal: .leading, vertical: .bottom)
   public static let bottomTrailing = Self(horizontal: .trailing, vertical: .bottom)
+
+  public var debugDescription: String {
+    "Alignment<\(horizontal.alignmentID), \(vertical.alignmentID)>"
+  }
 }
 
-public struct HorizontalAlignment: Equatable {
+public struct HorizontalAlignment: Equatable, CustomDebugStringConvertible {
   var alignmentID: AlignmentID.Type
   public static let leading = Self(alignmentID: HLeading.self)
   public static let center = Self(alignmentID: HCenter.self)
@@ -33,15 +37,23 @@ public struct HorizontalAlignment: Equatable {
   public static func == (a: HorizontalAlignment, b: HorizontalAlignment) -> Bool {
     a.alignmentID == b.alignmentID
   }
+
+  public var debugDescription: String {
+    "HorizontalAlignment<\(alignmentID)>"
+  }
 }
 
-public struct VerticalAlignment: Equatable {
+public struct VerticalAlignment: Equatable, CustomDebugStringConvertible {
   var alignmentID: AlignmentID.Type
   public static let top = Self(alignmentID: VTop.self)
   public static let center = Self(alignmentID: VCenter.self)
   public static let bottom = Self(alignmentID: VBottom.self)
   public static func == (a: VerticalAlignment, b: VerticalAlignment) -> Bool {
     a.alignmentID == b.alignmentID
+  }
+
+  public var debugDescription: String {
+    "VerticalAlignment<\(alignmentID)>"
   }
 }
 
