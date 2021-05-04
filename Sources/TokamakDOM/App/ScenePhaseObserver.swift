@@ -21,13 +21,14 @@ enum ScenePhaseObserver {
   private static var closure: JSClosure?
 
   static func observe() {
-    let closure = JSClosure { _ -> () in
+    let closure = JSClosure { _ in
       let visibilityState = document.visibilityState.string
       if visibilityState == "visible" {
         publisher.send(.active)
       } else if visibilityState == "hidden" {
         publisher.send(.background)
       }
+      return .undefined
     }
     _ = document.addEventListener!("visibilitychange", closure)
     Self.closure = closure
