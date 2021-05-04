@@ -23,6 +23,8 @@ import Glibc
 import WASILibc
 #endif
 
+// swiftlint:disable file_length
+
 /// The outline of a 2D shape.
 public struct Path: Equatable, LosslessStringConvertible {
   public class _PathBox: Equatable {

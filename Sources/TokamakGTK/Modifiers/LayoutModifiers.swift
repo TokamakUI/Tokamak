@@ -27,9 +27,9 @@ import TokamakCore
 //
 //  }
 //
-////  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
-////    gtk_widget_set_size_request(widget, Int32(width ?? -1), Int32(height ?? -1))
-////  }
+// //  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
+// //    gtk_widget_set_size_request(widget, Int32(width ?? -1), Int32(height ?? -1))
+// //  }
 // }
 
 // extension _FlexFrameLayout: WidgetModifier {
@@ -58,7 +58,7 @@ extension Color {
 }
 
 //
-//// Border modifier
+// // Border modifier
 // extension _OverlayModifier: WidgetAttributeModifier, WidgetModifier
 //  where Overlay == _ShapeView<_StrokedShape<TokamakCore.Rectangle._Inset>, Color>
 // {

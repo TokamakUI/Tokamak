@@ -80,26 +80,30 @@ public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
   }
 }
 
-// extension _BackgroundModifier {
-//  public func size<T, C: View>(for proposedSize: ProposedSize, hostView: MountedHostView<T>, content: C) -> CGSize {
-//    print("BACKGROUND SIZE")
-//    let children = hostView.getChildren()
-//    print("CHILDREN", children.map(\.view))
-//    let childSize = content._size(for: proposedSize, hostView: children[1])
-//    return childSize
-//  }
-//
-//  public func layout<T, C: View>(size: CGSize, hostView: MountedHostView<T>, content: C) {
-//    guard let context = hostView.target?.context else { return }
-//    print("BACKGROUND LAYOUT")
-//    let children = hostView.getChildren()
-//
-//    context.push()
-//
-//    background._layout(size: size, hostView: children[0])
-//    content._layout(size: size, hostView: children[1])
-//    context.pop()
-//  }
+// public extension _BackgroundModifier {
+//   func size<T, C: View>(
+//     for proposedSize: ProposedSize,
+//     hostView: MountedHostView<T>,
+//     content: C
+//   ) -> CGSize {
+//     print("BACKGROUND SIZE")
+//     let children = hostView.getChildren()
+//     print("CHILDREN", children.map(\.view))
+//     let childSize = content._size(for: proposedSize, hostView: children[1])
+//     return childSize
+//   }
+
+//   func layout<T, C: View>(size: CGSize, hostView: MountedHostView<T>, content: C) {
+//     guard let context = hostView.target?.context else { return }
+//     print("BACKGROUND LAYOUT")
+//     let children = hostView.getChildren()
+
+//     context.push()
+
+//     background._layout(size: size, hostView: children[0])
+//     content._layout(size: size, hostView: children[1])
+//     context.pop()
+//   }
 // }
 
 extension _BackgroundModifier: Equatable where Background: Equatable {

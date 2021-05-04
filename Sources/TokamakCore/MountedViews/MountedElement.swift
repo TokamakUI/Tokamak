@@ -168,10 +168,10 @@ public extension MountedElement {
         children.append(contentsOf: childElement.getChildren())
         continue
       }
-      if let _ = mapAnyView(
+      if mapAnyView(
         childView.view,
         transform: { (view: BuiltinView) in view }
-      ) {
+      ) != nil {
         children.append(childView)
       } else {
         children.append(contentsOf: childView.getChildren())
