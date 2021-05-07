@@ -36,19 +36,24 @@ public struct _Background<Content, Background>: View
 
 extension _Background: BuiltinView where Content: View, Background: View {
   public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
-    print("LAYOUT _BACKGROUND CONTENT", size, content)
     let children = hostView.getChildren()
+    guard children.count == 2 else {
+      print("Expecting two BuiltinView child views of _Background")
+      return
+    }
 
     let childSize = background._size(for: ProposedSize(size), hostView: children[0])
-    print("CHILDSIZE", childSize)
     background._layout(size: childSize, hostView: children[0])
 
     content._layout(size: size, hostView: children[1])
   }
 
   public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
-    print("SIZING _BACKGROUND CONTENT")
     let children = hostView.getChildren()
+    guard children.count == 2 else {
+      print("Expecting two BuiltinView child views of _Background")
+      return proposedSize.orDefault
+    }
     return content._size(for: proposedSize, hostView: children[1])
   }
 }
@@ -154,6 +159,11 @@ extension _Overlay: BuiltinView where Content: View, Overlay: View {
   public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
     print("LAYOUT _OVERLAY CONTENT", size, content)
     let children = hostView.getChildren()
+    guard children.count == 2 else {
+      print("Expecting two BuiltinView child views of _Overlay")
+      return
+    }
+
     content._layout(size: size, hostView: children[0])
 
     let childSize = overlay._size(for: ProposedSize(size), hostView: children[1])
@@ -164,6 +174,10 @@ extension _Overlay: BuiltinView where Content: View, Overlay: View {
   public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
     print("SIZING _OVERLAY CONTENT")
     let children = hostView.getChildren()
+    guard children.count == 2 else {
+      print("Expecting two BuiltinView child views of _Overlay")
+      return proposedSize.orDefault
+    }
     return content._size(for: proposedSize, hostView: children[0])
   }
 }

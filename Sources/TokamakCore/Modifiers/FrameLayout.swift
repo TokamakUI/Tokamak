@@ -40,12 +40,14 @@ public extension _FrameLayout {
   func size<T, C: View>(for proposedSize: ProposedSize, hostView: MountedHostView<T>,
                         content: C) -> CGSize
   {
-    print("FRAMELAYOUT SIZE")
     if let width = self.width, let height = self.height {
-      print("W", width, "H", height)
       return CGSize(width: width, height: height)
     }
     let children = hostView.getChildren()
+    guard children.count == 1 else {
+      print("Expecting one BuiltinView child view of _FrameLayout")
+      return proposedSize.orDefault
+    }
     let childSize = content._size(
       for: ProposedSize(width: width ?? proposedSize.width, height: height ?? proposedSize.height),
       hostView: children[0]
@@ -55,8 +57,11 @@ public extension _FrameLayout {
 
   func layout<T, C: View>(size: CGSize, hostView: MountedHostView<T>, content: C) {
     guard let context = hostView.target?.context else { return }
-    print("FRAMELAYOUT LAYOUT")
     let children = hostView.getChildren()
+    guard children.count == 1 else {
+      print("Expecting one BuiltinView child view of _FrameLayout")
+      return
+    }
 
     context.push()
 

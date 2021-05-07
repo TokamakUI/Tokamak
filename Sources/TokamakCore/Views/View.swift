@@ -49,6 +49,9 @@ public extension View {
   func _size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
     if let builtIn = self as? BuiltinView {
       return builtIn.size(for: proposedSize, hostView: hostView)
+    } else if Self.Body.self == Never.self {
+      print("Warning: missing a BuiltinView conformance for", Self.Type.self)
+      return proposedSize.orDefault
     } else {
       return body._size(for: proposedSize, hostView: hostView)
     }
@@ -57,6 +60,8 @@ public extension View {
   func _layout<T>(size: CGSize, hostView: MountedHostView<T>) {
     if let builtIn = self as? BuiltinView {
       builtIn.layout(size: size, hostView: hostView)
+    } else if Self.Body.self == Never.self {
+      print("Warning: missing a BuiltinView conformance for", Self.Type.self)
     } else {
       body._layout(size: size, hostView: hostView)
     }
