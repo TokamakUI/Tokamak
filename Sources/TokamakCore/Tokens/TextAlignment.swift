@@ -15,10 +15,30 @@
 //  Created by Max Desiatov on 30/12/2018.
 //
 
-public enum TextAlignment: CaseIterable {
-  case left
-  case right
-  case center
-  case justified
-  case natural
+public enum TextAlignment: Hashable, CaseIterable {
+  case leading,
+    center,
+    trailing
+}
+
+extension EnvironmentValues {
+  private struct _MultilineTextAlignmentKey: EnvironmentKey {
+    static var defaultValue: TextAlignment = .leading
+  }
+
+  public var multilineTextAlignment: TextAlignment {
+    get {
+      self[_MultilineTextAlignmentKey.self]
+    }
+    set {
+      self[_MultilineTextAlignmentKey.self] = newValue
+    }
+  }
+}
+
+public extension View {
+  @inlinable
+  func multilineTextAlignment(_ alignment: TextAlignment) -> some View {
+    environment(\.multilineTextAlignment, alignment)
+  }
 }
