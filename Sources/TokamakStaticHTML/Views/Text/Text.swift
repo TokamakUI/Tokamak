@@ -91,6 +91,16 @@ public extension Font {
   }
 }
 
+extension TextAlignment: CustomStringConvertible {
+  public var description: String {
+    switch self {
+    case .leading: return "left"
+    case .center: return "center"
+    case .trailing: return "right"
+    }
+  }
+}
+
 private struct TextSpan: AnyHTML {
   let content: String
   let attributes: [HTMLAttribute: String]
@@ -102,11 +112,12 @@ private struct TextSpan: AnyHTML {
 extension Text: AnyHTML {
   public var innerHTML: String? {
     let proxy = _TextProxy(self)
+    let innerHTML: String
     switch proxy.storage {
     case let .verbatim(text):
-      return text
+      innerHTML = text
     case let .segmentedText(segments):
-      return segments
+      innerHTML = segments
         .map {
           TextSpan(
             content: $0.0.rawText,
@@ -119,6 +130,7 @@ extension Text: AnyHTML {
         }
         .reduce("", +)
     }
+    return innerHTML.replacingOccurrences(of: "\n", with: "<br />")
   }
 
   public var tag: String { "span" }
@@ -189,7 +201,8 @@ extension Text {
       letter-spacing: \(kerning);
       vertical-align: \(baseline == nil ? "baseline" : "\(baseline!)em");
       text-decoration: \(textDecoration);
-      text-decoration-color: \(decorationColor)
+      text-decoration-color: \(decorationColor);
+      text-align: \(environment.multilineTextAlignment.description);
       """,
       "class": isRedacted ? "_tokamak-text-redacted" : "",
     ]
