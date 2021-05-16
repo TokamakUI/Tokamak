@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2017-2021 Wesley Wickwire and Tokamak contributors
+// Copyright (c) 2019 Sergej Jaskiewicz
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -19,49 +19,38 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+//
+//  Created by Sergej Jaskiewicz on 31.10.2019.
+//
 
 import CReflection
 
-public struct TypeInfo {
-  public let type: Any.Type
-  public let properties: [PropertyInfo]
-  public let size: Int
+typealias FieldEnumerator =
+  (_ fieldName: UnsafePointer<CChar>, _ fieldOffset: Int, _ fieldType: Any.Type) -> Bool
 
-  public func property(named: String) -> PropertyInfo? {
-    properties.first(where: { $0.name == named })
-  }
-}
-
-public func typeInfo(of type: Any.Type) -> TypeInfo {
-  let metadataPointer = UnsafeRawPointer(bitPattern: unsafeBitCast(type, to: Int.self))!
-
-  assert(
-    _checkMetadataState(
-      .init(desiredState: .layoutComplete, isBlocking: false),
-      metadataPointer
-    ).state.rawValue < MetadataState.layoutComplete.rawValue,
-    """
-    Struct metadata for \(type) is in incomplete state, \
-    proceeding would result in an undefined behavior.
-    """
-  )
-
-  var properties = [PropertyInfo]()
-
-  enumerateFields(
-    of: type,
-    allowResilientSuperclasses: false
-  ) {
-    properties.append(
-      .init(
-        name: String(cString: $0),
-        type: $2,
-        offset: $1,
-        ownerType: type
-      )
+func enumerateFields(
+  of type: Any.Type,
+  allowResilientSuperclasses: Bool,
+  enumerator: FieldEnumerator
+) {
+  // A neat trick to pass a Swift closure where a C function pointer is expected.
+  // (Unlike closures, function pointers cannot capture context)
+  withoutActuallyEscaping(enumerator) { enumerator in
+    var context = enumerator
+    enumerateFields(
+      typeMetadata: UnsafeRawPointer(bitPattern: unsafeBitCast(type, to: Int.self))!,
+      allowResilientSuperclasses: allowResilientSuperclasses,
+      enumeratorContext: &context,
+      enumerator: { rawContext, fieldName, fieldOffset, rawMetadataPtr in
+        rawContext
+          .unsafelyUnwrapped
+          .bindMemory(to: FieldEnumerator.self, capacity: 1)
+          .pointee(
+            fieldName,
+            fieldOffset,
+            unsafeBitCast(rawMetadataPtr, to: Any.Type.self)
+          )
+      }
     )
-    return true
   }
-
-  return TypeInfo(type: type, properties: properties, size: tokamak_get_size(metadataPointer))
 }

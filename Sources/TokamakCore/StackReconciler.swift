@@ -207,23 +207,22 @@ public final class StackReconciler<R: Renderer> {
     result: KeyPath<MountedCompositeElement<R>, (Any) -> T>
   ) -> T {
     compositeElement.updateEnvironment()
-    if let info = typeInfo(of: compositeElement.type) {
-      var stateIdx = 0
-      let dynamicProps = info.dynamicProperties(
-        &compositeElement.environmentValues,
-        source: &compositeElement[keyPath: bodyKeypath]
-      )
+    let info = typeInfo(of: compositeElement.type)
+    var stateIdx = 0
+    let dynamicProps = info.dynamicProperties(
+      &compositeElement.environmentValues,
+      source: &compositeElement[keyPath: bodyKeypath]
+    )
 
-      compositeElement.transientSubscriptions = []
-      for property in dynamicProps {
-        // Setup state/subscriptions
-        if property.type is ValueStorage.Type {
-          setupStorage(id: stateIdx, for: property, of: compositeElement, body: bodyKeypath)
-          stateIdx += 1
-        }
-        if property.type is ObservedProperty.Type {
-          setupTransientSubscription(for: property, of: compositeElement, body: bodyKeypath)
-        }
+    compositeElement.transientSubscriptions = []
+    for property in dynamicProps {
+      // Setup state/subscriptions
+      if property.type is ValueStorage.Type {
+        setupStorage(id: stateIdx, for: property, of: compositeElement, body: bodyKeypath)
+        stateIdx += 1
+      }
+      if property.type is ObservedProperty.Type {
+        setupTransientSubscription(for: property, of: compositeElement, body: bodyKeypath)
       }
     }
 

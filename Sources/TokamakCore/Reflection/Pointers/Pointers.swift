@@ -43,15 +43,11 @@ func withExistentialValuePointer<Value, Result>(
   withUnsafePointer(to: &value) {
     let container = $0
       .withMemoryRebound(to: ExistentialContainer.self, capacity: 1) { $0.pointee }
-    let info = metadata(of: container.type)
-    if info.kind == .class || info.size > ExistentialContainerBuffer.size() {
+    let info = typeInfo(of: container.type)
+    if info.size > ExistentialContainerBuffer.size() {
       let base = $0
         .withMemoryRebound(to: UnsafeMutableRawPointer.self, capacity: 1) { $0.pointee }
-      if info.kind == .struct {
-        return body(base.advanced(by: existentialHeaderSize))
-      } else {
-        return body(base)
-      }
+      return body(base.advanced(by: existentialHeaderSize))
     } else {
       return body($0.mutable.raw)
     }

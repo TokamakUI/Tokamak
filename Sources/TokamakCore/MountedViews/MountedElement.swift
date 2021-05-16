@@ -160,7 +160,7 @@ public class MountedElement<R: Renderer> {
 
 extension EnvironmentValues {
   mutating func inject(into element: inout Any, _ type: Any.Type) {
-    guard let info = typeInfo(of: type) else { return }
+    let info = typeInfo(of: type)
 
     // Extract the view from the AnyView for modification, apply Environment changes:
     if let container = element as? ModifierContainer {
@@ -172,7 +172,7 @@ extension EnvironmentValues {
     // `DynamicProperty`s can have `@Environment` properties contained in them,
     // so we have to inject into them as well.
     for dynamicProp in info.properties.filter({ $0.type is DynamicProperty.Type }) {
-      guard let propInfo = typeInfo(of: dynamicProp.type) else { return }
+      let propInfo = typeInfo(of: dynamicProp.type)
       var propWrapper = dynamicProp.get(from: element) as! DynamicProperty
       for prop in propInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
         var wrapper = prop.get(from: propWrapper) as! EnvironmentReader
@@ -201,7 +201,7 @@ extension TypeInfo {
     var dynamicProps = [PropertyInfo]()
     for prop in properties where prop.type is DynamicProperty.Type {
       dynamicProps.append(prop)
-      guard let propInfo = typeInfo(of: prop.type) else { continue }
+      let propInfo = typeInfo(of: prop.type)
 
       environment.inject(into: &source, prop.type)
       var extracted = prop.get(from: source)

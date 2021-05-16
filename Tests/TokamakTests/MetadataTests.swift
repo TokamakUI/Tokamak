@@ -26,14 +26,8 @@ import XCTest
 final class MetadataTests: XCTestCase {
   func testGenericStruct() {
     struct A<B, C, D, E, F, G, H> { let b: B }
-    let md = StructMetadata(type: A<Int, String, Bool, Int, Int, Int, Int>.self)
-    let args = md.genericArguments()
-    let props = md.properties()
-    XCTAssert(args.count == 7)
-    XCTAssert(args[0] == Int.self)
-    XCTAssert(args[1] == String.self)
-    XCTAssert(args[2] == Bool.self)
-    XCTAssert(args[3] == Int.self)
+    let md = typeInfo(of: A<Int, String, Bool, Int, Int, Int, Int>.self)
+    let props = md.properties
     XCTAssert(props.count == 1)
     XCTAssert(props[0].type == Int.self)
   }
@@ -44,17 +38,10 @@ final class MetadataTests: XCTestCase {
       var e: Int
     }
 
-    let md = StructMetadata(type: A.self)
-    let info = md.toTypeInfo()
-    XCTAssert(info.genericTypes.count == 0)
-    XCTAssert(info.kind == .struct)
+    let info = typeInfo(of: A.self)
     XCTAssert(info.type == A.self)
     XCTAssert(info.properties.count == 5)
     XCTAssert(info.size == MemoryLayout<A>.size)
-    XCTAssert(info.alignment == MemoryLayout<A>.alignment)
-    XCTAssert(info.stride == MemoryLayout<A>.stride)
-    XCTAssert(!info.properties[0].isVar)
-    XCTAssert(info.properties[4].isVar)
   }
 
   // https://github.com/wickwirew/Runtime/issues/42
@@ -65,17 +52,10 @@ final class MetadataTests: XCTestCase {
         var e: Int
       }
 
-      let md = StructMetadata(type: NestedA.self)
-      let info = md.toTypeInfo()
-      XCTAssert(info.genericTypes.count == 0)
-      XCTAssert(info.kind == .struct)
+      let info = typeInfo(of: NestedA.self)
       XCTAssert(info.type == NestedA.self)
       XCTAssert(info.properties.count == 5)
       XCTAssert(info.size == MemoryLayout<NestedA>.size)
-      XCTAssert(info.alignment == MemoryLayout<NestedA>.alignment)
-      XCTAssert(info.stride == MemoryLayout<NestedA>.stride)
-      XCTAssert(!info.properties[0].isVar)
-      XCTAssert(info.properties[4].isVar)
     }
 
     nest()

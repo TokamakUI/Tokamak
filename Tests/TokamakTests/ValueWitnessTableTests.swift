@@ -28,16 +28,6 @@ class ValueWitnessTableTests: XCTestCase {
     let info = try XCTUnwrap(typeInfo(of: Person.self))
     XCTAssert(info.size == MemoryLayout<Person>.size)
   }
-
-  func testAlignment() throws {
-    let info = try XCTUnwrap(typeInfo(of: Person.self))
-    XCTAssert(info.alignment == MemoryLayout<Person>.alignment)
-  }
-
-  func testStride() throws {
-    let info = try XCTUnwrap(typeInfo(of: Person.self))
-    XCTAssert(info.stride == MemoryLayout<Person>.stride)
-  }
 }
 
 private struct Person {

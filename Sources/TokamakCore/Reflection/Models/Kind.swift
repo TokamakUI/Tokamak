@@ -71,7 +71,7 @@ public enum Kind {
   }
 
   init(type: Any.Type) {
-    let pointer = metadataPointer(type: type)
+    let pointer = unsafeBitCast(type, to: UnsafePointer<Int>.self)
     self.init(flag: pointer.pointee)
   }
 

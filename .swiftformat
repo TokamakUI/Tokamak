@@ -10,3 +10,4 @@
 --funcattributes prev-line
 --disable andOperator
 --swiftversion 5.3
+--exclude Tests/TokamakTests/EnumerateFieldsTests.swift

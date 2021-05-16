@@ -23,7 +23,6 @@
 public struct PropertyInfo {
   public let name: String
   public let type: Any.Type
-  public let isVar: Bool
   public let offset: Int
   public let ownerType: Any.Type
 
