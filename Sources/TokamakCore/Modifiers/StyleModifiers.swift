@@ -15,6 +15,55 @@
 //  Created by Carson Katri on 6/29/20.
 //
 
+public struct _Background<Content, Background>: View
+  where Background: View, Content: View
+{
+  public var environment: EnvironmentValues!
+  public var content: Content
+  public var background: Background
+  public var alignment: Alignment
+
+  public init(content: Content, background: Background, alignment: Alignment = .center) {
+    self.background = background
+    self.content = content
+    self.alignment = alignment
+  }
+
+  public var body: some View {
+    neverBody("_Background")
+  }
+}
+
+extension _Background: BuiltinView where Content: View, Background: View {
+  public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
+    let children = hostView.getChildren()
+    guard children.count == 2 else {
+      print("Expecting two BuiltinView child views of _Background")
+      return
+    }
+
+    let childSize = background._size(for: ProposedSize(size), hostView: children[0])
+    background._layout(size: childSize, hostView: children[0])
+
+    content._layout(size: size, hostView: children[1])
+  }
+
+  public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
+    let children = hostView.getChildren()
+    guard children.count == 2 else {
+      print("Expecting two BuiltinView child views of _Background")
+      return proposedSize.orDefault
+    }
+    return content._size(for: proposedSize, hostView: children[1])
+  }
+}
+
+extension _Background: ParentView {
+  public var children: [AnyView] {
+    [AnyView(background), AnyView(content)]
+  }
+}
+
 public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
   where Background: View
 {
@@ -28,17 +77,39 @@ public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
   }
 
   public func body(content: Content) -> some View {
-    // FIXME: Clip to bounds of foreground.
-    ZStack(alignment: alignment) {
-      background
-      content
-    }
+    _Background(content: content, background: background, alignment: alignment)
   }
 
   mutating func setContent(from values: EnvironmentValues) {
     environment = values
   }
 }
+
+// public extension _BackgroundModifier {
+//   func size<T, C: View>(
+//     for proposedSize: ProposedSize,
+//     hostView: MountedHostView<T>,
+//     content: C
+//   ) -> CGSize {
+//     print("BACKGROUND SIZE")
+//     let children = hostView.getChildren()
+//     print("CHILDREN", children.map(\.view))
+//     let childSize = content._size(for: proposedSize, hostView: children[1])
+//     return childSize
+//   }
+
+//   func layout<T, C: View>(size: CGSize, hostView: MountedHostView<T>, content: C) {
+//     guard let context = hostView.target?.context else { return }
+//     print("BACKGROUND LAYOUT")
+//     let children = hostView.getChildren()
+
+//     context.push()
+
+//     background._layout(size: size, hostView: children[0])
+//     content._layout(size: size, hostView: children[1])
+//     context.pop()
+//   }
+// }
 
 extension _BackgroundModifier: Equatable where Background: Equatable {
   public static func == (
@@ -54,7 +125,66 @@ public extension View {
     _ background: Background,
     alignment: Alignment = .center
   ) -> some View where Background: View {
-    modifier(_BackgroundModifier(background: background, alignment: alignment))
+    _Background(content: self, background: background, alignment: alignment)
+
+//    modifier(_BackgroundModifier(background: background, alignment: alignment))
+  }
+}
+
+public struct _Overlay<Content, Overlay>: View
+  where Overlay: View, Content: View
+{
+  public var environment: EnvironmentValues!
+  public var content: Content
+  public var overlay: Overlay
+  public var alignment: Alignment
+
+  public init(content: Content, overlay: Overlay, alignment: Alignment = .center) {
+    self.overlay = overlay
+    self.content = content
+    self.alignment = alignment
+  }
+
+  public var body: some View {
+    neverBody("_Overlay")
+//    // FIXME: Clip to content shape.
+//    ZStack(alignment: alignment) {
+//      content
+//      overlay
+//    }
+  }
+}
+
+extension _Overlay: BuiltinView where Content: View, Overlay: View {
+  public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
+    print("LAYOUT _OVERLAY CONTENT", size, content)
+    let children = hostView.getChildren()
+    guard children.count == 2 else {
+      print("Expecting two BuiltinView child views of _Overlay")
+      return
+    }
+
+    content._layout(size: size, hostView: children[0])
+
+    let childSize = overlay._size(for: ProposedSize(size), hostView: children[1])
+    print("CHILDSIZE", childSize)
+    overlay._layout(size: childSize, hostView: children[1])
+  }
+
+  public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
+    print("SIZING _OVERLAY CONTENT")
+    let children = hostView.getChildren()
+    guard children.count == 2 else {
+      print("Expecting two BuiltinView child views of _Overlay")
+      return proposedSize.orDefault
+    }
+    return content._size(for: proposedSize, hostView: children[0])
+  }
+}
+
+extension _Overlay: ParentView {
+  public var children: [AnyView] {
+    [AnyView(content), AnyView(overlay)]
   }
 }
 
@@ -71,11 +201,7 @@ public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
   }
 
   public func body(content: Content) -> some View {
-    // FIXME: Clip to content shape.
-    ZStack(alignment: alignment) {
-      content
-      overlay
-    }
+    _Overlay(content: content, overlay: overlay, alignment: alignment)
   }
 
   mutating func setContent(from values: EnvironmentValues) {
@@ -93,7 +219,8 @@ public extension View {
   func overlay<Overlay>(_ overlay: Overlay, alignment: Alignment = .center) -> some View
     where Overlay: View
   {
-    modifier(_OverlayModifier(overlay: overlay, alignment: alignment))
+    _Overlay(content: self, overlay: overlay, alignment: alignment)
+//    modifier(_OverlayModifier(overlay: overlay, alignment: alignment))
   }
 
   func border<S>(_ content: S, width: CGFloat = 1) -> some View where S: ShapeStyle {

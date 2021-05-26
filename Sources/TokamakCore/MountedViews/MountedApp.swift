@@ -43,7 +43,7 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     let mountedScene: MountedScene<R> = childBody
       .makeMountedScene(parentTarget, environmentValues, self)
     if let title = mountedScene.title {
-      // swiftlint:disable force_cast
+      // swiftlint:disable:next force_cast
       (app.type as! _TitledApp.Type)._setTitle(title)
     }
     return mountedScene

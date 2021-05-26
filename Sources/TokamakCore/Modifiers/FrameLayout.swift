@@ -28,6 +28,52 @@ public struct _FrameLayout: ViewModifier {
   }
 }
 
+extension RenderingContext {
+  func align(_ childSize: CGSize, in parentSize: CGSize, alignment: Alignment) {
+    let parentPoint = alignment.point(for: parentSize)
+    let childPoint = alignment.point(for: childSize)
+    translate(x: parentPoint.x - childPoint.x, y: parentPoint.y - childPoint.y)
+  }
+}
+
+public extension _FrameLayout {
+  func size<T, C: View>(for proposedSize: ProposedSize, hostView: MountedHostView<T>,
+                        content: C) -> CGSize
+  {
+    if let width = self.width, let height = self.height {
+      return CGSize(width: width, height: height)
+    }
+    let children = hostView.getChildren()
+    guard children.count == 1 else {
+      print("Expecting one BuiltinView child view of _FrameLayout")
+      return proposedSize.orDefault
+    }
+    let childSize = content._size(
+      for: ProposedSize(width: width ?? proposedSize.width, height: height ?? proposedSize.height),
+      hostView: children[0]
+    )
+    return CGSize(width: width ?? childSize.width, height: height ?? childSize.height)
+  }
+
+  func layout<T, C: View>(size: CGSize, hostView: MountedHostView<T>, content: C) {
+    guard let context = hostView.target?.context else { return }
+    let children = hostView.getChildren()
+    guard children.count == 1 else {
+      print("Expecting one BuiltinView child view of _FrameLayout")
+      return
+    }
+
+    context.push()
+
+    let childSize = content._size(for: ProposedSize(size), hostView: children[0])
+
+    context.align(childSize, in: size, alignment: alignment)
+
+    content._layout(size: childSize, hostView: children[0])
+    context.pop()
+  }
+}
+
 public extension View {
   func frame(
     width: CGFloat? = nil,

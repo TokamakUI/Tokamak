@@ -50,14 +50,42 @@ struct PickerDemo: View {
 struct TokamakGTKDemo: App {
   var body: some Scene {
     WindowGroup("Test Scene") {
-      List {
-        Image("logo-header.png", bundle: Bundle.module, label: Text("Tokamak Demo"))
-        Counter()
-        PickerDemo()
-        ForEach(1..<100) {
-          Text("Item #\($0)")
+      VStack {
+        Text("SKI")
+        Capsule()
+        Text("SKA")
+          .background(Color.blue)
+          .padding(10)
+          .background(Color.yellow)
+          .padding(10)
+          .background(Color.red)
+          .padding(10)
+          .background(Color.green)
+        Text("SKO").border(Color.red)
+        HStack {
+          Text("A").frame(width: 50, height: 50).border(Color.red)
+          Text("B").frame(width: 100, height: 100).border(Color.red)
+        }
+        .padding(10)
+        .background(Color.gray)
+        ZStack {
+          Rectangle().frame(width: 50, height: 10)
+          Rectangle().frame(width: 10, height: 50)
+        }
+
+        ZStack(alignment: .topLeading) {
+          Rectangle().frame(width: 50, height: 10)
+          Rectangle().frame(width: 10, height: 50)
         }
       }
+//      List {
+//        Image("logo-header.png", bundle: Bundle.module, label: Text("Tokamak Demo"))
+//        Counter()
+//        PickerDemo()
+//        ForEach(1..<100) {
+//          Text("Item #\($0)")
+//        }
+//      }
     }
   }
 }

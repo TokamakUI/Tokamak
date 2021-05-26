@@ -84,7 +84,7 @@ public class MountedElement<R: Renderer> {
     }
   }
 
-  var mountedChildren = [MountedElement<R>]()
+  public var mountedChildren = [MountedElement<R>]()
   var environmentValues: EnvironmentValues
 
   unowned var parent: MountedElement<R>?
@@ -155,6 +155,29 @@ public class MountedElement<R: Renderer> {
     }
 
     return hostView.target
+  }
+}
+
+public extension MountedElement {
+  /** Get the child MountedHostViews whose AnyView wraps a BuiltinView
+   */
+  func getChildren() -> [MountedHostView<R>] {
+    var children: [MountedHostView<R>] = []
+    for childElement in mountedChildren {
+      guard let childView = childElement as? MountedHostView<R> else {
+        children.append(contentsOf: childElement.getChildren())
+        continue
+      }
+      if mapAnyView(
+        childView.view,
+        transform: { (view: BuiltinView) in view }
+      ) != nil {
+        children.append(childView)
+      } else {
+        children.append(contentsOf: childView.getChildren())
+      }
+    }
+    return children
   }
 }
 

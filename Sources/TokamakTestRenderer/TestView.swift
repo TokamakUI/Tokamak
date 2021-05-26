@@ -17,6 +17,11 @@
 
 import TokamakCore
 
+class TestContext: BasicRenderingContext {
+  var transformStack: [CGPoint] = []
+  var current: CGPoint = .zero
+}
+
 /// A class that `TestRenderer` uses as a target.
 /// When rendering to a `TestView` instance it is possible
 /// to examine its `subviews` and `props` for testing.
@@ -29,10 +34,13 @@ public final class TestView: Target {
 
   public var view: AnyView
 
+  public var context: RenderingContext
+
   /** Initialize a new test view. */
   init<V: View>(_ view: V, _ subviews: [TestView] = []) {
     self.subviews = subviews
     self.view = AnyView(view)
+    context = TestContext()
   }
 
   /** Add a subview to this test view.

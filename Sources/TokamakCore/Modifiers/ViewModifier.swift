@@ -16,6 +16,28 @@ public protocol ViewModifier {
   typealias Content = _ViewModifier_Content<Self>
   associatedtype Body: View
   func body(content: Content) -> Self.Body
+
+  func size<T, C: View>(for proposedSize: ProposedSize, hostView: MountedHostView<T>, content: C)
+    -> CGSize
+  func layout<T, C: View>(size: CGSize, hostView: MountedHostView<T>, content: C)
+}
+
+public extension ViewModifier {
+  func size<T, C: View>(for proposedSize: ProposedSize, hostView: MountedHostView<T>,
+                        content: C) -> CGSize
+  {
+    let children = hostView.getChildren()
+    let childSize = content._size(for: proposedSize, hostView: children[0])
+    print("DEFAULT VIEWMODIFIER SIZE", childSize)
+    return childSize
+//    return CGSize(width: childSize.width + 50, height: childSize.height + 50)
+  }
+
+  func layout<T, C: View>(size: CGSize, hostView: MountedHostView<T>, content: C) {
+    let children = hostView.getChildren()
+    print("DEFAULT VIEWMODIFIER LAYOUT")
+    content._layout(size: size, hostView: children[0])
+  }
 }
 
 public struct _ViewModifier_Content<Modifier>: View where Modifier: ViewModifier {

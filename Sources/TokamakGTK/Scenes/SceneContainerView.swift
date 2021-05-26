@@ -25,7 +25,9 @@ struct SceneContainerView<Content: View>: View, AnyWidget {
     neverBody("SceneContainerView")
   }
 
-  func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
+  func new(_ application: UnsafeMutablePointer<GtkApplication>)
+    -> UnsafeMutablePointer<GtkWidget>?
+  {
     print("Making window")
     let window: UnsafeMutablePointer<GtkWidget>
     window = gtk_application_window_new(application)

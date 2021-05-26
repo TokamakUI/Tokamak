@@ -31,6 +31,20 @@ extension EnvironmentValues {
   }
 }
 
+func layout<T>(_ element: MountedElement<T>) {
+  print("ELEMENT", element)
+  if let hostView = element as? MountedHostView<T>, let view = mapAnyView(
+    hostView.view,
+    transform: { (view: View) in view }
+  ) {
+    view._layout(size: CGSize(width: 200, height: 100), hostView: hostView)
+    return
+  }
+  for child in element.mountedChildren {
+    layout(child)
+  }
+}
+
 final class GTKRenderer: Renderer {
   private(set) var reconciler: StackReconciler<GTKRenderer>?
   private var gtkAppRef: UnsafeMutablePointer<GtkApplication>
@@ -49,13 +63,22 @@ final class GTKRenderer: Renderer {
         window.withMemoryRebound(to: GtkWindow.self, capacity: 1) {
           gtk_window_set_default_size($0, 200, 100)
         }
+        let fixed = gtk_fixed_new()!
+        window.withMemoryRebound(to: GtkContainer.self, capacity: 1) {
+          gtk_container_add($0, fixed)
+        }
         gtk_widget_show_all(window)
-
+//        gtk_widget_show(fixed)
         GTKRenderer.sharedWindow = window
+
+        var rootWidget: Widget!
+        fixed.withMemoryRebound(to: GtkFixed.self, capacity: 1) {
+          rootWidget = Widget(fixed, fixed: $0)
+        }
 
         self.reconciler = StackReconciler(
           app: app,
-          target: Widget(window),
+          target: rootWidget,
           environment: .defaultEnvironment,
           renderer: self,
           scheduler: { next in
@@ -63,6 +86,9 @@ final class GTKRenderer: Renderer {
               next()
               gtk_widget_show_all(window)
             }
+          },
+          afterRenderCallback: { elm in
+            layout(elm)
           }
         )
       }
@@ -77,40 +103,49 @@ final class GTKRenderer: Renderer {
     to parent: Widget,
     with host: MountedHost
   ) -> Widget? {
-    guard let anyWidget = mapAnyView(
+    print("HOST VIEW", host.view)
+    guard let builtinView = mapAnyView(
       host.view,
-      transform: { (widget: AnyWidget) in widget }
+      transform: { (view: BuiltinView) in view }
     ) else {
       // handle cases like `TupleView`
       if mapAnyView(host.view, transform: { (view: ParentView) in view }) != nil {
         return parent
       }
 
+      print("HOSTVIEW", host.view)
       return nil
     }
 
-    let ctor = anyWidget.new
+    let ctor: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?
 
-    let widget: UnsafeMutablePointer<GtkWidget>
+    if let anyWidget = builtinView as? AnyWidget {
+      ctor = anyWidget.new
+    } else {
+      ctor = { _ in nil }
+    }
+
+    let widget: UnsafeMutablePointer<GtkWidget>?
+    // swiftlint:disable:next force_cast
+    let context: WidgetContext = parent.context as! WidgetContext
     switch parent.storage {
     case let .application(app):
       widget = ctor(app)
-    case let .widget(parentWidget):
+    case .widget:
       widget = ctor(gtkAppRef)
-      parentWidget.withMemoryRebound(to: GtkContainer.self, capacity: 1) {
-        gtk_container_add($0, widget)
-        if let stack = mapAnyView(parent.view, transform: { (view: StackProtocol) in view }) {
-          gtk_widget_set_valign(widget, stack.alignment.vertical.gtkValue)
-          gtk_widget_set_halign(widget, stack.alignment.horizontal.gtkValue)
-          if anyWidget.expand {
-            gtk_widget_set_hexpand(widget, gtk_true())
-            gtk_widget_set_vexpand(widget, gtk_true())
-          }
-        }
-      }
+    case .dummy:
+      widget = ctor(gtkAppRef)
     }
-    gtk_widget_show(widget)
-    return Widget(host.view, widget)
+
+    if let w = widget {
+      context.parent.withMemoryRebound(to: GtkFixed.self, capacity: 1) {
+        gtk_fixed_put($0, w, 0, 0)
+        gtk_widget_set_size_request(w, 10, 10)
+      }
+      gtk_widget_show(w)
+    }
+
+    return Widget(host.view, widget, context: context)
   }
 
   func update(target: Widget, with host: MountedHost) {

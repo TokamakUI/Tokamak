@@ -15,10 +15,57 @@
 //  Created by Max Desiatov on 07/04/2020.
 //
 
+public struct ProposedSize {
+  public var width: CGFloat?
+  public var height: CGFloat?
+
+  public var orDefault: CGSize {
+    CGSize(width: width ?? 10, height: height ?? 10)
+  }
+
+  public init(width: CGFloat? = nil, height: CGFloat? = nil) {
+    self.width = width
+    self.height = height
+  }
+
+  public init(_ size: CGSize) {
+    width = size.width
+    height = size.height
+  }
+}
+
 public protocol View {
   associatedtype Body: View
 
   @ViewBuilder var body: Self.Body { get }
+}
+
+public protocol BuiltinView {
+  func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize
+  func layout<T>(size: CGSize, hostView: MountedHostView<T>)
+}
+
+public extension View {
+  func _size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
+    if let builtIn = self as? BuiltinView {
+      return builtIn.size(for: proposedSize, hostView: hostView)
+    } else if Self.Body.self == Never.self {
+      print("Warning: missing a BuiltinView conformance for", Self.Type.self)
+      return proposedSize.orDefault
+    } else {
+      return body._size(for: proposedSize, hostView: hostView)
+    }
+  }
+
+  func _layout<T>(size: CGSize, hostView: MountedHostView<T>) {
+    if let builtIn = self as? BuiltinView {
+      builtIn.layout(size: size, hostView: hostView)
+    } else if Self.Body.self == Never.self {
+      print("Warning: missing a BuiltinView conformance for", Self.Type.self)
+    } else {
+      body._layout(size: size, hostView: hostView)
+    }
+  }
 }
 
 public extension Never {

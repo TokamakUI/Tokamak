@@ -50,79 +50,79 @@ extension WidgetAttributeModifier {
   }
 }
 
-extension ModifiedContent: ViewDeferredToRenderer where Content: View {
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
-    guard let widgetModifier = modifier as? WidgetModifier else {
-      return AnyView(content)
-    }
-    let anyWidget: AnyWidget
-    if let anyView = content as? ViewDeferredToRenderer,
-       let _anyWidget = mapAnyView(
-         anyView.deferredBody,
-         transform: { (widget: AnyWidget) in widget }
-       )
-    {
-      anyWidget = _anyWidget
-    } else if let _anyWidget = content as? AnyWidget {
-      anyWidget = _anyWidget
-    } else {
-      return AnyView(content)
-    }
-
-    let build: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> = {
-      let contentWidget = anyWidget.new($0)
-      widgetModifier.modify(widget: contentWidget)
-      return contentWidget
-    }
-
-    let update: (Widget) -> () = { widget in
-      anyWidget.update(widget: widget)
-
-      // Is it correct to apply the modifier again after updating?
-      // I assume so since the modifier parameters may have changed.
-      if case let .widget(w) = widget.storage {
-        widgetModifier.modify(widget: w)
-      }
-    }
-
-    // All this could be done using a single result builder for the content parameter,
-    // but since we are already wrapping in an AnyView, there's no reason to also
-    // wrap the contents in the inferred _ConditionalContent wrappers too.
-    // So instead, the conditional logic is moved out of the result builder world.
-    // This gives slightly lighter View type hierarchies.
-    if let parentView = anyWidget as? ParentView, parentView.children.count > 1 {
-      return AnyView(
-        WidgetView(
-          build: build,
-          update: update,
-          content: {
-            ForEach(Array(parentView.children.enumerated()), id: \.offset) { _, view in
-              view
-            }
-          }
-        )
-      )
-    } else if let parentView = anyWidget as? ParentView, parentView.children.count == 1 {
-      return AnyView(
-        WidgetView(
-          build: build,
-          update: update,
-          content: {
-            parentView.children[0]
-          }
-        )
-      )
-    } else {
-      return AnyView(
-        WidgetView(
-          build: build,
-          update: update,
-          content: {
-            EmptyView()
-          }
-        )
-      )
-    }
-  }
-}
+// extension ModifiedContent: ViewDeferredToRenderer where Content: View {
+//  @_spi(TokamakCore)
+//  public var deferredBody: AnyView {
+//    guard let widgetModifier = modifier as? WidgetModifier else {
+//      return AnyView(content)
+//    }
+//    let anyWidget: AnyWidget
+//    if let anyView = content as? ViewDeferredToRenderer,
+//       let _anyWidget = mapAnyView(
+//         anyView.deferredBody,
+//         transform: { (widget: AnyWidget) in widget }
+//       )
+//    {
+//      anyWidget = _anyWidget
+//    } else if let _anyWidget = content as? AnyWidget {
+//      anyWidget = _anyWidget
+//    } else {
+//      return AnyView(content)
+//    }
+//
+//    let build: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> = {
+//      let contentWidget = anyWidget.new($0)
+//      widgetModifier.modify(widget: contentWidget)
+//      return contentWidget
+//    }
+//
+//    let update: (Widget) -> () = { widget in
+//      anyWidget.update(widget: widget)
+//
+//      // Is it correct to apply the modifier again after updating?
+//      // I assume so since the modifier parameters may have changed.
+//      if case let .widget(w) = widget.storage {
+//        widgetModifier.modify(widget: w)
+//      }
+//    }
+//
+//    // All this could be done using a single result builder for the content parameter,
+//    // but since we are already wrapping in an AnyView, there's no reason to also
+//    // wrap the contents in the inferred _ConditionalContent wrappers too.
+//    // So instead, the conditional logic is moved out of the result builder world.
+//    // This gives slightly lighter View type hierarchies.
+//    if let parentView = anyWidget as? ParentView, parentView.children.count > 1 {
+//      return AnyView(
+//        WidgetView(
+//          build: build,
+//          update: update,
+//          content: {
+//            ForEach(Array(parentView.children.enumerated()), id: \.offset) { _, view in
+//              view
+//            }
+//          }
+//        )
+//      )
+//    } else if let parentView = anyWidget as? ParentView, parentView.children.count == 1 {
+//      return AnyView(
+//        WidgetView(
+//          build: build,
+//          update: update,
+//          content: {
+//            parentView.children[0]
+//          }
+//        )
+//      )
+//    } else {
+//      return AnyView(
+//        WidgetView(
+//          build: build,
+//          update: update,
+//          content: {
+//            EmptyView()
+//          }
+//        )
+//      )
+//    }
+//  }
+// }

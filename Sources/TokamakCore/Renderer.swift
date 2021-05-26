@@ -21,6 +21,7 @@
  protocol are used by a reconciler (`StackReconciler` instance) to notify
  the renderer about updates in the view tree.
  */
+
 public protocol Renderer: AnyObject {
   typealias Mounted = MountedElement<Self>
   typealias MountedHost = MountedHostView<Self>

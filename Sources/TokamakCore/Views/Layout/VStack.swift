@@ -12,13 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// An alignment position along the horizontal axis.
-public enum HorizontalAlignment: Equatable {
-  case leading
-  case center
-  case trailing
-}
-
 /// A view that arranges its children in a vertical line.
 ///
 ///     VStack {
@@ -29,6 +22,7 @@ public struct VStack<Content>: PrimitiveView where Content: View {
   public let alignment: HorizontalAlignment
   public let spacing: CGFloat?
   public let content: Content
+  fileprivate let helper = StackHelper(axis: .vertical)
 
   public init(
     alignment: HorizontalAlignment = .center,
@@ -45,5 +39,15 @@ extension VStack: ParentView {
   @_spi(TokamakCore)
   public var children: [AnyView] {
     (content as? GroupView)?.children ?? [AnyView(content)]
+  }
+}
+
+extension VStack: BuiltinView {
+  public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
+    helper.layout(size: size, hostView: hostView)
+  }
+
+  public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
+    helper.size(for: proposedSize, hostView: hostView)
   }
 }

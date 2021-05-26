@@ -33,7 +33,7 @@ func _getTypeByMangledNameInContext(
 )
   -> Any.Type?
 
-/// https://github.com/apple/swift/blob/f2c42509628bed66bf5b8ee02fae778a2ba747a1/include/swift/Reflection/Records.h#L160
+/// https://github.com/apple/swift/blob/f2c4250962/include/swift/Reflection/Records.h#L160
 struct FieldDescriptor {
   let mangledTypeNameOffset: Int32
   let superClassOffset: Int32

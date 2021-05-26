@@ -18,29 +18,37 @@
 import CGTK
 import TokamakCore
 
-extension _FrameLayout: WidgetModifier {
-  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
-    gtk_widget_set_size_request(widget, Int32(width ?? -1), Int32(height ?? -1))
-  }
-}
+// extension _FrameLayout: BuiltinView {
+//  func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
+//    let children = hostView.getChildren()
+//    let childSize =
+//  }
+//  func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
+//
+//  }
+//
+// //  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
+// //    gtk_widget_set_size_request(widget, Int32(width ?? -1), Int32(height ?? -1))
+// //  }
+// }
 
-extension _FlexFrameLayout: WidgetModifier {
-  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
-    gtk_widget_set_halign(widget, alignment.horizontal.gtkValue)
-    gtk_widget_set_valign(widget, alignment.vertical.gtkValue)
-    if maxWidth == .infinity {
-      print("Setting hexpand")
-      gtk_widget_set_hexpand(widget, gtk_true())
-      gtk_widget_set_halign(widget, GTK_ALIGN_FILL)
-    }
-    if maxHeight == .infinity {
-      print("Setting vexpand")
-      gtk_widget_set_vexpand(widget, gtk_true())
-      gtk_widget_set_valign(widget, GTK_ALIGN_FILL)
-    }
-    gtk_widget_set_size_request(widget, Int32(idealWidth ?? -1), Int32(idealHeight ?? -1))
-  }
-}
+// extension _FlexFrameLayout: WidgetModifier {
+//  func modify(widget: UnsafeMutablePointer<GtkWidget>) {
+//    gtk_widget_set_halign(widget, alignment.horizontal.gtkValue)
+//    gtk_widget_set_valign(widget, alignment.vertical.gtkValue)
+//    if maxWidth == .infinity {
+//      print("Setting hexpand")
+//      gtk_widget_set_hexpand(widget, gtk_true())
+//      gtk_widget_set_halign(widget, GTK_ALIGN_FILL)
+//    }
+//    if maxHeight == .infinity {
+//      print("Setting vexpand")
+//      gtk_widget_set_vexpand(widget, gtk_true())
+//      gtk_widget_set_valign(widget, GTK_ALIGN_FILL)
+//    }
+//    gtk_widget_set_size_request(widget, Int32(idealWidth ?? -1), Int32(idealHeight ?? -1))
+//  }
+// }
 
 extension Color {
   func cssValue(_ environment: EnvironmentValues) -> String {
@@ -49,25 +57,26 @@ extension Color {
   }
 }
 
-// Border modifier
-extension _OverlayModifier: WidgetAttributeModifier, WidgetModifier
-  where Overlay == _ShapeView<_StrokedShape<TokamakCore.Rectangle._Inset>, Color>
-{
-  var attributes: [String: String] {
-    let style = overlay.shape.style.dashPhase == 0 ? "solid" : "dashed"
-
-    return [
-      "border-style": style,
-      "border-width": "\(overlay.shape.style.lineWidth)px",
-      "border-color": overlay.style.cssValue(environment),
-      "border-radius": "inherit",
-    ]
-  }
-}
-
-extension _BackgroundModifier: WidgetAttributeModifier, WidgetModifier where Background == Color {
-  var attributes: [String: String] {
-    let cssValue = background.cssValue(environment)
-    return ["background": cssValue]
-  }
-}
+//
+// // Border modifier
+// extension _OverlayModifier: WidgetAttributeModifier, WidgetModifier
+//  where Overlay == _ShapeView<_StrokedShape<TokamakCore.Rectangle._Inset>, Color>
+// {
+//  var attributes: [String: String] {
+//    let style = overlay.shape.style.dashPhase == 0 ? "solid" : "dashed"
+//
+//    return [
+//      "border-style": style,
+//      "border-width": "\(overlay.shape.style.lineWidth)px",
+//      "border-color": overlay.style.cssValue(environment),
+//      "border-radius": "inherit",
+//    ]
+//  }
+// }
+//
+// extension _BackgroundModifier: WidgetAttributeModifier, WidgetModifier where Background == Color {
+//  var attributes: [String: String] {
+//    let cssValue = background.cssValue(environment)
+//    return ["background": cssValue]
+//  }
+// }

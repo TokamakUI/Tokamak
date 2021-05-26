@@ -20,7 +20,9 @@ import Foundation
 import TokamakCore
 
 extension Image: AnyWidget {
-  func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
+  func new(_ application: UnsafeMutablePointer<GtkApplication>)
+    -> UnsafeMutablePointer<GtkWidget>?
+  {
     let proxy = _ImageProxy(self)
     let imagePath = proxy.path ?? proxy.name
     let img = gtk_image_new_from_file(imagePath)!

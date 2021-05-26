@@ -15,34 +15,50 @@
 import CGTK
 import TokamakCore
 
-protocol AnyWidget {
-  var expand: Bool { get }
-  func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>
+protocol AnyWidget: BuiltinView {
+  func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?
   func update(widget: Widget)
 }
 
 extension AnyWidget {
-  var expand: Bool { false }
+  public func size<T>(for proposedSize: ProposedSize, hostView: MountedHostView<T>) -> CGSize {
+    print("USING DEFAULT SIZE FOR", self)
+    return proposedSize.orDefault
+  }
+
+  public func layout<T>(size: CGSize, hostView: MountedHostView<T>) {
+    print("XXX LAYING OUT", self, size)
+
+    if let widget = hostView.target as? Widget {
+      // swiftlint:disable:next force_cast
+      let context = widget.context as! WidgetContext
+      let resolvedTransform = context.resolvedTransform
+      if case let .widget(w) = widget.storage {
+        gtk_fixed_move(context.parent, w, Int32(resolvedTransform.x), Int32(resolvedTransform.y))
+        gtk_widget_set_size_request(w, Int32(size.width), Int32(size.height))
+      }
+    }
+  }
 }
 
 struct WidgetView<Content: View>: View, AnyWidget, ParentView {
-  let build: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>
+  let build: (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?
   let update: (Widget) -> ()
   let content: Content
-  let expand: Bool
 
-  init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>,
-       update: @escaping (Widget) -> () = { _ in },
-       expand: Bool = false,
-       @ViewBuilder content: () -> Content)
-  {
+  init(
+    build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>?,
+    update: @escaping (Widget) -> () = { _ in },
+    @ViewBuilder content: () -> Content
+  ) {
     self.build = build
-    self.expand = expand
     self.content = content()
     self.update = update
   }
 
-  func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
+  func new(_ application: UnsafeMutablePointer<GtkApplication>)
+    -> UnsafeMutablePointer<GtkWidget>?
+  {
     build(application)
   }
 
@@ -62,10 +78,45 @@ struct WidgetView<Content: View>: View, AnyWidget, ParentView {
 }
 
 extension WidgetView where Content == EmptyView {
-  init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>,
-       expand: Bool = false)
-  {
-    self.init(build: build, expand: expand) { EmptyView() }
+  init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>) {
+    self.init(build: build) { EmptyView() }
+  }
+}
+
+class WidgetContext: RenderingContext {
+  let parent: UnsafeMutablePointer<GtkFixed>
+  var transformStack: [CGPoint] = []
+  var current: CGPoint = .zero
+
+  var resolvedTransform: CGPoint {
+    var a = CGPoint.zero
+    for b in transformStack + [current] {
+//      a = a.concatenating(b)
+      a.x += b.x
+      a.y += b.y
+    }
+    print("RESOLVED", a)
+    return a
+  }
+
+  init(parent: UnsafeMutablePointer<GtkFixed>) {
+    self.parent = parent
+  }
+
+  func push() {
+    print("PUSH")
+    transformStack.append(current)
+    current = .zero
+  }
+
+  func translate(x: CGFloat, y: CGFloat) {
+    current.x += x
+    current.y += y
+  }
+
+  func pop() {
+    print("POP")
+    current = transformStack.removeLast()
   }
 }
 
@@ -73,9 +124,11 @@ final class Widget: Target {
   enum Storage {
     case application(UnsafeMutablePointer<GtkApplication>)
     case widget(UnsafeMutablePointer<GtkWidget>)
+    case dummy
   }
 
   let storage: Storage
+  let context: RenderingContext
   var view: AnyView
 
   /*
@@ -92,19 +145,26 @@ final class Widget: Target {
    gtk_widget_show_all(window)
    */
 
-  init<V: View>(_ view: V, _ ref: UnsafeMutablePointer<GtkWidget>) {
-    storage = .widget(ref)
+  init<V: View>(_ view: V, _ ref: UnsafeMutablePointer<GtkWidget>?, context: WidgetContext) {
+    if let ref = ref {
+      storage = .widget(ref)
+    } else {
+      storage = .dummy
+    }
     self.view = AnyView(view)
+    self.context = context
   }
 
-  init(_ ref: UnsafeMutablePointer<GtkWidget>) {
+  init(_ ref: UnsafeMutablePointer<GtkWidget>, fixed: UnsafeMutablePointer<GtkFixed>) {
     storage = .widget(ref)
     view = AnyView(EmptyView())
+    context = WidgetContext(parent: fixed)
   }
 
-  init(_ ref: UnsafeMutablePointer<GtkApplication>) {
+  init(_ ref: UnsafeMutablePointer<GtkApplication>, context: WidgetContext) {
     storage = .application(ref)
     view = AnyView(EmptyView())
+    self.context = context
   }
 
   func destroy() {
@@ -113,6 +173,8 @@ final class Widget: Target {
       fatalError("Attempt to destroy root Application.")
     case let .widget(widget):
       gtk_widget_destroy(widget)
+    case .dummy:
+      ()
     }
   }
 }

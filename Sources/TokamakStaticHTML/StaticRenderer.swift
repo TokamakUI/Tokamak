@@ -17,6 +17,11 @@
 
 import TokamakCore
 
+class StaticContext: BasicRenderingContext {
+  var transformStack: [CGPoint] = []
+  var current: CGPoint = .zero
+}
+
 extension EnvironmentValues {
   /// Returns default settings for the static HTML environment
   static var defaultEnvironment: Self {
@@ -28,6 +33,8 @@ extension EnvironmentValues {
 }
 
 public final class HTMLTarget: Target {
+  public var context: RenderingContext = StaticContext()
+
   var html: AnyHTML
   var children: [HTMLTarget] = []
 
