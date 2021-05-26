@@ -163,6 +163,6 @@ final class DOMRenderer: Renderer {
     guard mapAnyView(host.view, transform: { (html: AnyHTML) in html }) != nil
     else { return }
 
-    _ = parent.ref.removeChild!(target.ref)
+    try? _ = parent.ref.throwing.removeChild!(target.ref)
   }
 }
