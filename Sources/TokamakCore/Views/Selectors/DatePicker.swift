@@ -20,7 +20,7 @@ import struct Foundation.Date
 /// A control for selecting an absolute date.
 ///
 /// Available when `Label` conform to `View`.
-public struct DatePicker<Label>: PrimitiveView where Label: View {
+public struct DatePicker<Label>: _PrimitiveView where Label: View {
   let label: Label
   let valueBinding: Binding<Date>
   let displayedComponents: DatePickerComponents

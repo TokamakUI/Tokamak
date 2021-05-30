@@ -18,7 +18,7 @@
 /// A `View` created from a `Tuple` of `View` values.
 ///
 /// Mainly for use with `@ViewBuilder`.
-public struct TupleView<T>: PrimitiveView {
+public struct TupleView<T>: _PrimitiveView {
   public let value: T
 
   let _children: [AnyView]

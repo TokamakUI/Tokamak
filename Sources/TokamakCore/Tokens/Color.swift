@@ -299,7 +299,7 @@ public extension Color {
 
   static let secondary: Self = .init(systemColor: .secondary)
   static let accentColor: Self = .init(_EnvironmentDependentColorBox {
-    ($0.accentColor ?? Self.blue)
+    $0.accentColor ?? Self.blue
   })
 
   init(_ color: UIColor) {

@@ -34,7 +34,7 @@
 ///         print("Set username")
 ///       })
 ///     }
-public struct TextField<Label>: PrimitiveView where Label: View {
+public struct TextField<Label>: _PrimitiveView where Label: View {
   let label: Label
   let textBinding: Binding<String>
   let onEditingChanged: (Bool) -> ()

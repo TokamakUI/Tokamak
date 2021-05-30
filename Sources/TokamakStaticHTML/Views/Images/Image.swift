@@ -19,9 +19,8 @@ import TokamakCore
 
 public typealias Image = TokamakCore.Image
 
-extension Image: ViewDeferredToRenderer {
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+extension Image: HTMLPrimitive {
+  var renderedBody: AnyView {
     AnyView(_HTMLImage(proxy: _ImageProxy(self)))
   }
 }

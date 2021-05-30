@@ -22,9 +22,8 @@ struct _ZStack_ContentGridItem: ViewModifier, DOMViewModifier {
   }
 }
 
-extension ZStack: ViewDeferredToRenderer {
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+extension ZStack: HTMLPrimitive {
+  var renderedBody: AnyView {
     AnyView(HTML("div", [
       "style": """
       display: grid;

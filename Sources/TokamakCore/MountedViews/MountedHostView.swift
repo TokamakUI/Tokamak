@@ -45,7 +45,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     on parent: MountedElement<R>? = nil,
     with reconciler: StackReconciler<R>
   ) {
-    guard let target = reconciler.renderer?.mountTarget(
+    guard let target = reconciler.renderer.mountTarget(
       before: sibling,
       to: parentTarget,
       with: self
@@ -57,7 +57,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     guard !view.children.isEmpty else { return }
 
     mountedChildren = view.children.map {
-      $0.makeMountedView(target, environmentValues, self)
+      $0.makeMountedView(reconciler.renderer, target, environmentValues, self)
     }
 
     /* Remember that `GroupView`s are always "flattened", their `target` instances are targets of
@@ -74,7 +74,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
   override func unmount(with reconciler: StackReconciler<R>) {
     guard let target = target else { return }
 
-    reconciler.renderer?.unmount(
+    reconciler.renderer.unmount(
       target: target,
       from: parentTarget,
       with: self
@@ -88,7 +88,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
 
     updateEnvironment()
     target.view = view
-    reconciler.renderer?.update(target: target, with: self)
+    reconciler.renderer.update(target: target, with: self)
 
     var childrenViews = view.children
 
@@ -101,7 +101,9 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
 
     // if no existing children then mount all new children
     case (true, false):
-      mountedChildren = childrenViews.map { $0.makeMountedView(target, environmentValues, self) }
+      mountedChildren = childrenViews.map {
+        $0.makeMountedView(reconciler.renderer, target, environmentValues, self)
+      }
       mountedChildren.forEach { $0.mount(on: self, with: reconciler) }
 
     // if both arrays have items then reconcile by types and keys
@@ -124,7 +126,12 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
             as a "cursor" sibling when mounting. Only then we can dispose of the old mounted child
             by unmounting it.
            */
-          newChild = childView.makeMountedView(target, environmentValues, self)
+          newChild = childView.makeMountedView(
+            reconciler.renderer,
+            target,
+            environmentValues,
+            self
+          )
           newChild.mount(before: mountedChild.firstDescendantTarget, on: self, with: reconciler)
           mountedChild.unmount(with: reconciler)
         }
@@ -144,7 +151,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
         // mount remaining views
         for firstChild in childrenViews {
           let newChild: MountedElement<R> =
-            firstChild.makeMountedView(target, environmentValues, self)
+            firstChild.makeMountedView(reconciler.renderer, target, environmentValues, self)
           newChild.mount(on: self, with: reconciler)
           newChildren.append(newChild)
         }

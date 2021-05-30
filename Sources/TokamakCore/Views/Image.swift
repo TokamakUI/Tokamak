@@ -17,7 +17,7 @@
 
 import Foundation
 
-public struct Image: PrimitiveView {
+public struct Image: _PrimitiveView {
   let label: Text?
   let name: String
   let bundle: Bundle?

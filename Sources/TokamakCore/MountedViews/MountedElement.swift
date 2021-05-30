@@ -222,13 +222,14 @@ extension TypeInfo {
 
 extension AnyView {
   func makeMountedView<R: Renderer>(
+    _ renderer: R,
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues,
     _ parent: MountedElement<R>?
   ) -> MountedElement<R> {
     if type == EmptyView.self {
       return MountedEmptyView(self, environmentValues, parent)
-    } else if bodyType == Never.self && !(type is ViewDeferredToRenderer.Type) {
+    } else if bodyType == Never.self && !renderer.isPrimitiveView(type) {
       return MountedHostView(self, parentTarget, environmentValues, parent)
     } else {
       return MountedCompositeView(self, parentTarget, environmentValues, parent)

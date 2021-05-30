@@ -22,7 +22,7 @@
 ///       Spacer()
 ///       Text("World")
 ///     }
-public struct Spacer: PrimitiveView {
+public struct Spacer: _PrimitiveView {
   public var minLength: CGFloat?
 
   public init(minLength: CGFloat? = nil) {

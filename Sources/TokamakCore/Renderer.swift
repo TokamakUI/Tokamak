@@ -66,4 +66,8 @@ public protocol Renderer: AnyObject {
     with host: MountedHost,
     completion: @escaping () -> ()
   )
+
+  func body(for view: Any) -> AnyView?
+
+  func isPrimitiveView(_ type: Any.Type) -> Bool
 }

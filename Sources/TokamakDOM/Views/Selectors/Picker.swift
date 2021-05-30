@@ -16,9 +16,8 @@ import JavaScriptKit
 import TokamakCore
 import TokamakStaticHTML
 
-extension _PickerContainer: ViewDeferredToRenderer {
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+extension _PickerContainer: DOMPrimitive {
+  var renderedBody: AnyView {
     AnyView(HTML("label") {
       label
       Text(" ")
@@ -35,9 +34,8 @@ extension _PickerContainer: ViewDeferredToRenderer {
   }
 }
 
-extension _PickerElement: ViewDeferredToRenderer {
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+extension _PickerElement: DOMPrimitive {
+  var renderedBody: AnyView {
     let attributes: [HTMLAttribute: String]
     if let value = valueIndex {
       attributes = [.value: "\(value)"]

@@ -18,9 +18,8 @@
 import TokamakCore
 import TokamakStaticHTML
 
-extension _Button: ViewDeferredToRenderer where Label == Text {
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+extension _Button: DOMPrimitive where Label == Text {
+  var renderedBody: AnyView {
     let listeners: [String: Listener] = [
       "pointerdown": { _ in isPressed = true },
       "pointerup": { _ in

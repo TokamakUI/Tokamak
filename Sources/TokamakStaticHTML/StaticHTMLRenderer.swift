@@ -146,4 +146,16 @@ public final class StaticHTMLRenderer: Renderer {
   ) {
     fatalError("Stateful apps cannot be created with TokamakStaticHTML")
   }
+
+  public func isPrimitiveView(_ type: Any.Type) -> Bool {
+    type is HTMLPrimitive.Type
+  }
+
+  public func body(for view: Any) -> AnyView? {
+    (view as? HTMLPrimitive)?.renderedBody
+  }
+}
+
+protocol HTMLPrimitive {
+  var renderedBody: AnyView { get }
 }

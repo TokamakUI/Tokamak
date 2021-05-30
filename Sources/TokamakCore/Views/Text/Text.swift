@@ -29,7 +29,7 @@
 ///       .bold()
 ///       .italic()
 ///       .underline(true, color: .red)
-public struct Text: PrimitiveView {
+public struct Text: _PrimitiveView {
   let storage: _Storage
   let modifiers: [_Modifier]
 

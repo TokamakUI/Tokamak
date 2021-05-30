@@ -31,13 +31,12 @@ extension LazyVGrid: SpacerContainer {
   }
 }
 
-extension LazyVGrid: ViewDeferredToRenderer {
-  public var lastColumn: GridItem? {
+extension LazyVGrid: HTMLPrimitive {
+  var lastColumn: GridItem? {
     _LazyVGridProxy(self).columns.last
   }
 
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+  var renderedBody: AnyView {
     var styles = """
     display: grid;
     grid-template-columns: \(_LazyVGridProxy(self)

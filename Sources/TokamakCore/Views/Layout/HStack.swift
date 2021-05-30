@@ -28,7 +28,7 @@ public enum VerticalAlignment: Equatable {
 ///       Text("Hello")
 ///       Text("World")
 ///     }
-public struct HStack<Content>: PrimitiveView where Content: View {
+public struct HStack<Content>: _PrimitiveView where Content: View {
   public let alignment: VerticalAlignment
   public let spacing: CGFloat?
   public let content: Content

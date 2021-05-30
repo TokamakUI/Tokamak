@@ -19,7 +19,7 @@ public final class NavigationContext: ObservableObject {
   @Published var destination = NavigationLinkDestination(EmptyView())
 }
 
-public struct NavigationView<Content>: PrimitiveView where Content: View {
+public struct NavigationView<Content>: _PrimitiveView where Content: View {
   let content: Content
 
   @StateObject var context = NavigationContext()

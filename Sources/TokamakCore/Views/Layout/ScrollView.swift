@@ -35,7 +35,7 @@
 ///         Text("\($0)")
 ///       }
 ///     }
-public struct ScrollView<Content>: PrimitiveView where Content: View {
+public struct ScrollView<Content>: _PrimitiveView where Content: View {
   public let content: Content
   public let axes: Axis.Set
   public let showsIndicators: Bool

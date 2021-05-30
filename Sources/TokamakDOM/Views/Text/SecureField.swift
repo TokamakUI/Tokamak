@@ -17,9 +17,8 @@
 
 import TokamakCore
 
-extension SecureField: ViewDeferredToRenderer where Label == Text {
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+extension SecureField: DOMPrimitive where Label == Text {
+  var renderedBody: AnyView {
     let proxy = _SecureFieldProxy(self)
     return AnyView(DynamicHTML("input", [
       "type": "password",

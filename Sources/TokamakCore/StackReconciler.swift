@@ -29,6 +29,7 @@ import CombineShim
  implemented in the future to improve UI responsiveness under heavy load and potentially even
  support multi-threading when it's supported in WebAssembly.
  */
+
 public final class StackReconciler<R: Renderer> {
   /** A set of mounted elements that triggered a re-render. These are stored in a `Set` instead of
    an array to avoid duplicate re-renders. The actual performance benefits of such de-duplication
@@ -52,7 +53,7 @@ public final class StackReconciler<R: Renderer> {
   /** A renderer instance to delegate to. Usually the renderer owns the reconciler instance, thus
    the reference has to be weak to avoid a reference cycle.
    **/
-  private(set) weak var renderer: R?
+  private(set) unowned var renderer: R
 
   /** A platform-specific implementation of an event loop scheduler. Usually reconciler
    updates are scheduled in reponse to user input. To make updates non-blocking so that the app
@@ -73,7 +74,7 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootElement = AnyView(view).makeMountedView(target, environment, nil)
+    rootElement = AnyView(view).makeMountedView(renderer, target, environment, nil)
 
     performInitialMount()
   }
@@ -201,45 +202,50 @@ public final class StackReconciler<R: Renderer> {
     }.store(in: &mountedApp.persistentSubscriptions)
   }
 
-  private func render<T>(
-    compositeElement: MountedCompositeElement<R>,
-    body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
-    result: KeyPath<MountedCompositeElement<R>, (Any) -> T>
-  ) -> T {
+  private func body(
+    of compositeElement: MountedCompositeElement<R>,
+    keyPath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>
+  ) -> Any {
     compositeElement.updateEnvironment()
     if let info = typeInfo(of: compositeElement.type) {
       var stateIdx = 0
       let dynamicProps = info.dynamicProperties(
         &compositeElement.environmentValues,
-        source: &compositeElement[keyPath: bodyKeypath]
+        source: &compositeElement[keyPath: keyPath]
       )
 
       compositeElement.transientSubscriptions = []
       for property in dynamicProps {
         // Setup state/subscriptions
         if property.type is ValueStorage.Type {
-          setupStorage(id: stateIdx, for: property, of: compositeElement, body: bodyKeypath)
+          setupStorage(id: stateIdx, for: property, of: compositeElement, body: keyPath)
           stateIdx += 1
         }
         if property.type is ObservedProperty.Type {
-          setupTransientSubscription(for: property, of: compositeElement, body: bodyKeypath)
+          setupTransientSubscription(for: property, of: compositeElement, body: keyPath)
         }
       }
     }
 
-    return compositeElement[keyPath: result](compositeElement[keyPath: bodyKeypath])
+    return compositeElement[keyPath: keyPath]
   }
 
   func render(compositeView: MountedCompositeView<R>) -> AnyView {
-    render(compositeElement: compositeView, body: \.view.view, result: \.view.bodyClosure)
+    let view = body(of: compositeView, keyPath: \.view.view)
+
+    guard let renderedBody = renderer.body(for: view) else {
+      return compositeView.view.bodyClosure(view)
+    }
+
+    return renderedBody
   }
 
   func render(mountedApp: MountedApp<R>) -> _AnyScene {
-    render(compositeElement: mountedApp, body: \.app.app, result: \.app.bodyClosure)
+    mountedApp.app.bodyClosure(body(of: mountedApp, keyPath: \.app.app))
   }
 
   func render(mountedScene: MountedScene<R>) -> _AnyScene.BodyResult {
-    render(compositeElement: mountedScene, body: \.scene.scene, result: \.scene.bodyClosure)
+    mountedScene.scene.bodyClosure(body(of: mountedScene, keyPath: \.scene.scene))
   }
 
   func reconcile<Element>(
