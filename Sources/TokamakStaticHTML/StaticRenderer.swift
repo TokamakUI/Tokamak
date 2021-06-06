@@ -65,7 +65,7 @@ public final class StaticHTMLRenderer: Renderer {
 
   static var title: String = ""
 
-  public func render(shouldSortAttributes: Bool = true) -> String {
+  public func render(shouldSortAttributes: Bool = false) -> String {
     """
     <html>
     <head>
