@@ -105,12 +105,12 @@ private struct TextSpan: AnyHTML {
   let content: String
   let attributes: [HTMLAttribute: String]
 
-  var innerHTML: String? { content }
+    public func innerHTML(shouldSortAttributes: Bool) -> String? { content }
   var tag: String { "span" }
 }
 
 extension Text: AnyHTML {
-  public var innerHTML: String? {
+    public func innerHTML(shouldSortAttributes: Bool) -> String? {
     let proxy = _TextProxy(self)
     let innerHTML: String
     switch proxy.storage {
@@ -126,7 +126,7 @@ extension Text: AnyHTML {
               environment: proxy.environment
             )
           )
-          .outerHTML
+          .outerHTML(shouldSortAttributes: shouldSortAttributes, children: [])
         }
         .reduce("", +)
     }

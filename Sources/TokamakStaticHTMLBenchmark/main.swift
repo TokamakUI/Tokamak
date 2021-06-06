@@ -27,12 +27,20 @@ struct BenchmarkApp: App {
   }
 }
 
-benchmark("render App") {
-  _ = StaticHTMLRenderer(BenchmarkApp())
+benchmark("render App unsorted attributes") {
+    _ = StaticHTMLRenderer(BenchmarkApp()).html(shouldSortAttributes: false)
 }
 
-benchmark("render List") {
-  _ = StaticHTMLRenderer(List(1..<100) { Text("\($0)") })
+benchmark("render App sorted attributes") {
+    _ = StaticHTMLRenderer(BenchmarkApp()).html(shouldSortAttributes: true)
+}
+
+benchmark("render List unsorted attributes") {
+    _ = StaticHTMLRenderer(List(1..<100) { Text("\($0)") }).html(shouldSortAttributes: false)
+}
+
+benchmark("render List sorted attributes") {
+    _ = StaticHTMLRenderer(List(1..<100) { Text("\($0)") }).html(shouldSortAttributes: true)
 }
 
 Benchmark.main()
