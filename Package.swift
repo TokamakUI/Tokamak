@@ -26,8 +26,8 @@ let package = Package(
       targets: ["TokamakStaticHTML"]
     ),
     .executable(
-      name: "TokamakStaticDemo",
-      targets: ["TokamakStaticDemo"]
+      name: "TokamakStaticHTMLDemo",
+      targets: ["TokamakStaticHTMLDemo"]
     ),
     .library(
       name: "TokamakGTK",
@@ -159,7 +159,7 @@ let package = Package(
       resources: [.copy("logo-header.png")]
     ),
     .target(
-      name: "TokamakStaticDemo",
+      name: "TokamakStaticHTMLDemo",
       dependencies: [
         "TokamakStaticHTML",
       ]

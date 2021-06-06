@@ -33,7 +33,7 @@ extension _Button: DOMPrimitive where Label == Text {
         ["class": "_tokamak-buttonstyle-default"],
         listeners: listeners
       ) {
-        HTML("span", content: label.innerHTML ?? "")
+        HTML("span", content: label.innerHTML(shouldSortAttributes: false) ?? "")
       })
     } else {
       return AnyView(DynamicHTML(
