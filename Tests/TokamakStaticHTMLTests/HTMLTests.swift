@@ -18,7 +18,7 @@
 import TokamakStaticHTML
 import XCTest
 
-private let expectation =
+private let expectedHTML =
 #"""
 <html>
 <head>
@@ -181,8 +181,9 @@ final class ReconcilerTests: XCTestCase {
   }
 
   func testOptional() {
-    let renderer = StaticHTMLRenderer(OptionalBody(model: Model(text: Text("text"))))
+    let resultingHTML = StaticHTMLRenderer(OptionalBody(model: Model(text: Text("text"))))
+        .render(shouldSortAttributes: true)
 
-    XCTAssertEqual(renderer.render(shouldSortAttributes: true), expectation)
+    XCTAssertEqual(resultingHTML, expectedHTML)
   }
 }
