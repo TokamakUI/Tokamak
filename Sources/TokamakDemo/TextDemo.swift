@@ -55,6 +55,15 @@ struct TextDemo: View {
       }
       (Text("This text has been ") + Text("concatenated").bold())
         .italic()
+      ForEach(TextAlignment.allCases, id: \.hashValue) { alignment in
+        Text(
+          """
+          Multiline
+          text
+          """
+        )
+        .multilineTextAlignment(alignment)
+      }
     }
   }
 }

@@ -53,6 +53,7 @@ struct Box<Content: View>: View, ParentView, AnyWidget, StackProtocol {
 }
 
 extension VStack: ViewDeferredToRenderer {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     AnyView(
       Box(
@@ -66,6 +67,7 @@ extension VStack: ViewDeferredToRenderer {
 }
 
 extension HStack: ViewDeferredToRenderer {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     AnyView(
       Box(

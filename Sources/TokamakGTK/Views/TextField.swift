@@ -57,6 +57,7 @@ private func bindAction(to entry: UnsafeMutablePointer<GtkWidget>, textBinding: 
 }
 
 extension SecureField: ViewDeferredToRenderer where Label == Text {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     let proxy = _SecureFieldProxy(self)
     return AnyView(WidgetView(
@@ -72,6 +73,7 @@ extension SecureField: ViewDeferredToRenderer where Label == Text {
 }
 
 extension TextField: ViewDeferredToRenderer where Label == Text {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     let proxy = _TextFieldProxy(self)
     return AnyView(WidgetView(

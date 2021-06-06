@@ -22,14 +22,10 @@
 ///       Spacer()
 ///       Text("World")
 ///     }
-public struct Spacer: View {
+public struct Spacer: PrimitiveView {
   public var minLength: CGFloat?
 
   public init(minLength: CGFloat? = nil) {
     self.minLength = minLength
-  }
-
-  public var body: Never {
-    neverBody("Spacer")
   }
 }

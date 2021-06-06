@@ -56,6 +56,7 @@ public extension SpacerContainer where Self: ParentView {
 }
 
 extension Spacer: ViewDeferredToRenderer {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     AnyView(HTML("div", [
       "style": "flex-grow: 1; \(minLength != nil ? "min-width: \(minLength!)" : "")",

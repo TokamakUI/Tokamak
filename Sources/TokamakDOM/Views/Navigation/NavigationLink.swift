@@ -16,6 +16,7 @@ import TokamakCore
 import TokamakStaticHTML
 
 extension NavigationLink: ViewDeferredToRenderer {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     let proxy = _NavigationLinkProxy(self)
     return AnyView(

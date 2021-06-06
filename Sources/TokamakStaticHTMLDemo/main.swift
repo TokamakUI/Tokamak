@@ -25,4 +25,4 @@ struct TestApp: App {
   }
 }
 
-print(StaticHTMLRenderer(TestApp()).html)
+print(StaticHTMLRenderer(TestApp()).render(shouldSortAttributes: true))

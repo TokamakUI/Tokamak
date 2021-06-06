@@ -15,6 +15,7 @@
 import TokamakCore
 
 extension TextEditor: ViewDeferredToRenderer {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     let proxy = _TextEditorProxy(self)
 

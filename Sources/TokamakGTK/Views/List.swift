@@ -31,6 +31,7 @@ extension List: ViewDeferredToRenderer {
     }
   }
 
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     let proxy = _ListProxy(self)
     return AnyView(ScrollView {

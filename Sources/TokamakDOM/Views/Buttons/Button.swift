@@ -19,6 +19,7 @@ import TokamakCore
 import TokamakStaticHTML
 
 extension _Button: ViewDeferredToRenderer where Label == Text {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     let listeners: [String: Listener] = [
       "pointerdown": { _ in isPressed = true },
@@ -33,7 +34,7 @@ extension _Button: ViewDeferredToRenderer where Label == Text {
         ["class": "_tokamak-buttonstyle-default"],
         listeners: listeners
       ) {
-        HTML("span", content: label.innerHTML ?? "")
+        HTML("span", content: label.innerHTML(shouldSortAttributes: false) ?? "")
       })
     } else {
       return AnyView(DynamicHTML(

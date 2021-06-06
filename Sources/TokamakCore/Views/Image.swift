@@ -17,7 +17,7 @@
 
 import Foundation
 
-public struct Image: View {
+public struct Image: PrimitiveView {
   let label: Text?
   let name: String
   let bundle: Bundle?
@@ -38,10 +38,6 @@ public struct Image: View {
     label = nil
     self.name = name
     self.bundle = bundle
-  }
-
-  public var body: Never {
-    neverBody("Image")
   }
 }
 

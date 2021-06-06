@@ -78,6 +78,7 @@ public struct List<SelectionValue, Content>: View
     }
   }
 
+  @_spi(TokamakCore)
   public var body: some View {
     if let style = style as? ListStyleDeferredToRenderer {
       style.listBody(ScrollView {

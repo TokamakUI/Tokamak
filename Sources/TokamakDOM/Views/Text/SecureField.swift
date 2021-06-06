@@ -18,6 +18,7 @@
 import TokamakCore
 
 extension SecureField: ViewDeferredToRenderer where Label == Text {
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     let proxy = _SecureFieldProxy(self)
     return AnyView(DynamicHTML("input", [

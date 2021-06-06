@@ -16,7 +16,7 @@
 //
 
 /// A type-erased view.
-public struct AnyView: View {
+public struct AnyView: PrimitiveView {
   /// The type of the underlying `view`.
   let type: Any.Type
 
@@ -67,10 +67,6 @@ public struct AnyView: View {
       }
     }
   }
-
-  public var body: Never {
-    neverBody("AnyView")
-  }
 }
 
 public func mapAnyView<T, V>(_ anyView: AnyView, transform: (V) -> T) -> T? {
@@ -80,6 +76,7 @@ public func mapAnyView<T, V>(_ anyView: AnyView, transform: (V) -> T) -> T? {
 }
 
 extension AnyView: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (view as? ParentView)?.children ?? []
   }

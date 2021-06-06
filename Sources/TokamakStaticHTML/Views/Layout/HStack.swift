@@ -30,6 +30,7 @@ extension VerticalAlignment {
 extension HStack: ViewDeferredToRenderer, SpacerContainer {
   public var axis: SpacerContainerAxis { .horizontal }
 
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     AnyView(HTML("div", [
       "style": """

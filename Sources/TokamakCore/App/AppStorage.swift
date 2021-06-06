@@ -173,6 +173,7 @@ struct DefaultAppStorageEnvironmentKey: EnvironmentKey {
 }
 
 public extension EnvironmentValues {
+  @_spi(TokamakCore)
   var _defaultAppStorage: _StorageProvider? {
     get {
       self[DefaultAppStorageEnvironmentKey.self]
