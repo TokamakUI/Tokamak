@@ -33,7 +33,11 @@ public struct DynamicHTML<Content>: View, AnyDynamicHTML {
   public let listeners: [String: Listener]
   let content: Content
 
-  public var innerHTML: String?
+  fileprivate let cachedInnerHTML: String?
+
+    public func innerHTML(shouldSortAttributes: Bool) -> String? {
+        cachedInnerHTML
+    }
 
   @_spi(TokamakCore)
   public var body: Never {
@@ -52,7 +56,7 @@ public extension DynamicHTML where Content: StringProtocol {
     self.attributes = attributes
     self.listeners = listeners
     self.content = content
-    innerHTML = String(content)
+    cachedInnerHTML = String(content)
   }
 }
 
@@ -67,7 +71,7 @@ extension DynamicHTML: ParentView where Content: View {
     self.attributes = attributes
     self.listeners = listeners
     self.content = content()
-    innerHTML = nil
+    cachedInnerHTML = nil
   }
 
   @_spi(TokamakCore)

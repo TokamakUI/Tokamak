@@ -47,17 +47,30 @@ extension HTMLAttribute: ExpressibleByStringLiteral {
 }
 
 public protocol AnyHTML {
-  var innerHTML: String? { get }
+    func innerHTML(shouldSortAttributes: Bool) -> String?
   var tag: String { get }
   var attributes: [HTMLAttribute: String] { get }
 }
 
 public extension AnyHTML {
-  var outerHTML: String {
-    """
+    func outerHTML(shouldSortAttributes: Bool, children: [HTMLTarget]) -> String {
+        let renderedAttributes: String
+        if attributes.isEmpty {
+            renderedAttributes = ""
+        } else {
+            let mappedAttributes = attributes.map { #"\#($0)="\#($1)""# }
+            if shouldSortAttributes {
+                renderedAttributes = mappedAttributes.sorted().joined(separator: " ")
+            } else {
+                renderedAttributes = mappedAttributes.joined(separator: " ")
+            }
+        }
+
+    return """
     <\(tag)\(attributes.isEmpty ? "" : " ")\
-    \(attributes.map { #"\#($0)="\#($1)""# }.joined(separator: " "))>\
-    \(innerHTML ?? "")\
+    \(renderedAttributes)>\
+    \(innerHTML(shouldSortAttributes: shouldSortAttributes) ?? "")\
+    \(children.map { $0.outerHTML(shouldSortAttributes: shouldSortAttributes) }.joined(separator: "\n"))\
     </\(tag)>
     """
   }
@@ -68,7 +81,12 @@ public struct HTML<Content>: View, AnyHTML {
   public let attributes: [HTMLAttribute: String]
   let content: Content
 
-  public let innerHTML: String?
+    fileprivate let cachedInnerHTML: String?
+
+      public func innerHTML(shouldSortAttributes: Bool) -> String? {
+          cachedInnerHTML
+      }
+
 
   @_spi(TokamakCore)
   public var body: Never {
@@ -85,7 +103,7 @@ public extension HTML where Content: StringProtocol {
     self.tag = tag
     self.attributes = attributes
     self.content = content
-    innerHTML = String(content)
+    cachedInnerHTML = String(content)
   }
 }
 
@@ -98,7 +116,7 @@ extension HTML: ParentView where Content: View {
     self.tag = tag
     self.attributes = attributes
     self.content = content()
-    innerHTML = nil
+    cachedInnerHTML = nil
   }
 
   @_spi(TokamakCore)

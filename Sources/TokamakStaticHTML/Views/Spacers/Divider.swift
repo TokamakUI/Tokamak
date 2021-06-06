@@ -15,7 +15,7 @@
 @_spi(TokamakCore) import TokamakCore
 
 extension Divider: AnyHTML {
-  public var innerHTML: String? { nil }
+    public func innerHTML(shouldSortAttributes: Bool) -> String? { nil }
   public var tag: String { "hr" }
   public var attributes: [HTMLAttribute: String] {
     [

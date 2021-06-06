@@ -49,7 +49,7 @@ extension AnyHTML {
       dom.reinstall(dynamicSelf.listeners)
     }
 
-    guard let innerHTML = innerHTML else { return }
+    guard let innerHTML = innerHTML(shouldSortAttributes: false) else { return }
     dom.ref.innerHTML = .string(innerHTML)
   }
 }
