@@ -78,6 +78,7 @@ public struct List<SelectionValue, Content>: View
     }
   }
 
+  @_spi(TokamakCore)
   public var body: some View {
     if let style = style as? ListStyleDeferredToRenderer {
       style.listBody(ScrollView {
@@ -119,7 +120,7 @@ public enum _ListRow {
   }
 }
 
-/// This is a helper class that works around absence of "package private" access control in Swift
+/// This is a helper type that works around absence of "package private" access control in Swift
 public struct _ListProxy<SelectionValue, Content>
   where SelectionValue: Hashable, Content: View
 {
@@ -147,11 +148,13 @@ public extension List {
     self.init(selection: selection) { ForEach(data) { row in HStack { rowContent(row) } } }
   }
 
-  init<Data, ID, RowContent>(_ data: Data,
+  init<Data, ID, RowContent>(
+    _ data: Data,
 
-                             id: KeyPath<Data.Element, ID>,
-                             selection: Binding<Set<SelectionValue>>?,
-                             @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
+    id: KeyPath<Data.Element, ID>,
+    selection: Binding<Set<SelectionValue>>?,
+    @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent
+  )
     where Content == ForEach<Data, ID, HStack<RowContent>>,
     Data: RandomAccessCollection,
     ID: Hashable, RowContent: View
@@ -175,9 +178,11 @@ public extension List {
     }
   }
 
-  init<Data, RowContent>(_ data: Data,
-                         selection: Binding<SelectionValue?>?,
-                         @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent)
+  init<Data, RowContent>(
+    _ data: Data,
+    selection: Binding<SelectionValue?>?,
+    @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent
+  )
     where Content == ForEach<Data, Data.Element.ID, HStack<RowContent>>,
     Data: RandomAccessCollection, RowContent: View, Data.Element: Identifiable
   {

@@ -1,3 +1,59 @@
+# 0.7.0 (3 May 2021)
+
+This release introduces new view types such as `DatePicker`, new modifiers such as `shadow`,
+improves test coverage, updates dependencies, and fixes multiple bugs and crashes. Additionally,
+a proof of concept GTK renderer is now available in the `TokamakGTK` module.
+
+Many thanks to (in alphabetical order)
+[@carson-katri](https://github.com/carson-katri), [@filip-sakel](https://github.com/filip-sakel),
+[@foscomputerservices](https://github.com/foscomputerservices), [@literalpie](https://github.com/literalpie),
+[@mattpolzin](https://github.com/mattpolzin), [@mortenbekditlevsen](https://github.com/mortenbekditlevsen),
+and [@Snowy1803](https://github.com/Snowy1803) for their contributions to this release!
+
+**Closed issues:**
+
+- `@ObservedObject` is a get-only property ([#392](https://github.com/TokamakUI/Tokamak/issues/392))
+- What is the difference between `HTML` and `DynamicHTML`? ([#388](https://github.com/TokamakUI/Tokamak/issues/388))
+- Reduce `View.body` Visibility ([#385](https://github.com/TokamakUI/Tokamak/issues/385))
+- Verify that type constructor names contain contain module names ([#368](https://github.com/TokamakUI/Tokamak/issues/368))
+- Crash when using a `View` with optional content ([#362](https://github.com/TokamakUI/Tokamak/issues/362))
+- Set up code coverage reports on GitHub Actions ([#350](https://github.com/TokamakUI/Tokamak/issues/350))
+- Shadow support ([#324](https://github.com/TokamakUI/Tokamak/issues/324))
+- Implement `DatePicker` view in the DOM renderer ([#320](https://github.com/TokamakUI/Tokamak/issues/320))
+- `TokamakDemo` build failed ([#305](https://github.com/TokamakUI/Tokamak/issues/305))
+
+**Merged pull requests:**
+
+- Add `@dynamicMemberLookup` to `Binding` ([#396](https://github.com/TokamakUI/Tokamak/pull/396)) via [@carson-katri](https://github.com/carson-katri)
+- Add `DatePicker` to the `TokamakDOM` module ([#394](https://github.com/TokamakUI/Tokamak/pull/394)) via [@Snowy1803](https://github.com/Snowy1803)
+- Use `String(reflecting:)` vs `String(describing:)` ([#391](https://github.com/TokamakUI/Tokamak/pull/391)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Clarify the difference between `HTML` and `DynamicHTML` ([#389](https://github.com/TokamakUI/Tokamak/pull/389)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add `_spi(TokamakCore)` to ideally internal public members ([#386](https://github.com/TokamakUI/Tokamak/pull/386)) via [@filip-sakel](https://github.com/filip-sakel)
+- Make properties of `CGPoint`, `CGSize` and `CGRect` `var`s instead of `let`s ([#382](https://github.com/TokamakUI/Tokamak/pull/382)) via [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)
+- Use immediate scheduler in `TestRenderer` ([#380](https://github.com/TokamakUI/Tokamak/pull/380)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Simple Code Coverage analysis ([#378](https://github.com/TokamakUI/Tokamak/pull/378)) via [@mattpolzin](https://github.com/mattpolzin)
+- Add checks for metadata state ([#375](https://github.com/TokamakUI/Tokamak/pull/375)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Use upstream OpenCombine instead of a fork ([#377](https://github.com/TokamakUI/Tokamak/pull/377)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Update JavaScriptKit, OpenCombineJS dependencies ([#376](https://github.com/TokamakUI/Tokamak/pull/376)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Clean up metadata reflection code ([#372](https://github.com/TokamakUI/Tokamak/pull/372)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add David Hunt to the list of maintainers ([#373](https://github.com/TokamakUI/Tokamak/pull/373)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Refactor environment injection, add a test ([#371](https://github.com/TokamakUI/Tokamak/pull/371)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Replace uses of the Runtime library with stdlib ([#370](https://github.com/TokamakUI/Tokamak/pull/370)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Use `macos-latest` agent for the GTK build ([#360](https://github.com/TokamakUI/Tokamak/pull/360)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add a benchmark target and a script to run it ([#365](https://github.com/TokamakUI/Tokamak/pull/365)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Fix crashes in views with optional content ([#364](https://github.com/TokamakUI/Tokamak/pull/364)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add GTK support for `SecureField` ([#363](https://github.com/TokamakUI/Tokamak/pull/363)) via [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)
+- Add support for shadow modifier ([#355](https://github.com/TokamakUI/Tokamak/pull/355)) via [@literalpie](https://github.com/literalpie)
+- Two infinite loop fixes ([#359](https://github.com/TokamakUI/Tokamak/pull/359)) via [@foscomputerservices](https://github.com/foscomputerservices)
+- Added `TextField` support for GTK using `GtkEntry` ([#361](https://github.com/TokamakUI/Tokamak/pull/361)) via [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)
+- Fixed a small issue with re-renderers being dropped ([#356](https://github.com/TokamakUI/Tokamak/pull/356)) via [@foscomputerservices](https://github.com/foscomputerservices)
+- Removed an extra space that cause Safari to issue "Invalid value" ([#358](https://github.com/TokamakUI/Tokamak/pull/358)) via [@foscomputerservices](https://github.com/foscomputerservices)
+- Add `@mortenbekditlevsen` to the list of maintainers in `README.md` ([#352](https://github.com/TokamakUI/Tokamak/pull/352)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Build the GTK renderer on Ubuntu on CI ([#347](https://github.com/TokamakUI/Tokamak/pull/347)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add missing `Link` re-export to TokamakDOM ([#351](https://github.com/TokamakUI/Tokamak/pull/351)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- GTK shape support WIP ([#348](https://github.com/TokamakUI/Tokamak/pull/348)) via [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)
+- Add a "bug report" issue template ([#349](https://github.com/TokamakUI/Tokamak/pull/349)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
 # 0.6.1 (6 December 2020)
 
 This release fixes autocomplete in Xcode for projects that depend on Tokamak.

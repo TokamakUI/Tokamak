@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/13/20.
 //
 
-public struct LazyHGrid<Content>: View where Content: View {
+public struct LazyHGrid<Content>: PrimitiveView where Content: View {
   let rows: [GridItem]
   let alignment: VerticalAlignment
   let spacing: CGFloat
@@ -34,10 +34,6 @@ public struct LazyHGrid<Content>: View where Content: View {
     self.spacing = spacing ?? 8
     self.pinnedViews = pinnedViews
     self.content = content()
-  }
-
-  public var body: Never {
-    neverBody("LazyVGrid")
   }
 }
 

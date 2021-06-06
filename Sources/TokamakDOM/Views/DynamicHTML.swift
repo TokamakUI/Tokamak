@@ -35,6 +35,7 @@ public struct DynamicHTML<Content>: View, AnyDynamicHTML {
 
   public var innerHTML: String?
 
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("HTML")
   }
@@ -69,6 +70,7 @@ extension DynamicHTML: ParentView where Content: View {
     innerHTML = nil
   }
 
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     [AnyView(content)]
   }

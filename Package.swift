@@ -41,17 +41,21 @@ let package = Package(
       name: "TokamakShim",
       targets: ["TokamakShim"]
     ),
+    .executable(
+      name: "TokamakStaticHTMLBenchmark",
+      targets: ["TokamakStaticHTMLBenchmark"]
+    ),
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     // .package(url: /* package url */, from: "1.0.0"),
     .package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
-      .upToNextMinor(from: "0.9.0")
+      .upToNextMinor(from: "0.10.0")
     ),
-    .package(url: "https://github.com/MaxDesiatov/Runtime.git", from: "2.1.2"),
-    .package(url: "https://github.com/TokamakUI/OpenCombine.git", from: "0.12.0-alpha3"),
-    .package(url: "https://github.com/swiftwasm/OpenCombineJS.git", .upToNextMinor(from: "0.0.2")),
+    .package(url: "https://github.com/OpenCombine/OpenCombine.git", from: "0.12.0"),
+    .package(url: "https://github.com/swiftwasm/OpenCombineJS.git", .upToNextMinor(from: "0.1.1")),
+    .package(name: "Benchmark", url: "https://github.com/google/swift-benchmark", from: "0.1.0"),
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define
@@ -68,7 +72,7 @@ let package = Package(
     ),
     .target(
       name: "TokamakCore",
-      dependencies: ["CombineShim", "Runtime"]
+      dependencies: ["CombineShim"]
     ),
     .target(
       name: "TokamakShim",
@@ -115,6 +119,20 @@ let package = Package(
       ]
     ),
     .target(
+      name: "TokamakCoreBenchmark",
+      dependencies: [
+        "Benchmark",
+        "TokamakCore",
+      ]
+    ),
+    .target(
+      name: "TokamakStaticHTMLBenchmark",
+      dependencies: [
+        "Benchmark",
+        "TokamakStaticHTML",
+      ]
+    ),
+    .target(
       name: "TokamakDOM",
       dependencies: [
         "CombineShim",
@@ -154,5 +172,14 @@ let package = Package(
       name: "TokamakTests",
       dependencies: ["TokamakTestRenderer"]
     ),
+    // FIXME: re-enable when `ViewDeferredToRenderer` conformance conflicts issue is resolved
+    // Currently, when multiple modules that have conflicting `ViewDeferredToRenderer`
+    // implementations are linked in the same binary, only a single one is used with no defined
+    // behavior for that. We need to replace `ViewDeferredToRenderer` with a different solution
+    // that isn't prone to these hard to debug errors.
+    // .testTarget(
+    //   name: "TokamakStaticHTMLTests",
+    //   dependencies: ["TokamakStaticHTML"]
+    // ),
   ]
 )

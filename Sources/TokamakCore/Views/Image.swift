@@ -17,7 +17,7 @@
 
 import Foundation
 
-public struct Image: View {
+public struct Image: PrimitiveView {
   let label: Text?
   let name: String
   let bundle: Bundle?
@@ -39,13 +39,9 @@ public struct Image: View {
     self.name = name
     self.bundle = bundle
   }
-
-  public var body: Never {
-    neverBody("Image")
-  }
 }
 
-/// This is a helper class that works around absence of "package private" access control in Swift
+/// This is a helper type that works around absence of "package private" access control in Swift
 public struct _ImageProxy {
   public let subject: Image
 

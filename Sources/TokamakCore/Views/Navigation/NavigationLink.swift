@@ -22,7 +22,9 @@ final class NavigationLinkDestination {
   }
 }
 
-public struct NavigationLink<Label, Destination>: View where Label: View, Destination: View {
+public struct NavigationLink<Label, Destination>: PrimitiveView where Label: View,
+  Destination: View
+{
   @State var destination: NavigationLinkDestination
   let label: Label
 
@@ -44,10 +46,6 @@ public struct NavigationLink<Label, Destination>: View where Label: View, Destin
   //    tag: V, selection: Binding<V?>,
   //    @ViewBuilder label: () -> Label
   //   ) where V : Hashable
-
-  public var body: Never {
-    neverBody("NavigationLink")
-  }
 }
 
 public extension NavigationLink where Label == Text {
@@ -72,7 +70,7 @@ public extension NavigationLink where Label == Text {
   //  ) where S : StringProtocol, V : Hashable
 }
 
-/// This is a helper class that works around absence of "package private" access control in Swift
+/// This is a helper type that works around absence of "package private" access control in Swift
 public struct _NavigationLinkProxy<Label, Destination> where Label: View, Destination: View {
   public let subject: NavigationLink<Label, Destination>
 

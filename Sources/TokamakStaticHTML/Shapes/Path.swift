@@ -62,7 +62,7 @@ extension Path: ViewDeferredToRenderer {
         if let cornerSize = roundedRect.cornerSize {
           return [
             "rx": "\(cornerSize.width)",
-            "ry": " \(roundedRect.style == .continuous ? cornerSize.width : cornerSize.height)",
+            "ry": "\(roundedRect.style == .continuous ? cornerSize.width : cornerSize.height)",
           ]
         } else {
           // For this to support vertical capsules, we need
@@ -128,6 +128,7 @@ extension Path: ViewDeferredToRenderer {
     svgFrom(storage: storage, strokeStyle: strokeStyle)
   }
 
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     let sizeStyle = sizing == .flexible ?
       """

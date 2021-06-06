@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+protocol ModifierContainer {
+  var environmentModifier: EnvironmentModifier? { get }
+}
+
 /// A value with a modifier applied to it.
 public struct ModifiedContent<Content, Modifier> {
   @Environment(\.self) public var environment
@@ -23,6 +27,10 @@ public struct ModifiedContent<Content, Modifier> {
     self.content = content
     self.modifier = modifier
   }
+}
+
+extension ModifiedContent: ModifierContainer {
+  var environmentModifier: EnvironmentModifier? { modifier as? EnvironmentModifier }
 }
 
 extension ModifiedContent: EnvironmentReader where Modifier: EnvironmentReader {

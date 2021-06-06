@@ -29,7 +29,7 @@
 ///       .bold()
 ///       .italic()
 ///       .underline(true, color: .red)
-public struct Text: View {
+public struct Text: PrimitiveView {
   let storage: _Storage
   let modifiers: [_Modifier]
 
@@ -71,10 +71,6 @@ public struct Text: View {
   public init<S>(_ content: S) where S: StringProtocol {
     self.init(storage: .verbatim(String(content)))
   }
-
-  public var body: Never {
-    neverBody("Text")
-  }
 }
 
 public extension Text._Storage {
@@ -90,7 +86,7 @@ public extension Text._Storage {
   }
 }
 
-/// This is a helper class that works around absence of "package private" access control in Swift
+/// This is a helper type that works around absence of "package private" access control in Swift
 public struct _TextProxy {
   public let subject: Text
 

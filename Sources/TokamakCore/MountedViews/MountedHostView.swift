@@ -1,4 +1,4 @@
-// Copyright 2018-2020 Tokamak contributors
+// Copyright 2018-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +14,6 @@
 //
 //  Created by Max Desiatov on 03/12/2018.
 //
-
-import Runtime
 
 /* A representation of a `View`, which has a `body` of type `Never`, stored in the tree of mounted
  views by `StackReconciler`.

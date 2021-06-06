@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,10 +15,8 @@
 //  Created by Max Desiatov on 08/04/2020.
 //
 
-import Runtime
-
 /// A type-erased view.
-public struct AnyView: View {
+public struct AnyView: PrimitiveView {
   /// The type of the underlying `view`.
   let type: Any.Type
 
@@ -48,28 +46,26 @@ public struct AnyView: View {
     } else {
       type = V.self
 
-      // FIXME: no idea if using `mangledName` is reliable, but seems to be the only way to get
-      // a name of a type constructor in runtime. Should definitely check if these are different
-      // across modules, otherwise can cause problems with views with same names in different
-      // modules.
-
-      // swiftlint:disable:next force_try
-      typeConstructorName = try! typeInfo(of: type).mangledName
+      typeConstructorName = TokamakCore.typeConstructorName(type)
 
       bodyType = V.Body.self
       self.view = view
       if view is ViewDeferredToRenderer {
-        // swiftlint:disable:next force_cast
-        bodyClosure = { ($0 as! ViewDeferredToRenderer).deferredBody }
+        bodyClosure = {
+          let deferredView: Any
+          if let opt = $0 as? AnyOptional, let value = opt.value {
+            deferredView = value
+          } else {
+            deferredView = $0
+          }
+          // swiftlint:disable:next force_cast
+          return (deferredView as! ViewDeferredToRenderer).deferredBody
+        }
       } else {
         // swiftlint:disable:next force_cast
         bodyClosure = { AnyView(($0 as! V).body) }
       }
     }
-  }
-
-  public var body: Never {
-    neverBody("AnyView")
   }
 }
 
@@ -80,6 +76,7 @@ public func mapAnyView<T, V>(_ anyView: AnyView, transform: (V) -> T) -> T? {
 }
 
 extension AnyView: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (view as? ParentView)?.children ?? []
   }

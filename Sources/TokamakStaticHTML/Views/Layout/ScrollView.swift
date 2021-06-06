@@ -26,6 +26,7 @@ extension ScrollView: ViewDeferredToRenderer, SpacerContainer {
     }
   }
 
+  @_spi(TokamakCore)
   public var deferredBody: AnyView {
     let scrollX = axes.contains(.horizontal)
     let scrollY = axes.contains(.vertical)

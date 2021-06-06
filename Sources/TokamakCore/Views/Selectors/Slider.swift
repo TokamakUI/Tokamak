@@ -28,7 +28,7 @@ private func convert<T: BinaryFloatingPoint>(_ range: ClosedRange<T>) -> ClosedR
 /// A control for selecting a value from a bounded linear range of values.
 ///
 /// Available when `Label` and `ValueLabel` conform to `View`.
-public struct Slider<Label, ValueLabel>: View where Label: View, ValueLabel: View {
+public struct Slider<Label, ValueLabel>: PrimitiveView where Label: View, ValueLabel: View {
   let label: Label
   let minValueLabel: ValueLabel
   let maxValueLabel: ValueLabel
@@ -36,10 +36,6 @@ public struct Slider<Label, ValueLabel>: View where Label: View, ValueLabel: Vie
   let bounds: ClosedRange<Double>
   let step: _SliderStep
   let onEditingChanged: (Bool) -> ()
-
-  public var body: Never {
-    neverBody("Slider")
-  }
 }
 
 public extension Slider where Label == EmptyView, ValueLabel == EmptyView {
@@ -144,6 +140,7 @@ public extension Slider {
 }
 
 extension Slider: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     ((label as? GroupView)?.children ?? [AnyView(label)])
       + ((minValueLabel as? GroupView)?.children ?? [AnyView(minValueLabel)])
@@ -151,7 +148,7 @@ extension Slider: ParentView {
   }
 }
 
-/// This is a helper class that works around absence of "package private" access control in Swift
+/// This is a helper type that works around absence of "package private" access control in Swift
 public struct _SliderProxy<Label, ValueLabel> where Label: View, ValueLabel: View {
   public let subject: Slider<Label, ValueLabel>
 

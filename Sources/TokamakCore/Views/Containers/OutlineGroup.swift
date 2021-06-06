@@ -86,6 +86,7 @@ public extension OutlineGroup where Parent: View,
 }
 
 extension OutlineGroup: View where Parent: View, Leaf: View, Subgroup: View {
+  @_spi(TokamakCore)
   public var body: some View {
     switch root {
     case let .collection(data):
@@ -124,6 +125,7 @@ extension OutlineGroup: View where Parent: View, Leaf: View, Subgroup: View {
 public struct OutlineSubgroupChildren: View {
   let children: () -> AnyView
 
+  @_spi(TokamakCore)
   public var body: some View {
     children()
   }

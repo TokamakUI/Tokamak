@@ -1,4 +1,4 @@
-// Copyright 2018-2020 Tokamak contributors
+// Copyright 2018-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 //
 
 import CombineShim
-import Runtime
 
 // This is very similar to `MountedCompositeView`. However, the `mountedBody`
 // is the computed content of the specified `Scene`, instead of having child
