@@ -28,19 +28,19 @@ struct BenchmarkApp: App {
 }
 
 benchmark("render App unsorted attributes") {
-    _ = StaticHTMLRenderer(BenchmarkApp()).html(shouldSortAttributes: false)
+    _ = StaticHTMLRenderer(BenchmarkApp()).render(shouldSortAttributes: false)
 }
 
 benchmark("render App sorted attributes") {
-    _ = StaticHTMLRenderer(BenchmarkApp()).html(shouldSortAttributes: true)
+    _ = StaticHTMLRenderer(BenchmarkApp()).render(shouldSortAttributes: true)
 }
 
 benchmark("render List unsorted attributes") {
-    _ = StaticHTMLRenderer(List(1..<100) { Text("\($0)") }).html(shouldSortAttributes: false)
+    _ = StaticHTMLRenderer(List(1..<100) { Text("\($0)") }).render(shouldSortAttributes: false)
 }
 
 benchmark("render List sorted attributes") {
-    _ = StaticHTMLRenderer(List(1..<100) { Text("\($0)") }).html(shouldSortAttributes: true)
+    _ = StaticHTMLRenderer(List(1..<100) { Text("\($0)") }).render(shouldSortAttributes: true)
 }
 
 Benchmark.main()

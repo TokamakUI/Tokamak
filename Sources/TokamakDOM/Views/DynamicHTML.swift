@@ -35,7 +35,7 @@ public struct DynamicHTML<Content>: View, AnyDynamicHTML {
 
   fileprivate let cachedInnerHTML: String?
 
-    func innerHTML(shouldSortAttributes: Bool) -> String? {
+    public func innerHTML(shouldSortAttributes: Bool) -> String? {
         cachedInnerHTML
     }
 

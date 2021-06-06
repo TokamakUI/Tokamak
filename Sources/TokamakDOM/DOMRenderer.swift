@@ -114,10 +114,16 @@ final class DOMRenderer: Renderer {
 
     let maybeNode: JSObject?
     if let sibling = sibling {
-      _ = sibling.ref.insertAdjacentHTML!("beforebegin", anyHTML.outerHTML)
+      _ = sibling.ref.insertAdjacentHTML!(
+        "beforebegin",
+        anyHTML.outerHTML(shouldSortAttributes: false, children: [])
+      )
       maybeNode = sibling.ref.previousSibling.object
     } else {
-      _ = parent.ref.insertAdjacentHTML!("beforeend", anyHTML.outerHTML)
+      _ = parent.ref.insertAdjacentHTML!(
+        "beforeend",
+        anyHTML.outerHTML(shouldSortAttributes: false, children: [])
+      )
 
       guard
         let children = parent.ref.childNodes.object,
