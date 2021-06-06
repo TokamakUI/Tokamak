@@ -30,7 +30,7 @@ extension ModifiedContent: AnyModifiedContent where Modifier: DOMViewModifier, C
 }
 
 extension ModifiedContent: _HTMLPrimitive where Content: View, Modifier: ViewModifier {
-    @_spi(TokamakStaticHTML)
+  @_spi(TokamakStaticHTML)
   public var renderedBody: AnyView {
     if let domModifier = modifier as? DOMViewModifier {
       if let adjacentModifier = content as? AnyModifiedContent,

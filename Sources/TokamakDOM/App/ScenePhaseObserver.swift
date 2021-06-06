@@ -28,7 +28,7 @@ enum ScenePhaseObserver {
       } else if visibilityState == "hidden" {
         publisher.send(.background)
       }
-        return .undefined
+      return .undefined
     }
     _ = document.addEventListener!("visibilitychange", closure)
     Self.closure = closure

@@ -27,7 +27,7 @@ private final class HashState: ObservableObject {
   init() {
     let onHashChange = JSClosure { [weak self] _ in
       self?.currentHash = location.hash.string!
-        return .undefined
+      return .undefined
     }
 
     window.onhashchange = .object(onHashChange)

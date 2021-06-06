@@ -30,7 +30,7 @@ extension VerticalAlignment {
 extension HStack: _HTMLPrimitive, SpacerContainer {
   public var axis: SpacerContainerAxis { .horizontal }
 
-    @_spi(TokamakStaticHTML)
+  @_spi(TokamakStaticHTML)
   public var renderedBody: AnyView {
     AnyView(HTML("div", [
       "style": """

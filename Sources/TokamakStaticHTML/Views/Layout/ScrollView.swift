@@ -26,7 +26,7 @@ extension ScrollView: _HTMLPrimitive, SpacerContainer {
     }
   }
 
-    @_spi(TokamakStaticHTML)
+  @_spi(TokamakStaticHTML)
   public var renderedBody: AnyView {
     let scrollX = axes.contains(.horizontal)
     let scrollY = axes.contains(.vertical)

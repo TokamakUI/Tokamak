@@ -36,7 +36,7 @@ extension LazyVGrid: _HTMLPrimitive {
     _LazyVGridProxy(self).columns.last
   }
 
-    @_spi(TokamakStaticHTML)
+  @_spi(TokamakStaticHTML)
   public var renderedBody: AnyView {
     var styles = """
     display: grid;

@@ -39,7 +39,12 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     mountedChildren.forEach { $0.unmount(with: reconciler) }
   }
 
-  private func mountChild(_ renderer: R, _ childBody: _AnyScene) -> MountedElement<R> {
+  /// Mounts a child scene within the app.
+  /// - Parameters:
+  ///   - renderer: A instance conforming to the `Renderer` protocol to render the mounted scene with.
+  ///   - childBody: The body of the child scene to mount for this app.
+  /// - Returns: Returns an instance of the `MountedScene` class that's already mounted in this app.
+  private func mountChild(_ renderer: R, _ childBody: _AnyScene) -> MountedScene<R> {
     let mountedScene: MountedScene<R> = childBody
       .makeMountedScene(renderer, parentTarget, environmentValues, self)
     if let title = mountedScene.title {

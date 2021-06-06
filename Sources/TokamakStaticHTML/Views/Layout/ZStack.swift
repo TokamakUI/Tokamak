@@ -23,7 +23,7 @@ struct _ZStack_ContentGridItem: ViewModifier, DOMViewModifier {
 }
 
 extension ZStack: _HTMLPrimitive {
-    @_spi(TokamakStaticHTML)
+  @_spi(TokamakStaticHTML)
   public var renderedBody: AnyView {
     AnyView(HTML("div", [
       "style": """

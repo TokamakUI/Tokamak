@@ -56,8 +56,8 @@ public extension SpacerContainer where Self: ParentView {
 }
 
 extension Spacer: _HTMLPrimitive {
-    @_spi(TokamakStaticHTML)
-    public var renderedBody: AnyView {
+  @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
     AnyView(HTML("div", [
       "style": "flex-grow: 1; \(minLength != nil ? "min-width: \(minLength!)" : "")",
     ]))

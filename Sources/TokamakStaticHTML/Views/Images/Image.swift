@@ -20,7 +20,7 @@ import TokamakCore
 public typealias Image = TokamakCore.Image
 
 extension Image: _HTMLPrimitive {
-    @_spi(TokamakStaticHTML)
+  @_spi(TokamakStaticHTML)
   public var renderedBody: AnyView {
     AnyView(_HTMLImage(proxy: _ImageProxy(self)))
   }

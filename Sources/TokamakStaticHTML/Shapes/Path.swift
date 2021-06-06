@@ -128,7 +128,7 @@ extension Path: _HTMLPrimitive {
     svgFrom(storage: storage, strokeStyle: strokeStyle)
   }
 
-    @_spi(TokamakStaticHTML)
+  @_spi(TokamakStaticHTML)
   public var renderedBody: AnyView {
     let sizeStyle = sizing == .flexible ?
       """

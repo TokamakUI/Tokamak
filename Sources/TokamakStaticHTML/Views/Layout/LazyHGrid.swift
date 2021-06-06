@@ -36,8 +36,8 @@ extension LazyHGrid: _HTMLPrimitive {
     _LazyHGridProxy(self).rows.last
   }
 
-    @_spi(TokamakStaticHTML)
-    public var renderedBody: AnyView {
+  @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
     var styles = """
     display: grid;
     grid-template-rows: \(_LazyHGridProxy(self)

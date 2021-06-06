@@ -134,15 +134,15 @@ final class GTKRenderer: Renderer {
     target.destroy()
   }
 
-    public func isPrimitiveView(_ type: Any.Type) -> Bool {
-      type is GTKPrimitive.Type
-    }
+  public func isPrimitiveView(_ type: Any.Type) -> Bool {
+    type is GTKPrimitive.Type
+  }
 
-    public func body(for view: Any) -> AnyView? {
-      (view as? GTKPrimitive)?.renderedBody
-    }
+  public func body(for view: Any) -> AnyView? {
+    (view as? GTKPrimitive)?.renderedBody
+  }
 }
 
 protocol GTKPrimitive {
-    var renderedBody: AnyView { get }
+  var renderedBody: AnyView { get }
 }
