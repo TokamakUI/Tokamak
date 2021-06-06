@@ -167,12 +167,11 @@ final class DOMRenderer: Renderer {
   }
 
   func body(for view: Any) -> AnyView? {
-    print("\(#function) called for \(view)")
-    return (view as? DOMPrimitive)?.renderedBody
+    (view as? DOMPrimitive)?.renderedBody ?? (view as? _HTMLPrimitive)?.renderedBody
   }
 
   func isPrimitiveView(_ type: Any.Type) -> Bool {
-    type is DOMPrimitive
+    type as? DOMPrimitive.Type != nil || type as? _HTMLPrimitive.Type != nil
   }
 }
 

@@ -22,7 +22,7 @@ extension StrokeStyle {
   }
 }
 
-extension Path: HTMLPrimitive {
+extension Path: _HTMLPrimitive {
   // TODO: Support transformations
   func svgFrom(
     storage: Storage,
@@ -128,7 +128,8 @@ extension Path: HTMLPrimitive {
     svgFrom(storage: storage, strokeStyle: strokeStyle)
   }
 
-  var renderedBody: AnyView {
+    @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
     let sizeStyle = sizing == .flexible ?
       """
       width: 100%;

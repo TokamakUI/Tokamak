@@ -31,12 +31,13 @@ extension LazyHGrid: SpacerContainer {
   }
 }
 
-extension LazyHGrid: HTMLPrimitive {
+extension LazyHGrid: _HTMLPrimitive {
   public var lastRow: GridItem? {
     _LazyHGridProxy(self).rows.last
   }
 
-  var renderedBody: AnyView {
+    @_spi(TokamakStaticHTML)
+    public var renderedBody: AnyView {
     var styles = """
     display: grid;
     grid-template-rows: \(_LazyHGridProxy(self)

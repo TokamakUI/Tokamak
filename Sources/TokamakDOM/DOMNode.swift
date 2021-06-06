@@ -84,6 +84,7 @@ final class DOMNode: Target {
     for (event, listener) in listeners {
       let jsClosure = JSClosure {
         listener($0[0].object!)
+        return .undefined
       }
       _ = ref.addEventListener!(event, jsClosure)
       self.listeners[event] = jsClosure

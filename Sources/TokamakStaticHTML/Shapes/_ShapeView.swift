@@ -31,8 +31,9 @@ extension _StrokedShape: ShapeAttributes {
   }
 }
 
-extension _ShapeView: HTMLPrimitive {
-  var renderedBody: AnyView {
+extension _ShapeView: _HTMLPrimitive {
+    @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
     let path = shape.path(in: .zero).renderedBody
     if let shapeAttributes = shape as? ShapeAttributes {
       return AnyView(HTML("div", shapeAttributes.attributes(style)) { path })

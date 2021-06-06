@@ -23,7 +23,6 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     on parent: MountedElement<R>? = nil,
     with reconciler: StackReconciler<R>
   ) {
-    print("\(#function) called in \(#file)")
     let childBody = reconciler.render(compositeView: self)
 
     let child: MountedElement<R> = childBody.makeMountedView(

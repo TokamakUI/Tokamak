@@ -148,14 +148,14 @@ public final class StaticHTMLRenderer: Renderer {
   }
 
   public func isPrimitiveView(_ type: Any.Type) -> Bool {
-    type is HTMLPrimitive.Type
+    type is _HTMLPrimitive.Type
   }
 
   public func body(for view: Any) -> AnyView? {
-    (view as? HTMLPrimitive)?.renderedBody
+    (view as? _HTMLPrimitive)?.renderedBody
   }
 }
 
-protocol HTMLPrimitive {
+public protocol _HTMLPrimitive {
   var renderedBody: AnyView { get }
 }

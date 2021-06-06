@@ -17,8 +17,9 @@
 
 import TokamakCore
 
-extension Link: HTMLPrimitive {
-  var renderedBody: AnyView {
+extension Link: _HTMLPrimitive {
+    @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
     let proxy = _LinkProxy(self)
     return AnyView(HTML("a", ["href": proxy.destination.absoluteString, "class": "_tokamak-link"]) {
       proxy.label

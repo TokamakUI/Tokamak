@@ -55,16 +55,17 @@ struct _GeometryReader<Content: View>: View {
     }
     ._domRef($state.observedNodeRef)
     ._onMount {
-      let closure = JSClosure { [weak state] args -> () in
+      let closure = JSClosure { [weak state] args -> JSValue in
         // FIXME: `JSArrayRef` is not a `RandomAccessCollection` for some reason, which forces
         // us to use a string subscript
         guard
           let rect = args[0].object?[dynamicMember: "0"].object?.contentRect.object,
           let width = rect.width.number,
           let height = rect.height.number
-        else { return }
+        else { return .undefined }
 
         state?.size = .init(width: width, height: height)
+        return .undefined
       }
       state.closure = closure
 
