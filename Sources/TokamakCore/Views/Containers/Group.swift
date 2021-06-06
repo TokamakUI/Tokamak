@@ -13,7 +13,8 @@
 // limitations under the License.
 
 public struct Group<Content> {
-  let content: Content
+  @usableFromInline let content: Content
+  @inlinable
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()
   }

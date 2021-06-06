@@ -17,6 +17,7 @@ public struct Alignment: Equatable {
   public var horizontal: HorizontalAlignment
   public var vertical: VerticalAlignment
 
+  @inlinable
   public init(
     horizontal: HorizontalAlignment,
     vertical: VerticalAlignment
@@ -48,6 +49,7 @@ public struct ZStack<Content>: PrimitiveView where Content: View {
   public let spacing: CGFloat?
   public let content: Content
 
+  @inlinable
   public init(
     alignment: Alignment = .center,
     spacing: CGFloat? = nil,

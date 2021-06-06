@@ -75,10 +75,10 @@ public class MountedElement<R: Renderer> {
   var typeConstructorName: String {
     switch element {
     case .app: fatalError("""
-      `App` values aren't supposed to be reconciled, thus the type constructor name is not stored \
-      for `App` elements. Please report this crash as a bug at \
-      https://github.com/swiftwasm/Tokamak/issues/new
-      """)
+    `App` values aren't supposed to be reconciled, thus the type constructor name is not stored \
+    for `App` elements. Please report this crash as a bug at \
+    https://github.com/swiftwasm/Tokamak/issues/new
+    """)
     case let .scene(scene): return scene.typeConstructorName
     case let .view(view): return view.typeConstructorName
     }

@@ -19,6 +19,7 @@ public struct _PreferenceWritingModifier<Key>: _PreferenceWritingModifierProtoco
   where Key: PreferenceKey
 {
   public let value: Key.Value
+  @inlinable
   public init(key: Key.Type = Key.self, value: Key.Value) {
     self.value = value
   }
@@ -36,6 +37,7 @@ extension _PreferenceWritingModifier: Equatable where Key.Value: Equatable {
 }
 
 public extension View {
+  @inlinable
   func preference<K>(key: K.Type = K.self, value: K.Value) -> some View
     where K: PreferenceKey
   {

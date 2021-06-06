@@ -22,6 +22,7 @@ public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
   public var background: Background
   public var alignment: Alignment
 
+  @inlinable
   public init(background: Background, alignment: Alignment = .center) {
     self.background = background
     self.alignment = alignment
@@ -50,6 +51,7 @@ extension _BackgroundModifier: Equatable where Background: Equatable {
 }
 
 public extension View {
+  @inlinable
   func background<Background>(
     _ background: Background,
     alignment: Alignment = .center
@@ -65,6 +67,7 @@ public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
   public var overlay: Overlay
   public var alignment: Alignment
 
+  @inlinable
   public init(overlay: Overlay, alignment: Alignment = .center) {
     self.overlay = overlay
     self.alignment = alignment
@@ -90,12 +93,14 @@ extension _OverlayModifier: Equatable where Overlay: Equatable {
 }
 
 public extension View {
+  @inlinable
   func overlay<Overlay>(_ overlay: Overlay, alignment: Alignment = .center) -> some View
     where Overlay: View
   {
     modifier(_OverlayModifier(overlay: overlay, alignment: alignment))
   }
 
+  @inlinable
   func border<S>(_ content: S, width: CGFloat = 1) -> some View where S: ShapeStyle {
     overlay(Rectangle().strokeBorder(content, lineWidth: width))
   }

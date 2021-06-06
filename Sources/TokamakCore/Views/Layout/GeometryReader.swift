@@ -42,6 +42,7 @@ public func makeProxy(from size: CGSize) -> GeometryProxy {
 
 public struct GeometryReader<Content>: PrimitiveView where Content: View {
   public let content: (GeometryProxy) -> Content
+  @inlinable
   public init(@ViewBuilder content: @escaping (GeometryProxy) -> Content) {
     self.content = content
   }

@@ -17,32 +17,37 @@
 
 public struct Angle: AdditiveArithmetic {
   public var radians: Double
-  public var degrees: Double {
+  @inlinable public var degrees: Double {
     get { radians * (180.0 / .pi) }
     set { radians = newValue * (.pi / 180.0) }
   }
 
+  @inlinable
   public init() {
     self.init(radians: 0.0)
   }
 
+  @inlinable
   public init(radians: Double) {
     self.radians = radians
   }
 
+  @inlinable
   public init(degrees: Double) {
     self.init(radians: degrees * (.pi / 180.0))
   }
 
+  @inlinable
   public static func radians(_ radians: Double) -> Angle {
     Angle(radians: radians)
   }
 
+  @inlinable
   public static func degrees(_ degrees: Double) -> Angle {
     Angle(degrees: degrees)
   }
 
-  public static let zero: Angle = .radians(0)
+  @inlinable public static var zero: Angle { .init() }
 
   public static func + (lhs: Self, rhs: Self) -> Self {
     .radians(lhs.radians + rhs.radians)
@@ -64,6 +69,7 @@ public struct Angle: AdditiveArithmetic {
 }
 
 extension Angle: Hashable, Comparable {
+  @inlinable
   public static func < (lhs: Self, rhs: Self) -> Bool {
     lhs.radians < rhs.radians
   }

@@ -354,6 +354,7 @@ public extension EnvironmentValues {
 }
 
 public extension View {
+  @inlinable
   func font(_ font: Font?) -> some View {
     environment(\.font, font)
   }

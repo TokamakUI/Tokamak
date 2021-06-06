@@ -97,7 +97,7 @@ extension _AnyScene {
   ) -> MountedScene<R> {
     var title: String?
     if let titledSelf = scene as? TitledScene,
-       let text = titledSelf.title
+      let text = titledSelf.title
     {
       title = _TextProxy(text).rawText
     }

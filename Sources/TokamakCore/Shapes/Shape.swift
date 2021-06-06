@@ -53,6 +53,7 @@ public struct _ShapeView<Content, Style>: PrimitiveView where Content: Shape, St
   public var style: Style
   public var fillStyle: FillStyle
 
+  @inlinable
   public init(shape: Content, style: Style, fillStyle: FillStyle = FillStyle()) {
     self.shape = shape
     self.style = style

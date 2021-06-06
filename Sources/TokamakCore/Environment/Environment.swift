@@ -24,20 +24,21 @@ protocol EnvironmentReader {
 }
 
 @propertyWrapper public struct Environment<Value>: DynamicProperty {
-  enum Content {
+  @usableFromInline enum Content {
     case keyPath(KeyPath<EnvironmentValues, Value>)
     case value(Value)
   }
 
-  private var content: Content
-  private let keyPath: KeyPath<EnvironmentValues, Value>
+  @usableFromInline var content: Content
+  @inlinable
   public init(_ keyPath: KeyPath<EnvironmentValues, Value>) {
     content = .keyPath(keyPath)
-    self.keyPath = keyPath
   }
 
   mutating func setContent(from values: EnvironmentValues) {
-    content = .value(values[keyPath: keyPath])
+    if case let .keyPath(keyPath) = content {
+      content = .value(values[keyPath: keyPath])
+    }
   }
 
   public var wrappedValue: Value {

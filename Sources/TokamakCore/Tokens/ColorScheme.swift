@@ -31,6 +31,7 @@ public extension EnvironmentValues {
 }
 
 public extension View {
+  @inlinable
   func colorScheme(_ colorScheme: ColorScheme) -> some View {
     environment(\.colorScheme, colorScheme)
   }

@@ -21,6 +21,7 @@ public struct _PreferenceTransformModifier<Key>: _PreferenceWritingModifierProto
 {
   public let transform: (inout Key.Value) -> ()
 
+  @inlinable
   public init(
     key _: Key.Type = Key.self,
     transform: @escaping (inout Key.Value) -> ()
@@ -37,6 +38,7 @@ public struct _PreferenceTransformModifier<Key>: _PreferenceWritingModifierProto
 }
 
 public extension View {
+  @inlinable
   func transformPreference<K>(
     _ key: K.Type = K.self,
     _ callback: @escaping (inout K.Value) -> ()
