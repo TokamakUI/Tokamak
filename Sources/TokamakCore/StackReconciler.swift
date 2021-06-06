@@ -18,7 +18,7 @@
 import CombineShim
 
 /** A class that reconciles a "raw" tree of element values (such as `App`, `Scene` and `View`,
- all coming from `body` or `deferredBody` properties) with a tree of mounted element instances
+ all coming from `body` or `renderedBody` properties) with a tree of mounted element instances
  ('MountedApp', `MountedScene`, `MountedCompositeView` and `MountedHostView` respectively). Any
  updates to the former tree are reflected in the latter tree, and then resulting changes are
  delegated to the renderer for it to reflect those in its viewport.

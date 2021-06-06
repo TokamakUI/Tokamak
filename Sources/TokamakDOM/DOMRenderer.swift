@@ -177,7 +177,7 @@ final class DOMRenderer: Renderer {
   }
 
   func isPrimitiveView(_ type: Any.Type) -> Bool {
-    type as? DOMPrimitive.Type != nil || type as? _HTMLPrimitive.Type != nil
+    type is DOMPrimitive.Type || type is _HTMLPrimitive.Type
   }
 }
 
