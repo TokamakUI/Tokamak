@@ -18,9 +18,9 @@
 import TokamakCore
 import TokamakStaticHTML
 
-extension _Button: ViewDeferredToRenderer {
+extension _Button: DOMPrimitive {
   @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+  public var renderedBody: AnyView {
     var attributes: [HTMLAttribute: String] = [:]
     let listeners: [String: Listener] = [
       "pointerdown": { _ in isPressed = true },

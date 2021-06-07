@@ -43,7 +43,7 @@ public struct Alignment: Equatable {
 ///       Text("Top")
 ///     }
 ///
-public struct ZStack<Content>: PrimitiveView where Content: View {
+public struct ZStack<Content>: _PrimitiveView where Content: View {
   public let alignment: Alignment
   public let spacing: CGFloat?
   public let content: Content

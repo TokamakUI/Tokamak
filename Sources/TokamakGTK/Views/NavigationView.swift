@@ -58,9 +58,9 @@ protocol GtkStackProtocol {}
 //   }
 // }
 
-extension NavigationView: ViewDeferredToRenderer {
+extension NavigationView: GTKPrimitive {
   @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+  public var renderedBody: AnyView {
     let proxy = _NavigationViewProxy(self)
     return AnyView(HStack {
       proxy.content
@@ -70,9 +70,9 @@ extension NavigationView: ViewDeferredToRenderer {
   }
 }
 
-extension NavigationLink: ViewDeferredToRenderer {
+extension NavigationLink: GTKPrimitive {
   @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+  public var renderedBody: AnyView {
     let proxy = _NavigationLinkProxy(self)
     return AnyView(Button(action: { proxy.activate() }) {
       proxy.label
@@ -137,8 +137,8 @@ extension NavigationLink: ViewDeferredToRenderer {
 //     [AnyView(_NavigationLinkProxy(self).label)]
 //   }
 // }
-// extension NavigationLink: ViewDeferredToRenderer {
-//   public var deferredBody: AnyView {
+// extension NavigationLink: GTKPrimitive {
+//   public var renderedBody: AnyView {
 //     let proxy = _NavigationLinkProxy(self)
 //     print("Selected: \(proxy.isSelected)")
 //     return AnyView(Button {

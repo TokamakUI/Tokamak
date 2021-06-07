@@ -52,9 +52,9 @@ struct Box<Content: View>: View, ParentView, AnyWidget, StackProtocol {
   }
 }
 
-extension VStack: ViewDeferredToRenderer {
+extension VStack: GTKPrimitive {
   @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+  public var renderedBody: AnyView {
     AnyView(
       Box(
         content: content,
@@ -66,9 +66,9 @@ extension VStack: ViewDeferredToRenderer {
   }
 }
 
-extension HStack: ViewDeferredToRenderer {
+extension HStack: GTKPrimitive {
   @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+  public var renderedBody: AnyView {
     AnyView(
       Box(
         content: content,

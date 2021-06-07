@@ -14,9 +14,9 @@
 
 import TokamakCore
 
-extension NavigationView: ViewDeferredToRenderer {
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+extension NavigationView: _HTMLPrimitive {
+  @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
     let proxy = _NavigationViewProxy(self)
     return AnyView(HTML("div", [
       "class": "_tokamak-navigationview",

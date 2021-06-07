@@ -27,11 +27,11 @@ extension HorizontalAlignment {
   }
 }
 
-extension VStack: ViewDeferredToRenderer, SpacerContainer {
+extension VStack: _HTMLPrimitive, SpacerContainer {
   public var axis: SpacerContainerAxis { .vertical }
 
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+  @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
     AnyView(HTML("div", [
       "style": """
       display: flex; flex-direction: column; align-items: \(alignment.cssValue);

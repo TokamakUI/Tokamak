@@ -17,7 +17,7 @@
 
 import TokamakCore
 
-extension ScrollView: ViewDeferredToRenderer, SpacerContainer {
+extension ScrollView: _HTMLPrimitive, SpacerContainer {
   public var axis: SpacerContainerAxis {
     if axes.contains(.horizontal) {
       return .horizontal
@@ -26,8 +26,8 @@ extension ScrollView: ViewDeferredToRenderer, SpacerContainer {
     }
   }
 
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+  @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
     let scrollX = axes.contains(.horizontal)
     let scrollY = axes.contains(.vertical)
     return AnyView(HTML("div", [

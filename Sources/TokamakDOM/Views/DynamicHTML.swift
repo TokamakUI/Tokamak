@@ -35,9 +35,9 @@ public struct DynamicHTML<Content>: View, AnyDynamicHTML {
 
   fileprivate let cachedInnerHTML: String?
 
-    public func innerHTML(shouldSortAttributes: Bool) -> String? {
-        cachedInnerHTML
-    }
+  public func innerHTML(shouldSortAttributes: Bool) -> String? {
+    cachedInnerHTML
+  }
 
   @_spi(TokamakCore)
   public var body: Never {

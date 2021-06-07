@@ -16,7 +16,7 @@
 //
 
 /// A type-erased view.
-public struct AnyView: PrimitiveView {
+public struct AnyView: _PrimitiveView {
   /// The type of the underlying `view`.
   let type: Any.Type
 
@@ -50,21 +50,8 @@ public struct AnyView: PrimitiveView {
 
       bodyType = V.Body.self
       self.view = view
-      if view is ViewDeferredToRenderer {
-        bodyClosure = {
-          let deferredView: Any
-          if let opt = $0 as? AnyOptional, let value = opt.value {
-            deferredView = value
-          } else {
-            deferredView = $0
-          }
-          // swiftlint:disable:next force_cast
-          return (deferredView as! ViewDeferredToRenderer).deferredBody
-        }
-      } else {
-        // swiftlint:disable:next force_cast
-        bodyClosure = { AnyView(($0 as! V).body) }
-      }
+      // swiftlint:disable:next force_cast
+      bodyClosure = { AnyView(($0 as! V).body) }
     }
   }
 }

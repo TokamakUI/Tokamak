@@ -19,7 +19,7 @@ public struct Group<Content> {
   }
 }
 
-extension Group: PrimitiveView & View where Content: View {}
+extension Group: _PrimitiveView & View where Content: View {}
 
 extension Group: ParentView where Content: View {
   @_spi(TokamakCore)

@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/3/20.
 //
 
-public struct DisclosureGroup<Label, Content>: PrimitiveView where Label: View, Content: View {
+public struct DisclosureGroup<Label, Content>: _PrimitiveView where Label: View, Content: View {
   @State var isExpanded: Bool = false
   let isExpandedBinding: Binding<Bool>?
 

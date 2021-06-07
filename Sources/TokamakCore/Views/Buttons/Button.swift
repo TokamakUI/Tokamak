@@ -48,7 +48,7 @@ public struct Button<Label>: View where Label: View {
   }
 }
 
-public struct _Button<Label>: PrimitiveView where Label: View {
+public struct _Button<Label>: _PrimitiveView where Label: View {
   public let label: Label
   public let action: () -> ()
   @State public var isPressed = false

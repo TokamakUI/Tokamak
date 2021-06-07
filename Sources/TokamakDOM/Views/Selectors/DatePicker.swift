@@ -20,9 +20,8 @@ import JavaScriptKit
 import TokamakCore
 import TokamakStaticHTML
 
-extension DatePicker: ViewDeferredToRenderer {
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+extension DatePicker: DOMPrimitive {
+  var renderedBody: AnyView {
     let proxy = _DatePickerProxy(self)
 
     let type = proxy.displayedComponents

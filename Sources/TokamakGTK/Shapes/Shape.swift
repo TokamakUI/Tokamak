@@ -50,9 +50,9 @@ func createPath(from elements: [Path.Element], in cr: OpaquePointer) {
   }
 }
 
-extension _ShapeView: ViewDeferredToRenderer {
+extension _ShapeView: GTKPrimitive {
   @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+  public var renderedBody: AnyView {
     AnyView(WidgetView(build: { _ in
       let w = gtk_drawing_area_new()
       bindAction(to: w!)

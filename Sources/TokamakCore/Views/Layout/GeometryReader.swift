@@ -40,7 +40,7 @@ public func makeProxy(from size: CGSize) -> GeometryProxy {
 //   public subscript<T>(anchor: Anchor<T>) -> T {}
 // }
 
-public struct GeometryReader<Content>: PrimitiveView where Content: View {
+public struct GeometryReader<Content>: _PrimitiveView where Content: View {
   public let content: (GeometryProxy) -> Content
   public init(@ViewBuilder content: @escaping (GeometryProxy) -> Content) {
     self.content = content

@@ -17,8 +17,8 @@
 
 public enum TextAlignment: Hashable, CaseIterable {
   case leading,
-    center,
-    trailing
+       center,
+       trailing
 }
 
 extension EnvironmentValues {

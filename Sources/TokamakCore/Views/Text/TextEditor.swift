@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public struct TextEditor: PrimitiveView {
+public struct TextEditor: _PrimitiveView {
   let textBinding: Binding<String>
 
   public init(text: Binding<String>) {

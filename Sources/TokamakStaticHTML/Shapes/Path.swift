@@ -22,7 +22,7 @@ extension StrokeStyle {
   }
 }
 
-extension Path: ViewDeferredToRenderer {
+extension Path: _HTMLPrimitive {
   // TODO: Support transformations
   func svgFrom(
     storage: Storage,
@@ -128,8 +128,8 @@ extension Path: ViewDeferredToRenderer {
     svgFrom(storage: storage, strokeStyle: strokeStyle)
   }
 
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+  @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
     let sizeStyle = sizing == .flexible ?
       """
       width: 100%;

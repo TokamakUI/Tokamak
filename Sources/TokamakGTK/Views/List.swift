@@ -15,7 +15,7 @@
 import CGTK
 import TokamakCore
 
-extension List: ViewDeferredToRenderer {
+extension List: GTKPrimitive {
   @ViewBuilder
   func iterateAsRow(_ content: [AnyView]) -> some View {
     ForEach(Array(content.enumerated()), id: \.offset) { _, row in
@@ -32,7 +32,7 @@ extension List: ViewDeferredToRenderer {
   }
 
   @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+  public var renderedBody: AnyView {
     let proxy = _ListProxy(self)
     return AnyView(ScrollView {
       WidgetView(build: { _ in

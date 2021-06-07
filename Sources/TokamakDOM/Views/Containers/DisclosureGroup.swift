@@ -18,7 +18,7 @@
 import TokamakCore
 import TokamakStaticHTML
 
-extension DisclosureGroup: ViewDeferredToRenderer {
+extension DisclosureGroup: DOMPrimitive {
   var chevron: some View {
     DynamicHTML(
       "div",
@@ -70,8 +70,7 @@ extension DisclosureGroup: ViewDeferredToRenderer {
     }
   }
 
-  @_spi(TokamakCore)
-  public var deferredBody: AnyView {
+  var renderedBody: AnyView {
     AnyView(HTML("div", [
       "class": "_tokamak-disclosuregroup",
       "role": "tree",

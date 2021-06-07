@@ -31,7 +31,7 @@ protocol ForEachProtocol: GroupView {
 ///         Text("\($0)")
 ///       }
 ///     }
-public struct ForEach<Data, ID, Content>: PrimitiveView where Data: RandomAccessCollection,
+public struct ForEach<Data, ID, Content>: _PrimitiveView where Data: RandomAccessCollection,
   ID: Hashable,
   Content: View
 {
