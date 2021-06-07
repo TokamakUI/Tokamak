@@ -47,30 +47,31 @@ extension HTMLAttribute: ExpressibleByStringLiteral {
 }
 
 public protocol AnyHTML {
-    func innerHTML(shouldSortAttributes: Bool) -> String?
+  func innerHTML(shouldSortAttributes: Bool) -> String?
   var tag: String { get }
   var attributes: [HTMLAttribute: String] { get }
 }
 
 public extension AnyHTML {
-    func outerHTML(shouldSortAttributes: Bool, children: [HTMLTarget]) -> String {
-        let renderedAttributes: String
-        if attributes.isEmpty {
-            renderedAttributes = ""
-        } else {
-            let mappedAttributes = attributes.map { #"\#($0)="\#($1)""# }
-            if shouldSortAttributes {
-                renderedAttributes = mappedAttributes.sorted().joined(separator: " ")
-            } else {
-                renderedAttributes = mappedAttributes.joined(separator: " ")
-            }
-        }
+  func outerHTML(shouldSortAttributes: Bool, children: [HTMLTarget]) -> String {
+    let renderedAttributes: String
+    if attributes.isEmpty {
+      renderedAttributes = ""
+    } else {
+      let mappedAttributes = attributes.map { #"\#($0)="\#($1)""# }
+      if shouldSortAttributes {
+        renderedAttributes = mappedAttributes.sorted().joined(separator: " ")
+      } else {
+        renderedAttributes = mappedAttributes.joined(separator: " ")
+      }
+    }
 
     return """
     <\(tag)\(attributes.isEmpty ? "" : " ")\
     \(renderedAttributes)>\
     \(innerHTML(shouldSortAttributes: shouldSortAttributes) ?? "")\
-    \(children.map { $0.outerHTML(shouldSortAttributes: shouldSortAttributes) }.joined(separator: "\n"))\
+    \(children.map { $0.outerHTML(shouldSortAttributes: shouldSortAttributes) }
+      .joined(separator: "\n"))\
     </\(tag)>
     """
   }
@@ -81,12 +82,11 @@ public struct HTML<Content>: View, AnyHTML {
   public let attributes: [HTMLAttribute: String]
   let content: Content
 
-    fileprivate let cachedInnerHTML: String?
+  fileprivate let cachedInnerHTML: String?
 
-      public func innerHTML(shouldSortAttributes: Bool) -> String? {
-          cachedInnerHTML
-      }
-
+  public func innerHTML(shouldSortAttributes: Bool) -> String? {
+    cachedInnerHTML
+  }
 
   @_spi(TokamakCore)
   public var body: Never {

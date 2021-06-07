@@ -15,7 +15,7 @@
 //  Created by Gene Z. Ragan on 07/22/2020.
 
 public struct ButtonStyleConfiguration {
-  public struct Label: PrimitiveView {
+  public struct Label: _PrimitiveView {
     let content: AnyView
   }
 

@@ -22,7 +22,7 @@ final class NavigationLinkDestination {
   }
 }
 
-public struct NavigationLink<Label, Destination>: PrimitiveView where Label: View,
+public struct NavigationLink<Label, Destination>: _PrimitiveView where Label: View,
   Destination: View
 {
   @State var destination: NavigationLinkDestination

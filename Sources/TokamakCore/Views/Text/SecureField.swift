@@ -35,7 +35,7 @@
 ///         print("Set password")
 ///       })
 ///     }
-public struct SecureField<Label>: PrimitiveView where Label: View {
+public struct SecureField<Label>: _PrimitiveView where Label: View {
   let label: Label
   let textBinding: Binding<String>
   let onCommit: () -> ()

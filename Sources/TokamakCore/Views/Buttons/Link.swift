@@ -17,7 +17,7 @@
 
 import struct Foundation.URL
 
-public struct Link<Label>: PrimitiveView where Label: View {
+public struct Link<Label>: _PrimitiveView where Label: View {
   let destination: URL
   let label: Label
 

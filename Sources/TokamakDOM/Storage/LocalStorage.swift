@@ -25,6 +25,7 @@ private let localStorage = JSObject.global.localStorage.object!
 public class LocalStorage: WebStorage, _StorageProvider {
   static let closure = JSClosure { _ in
     rootPublisher.send()
+    return .undefined
   }
 
   let storage = localStorage

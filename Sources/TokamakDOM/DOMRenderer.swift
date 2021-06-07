@@ -171,4 +171,16 @@ final class DOMRenderer: Renderer {
 
     _ = try? parent.ref.throwing.removeChild!(target.ref)
   }
+
+  func primitiveBody(for view: Any) -> AnyView? {
+    (view as? DOMPrimitive)?.renderedBody ?? (view as? _HTMLPrimitive)?.renderedBody
+  }
+
+  func isPrimitiveView(_ type: Any.Type) -> Bool {
+    type is DOMPrimitive.Type || type is _HTMLPrimitive.Type
+  }
+}
+
+protocol DOMPrimitive {
+  var renderedBody: AnyView { get }
 }

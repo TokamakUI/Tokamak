@@ -16,13 +16,13 @@
 //
 
 /// A `View` with no effect on rendering.
-public struct EmptyView: PrimitiveView {
+public struct EmptyView: _PrimitiveView {
   @inlinable
   public init() {}
 }
 
 // swiftlint:disable:next type_name
-public struct _ConditionalContent<TrueContent, FalseContent>: PrimitiveView
+public struct _ConditionalContent<TrueContent, FalseContent>: _PrimitiveView
   where TrueContent: View, FalseContent: View
 {
   enum Storage {

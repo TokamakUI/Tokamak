@@ -36,7 +36,7 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
     let childBody = reconciler.render(mountedScene: self)
 
     let child: MountedElement<R> = childBody
-      .makeMountedElement(parentTarget, environmentValues, self)
+      .makeMountedElement(reconciler.renderer, parentTarget, environmentValues, self)
     mountedChildren = [child]
     child.mount(before: sibling, on: self, with: reconciler)
   }
@@ -60,7 +60,9 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
           $0.view = AnyView(view)
         }
       },
-      mountChild: { $0.makeMountedElement(parentTarget, environmentValues, self) }
+      mountChild: {
+        $0.makeMountedElement(reconciler.renderer, parentTarget, environmentValues, self)
+      }
     )
   }
 }
@@ -76,21 +78,23 @@ extension _AnyScene.BodyResult {
   }
 
   func makeMountedElement<R: Renderer>(
+    _ renderer: R,
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues,
     _ parent: MountedElement<R>?
   ) -> MountedElement<R> {
     switch self {
     case let .scene(scene):
-      return scene.makeMountedScene(parentTarget, environmentValues, parent)
+      return scene.makeMountedScene(renderer, parentTarget, environmentValues, parent)
     case let .view(view):
-      return view.makeMountedView(parentTarget, environmentValues, parent)
+      return view.makeMountedView(renderer, parentTarget, environmentValues, parent)
     }
   }
 }
 
 extension _AnyScene {
   func makeMountedScene<R: Renderer>(
+    _ renderer: R,
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues,
     _ parent: MountedElement<R>?
@@ -104,11 +108,16 @@ extension _AnyScene {
     let children: [MountedElement<R>]
     if let deferredScene = scene as? SceneDeferredToRenderer {
       children = [
-        deferredScene.deferredBody.makeMountedView(parentTarget, environmentValues, parent),
+        deferredScene.deferredBody.makeMountedView(
+          renderer,
+          parentTarget,
+          environmentValues,
+          parent
+        ),
       ]
     } else if let groupScene = scene as? GroupScene {
       children = groupScene.children.map {
-        $0.makeMountedScene(parentTarget, environmentValues, parent)
+        $0.makeMountedScene(renderer, parentTarget, environmentValues, parent)
       }
     } else {
       children = []

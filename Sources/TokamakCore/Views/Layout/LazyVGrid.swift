@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/13/20.
 //
 
-public struct LazyVGrid<Content>: PrimitiveView where Content: View {
+public struct LazyVGrid<Content>: _PrimitiveView where Content: View {
   let columns: [GridItem]
   let alignment: HorizontalAlignment
   let spacing: CGFloat
