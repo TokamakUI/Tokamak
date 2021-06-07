@@ -70,7 +70,7 @@ public protocol Renderer: AnyObject {
   /** Returns a body of a given pritimive view, or `nil` if `view` is not a primitive view for
    this renderer.
    */
-  func body(for view: Any) -> AnyView?
+  func primitiveBody(for view: Any) -> AnyView?
 
   /** Returns `true` if a given view type is a primitive view that should be deferred to this
    renderer.

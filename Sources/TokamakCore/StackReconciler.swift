@@ -232,7 +232,7 @@ public final class StackReconciler<R: Renderer> {
   func render(compositeView: MountedCompositeView<R>) -> AnyView {
     let view = body(of: compositeView, keyPath: \.view.view)
 
-    guard let renderedBody = renderer.body(for: view) else {
+    guard let renderedBody = renderer.primitiveBody(for: view) else {
       return compositeView.view.bodyClosure(view)
     }
 

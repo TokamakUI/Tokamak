@@ -146,7 +146,7 @@ public final class StaticHTMLRenderer: Renderer {
     type is _HTMLPrimitive.Type
   }
 
-  public func body(for view: Any) -> AnyView? {
+  public func primitiveBody(for view: Any) -> AnyView? {
     (view as? _HTMLPrimitive)?.renderedBody
   }
 }

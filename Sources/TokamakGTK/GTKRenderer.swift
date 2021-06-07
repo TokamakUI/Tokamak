@@ -138,7 +138,7 @@ final class GTKRenderer: Renderer {
     type is GTKPrimitive.Type
   }
 
-  public func body(for view: Any) -> AnyView? {
+  public func primitiveBody(for view: Any) -> AnyView? {
     (view as? GTKPrimitive)?.renderedBody
   }
 }

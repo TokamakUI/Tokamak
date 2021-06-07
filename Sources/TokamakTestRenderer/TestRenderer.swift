@@ -64,7 +64,7 @@ public final class TestRenderer: Renderer {
     target.removeFromSuperview()
   }
 
-  public func body(for view: Any) -> AnyView? {
+  public func primitiveBody(for view: Any) -> AnyView? {
     nil
   }
 
