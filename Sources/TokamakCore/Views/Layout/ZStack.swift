@@ -43,7 +43,7 @@ public struct Alignment: Equatable {
 ///       Text("Top")
 ///     }
 ///
-public struct ZStack<Content>: View where Content: View {
+public struct ZStack<Content>: _PrimitiveView where Content: View {
   public let alignment: Alignment
   public let spacing: CGFloat?
   public let content: Content
@@ -57,13 +57,10 @@ public struct ZStack<Content>: View where Content: View {
     self.spacing = spacing
     self.content = content()
   }
-
-  public var body: Never {
-    neverBody("ZStack")
-  }
 }
 
 extension ZStack: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (content as? GroupView)?.children ?? [AnyView(content)]
   }

@@ -11,18 +11,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Carson Katri on 7/20/20.
-//
 
-import TokamakStaticHTML
+import TokamakShim
 
-struct TestApp: App {
-  var body: some Scene {
-    WindowGroup("TokamakStaticHTML Demo") {
-      ContentView()
-    }
+struct TextEditorDemo: View {
+  @State var text = ""
+
+  var body: some View {
+    Text("Word count: \(text.split(separator: " ").count)")
+    TextEditor(text: $text)
+      .frame(width: 300, height: 300)
   }
 }
-
-print(StaticHTMLRenderer(TestApp()).html)

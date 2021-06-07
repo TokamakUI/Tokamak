@@ -241,6 +241,7 @@ public struct Color: Hashable, Equatable {
   }
 
   /// Create a `Color` dependent on the current `ColorScheme`.
+  @_spi(TokamakCore)
   public static func _withScheme(_ resolver: @escaping (ColorScheme) -> Self) -> Self {
     .init(_EnvironmentDependentColorBox {
       resolver($0.colorScheme)
@@ -273,7 +274,7 @@ extension Color: CustomStringConvertible {
     if let providerDescription = provider as? CustomStringConvertible {
       return providerDescription.description
     } else {
-      return String(describing: self)
+      return "Color: \(provider.self)"
     }
   }
 }
@@ -298,7 +299,7 @@ public extension Color {
 
   static let secondary: Self = .init(systemColor: .secondary)
   static let accentColor: Self = .init(_EnvironmentDependentColorBox {
-    ($0.accentColor ?? Self.blue)
+    $0.accentColor ?? Self.blue
   })
 
   init(_ color: UIColor) {
@@ -344,6 +345,7 @@ public extension Color {
 
 extension Color: ShapeStyle {}
 extension Color: View {
+  @_spi(TokamakCore)
   public var body: some View {
     _ShapeView(shape: Rectangle(), style: self)
   }

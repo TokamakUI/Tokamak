@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Runtime
 import TokamakCore
 
 private protocol AnyModifiedContent {
@@ -30,8 +29,9 @@ extension ModifiedContent: AnyModifiedContent where Modifier: DOMViewModifier, C
   }
 }
 
-extension ModifiedContent: ViewDeferredToRenderer where Content: View, Modifier: ViewModifier {
-  public var deferredBody: AnyView {
+extension ModifiedContent: _HTMLPrimitive where Content: View, Modifier: ViewModifier {
+  @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
     if let domModifier = modifier as? DOMViewModifier {
       if let adjacentModifier = content as? AnyModifiedContent,
          !(adjacentModifier.anyModifier.isOrderDependent || domModifier.isOrderDependent)

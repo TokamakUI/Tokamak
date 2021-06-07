@@ -25,6 +25,7 @@ public struct Toggle<Label>: View where Label: View {
     self.label = label()
   }
 
+  @_spi(TokamakCore)
   public var body: AnyView {
     toggleStyle.makeBody(
       configuration: ToggleStyleConfiguration(label: AnyView(label), isOn: $isOn)
@@ -48,6 +49,7 @@ public extension Toggle where Label == AnyView {
 }
 
 extension Toggle: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (label as? GroupView)?.children ?? [AnyView(label)]
   }

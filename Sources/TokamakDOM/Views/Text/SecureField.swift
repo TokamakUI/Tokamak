@@ -17,14 +17,14 @@
 
 import TokamakCore
 
-extension SecureField: ViewDeferredToRenderer where Label == Text {
-  public var deferredBody: AnyView {
+extension SecureField: DOMPrimitive where Label == Text {
+  var renderedBody: AnyView {
     let proxy = _SecureFieldProxy(self)
     return AnyView(DynamicHTML("input", [
       "type": "password",
       .value: proxy.textBinding.wrappedValue,
       "placeholder": proxy.label.rawText,
-      "class": "_tokamak-securefield",
+      "class": "_tokamak-formcontrol",
     ], listeners: [
       "keypress": { event in if event.key == "Enter" { proxy.onCommit() } },
       "input": { event in

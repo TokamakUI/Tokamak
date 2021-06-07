@@ -15,11 +15,11 @@
 //  Created by Jed Fox on 06/30/2020.
 //
 
-final class NavigationContext: ObservableObject {
+public final class NavigationContext: ObservableObject {
   @Published var destination = NavigationLinkDestination(EmptyView())
 }
 
-public struct NavigationView<Content>: View where Content: View {
+public struct NavigationView<Content>: _PrimitiveView where Content: View {
   let content: Content
 
   @StateObject var context = NavigationContext()
@@ -27,26 +27,24 @@ public struct NavigationView<Content>: View where Content: View {
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()
   }
-
-  public var body: Never {
-    neverBody("NavigationView")
-  }
 }
 
-/// This is a helper class that works around absence of "package private" access control in Swift
+/// This is a helper type that works around absence of "package private" access control in Swift
 public struct _NavigationViewProxy<Content: View> {
   public let subject: NavigationView<Content>
 
   public init(_ subject: NavigationView<Content>) { self.subject = subject }
 
+  public var context: NavigationContext { subject.context }
+
   public var content: some View {
     subject.content
-      .environmentObject(subject.context)
+      .environmentObject(context)
   }
 
   public var destination: some View {
     subject.context.destination.view
-      .environmentObject(subject.context)
+      .environmentObject(context)
   }
 }
 

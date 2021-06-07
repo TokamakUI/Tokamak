@@ -52,11 +52,11 @@ struct NavItem: View {
       Text(id)
       #elseif os(macOS)
       Text(id).opacity(0.5)
-      #else
+      #elseif os(Linux)
       HStack {
         Text(id)
         Spacer()
-        Text("unavailable").opacity(0.5)
+        Text("unavailable")
       }
       #endif
     }
@@ -120,7 +120,11 @@ struct TokamakDemoView: View {
             }.padding(20))
             NavItem("GeometryReader", destination: GeometryReaderDemo())
           }
+          Section(header: Text("Modifiers")) {
+            NavItem("Shadow", destination: ShadowDemo())
+          }
           Section(header: Text("Selectors")) {
+            NavItem("DatePicker", destination: DatePickerDemo())
             NavItem("Picker", destination: PickerDemo())
             NavItem("Slider", destination: SliderDemo())
             NavItem("Toggle", destination: ToggleDemo())
@@ -128,6 +132,7 @@ struct TokamakDemoView: View {
           Section(header: Text("Text")) {
             NavItem("Text", destination: TextDemo())
             NavItem("TextField", destination: TextFieldDemo())
+            NavItem("TextEditor", destination: TextEditorDemo())
           }
           Section(header: Text("Misc")) {
             NavItem("Path", destination: PathDemo())

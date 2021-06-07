@@ -22,16 +22,28 @@ let package = Package(
       targets: ["TokamakDOM"]
     ),
     .library(
-      name: "TokamakShim",
-      targets: ["TokamakShim"]
-    ),
-    .library(
       name: "TokamakStaticHTML",
       targets: ["TokamakStaticHTML"]
     ),
     .executable(
-      name: "TokamakStaticDemo",
-      targets: ["TokamakStaticDemo"]
+      name: "TokamakStaticHTMLDemo",
+      targets: ["TokamakStaticHTMLDemo"]
+    ),
+    .library(
+      name: "TokamakGTK",
+      targets: ["TokamakGTK"]
+    ),
+    .executable(
+      name: "TokamakGTKDemo",
+      targets: ["TokamakGTKDemo"]
+    ),
+    .library(
+      name: "TokamakShim",
+      targets: ["TokamakShim"]
+    ),
+    .executable(
+      name: "TokamakStaticHTMLBenchmark",
+      targets: ["TokamakStaticHTMLBenchmark"]
     ),
   ],
   dependencies: [
@@ -39,11 +51,11 @@ let package = Package(
     // .package(url: /* package url */, from: "1.0.0"),
     .package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
-      .upToNextMinor(from: "0.9.0")
+      .upToNextMinor(from: "0.10.0")
     ),
-    .package(url: "https://github.com/MaxDesiatov/Runtime.git", from: "2.1.2"),
-    .package(url: "https://github.com/TokamakUI/OpenCombine.git", from: "0.12.0-alpha2"),
-    .package(url: "https://github.com/swiftwasm/OpenCombineJS.git", from: "0.0.1"),
+    .package(url: "https://github.com/OpenCombine/OpenCombine.git", from: "0.12.0"),
+    .package(url: "https://github.com/swiftwasm/OpenCombineJS.git", .upToNextMinor(from: "0.1.1")),
+    .package(name: "Benchmark", url: "https://github.com/google/swift-benchmark", from: "0.1.0"),
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define
@@ -60,12 +72,64 @@ let package = Package(
     ),
     .target(
       name: "TokamakCore",
-      dependencies: ["CombineShim", "Runtime"]
+      dependencies: ["CombineShim"]
+    ),
+    .target(
+      name: "TokamakShim",
+      dependencies: [
+        .target(name: "TokamakDOM", condition: .when(platforms: [.wasi])),
+        .target(name: "TokamakGTK", condition: .when(platforms: [.linux])),
+      ]
+    ),
+    .systemLibrary(
+      name: "CGTK",
+      pkgConfig: "gtk+-3.0",
+      providers: [
+        .apt(["libgtk+-3.0", "gtk+-3.0"]),
+        // .yum(["gtk3-devel"]),
+        .brew(["gtk+3"]),
+      ]
+    ),
+    .systemLibrary(
+      name: "CGDK",
+      pkgConfig: "gdk-3.0",
+      providers: [
+        .apt(["libgtk+-3.0", "gtk+-3.0"]),
+        // .yum(["gtk3-devel"]),
+        .brew(["gtk+3"]),
+      ]
+    ),
+    .target(
+      name: "TokamakGTKCHelpers",
+      dependencies: ["CGTK"]
+    ),
+    .target(
+      name: "TokamakGTK",
+      dependencies: ["TokamakCore", "CGTK", "CGDK", "TokamakGTKCHelpers", "CombineShim"]
+    ),
+    .target(
+      name: "TokamakGTKDemo",
+      dependencies: ["TokamakGTK"],
+      resources: [.copy("logo-header.png")]
     ),
     .target(
       name: "TokamakStaticHTML",
       dependencies: [
         "TokamakCore",
+      ]
+    ),
+    .target(
+      name: "TokamakCoreBenchmark",
+      dependencies: [
+        "Benchmark",
+        "TokamakCore",
+      ]
+    ),
+    .target(
+      name: "TokamakStaticHTMLBenchmark",
+      dependencies: [
+        "Benchmark",
+        "TokamakStaticHTML",
       ]
     ),
     .target(
@@ -83,10 +147,6 @@ let package = Package(
       ]
     ),
     .target(
-      name: "TokamakShim",
-      dependencies: [.target(name: "TokamakDOM", condition: .when(platforms: [.wasi]))]
-    ),
-    .target(
       name: "TokamakDemo",
       dependencies: [
         "TokamakShim",
@@ -99,7 +159,7 @@ let package = Package(
       resources: [.copy("logo-header.png")]
     ),
     .target(
-      name: "TokamakStaticDemo",
+      name: "TokamakStaticHTMLDemo",
       dependencies: [
         "TokamakStaticHTML",
       ]
@@ -118,6 +178,10 @@ let package = Package(
     .testTarget(
       name: "TokamakTests",
       dependencies: ["TokamakTestRenderer"]
+    ),
+    .testTarget(
+      name: "TokamakStaticHTMLTests",
+      dependencies: ["TokamakStaticHTML"]
     ),
   ]
 )

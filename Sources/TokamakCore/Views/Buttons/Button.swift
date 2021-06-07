@@ -42,12 +42,13 @@ public struct Button<Label>: View where Label: View {
     implementation = _Button(action: action, label: label())
   }
 
+  @_spi(TomkamakCore)
   public var body: some View {
     implementation
   }
 }
 
-public struct _Button<Label>: View where Label: View {
+public struct _Button<Label>: _PrimitiveView where Label: View {
   public let label: Label
   public let action: () -> ()
   @State public var isPressed = false
@@ -56,10 +57,6 @@ public struct _Button<Label>: View where Label: View {
   public init(action: @escaping () -> (), label: Label) {
     self.label = label
     self.action = action
-  }
-
-  public var body: Never {
-    neverBody("_Button")
   }
 }
 
@@ -72,6 +69,7 @@ public extension Button where Label == Text {
 }
 
 extension Button: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (implementation.label as? GroupView)?.children ?? [AnyView(implementation.label)]
   }

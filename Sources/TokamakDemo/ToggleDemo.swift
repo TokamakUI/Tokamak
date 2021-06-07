@@ -27,3 +27,9 @@ public struct ToggleDemo: View {
     }
   }
 }
+
+struct ToggleDemo_Previews: PreviewProvider {
+  static var previews: some View {
+    ToggleDemo()
+  }
+}

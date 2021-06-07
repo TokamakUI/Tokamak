@@ -1,4 +1,4 @@
-// Copyright 2018-2020 Tokamak contributors
+// Copyright 2018-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 //
 
 import CombineShim
-import Runtime
 
 final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
   override func mount(
@@ -27,6 +26,7 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     let childBody = reconciler.render(compositeView: self)
 
     let child: MountedElement<R> = childBody.makeMountedView(
+      reconciler.renderer,
       parentTarget,
       environmentValues,
       self
@@ -34,7 +34,8 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     mountedChildren = [child]
     child.mount(before: sibling, on: self, with: reconciler)
 
-    // `_TargetRef` is a composite view, so it's enough to check for it only here
+    // `_TargetRef` (and `TargetRefType` generic eraser protocol it conforms to) is a composite view, so it's enough
+    // to check for it only here.
     if var targetRef = view.view as? TargetRefType {
       // `_TargetRef` body is not always a host view that has a target, need to traverse
       // all descendants to find a `MountedHostView<R>` instance.
@@ -52,7 +53,7 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     reconciler.afterCurrentRender(perform: { [weak self] in
       guard let self = self else { return }
 
-      // FIXME: this has to be implemented in a render-specific way, otherwise it's equivalent to
+      // FIXME: this has to be implemented in a renderer-specific way, otherwise it's equivalent to
       // `_onMount` and `_onUnmount` at the moment,
       // see https://github.com/swiftwasm/Tokamak/issues/175 for more details
       if let appearanceAction = self.view.view as? AppearanceActionType {
@@ -90,7 +91,9 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
         $0.environmentValues = environmentValues
         $0.view = AnyView(element)
       },
-      mountChild: { $0.makeMountedView(parentTarget, environmentValues, self) }
+      mountChild: {
+        $0.makeMountedView(reconciler.renderer, parentTarget, environmentValues, self)
+      }
     )
   }
 }

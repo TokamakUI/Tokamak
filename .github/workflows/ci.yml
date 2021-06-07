@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 jobs:
-  swiftwasm_build:
+  swiftwasm_bundle:
     runs-on: ubuntu-20.04
 
     steps:
@@ -15,7 +15,16 @@ jobs:
         with:
           shell-action: carton bundle --product TokamakDemo
 
-  macos_build:
+  swiftwasm_test:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: swiftwasm/swiftwasm-action@v5.3
+        with:
+          shell-action: carton test
+
+  core_macos_build:
     runs-on: macos-11.0
 
     steps:
@@ -24,13 +33,16 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo xcode-select --switch /Applications/Xcode_12.2.app/Contents/Developer/
+
+          sudo xcode-select --switch /Applications/Xcode_12.3.app/Contents/Developer/
           brew install swiftwasm/tap/carton
           carton test --environment defaultBrowser
 
           # avoid building unrelated products for testing by specifying the test product explicitly
           swift build --product TokamakPackageTests
           `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest
+
+          rm -rf Sources/TokamakGTKCHelpers/*.c
 
           xcodebuild -version
 
@@ -43,3 +55,49 @@ jobs:
           xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
             CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
             xcpretty --color
+          cd ..
+
+          ./benchmark.sh
+
+  gtk_macos_build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the GTK renderer on macOS
+        shell: bash
+        run: |
+          set -ex
+          sudo xcode-select --switch /Applications/Xcode_12.3.app/Contents/Developer/
+
+          brew install gtk+3
+
+          make build
+
+  gtk_ubuntu_18_04_build:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the GTK renderer on Ubuntu 18.04
+        shell: bash
+        run: |
+          set -ex
+          sudo apt-get update
+          sudo apt-get install libgtk+-3.0 gtk+-3.0
+
+          make build
+
+  gtk_ubuntu_20_04_build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the GTK renderer on Ubuntu 20.04
+        shell: bash
+        run: |
+          set -ex
+          sudo apt-get update
+          sudo apt-get install libgtk+-3.0 gtk+-3.0
+
+          make build

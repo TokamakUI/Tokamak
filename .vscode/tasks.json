@@ -11,12 +11,37 @@
     {
       "label": "swift test",
       "type": "shell",
-      "command": "swift test"
+      "command": "swift build --product TokamakPackageTests && `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest"
     },
     {
       "label": "carton dev",
       "type": "shell",
       "command": "carton dev --product TokamakDemo"
+    },
+    {
+      "label": "benchmark",
+      "type": "shell",
+      "command": "./benchmark.sh"
+    },
+    {
+      "label": "make",
+      "type": "shell",
+      "command": "make",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "make run",
+      "type": "shell",
+      "command": "make run",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     }
   ]
 }

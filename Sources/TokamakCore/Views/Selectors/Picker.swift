@@ -12,35 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public struct _PickerContainer<Label: View, SelectionValue: Hashable, Content: View>: View {
+public protocol _PickerContainerProtocol {
+  var elements: [_AnyIDView] { get }
+}
+
+public struct _PickerContainer<
+  Label: View,
+  SelectionValue: Hashable,
+  Content: View
+>: _PrimitiveView,
+  _PickerContainerProtocol
+{
   @Binding public var selection: SelectionValue
   public let label: Label
   public let content: Content
+  public let elements: [_AnyIDView]
   @Environment(\.pickerStyle) public var style
 
   public init(
     selection: Binding<SelectionValue>,
     label: Label,
+    elements: [_AnyIDView],
     @ViewBuilder content: () -> Content
   ) {
     _selection = selection
     self.label = label
+    self.elements = elements
     self.content = content()
-  }
-
-  public var body: Never {
-    neverBody("_PickerLabel")
   }
 }
 
-public struct _PickerElement: View {
+public struct _PickerElement: _PrimitiveView {
   public let valueIndex: Int?
   public let content: AnyView
   @Environment(\.pickerStyle) public var style
-
-  public var body: Never {
-    neverBody("_PickerElement")
-  }
 }
 
 public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View {
@@ -58,10 +63,11 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
     self.content = content()
   }
 
+  @_spi(TokamakCore)
   public var body: some View {
     let children = self.children
 
-    return _PickerContainer(selection: selection, label: label) {
+    return _PickerContainer(selection: selection, label: label, elements: elements) {
       // Need to implement a special behavior here. If one of the children is `ForEach`
       // and its `Data.Element` type is the same as `SelectionValue` type, then we can
       // update the binding.
@@ -96,7 +102,21 @@ public extension Picker where Label == Text {
 }
 
 extension Picker: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (content as? GroupView)?.children ?? [AnyView(content)]
+  }
+}
+
+@_spi(TokamakCore)
+extension Picker: _PickerContainerProtocol {
+  @_spi(TokamakCore)
+  public var elements: [_AnyIDView] {
+    (content as? ForEachProtocol)?.children
+      .compactMap {
+        mapAnyView($0, transform: { (v: _AnyIDView) in v })
+      } ?? []
+    // .filter { $0.elementType == SelectionValue.self }
+    // .map(\.children) ?? []
   }
 }

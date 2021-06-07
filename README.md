@@ -82,6 +82,10 @@ struct SVGCircle: View {
 }
 ```
 
+`HTML` doesn't support event listeners, and is declared in the `TokamakStaticHTML` module, which `TokamakDOM` re-exports. The benefit of `HTML` is that you can use it for static rendering in libraries like [TokamakVapor](https://github.com/TokamakUI/TokamakVapor) and [TokamakPublish](https://github.com/TokamakUI/TokamakPublish).
+
+Another option is the `DynamicHTML` view provided by the `TokamakDOM` module, which has a `listeners` property with a corresponding initializer parameter. You can pass closures that can handle `onclick`, `onmouseover` and other DOM events for you in the `listeners` dictionary. Check out [MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers) for the full list.
+
 ### Arbitrary styles and scripts
 
 While [`JavaScriptKit`](https://github.com/swiftwasm/JavaScriptKit) is a great option for occasional interactions with JavaScript,
@@ -91,10 +95,12 @@ DOM access:
 ```swift
 import JavaScriptKit
 
-_ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
-"""#)
-_ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
+let document = JSObject.global.document
+let script = document.createElement("script")
+script.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js")
+document.head.appendChild(script)
+
+_ = document.head.insertAdjacentHTML("beforeend", #"""
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
@@ -107,7 +113,8 @@ app.
 
 ## Requirements for app developers
 
-- macOS 10.15 and Xcode 11.4 or later.
+- macOS 10.15 and Xcode 11.4 or later. macOS 11.0 and Xcode 12.0 or later are required if you're
+  building a multi-platform app with Tokamak that also needs to support SwiftUI on macOS.
 - [Swift 5.2 or later](https://swift.org/download/) and Ubuntu 18.04 if you'd like to use Linux.
   Other Linux distributions are currently not supported.
 
@@ -204,7 +211,7 @@ doesn't provide an official build of the extension on the VSCode Marketplace unf
 
 ### Modular structure
 
-Tokamak is built with modularity in mind, providing a cross-platform `TokamakCore` module and
+Tokamak is built with modularity in mind, providing a multi-platform `TokamakCore` module and
 separate modules for platform-specific renderers. Currently, the only available renderer modules are
 `TokamakDOM` and `TokamakStaticHTML`, the latter can be used for static websites and server-side
 rendering. If you'd like to implement your own custom renderer, please refer to our [renderers
@@ -280,8 +287,9 @@ appreciated and helps in maintaining the project.
 ## Maintainers
 
 In alphabetical order: [Carson Katri](https://github.com/carson-katri),
+[David Hunt](https://github.com/foscomputerservices),
 [Jed Fox](https://jedfox.com), [Max Desiatov](https://desiatov.com),
-[Yuta Saito](https://github.com/kateinoigakukun/).
+[Morten Bek Ditlevsen](https://github.com/mortenbekditlevsen/), [Yuta Saito](https://github.com/kateinoigakukun/).
 
 ## Acknowledgments
 

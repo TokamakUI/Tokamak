@@ -14,10 +14,12 @@
 
 // FIXME: these should have standalone implementations
 public extension View {
+  @_spi(TokamakCore)
   func _onMount(perform action: (() -> ())? = nil) -> some View {
     modifier(_AppearanceActionModifier(appear: action))
   }
 
+  @_spi(TokamakCore)
   func _onUnmount(perform action: (() -> ())? = nil) -> some View {
     modifier(_AppearanceActionModifier(disappear: action))
   }
