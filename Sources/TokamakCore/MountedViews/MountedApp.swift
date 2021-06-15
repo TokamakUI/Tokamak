@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/19/20.
 //
 
-import CombineShim
+import OpenCombineShim
 
 // This is very similar to `MountedCompositeView`. However, the `mountedBody`
 // is the computed content of the specified `Scene`, instead of having child

@@ -29,6 +29,16 @@ public final class TestRenderer: Renderer {
     reconciler!.rootTarget
   }
 
+  public init<A: App>(_ app: A) {
+    reconciler = StackReconciler(
+      app: app,
+      target: TestView(EmptyView()),
+      environment: .init(),
+      renderer: self,
+      scheduler: testScheduler
+    )
+  }
+
   public init<V: View>(_ view: V) {
     reconciler = StackReconciler(
       view: view,

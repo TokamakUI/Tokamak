@@ -15,7 +15,7 @@
 //  Created by Max Desiatov on 03/12/2018.
 //
 
-import CombineShim
+import OpenCombineShim
 
 final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
   override func mount(

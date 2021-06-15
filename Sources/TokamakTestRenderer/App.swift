@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,8 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if canImport(Combine)
-@_exported import Combine
-#else
-@_exported import OpenCombine
-#endif
+import OpenCombineShim
+import TokamakCore
+
+public extension App {
+  static func _setTitle(_ title: String) {}
+
+  static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {}
+
+  var _phasePublisher: AnyPublisher<ScenePhase, Never> { Empty().eraseToAnyPublisher() }
+
+  var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> { Empty().eraseToAnyPublisher() }
+}

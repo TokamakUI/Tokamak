@@ -62,9 +62,9 @@ public struct ButtonStyleDemo: View {
           Text("Label").padding(.leading, 5)
         }
       })
-      .buttonStyle(
-            PressedButtonStyle(pressedColor: Color.red)
-      )
+        .buttonStyle(
+          PressedButtonStyle(pressedColor: Color.red)
+        )
     }
   }
 }

@@ -15,7 +15,7 @@
 //  Created by Max Desiatov on 28/11/2018.
 //
 
-import CombineShim
+import OpenCombineShim
 
 /** A class that reconciles a "raw" tree of element values (such as `App`, `Scene` and `View`,
  all coming from `body` or `renderedBody` properties) with a tree of mounted element instances
