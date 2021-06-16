@@ -161,7 +161,7 @@ private let expectedHTML =
   </html>
   """#
 
-final class ReconcilerTests: XCTestCase {
+final class HTMLTests: XCTestCase {
   struct Model {
     let text: Text
   }

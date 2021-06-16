@@ -45,6 +45,15 @@
           "revision": "8e0ef8bb7482ab97dcd2cd1d6855bd38921c345d",
           "version": "0.1.0"
         }
+      },
+      {
+        "package": "SnapshotTesting",
+        "repositoryURL": "https://github.com/TokamakUI/swift-snapshot-testing.git",
+        "state": {
+          "branch": "swiftui-macos",
+          "revision": "58a8e1262a4ee54d45bf5cbbe33f2e4c911de6c6",
+          "version": null
+        }
       }
     ]
   },
