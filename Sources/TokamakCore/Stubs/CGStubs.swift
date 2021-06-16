@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,31 +15,12 @@
 //  Created by Max Desiatov on 08/04/2020.
 //
 
-#if canImport(Glibc)
-import Glibc
-#elseif canImport(Darwin)
-import Darwin
-#elseif os(WASI)
-import WASILibc
-#endif
+import Foundation
 
-public typealias CGFloat = Double
-public struct CGPoint: Equatable {
-  public var x: CGFloat
-  public var y: CGFloat
-
-  public init(x: CGFloat, y: CGFloat) {
-    self.x = x
-    self.y = y
-  }
-
-  public static var zero: Self {
-    .init(x: 0, y: 0)
-  }
-
+extension CGPoint {
   func rotate(_ angle: Angle, around origin: Self) -> Self {
-    let cosAngle = cos(angle.radians)
-    let sinAngle = sin(angle.radians)
+    let cosAngle = CGFloat(cos(angle.radians))
+    let sinAngle = CGFloat(sin(angle.radians))
     return .init(
       x: cosAngle * (x - origin.x) - sinAngle * (y - origin.y) + origin.x,
       y: sinAngle * (x - origin.x) + cosAngle * (y - origin.y) + origin.y
@@ -51,34 +32,6 @@ public struct CGPoint: Equatable {
       x: x + offset.x,
       y: y + offset.y
     )
-  }
-}
-
-public struct CGSize: Equatable {
-  public var width: CGFloat
-  public var height: CGFloat
-
-  public init(width: CGFloat, height: CGFloat) {
-    self.width = width
-    self.height = height
-  }
-
-  public static var zero: Self {
-    .init(width: 0, height: 0)
-  }
-}
-
-public struct CGRect: Equatable {
-  public var origin: CGPoint
-  public var size: CGSize
-
-  public init(origin: CGPoint, size: CGSize) {
-    self.origin = origin
-    self.size = size
-  }
-
-  public static var zero: Self {
-    .init(origin: .zero, size: .zero)
   }
 }
 

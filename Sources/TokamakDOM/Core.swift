@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -87,9 +87,6 @@ public typealias Font = TokamakCore.Font
 
 public typealias Angle = TokamakCore.Angle
 public typealias CGAffineTransform = TokamakCore.CGAffineTransform
-public typealias CGPoint = TokamakCore.CGPoint
-public typealias CGRect = TokamakCore.CGRect
-public typealias CGSize = TokamakCore.CGSize
 public typealias UnitPoint = TokamakCore.UnitPoint
 
 public typealias Edge = TokamakCore.Edge
