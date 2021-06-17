@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 //
 //  Created by Carson Katri on 7/13/20.
 //
+
+import Foundation
 
 public struct LazyHGrid<Content>: _PrimitiveView where Content: View {
   let rows: [GridItem]

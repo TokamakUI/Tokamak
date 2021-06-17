@@ -78,10 +78,9 @@ public typealias RoundedRectangle = TokamakCore.RoundedRectangle
 public typealias Color = TokamakCore.Color
 public typealias Font = TokamakCore.Font
 
+#if !canImport(CoreGraphics)
 public typealias CGAffineTransform = TokamakCore.CGAffineTransform
-public typealias CGPoint = TokamakCore.CGPoint
-public typealias CGRect = TokamakCore.CGRect
-public typealias CGSize = TokamakCore.CGSize
+#endif
 
 // MARK: Views
 
