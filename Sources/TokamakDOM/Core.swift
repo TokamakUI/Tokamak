@@ -85,8 +85,11 @@ public typealias RoundedRectangle = TokamakCore.RoundedRectangle
 public typealias Color = TokamakCore.Color
 public typealias Font = TokamakCore.Font
 
-public typealias Angle = TokamakCore.Angle
+#if !canImport(CoreGraphics)
 public typealias CGAffineTransform = TokamakCore.CGAffineTransform
+#endif
+
+public typealias Angle = TokamakCore.Angle
 public typealias UnitPoint = TokamakCore.UnitPoint
 
 public typealias Edge = TokamakCore.Edge
