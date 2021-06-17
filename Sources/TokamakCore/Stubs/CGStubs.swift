@@ -35,6 +35,17 @@ extension CGPoint {
   }
 }
 
+public extension CGAffineTransform {
+  /// Transform the point into the transform's coordinate system.
+  func transform(point: CGPoint) -> CGPoint {
+    CGPoint(
+      x: (a * point.x) + (c * point.y) + tx,
+      y: (b * point.x) + (d * point.y) + ty
+    )
+  }
+}
+
+#if !canImport(CoreGraphics)
 public enum CGLineCap {
   /// A line with a squared-off end. Extends to the endpoint of the Path.
   case butt
@@ -127,14 +138,6 @@ public struct CGAffineTransform: Equatable {
     )
   }
 
-  /// Transform the point into the transform's coordinate system.
-  public func transform(point: CGPoint) -> CGPoint {
-    CGPoint(
-      x: (a * point.x) + (c * point.y) + tx,
-      y: (b * point.x) + (d * point.y) + ty
-    )
-  }
-
   /// Returns an affine transformation matrix constructed by combining two existing affine
   /// transforms.
   /// - Parameters:
@@ -203,3 +206,5 @@ public struct CGAffineTransform: Equatable {
     self == Self.identity
   }
 }
+
+#endif
