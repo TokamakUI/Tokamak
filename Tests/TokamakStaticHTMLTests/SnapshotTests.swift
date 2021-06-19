@@ -16,38 +16,69 @@
 //
 
 // SnapshotTesting with image snapshots are only supported on iOS.
-#if !os(WASI)
+#if os(macOS)
 import SnapshotTesting
-
-#if TOKAMAK_CONTROL_SNAPSHOTS
-import SwiftUI
-#else
 import TokamakStaticHTML
-#endif
-
 import XCTest
 
+// Needed for `NSImage`, but would be great to make this truly cross-platform.
+import class AppKit.NSImage
+
+public extension Snapshotting where Value: View, Format == NSImage {
+  static var image: Snapshotting { .image() }
+
+  /// A snapshot strategy for comparing Tokamak Views based on pixel equality.
+  static func image(precision: Float = 1, size: CGSize? = nil) -> Snapshotting {
+    SimplySnapshotting.image(precision: precision).asyncPullback { view in
+      Async { callback in
+        let html = Data(StaticHTMLRenderer(view).render().utf8)
+        let cwd = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        let renderedPath = cwd.appendingPathComponent("rendered.html")
+
+        // swiftlint:disable:next force_try
+        try! html.write(to: renderedPath)
+        let browser = Process()
+        browser
+          .launchPath = "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"
+
+        var arguments = ["--headless", "--disable-gpu", "--screenshot", renderedPath.path]
+        if let size = size {
+          arguments.append("--window-size=\(Int(size.width)),\(Int(size.height))")
+        }
+
+        browser.arguments = arguments
+        browser.terminationHandler = { _ in
+          callback(NSImage(
+            contentsOfFile: cwd.appendingPathComponent("screenshot.png")
+              .path
+          )!)
+        }
+        browser.launch()
+      }
+    }
+  }
+}
+
 struct HStackTest: View {
-  let spacing: CGFloat
   var body: some View {
-    HStack(spacing: spacing) {
-      Rectangle()
-        .background(Color.red)
-
-      Rectangle()
-        .background(Color.green)
-
-      Rectangle()
-        .background(Color.blue)
+    VStack {
+      Text("Adaptive LazyVGrid")
+      LazyVGrid(columns: [
+        GridItem(.adaptive(minimum: 50)),
+      ]) {
+        ForEach(0..<10) {
+          Text("\($0 + 1)")
+            .padding()
+            .background(Color.red)
+        }
+      }
     }.frame(width: 300, height: 100)
   }
 }
 
 final class SnapshotTests: XCTestCase {
-  func testHStack() {
-    assertSnapshot(matching: HStackTest(spacing: 0), as: .image())
-    assertSnapshot(matching: HStackTest(spacing: 10), as: .image())
-    assertSnapshot(matching: HStackTest(spacing: 100), as: .image())
+  func testVGrid() {
+    assertSnapshot(matching: HStackTest(), as: .image(size: .init(width: 300, height: 100)))
   }
 }
 

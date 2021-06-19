@@ -68,8 +68,8 @@ let package = Package(
     ),
     .package(
       name: "SnapshotTesting",
-      url: "https://github.com/TokamakUI/swift-snapshot-testing.git",
-      .branch("swiftui-macos")
+      url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
+      from: "1.9.0"
     ),
   ],
   targets: [
