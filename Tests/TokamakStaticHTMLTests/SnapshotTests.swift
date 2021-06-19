@@ -41,7 +41,13 @@ public extension Snapshotting where Value: View, Format == NSImage {
         browser
           .launchPath = "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"
 
-        var arguments = ["--headless", "--disable-gpu", "--screenshot", renderedPath.path]
+        var arguments = [
+          "--headless",
+          "--disable-gpu",
+          "--force-device-scale-factor=1.0",
+          "--screenshot",
+          renderedPath.path,
+        ]
         if let size = size {
           arguments.append("--window-size=\(Int(size.width)),\(Int(size.height))")
         }
