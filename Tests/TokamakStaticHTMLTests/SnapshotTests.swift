@@ -65,28 +65,24 @@ public extension Snapshotting where Value: View, Format == NSImage {
   }
 }
 
-struct HStackTest: View {
-  var body: some View {
-    VStack {
-      Text("Adaptive LazyVGrid")
-      LazyVGrid(columns: [
-        GridItem(.adaptive(minimum: 50)),
-      ]) {
-        ForEach(0..<10) {
-          Text("\($0 + 1)")
-            .padding()
-            .background(Color.red)
-        }
-      }
-    }.frame(width: 300, height: 100)
+struct Star: Shape {
+  func path(in rect: CGRect) -> Path {
+    Path { path in
+      path.move(to: .init(x: 40, y: 0))
+      path.addLine(to: .init(x: 20, y: 76))
+      path.addLine(to: .init(x: 80, y: 30.4))
+      path.addLine(to: .init(x: 0, y: 30.4))
+      path.addLine(to: .init(x: 64, y: 76))
+      path.addLine(to: .init(x: 40, y: 0))
+    }
   }
 }
 
 final class SnapshotTests: XCTestCase {
-  func testVGrid() {
+  func testPath() {
     assertSnapshot(
-      matching: HStackTest(),
-      as: .image(size: .init(width: 300, height: 100)),
+      matching: Star().fill(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1)),
+      as: .image(size: .init(width: 100, height: 100)),
       timeout: 10
     )
   }
