@@ -78,7 +78,11 @@ struct HStackTest: View {
 
 final class SnapshotTests: XCTestCase {
   func testVGrid() {
-    assertSnapshot(matching: HStackTest(), as: .image(size: .init(width: 300, height: 100)))
+    assertSnapshot(
+      matching: HStackTest(),
+      as: .image(size: .init(width: 300, height: 100)),
+      timeout: 10
+    )
   }
 }
 
