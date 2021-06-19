@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,13 +15,7 @@
 //  Created by Carson Katri on 06/28/2020.
 //
 
-#if canImport(Darwin)
-import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#elseif os(WASI)
-import WASILibc
-#endif
+import Foundation
 
 /// The outline of a 2D shape.
 public struct Path: Equatable, LosslessStringConvertible {
@@ -610,6 +604,7 @@ private func getArc(
           clockwise: clockwise
         )
     } else {
+      let angle = CGFloat(angle)
       let endPoint = CGPoint(
         x: (radius * cos(angle)) + center.x,
         y: (radius * sin(angle)) + center.y

@@ -26,7 +26,7 @@ protocol StackProtocol {
 struct Box<Content: View>: View, ParentView, AnyWidget, StackProtocol {
   let content: Content
   let orientation: GtkOrientation
-  let spacing: TokamakCore.CGFloat
+  let spacing: CGFloat
   let alignment: Alignment
 
   let expand = true
