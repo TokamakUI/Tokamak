@@ -40,18 +40,9 @@ final class ReconcilerStressTests: XCTestCase {
     let renderer = TestRenderer(SpookyHanger())
     let root = renderer.rootTarget
 
-    let list = root.subviews[0].subviews[0]
-
     XCTAssertTrue(
-      root.view
+      root.subviews[0].view
         .view is NavigationView<List<Never, ForEach<[String], String, NavigationLink<Text, Text>>>>
     )
-
-    guard let link = list.subviews[0].view.view as? NavigationLink<Text, Text> else {
-      XCTAssert(false, "navigation has no link")
-      return
-    }
-
-    _NavigationLinkProxy(link).activate()
   }
 }
