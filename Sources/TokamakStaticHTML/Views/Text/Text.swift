@@ -145,6 +145,7 @@ extension Text: AnyHTML {
 }
 
 extension Text {
+  // swiftlint:disable function_body_length
   static func attributes(
     from modifiers: [_Modifier],
     environment: EnvironmentValues
@@ -207,4 +208,5 @@ extension Text {
       "class": isRedacted ? "_tokamak-text-redacted" : "",
     ]
   }
+  // swiftlint:enable function_body_length
 }
