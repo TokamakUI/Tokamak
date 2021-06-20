@@ -58,7 +58,10 @@ public extension AnyHTML {
     if attributes.isEmpty {
       renderedAttributes = ""
     } else {
-      let mappedAttributes = attributes.map { #"\#($0)="\#($1)""# }
+      let mappedAttributes = attributes
+        // Exclude empty values to avoid waste of space with `class=""`
+        .filter { !$1.isEmpty }
+        .map { #"\#($0)="\#($1)""# }
       if shouldSortAttributes {
         renderedAttributes = mappedAttributes.sorted().joined(separator: " ")
       } else {
