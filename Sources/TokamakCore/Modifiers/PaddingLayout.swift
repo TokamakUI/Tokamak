@@ -29,22 +29,24 @@ public struct _PaddingLayout: ViewModifier {
 }
 
 public extension View {
-  func padding(_ insets: EdgeInsets) -> some View {
+  func padding(_ insets: EdgeInsets) -> ModifiedContent<Self, _PaddingLayout> {
     modifier(_PaddingLayout(insets: insets))
   }
 
-  func padding(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> some View {
+  func padding(_ edges: Edge.Set = .all,
+               _ length: CGFloat? = nil) -> ModifiedContent<Self, _PaddingLayout>
+  {
     let insets = length.map { EdgeInsets(_all: $0) }
     return modifier(_PaddingLayout(edges: edges, insets: insets))
   }
 
-  func padding(_ length: CGFloat) -> some View {
+  func padding(_ length: CGFloat) -> ModifiedContent<Self, _PaddingLayout> {
     padding(.all, length)
   }
 }
 
-extension ModifiedContent where Modifier == _PaddingLayout, Content: View {
-  public func padding(_ length: CGFloat) -> some View {
+public extension ModifiedContent where Modifier == _PaddingLayout, Content: View {
+  func padding(_ length: CGFloat) -> some View {
     var layout = modifier
     layout.insets?.top += length
     layout.insets?.leading += length
