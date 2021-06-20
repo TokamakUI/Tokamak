@@ -117,7 +117,7 @@ justify-content: center;
 align-items: center;
 overflow: hidden;"><div class="_tokamak-stack" style="display: flex; flex-direction: column; align-items: center;
 height: 100%;
-"><span class="" style="
+"><span style="
 font-family: system,
 -apple-system,
 '.SFNSText-Regular',
