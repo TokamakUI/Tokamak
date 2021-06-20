@@ -45,20 +45,14 @@ public final class HTMLTarget: Target {
 }
 
 extension HTMLTarget {
-  var outerHTML: String {
-    """
-    <\(html.tag)\(html.attributes.isEmpty ? "" : " ")\
-    \(html.attributes.map { #"\#($0)="\#($1)""# }.joined(separator: " "))>\
-    \(html.innerHTML ?? "")\
-    \(children.map(\.outerHTML).joined(separator: "\n"))\
-    </\(html.tag)>
-    """
+  func outerHTML(shouldSortAttributes: Bool) -> String {
+    html.outerHTML(shouldSortAttributes: shouldSortAttributes, children: children)
   }
 }
 
 struct HTMLBody: AnyHTML {
   let tag: String = "body"
-  let innerHTML: String? = nil
+  public func innerHTML(shouldSortAttributes: Bool) -> String? { nil }
   let attributes: [HTMLAttribute: String] = [
     "style": "margin: 0;" + rootNodeStyles,
   ]
@@ -70,7 +64,8 @@ public final class StaticHTMLRenderer: Renderer {
   var rootTarget: HTMLTarget
 
   static var title: String = ""
-  public var html: String {
+
+  public func render(shouldSortAttributes: Bool = false) -> String {
     """
     <html>
     <head>
@@ -79,7 +74,7 @@ public final class StaticHTMLRenderer: Renderer {
         \(tokamakStyles)
       </style>
     </head>
-    \(rootTarget.outerHTML)
+    \(rootTarget.outerHTML(shouldSortAttributes: shouldSortAttributes))
     </html>
     """
   }
@@ -146,4 +141,16 @@ public final class StaticHTMLRenderer: Renderer {
   ) {
     fatalError("Stateful apps cannot be created with TokamakStaticHTML")
   }
+
+  public func isPrimitiveView(_ type: Any.Type) -> Bool {
+    type is _HTMLPrimitive.Type
+  }
+
+  public func primitiveBody(for view: Any) -> AnyView? {
+    (view as? _HTMLPrimitive)?.renderedBody
+  }
+}
+
+public protocol _HTMLPrimitive {
+  var renderedBody: AnyView { get }
 }

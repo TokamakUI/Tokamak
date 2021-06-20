@@ -11,9 +11,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 7/20/20.
+//
 
-#if canImport(Combine)
-@_exported import Combine
-#else
-@_exported import OpenCombine
-#endif
+import TokamakStaticHTML
+
+struct TestApp: App {
+  var body: some Scene {
+    WindowGroup("TokamakStaticHTML Demo") {
+      ContentView()
+    }
+  }
+}
+
+print(StaticHTMLRenderer(TestApp()).render(shouldSortAttributes: true))

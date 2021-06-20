@@ -14,8 +14,8 @@
 
 import TokamakCore
 
-extension TextEditor: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
+extension TextEditor: DOMPrimitive {
+  var renderedBody: AnyView {
     let proxy = _TextEditorProxy(self)
 
     return AnyView(DynamicHTML("textarea", [

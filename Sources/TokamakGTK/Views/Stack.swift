@@ -26,7 +26,7 @@ protocol StackProtocol {
 struct Box<Content: View>: View, ParentView, AnyWidget, StackProtocol {
   let content: Content
   let orientation: GtkOrientation
-  let spacing: TokamakCore.CGFloat
+  let spacing: CGFloat
   let alignment: Alignment
 
   let expand = true
@@ -52,8 +52,9 @@ struct Box<Content: View>: View, ParentView, AnyWidget, StackProtocol {
   }
 }
 
-extension VStack: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
+extension VStack: GTKPrimitive {
+  @_spi(TokamakCore)
+  public var renderedBody: AnyView {
     AnyView(
       Box(
         content: content,
@@ -65,8 +66,9 @@ extension VStack: ViewDeferredToRenderer {
   }
 }
 
-extension HStack: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
+extension HStack: GTKPrimitive {
+  @_spi(TokamakCore)
+  public var renderedBody: AnyView {
     AnyView(
       Box(
         content: content,

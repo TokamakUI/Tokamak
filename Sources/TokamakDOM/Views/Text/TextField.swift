@@ -18,7 +18,7 @@
 import TokamakCore
 import TokamakStaticHTML
 
-extension TextField: ViewDeferredToRenderer where Label == _TextFieldStyleLabel {
+extension TextField: DOMPrimitive where Label == _TextFieldStyleLabel {
   func css(for style: _AnyTextFieldStyle) -> String {
     if style is PlainTextFieldStyle {
       return """
@@ -39,7 +39,7 @@ extension TextField: ViewDeferredToRenderer where Label == _TextFieldStyleLabel 
     }
   }
 
-  public var deferredBody: AnyView {
+  var renderedBody: AnyView {
     let proxy = _TextFieldProxy(self)
 
     return AnyView(DynamicHTML("input", [

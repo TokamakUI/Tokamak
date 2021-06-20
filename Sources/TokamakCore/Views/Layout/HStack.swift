@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
 //  Created by Max Desiatov on 08/04/2020.
 //
 
+import Foundation
+
 /// An alignment position along the vertical axis.
 public enum VerticalAlignment: Equatable {
   case top
@@ -28,7 +30,7 @@ public enum VerticalAlignment: Equatable {
 ///       Text("Hello")
 ///       Text("World")
 ///     }
-public struct HStack<Content>: View where Content: View {
+public struct HStack<Content>: _PrimitiveView where Content: View {
   public let alignment: VerticalAlignment
   public let spacing: CGFloat?
   public let content: Content
@@ -42,13 +44,10 @@ public struct HStack<Content>: View where Content: View {
     self.spacing = spacing
     self.content = content()
   }
-
-  public var body: Never {
-    neverBody("HStack")
-  }
 }
 
 extension HStack: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (content as? GroupView)?.children ?? [AnyView(content)]
   }

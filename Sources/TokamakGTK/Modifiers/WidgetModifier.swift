@@ -50,17 +50,18 @@ extension WidgetAttributeModifier {
   }
 }
 
-extension ModifiedContent: ViewDeferredToRenderer where Content: View {
-  public var deferredBody: AnyView {
+extension ModifiedContent: GTKPrimitive where Content: View {
+  @_spi(TokamakCore)
+  public var renderedBody: AnyView {
     guard let widgetModifier = modifier as? WidgetModifier else {
       return AnyView(content)
     }
     let anyWidget: AnyWidget
-    if let anyView = content as? ViewDeferredToRenderer,
-      let _anyWidget = mapAnyView(
-        anyView.deferredBody,
-        transform: { (widget: AnyWidget) in widget }
-      )
+    if let anyView = content as? GTKPrimitive,
+       let _anyWidget = mapAnyView(
+         anyView.renderedBody,
+         transform: { (widget: AnyWidget) in widget }
+       )
     {
       anyWidget = _anyWidget
     } else if let _anyWidget = content as? AnyWidget {

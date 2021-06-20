@@ -40,8 +40,8 @@ public struct _PreferenceValue<Key> where Key: PreferenceKey {
   }
 }
 
-extension _PreferenceValue {
-  public func _force<V>(
+public extension _PreferenceValue {
+  func _force<V>(
     _ transform: @escaping (Key.Value) -> V
   ) -> _PreferenceReadingView<Key, V> where V: View {
     _PreferenceReadingView(value: self, transform: transform)
@@ -59,7 +59,7 @@ public struct _PreferenceStore {
   public func value<Key>(forKey key: Key.Type = Key.self) -> _PreferenceValue<Key>
     where Key: PreferenceKey
   {
-    values[String(describing: key)] as? _PreferenceValue<Key>
+    values[String(reflecting: key)] as? _PreferenceValue<Key>
       ?? _PreferenceValue(valueList: [Key.defaultValue])
   }
 
@@ -67,7 +67,7 @@ public struct _PreferenceStore {
     where Key: PreferenceKey
   {
     let previousValues = self.value(forKey: key).valueList
-    values[String(describing: key)] = _PreferenceValue<Key>(valueList: previousValues + [value])
+    values[String(reflecting: key)] = _PreferenceValue<Key>(valueList: previousValues + [value])
   }
 
   public mutating func merge(with other: Self) {
@@ -102,12 +102,6 @@ public protocol _PreferenceWritingModifierProtocol: ViewModifier
   where Body == AnyView
 {
   func body(_ content: Self.Content, with preferenceStore: inout _PreferenceStore) -> AnyView
-}
-
-public extension _PreferenceWritingViewProtocol where Self: View {
-  var body: Never {
-    neverBody(String(describing: Self.self))
-  }
 }
 
 public extension _PreferenceWritingModifierProtocol {

@@ -91,9 +91,9 @@ public struct ToolbarItem<ID, Content>: View, AnyToolbarItem where Content: View
   }
 }
 
-extension ToolbarItem where ID == () {
-  public init(placement: ToolbarItemPlacement = .automatic,
-              @ViewBuilder content: () -> Content)
+public extension ToolbarItem where ID == () {
+  init(placement: ToolbarItemPlacement = .automatic,
+       @ViewBuilder content: () -> Content)
   {
     self.init(id: (), placement: placement, showsByDefault: true, content: content)
   }
@@ -112,9 +112,9 @@ public struct _ToolbarItemProxy<ID, Content> where Content: View {
   public var content: Content { subject.content }
 }
 
-extension View {
+public extension View {
   @_disfavoredOverload
-  public func toolbar<Content>(
+  func toolbar<Content>(
     @ViewBuilder content: @escaping () -> Content
   ) -> some View where Content: View {
     toolbar {
@@ -122,7 +122,7 @@ extension View {
     }
   }
 
-  public func toolbar<Items>(@ToolbarContentBuilder <()> items: () -> ToolbarItemGroup<(), Items>)
+  func toolbar<Items>(@ToolbarContentBuilder<()> items: () -> ToolbarItemGroup<(), Items>)
     -> some View
   {
     preference(key: ToolbarKey.self, value: ToolbarKey.ToolbarValue(items()._items.compactMap {
@@ -130,9 +130,9 @@ extension View {
     }))
   }
 
-  public func toolbar<Items>(
+  func toolbar<Items>(
     id: String,
-    @ToolbarContentBuilder <String> items: () -> ToolbarItemGroup<String, Items>
+    @ToolbarContentBuilder<String> items: () -> ToolbarItemGroup<String, Items>
   ) -> some View {
     preference(key: ToolbarKey.self, value: ToolbarKey.ToolbarValue(items()._items.compactMap {
       $0.view as? AnyToolbarItem

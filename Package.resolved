@@ -6,17 +6,17 @@
         "repositoryURL": "https://github.com/swiftwasm/JavaScriptKit.git",
         "state": {
           "branch": null,
-          "revision": "b7a02434c6e973c08c3fd5069105ef44dd82b891",
-          "version": "0.9.0"
+          "revision": "b19e7c8b10a2750ed47753e31ed13613171f3294",
+          "version": "0.10.1"
         }
       },
       {
         "package": "OpenCombine",
-        "repositoryURL": "https://github.com/TokamakUI/OpenCombine.git",
+        "repositoryURL": "https://github.com/OpenCombine/OpenCombine.git",
         "state": {
           "branch": null,
-          "revision": "eea5e707b571da14fce588000046b8ec4c62018b",
-          "version": "0.12.0-alpha3"
+          "revision": "28993ae57de5a4ea7e164787636cafad442d568c",
+          "version": "0.12.0"
         }
       },
       {
@@ -24,17 +24,35 @@
         "repositoryURL": "https://github.com/swiftwasm/OpenCombineJS.git",
         "state": {
           "branch": null,
-          "revision": "5e8636b15bcb4b8900696d95daaab941458ed2cf",
-          "version": "0.0.2"
+          "revision": "eaf324ce78710f53b52fb82e9a8de4693633e33a",
+          "version": "0.1.1"
         }
       },
       {
-        "package": "Runtime",
-        "repositoryURL": "https://github.com/MaxDesiatov/Runtime.git",
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser",
         "state": {
           "branch": null,
-          "revision": "a617ead8a125a97e69d6100e4d27922006e82e0a",
-          "version": "2.1.2"
+          "revision": "986d191f94cec88f6350056da59c2e59e83d1229",
+          "version": "0.4.3"
+        }
+      },
+      {
+        "package": "Benchmark",
+        "repositoryURL": "https://github.com/google/swift-benchmark",
+        "state": {
+          "branch": null,
+          "revision": "8e0ef8bb7482ab97dcd2cd1d6855bd38921c345d",
+          "version": "0.1.0"
+        }
+      },
+      {
+        "package": "SnapshotTesting",
+        "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
+        "state": {
+          "branch": null,
+          "revision": "f8a9c997c3c1dab4e216a8ec9014e23144cbab37",
+          "version": "1.9.0"
         }
       }
     ]

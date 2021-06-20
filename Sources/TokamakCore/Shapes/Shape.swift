@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 //
 //  Created by Carson Katri on 06/28/2020.
 //
+
+import Foundation
 
 public protocol Shape: View {
   func path(in rect: CGRect) -> Path
@@ -46,7 +48,7 @@ public struct FillStyle: Equatable, ShapeStyle {
   }
 }
 
-public struct _ShapeView<Content, Style>: View where Content: Shape, Style: ShapeStyle {
+public struct _ShapeView<Content, Style>: _PrimitiveView where Content: Shape, Style: ShapeStyle {
   @Environment(\.self) public var environment
   @Environment(\.foregroundColor) public var foregroundColor
   public var shape: Content
@@ -57,10 +59,6 @@ public struct _ShapeView<Content, Style>: View where Content: Shape, Style: Shap
     self.shape = shape
     self.style = style
     self.fillStyle = fillStyle
-  }
-
-  public var body: Never {
-    neverBody("_ShapeView")
   }
 }
 

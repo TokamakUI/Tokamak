@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,18 +11,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-//  Created by Carson Katri on 7/20/20.
-//
 
-import TokamakStaticHTML
+import OpenCombineShim
+import TokamakCore
 
-struct TestApp: App {
-  var body: some Scene {
-    WindowGroup("TokamakStaticHTML Demo") {
-      ContentView()
-    }
-  }
+public extension App {
+  static func _setTitle(_ title: String) {}
+
+  static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {}
+
+  var _phasePublisher: AnyPublisher<ScenePhase, Never> { Empty().eraseToAnyPublisher() }
+
+  var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> { Empty().eraseToAnyPublisher() }
 }
-
-print(StaticHTMLRenderer(TestApp()).html)

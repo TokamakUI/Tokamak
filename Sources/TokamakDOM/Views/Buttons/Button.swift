@@ -18,8 +18,10 @@
 import TokamakCore
 import TokamakStaticHTML
 
-extension _Button: ViewDeferredToRenderer where Label == Text {
-  public var deferredBody: AnyView {
+extension _Button: DOMPrimitive {
+  @_spi(TokamakCore)
+  public var renderedBody: AnyView {
+    var attributes: [HTMLAttribute: String] = [:]
     let listeners: [String: Listener] = [
       "pointerdown": { _ in isPressed = true },
       "pointerup": { _ in
@@ -33,7 +35,7 @@ extension _Button: ViewDeferredToRenderer where Label == Text {
         ["class": "_tokamak-buttonstyle-default"],
         listeners: listeners
       ) {
-        HTML("span", content: label.innerHTML ?? "")
+        label
       })
     } else {
       return AnyView(DynamicHTML(
@@ -49,5 +51,18 @@ extension _Button: ViewDeferredToRenderer where Label == Text {
         )
       })
     }
+    return AnyView(DynamicHTML(
+      "button",
+      attributes,
+      listeners: listeners
+    ) {
+      buttonStyle.makeBody(
+        configuration: _ButtonStyleConfigurationProxy(
+          label: AnyView(label),
+          isPressed: isPressed
+        ).subject
+      )
+      .colorScheme(.light)
+    })
   }
 }

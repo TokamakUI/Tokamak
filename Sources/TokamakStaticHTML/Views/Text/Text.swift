@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Foundation
 import TokamakCore
 
 extension Font.Design: CustomStringConvertible {
@@ -91,22 +92,33 @@ public extension Font {
   }
 }
 
+extension TextAlignment: CustomStringConvertible {
+  public var description: String {
+    switch self {
+    case .leading: return "left"
+    case .center: return "center"
+    case .trailing: return "right"
+    }
+  }
+}
+
 private struct TextSpan: AnyHTML {
   let content: String
   let attributes: [HTMLAttribute: String]
 
-  var innerHTML: String? { content }
+  public func innerHTML(shouldSortAttributes: Bool) -> String? { content }
   var tag: String { "span" }
 }
 
 extension Text: AnyHTML {
-  public var innerHTML: String? {
+  public func innerHTML(shouldSortAttributes: Bool) -> String? {
     let proxy = _TextProxy(self)
+    let innerHTML: String
     switch proxy.storage {
     case let .verbatim(text):
-      return text
+      innerHTML = text
     case let .segmentedText(segments):
-      return segments
+      innerHTML = segments
         .map {
           TextSpan(
             content: $0.0.rawText,
@@ -115,10 +127,11 @@ extension Text: AnyHTML {
               environment: proxy.environment
             )
           )
-          .outerHTML
+          .outerHTML(shouldSortAttributes: shouldSortAttributes, children: [])
         }
         .reduce("", +)
     }
+    return innerHTML.replacingOccurrences(of: "\n", with: "<br />")
   }
 
   public var tag: String { "span" }
@@ -132,6 +145,7 @@ extension Text: AnyHTML {
 }
 
 extension Text {
+  // swiftlint:disable function_body_length
   static func attributes(
     from modifiers: [_Modifier],
     environment: EnvironmentValues
@@ -175,7 +189,6 @@ extension Text {
     let decorationColor = strikethrough?.1?.cssValue(environment)
       ?? underline?.1?.cssValue(environment)
       ?? "inherit"
-
     let resolvedFont = font == nil ? nil : _FontProxy(font!).resolve(in: environment)
 
     return [
@@ -189,9 +202,11 @@ extension Text {
       letter-spacing: \(kerning);
       vertical-align: \(baseline == nil ? "baseline" : "\(baseline!)em");
       text-decoration: \(textDecoration);
-      text-decoration-color: \(decorationColor)
+      text-decoration-color: \(decorationColor);
+      text-align: \(environment.multilineTextAlignment.description);
       """,
       "class": isRedacted ? "_tokamak-text-redacted" : "",
     ]
   }
+  // swiftlint:enable function_body_length
 }

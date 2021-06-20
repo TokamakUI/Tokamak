@@ -15,10 +15,13 @@
 //  Created by Max Desiatov on 07/12/2018.
 //
 
+#if canImport(SnapshotTesting)
+
+import SnapshotTesting
 import TokamakStaticHTML
 import XCTest
 
-final class ReconcilerTests: XCTestCase {
+final class HTMLTests: XCTestCase {
   struct Model {
     let text: Text
   }
@@ -38,8 +41,25 @@ final class ReconcilerTests: XCTestCase {
   }
 
   func testOptional() {
-    let renderer = StaticHTMLRenderer(OptionalBody(model: Model(text: Text("text"))))
+    let resultingHTML = StaticHTMLRenderer(OptionalBody(model: Model(text: Text("text"))))
+      .render(shouldSortAttributes: true)
 
-    XCTAssertEqual(renderer.html.count, 2777)
+    assertSnapshot(matching: resultingHTML, as: .lines)
+  }
+
+  func testPaddingFusion() {
+    let nestedTwice = StaticHTMLRenderer(
+      Text("text").padding(10).padding(20)
+    ).render(shouldSortAttributes: true)
+
+    assertSnapshot(matching: nestedTwice, as: .lines)
+
+    let nestedThrice = StaticHTMLRenderer(
+      Text("text").padding(20).padding(20).padding(20)
+    ).render(shouldSortAttributes: true)
+
+    assertSnapshot(matching: nestedThrice, as: .lines)
   }
 }
+
+#endif

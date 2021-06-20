@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,15 +17,18 @@
 
 import JavaScriptKit
 import OpenCombineJS
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 import TokamakStaticHTML
 
 extension EnvironmentValues {
   /// Returns default settings for the DOM environment
   static var defaultEnvironment: Self {
     var environment = EnvironmentValues()
+
+    // `.toggleStyle` property is internal
     environment[_ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
-    environment[_ColorSchemeKey] = .init(matchMediaDarkScheme: matchMediaDarkScheme)
+
+    environment.colorScheme = .init(matchMediaDarkScheme: matchMediaDarkScheme)
     environment._defaultAppStorage = LocalStorage.standard
     _DefaultSceneStorageProvider.default = SessionStorage.standard
 
@@ -92,6 +95,16 @@ final class DOMRenderer: Renderer {
     ) { scheduler.schedule(options: nil, $0) }
   }
 
+  private func fixSpacers(host: MountedHost, target: JSObject) {
+    let fillAxes = host.view.fillAxes
+    if fillAxes.contains(.horizontal) {
+      target.style.object!.width = "100%"
+    }
+    if fillAxes.contains(.vertical) {
+      target.style.object!.height = "100%"
+    }
+  }
+
   public func mountTarget(
     before sibling: DOMNode?,
     to parent: DOMNode,
@@ -111,10 +124,16 @@ final class DOMRenderer: Renderer {
 
     let maybeNode: JSObject?
     if let sibling = sibling {
-      _ = sibling.ref.insertAdjacentHTML!("beforebegin", anyHTML.outerHTML)
+      _ = sibling.ref.insertAdjacentHTML!(
+        "beforebegin",
+        anyHTML.outerHTML(shouldSortAttributes: false, children: [])
+      )
       maybeNode = sibling.ref.previousSibling.object
     } else {
-      _ = parent.ref.insertAdjacentHTML!("beforeend", anyHTML.outerHTML)
+      _ = parent.ref.insertAdjacentHTML!(
+        "beforeend",
+        anyHTML.outerHTML(shouldSortAttributes: false, children: [])
+      )
 
       guard
         let children = parent.ref.childNodes.object,
@@ -127,13 +146,7 @@ final class DOMRenderer: Renderer {
 
     guard let resultingNode = maybeNode else { return nil }
 
-    let fillAxes = host.view.fillAxes
-    if fillAxes.contains(.horizontal) {
-      resultingNode.style.object!.width = "100%"
-    }
-    if fillAxes.contains(.vertical) {
-      resultingNode.style.object!.height = "100%"
-    }
+    fixSpacers(host: host, target: resultingNode)
 
     if let dynamicHTML = anyHTML as? AnyDynamicHTML {
       return DOMNode(host.view, resultingNode, dynamicHTML.listeners)
@@ -147,6 +160,8 @@ final class DOMRenderer: Renderer {
     else { return }
 
     html.update(dom: target)
+
+    fixSpacers(host: host, target: target.ref)
   }
 
   func unmount(
@@ -160,6 +175,18 @@ final class DOMRenderer: Renderer {
     guard mapAnyView(host.view, transform: { (html: AnyHTML) in html }) != nil
     else { return }
 
-    _ = parent.ref.removeChild!(target.ref)
+    _ = try? parent.ref.throwing.removeChild!(target.ref)
   }
+
+  func primitiveBody(for view: Any) -> AnyView? {
+    (view as? DOMPrimitive)?.renderedBody ?? (view as? _HTMLPrimitive)?.renderedBody
+  }
+
+  func isPrimitiveView(_ type: Any.Type) -> Bool {
+    type is DOMPrimitive.Type || type is _HTMLPrimitive.Type
+  }
+}
+
+protocol DOMPrimitive {
+  var renderedBody: AnyView { get }
 }

@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
 //  Created by Carson Katri on 06/29/2020.
 //
 
+import Foundation
+
 /// A `View` that fills the major axis of its parent stack.
 ///
 ///     HStack {
@@ -22,14 +24,10 @@
 ///       Spacer()
 ///       Text("World")
 ///     }
-public struct Spacer: View {
+public struct Spacer: _PrimitiveView {
   public var minLength: CGFloat?
 
   public init(minLength: CGFloat? = nil) {
     self.minLength = minLength
-  }
-
-  public var body: Never {
-    neverBody("Spacer")
   }
 }

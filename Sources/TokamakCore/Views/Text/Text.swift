@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
 //  Created by Max Desiatov on 08/04/2020.
 //
 
+import Foundation
+
 /// A view that displays one or more lines of read-only text.
 ///
 /// You can choose a font using the `font(_:)` view modifier.
@@ -29,7 +31,7 @@
 ///       .bold()
 ///       .italic()
 ///       .underline(true, color: .red)
-public struct Text: View {
+public struct Text: _PrimitiveView {
   let storage: _Storage
   let modifiers: [_Modifier]
 
@@ -71,10 +73,6 @@ public struct Text: View {
   public init<S>(_ content: S) where S: StringProtocol {
     self.init(storage: .verbatim(String(content)))
   }
-
-  public var body: Never {
-    neverBody("Text")
-  }
 }
 
 public extension Text._Storage {
@@ -90,7 +88,7 @@ public extension Text._Storage {
   }
 }
 
-/// This is a helper class that works around absence of "package private" access control in Swift
+/// This is a helper type that works around absence of "package private" access control in Swift
 public struct _TextProxy {
   public let subject: Text
 

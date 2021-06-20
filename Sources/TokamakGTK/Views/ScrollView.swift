@@ -18,8 +18,9 @@
 import CGTK
 import TokamakCore
 
-extension ScrollView: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
+extension ScrollView: GTKPrimitive {
+  @_spi(TokamakCore)
+  public var renderedBody: AnyView {
     AnyView(WidgetView(build: { _ in
       gtk_scrolled_window_new(nil, nil)
     }) {

@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 8/4/20.
 //
 
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 
 // MARK: List Colors
 

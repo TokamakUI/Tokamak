@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/3/20.
 //
 
-public struct DisclosureGroup<Label, Content>: View where Label: View, Content: View {
+public struct DisclosureGroup<Label, Content>: _PrimitiveView where Label: View, Content: View {
   @State var isExpanded: Bool = false
   let isExpandedBinding: Binding<Bool>?
 
@@ -38,10 +38,6 @@ public struct DisclosureGroup<Label, Content>: View where Label: View, Content: 
     isExpandedBinding = isExpanded
     self.label = label()
     self.content = content
-  }
-
-  public var body: Never {
-    neverBody("DisclosureGroup")
   }
 }
 

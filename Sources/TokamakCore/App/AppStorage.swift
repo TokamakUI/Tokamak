@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/16/20.
 //
 
-import CombineShim
+import OpenCombineShim
 
 @propertyWrapper public struct AppStorage<Value>: DynamicProperty {
   let provider: _StorageProvider?
@@ -173,6 +173,7 @@ struct DefaultAppStorageEnvironmentKey: EnvironmentKey {
 }
 
 public extension EnvironmentValues {
+  @_spi(TokamakCore)
   var _defaultAppStorage: _StorageProvider? {
     get {
       self[DefaultAppStorageEnvironmentKey.self]

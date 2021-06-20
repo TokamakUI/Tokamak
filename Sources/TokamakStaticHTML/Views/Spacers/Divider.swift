@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 
 extension Divider: AnyHTML {
-  public var innerHTML: String? { nil }
+  public func innerHTML(shouldSortAttributes: Bool) -> String? { nil }
   public var tag: String { "hr" }
   public var attributes: [HTMLAttribute: String] {
     [

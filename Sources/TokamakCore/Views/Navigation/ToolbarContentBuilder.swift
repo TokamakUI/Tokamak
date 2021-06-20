@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/7/20.
 //
 
-@_functionBuilder public struct ToolbarContentBuilder<ID> {
+@_functionBuilder public enum ToolbarContentBuilder<ID> {
   public static func buildBlock<V>(_ content: ToolbarItem<ID, V>)
     -> ToolbarItemGroup<ID, ToolbarItem<ID, V>> where V: View
   {
@@ -27,9 +27,9 @@
 // swiftlint:disable large_tuple
 // swiftlint:disable function_parameter_count
 
-extension ToolbarContentBuilder {
-  public static func buildBlock<C0, C1>(_ c0: ToolbarItem<ID, C0>,
-                                        _ c1: ToolbarItem<ID, C1>) -> ToolbarItemGroup<
+public extension ToolbarContentBuilder {
+  static func buildBlock<C0, C1>(_ c0: ToolbarItem<ID, C0>,
+                                 _ c1: ToolbarItem<ID, C1>) -> ToolbarItemGroup<
     ID,
     (ToolbarItem<ID, C0>, ToolbarItem<ID, C1>)
   >
@@ -39,9 +39,9 @@ extension ToolbarContentBuilder {
   }
 }
 
-extension ToolbarContentBuilder {
-  public static func buildBlock<C0, C1, C2>(_ c0: ToolbarItem<ID, C0>, _ c1: ToolbarItem<ID, C1>,
-                                            _ c2: ToolbarItem<ID, C2>)
+public extension ToolbarContentBuilder {
+  static func buildBlock<C0, C1, C2>(_ c0: ToolbarItem<ID, C0>, _ c1: ToolbarItem<ID, C1>,
+                                     _ c2: ToolbarItem<ID, C2>)
     -> ToolbarItemGroup<ID, (ToolbarItem<ID, C0>, ToolbarItem<ID, C1>, ToolbarItem<ID, C2>)>
     where C0: View, C1: View, C2: View
   {
@@ -49,8 +49,8 @@ extension ToolbarContentBuilder {
   }
 }
 
-extension ToolbarContentBuilder {
-  public static func buildBlock<C0, C1, C2, C3>(
+public extension ToolbarContentBuilder {
+  static func buildBlock<C0, C1, C2, C3>(
     _ c0: ToolbarItem<ID, C0>,
     _ c1: ToolbarItem<ID, C1>,
     _ c2: ToolbarItem<ID, C2>,
@@ -66,8 +66,8 @@ extension ToolbarContentBuilder {
   }
 }
 
-extension ToolbarContentBuilder {
-  public static func buildBlock<C0, C1, C2, C3, C4>(
+public extension ToolbarContentBuilder {
+  static func buildBlock<C0, C1, C2, C3, C4>(
     _ c0: ToolbarItem<ID, C0>,
     _ c1: ToolbarItem<ID, C1>,
     _ c2: ToolbarItem<ID, C2>,
@@ -84,8 +84,8 @@ extension ToolbarContentBuilder {
   }
 }
 
-extension ToolbarContentBuilder {
-  public static func buildBlock<C0, C1, C2, C3, C4, C5>(
+public extension ToolbarContentBuilder {
+  static func buildBlock<C0, C1, C2, C3, C4, C5>(
     _ c0: ToolbarItem<ID, C0>,
     _ c1: ToolbarItem<ID, C1>,
     _ c2: ToolbarItem<ID, C2>,
@@ -104,8 +104,8 @@ extension ToolbarContentBuilder {
   }
 }
 
-extension ToolbarContentBuilder {
-  public static func buildBlock<C0, C1, C2, C3, C4, C5, C6>(
+public extension ToolbarContentBuilder {
+  static func buildBlock<C0, C1, C2, C3, C4, C5, C6>(
     _ c0: ToolbarItem<ID, C0>,
     _ c1: ToolbarItem<ID, C1>,
     _ c2: ToolbarItem<ID, C2>,
@@ -126,8 +126,8 @@ extension ToolbarContentBuilder {
   }
 }
 
-extension ToolbarContentBuilder {
-  public static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7>(
+public extension ToolbarContentBuilder {
+  static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7>(
     _ c0: ToolbarItem<ID, C0>,
     _ c1: ToolbarItem<ID, C1>,
     _ c2: ToolbarItem<ID, C2>,
@@ -150,8 +150,8 @@ extension ToolbarContentBuilder {
   }
 }
 
-extension ToolbarContentBuilder {
-  public static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7, C8>(
+public extension ToolbarContentBuilder {
+  static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7, C8>(
     _ c0: ToolbarItem<ID, C0>,
     _ c1: ToolbarItem<ID, C1>,
     _ c2: ToolbarItem<ID, C2>,
@@ -178,8 +178,8 @@ extension ToolbarContentBuilder {
   }
 }
 
-extension ToolbarContentBuilder {
-  public static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7, C8, C9>(
+public extension ToolbarContentBuilder {
+  static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7, C8, C9>(
     _ c0: ToolbarItem<ID, C0>,
     _ c1: ToolbarItem<ID, C1>,
     _ c2: ToolbarItem<ID, C2>,
@@ -212,7 +212,7 @@ extension ToolbarItemGroup: View {
   public var body: some View {
     let items = _items.sorted { a, b in
       if let a = a.view as? AnyToolbarItem,
-        let b = b.view as? AnyToolbarItem
+         let b = b.view as? AnyToolbarItem
       {
         // Bring `.navigation` placements to the front
         if a.placement == .navigation && b.placement != .navigation {

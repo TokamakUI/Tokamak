@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 //
 //  Created by Carson Katri on 6/29/20.
 //
+
+import Foundation
 import TokamakCore
 
 extension StrokeStyle {
@@ -22,7 +24,7 @@ extension StrokeStyle {
   }
 }
 
-extension Path: ViewDeferredToRenderer {
+extension Path: _HTMLPrimitive {
   // TODO: Support transformations
   func svgFrom(
     storage: Storage,
@@ -128,7 +130,8 @@ extension Path: ViewDeferredToRenderer {
     svgFrom(storage: storage, strokeStyle: strokeStyle)
   }
 
-  public var deferredBody: AnyView {
+  @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
     let sizeStyle = sizing == .flexible ?
       """
       width: 100%;

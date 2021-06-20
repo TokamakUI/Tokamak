@@ -82,6 +82,10 @@ struct SVGCircle: View {
 }
 ```
 
+`HTML` doesn't support event listeners, and is declared in the `TokamakStaticHTML` module, which `TokamakDOM` re-exports. The benefit of `HTML` is that you can use it for static rendering in libraries like [TokamakVapor](https://github.com/TokamakUI/TokamakVapor) and [TokamakPublish](https://github.com/TokamakUI/TokamakPublish).
+
+Another option is the `DynamicHTML` view provided by the `TokamakDOM` module, which has a `listeners` property with a corresponding initializer parameter. You can pass closures that can handle `onclick`, `onmouseover` and other DOM events for you in the `listeners` dictionary. Check out [MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers) for the full list.
+
 ### Arbitrary styles and scripts
 
 While [`JavaScriptKit`](https://github.com/swiftwasm/JavaScriptKit) is a great option for occasional interactions with JavaScript,
@@ -283,6 +287,7 @@ appreciated and helps in maintaining the project.
 ## Maintainers
 
 In alphabetical order: [Carson Katri](https://github.com/carson-katri),
+[David Hunt](https://github.com/foscomputerservices),
 [Jed Fox](https://jedfox.com), [Max Desiatov](https://desiatov.com),
 [Morten Bek Ditlevsen](https://github.com/mortenbekditlevsen/), [Yuta Saito](https://github.com/kateinoigakukun/).
 

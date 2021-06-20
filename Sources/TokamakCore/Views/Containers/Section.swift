@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 //
 //  Created by Carson Katri on 7/5/20.
 //
+
+import Foundation
 
 protocol SectionView {
   func listRow(_ style: ListStyle) -> AnyView
@@ -33,6 +35,7 @@ extension Section: View, SectionView where Parent: View, Content: View, Footer: 
   }
 
   @ViewBuilder
+  @_spi(TokamakCore)
   public var body: TupleView<(Parent, Content, Footer)> {
     header
     content
