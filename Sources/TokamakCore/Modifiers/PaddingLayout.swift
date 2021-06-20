@@ -33,9 +33,10 @@ public extension View {
     modifier(_PaddingLayout(insets: insets))
   }
 
-  func padding(_ edges: Edge.Set = .all,
-               _ length: CGFloat? = nil) -> ModifiedContent<Self, _PaddingLayout>
-  {
+  func padding(
+    _ edges: Edge.Set = .all,
+    _ length: CGFloat? = nil
+  ) -> ModifiedContent<Self, _PaddingLayout> {
     let insets = length.map { EdgeInsets(_all: $0) }
     return modifier(_PaddingLayout(edges: edges, insets: insets))
   }
