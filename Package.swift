@@ -189,7 +189,8 @@ let package = Package(
         "TokamakStaticHTML",
         .product(
           name: "SnapshotTesting",
-          package: "SnapshotTesting"
+          package: "SnapshotTesting",
+          condition: .when(platforms: [.macOS])
         ),
       ],
       exclude: ["__Snapshots__"]
