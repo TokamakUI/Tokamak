@@ -1,4 +1,4 @@
-// Copyright 2018-2020 Tokamak contributors
+// Copyright 2018-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,6 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+import Foundation
 
 /// Override `TokamakCore`'s default `Font` resolvers with a Renderer-specific one.
 /// You can override a specific font box
@@ -219,8 +221,8 @@ public struct Font: Hashable {
   }
 }
 
-extension Font {
-  public struct Weight: Hashable {
+public extension Font {
+  struct Weight: Hashable {
     public let value: Int
 
     public static let ultraLight: Self = .init(value: 100)
@@ -235,8 +237,8 @@ extension Font {
   }
 }
 
-extension Font {
-  public enum Leading {
+public extension Font {
+  enum Leading {
     case standard
     case tight
     case loose
@@ -247,9 +249,9 @@ public enum _FontNames: String, CaseIterable {
   case system
 }
 
-extension Font {
-  public static func system(size: CGFloat, weight: Weight = .regular,
-                            design: Design = .default) -> Self
+public extension Font {
+  static func system(size: CGFloat, weight: Weight = .regular,
+                     design: Design = .default) -> Self
   {
     .init(
       _ConcreteFontBox(
@@ -268,7 +270,7 @@ extension Font {
     )
   }
 
-  public enum Design: Hashable {
+  enum Design: Hashable {
     case `default`
     case serif
     case rounded
@@ -276,26 +278,26 @@ extension Font {
   }
 }
 
-extension Font {
-  public static let largeTitle: Self = .init(_SystemFontBox(.largeTitle))
-  public static let title: Self = .init(_SystemFontBox(.title))
-  public static let title2: Self = .init(_SystemFontBox(.title2))
-  public static let title3: Self = .init(_SystemFontBox(.title3))
-  public static let headline: Font = .init(_SystemFontBox(.headline))
-  public static let subheadline: Self = .init(_SystemFontBox(.subheadline))
-  public static let body: Self = .init(_SystemFontBox(.body))
-  public static let callout: Self = .init(_SystemFontBox(.callout))
-  public static let footnote: Self = .init(_SystemFontBox(.footnote))
-  public static let caption: Self = .init(_SystemFontBox(.caption))
-  public static let caption2: Self = .init(_SystemFontBox(.caption2))
+public extension Font {
+  static let largeTitle: Self = .init(_SystemFontBox(.largeTitle))
+  static let title: Self = .init(_SystemFontBox(.title))
+  static let title2: Self = .init(_SystemFontBox(.title2))
+  static let title3: Self = .init(_SystemFontBox(.title3))
+  static let headline: Font = .init(_SystemFontBox(.headline))
+  static let subheadline: Self = .init(_SystemFontBox(.subheadline))
+  static let body: Self = .init(_SystemFontBox(.body))
+  static let callout: Self = .init(_SystemFontBox(.callout))
+  static let footnote: Self = .init(_SystemFontBox(.footnote))
+  static let caption: Self = .init(_SystemFontBox(.caption))
+  static let caption2: Self = .init(_SystemFontBox(.caption2))
 
-  public static func system(_ style: TextStyle, design: Design = .default) -> Self {
+  static func system(_ style: TextStyle, design: Design = .default) -> Self {
     .init(_ModifiedFontBox(previously: style.font.provider) {
       $0._design = design
     })
   }
 
-  public enum TextStyle: Hashable, CaseIterable {
+  enum TextStyle: Hashable, CaseIterable {
     case largeTitle
     case title
     case title2

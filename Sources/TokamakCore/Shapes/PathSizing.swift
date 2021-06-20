@@ -15,8 +15,8 @@
 //  Created by Carson Katri on 7/21/20.
 //
 
-extension Path {
-  public enum _Sizing {
+public extension Path {
+  enum _Sizing {
     case fixed
     case flexible
   }

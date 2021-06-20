@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -48,10 +48,9 @@ public typealias RoundedRectangle = TokamakCore.RoundedRectangle
 public typealias Color = TokamakCore.Color
 public typealias Font = TokamakCore.Font
 
+#if !canImport(CoreGraphics)
 public typealias CGAffineTransform = TokamakCore.CGAffineTransform
-public typealias CGPoint = TokamakCore.CGPoint
-public typealias CGRect = TokamakCore.CGRect
-public typealias CGSize = TokamakCore.CGSize
+#endif
 
 // MARK: Views
 
@@ -92,8 +91,10 @@ public typealias ViewBuilder = TokamakCore.ViewBuilder
 
 // FIXME: I would put this inside TokamakCore, but for
 // some reason it doesn't get exported with the typealias
-extension Text {
-  public static func + (lhs: Self, rhs: Self) -> Self {
+public extension Text {
+  static func + (lhs: Self, rhs: Self) -> Self {
     _concatenating(lhs: lhs, rhs: rhs)
   }
 }
+
+public typealias PreviewProvider = TokamakCore.PreviewProvider

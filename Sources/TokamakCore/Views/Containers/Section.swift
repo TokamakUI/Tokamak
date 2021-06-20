@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 //
 //  Created by Carson Katri on 7/5/20.
 //
+
+import Foundation
 
 protocol SectionView {
   func listRow(_ style: ListStyle) -> AnyView
@@ -33,6 +35,7 @@ extension Section: View, SectionView where Parent: View, Content: View, Footer: 
   }
 
   @ViewBuilder
+  @_spi(TokamakCore)
   public var body: TupleView<(Parent, Content, Footer)> {
     header
     content
@@ -88,20 +91,20 @@ extension Section: View, SectionView where Parent: View, Content: View, Footer: 
   }
 }
 
-extension Section where Parent == EmptyView, Content: View, Footer: View {
-  public init(footer: Footer, @ViewBuilder content: () -> Content) {
+public extension Section where Parent == EmptyView, Content: View, Footer: View {
+  init(footer: Footer, @ViewBuilder content: () -> Content) {
     self.init(header: EmptyView(), footer: footer, content: content)
   }
 }
 
-extension Section where Parent: View, Content: View, Footer == EmptyView {
-  public init(header: Parent, @ViewBuilder content: () -> Content) {
+public extension Section where Parent: View, Content: View, Footer == EmptyView {
+  init(header: Parent, @ViewBuilder content: () -> Content) {
     self.init(header: header, footer: EmptyView(), content: content)
   }
 }
 
-extension Section where Parent == EmptyView, Content: View, Footer == EmptyView {
-  public init(@ViewBuilder content: () -> Content) {
+public extension Section where Parent == EmptyView, Content: View, Footer == EmptyView {
+  init(@ViewBuilder content: () -> Content) {
     self.init(header: EmptyView(), footer: EmptyView(), content: content)
   }
 }

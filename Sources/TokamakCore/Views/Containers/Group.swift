@@ -19,13 +19,10 @@ public struct Group<Content> {
   }
 }
 
-extension Group: View where Content: View {
-  public var body: Never {
-    neverBody("Group")
-  }
-}
+extension Group: _PrimitiveView & View where Content: View {}
 
 extension Group: ParentView where Content: View {
+  @_spi(TokamakCore)
   public var children: [AnyView] { (content as? ParentView)?.children ?? [AnyView(content)] }
 }
 

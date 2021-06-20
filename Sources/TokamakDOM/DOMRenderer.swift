@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,15 +16,19 @@
 //
 
 import JavaScriptKit
-import TokamakCore
+import OpenCombineJS
+@_spi(TokamakCore) import TokamakCore
 import TokamakStaticHTML
 
 extension EnvironmentValues {
   /// Returns default settings for the DOM environment
   static var defaultEnvironment: Self {
     var environment = EnvironmentValues()
+
+    // `.toggleStyle` property is internal
     environment[_ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
-    environment[_ColorSchemeKey] = .init(matchMediaDarkScheme: matchMediaDarkScheme)
+
+    environment.colorScheme = .init(matchMediaDarkScheme: matchMediaDarkScheme)
     environment._defaultAppStorage = LocalStorage.standard
     _DefaultSceneStorageProvider.default = SessionStorage.standard
 
@@ -71,7 +75,7 @@ func appendRootStyle(_ rootNode: JSObject) {
 }
 
 final class DOMRenderer: Renderer {
-  private(set) var reconciler: StackReconciler<DOMRenderer>?
+  private var reconciler: StackReconciler<DOMRenderer>?
 
   private let rootRef: JSObject
 
@@ -91,12 +95,26 @@ final class DOMRenderer: Renderer {
     ) { scheduler.schedule(options: nil, $0) }
   }
 
-  public func mountTarget(to parent: DOMNode, with host: MountedHost) -> DOMNode? {
+  private func fixSpacers(host: MountedHost, target: JSObject) {
+    let fillAxes = host.view.fillAxes
+    if fillAxes.contains(.horizontal) {
+      target.style.object!.width = "100%"
+    }
+    if fillAxes.contains(.vertical) {
+      target.style.object!.height = "100%"
+    }
+  }
+
+  public func mountTarget(
+    before sibling: DOMNode?,
+    to parent: DOMNode,
+    with host: MountedHost
+  ) -> DOMNode? {
     guard let anyHTML = mapAnyView(
       host.view,
       transform: { (html: AnyHTML) in html }
     ) else {
-      // handle cases like `TupleView`
+      // handle `GroupView` cases (such as `TupleView`, `Group` etc)
       if mapAnyView(host.view, transform: { (view: ParentView) in view }) != nil {
         return parent
       }
@@ -104,27 +122,36 @@ final class DOMRenderer: Renderer {
       return nil
     }
 
-    _ = parent.ref.insertAdjacentHTML!("beforeend", JSValue(stringLiteral: anyHTML.outerHTML))
+    let maybeNode: JSObject?
+    if let sibling = sibling {
+      _ = sibling.ref.insertAdjacentHTML!(
+        "beforebegin",
+        anyHTML.outerHTML(shouldSortAttributes: false, children: [])
+      )
+      maybeNode = sibling.ref.previousSibling.object
+    } else {
+      _ = parent.ref.insertAdjacentHTML!(
+        "beforeend",
+        anyHTML.outerHTML(shouldSortAttributes: false, children: [])
+      )
 
-    guard
-      let children = parent.ref.childNodes.object,
-      let length = children.length.number,
-      length > 0,
-      let lastChild = children[Int(length) - 1].object
-    else { return nil }
+      guard
+        let children = parent.ref.childNodes.object,
+        let length = children.length.number,
+        length > 0
+      else { return nil }
 
-    let fillAxes = host.view.fillAxes
-    if fillAxes.contains(.horizontal) {
-      lastChild.style.object!.width = "100%"
+      maybeNode = children[Int(length) - 1].object
     }
-    if fillAxes.contains(.vertical) {
-      lastChild.style.object!.height = "100%"
-    }
+
+    guard let resultingNode = maybeNode else { return nil }
+
+    fixSpacers(host: host, target: resultingNode)
 
     if let dynamicHTML = anyHTML as? AnyDynamicHTML {
-      return DOMNode(host.view, lastChild, dynamicHTML.listeners)
+      return DOMNode(host.view, resultingNode, dynamicHTML.listeners)
     } else {
-      return DOMNode(host.view, lastChild, [:])
+      return DOMNode(host.view, resultingNode, [:])
     }
   }
 
@@ -133,6 +160,8 @@ final class DOMRenderer: Renderer {
     else { return }
 
     html.update(dom: target)
+
+    fixSpacers(host: host, target: target.ref)
   }
 
   func unmount(
@@ -146,6 +175,18 @@ final class DOMRenderer: Renderer {
     guard mapAnyView(host.view, transform: { (html: AnyHTML) in html }) != nil
     else { return }
 
-    _ = parent.ref.removeChild!(target.ref)
+    _ = try? parent.ref.throwing.removeChild!(target.ref)
   }
+
+  func primitiveBody(for view: Any) -> AnyView? {
+    (view as? DOMPrimitive)?.renderedBody ?? (view as? _HTMLPrimitive)?.renderedBody
+  }
+
+  func isPrimitiveView(_ type: Any.Type) -> Bool {
+    type is DOMPrimitive.Type || type is _HTMLPrimitive.Type
+  }
+}
+
+protocol DOMPrimitive {
+  var renderedBody: AnyView { get }
 }

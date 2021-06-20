@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
 //  Created by Carson Katri on 6/29/20.
 //
 
+import Foundation
+
 public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
   where Background: View
 {
@@ -28,7 +30,11 @@ public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
   }
 
   public func body(content: Content) -> some View {
-    content
+    // FIXME: Clip to bounds of foreground.
+    ZStack(alignment: alignment) {
+      background
+      content
+    }
   }
 
   mutating func setContent(from values: EnvironmentValues) {
@@ -45,8 +51,8 @@ extension _BackgroundModifier: Equatable where Background: Equatable {
   }
 }
 
-extension View {
-  public func background<Background>(
+public extension View {
+  func background<Background>(
     _ background: Background,
     alignment: Alignment = .center
   ) -> some View where Background: View {
@@ -67,6 +73,7 @@ public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
   }
 
   public func body(content: Content) -> some View {
+    // FIXME: Clip to content shape.
     ZStack(alignment: alignment) {
       content
       overlay
@@ -84,14 +91,14 @@ extension _OverlayModifier: Equatable where Overlay: Equatable {
   }
 }
 
-extension View {
-  public func overlay<Overlay>(_ overlay: Overlay, alignment: Alignment = .center) -> some View
+public extension View {
+  func overlay<Overlay>(_ overlay: Overlay, alignment: Alignment = .center) -> some View
     where Overlay: View
   {
     modifier(_OverlayModifier(overlay: overlay, alignment: alignment))
   }
 
-  public func border<S>(_ content: S, width: CGFloat = 1) -> some View where S: ShapeStyle {
+  func border<S>(_ content: S, width: CGFloat = 1) -> some View where S: ShapeStyle {
     overlay(Rectangle().strokeBorder(content, lineWidth: width))
   }
 }

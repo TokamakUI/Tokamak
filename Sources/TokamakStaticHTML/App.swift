@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,23 +15,23 @@
 //  Created by Carson Katri on 7/31/20.
 //
 
-import CombineShim
+import OpenCombineShim
 import TokamakCore
 
-extension App {
-  public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
+public extension App {
+  static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
     fatalError("TokamakStaticHTML does not support default `App._launch`")
   }
 
-  public static func _setTitle(_ title: String) {
+  static func _setTitle(_ title: String) {
     StaticHTMLRenderer.title = title
   }
 
-  public var _phasePublisher: AnyPublisher<ScenePhase, Never> {
+  var _phasePublisher: AnyPublisher<ScenePhase, Never> {
     CurrentValueSubject<ScenePhase, Never>(.active).eraseToAnyPublisher()
   }
 
-  public var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
+  var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
     CurrentValueSubject<ColorScheme, Never>(.light).eraseToAnyPublisher()
   }
 }

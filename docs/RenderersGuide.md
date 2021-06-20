@@ -305,7 +305,51 @@ bring Tokamak to.
 Primitive `Views`, such as `Text`, `Button`, `HStack`, etc. have a body type of `Never`. When the
 `StackReconciler` goes to render these `Views`, it expects your `Renderer` to provide a body.
 
-This is done via the `ViewDeferredToRenderer` protocol. There we can provide a `View` that our
+This is done via a few additional functions in the `Renderer` protocol.
+
+```swift
+public protocol Renderer: AnyObject {
+  // ...
+  // Functions unrelated to this feature skipped for brevity.
+
+  /** Returns a body of a given pritimive view, or `nil` if `view` is not a primitive view for
+   this renderer.
+   */
+  func primitiveBody(for view: Any) -> AnyView?
+
+  /** Returns `true` if a given view type is a primitive view that should be deferred to this
+   renderer.
+   */
+  func isPrimitiveView(_ type: Any.Type) -> Bool
+}
+```
+
+This allows to declare a renderer-specific protocol for these views. Let's call it `HTMLPrimitive`:
+
+```swift
+public protocol HTMLPrimitive {
+  var renderedBody: AnyView { get }
+}
+```
+
+Then add the implementation using this protocol to your `StaticHTMLRenderer`:
+
+```swift
+public final class StaticHTMLRenderer: Renderer {
+  // ...
+  // Rest of the functions skipped for brevity.
+
+  public func isPrimitiveView(_ type: Any.Type) -> Bool {
+    type is HTMLPrimitive.Type
+  }
+
+  public func primitiveBody(for view: Any) -> AnyView? {
+    (view as? HTMLPrimitive)?.renderedBody
+  }
+}
+```
+
+In a conformance to `HTMLPrimitive` we can provide a `View` that our
 `Renderer` understands. For instance, `TokamakDOM` (and `TokamakStaticHTML` by extension) use the
 `HTML` view. Let’s look at a simpler version of this view:
 
@@ -330,13 +374,13 @@ Here we define an `HTML` view to have a body type of `Never`, like other primiti
 conforms to `AnyHTML`, which allows our `Renderer` to access the attributes of the `HTML` without
 worrying about the `associatedtypes` involved with `View`.
 
-### `ViewDeferredToRenderer`
+### `HTMLPrimitive`
 
 Now we can use `HTML` to override the body of the primitive `Views` provided by `TokamakCore`:
 
 ```swift
-extension Text: ViewDeferredToRenderer {
-  var deferredBody: AnyView {
+extension Text: HTMLPrimitive {
+  var renderedBody: AnyView {
     AnyView(HTML("span", [:], _TextProxy(self).rawText))
   }
 }

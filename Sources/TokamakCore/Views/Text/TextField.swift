@@ -34,20 +34,16 @@
 ///         print("Set username")
 ///       })
 ///     }
-public struct TextField<Label>: View where Label: View {
+public struct TextField<Label>: _PrimitiveView where Label: View {
   let label: Label
   let textBinding: Binding<String>
   let onEditingChanged: (Bool) -> ()
   let onCommit: () -> ()
   @Environment(\.textFieldStyle) var style
-
-  public var body: Never {
-    neverBody("TextField")
-  }
 }
 
-extension TextField where Label == Text {
-  public init<S>(
+public extension TextField where Label == Text {
+  init<S>(
     _ title: S,
     text: Binding<String>,
     onEditingChanged: @escaping (Bool) -> () = { _ in },
@@ -68,12 +64,13 @@ extension TextField where Label == Text {
 }
 
 extension TextField: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (label as? GroupView)?.children ?? [AnyView(label)]
   }
 }
 
-/// This is a helper class that works around absence of "package private" access control in Swift
+/// This is a helper type that works around absence of "package private" access control in Swift
 public struct _TextFieldProxy {
   public let subject: TextField<Text>
 

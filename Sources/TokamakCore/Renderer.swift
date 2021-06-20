@@ -31,9 +31,6 @@ public protocol Renderer: AnyObject {
    */
   associatedtype TargetType: Target
 
-  /// Reconciler instance used by this renderer.
-  var reconciler: StackReconciler<Self>? { get }
-
   /** Function called by a reconciler when a new target instance should be
    created and added to the parent (either as a subview or some other way, e.g.
    installed if it's a layout constraint).
@@ -42,6 +39,7 @@ public protocol Renderer: AnyObject {
    - returns: The newly created target.
    */
   func mountTarget(
+    before sibling: TargetType?,
     to parent: TargetType,
     with host: MountedHost
   ) -> TargetType?
@@ -68,4 +66,14 @@ public protocol Renderer: AnyObject {
     with host: MountedHost,
     completion: @escaping () -> ()
   )
+
+  /** Returns a body of a given pritimive view, or `nil` if `view` is not a primitive view for
+   this renderer.
+   */
+  func primitiveBody(for view: Any) -> AnyView?
+
+  /** Returns `true` if a given view type is a primitive view that should be deferred to this
+   renderer.
+   */
+  func isPrimitiveView(_ type: Any.Type) -> Bool
 }

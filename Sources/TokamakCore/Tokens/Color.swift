@@ -39,7 +39,7 @@ public protocol AnyColorBoxDeferredToRenderer: AnyColorBox {
   func deferredResolve(in environment: EnvironmentValues) -> AnyColorBox.ResolvedValue
 }
 
-public class AnyColorBox: AnyTokenBox {
+public class AnyColorBox: AnyTokenBox, Equatable {
   public struct _RGBA: Hashable, Equatable {
     public let red: Double
     public let green: Double
@@ -61,7 +61,15 @@ public class AnyColorBox: AnyTokenBox {
     }
   }
 
-  public static func == (lhs: AnyColorBox, rhs: AnyColorBox) -> Bool { false }
+  public static func == (lhs: AnyColorBox, rhs: AnyColorBox) -> Bool {
+    lhs.equals(rhs)
+  }
+
+  /// We use a function separate from `==` so that subclasses can override the equality checks.
+  public func equals(_ other: AnyColorBox) -> Bool {
+    fatalError("implement \(#function) in subclass")
+  }
+
   public func hash(into hasher: inout Hasher) {
     fatalError("implement \(#function) in subclass")
   }
@@ -74,8 +82,10 @@ public class AnyColorBox: AnyTokenBox {
 public class _ConcreteColorBox: AnyColorBox {
   public let rgba: AnyColorBox._RGBA
 
-  public static func == (lhs: _ConcreteColorBox, rhs: _ConcreteColorBox) -> Bool {
-    lhs.rgba == rhs.rgba
+  override public func equals(_ other: AnyColorBox) -> Bool {
+    guard let other = other as? _ConcreteColorBox
+    else { return false }
+    return rgba == other.rgba
   }
 
   override public func hash(into hasher: inout Hasher) {
@@ -94,10 +104,10 @@ public class _ConcreteColorBox: AnyColorBox {
 public class _EnvironmentDependentColorBox: AnyColorBox {
   public let resolver: (EnvironmentValues) -> Color
 
-  public static func == (lhs: _EnvironmentDependentColorBox,
-                         rhs: _EnvironmentDependentColorBox) -> Bool
-  {
-    lhs.resolver(EnvironmentValues()) == rhs.resolver(EnvironmentValues())
+  override public func equals(_ other: AnyColorBox) -> Bool {
+    guard let other = other as? _EnvironmentDependentColorBox
+    else { return false }
+    return resolver(EnvironmentValues()) == other.resolver(EnvironmentValues())
   }
 
   override public func hash(into hasher: inout Hasher) {
@@ -113,8 +123,8 @@ public class _EnvironmentDependentColorBox: AnyColorBox {
   }
 }
 
-public class _SystemColorBox: AnyColorBox {
-  public enum SystemColor: Equatable, Hashable {
+public class _SystemColorBox: AnyColorBox, CustomStringConvertible {
+  public enum SystemColor: String, Equatable, Hashable {
     case clear
     case black
     case white
@@ -130,10 +140,16 @@ public class _SystemColorBox: AnyColorBox {
     case secondary
   }
 
+  public var description: String {
+    value.rawValue
+  }
+
   public let value: SystemColor
 
-  public static func == (lhs: _SystemColorBox, rhs: _SystemColorBox) -> Bool {
-    lhs.value == rhs.value
+  override public func equals(_ other: AnyColorBox) -> Bool {
+    guard let other = other as? _SystemColorBox
+    else { return false }
+    return value == other.value
   }
 
   override public func hash(into hasher: inout Hasher) {
@@ -225,6 +241,7 @@ public struct Color: Hashable, Equatable {
   }
 
   /// Create a `Color` dependent on the current `ColorScheme`.
+  @_spi(TokamakCore)
   public static func _withScheme(_ resolver: @escaping (ColorScheme) -> Self) -> Self {
     .init(_EnvironmentDependentColorBox {
       resolver($0.colorScheme)
@@ -244,38 +261,48 @@ public struct _ColorProxy {
   }
 }
 
-extension Color {
-  public enum RGBColorSpace {
+public extension Color {
+  enum RGBColorSpace {
     case sRGB
     case sRGBLinear
     case displayP3
   }
 }
 
-extension Color {
+extension Color: CustomStringConvertible {
+  public var description: String {
+    if let providerDescription = provider as? CustomStringConvertible {
+      return providerDescription.description
+    } else {
+      return "Color: \(provider.self)"
+    }
+  }
+}
+
+public extension Color {
   private init(systemColor: _SystemColorBox.SystemColor) {
     self.init(_SystemColorBox(systemColor))
   }
 
-  public static let clear: Self = .init(systemColor: .clear)
-  public static let black: Self = .init(systemColor: .black)
-  public static let white: Self = .init(systemColor: .white)
-  public static let gray: Self = .init(systemColor: .gray)
-  public static let red: Self = .init(systemColor: .red)
-  public static let green: Self = .init(systemColor: .green)
-  public static let blue: Self = .init(systemColor: .blue)
-  public static let orange: Self = .init(systemColor: .orange)
-  public static let yellow: Self = .init(systemColor: .yellow)
-  public static let pink: Self = .init(systemColor: .pink)
-  public static let purple: Self = .init(systemColor: .purple)
-  public static let primary: Self = .init(systemColor: .primary)
+  static let clear: Self = .init(systemColor: .clear)
+  static let black: Self = .init(systemColor: .black)
+  static let white: Self = .init(systemColor: .white)
+  static let gray: Self = .init(systemColor: .gray)
+  static let red: Self = .init(systemColor: .red)
+  static let green: Self = .init(systemColor: .green)
+  static let blue: Self = .init(systemColor: .blue)
+  static let orange: Self = .init(systemColor: .orange)
+  static let yellow: Self = .init(systemColor: .yellow)
+  static let pink: Self = .init(systemColor: .pink)
+  static let purple: Self = .init(systemColor: .purple)
+  static let primary: Self = .init(systemColor: .primary)
 
-  public static let secondary: Self = .init(systemColor: .secondary)
-  public static let accentColor: Self = .init(_EnvironmentDependentColorBox {
-    ($0.accentColor ?? Self.blue)
+  static let secondary: Self = .init(systemColor: .secondary)
+  static let accentColor: Self = .init(_EnvironmentDependentColorBox {
+    $0.accentColor ?? Self.blue
   })
 
-  public init(_ color: UIColor) {
+  init(_ color: UIColor) {
     self = color.color
   }
 }
@@ -293,8 +320,8 @@ extension Color: ExpressibleByIntegerLiteral {
   }
 }
 
-extension Color {
-  public init?(hex: String) {
+public extension Color {
+  init?(hex: String) {
     let cArray = Array(hex.count > 6 ? String(hex.dropFirst()) : hex)
 
     guard cArray.count == 6 else { return nil }
@@ -318,6 +345,7 @@ extension Color {
 
 extension Color: ShapeStyle {}
 extension Color: View {
+  @_spi(TokamakCore)
   public var body: some View {
     _ShapeView(shape: Rectangle(), style: self)
   }
@@ -338,8 +366,8 @@ public extension EnvironmentValues {
   }
 }
 
-extension View {
-  public func accentColor(_ accentColor: Color?) -> some View {
+public extension View {
+  func accentColor(_ accentColor: Color?) -> some View {
     environment(\.accentColor, accentColor)
   }
 }
@@ -359,8 +387,8 @@ public extension EnvironmentValues {
   }
 }
 
-extension View {
-  public func foregroundColor(_ color: Color?) -> some View {
+public extension View {
+  func foregroundColor(_ color: Color?) -> some View {
     environment(\.foregroundColor, color)
   }
 }

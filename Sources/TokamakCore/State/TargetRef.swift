@@ -12,10 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/// A helper protocol for erasing generic parameters of the `_TargetRef` type.
 protocol TargetRefType {
   var target: Target? { get set }
 }
 
+/** Allows capturing target instance of aclosest descendant host view. The resulting instance
+ is written to a given `binding`. The actual assignment to this binding is done within the
+ `MountedCompositeView` implementation. */
 public struct _TargetRef<V: View, T>: View, TargetRefType {
   let binding: Binding<T?>
 
@@ -30,10 +34,12 @@ public struct _TargetRef<V: View, T>: View, TargetRefType {
   public var body: V { view }
 }
 
-extension View {
-  /** Allows capturing target instance of aclosest descendant host view. The resulting instance
-   is written to a given `binding`. */
-  public func _targetRef<T: Target>(_ binding: Binding<T?>) -> _TargetRef<Self, T> {
+public extension View {
+  /** A modifier that returns a `_TargetRef` value, which captures a target instance of a
+   closest descendant host view.
+   The resulting instance is written to a given `binding`. */
+  @_spi(TokamakCore)
+  func _targetRef<T: Target>(_ binding: Binding<T?>) -> _TargetRef<Self, T> {
     .init(binding: binding, view: self)
   }
 }

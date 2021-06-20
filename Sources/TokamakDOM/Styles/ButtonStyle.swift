@@ -17,8 +17,8 @@
 
 import TokamakCore
 
-extension ButtonStyleConfiguration.Label: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
+extension ButtonStyleConfiguration.Label: DOMPrimitive {
+  var renderedBody: AnyView {
     _ButtonStyleConfigurationProxy.Label(self).content
   }
 }

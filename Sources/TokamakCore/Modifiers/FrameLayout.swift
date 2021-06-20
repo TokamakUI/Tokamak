@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,6 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+import Foundation
 
 public struct _FrameLayout: ViewModifier {
   public let width: CGFloat?
@@ -28,8 +30,8 @@ public struct _FrameLayout: ViewModifier {
   }
 }
 
-extension View {
-  public func frame(
+public extension View {
+  func frame(
     width: CGFloat? = nil,
     height: CGFloat? = nil,
     alignment: Alignment = .center

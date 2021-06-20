@@ -15,11 +15,8 @@
 //  Created by Gene Z. Ragan on 07/22/2020.
 
 public struct ButtonStyleConfiguration {
-  public struct Label: View {
+  public struct Label: _PrimitiveView {
     let content: AnyView
-    public var body: Never {
-      neverBody("ButtonStyleConfiguration.Label")
-    }
   }
 
   public let label: Label
@@ -33,7 +30,7 @@ public struct DefaultButtonStyle: ButtonStyle {
   }
 }
 
-/// This is a helper class that works around absence of "package private" access control in Swift
+/// This is a helper type that works around absence of "package private" access control in Swift
 public struct _ButtonStyleConfigurationProxy {
   public struct Label {
     public typealias Subject = ButtonStyleConfiguration.Label
@@ -97,8 +94,8 @@ extension EnvironmentValues {
   }
 }
 
-extension View {
-  public func buttonStyle<S>(_ style: S) -> some View where S: ButtonStyle {
+public extension View {
+  func buttonStyle<S>(_ style: S) -> some View where S: ButtonStyle {
     environment(\.buttonStyle, _AnyButtonStyle(style))
   }
 }

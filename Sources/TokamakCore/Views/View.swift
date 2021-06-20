@@ -21,30 +21,32 @@ public protocol View {
   @ViewBuilder var body: Self.Body { get }
 }
 
-extension Never {
-  public var body: Never {
-    neverBody("Never")
+public extension Never {
+  @_spi(TokamakCore)
+  var body: Never {
+    fatalError()
   }
 }
 
-extension Never: View {}
+extension Never: _PrimitiveView {}
+
+/// A `View` that offers primitive functionality, which renders its `body` inaccessible.
+public protocol _PrimitiveView: View where Body == Never {}
+
+public extension _PrimitiveView {
+  @_spi(TokamakCore)
+  var body: Never {
+    neverBody(String(reflecting: Self.self))
+  }
+}
 
 /// A `View` type that renders with subviews, usually specified in the `Content` type argument
 public protocol ParentView {
   var children: [AnyView] { get }
 }
 
-/// A `View` type that is not rendered, but "flattened" rendering all its children instead.
+/// A `View` type that is not rendered but "flattened", rendering all its children instead.
 protocol GroupView: ParentView {}
-
-/** The distinction between "host" (truly primitive) and "composite" (that have meaningful `body`)
- views is made in the reconciler in `TokamakCore` based on their `body` type, host views have body
- type `Never`. `ViewDeferredToRenderer` allows renderers to override that per-platform and render
- host views as composite by providing their own `deferredBody` implementation.
- */
-public protocol ViewDeferredToRenderer {
-  var deferredBody: AnyView { get }
-}
 
 /// Calls `fatalError` with an explanation that a given `type` is a primitive `View`
 public func neverBody(_ type: String) -> Never {
