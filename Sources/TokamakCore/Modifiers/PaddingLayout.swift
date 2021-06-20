@@ -46,7 +46,7 @@ public extension View {
 }
 
 public extension ModifiedContent where Modifier == _PaddingLayout, Content: View {
-  func padding(_ length: CGFloat) -> some View {
+  func padding(_ length: CGFloat) -> ModifiedContent<Content, _PaddingLayout> {
     var layout = modifier
     layout.insets?.top += length
     layout.insets?.leading += length

@@ -46,9 +46,16 @@ final class ReconcilerTests: XCTestCase {
   }
 
   func testPaddingFusion() {
-    let x = Text("text").padding(10)
-    let resultingHTML = StaticHTMLRenderer(x.padding(20)).render(shouldSortAttributes: true)
+    let nestedTwice = StaticHTMLRenderer(
+      Text("text").padding(10).padding(20)
+    ).render(shouldSortAttributes: true)
 
-    assertSnapshot(matching: resultingHTML, as: .lines)
+    assertSnapshot(matching: nestedTwice, as: .lines)
+
+    let nestedThrice = StaticHTMLRenderer(
+      Text("text").padding(20).padding(20).padding(20)
+    ).render(shouldSortAttributes: true)
+
+    assertSnapshot(matching: nestedThrice, as: .lines)
   }
 }
