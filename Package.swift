@@ -190,7 +190,7 @@ let package = Package(
         .product(
           name: "SnapshotTesting",
           package: "SnapshotTesting",
-          condition: .when(platforms: [.macOS])
+          condition: .when(platforms: [.macOS, .linux])
         ),
       ],
       exclude: ["__Snapshots__"]

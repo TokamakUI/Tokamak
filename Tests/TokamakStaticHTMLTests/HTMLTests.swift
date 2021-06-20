@@ -15,11 +15,13 @@
 //  Created by Max Desiatov on 07/12/2018.
 //
 
+#if canImport(SnapshotTesting)
+
 import SnapshotTesting
 import TokamakStaticHTML
 import XCTest
 
-final class ReconcilerTests: XCTestCase {
+final class HTMLTests: XCTestCase {
   struct Model {
     let text: Text
   }
@@ -59,3 +61,5 @@ final class ReconcilerTests: XCTestCase {
     assertSnapshot(matching: nestedThrice, as: .lines)
   }
 }
+
+#endif
