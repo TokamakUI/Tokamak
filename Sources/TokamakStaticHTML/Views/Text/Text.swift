@@ -188,7 +188,6 @@ extension Text {
     let decorationColor = strikethrough?.1?.cssValue(environment)
       ?? underline?.1?.cssValue(environment)
       ?? "inherit"
-
     let resolvedFont = font == nil ? nil : _FontProxy(font!).resolve(in: environment)
 
     return [
