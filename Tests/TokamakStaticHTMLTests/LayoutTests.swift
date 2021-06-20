@@ -45,6 +45,7 @@ public extension Snapshotting where Value: View, Format == NSImage {
           "--headless",
           "--disable-gpu",
           "--force-device-scale-factor=1.0",
+          "--force-color-profile=srgb",
           "--screenshot",
           renderedPath.path,
         ]
@@ -78,7 +79,7 @@ struct Star: Shape {
   }
 }
 
-final class SnapshotTests: XCTestCase {
+final class LayoutTests: XCTestCase {
   func testPath() {
     assertSnapshot(
       matching: Star().fill(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1)),
