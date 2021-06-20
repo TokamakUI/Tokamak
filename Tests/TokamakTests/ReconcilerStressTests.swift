@@ -40,8 +40,6 @@ final class ReconcilerStressTests: XCTestCase {
     let renderer = TestRenderer(SpookyHanger())
     let root = renderer.rootTarget
 
-    return
-
     let list = root.subviews[0].subviews[0]
 
     XCTAssertTrue(
