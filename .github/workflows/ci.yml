@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo xcode-select --switch /Applications/Xcode_12.3.app/Contents/Developer/
+          sudo xcode-select --switch /Applications/Xcode_12.4.app/Contents/Developer/
           # avoid building unrelated products for testing by specifying the test product explicitly
           swift build --product TokamakPackageTests
           `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest
@@ -55,6 +55,13 @@ jobs:
 
           ./benchmark.sh
 
+      - name: Upload failed snapshots
+        uses: actions/upload-artifact@v2
+        if: ${{ failure() }}
+        with:
+          name: Failed snapshots
+          path: /var/folders/**/SnapshotTests
+
   gtk_macos_build:
     runs-on: macos-latest
 
@@ -64,7 +71,7 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo xcode-select --switch /Applications/Xcode_12.3.app/Contents/Developer/
+          sudo xcode-select --switch /Applications/Xcode_12.4.app/Contents/Developer/
 
           brew install gtk+3
 
