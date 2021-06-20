@@ -15,8 +15,8 @@
 import TokamakCore
 import TokamakStaticHTML
 
-extension NavigationLink: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
+extension NavigationLink: DOMPrimitive {
+  var renderedBody: AnyView {
     let proxy = _NavigationLinkProxy(self)
     return AnyView(
       DynamicHTML("a", [

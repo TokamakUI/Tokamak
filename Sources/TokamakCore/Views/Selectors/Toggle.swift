@@ -25,6 +25,7 @@ public struct Toggle<Label>: View where Label: View {
     self.label = label()
   }
 
+  @_spi(TokamakCore)
   public var body: AnyView {
     toggleStyle.makeBody(
       configuration: ToggleStyleConfiguration(label: AnyView(label), isOn: $isOn)
@@ -32,22 +33,23 @@ public struct Toggle<Label>: View where Label: View {
   }
 }
 
-extension Toggle where Label == Text {
-  public init<S>(_ title: S, isOn: Binding<Bool>) where S: StringProtocol {
+public extension Toggle where Label == Text {
+  init<S>(_ title: S, isOn: Binding<Bool>) where S: StringProtocol {
     self.init(isOn: isOn) {
       Text(title)
     }
   }
 }
 
-extension Toggle where Label == AnyView {
-  public init(_ configuration: ToggleStyleConfiguration) {
+public extension Toggle where Label == AnyView {
+  init(_ configuration: ToggleStyleConfiguration) {
     label = configuration.label
     _isOn = configuration.$isOn
   }
 }
 
 extension Toggle: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (label as? GroupView)?.children ?? [AnyView(label)]
   }

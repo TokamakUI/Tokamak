@@ -1,4 +1,4 @@
-// Copyright 2018-2020 Tokamak contributors
+// Copyright 2018-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,27 +15,38 @@
 //  Created by Carson Katri on 7/19/20.
 //
 
-import CombineShim
-import Runtime
+import OpenCombineShim
 
 // This is very similar to `MountedCompositeView`. However, the `mountedBody`
 // is the computed content of the specified `Scene`, instead of having child
 // `View`s
 final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
-  override func mount(with reconciler: StackReconciler<R>) {
+  override func mount(
+    before _: R.TargetType? = nil,
+    on _: MountedElement<R>? = nil,
+    with reconciler: StackReconciler<R>
+  ) {
+    // `App` elements have no siblings, hence the `before` argument is discarded.
+    // They also have no parents, so the `parent` argument is discarded as well.
     let childBody = reconciler.render(mountedApp: self)
 
-    let child: MountedElement<R> = mountChild(childBody)
+    let child: MountedElement<R> = mountChild(reconciler.renderer, childBody)
     mountedChildren = [child]
-    child.mount(with: reconciler)
+    child.mount(before: nil, on: self, with: reconciler)
   }
 
   override func unmount(with reconciler: StackReconciler<R>) {
     mountedChildren.forEach { $0.unmount(with: reconciler) }
   }
 
-  private func mountChild(_ childBody: _AnyScene) -> MountedElement<R> {
-    let mountedScene: MountedScene<R> = childBody.makeMountedScene(parentTarget, environmentValues)
+  /// Mounts a child scene within the app.
+  /// - Parameters:
+  ///   - renderer: A instance conforming to the `Renderer` protocol to render the mounted scene with.
+  ///   - childBody: The body of the child scene to mount for this app.
+  /// - Returns: Returns an instance of the `MountedScene` class that's already mounted in this app.
+  private func mountChild(_ renderer: R, _ childBody: _AnyScene) -> MountedScene<R> {
+    let mountedScene: MountedScene<R> = childBody
+      .makeMountedScene(renderer, parentTarget, environmentValues, self)
     if let title = mountedScene.title {
       // swiftlint:disable force_cast
       (app.type as! _TitledApp.Type)._setTitle(title)
@@ -53,7 +64,7 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
         $0.environmentValues = environmentValues
         $0.scene = _AnyScene(element)
       },
-      mountChild: { mountChild($0) }
+      mountChild: { mountChild(reconciler.renderer, $0) }
     )
   }
 }

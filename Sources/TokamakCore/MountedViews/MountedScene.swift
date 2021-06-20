@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Runtime
-
 final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
   let title: String?
 
@@ -22,19 +20,25 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
     _ title: String?,
     _ children: [MountedElement<R>],
     _ parentTarget: R.TargetType,
-    _ environmentValues: EnvironmentValues
+    _ environmentValues: EnvironmentValues,
+    _ parent: MountedElement<R>?
   ) {
     self.title = title
-    super.init(scene, parentTarget, environmentValues)
+    super.init(scene, parentTarget, environmentValues, parent)
     mountedChildren = children
   }
 
-  override func mount(with reconciler: StackReconciler<R>) {
+  override func mount(
+    before sibling: R.TargetType? = nil,
+    on parent: MountedElement<R>? = nil,
+    with reconciler: StackReconciler<R>
+  ) {
     let childBody = reconciler.render(mountedScene: self)
 
-    let child: MountedElement<R> = childBody.makeMountedElement(parentTarget, environmentValues)
+    let child: MountedElement<R> = childBody
+      .makeMountedElement(reconciler.renderer, parentTarget, environmentValues, self)
     mountedChildren = [child]
-    child.mount(with: reconciler)
+    child.mount(before: sibling, on: self, with: reconciler)
   }
 
   override func unmount(with reconciler: StackReconciler<R>) {
@@ -56,7 +60,9 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
           $0.view = AnyView(view)
         }
       },
-      mountChild: { $0.makeMountedElement(parentTarget, environmentValues) }
+      mountChild: {
+        $0.makeMountedElement(reconciler.renderer, parentTarget, environmentValues, self)
+      }
     )
   }
 }
@@ -72,37 +78,50 @@ extension _AnyScene.BodyResult {
   }
 
   func makeMountedElement<R: Renderer>(
+    _ renderer: R,
     _ parentTarget: R.TargetType,
-    _ environmentValues: EnvironmentValues
+    _ environmentValues: EnvironmentValues,
+    _ parent: MountedElement<R>?
   ) -> MountedElement<R> {
     switch self {
     case let .scene(scene):
-      return scene.makeMountedScene(parentTarget, environmentValues)
+      return scene.makeMountedScene(renderer, parentTarget, environmentValues, parent)
     case let .view(view):
-      return view.makeMountedView(parentTarget, environmentValues)
+      return view.makeMountedView(renderer, parentTarget, environmentValues, parent)
     }
   }
 }
 
 extension _AnyScene {
   func makeMountedScene<R: Renderer>(
+    _ renderer: R,
     _ parentTarget: R.TargetType,
-    _ environmentValues: EnvironmentValues
+    _ environmentValues: EnvironmentValues,
+    _ parent: MountedElement<R>?
   ) -> MountedScene<R> {
     var title: String?
     if let titledSelf = scene as? TitledScene,
-      let text = titledSelf.title
+       let text = titledSelf.title
     {
       title = _TextProxy(text).rawText
     }
     let children: [MountedElement<R>]
     if let deferredScene = scene as? SceneDeferredToRenderer {
-      children = [deferredScene.deferredBody.makeMountedView(parentTarget, environmentValues)]
+      children = [
+        deferredScene.deferredBody.makeMountedView(
+          renderer,
+          parentTarget,
+          environmentValues,
+          parent
+        ),
+      ]
     } else if let groupScene = scene as? GroupScene {
-      children = groupScene.children.map { $0.makeMountedScene(parentTarget, environmentValues) }
+      children = groupScene.children.map {
+        $0.makeMountedScene(renderer, parentTarget, environmentValues, parent)
+      }
     } else {
       children = []
     }
-    return .init(self, title, children, parentTarget, environmentValues)
+    return .init(self, title, children, parentTarget, environmentValues, parent)
   }
 }

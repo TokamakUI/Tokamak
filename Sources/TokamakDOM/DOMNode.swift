@@ -24,32 +24,49 @@ extension AnyHTML {
     // @carson-katri: For diffing, could you build a Set from the keys and values of the dictionary,
     // then use the standard lib to get the difference?
 
+    // `checked` attribute on checkboxes is a special one as its value doesn't matter. We only
+    // need to check whether it exists or not, and set the property if it doesn't.
+    var containsChecked = false
     for (attribute, value) in attributes {
-      _ = dom.ref[dynamicMember: attribute] = .string(value)
+      if attribute.isUpdatedAsProperty {
+        dom.ref[dynamicMember: attribute.value] = .string(value)
+      } else {
+        _ = dom.ref.setAttribute!(attribute.value, value)
+      }
+
+      if attribute == .checked {
+        containsChecked = true
+      }
+    }
+
+    if !containsChecked && dom.ref.type == "checkbox" &&
+      dom.ref.tagName.string!.lowercased() == "input"
+    {
+      dom.ref.checked = .boolean(false)
     }
 
     if let dynamicSelf = self as? AnyDynamicHTML {
       dom.reinstall(dynamicSelf.listeners)
     }
 
-    guard let innerHTML = innerHTML else { return }
+    guard let innerHTML = innerHTML(shouldSortAttributes: false) else { return }
     dom.ref.innerHTML = .string(innerHTML)
   }
 }
 
 final class DOMNode: Target {
-  let ref: JSObjectRef
+  let ref: JSObject
   private var listeners: [String: JSClosure]
   var view: AnyView
 
-  init<V: View>(_ view: V, _ ref: JSObjectRef, _ listeners: [String: Listener] = [:]) {
+  init<V: View>(_ view: V, _ ref: JSObject, _ listeners: [String: Listener] = [:]) {
     self.ref = ref
     self.listeners = [:]
     self.view = AnyView(view)
     reinstall(listeners)
   }
 
-  init(_ ref: JSObjectRef) {
+  init(_ ref: JSObject) {
     self.ref = ref
     view = AnyView(EmptyView())
     listeners = [:]
@@ -60,6 +77,7 @@ final class DOMNode: Target {
   func reinstall(_ listeners: [String: Listener]) {
     for (event, jsClosure) in self.listeners {
       _ = ref.removeEventListener!(event, jsClosure)
+      jsClosure.release()
     }
     self.listeners = [:]
 

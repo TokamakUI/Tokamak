@@ -39,8 +39,8 @@ struct TextDemo: View {
           .heavy,
           .black,
         ], id: \.self) { weight in
-          Text("a")
-            .fontWeight(weight)
+            Text("a")
+              .fontWeight(weight)
         }
       }
       VStack {
@@ -55,6 +55,15 @@ struct TextDemo: View {
       }
       (Text("This text has been ") + Text("concatenated").bold())
         .italic()
+      ForEach(TextAlignment.allCases, id: \.hashValue) { alignment in
+        Text(
+          """
+          Multiline
+          text
+          """
+        )
+        .multilineTextAlignment(alignment)
+      }
     }
   }
 }

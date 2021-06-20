@@ -52,11 +52,11 @@ struct NavItem: View {
       Text(id)
       #elseif os(macOS)
       Text(id).opacity(0.5)
-      #else
+      #elseif os(Linux)
       HStack {
         Text(id)
         Spacer()
-        Text("unavailable").opacity(0.5)
+        Text("unavailable")
       }
       #endif
     }
@@ -68,6 +68,9 @@ struct TokamakDemoView: View {
     NavigationView { () -> AnyView in
       let list = title(
         List {
+          Image("logo-header.png", label: Text("Tokamak Demo"))
+            .frame(height: 50)
+            .padding(.bottom, 20)
           Section(header: Text("Buttons")) {
             NavItem(
               "Counter",
@@ -118,7 +121,11 @@ struct TokamakDemoView: View {
             }.padding(20))
             NavItem("GeometryReader", destination: GeometryReaderDemo())
           }
+          Section(header: Text("Modifiers")) {
+            NavItem("Shadow", destination: ShadowDemo())
+          }
           Section(header: Text("Selectors")) {
+            NavItem("DatePicker", destination: DatePickerDemo())
             NavItem("Picker", destination: PickerDemo())
             NavItem("Slider", destination: SliderDemo())
             NavItem("Toggle", destination: ToggleDemo())
@@ -126,10 +133,14 @@ struct TokamakDemoView: View {
           Section(header: Text("Text")) {
             NavItem("Text", destination: TextDemo())
             NavItem("TextField", destination: TextFieldDemo())
+            NavItem("TextEditor", destination: TextEditorDemo())
           }
           Section(header: Text("Misc")) {
             NavItem("Path", destination: PathDemo())
             NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8)))
+            if #available(macOS 11.0, iOS 14.0, *) {
+              NavItem("Preferences", destination: PreferenceKeyDemo())
+            }
             NavItem("Color", destination: ColorDemo())
             if #available(OSX 11.0, iOS 14.0, *) {
               NavItem("AppStorage", destination: AppStorageDemo())
@@ -145,6 +156,7 @@ struct TokamakDemoView: View {
           #if os(WASI)
           Section(header: Text("TokamakDOM")) {
             NavItem("DOM reference", destination: DOMRefDemo())
+            NavItem("URL hash changes", destination: URLHashDemo())
           }
           #endif
         }

@@ -15,20 +15,20 @@
 import TokamakCore
 
 public protocol DOMViewModifier {
-  var attributes: [String: String] { get }
+  var attributes: [HTMLAttribute: String] { get }
   /// Can the modifier be flattened?
   var isOrderDependent: Bool { get }
 }
 
-extension DOMViewModifier {
-  public var isOrderDependent: Bool { false }
+public extension DOMViewModifier {
+  var isOrderDependent: Bool { false }
 }
 
 extension ModifiedContent: DOMViewModifier
   where Content: DOMViewModifier, Modifier: DOMViewModifier
 {
   // Merge attributes
-  public var attributes: [String: String] {
+  public var attributes: [HTMLAttribute: String] {
     var attr = content.attributes
     for (key, val) in modifier.attributes {
       if let prev = attr[key] {
@@ -40,14 +40,14 @@ extension ModifiedContent: DOMViewModifier
 }
 
 extension _ZIndexModifier: DOMViewModifier {
-  public var attributes: [String: String] {
+  public var attributes: [HTMLAttribute: String] {
     ["style": "z-index: \(index);"]
   }
 }
 
 extension _BackgroundModifier: DOMViewModifier where Background == Color {
   public var isOrderDependent: Bool { true }
-  public var attributes: [String: String] {
+  public var attributes: [HTMLAttribute: String] {
     ["style": "background-color: \(background.cssValue(environment))"]
   }
 }

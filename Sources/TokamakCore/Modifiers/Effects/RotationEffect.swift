@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
 //  Created by Carson Katri on 7/3/20.
 //
 
+import Foundation
+
 public struct _RotationEffect: GeometryEffect {
   public var angle: Angle
   public var anchor: UnitPoint
@@ -25,7 +27,7 @@ public struct _RotationEffect: GeometryEffect {
   }
 
   public func effectValue(size: CGSize) -> ProjectionTransform {
-    .init(CGAffineTransform.identity.rotated(by: angle.radians))
+    .init(CGAffineTransform.identity.rotated(by: CGFloat(angle.radians)))
   }
 
   public func body(content: Content) -> some View {
@@ -33,8 +35,8 @@ public struct _RotationEffect: GeometryEffect {
   }
 }
 
-extension View {
-  public func rotationEffect(_ angle: Angle, anchor: UnitPoint = .center) -> some View {
+public extension View {
+  func rotationEffect(_ angle: Angle, anchor: UnitPoint = .center) -> some View {
     modifier(_RotationEffect(angle: angle, anchor: anchor))
   }
 }

@@ -15,15 +15,16 @@
 import TokamakCore
 
 struct _ZStack_ContentGridItem: ViewModifier, DOMViewModifier {
-  let attributes = ["style": "grid-area: a;"]
+  let attributes: [HTMLAttribute: String] = ["style": "grid-area: a;"]
 
   func body(content: Content) -> some View {
     content
   }
 }
 
-extension ZStack: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
+extension ZStack: _HTMLPrimitive {
+  @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
     AnyView(HTML("div", [
       "style": """
       display: grid;

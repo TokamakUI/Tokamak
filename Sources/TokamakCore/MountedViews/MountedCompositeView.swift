@@ -1,4 +1,4 @@
-// Copyright 2018-2020 Tokamak contributors
+// Copyright 2018-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,18 +15,27 @@
 //  Created by Max Desiatov on 03/12/2018.
 //
 
-import CombineShim
-import Runtime
+import OpenCombineShim
 
 final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
-  override func mount(with reconciler: StackReconciler<R>) {
+  override func mount(
+    before sibling: R.TargetType? = nil,
+    on parent: MountedElement<R>? = nil,
+    with reconciler: StackReconciler<R>
+  ) {
     let childBody = reconciler.render(compositeView: self)
 
-    let child: MountedElement<R> = childBody.makeMountedView(parentTarget, environmentValues)
+    let child: MountedElement<R> = childBody.makeMountedView(
+      reconciler.renderer,
+      parentTarget,
+      environmentValues,
+      self
+    )
     mountedChildren = [child]
-    child.mount(with: reconciler)
+    child.mount(before: sibling, on: self, with: reconciler)
 
-    // `_TargetRef` is a composite view, so it's enough to check for it only here
+    // `_TargetRef` (and `TargetRefType` generic eraser protocol it conforms to) is a composite view, so it's enough
+    // to check for it only here.
     if var targetRef = view.view as? TargetRefType {
       // `_TargetRef` body is not always a host view that has a target, need to traverse
       // all descendants to find a `MountedHostView<R>` instance.
@@ -41,12 +50,27 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
       view.view = targetRef
     }
 
-    // FIXME: this has to be implemented in a render-specific way, otherwise it's equivalent to
-    // `_onMount` and `_onUnmount` at the moment,
-    // see https://github.com/swiftwasm/Tokamak/issues/175 for more details
-    if let appearanceAction = view.view as? AppearanceActionType {
-      appearanceAction.appear?()
-    }
+    reconciler.afterCurrentRender(perform: { [weak self] in
+      guard let self = self else { return }
+
+      // FIXME: this has to be implemented in a renderer-specific way, otherwise it's equivalent to
+      // `_onMount` and `_onUnmount` at the moment,
+      // see https://github.com/swiftwasm/Tokamak/issues/175 for more details
+      if let appearanceAction = self.view.view as? AppearanceActionType {
+        appearanceAction.appear?()
+      }
+
+      if let preferenceModifier = self.view.view as? _PreferenceWritingViewProtocol {
+        self.view = preferenceModifier.modifyPreferenceStore(&self.preferenceStore)
+        if let parent = parent {
+          parent.preferenceStore.merge(with: self.preferenceStore)
+        }
+      }
+
+      if let preferenceReader = self.view.view as? _PreferenceReadingViewProtocol {
+        preferenceReader.preferenceStore(self.preferenceStore)
+      }
+    })
   }
 
   override func unmount(with reconciler: StackReconciler<R>) {
@@ -67,7 +91,9 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
         $0.environmentValues = environmentValues
         $0.view = AnyView(element)
       },
-      mountChild: { $0.makeMountedView(parentTarget, environmentValues) }
+      mountChild: {
+        $0.makeMountedView(reconciler.renderer, parentTarget, environmentValues, self)
+      }
     )
   }
 }

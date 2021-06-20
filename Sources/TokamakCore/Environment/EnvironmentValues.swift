@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import CombineShim
+import OpenCombineShim
 
 public struct EnvironmentValues: CustomStringConvertible {
   public var description: String {
-    String(describing: values)
+    "EnvironmentValues: \(values.count)"
   }
 
   private var values: [ObjectIdentifier: Any] = [:]
@@ -49,8 +49,8 @@ struct IsEnabledKey: EnvironmentKey {
   static let defaultValue = true
 }
 
-extension EnvironmentValues {
-  public var isEnabled: Bool {
+public extension EnvironmentValues {
+  var isEnabled: Bool {
     get {
       self[IsEnabledKey.self]
     }
@@ -72,8 +72,8 @@ struct _EnvironmentValuesWritingModifier: ViewModifier, EnvironmentModifier {
   }
 }
 
-extension View {
-  public func environmentValues(_ values: EnvironmentValues) -> some View {
+public extension View {
+  func environmentValues(_ values: EnvironmentValues) -> some View {
     modifier(_EnvironmentValuesWritingModifier(environmentValues: values))
   }
 }

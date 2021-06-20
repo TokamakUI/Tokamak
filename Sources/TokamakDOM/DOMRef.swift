@@ -13,14 +13,14 @@
 // limitations under the License.
 
 import JavaScriptKit
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 
-extension View {
+public extension View {
   /** Allows capturing DOM references of host views. The resulting reference is written
    to a given `binding`.
    */
-  public func _domRef(_ binding: Binding<JSObjectRef?>) -> some View {
-    // Convert `Binding<JSObjectRef?>` to `Binding<DOMNode?>` first.
+  func _domRef(_ binding: Binding<JSObject?>) -> some View {
+    // Convert `Binding<JSObject?>` to `Binding<DOMNode?>` first.
     let targetBinding = Binding(
       get: { binding.wrappedValue.map(DOMNode.init) },
       set: { binding.wrappedValue = $0?.ref }

@@ -18,11 +18,11 @@
 import TokamakCore
 
 protocol ShapeAttributes {
-  func attributes(_ style: ShapeStyle) -> [String: String]
+  func attributes(_ style: ShapeStyle) -> [HTMLAttribute: String]
 }
 
 extension _StrokedShape: ShapeAttributes {
-  func attributes(_ style: ShapeStyle) -> [String: String] {
+  func attributes(_ style: ShapeStyle) -> [HTMLAttribute: String] {
     if let color = style as? Color {
       return ["style": "stroke: \(color.cssValue(environment)); fill: none;"]
     } else {
@@ -31,9 +31,10 @@ extension _StrokedShape: ShapeAttributes {
   }
 }
 
-extension _ShapeView: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    let path = shape.path(in: .zero).deferredBody
+extension _ShapeView: _HTMLPrimitive {
+  @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
+    let path = shape.path(in: .zero).renderedBody
     if let shapeAttributes = shape as? ShapeAttributes {
       return AnyView(HTML("div", shapeAttributes.attributes(style)) { path })
     } else if let color = style as? Color {

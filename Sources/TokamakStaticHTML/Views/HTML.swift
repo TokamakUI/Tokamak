@@ -17,18 +17,61 @@
 
 import TokamakCore
 
-public protocol AnyHTML {
-  var innerHTML: String? { get }
-  var tag: String { get }
-  var attributes: [String: String] { get }
+/** Represents an attribute of an HTML tag. To consume updates from updated attributes, the DOM
+ renderer needs to know whether the attribute should be assigned via a DOM element property or the
+ [`setAttribute`](https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute) function.
+ The `isUpdatedAsProperty` flag is used to disambiguate between these two cases.
+ */
+public struct HTMLAttribute: Hashable {
+  public let value: String
+  public let isUpdatedAsProperty: Bool
+
+  public init(_ value: String, isUpdatedAsProperty: Bool) {
+    self.value = value
+    self.isUpdatedAsProperty = isUpdatedAsProperty
+  }
+
+  public static let value = HTMLAttribute("value", isUpdatedAsProperty: true)
+
+  public static let checked = HTMLAttribute("checked", isUpdatedAsProperty: true)
 }
 
-extension AnyHTML {
-  public var outerHTML: String {
-    """
+extension HTMLAttribute: CustomStringConvertible {
+  public var description: String { value }
+}
+
+extension HTMLAttribute: ExpressibleByStringLiteral {
+  public init(stringLiteral: String) {
+    self.init(stringLiteral, isUpdatedAsProperty: false)
+  }
+}
+
+public protocol AnyHTML {
+  func innerHTML(shouldSortAttributes: Bool) -> String?
+  var tag: String { get }
+  var attributes: [HTMLAttribute: String] { get }
+}
+
+public extension AnyHTML {
+  func outerHTML(shouldSortAttributes: Bool, children: [HTMLTarget]) -> String {
+    let renderedAttributes: String
+    if attributes.isEmpty {
+      renderedAttributes = ""
+    } else {
+      let mappedAttributes = attributes.map { #"\#($0)="\#($1)""# }
+      if shouldSortAttributes {
+        renderedAttributes = mappedAttributes.sorted().joined(separator: " ")
+      } else {
+        renderedAttributes = mappedAttributes.joined(separator: " ")
+      }
+    }
+
+    return """
     <\(tag)\(attributes.isEmpty ? "" : " ")\
-    \(attributes.map { #"\#($0)="\#($1)""# }.joined(separator: " "))>\
-    \(innerHTML ?? "")\
+    \(renderedAttributes)>\
+    \(innerHTML(shouldSortAttributes: shouldSortAttributes) ?? "")\
+    \(children.map { $0.outerHTML(shouldSortAttributes: shouldSortAttributes) }
+      .joined(separator: "\n"))\
     </\(tag)>
     """
   }
@@ -36,50 +79,56 @@ extension AnyHTML {
 
 public struct HTML<Content>: View, AnyHTML {
   public let tag: String
-  public let attributes: [String: String]
+  public let attributes: [HTMLAttribute: String]
   let content: Content
 
-  public let innerHTML: String?
+  fileprivate let cachedInnerHTML: String?
 
+  public func innerHTML(shouldSortAttributes: Bool) -> String? {
+    cachedInnerHTML
+  }
+
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("HTML")
   }
 }
 
-extension HTML where Content: StringProtocol {
-  public init(
+public extension HTML where Content: StringProtocol {
+  init(
     _ tag: String,
-    _ attributes: [String: String] = [:],
+    _ attributes: [HTMLAttribute: String] = [:],
     content: Content
   ) {
     self.tag = tag
     self.attributes = attributes
     self.content = content
-    innerHTML = String(content)
+    cachedInnerHTML = String(content)
   }
 }
 
 extension HTML: ParentView where Content: View {
   public init(
     _ tag: String,
-    _ attributes: [String: String] = [:],
+    _ attributes: [HTMLAttribute: String] = [:],
     @ViewBuilder content: () -> Content
   ) {
     self.tag = tag
     self.attributes = attributes
     self.content = content()
-    innerHTML = nil
+    cachedInnerHTML = nil
   }
 
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     [AnyView(content)]
   }
 }
 
-extension HTML where Content == EmptyView {
-  public init(
+public extension HTML where Content == EmptyView {
+  init(
     _ tag: String,
-    _ attributes: [String: String] = [:]
+    _ attributes: [HTMLAttribute: String] = [:]
   ) {
     self = HTML(tag, attributes) { EmptyView() }
   }
@@ -89,8 +138,8 @@ public protocol StylesConvertible {
   var styles: [String: String] { get }
 }
 
-extension Dictionary {
-  public var inlineStyles: String {
+public extension Dictionary {
+  var inlineStyles: String {
     map { "\($0.0): \($0.1);" }
       .joined(separator: " ")
   }

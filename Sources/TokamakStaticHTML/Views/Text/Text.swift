@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Foundation
 import TokamakCore
 
 extension Font.Design: CustomStringConvertible {
@@ -76,35 +77,48 @@ extension Font.Leading: CustomStringConvertible {
   }
 }
 
-extension Font: StylesConvertible {
-  public var styles: [String: String] {
-    [
-      "font-family": _name == _FontNames.system.rawValue ? _design.description : _name,
-      "font-weight": "\(_bold ? Font.Weight.bold.value : _weight.value)",
-      "font-style": _italic ? "italic" : "normal",
-      "font-size": "\(_size)",
-      "line-height": _leading.description,
-      "font-variant": _smallCaps ? "small-caps" : "normal",
+public extension Font {
+  func styles(in environment: EnvironmentValues) -> [String: String] {
+    let proxy = _FontProxy(self).resolve(in: environment)
+    return [
+      "font-family": proxy._name == _FontNames.system.rawValue ? proxy._design.description : proxy
+        ._name,
+      "font-weight": "\(proxy._bold ? Font.Weight.bold.value : proxy._weight.value)",
+      "font-style": proxy._italic ? "italic" : "normal",
+      "font-size": "\(proxy._size)",
+      "line-height": proxy._leading.description,
+      "font-variant": proxy._smallCaps ? "small-caps" : "normal",
     ]
+  }
+}
+
+extension TextAlignment: CustomStringConvertible {
+  public var description: String {
+    switch self {
+    case .leading: return "left"
+    case .center: return "center"
+    case .trailing: return "right"
+    }
   }
 }
 
 private struct TextSpan: AnyHTML {
   let content: String
-  let attributes: [String: String]
+  let attributes: [HTMLAttribute: String]
 
-  var innerHTML: String? { content }
+  public func innerHTML(shouldSortAttributes: Bool) -> String? { content }
   var tag: String { "span" }
 }
 
 extension Text: AnyHTML {
-  public var innerHTML: String? {
+  public func innerHTML(shouldSortAttributes: Bool) -> String? {
     let proxy = _TextProxy(self)
+    let innerHTML: String
     switch proxy.storage {
     case let .verbatim(text):
-      return text
+      innerHTML = text
     case let .segmentedText(segments):
-      return segments
+      innerHTML = segments
         .map {
           TextSpan(
             content: $0.0.rawText,
@@ -113,14 +127,15 @@ extension Text: AnyHTML {
               environment: proxy.environment
             )
           )
-          .outerHTML
+          .outerHTML(shouldSortAttributes: shouldSortAttributes, children: [])
         }
         .reduce("", +)
     }
+    return innerHTML.replacingOccurrences(of: "\n", with: "<br />")
   }
 
   public var tag: String { "span" }
-  public var attributes: [String: String] {
+  public var attributes: [HTMLAttribute: String] {
     let proxy = _TextProxy(self)
     return Self.attributes(
       from: proxy.modifiers,
@@ -133,7 +148,7 @@ extension Text {
   static func attributes(
     from modifiers: [_Modifier],
     environment: EnvironmentValues
-  ) -> [String: String] {
+  ) -> [HTMLAttribute: String] {
     let isRedacted = environment.redactionReasons.contains(.placeholder)
 
     var font: Font?
@@ -168,24 +183,27 @@ extension Text {
 
     let hasStrikethrough = strikethrough?.0 ?? false
     let hasUnderline = underline?.0 ?? false
-    let textDecoration = !hasStrikethrough && !hasUnderline ?
-      "none" :
+    let textDecoration = !hasStrikethrough && !hasUnderline ? "none" :
       "\(hasStrikethrough ? "line-through" : "") \(hasUnderline ? "underline" : "")"
     let decorationColor = strikethrough?.1?.cssValue(environment)
       ?? underline?.1?.cssValue(environment)
       ?? "inherit"
 
+    let resolvedFont = font == nil ? nil : _FontProxy(font!).resolve(in: environment)
+
     return [
       "style": """
-      \(font?.styles.filter { weight != nil ? $0.key != "font-weight" : true }.inlineStyles ?? "")
+      \(font?.styles(in: environment).filter { weight != nil ? $0.key != "font-weight" : true }
+        .inlineStyles ?? "")
       \(font == nil ? "font-family: \(Font.Design.default.description);" : "")
       color: \((color ?? .primary).cssValue(environment));
       font-style: \(italic ? "italic" : "normal");
-      font-weight: \(weight?.value ?? font?._weight.value ?? 400);
+      font-weight: \(weight?.value ?? resolvedFont?._weight.value ?? 400);
       letter-spacing: \(kerning);
       vertical-align: \(baseline == nil ? "baseline" : "\(baseline!)em");
       text-decoration: \(textDecoration);
-      text-decoration-color: \(decorationColor)
+      text-decoration-color: \(decorationColor);
+      text-align: \(environment.multilineTextAlignment.description);
       """,
       "class": isRedacted ? "_tokamak-text-redacted" : "",
     ]

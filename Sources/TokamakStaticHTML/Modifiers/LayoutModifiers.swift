@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Foundation
 import TokamakCore
 
 private extension DOMViewModifier {
@@ -33,7 +34,7 @@ private extension DOMViewModifier {
 }
 
 extension _FrameLayout: DOMViewModifier {
-  public var attributes: [String: String] {
+  public var attributes: [HTMLAttribute: String] {
     ["style": """
     \(unwrapToStyle(\.width, property: "width"))
     \(unwrapToStyle(\.height, property: "height"))
@@ -47,7 +48,7 @@ extension _FrameLayout: DOMViewModifier {
 }
 
 extension _FlexFrameLayout: DOMViewModifier {
-  public var attributes: [String: String] {
+  public var attributes: [HTMLAttribute: String] {
     ["style": """
     \(unwrapToStyle(\.minWidth, property: "min-width"))
     width: \(unwrapToStyle(\.idealWidth, defaultValue: fillWidth ? "100%" : "auto"));
@@ -88,7 +89,7 @@ private extension EdgeInsets {
 
 extension _PaddingLayout: DOMViewModifier {
   public var isOrderDependent: Bool { true }
-  public var attributes: [String: String] {
+  public var attributes: [HTMLAttribute: String] {
     var padding = [(String, CGFloat)]()
     let insets = self.insets ?? .init(_all: 10)
     for edge in Edge.allCases {
@@ -97,7 +98,15 @@ extension _PaddingLayout: DOMViewModifier {
       }
     }
     return ["style": padding
-      .map { "padding-\($0.0): \($0.1);" }
+      .map { "padding-\($0.0): \($0.1)px;" }
       .joined(separator: " ")]
   }
+}
+
+extension _ShadowLayout: DOMViewModifier {
+  public var attributes: [HTMLAttribute: String] {
+    ["style": "box-shadow: \(x)px \(y)px \(radius * 2)px 0px \(color.cssValue(environment));"]
+  }
+
+  public var isOrderDependent: Bool { true }
 }
