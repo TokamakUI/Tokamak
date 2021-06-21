@@ -145,6 +145,7 @@ extension Text: AnyHTML {
 }
 
 extension Text {
+  // swiftlint:disable function_body_length
   static func attributes(
     from modifiers: [_Modifier],
     environment: EnvironmentValues
@@ -188,7 +189,6 @@ extension Text {
     let decorationColor = strikethrough?.1?.cssValue(environment)
       ?? underline?.1?.cssValue(environment)
       ?? "inherit"
-
     let resolvedFont = font == nil ? nil : _FontProxy(font!).resolve(in: environment)
 
     return [
@@ -208,4 +208,5 @@ extension Text {
       "class": isRedacted ? "_tokamak-text-redacted" : "",
     ]
   }
+  // swiftlint:enable function_body_length
 }

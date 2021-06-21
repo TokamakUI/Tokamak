@@ -41,7 +41,8 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
 
   /// Mounts a child scene within the app.
   /// - Parameters:
-  ///   - renderer: A instance conforming to the `Renderer` protocol to render the mounted scene with.
+  ///   - renderer: An instance conforming to the `Renderer` protocol to render the mounted
+  ///   scene with.
   ///   - childBody: The body of the child scene to mount for this app.
   /// - Returns: Returns an instance of the `MountedScene` class that's already mounted in this app.
   private func mountChild(_ renderer: R, _ childBody: _AnyScene) -> MountedScene<R> {

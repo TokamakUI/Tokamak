@@ -53,9 +53,19 @@ let package = Package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
       .upToNextMinor(from: "0.10.0")
     ),
-    .package(url: "https://github.com/OpenCombine/OpenCombine.git", from: "0.12.0"),
-    .package(url: "https://github.com/swiftwasm/OpenCombineJS.git", .upToNextMinor(from: "0.1.1")),
-    .package(name: "Benchmark", url: "https://github.com/google/swift-benchmark", from: "0.1.0"),
+    .package(
+      url: "https://github.com/OpenCombine/OpenCombine.git",
+      from: "0.12.0"
+    ),
+    .package(
+      url: "https://github.com/swiftwasm/OpenCombineJS.git",
+      .upToNextMinor(from: "0.1.1")
+    ),
+    .package(
+      name: "Benchmark",
+      url: "https://github.com/google/swift-benchmark",
+      from: "0.1.0"
+    ),
     .package(
       name: "SnapshotTesting",
       url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
@@ -190,7 +200,7 @@ let package = Package(
         .product(
           name: "SnapshotTesting",
           package: "SnapshotTesting",
-          condition: .when(platforms: [.macOS, .linux])
+          condition: .when(platforms: [.macOS])
         ),
       ],
       exclude: ["__Snapshots__"]
