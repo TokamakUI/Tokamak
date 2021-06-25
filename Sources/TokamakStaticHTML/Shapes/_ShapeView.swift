@@ -35,16 +35,27 @@ extension _ShapeView: _HTMLPrimitive {
   @_spi(TokamakStaticHTML)
   public var renderedBody: AnyView {
     let path = shape.path(in: .zero).renderedBody
+    let attributes: [HTMLAttribute: String]
+
     if let shapeAttributes = shape as? ShapeAttributes {
-      return AnyView(HTML("div", shapeAttributes.attributes(style)) { path })
+      attributes = shapeAttributes.attributes(style)
     } else if let color = style as? Color {
-      return AnyView(HTML("div", [
-        "style": "fill: \(color.cssValue(environment));",
-      ]) { path })
+      attributes = ["style": "fill: \(color.cssValue(environment));"]
     } else if let foregroundColor = foregroundColor {
-      return AnyView(HTML("div", [
-        "style": "fill: \(foregroundColor.cssValue(environment));",
-      ]) { path })
+      attributes = ["style": "fill: \(foregroundColor.cssValue(environment));"]
+    } else {
+      return path
+    }
+
+    if let view = mapAnyView(path, transform: { (html: HTML<AnyView>) -> AnyView in
+      let uniqueKeys = { (first: String, second: String) in "\(first) \(second)" }
+      let mergedAttributes = html.attributes.merging(
+        attributes,
+        uniquingKeysWith: uniqueKeys
+      )
+      return AnyView(HTML(html.tag, mergedAttributes) { html.content })
+    }) {
+      return view
     } else {
       return path
     }

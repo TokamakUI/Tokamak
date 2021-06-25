@@ -174,11 +174,11 @@ public struct Path: Equatable, LosslessStringConvertible {
   }
 
   public func strokedPath(_ style: StrokeStyle) -> Self {
-    Self(storage: .stroked(StrokedPath(path: self, style: style)))
+    Self(storage: .stroked(StrokedPath(path: self, style: style)), sizing: sizing)
   }
 
   public func trimmedPath(from: CGFloat, to: CGFloat) -> Self {
-    Self(storage: .trimmed(TrimmedPath(path: self, from: from, to: to)))
+    Self(storage: .trimmed(TrimmedPath(path: self, from: from, to: to)), sizing: sizing)
   }
 
   //  FIXME: In SwiftUI, but we don't have CGPath...

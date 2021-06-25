@@ -31,8 +31,13 @@ struct Star: Shape {
 struct PathDemo: View {
   var body: some View {
     VStack {
-      Star()
-        .fill(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1))
+      ZStack {
+        Star()
+          .fill(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1))
+        Circle()
+          .stroke(Color.red)
+      }
+      .frame(width: 100, height: 100, alignment: .center)
       Path { path in
         path.addRect(.init(origin: .zero, size: .init(width: 20, height: 20)))
         path.addEllipse(in: .init(
