@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import CoreFoundation
 
 /// This protocol has no functionality currently, and is only provided for compatibility purposes.
 public protocol PreviewProvider {

@@ -16,6 +16,7 @@
 //
 
 import Foundation
+import CoreFoundation
 
 extension CGPoint {
   func rotate(_ angle: Angle, around origin: Self) -> Self {
