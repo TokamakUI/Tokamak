@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,8 +15,7 @@
 //  Created by Carson Katri on 7/16/20.
 //
 
-import CombineShim
-import Runtime
+import OpenCombineShim
 
 /// Provides the ability to set the title of the Scene.
 public protocol _TitledApp {
@@ -42,8 +41,8 @@ public protocol App: _TitledApp {
   init()
 }
 
-extension App {
-  public static func main() {
+public extension App {
+  static func main() {
     let app = Self()
     _launch(app, EnvironmentValues())
   }

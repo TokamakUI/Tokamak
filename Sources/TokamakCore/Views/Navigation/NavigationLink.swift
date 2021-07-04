@@ -22,7 +22,9 @@ final class NavigationLinkDestination {
   }
 }
 
-public struct NavigationLink<Label, Destination>: View where Label: View, Destination: View {
+public struct NavigationLink<Label, Destination>: _PrimitiveView where Label: View,
+  Destination: View
+{
   @State var destination: NavigationLinkDestination
   let label: Label
 
@@ -44,16 +46,12 @@ public struct NavigationLink<Label, Destination>: View where Label: View, Destin
   //    tag: V, selection: Binding<V?>,
   //    @ViewBuilder label: () -> Label
   //   ) where V : Hashable
-
-  public var body: Never {
-    neverBody("NavigationLink")
-  }
 }
 
-extension NavigationLink where Label == Text {
+public extension NavigationLink where Label == Text {
   /// Creates an instance that presents `destination`, with a `Text` label
   /// generated from a title string.
-  public init<S>(_ title: S, destination: Destination) where S: StringProtocol {
+  init<S>(_ title: S, destination: Destination) where S: StringProtocol {
     self.init(destination: destination) { Text(title) }
   }
 
@@ -72,7 +70,7 @@ extension NavigationLink where Label == Text {
   //  ) where S : StringProtocol, V : Hashable
 }
 
-/// This is a helper class that works around absence of "package private" access control in Swift
+/// This is a helper type that works around absence of "package private" access control in Swift
 public struct _NavigationLinkProxy<Label, Destination> where Label: View, Destination: View {
   public let subject: NavigationLink<Label, Destination>
 
@@ -80,16 +78,19 @@ public struct _NavigationLinkProxy<Label, Destination> where Label: View, Destin
     self.subject = subject
   }
 
-  public var label: AnyView {
+  public var label: some View {
     subject.style.makeBody(configuration: .init(
       body: AnyView(subject.label),
       isSelected: isSelected
     ))
+    // subject.label
   }
+
+  public var context: NavigationContext { subject.navigationContext }
 
   public var style: _AnyNavigationLinkStyle { subject.style }
   public var isSelected: Bool {
-    ObjectIdentifier(subject.destination) == ObjectIdentifier(subject.navigationContext.destination)
+    subject.destination === subject.navigationContext.destination
   }
 
   public func activate() {

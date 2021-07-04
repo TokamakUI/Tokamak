@@ -14,16 +14,18 @@
 
 import TokamakCore
 
-extension NavigationView: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    AnyView(HTML("div", [
+extension NavigationView: _HTMLPrimitive {
+  @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
+    let proxy = _NavigationViewProxy(self)
+    return AnyView(HTML("div", [
       "class": "_tokamak-navigationview",
     ]) {
-      _NavigationViewProxy(self).content
+      proxy.content
       HTML("div", [
         "class": "_tokamak-navigationview-content",
       ]) {
-        _NavigationViewProxy(self).destination
+        proxy.destination
       }
     })
   }

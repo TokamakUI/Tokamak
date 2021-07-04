@@ -19,6 +19,7 @@ DerivedData
 *.hmap
 *.ipa
 .swiftpm/xcode
+*.xcodeproj
 
 # Bundler
 .bundle
@@ -39,3 +40,4 @@ Pods/
 
 # SwiftPM
 .build
+/Packages

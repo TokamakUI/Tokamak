@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Foundation
 import TokamakCore
 
 public enum SpacerContainerAxis {
@@ -24,8 +25,8 @@ public protocol SpacerContainer {
   var fillCrossAxis: Bool { get }
 }
 
-extension SpacerContainer where Self: ParentView {
-  public var hasSpacer: Bool {
+public extension SpacerContainer where Self: ParentView {
+  var hasSpacer: Bool {
     children
       .compactMap {
         mapAnyView($0) { (v: Spacer) in
@@ -45,7 +46,7 @@ extension SpacerContainer where Self: ParentView {
   // Does a child SpacerContainer along the opposite axis have a spacer?
   // (e.g., an HStack with a child VStack which contains a spacer)
   // If so, we need to fill the cross-axis so the child can show the correct layout.
-  public var fillCrossAxis: Bool {
+  var fillCrossAxis: Bool {
     children
       .compactMap {
         mapAnyView($0) { (v: SpacerContainer) in v }
@@ -55,8 +56,9 @@ extension SpacerContainer where Self: ParentView {
   }
 }
 
-extension Spacer: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
+extension Spacer: _HTMLPrimitive {
+  @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
     AnyView(HTML("div", [
       "style": "flex-grow: 1; \(minLength != nil ? "min-width: \(minLength!)" : "")",
     ]))

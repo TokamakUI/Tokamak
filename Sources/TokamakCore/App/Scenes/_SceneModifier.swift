@@ -25,6 +25,7 @@ public struct _SceneModifier_Content<Modifier>: Scene where Modifier: _SceneModi
   public let modifier: Modifier
   public let scene: _AnyScene
 
+  @_spi(TokamakCore)
   public var body: Never {
     neverScene("_SceneModifier_Content")
   }
@@ -36,8 +37,8 @@ public extension Scene {
   }
 }
 
-extension _SceneModifier where Body == Never {
-  public func body(content: SceneContent) -> Body {
+public extension _SceneModifier where Body == Never {
+  func body(content: SceneContent) -> Body {
     fatalError("""
     \(self) is a primitive `_SceneModifier`, you're not supposed to run `body(content:)`
     """)

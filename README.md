@@ -1,8 +1,8 @@
-<img alt="Tokamak logo" src="docs/logo-header.png" width="640px"/>
+<img alt="Tokamak logo" src="Sources/TokamakDemo/logo-header.png" width="640px"/>
 
 ## SwiftUI-compatible framework for building browser apps with WebAssembly
 
-![CI status](https://github.com/swiftwasm/Tokamak/workflows/CI/badge.svg?branch=main)
+[![CI status](https://github.com/swiftwasm/Tokamak/workflows/CI/badge.svg?branch=main)](https://github.com/TokamakUI/Tokamak/actions?query=workflow%3ACI) [![Discord](https://img.shields.io/discord/780838335798706197?label=Discord)](https://discord.gg/ashJW8T8yp)
 
 At the moment Tokamak implements a very basic subset of SwiftUI. Its DOM renderer supports a few
 view types and modifiers (you can check the current list in [the progress
@@ -21,8 +21,8 @@ Don't forget to check [the "Contributing"
 section](https://github.com/swiftwasm/Tokamak#contributing) first.
 
 If you'd like to participate in the growing [SwiftWasm](https://swiftwasm.org) community, you're
-also very welcome to join the `#webassembly` channel in [the SwiftPM
-Slack](https://swift-package-manager.herokuapp.com/).
+also very welcome to join [our Discord server](https://discord.gg/ashJW8T8yp), or the `#webassembly`
+channel in [the SwiftPM Slack](https://swift-package-manager.herokuapp.com/).
 
 ### Example code
 
@@ -82,6 +82,10 @@ struct SVGCircle: View {
 }
 ```
 
+`HTML` doesn't support event listeners, and is declared in the `TokamakStaticHTML` module, which `TokamakDOM` re-exports. The benefit of `HTML` is that you can use it for static rendering in libraries like [TokamakVapor](https://github.com/TokamakUI/TokamakVapor) and [TokamakPublish](https://github.com/TokamakUI/TokamakPublish).
+
+Another option is the `DynamicHTML` view provided by the `TokamakDOM` module, which has a `listeners` property with a corresponding initializer parameter. You can pass closures that can handle `onclick`, `onmouseover` and other DOM events for you in the `listeners` dictionary. Check out [MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers) for the full list.
+
 ### Arbitrary styles and scripts
 
 While [`JavaScriptKit`](https://github.com/swiftwasm/JavaScriptKit) is a great option for occasional interactions with JavaScript,
@@ -91,10 +95,12 @@ DOM access:
 ```swift
 import JavaScriptKit
 
-_ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
-"""#)
-_ = document.head.object!.insertAdjacentHTML!("beforeend", #"""
+let document = JSObject.global.document
+let script = document.createElement("script")
+script.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js")
+document.head.appendChild(script)
+
+_ = document.head.insertAdjacentHTML("beforeend", #"""
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
@@ -107,7 +113,8 @@ app.
 
 ## Requirements for app developers
 
-- macOS 10.15 and Xcode 11.4 or later.
+- macOS 10.15 and Xcode 11.4 or later. macOS 11.0 and Xcode 12.0 or later are required if you're
+  building a multi-platform app with Tokamak that also needs to support SwiftUI on macOS.
 - [Swift 5.2 or later](https://swift.org/download/) and Ubuntu 18.04 if you'd like to use Linux.
   Other Linux distributions are currently not supported.
 
@@ -135,7 +142,7 @@ app by following these steps:
 brew install swiftwasm/tap/carton
 ```
 
-If you had `carton` installed before this, make sure you have version 0.6.1 or greater:
+If you had `carton` installed before this, make sure you have version 0.9.0 or greater:
 
 ```
 carton --version
@@ -164,14 +171,47 @@ carton dev
    running. You can edit the app source code in your favorite editor and save it, `carton`
    will immediately rebuild the app and reload all browser tabs that have the app open.
 
-You can also clone this repository and run `carton dev` in its root directory. This
-will build the demo app that shows almost all of the currently implemented APIs.
+You can also clone this repository and run `carton dev --product TokamakDemo` in its root
+directory. This will build the demo app that shows almost all of the currently implemented APIs.
+
+## Troubleshooting
+
+### `unable to find utility "xctest"` error when building
+
+This error can only happen on macOS, so make sure you have Xcode installed as listed [in the
+requirements](#requirements-for-app-developers). If you do have Xcode installed but still get the
+error, please refer to [this StackOverflow answer](https://stackoverflow.com/a/61725799/442427).
+
+### Syntax highlighting and autocomplete don't work in Xcode
+
+Open `Package.swift` of your project that depends on Tokamak with Xcode and build it for macOS.
+As Xcode currently doesn't support cross-compilation for non-Apple platforms, your project can't
+be indexed if it doesn't build for macOS, even if it isn't fully function on macOS when running.
+If you need to exclude some WebAssembly-specific code in your own app that doesn't compile on macOS,
+you can rely on `#if os(WASI)` compiler directives.
+
+All relevant modules of Tokamak (including `TokamakDOM`) should compile on macOS. You may see issues
+with `TokamakShim` on macOS Catalina, where relevant SwiftUI APIs aren't supported, but replacing
+`import TokamakShim` with `import TokamakDOM` should resolve the issue until you're able to update
+to macOS Big Sur.
+
+If you stumble upon code in Tokamak that doesn't build on macOS and prevents syntax highlighting or
+autocomplete from working in Xcode, please [report it as a
+bug](https://github.com/TokamakUI/Tokamak/issues/new).
+
+### Syntax highlighting and autocomplete don't work in VSCode
+
+Make sure you have [the SourceKit LSP
+extension](https://marketplace.visualstudio.com/items?itemName=pvasek.sourcekit-lsp--dev-unofficial)
+installed. If you don't trust this unofficial release, please follow [the manual building and
+installation guide](https://github.com/apple/sourcekit-lsp/tree/main/Editors/vscode). Apple currently
+doesn't provide an official build of the extension on the VSCode Marketplace unfortunately.
 
 ## Contributing
 
 ### Modular structure
 
-Tokamak is built with modularity in mind, providing a cross-platform `TokamakCore` module and
+Tokamak is built with modularity in mind, providing a multi-platform `TokamakCore` module and
 separate modules for platform-specific renderers. Currently, the only available renderer modules are
 `TokamakDOM` and `TokamakStaticHTML`, the latter can be used for static websites and server-side
 rendering. If you'd like to implement your own custom renderer, please refer to our [renderers
@@ -236,15 +276,20 @@ unacceptable behavior to conduct@tokamak.dev.
 
 ### Sponsorship
 
-If this library saved you any amount of time or money, please consider [sponsoring
-the work of its maintainer](https://github.com/sponsors/MaxDesiatov). While some of the
+If this library saved you any amount of time or money, please consider sponsoring
+the work of its maintainers on their sponsorship pages:
+[@carson-katri](https://github.com/sponsors/carson-katri),
+[@kateinoigakukun](https://github.com/sponsors/kateinoigakukun), and
+[@MaxDesiatov](https://github.com/sponsors/MaxDesiatov). While some of the
 sponsorship tiers give you priority support or even consulting time, any amount is
 appreciated and helps in maintaining the project.
 
 ## Maintainers
 
-[Carson Katri](https://github.com/carson-katri),
-[Jed Fox](https://jedfox.com), [Max Desiatov](https://desiatov.com).
+In alphabetical order: [Carson Katri](https://github.com/carson-katri),
+[David Hunt](https://github.com/foscomputerservices),
+[Jed Fox](https://jedfox.com), [Max Desiatov](https://desiatov.com),
+[Morten Bek Ditlevsen](https://github.com/mortenbekditlevsen/), [Yuta Saito](https://github.com/kateinoigakukun/).
 
 ## Acknowledgments
 

@@ -35,18 +35,14 @@
 ///         print("Set password")
 ///       })
 ///     }
-public struct SecureField<Label>: View where Label: View {
+public struct SecureField<Label>: _PrimitiveView where Label: View {
   let label: Label
   let textBinding: Binding<String>
   let onCommit: () -> ()
-
-  public var body: Never {
-    neverBody("SecureField")
-  }
 }
 
-extension SecureField where Label == Text {
-  public init<S>(
+public extension SecureField where Label == Text {
+  init<S>(
     _ title: S, text: Binding<String>,
     onCommit: @escaping () -> () = {}
   ) where S: StringProtocol {
@@ -57,12 +53,13 @@ extension SecureField where Label == Text {
 }
 
 extension SecureField: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (label as? GroupView)?.children ?? [AnyView(label)]
   }
 }
 
-/// This is a helper class that works around absence of "package private" access control in Swift
+/// This is a helper type that works around absence of "package private" access control in Swift
 public struct _SecureFieldProxy {
   public let subject: SecureField<Text>
 

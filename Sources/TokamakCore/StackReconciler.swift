@@ -1,4 +1,4 @@
-// Copyright 2018-2020 Tokamak contributors
+// Copyright 2018-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,11 +15,10 @@
 //  Created by Max Desiatov on 28/11/2018.
 //
 
-import CombineShim
-import Runtime
+import OpenCombineShim
 
 /** A class that reconciles a "raw" tree of element values (such as `App`, `Scene` and `View`,
- all coming from `body` or `deferredBody` properties) with a tree of mounted element instances
+ all coming from `body` or `renderedBody` properties) with a tree of mounted element instances
  ('MountedApp', `MountedScene`, `MountedCompositeView` and `MountedHostView` respectively). Any
  updates to the former tree are reflected in the latter tree, and then resulting changes are
  delegated to the renderer for it to reflect those in its viewport.
@@ -53,7 +52,7 @@ public final class StackReconciler<R: Renderer> {
   /** A renderer instance to delegate to. Usually the renderer owns the reconciler instance, thus
    the reference has to be weak to avoid a reference cycle.
    **/
-  private(set) weak var renderer: R?
+  private(set) unowned var renderer: R
 
   /** A platform-specific implementation of an event loop scheduler. Usually reconciler
    updates are scheduled in reponse to user input. To make updates non-blocking so that the app
@@ -74,9 +73,9 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootElement = AnyView(view).makeMountedView(target, environment)
+    rootElement = AnyView(view).makeMountedView(renderer, target, environment, nil)
 
-    rootElement.mount(with: self)
+    performInitialMount()
   }
 
   public init<A: App>(
@@ -90,13 +89,18 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootElement = MountedApp(app, target, environment)
+    rootElement = MountedApp(app, target, environment, nil)
 
-    rootElement.mount(with: self)
+    performInitialMount()
     if let mountedApp = rootElement as? MountedApp<R> {
       setupPersistentSubscription(for: app._phasePublisher, to: \.scenePhase, of: mountedApp)
       setupPersistentSubscription(for: app._colorSchemePublisher, to: \.colorScheme, of: mountedApp)
     }
+  }
+
+  private func performInitialMount() {
+    rootElement.mount(with: self)
+    performPostrenderCallbacks()
   }
 
   private func queueStorageUpdate(
@@ -108,7 +112,7 @@ public final class StackReconciler<R: Renderer> {
     queueUpdate(for: mountedElement)
   }
 
-  private func queueUpdate(for mountedElement: MountedCompositeElement<R>) {
+  internal func queueUpdate(for mountedElement: MountedCompositeElement<R>) {
     let shouldSchedule = queuedRerenders.isEmpty
     queuedRerenders.insert(mountedElement)
 
@@ -118,11 +122,14 @@ public final class StackReconciler<R: Renderer> {
   }
 
   private func updateStateAndReconcile() {
-    for mountedView in queuedRerenders {
+    let queued = queuedRerenders
+    queuedRerenders.removeAll()
+
+    for mountedView in queued {
       mountedView.update(with: self)
     }
 
-    queuedRerenders.removeAll()
+    performPostrenderCallbacks()
   }
 
   private func setupStorage(
@@ -131,10 +138,9 @@ public final class StackReconciler<R: Renderer> {
     of compositeElement: MountedCompositeElement<R>,
     body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>
   ) {
-    // swiftlint:disable force_try
     // `ValueStorage` property already filtered out, so safe to assume the value's type
     // swiftlint:disable:next force_cast
-    var storage = try! property.get(from: compositeElement[keyPath: bodyKeypath]) as! ValueStorage
+    var storage = property.get(from: compositeElement[keyPath: bodyKeypath]) as! ValueStorage
 
     if compositeElement.storage.count == id {
       compositeElement.storage.append(storage.anyInitialValue)
@@ -144,7 +150,7 @@ public final class StackReconciler<R: Renderer> {
       storage.getter = { compositeElement.storage[id] }
 
       guard var writableStorage = storage as? WritableValueStorage else {
-        return try! property.set(value: storage, on: &compositeElement[keyPath: bodyKeypath])
+        return property.set(value: storage, on: &compositeElement[keyPath: bodyKeypath])
       }
 
       // Avoiding an indirect reference cycle here: this closure can be owned by callbacks
@@ -154,7 +160,7 @@ public final class StackReconciler<R: Renderer> {
         self?.queueStorageUpdate(for: element, id: id) { $0 = newValue }
       }
 
-      try! property.set(value: writableStorage, on: &compositeElement[keyPath: bodyKeypath])
+      property.set(value: writableStorage, on: &compositeElement[keyPath: bodyKeypath])
     }
   }
 
@@ -165,7 +171,7 @@ public final class StackReconciler<R: Renderer> {
   ) {
     // `ObservedProperty` property already filtered out, so safe to assume the value's type
     // swiftlint:disable force_cast
-    let observed = try! property.get(
+    let observed = property.get(
       from: compositeElement[keyPath: bodyKeypath]
     ) as! ObservedProperty
     // swiftlint:enable force_cast
@@ -195,44 +201,50 @@ public final class StackReconciler<R: Renderer> {
     }.store(in: &mountedApp.persistentSubscriptions)
   }
 
-  func render<T>(
-    compositeElement: MountedCompositeElement<R>,
-    body bodyKeypath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>,
-    result: KeyPath<MountedCompositeElement<R>, (Any) -> T>
-  ) -> T {
-    let info = compositeElement.updateEnvironment()
+  private func body(
+    of compositeElement: MountedCompositeElement<R>,
+    keyPath: ReferenceWritableKeyPath<MountedCompositeElement<R>, Any>
+  ) -> Any {
+    compositeElement.updateEnvironment()
+    if let info = typeInfo(of: compositeElement.type) {
+      var stateIdx = 0
+      let dynamicProps = info.dynamicProperties(
+        &compositeElement.environmentValues,
+        source: &compositeElement[keyPath: keyPath]
+      )
 
-    var stateIdx = 0
-    let dynamicProps = info.dynamicProperties(
-      compositeElement.environmentValues,
-      source: &compositeElement[keyPath: bodyKeypath]
-    )
-
-    compositeElement.transientSubscriptions = []
-    for property in dynamicProps {
-      // Setup state/subscriptions
-      if property.type is ValueStorage.Type {
-        setupStorage(id: stateIdx, for: property, of: compositeElement, body: bodyKeypath)
-        stateIdx += 1
-      }
-      if property.type is ObservedProperty.Type {
-        setupTransientSubscription(for: property, of: compositeElement, body: bodyKeypath)
+      compositeElement.transientSubscriptions = []
+      for property in dynamicProps {
+        // Setup state/subscriptions
+        if property.type is ValueStorage.Type {
+          setupStorage(id: stateIdx, for: property, of: compositeElement, body: keyPath)
+          stateIdx += 1
+        }
+        if property.type is ObservedProperty.Type {
+          setupTransientSubscription(for: property, of: compositeElement, body: keyPath)
+        }
       }
     }
 
-    return compositeElement[keyPath: result](compositeElement[keyPath: bodyKeypath])
+    return compositeElement[keyPath: keyPath]
   }
 
   func render(compositeView: MountedCompositeView<R>) -> AnyView {
-    render(compositeElement: compositeView, body: \.view.view, result: \.view.bodyClosure)
+    let view = body(of: compositeView, keyPath: \.view.view)
+
+    guard let renderedBody = renderer.primitiveBody(for: view) else {
+      return compositeView.view.bodyClosure(view)
+    }
+
+    return renderedBody
   }
 
   func render(mountedApp: MountedApp<R>) -> _AnyScene {
-    render(compositeElement: mountedApp, body: \.app.app, result: \.app.bodyClosure)
+    mountedApp.app.bodyClosure(body(of: mountedApp, keyPath: \.app.app))
   }
 
   func render(mountedScene: MountedScene<R>) -> _AnyScene.BodyResult {
-    render(compositeElement: mountedScene, body: \.scene.scene, result: \.scene.bodyClosure)
+    mountedScene.scene.bodyClosure(body(of: mountedScene, keyPath: \.scene.scene))
   }
 
   func reconcile<Element>(
@@ -257,14 +269,8 @@ public final class StackReconciler<R: Renderer> {
     case let (mountedChild?, childBody):
       let childBodyType = getElementType(childBody)
 
-      // FIXME: no idea if using `mangledName` is reliable, but seems to be the only way to get
-      // a name of a type constructor in runtime. Should definitely check if these are different
-      // across modules, otherwise can cause problems with views with same names in different
-      // modules.
-
       // new child has the same type as existing child
-      // swiftlint:disable:next force_try
-      if try! mountedChild.typeConstructorName == typeInfo(of: childBodyType).mangledName {
+      if mountedChild.typeConstructorName == typeConstructorName(childBodyType) {
         updateChild(mountedChild)
         mountedChild.update(with: self)
       } else {
@@ -277,5 +283,15 @@ public final class StackReconciler<R: Renderer> {
         newMountedChild.mount(with: self)
       }
     }
+  }
+
+  private var queuedPostrenderCallbacks = [() -> ()]()
+  func afterCurrentRender(perform callback: @escaping () -> ()) {
+    queuedPostrenderCallbacks.append(callback)
+  }
+
+  private func performPostrenderCallbacks() {
+    queuedPostrenderCallbacks.forEach { $0() }
+    queuedPostrenderCallbacks.removeAll()
   }
 }

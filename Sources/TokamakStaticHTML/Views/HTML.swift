@@ -32,6 +32,8 @@ public struct HTMLAttribute: Hashable {
   }
 
   public static let value = HTMLAttribute("value", isUpdatedAsProperty: true)
+
+  public static let checked = HTMLAttribute("checked", isUpdatedAsProperty: true)
 }
 
 extension HTMLAttribute: CustomStringConvertible {
@@ -45,17 +47,34 @@ extension HTMLAttribute: ExpressibleByStringLiteral {
 }
 
 public protocol AnyHTML {
-  var innerHTML: String? { get }
+  func innerHTML(shouldSortAttributes: Bool) -> String?
   var tag: String { get }
   var attributes: [HTMLAttribute: String] { get }
 }
 
-extension AnyHTML {
-  public var outerHTML: String {
-    """
+public extension AnyHTML {
+  func outerHTML(shouldSortAttributes: Bool, children: [HTMLTarget]) -> String {
+    let renderedAttributes: String
+    if attributes.isEmpty {
+      renderedAttributes = ""
+    } else {
+      let mappedAttributes = attributes
+        // Exclude empty values to avoid waste of space with `class=""`
+        .filter { !$1.isEmpty }
+        .map { #"\#($0)="\#($1)""# }
+      if shouldSortAttributes {
+        renderedAttributes = mappedAttributes.sorted().joined(separator: " ")
+      } else {
+        renderedAttributes = mappedAttributes.joined(separator: " ")
+      }
+    }
+
+    return """
     <\(tag)\(attributes.isEmpty ? "" : " ")\
-    \(attributes.map { #"\#($0)="\#($1)""# }.joined(separator: " "))>\
-    \(innerHTML ?? "")\
+    \(renderedAttributes)>\
+    \(innerHTML(shouldSortAttributes: shouldSortAttributes) ?? "")\
+    \(children.map { $0.outerHTML(shouldSortAttributes: shouldSortAttributes) }
+      .joined(separator: "\n"))\
     </\(tag)>
     """
   }
@@ -66,15 +85,20 @@ public struct HTML<Content>: View, AnyHTML {
   public let attributes: [HTMLAttribute: String]
   let content: Content
 
-  public let innerHTML: String?
+  fileprivate let cachedInnerHTML: String?
 
+  public func innerHTML(shouldSortAttributes: Bool) -> String? {
+    cachedInnerHTML
+  }
+
+  @_spi(TokamakCore)
   public var body: Never {
     neverBody("HTML")
   }
 }
 
-extension HTML where Content: StringProtocol {
-  public init(
+public extension HTML where Content: StringProtocol {
+  init(
     _ tag: String,
     _ attributes: [HTMLAttribute: String] = [:],
     content: Content
@@ -82,7 +106,7 @@ extension HTML where Content: StringProtocol {
     self.tag = tag
     self.attributes = attributes
     self.content = content
-    innerHTML = String(content)
+    cachedInnerHTML = String(content)
   }
 }
 
@@ -95,16 +119,17 @@ extension HTML: ParentView where Content: View {
     self.tag = tag
     self.attributes = attributes
     self.content = content()
-    innerHTML = nil
+    cachedInnerHTML = nil
   }
 
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     [AnyView(content)]
   }
 }
 
-extension HTML where Content == EmptyView {
-  public init(
+public extension HTML where Content == EmptyView {
+  init(
     _ tag: String,
     _ attributes: [HTMLAttribute: String] = [:]
   ) {
@@ -116,8 +141,8 @@ public protocol StylesConvertible {
   var styles: [String: String] { get }
 }
 
-extension Dictionary {
-  public var inlineStyles: String {
+public extension Dictionary {
+  var inlineStyles: String {
     map { "\($0.0): \($0.1);" }
       .joined(separator: " ")
   }

@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Foundation
 import TokamakShim
 
 struct Star: Shape {
@@ -30,8 +31,13 @@ struct Star: Shape {
 struct PathDemo: View {
   var body: some View {
     VStack {
-      Star()
-        .fill(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1))
+      HStack {
+        Star()
+          .fill(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1))
+        Circle()
+          .stroke(Color.blue)
+          .frame(width: 80, height: 80, alignment: .center)
+      }
       Path { path in
         path.addRect(.init(origin: .zero, size: .init(width: 20, height: 20)))
         path.addEllipse(in: .init(

@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/17/20.
 //
 
-import CombineShim
+import OpenCombineShim
 
 /// The renderer must specify a default `_StorageProvider` before any `SceneStorage`
 /// values are accessed.
@@ -53,36 +53,36 @@ public enum _DefaultSceneStorageProvider {
 
 extension SceneStorage: ObservedProperty {}
 
-extension SceneStorage {
-  public init(wrappedValue: Value, _ key: String) where Value == Bool {
+public extension SceneStorage {
+  init(wrappedValue: Value, _ key: String) where Value == Bool {
     defaultValue = wrappedValue
     self.key = key
     store = { $0.store(key: $1, value: $2) }
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value, _ key: String) where Value == Int {
+  init(wrappedValue: Value, _ key: String) where Value == Int {
     defaultValue = wrappedValue
     self.key = key
     store = { $0.store(key: $1, value: $2) }
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value, _ key: String) where Value == Double {
+  init(wrappedValue: Value, _ key: String) where Value == Double {
     defaultValue = wrappedValue
     self.key = key
     store = { $0.store(key: $1, value: $2) }
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value, _ key: String) where Value == String {
+  init(wrappedValue: Value, _ key: String) where Value == String {
     defaultValue = wrappedValue
     self.key = key
     store = { $0.store(key: $1, value: $2) }
     read = { $0.read(key: $1) }
   }
 
-  public init(wrappedValue: Value, _ key: String) where Value: RawRepresentable,
+  init(wrappedValue: Value, _ key: String) where Value: RawRepresentable,
     Value.RawValue == Int
   {
     defaultValue = wrappedValue
@@ -96,7 +96,7 @@ extension SceneStorage {
     }
   }
 
-  public init(wrappedValue: Value, _ key: String)
+  init(wrappedValue: Value, _ key: String)
     where Value: RawRepresentable, Value.RawValue == String
   {
     defaultValue = wrappedValue

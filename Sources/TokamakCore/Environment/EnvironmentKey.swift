@@ -30,17 +30,15 @@ public struct _EnvironmentKeyWritingModifier<Value>: ViewModifier, EnvironmentMo
     self.value = value
   }
 
-  public func body(content: Content) -> some View {
-    content
-  }
+  public typealias Body = Never
 
   func modifyEnvironment(_ values: inout EnvironmentValues) {
     values[keyPath: keyPath] = value
   }
 }
 
-extension View {
-  public func environment<V>(
+public extension View {
+  func environment<V>(
     _ keyPath: WritableKeyPath<EnvironmentValues, V>,
     _ value: V
   ) -> some View {

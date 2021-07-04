@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
 //  Created by Carson Katri on 06/29/2020.
 //
 
+import Foundation
+
 public struct _ClipEffect<ClipShape>: ViewModifier where ClipShape: Shape {
   public var shape: ClipShape
   public var style: FillStyle
@@ -29,19 +31,19 @@ public struct _ClipEffect<ClipShape>: ViewModifier where ClipShape: Shape {
   }
 }
 
-extension View {
-  public func clipShape<S>(_ shape: S, style: FillStyle = FillStyle()) -> some View where S: Shape {
+public extension View {
+  func clipShape<S>(_ shape: S, style: FillStyle = FillStyle()) -> some View where S: Shape {
     modifier(_ClipEffect(shape: shape, style: style))
   }
 
-  public func clipped(antialiased: Bool = false) -> some View {
+  func clipped(antialiased: Bool = false) -> some View {
     clipShape(
       Rectangle(),
       style: FillStyle(antialiased: antialiased)
     )
   }
 
-  public func cornerRadius(_ radius: CGFloat, antialiased: Bool = true) -> some View {
+  func cornerRadius(_ radius: CGFloat, antialiased: Bool = true) -> some View {
     clipShape(
       RoundedRectangle(cornerRadius: radius),
       style: FillStyle(antialiased: antialiased)

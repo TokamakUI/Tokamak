@@ -92,8 +92,8 @@ extension EnvironmentValues {
   }
 }
 
-extension View {
-  public func listStyle<S>(_ style: S) -> some View where S: ListStyle {
+public extension View {
+  func listStyle<S>(_ style: S) -> some View where S: ListStyle {
     environment(\.listStyle, style)
   }
 }

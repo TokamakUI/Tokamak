@@ -30,7 +30,7 @@ public struct CheckboxToggleStyle: ToggleStyle {
   public func makeBody(configuration: ToggleStyleConfiguration) -> some View {
     var attrs: [HTMLAttribute: String] = ["type": "checkbox"]
     if configuration.isOn {
-      attrs["checked"] = "checked"
+      attrs[.checked] = "checked"
     }
     return HTML("label") {
       DynamicHTML("input", attrs, listeners: [

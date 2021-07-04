@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/3/20.
 //
 
-public struct DisclosureGroup<Label, Content>: View where Label: View, Content: View {
+public struct DisclosureGroup<Label, Content>: _PrimitiveView where Label: View, Content: View {
   @State var isExpanded: Bool = false
   let isExpandedBinding: Binding<Bool>?
 
@@ -39,13 +39,9 @@ public struct DisclosureGroup<Label, Content>: View where Label: View, Content: 
     self.label = label()
     self.content = content
   }
-
-  public var body: Never {
-    neverBody("DisclosureGroup")
-  }
 }
 
-extension DisclosureGroup where Label == Text {
+public extension DisclosureGroup where Label == Text {
   // FIXME: Implement LocalizedStringKey
 //  public init(_ titleKey: LocalizedStringKey,
 //              @ViewBuilder content: @escaping () -> Content)
@@ -54,14 +50,14 @@ extension DisclosureGroup where Label == Text {
 //              @SwiftUI.ViewBuilder content: @escaping () -> Content)
 
   @_disfavoredOverload
-  public init<S>(_ label: S, @ViewBuilder content: @escaping () -> Content)
+  init<S>(_ label: S, @ViewBuilder content: @escaping () -> Content)
     where S: StringProtocol
   {
     self.init(content: content, label: { Text(label) })
   }
 
   @_disfavoredOverload
-  public init<S>(
+  init<S>(
     _ label: S,
     isExpanded: Binding<Bool>,
     @ViewBuilder content: @escaping () -> Content

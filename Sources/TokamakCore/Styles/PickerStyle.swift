@@ -39,8 +39,8 @@ extension EnvironmentValues {
   }
 }
 
-extension View {
-  public func pickerStyle(_ style: PickerStyle) -> some View {
+public extension View {
+  func pickerStyle(_ style: PickerStyle) -> some View {
     environment(\.pickerStyle, style)
   }
 }

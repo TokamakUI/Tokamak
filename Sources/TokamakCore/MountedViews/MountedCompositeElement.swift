@@ -1,4 +1,4 @@
-// Copyright 2018-2020 Tokamak contributors
+// Copyright 2018-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/19/20.
 //
 
-import CombineShim
+import OpenCombineShim
 
 class MountedCompositeElement<R: Renderer>: MountedElement<R> {
   let parentTarget: R.TargetType
@@ -37,19 +37,34 @@ class MountedCompositeElement<R: Renderer>: MountedElement<R> {
    */
   var persistentSubscriptions = [AnyCancellable]()
 
-  init<A: App>(_ app: A, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
+  init<A: App>(
+    _ app: A,
+    _ parentTarget: R.TargetType,
+    _ environmentValues: EnvironmentValues,
+    _ parent: MountedElement<R>?
+  ) {
     self.parentTarget = parentTarget
-    super.init(_AnyApp(app), environmentValues)
+    super.init(_AnyApp(app), environmentValues, parent)
   }
 
-  init(_ scene: _AnyScene, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
+  init(
+    _ scene: _AnyScene,
+    _ parentTarget: R.TargetType,
+    _ environmentValues: EnvironmentValues,
+    _ parent: MountedElement<R>?
+  ) {
     self.parentTarget = parentTarget
-    super.init(scene, environmentValues)
+    super.init(scene, environmentValues, parent)
   }
 
-  init(_ view: AnyView, _ parentTarget: R.TargetType, _ environmentValues: EnvironmentValues) {
+  init(
+    _ view: AnyView,
+    _ parentTarget: R.TargetType,
+    _ environmentValues: EnvironmentValues,
+    _ parent: MountedElement<R>?
+  ) {
     self.parentTarget = parentTarget
-    super.init(view, environmentValues)
+    super.init(view, environmentValues, parent)
   }
 }
 
