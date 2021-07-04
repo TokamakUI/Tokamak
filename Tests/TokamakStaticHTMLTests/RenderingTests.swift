@@ -128,7 +128,7 @@ struct Opacity: View {
   }
 }
 
-final class LayoutTests: XCTestCase {
+final class RenderingTests: XCTestCase {
   func testPath() {
     assertSnapshot(
       matching: Star().fill(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1)),
