@@ -25,7 +25,7 @@ struct MetadataOffset<Pointee> {
 
   func apply(to ptr: UnsafeRawPointer) -> UnsafePointer<Pointee> {
     #if arch(wasm32)
-    return unsafeBitCast(offset, to: UnsafePointer<Pointee>.self)
+    return UnsafePointer<Pointee>(bitPattern: Int(offset))!
     #else
     return ptr.advanced(by: numericCast(offset)).assumingMemoryBound(to: Pointee.self)
     #endif
