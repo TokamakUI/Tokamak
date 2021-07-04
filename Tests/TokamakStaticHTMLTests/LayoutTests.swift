@@ -87,6 +87,14 @@ final class LayoutTests: XCTestCase {
       timeout: 10
     )
   }
+
+  func testStrokedCircle() {
+    assertSnapshot(
+      matching: Circle().stroke(Color.green).frame(width: 100, height: 100, alignment: .center),
+      as: .image(size: .init(width: 150, height: 150)),
+      timeout: 10
+    )
+  }
 }
 
 #endif
