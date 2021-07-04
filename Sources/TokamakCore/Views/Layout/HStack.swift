@@ -24,7 +24,7 @@ public enum VerticalAlignment: Equatable {
   case bottom
 }
 
-let defaultStackSpacing: CGFloat = 8
+public let defaultStackSpacing: CGFloat = 8
 
 /// A view that arranges its children in a horizontal line.
 ///

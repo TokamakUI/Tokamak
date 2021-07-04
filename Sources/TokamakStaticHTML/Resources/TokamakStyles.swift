@@ -12,17 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import TokamakCore
+
 public let tokamakStyles = """
 ._tokamak-stack {
   display: grid;
 }
 ._tokamak-hstack {
   grid-auto-flow: column;
-  column-gap: var(--tokamak-stack-gap);
+  column-gap: var(--tokamak-stack-gap, \(Int(defaultStackSpacing))px);
 }
 ._tokamak-vstack {
   grid-auto-flow: row;
-  row-gap: var(--tokamak-stack-gap);
+  row-gap: var(--tokamak-stack-gap, \(Int(defaultStackSpacing))px);
 }
 ._tokamak-scrollview-hideindicators {
   scrollbar-color: transparent;

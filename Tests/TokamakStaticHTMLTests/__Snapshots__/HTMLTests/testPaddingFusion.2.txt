@@ -7,11 +7,11 @@
 }
 ._tokamak-hstack {
   grid-auto-flow: column;
-  column-gap: var(--tokamak-stack-gap);
+  column-gap: var(--tokamak-stack-gap, 8px);
 }
 ._tokamak-vstack {
   grid-auto-flow: row;
-  row-gap: var(--tokamak-stack-gap);
+  row-gap: var(--tokamak-stack-gap, 8px);
 }
 ._tokamak-scrollview-hideindicators {
   scrollbar-color: transparent;
