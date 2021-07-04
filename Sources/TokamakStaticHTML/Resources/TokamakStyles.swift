@@ -17,17 +17,15 @@
 // browsers with enough adoption
 public let tokamakStyles = """
 ._tokamak-stack {
-  display: flex;
-  flex-direction: row;
+  display: grid;
 }
-._tokamak-stack > * {
-  flex-shrink: 0;
+._tokamak-hstack {
+  grid-auto-flow: column;
+  column-gap: var(--tokamak-stack-gap);
 }
-._tokamak-hstack > * {
-  margin: 0px var(--tokamak-stack-gap);
-}
-._tokamak-vstack > * {
-  margin: var(--tokamak-stack-gap) 0px;
+._tokamak-vstack {
+  grid-auto-flow: row;
+  row-gap: var(--tokamak-stack-gap);
 }
 ._tokamak-scrollview-hideindicators {
   scrollbar-color: transparent;

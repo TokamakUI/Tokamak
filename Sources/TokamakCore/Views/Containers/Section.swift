@@ -81,7 +81,7 @@ extension Section: View, SectionView where Parent: View, Content: View, Footer: 
 
   func listRow(_ style: ListStyle) -> AnyView {
     AnyView(
-      VStack(alignment: .leading) {
+      VStack(alignment: .leading, spacing: 0) {
         headerView(style)
         sectionContent(style)
         footerView(style)

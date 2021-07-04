@@ -2,8 +2,16 @@
 <head>
   <title></title>
   <style>
-    ._tokamak-stack > * {
-  flex-shrink: 0;
+    ._tokamak-stack {
+  display: grid;
+}
+._tokamak-hstack {
+  grid-auto-flow: column;
+  column-gap: var(--tokamak-stack-gap);
+}
+._tokamak-vstack {
+  grid-auto-flow: row;
+  row-gap: var(--tokamak-stack-gap);
 }
 ._tokamak-scrollview-hideindicators {
   scrollbar-color: transparent;
@@ -115,9 +123,10 @@ width: 100%;
 height: 100%;
 justify-content: center;
 align-items: center;
-overflow: hidden;"><div class="_tokamak-stack" style="display: flex; flex-direction: column; align-items: center;
+overflow: hidden;"><div class="_tokamak-stack _tokamak-vstack" style="justify-items: center;
 height: 100%;
-"><span style="
+
+--tokamak-stack-gap: 8.0px"><span style="
 font-family: system,
 -apple-system,
 '.SFNSText-Regular',

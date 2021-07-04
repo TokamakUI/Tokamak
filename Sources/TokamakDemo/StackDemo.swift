@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Foundation
 import TokamakShim
 
 struct StackDemo: View {
-  @State private var horizontalSpacing: CGFloat = 0
-  @State private var verticalSpacing: CGFloat = 0
+  @State private var horizontalSpacing: CGFloat = 8
+  @State private var verticalSpacing: CGFloat = 8
 
   var body: some View {
     VStack(spacing: verticalSpacing) {

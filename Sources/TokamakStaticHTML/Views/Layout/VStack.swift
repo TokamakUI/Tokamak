@@ -34,10 +34,10 @@ extension VStack: _HTMLPrimitive, SpacerContainer {
   public var renderedBody: AnyView {
     AnyView(HTML("div", [
       "style": """
-      display: flex; flex-direction: column; align-items: \(alignment.cssValue);
+      justify-items: \(alignment.cssValue);
       \(hasSpacer ? "height: 100%;" : "")
       \(fillCrossAxis ? "width: 100%;" : "")
-      --tokamak-stack-gap: \(spacing ?? 0)px
+      --tokamak-stack-gap: \(_VStackProxy(self).spacing)px
       """,
       "class": "_tokamak-stack _tokamak-vstack",
     ]) { content })
