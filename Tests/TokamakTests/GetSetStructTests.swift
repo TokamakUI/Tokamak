@@ -23,7 +23,6 @@
 @testable import TokamakCore
 import XCTest
 
-// swiftlint:disable type_body_length
 class GetSetStructTests: XCTestCase {
   // swiftlint:disable force_cast
   func testGet() throws {

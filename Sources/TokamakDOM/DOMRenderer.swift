@@ -95,6 +95,16 @@ final class DOMRenderer: Renderer {
     ) { scheduler.schedule(options: nil, $0) }
   }
 
+  private func fixSpacers(host: MountedHost, target: JSObject) {
+    let fillAxes = host.view.fillAxes
+    if fillAxes.contains(.horizontal) {
+      target.style.object!.width = "100%"
+    }
+    if fillAxes.contains(.vertical) {
+      target.style.object!.height = "100%"
+    }
+  }
+
   public func mountTarget(
     before sibling: DOMNode?,
     to parent: DOMNode,
@@ -136,13 +146,7 @@ final class DOMRenderer: Renderer {
 
     guard let resultingNode = maybeNode else { return nil }
 
-    let fillAxes = host.view.fillAxes
-    if fillAxes.contains(.horizontal) {
-      resultingNode.style.object!.width = "100%"
-    }
-    if fillAxes.contains(.vertical) {
-      resultingNode.style.object!.height = "100%"
-    }
+    fixSpacers(host: host, target: resultingNode)
 
     if let dynamicHTML = anyHTML as? AnyDynamicHTML {
       return DOMNode(host.view, resultingNode, dynamicHTML.listeners)
@@ -156,6 +160,8 @@ final class DOMRenderer: Renderer {
     else { return }
 
     html.update(dom: target)
+
+    fixSpacers(host: host, target: target.ref)
   }
 
   func unmount(

@@ -17,6 +17,7 @@
 
 import CGDK
 import CGTK
+import Foundation
 import TokamakCore
 
 func createPath(from elements: [Path.Element], in cr: OpaquePointer) {
@@ -25,12 +26,12 @@ func createPath(from elements: [Path.Element], in cr: OpaquePointer) {
   for element in elements {
     switch element {
     case let .move(to: p):
-      cairo_move_to(cr, p.x, p.y)
+      cairo_move_to(cr, Double(p.x), Double(p.y))
       current = p
       start = p
 
     case let .line(to: p):
-      cairo_line_to(cr, p.x, p.y)
+      cairo_line_to(cr, Double(p.x), Double(p.y))
       current = p
 
     case .closeSubpath:
@@ -38,13 +39,29 @@ func createPath(from elements: [Path.Element], in cr: OpaquePointer) {
       current = start
 
     case let .curve(to: p, control1: c1, control2: c2):
-      cairo_curve_to(cr, c1.x, c1.y, c2.x, c2.y, p.x, p.y)
+      cairo_curve_to(
+        cr,
+        Double(c1.x),
+        Double(c1.y),
+        Double(c2.x),
+        Double(c2.y),
+        Double(p.x),
+        Double(p.y)
+      )
       current = p
 
     case let .quadCurve(to: p, control: c):
       let c1 = CGPoint(x: (current.x + 2 * c.x) / 3, y: (current.y + 2 * c.y) / 3)
       let c2 = CGPoint(x: (p.x + 2 * c.x) / 3, y: (p.y + 2 * c.y) / 3)
-      cairo_curve_to(cr, c1.x, c1.y, c2.x, c2.y, p.x, p.y)
+      cairo_curve_to(
+        cr,
+        Double(c1.x),
+        Double(c1.y),
+        Double(c2.x),
+        Double(c2.y),
+        Double(p.x),
+        Double(p.y)
+      )
       current = p
     }
   }
@@ -87,12 +104,12 @@ extension _ShapeView: GTKPrimitive {
         stroke = true
         let style = strokedPath.style
 
-        cairo_set_line_width(cr, style.lineWidth)
+        cairo_set_line_width(cr, Double(style.lineWidth))
         cairo_set_line_join(cr, style.lineJoin.cairo)
         cairo_set_line_cap(cr, style.lineCap.cairo)
-        cairo_set_miter_limit(cr, style.miterLimit)
-        cairo_set_dash(cr, style.dash, Int32(style.dash.count), style.dashPhase)
-
+        cairo_set_miter_limit(cr, Double(style.miterLimit))
+        let dash = style.dash.map(Double.init)
+        cairo_set_dash(cr, dash, Int32(dash.count), Double(style.dashPhase))
       } else {
         elements = path.elements
         stroke = false

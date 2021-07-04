@@ -167,4 +167,3 @@ final class ReconcilerTests: XCTestCase {
     XCTAssertEqual(stack.subviews.count, 1)
   }
 }
-#endif

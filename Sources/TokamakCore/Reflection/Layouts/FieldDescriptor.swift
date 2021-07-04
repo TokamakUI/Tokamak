@@ -30,9 +30,9 @@ func _getTypeByMangledNameInContext(
   _ nameLength: UInt,
   _ genericContext: UnsafeRawPointer?,
   _ genericArguments: UnsafeRawPointer?
-)
-  -> Any.Type?
+) -> Any.Type?
 
+// swiftlint:disable:next line_length
 /// https://github.com/apple/swift/blob/f2c42509628bed66bf5b8ee02fae778a2ba747a1/include/swift/Reflection/Records.h#L160
 struct FieldDescriptor {
   let mangledTypeNameOffset: Int32

@@ -15,7 +15,7 @@
 //  Created by Max Desiatov on 03/12/2018.
 //
 
-import CombineShim
+import OpenCombineShim
 
 final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
   override func mount(
@@ -34,8 +34,8 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     mountedChildren = [child]
     child.mount(before: sibling, on: self, with: reconciler)
 
-    // `_TargetRef` (and `TargetRefType` generic eraser protocol it conforms to) is a composite view, so it's enough
-    // to check for it only here.
+    // `_TargetRef` (and `TargetRefType` generic eraser protocol it conforms to) is a composite
+    // view, so it's enough check for it only here.
     if var targetRef = view.view as? TargetRefType {
       // `_TargetRef` body is not always a host view that has a target, need to traverse
       // all descendants to find a `MountedHostView<R>` instance.

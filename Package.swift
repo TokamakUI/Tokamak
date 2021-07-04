@@ -53,9 +53,24 @@ let package = Package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
       .upToNextMinor(from: "0.10.0")
     ),
-    .package(url: "https://github.com/OpenCombine/OpenCombine.git", from: "0.12.0"),
-    .package(url: "https://github.com/swiftwasm/OpenCombineJS.git", .upToNextMinor(from: "0.1.1")),
-    .package(name: "Benchmark", url: "https://github.com/google/swift-benchmark", from: "0.1.0"),
+    .package(
+      url: "https://github.com/OpenCombine/OpenCombine.git",
+      from: "0.12.0"
+    ),
+    .package(
+      url: "https://github.com/swiftwasm/OpenCombineJS.git",
+      .upToNextMinor(from: "0.1.1")
+    ),
+    .package(
+      name: "Benchmark",
+      url: "https://github.com/google/swift-benchmark",
+      from: "0.1.0"
+    ),
+    .package(
+      name: "SnapshotTesting",
+      url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
+      from: "1.9.0"
+    ),
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define
@@ -63,16 +78,13 @@ let package = Package(
     // Targets can depend on other targets in this package, and on products
     // in packages which this package depends on.
     .target(
-      name: "CombineShim",
-      dependencies: [.product(
-        name: "OpenCombine",
-        package: "OpenCombine",
-        condition: .when(platforms: [.wasi, .linux])
-      )]
-    ),
-    .target(
       name: "TokamakCore",
-      dependencies: ["CombineShim"]
+      dependencies: [
+        .product(
+          name: "OpenCombineShim",
+          package: "OpenCombine"
+        ),
+      ]
     ),
     .target(
       name: "TokamakShim",
@@ -105,7 +117,13 @@ let package = Package(
     ),
     .target(
       name: "TokamakGTK",
-      dependencies: ["TokamakCore", "CGTK", "CGDK", "TokamakGTKCHelpers", "CombineShim"]
+      dependencies: [
+        "TokamakCore", "CGTK", "CGDK", "TokamakGTKCHelpers",
+        .product(
+          name: "OpenCombineShim",
+          package: "OpenCombine"
+        ),
+      ]
     ),
     .target(
       name: "TokamakGTKDemo",
@@ -135,15 +153,18 @@ let package = Package(
     .target(
       name: "TokamakDOM",
       dependencies: [
-        "CombineShim",
-        "OpenCombineJS",
         "TokamakCore",
         "TokamakStaticHTML",
+        .product(
+          name: "OpenCombineShim",
+          package: "OpenCombine"
+        ),
         .product(
           name: "JavaScriptKit",
           package: "JavaScriptKit",
           condition: .when(platforms: [.wasi])
         ),
+        "OpenCombineJS",
       ]
     ),
     .target(
@@ -181,7 +202,15 @@ let package = Package(
     ),
     .testTarget(
       name: "TokamakStaticHTMLTests",
-      dependencies: ["TokamakStaticHTML"]
+      dependencies: [
+        "TokamakStaticHTML",
+        .product(
+          name: "SnapshotTesting",
+          package: "SnapshotTesting",
+          condition: .when(platforms: [.macOS])
+        ),
+      ],
+      exclude: ["__Snapshots__"]
     ),
   ]
 )
