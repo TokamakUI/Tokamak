@@ -16,12 +16,12 @@ import JavaScriptKit
 import TokamakCore
 import TokamakStaticHTML
 
-extension _PickerContainer: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
+extension _PickerContainer: DOMPrimitive {
+  var renderedBody: AnyView {
     AnyView(HTML("label") {
       label
       Text(" ")
-      DynamicHTML("select", ["class": "_tokamak-picker"], listeners: ["change": {
+      DynamicHTML("select", ["class": "_tokamak-formcontrol"], listeners: ["change": {
         guard
           let valueString = $0.target.object!.value.string,
           let value = Int(valueString) as? SelectionValue
@@ -34,11 +34,11 @@ extension _PickerContainer: ViewDeferredToRenderer {
   }
 }
 
-extension _PickerElement: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
-    let attributes: [String: String]
+extension _PickerElement: DOMPrimitive {
+  var renderedBody: AnyView {
+    let attributes: [HTMLAttribute: String]
     if let value = valueIndex {
-      attributes = ["value": "\(value)"]
+      attributes = [.value: "\(value)"]
     } else {
       attributes = [:]
     }

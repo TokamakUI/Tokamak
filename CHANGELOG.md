@@ -1,4 +1,180 @@
-# 0.3.0 (19 August, 2020)
+# 0.7.0 (3 May 2021)
+
+This release introduces new view types such as `DatePicker`, new modifiers such as `shadow`,
+improves test coverage, updates dependencies, and fixes multiple bugs and crashes. Additionally,
+a proof of concept GTK renderer is now available in the `TokamakGTK` module.
+
+Many thanks to (in alphabetical order)
+[@carson-katri](https://github.com/carson-katri), [@filip-sakel](https://github.com/filip-sakel),
+[@foscomputerservices](https://github.com/foscomputerservices), [@literalpie](https://github.com/literalpie),
+[@mattpolzin](https://github.com/mattpolzin), [@mortenbekditlevsen](https://github.com/mortenbekditlevsen),
+and [@Snowy1803](https://github.com/Snowy1803) for their contributions to this release!
+
+**Closed issues:**
+
+- `@ObservedObject` is a get-only property ([#392](https://github.com/TokamakUI/Tokamak/issues/392))
+- What is the difference between `HTML` and `DynamicHTML`? ([#388](https://github.com/TokamakUI/Tokamak/issues/388))
+- Reduce `View.body` Visibility ([#385](https://github.com/TokamakUI/Tokamak/issues/385))
+- Verify that type constructor names contain contain module names ([#368](https://github.com/TokamakUI/Tokamak/issues/368))
+- Crash when using a `View` with optional content ([#362](https://github.com/TokamakUI/Tokamak/issues/362))
+- Set up code coverage reports on GitHub Actions ([#350](https://github.com/TokamakUI/Tokamak/issues/350))
+- Shadow support ([#324](https://github.com/TokamakUI/Tokamak/issues/324))
+- Implement `DatePicker` view in the DOM renderer ([#320](https://github.com/TokamakUI/Tokamak/issues/320))
+- `TokamakDemo` build failed ([#305](https://github.com/TokamakUI/Tokamak/issues/305))
+
+**Merged pull requests:**
+
+- Add `@dynamicMemberLookup` to `Binding` ([#396](https://github.com/TokamakUI/Tokamak/pull/396)) via [@carson-katri](https://github.com/carson-katri)
+- Add `DatePicker` to the `TokamakDOM` module ([#394](https://github.com/TokamakUI/Tokamak/pull/394)) via [@Snowy1803](https://github.com/Snowy1803)
+- Use `String(reflecting:)` vs `String(describing:)` ([#391](https://github.com/TokamakUI/Tokamak/pull/391)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Clarify the difference between `HTML` and `DynamicHTML` ([#389](https://github.com/TokamakUI/Tokamak/pull/389)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add `_spi(TokamakCore)` to ideally internal public members ([#386](https://github.com/TokamakUI/Tokamak/pull/386)) via [@filip-sakel](https://github.com/filip-sakel)
+- Make properties of `CGPoint`, `CGSize` and `CGRect` `var`s instead of `let`s ([#382](https://github.com/TokamakUI/Tokamak/pull/382)) via [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)
+- Use immediate scheduler in `TestRenderer` ([#380](https://github.com/TokamakUI/Tokamak/pull/380)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Simple Code Coverage analysis ([#378](https://github.com/TokamakUI/Tokamak/pull/378)) via [@mattpolzin](https://github.com/mattpolzin)
+- Add checks for metadata state ([#375](https://github.com/TokamakUI/Tokamak/pull/375)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Use upstream OpenCombine instead of a fork ([#377](https://github.com/TokamakUI/Tokamak/pull/377)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Update JavaScriptKit, OpenCombineJS dependencies ([#376](https://github.com/TokamakUI/Tokamak/pull/376)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Clean up metadata reflection code ([#372](https://github.com/TokamakUI/Tokamak/pull/372)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add David Hunt to the list of maintainers ([#373](https://github.com/TokamakUI/Tokamak/pull/373)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Refactor environment injection, add a test ([#371](https://github.com/TokamakUI/Tokamak/pull/371)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Replace uses of the Runtime library with stdlib ([#370](https://github.com/TokamakUI/Tokamak/pull/370)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Use `macos-latest` agent for the GTK build ([#360](https://github.com/TokamakUI/Tokamak/pull/360)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add a benchmark target and a script to run it ([#365](https://github.com/TokamakUI/Tokamak/pull/365)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Fix crashes in views with optional content ([#364](https://github.com/TokamakUI/Tokamak/pull/364)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add GTK support for `SecureField` ([#363](https://github.com/TokamakUI/Tokamak/pull/363)) via [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)
+- Add support for shadow modifier ([#355](https://github.com/TokamakUI/Tokamak/pull/355)) via [@literalpie](https://github.com/literalpie)
+- Two infinite loop fixes ([#359](https://github.com/TokamakUI/Tokamak/pull/359)) via [@foscomputerservices](https://github.com/foscomputerservices)
+- Added `TextField` support for GTK using `GtkEntry` ([#361](https://github.com/TokamakUI/Tokamak/pull/361)) via [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)
+- Fixed a small issue with re-renderers being dropped ([#356](https://github.com/TokamakUI/Tokamak/pull/356)) via [@foscomputerservices](https://github.com/foscomputerservices)
+- Removed an extra space that cause Safari to issue "Invalid value" ([#358](https://github.com/TokamakUI/Tokamak/pull/358)) via [@foscomputerservices](https://github.com/foscomputerservices)
+- Add `@mortenbekditlevsen` to the list of maintainers in `README.md` ([#352](https://github.com/TokamakUI/Tokamak/pull/352)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Build the GTK renderer on Ubuntu on CI ([#347](https://github.com/TokamakUI/Tokamak/pull/347)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add missing `Link` re-export to TokamakDOM ([#351](https://github.com/TokamakUI/Tokamak/pull/351)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- GTK shape support WIP ([#348](https://github.com/TokamakUI/Tokamak/pull/348)) via [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)
+- Add a "bug report" issue template ([#349](https://github.com/TokamakUI/Tokamak/pull/349)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
+# 0.6.1 (6 December 2020)
+
+This release fixes autocomplete in Xcode for projects that depend on Tokamak.
+
+# 0.6.0 (4 December 2020)
+
+This release introduces support for the `Image` view, which can load images bundled as SwiftPM
+resources. It also adds the `PreferenceKey` protocol and `preference(key:value:)`,
+`onPreferenceChange`, `backgroundPreferenceValue`, `transformPreference`, and
+`overlayPreferenceValue` modifiers. Many thanks to [@carson-katri](https://github.com/carson-katri)
+and [@j-f1](https://github.com/j-f1) for implementing this!
+
+**Merged pull requests:**
+
+- Add [@kateinoigakukun](https://github.com/kateinoigakukun) to the list of maintainers ([#310](https://github.com/TokamakUI/Tokamak/pull/310)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add `Image` implementation, bump JSKit to 0.9.0 ([#155](https://github.com/TokamakUI/Tokamak/pull/155)) via [@j-f1](https://github.com/j-f1)
+- Add Preferences ([#307](https://github.com/TokamakUI/Tokamak/pull/307)) via [@carson-katri](https://github.com/carson-katri)
+- Remove unused Dangerfile.swift ([#311](https://github.com/TokamakUI/Tokamak/pull/311)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
+# 0.5.3 (28 November 2020)
+
+A bugfix release that fixes `Toggle` values not updated when reset from a binding. Additionally, the
+embedded internal implementation of `JSScheduler` is replaced with one from
+[`OpenCombineJS`](https://github.com/swiftwasm/OpenCombineJS). This library is a new dependency of
+Tokamak used in the DOM renderer.
+
+**Closed issues:**
+
+- `Toggle` value not updated when it's reset from a binding ([#287](https://github.com/TokamakUI/Tokamak/issues/287))
+
+**Merged pull requests:**
+
+- Fix update of `checked` property of checkbox input ([#309](https://github.com/TokamakUI/Tokamak/pull/309)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Use latest macOS and Xcode on CI ([#308](https://github.com/TokamakUI/Tokamak/pull/308)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Use `JSScheduler` from `OpenCombineJS` package ([#304](https://github.com/TokamakUI/Tokamak/pull/304)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
+# 0.5.2 (12 November 2020)
+
+This is a bugfix release that fixes in-tree updates in cases where type of a view changes with
+conditional updates. Thanks to [@vi4m](https://github.com/vi4m) for reporting the issue!
+
+**Merged pull requests:**
+
+- Pass sibling to `Renderer.mount`, fix update order ([#301](https://github.com/TokamakUI/Tokamak/pull/301)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
+# 0.5.1 (9 November 2020)
+
+A bugfix release to improve compatibility with Xcode autocomplete.
+
+**Merged pull requests:**
+
+- Update Package.resolved ([#300](https://github.com/TokamakUI/Tokamak/pull/300)) via [@kateinoigakukun](https://github.com/kateinoigakukun)
+- Allow use of Combine to enable Xcode autocomplete ([#299](https://github.com/TokamakUI/Tokamak/pull/299)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
+# 0.5.0 (9 November 2020)
+
+This is a compatibility release with small feature additions. Namely the `Link` view is now available,
+and our JavaScriptKit dependency has been updated. The latter change now allows you to open
+`Package.swift` package manifests of your Tokamak projects with working auto-complete in Xcode.
+Also, our dark mode implementation now more closely follows SwiftUI behavior.
+
+Many thanks to [@carson-katri](https://github.com/carson-katri) and
+[@kateinoigakukun](https://github.com/kateinoigakukun) for their contributions to this release!
+
+**Closed issues:**
+
+- Can't build Tokamak project - carton dev command ([#296](https://github.com/TokamakUI/Tokamak/issues/296))
+- Colors should change depending on light/dark color scheme ([#290](https://github.com/TokamakUI/Tokamak/issues/290))
+- Pattern for handling global dom events ([#284](https://github.com/TokamakUI/Tokamak/issues/284))
+- 0.4.0 upgrade / regression? ([#283](https://github.com/TokamakUI/Tokamak/issues/283))
+
+**Merged pull requests:**
+
+- Xcode compatibility ([#297](https://github.com/TokamakUI/Tokamak/pull/297)) via [@kateinoigakukun](https://github.com/kateinoigakukun)
+- Allow tests to be run on macOS ([#295](https://github.com/TokamakUI/Tokamak/pull/295)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add Link view, update JavaScriptKit to 0.8.0 ([#276](https://github.com/TokamakUI/Tokamak/pull/276)) via [@carson-katri](https://github.com/carson-katri)
+- Add `AnyColorBox` and `AnyFontBox` ([#291](https://github.com/TokamakUI/Tokamak/pull/291)) via [@carson-katri](https://github.com/carson-katri)
+- Replace Danger with SwiftLint to improve warnings ([#293](https://github.com/TokamakUI/Tokamak/pull/293)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Use v5.3 tag of `swiftwasm-action` in `ci.yml` ([#292](https://github.com/TokamakUI/Tokamak/pull/292)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add @carson-katri and @kateinoigakukun to `FUNDING.yml` ([#289](https://github.com/TokamakUI/Tokamak/pull/289)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add `URLHashDemo` w/ `window.onhashchange` closure ([#288](https://github.com/TokamakUI/Tokamak/pull/288)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
+# 0.4.0 (30 September 2020)
+
+This is mainly a bugfix and compatibility release with a small feature addition. Namely, `Slider`
+view is introduced in the DOM renderer, and binding updates for SVG elements are working now. During
+this development cycle efforts of our team were devoted to recently released [JavaScriptKit
+0.7](https://github.com/swiftwasm/JavaScriptKit/releases/tag/0.7.0) and [`carton`
+0.6](https://github.com/swiftwasm/carton/releases/tag/0.6.0). Both of those releases are pretty big
+updates that improve developer experience significantly, and this version of Tokamak requires those
+as minimum versions.
+
+Many thanks to [@j-f1](https://github.com/j-f1) and
+[@kateinoigakukun](https://github.com/kateinoigakukun) for their contributions to these updates!
+
+**Closed issues:**
+
+- HTML + Binding ([#278](https://github.com/TokamakUI/Tokamak/issues/278))
+
+**Merged pull requests:**
+
+- Fix compatibility with JavaScriptKit 0.7 ([#281](https://github.com/TokamakUI/Tokamak/pull/281))
+  via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Re-export `HTML` type in `TokamakDOM` ([#275](https://github.com/TokamakUI/Tokamak/pull/275)) via
+  [@kateinoigakukun](https://github.com/kateinoigakukun)
+- Use setAttribute, not properties to fix SVG update
+  ([#279](https://github.com/TokamakUI/Tokamak/pull/279)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Allow non-body mount host node ([#271](https://github.com/TokamakUI/Tokamak/pull/271)) via
+  [@kateinoigakukun](https://github.com/kateinoigakukun)
+- Add missing JavaScriptKit import to `README.md`
+  ([#265](https://github.com/TokamakUI/Tokamak/pull/265)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Fix the sizing of sliders ([#268](https://github.com/TokamakUI/Tokamak/pull/268)) via
+  [@j-f1](https://github.com/j-f1)
+- Add `Slider` implementation ([#228](https://github.com/TokamakUI/Tokamak/pull/228)) via
+  [@j-f1](https://github.com/j-f1)
+- Remove Xcode 12 warning from README.md ([#264](https://github.com/TokamakUI/Tokamak/pull/264)) via
+  [@MaxDesiatov](https://github.com/MaxDesiatov)
+
+# 0.3.0 (19 August 2020)
 
 This release improves compatibility with the SwiftUI API and fixes bugs in our WebAssembly/DOM renderer, included but not limited to:
 
@@ -120,7 +296,7 @@ The complete list of changes included in this release is available below.
 - Add SwiftUI App Lifecycle ([#195](https://github.com/swiftwasm/Tokamak/pull/195)) via
   [@carson-katri](https://github.com/carson-katri)
 
-# 0.2.0 (21 July, 2020)
+# 0.2.0 (21 July 2020)
 
 This is the first release that supports WebAssembly and browser apps with the new `TokamakDOM`
 module. The API now closely follows SwiftUI, while the new React-like API is no longer available.

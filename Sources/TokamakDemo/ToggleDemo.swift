@@ -20,9 +20,16 @@ public struct ToggleDemo: View {
   public var body: some View {
     VStack {
       Toggle("Check me!", isOn: $checked)
+      Toggle("Toggle binding that should mirror the toggle above", isOn: $checked)
       Toggle(isOn: Binding(get: { true }, set: { _ in })) {
         Group { Text("I’m always checked!").italic() }.foregroundColor(.red)
       }
     }
+  }
+}
+
+struct ToggleDemo_Previews: PreviewProvider {
+  static var previews: some View {
+    ToggleDemo()
   }
 }

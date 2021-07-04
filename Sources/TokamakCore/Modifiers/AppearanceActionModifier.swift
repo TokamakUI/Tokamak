@@ -32,12 +32,12 @@ extension ModifiedContent: AppearanceActionType
   var disappear: (() -> ())? { modifier.disappear }
 }
 
-extension View {
-  public func onAppear(perform action: (() -> ())? = nil) -> some View {
+public extension View {
+  func onAppear(perform action: (() -> ())? = nil) -> some View {
     modifier(_AppearanceActionModifier(appear: action))
   }
 
-  public func onDisappear(perform action: (() -> ())? = nil) -> some View {
+  func onDisappear(perform action: (() -> ())? = nil) -> some View {
     modifier(_AppearanceActionModifier(disappear: action))
   }
 }

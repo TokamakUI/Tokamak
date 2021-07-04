@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,29 +15,13 @@
 //  Created by Max Desiatov on 08/04/2020.
 //
 
-#if canImport(Glibc)
-import Glibc
-#elseif canImport(Darwin)
-import Darwin
-#endif
+import CoreFoundation
+import Foundation
 
-public typealias CGFloat = Double
-public struct CGPoint: Equatable {
-  public let x: CGFloat
-  public let y: CGFloat
-
-  public init(x: CGFloat, y: CGFloat) {
-    self.x = x
-    self.y = y
-  }
-
-  public static var zero: Self {
-    .init(x: 0, y: 0)
-  }
-
+extension CGPoint {
   func rotate(_ angle: Angle, around origin: Self) -> Self {
-    let cosAngle = cos(angle.radians)
-    let sinAngle = sin(angle.radians)
+    let cosAngle = CGFloat(cos(angle.radians))
+    let sinAngle = CGFloat(sin(angle.radians))
     return .init(
       x: cosAngle * (x - origin.x) - sinAngle * (y - origin.y) + origin.x,
       y: sinAngle * (x - origin.x) + cosAngle * (y - origin.y) + origin.y
@@ -52,34 +36,17 @@ public struct CGPoint: Equatable {
   }
 }
 
-public struct CGSize: Equatable {
-  public let width: CGFloat
-  public let height: CGFloat
-
-  public init(width: CGFloat, height: CGFloat) {
-    self.width = width
-    self.height = height
-  }
-
-  public static var zero: Self {
-    .init(width: 0, height: 0)
+public extension CGAffineTransform {
+  /// Transform the point into the transform's coordinate system.
+  func transform(point: CGPoint) -> CGPoint {
+    CGPoint(
+      x: (a * point.x) + (c * point.y) + tx,
+      y: (b * point.x) + (d * point.y) + ty
+    )
   }
 }
 
-public struct CGRect: Equatable {
-  public let origin: CGPoint
-  public let size: CGSize
-
-  public init(origin: CGPoint, size: CGSize) {
-    self.origin = origin
-    self.size = size
-  }
-
-  public static var zero: Self {
-    .init(origin: .zero, size: .zero)
-  }
-}
-
+#if !canImport(CoreGraphics)
 public enum CGLineCap {
   /// A line with a squared-off end. Extends to the endpoint of the Path.
   case butt
@@ -172,14 +139,6 @@ public struct CGAffineTransform: Equatable {
     )
   }
 
-  /// Transform the point into the transform's coordinate system.
-  public func transform(point: CGPoint) -> CGPoint {
-    CGPoint(
-      x: (a * point.x) + (c * point.y) + tx,
-      y: (b * point.x) + (d * point.y) + ty
-    )
-  }
-
   /// Returns an affine transformation matrix constructed by combining two existing affine
   /// transforms.
   /// - Parameters:
@@ -192,7 +151,9 @@ public struct CGAffineTransform: Equatable {
     let t2m = [[t2.a, t2.b, 0],
                [t2.c, t2.d, 0],
                [t2.tx, t2.ty, 1]]
-    var res = [[CGFloat]]()
+    var res: [[CGFloat]] = [[0, 0, 0],
+                            [0, 0, 0],
+                            [0, 0, 0]]
     for i in 0..<3 {
       for j in 0..<3 {
         res[i][j] = 0
@@ -230,9 +191,7 @@ public struct CGAffineTransform: Equatable {
   /// - Parameters:
   ///   - tx: The value by which to move x values with the affine transform.
   ///   - ty: The value by which to move y values with the affine transform.
-  public func translatedBy(x tx: CGFloat,
-                           y ty: CGFloat) -> Self
-  {
+  public func translatedBy(x tx: CGFloat, y ty: CGFloat) -> Self {
     .init(a: a, b: b, c: c, d: d, tx: self.tx + tx, ty: self.ty + ty)
   }
 
@@ -240,9 +199,7 @@ public struct CGAffineTransform: Equatable {
   /// - Parameters:
   ///   - sx: The value by which to scale x values of the affine transform.
   ///   - sy: The value by which to scale y values of the affine transform.
-  public func scaledBy(x sx: CGFloat,
-                       y sy: CGFloat) -> Self
-  {
+  public func scaledBy(x sx: CGFloat, y sy: CGFloat) -> Self {
     .init(a: a + sx, b: b, c: c, d: d + sy, tx: tx, ty: ty)
   }
 
@@ -250,3 +207,5 @@ public struct CGAffineTransform: Equatable {
     self == Self.identity
   }
 }
+
+#endif

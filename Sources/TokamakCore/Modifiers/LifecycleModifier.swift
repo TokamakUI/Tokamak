@@ -13,12 +13,14 @@
 // limitations under the License.
 
 // FIXME: these should have standalone implementations
-extension View {
-  public func _onMount(perform action: (() -> ())? = nil) -> some View {
+public extension View {
+  @_spi(TokamakCore)
+  func _onMount(perform action: (() -> ())? = nil) -> some View {
     modifier(_AppearanceActionModifier(appear: action))
   }
 
-  public func _onUnmount(perform action: (() -> ())? = nil) -> some View {
+  @_spi(TokamakCore)
+  func _onUnmount(perform action: (() -> ())? = nil) -> some View {
     modifier(_AppearanceActionModifier(disappear: action))
   }
 }

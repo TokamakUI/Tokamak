@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,14 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Foundation
 import JavaScriptKit
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 import TokamakStaticHTML
 
-private let ResizeObserver = JSObjectRef.global.ResizeObserver.function!
+private let ResizeObserver = JSObject.global.ResizeObserver.function!
 
-extension GeometryReader: ViewDeferredToRenderer {
-  public var deferredBody: AnyView {
+extension GeometryReader: DOMPrimitive {
+  var renderedBody: AnyView {
     AnyView(_GeometryReader(content: content))
   }
 }
@@ -32,10 +33,10 @@ struct _GeometryReader<Content: View>: View {
     var closure: JSClosure?
 
     /// A reference to a DOM node being observed for size updates.
-    var observedNodeRef: JSObjectRef?
+    var observedNodeRef: JSObject?
 
     /// A reference to a `ResizeObserver` instance.
-    var observerRef: JSObjectRef?
+    var observerRef: JSObject?
 
     /// The last known size of the `observedNodeRef` DOM node.
     @Published var size: CGSize?
@@ -55,7 +56,7 @@ struct _GeometryReader<Content: View>: View {
     }
     ._domRef($state.observedNodeRef)
     ._onMount {
-      let closure = JSClosure { [weak state] args in
+      let closure = JSClosure { [weak state] args -> JSValue in
         // FIXME: `JSArrayRef` is not a `RandomAccessCollection` for some reason, which forces
         // us to use a string subscript
         guard
@@ -65,7 +66,6 @@ struct _GeometryReader<Content: View>: View {
         else { return .undefined }
 
         state?.size = .init(width: width, height: height)
-
         return .undefined
       }
       state.closure = closure

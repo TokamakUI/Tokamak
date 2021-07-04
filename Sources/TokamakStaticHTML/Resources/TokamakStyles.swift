@@ -12,9 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import TokamakCore
+
 public let tokamakStyles = """
-._tokamak-stack > * {
-  flex-shrink: 0;
+._tokamak-stack {
+  display: grid;
+}
+._tokamak-hstack {
+  grid-auto-flow: column;
+  column-gap: var(--tokamak-stack-gap, \(Int(defaultStackSpacing))px);
+}
+._tokamak-vstack {
+  grid-auto-flow: row;
+  row-gap: var(--tokamak-stack-gap, \(Int(defaultStackSpacing))px);
 }
 ._tokamak-scrollview-hideindicators {
   scrollbar-color: transparent;
@@ -96,11 +106,17 @@ public let tokamakStyles = """
   height: 100%;
 }
 
-._tokamak-securefield,
-._tokamak-textfield-default,
-._tokamak-textfield-roundedborder,
-._tokamak-picker {
+._tokamak-formcontrol {
   color-scheme: light dark;
+}
+
+._tokamak-link {
+  text-decoration: none;
+}
+
+._tokamak-texteditor {
+  width: 100%;
+  height: 100%;
 }
 
 @media (prefers-color-scheme:dark) {

@@ -1,23 +1,31 @@
 name: CI
 
 on:
-  push:
-    branches: [main]
   pull_request:
+  push:
     branches: [main]
 
 jobs:
-  linux_build:
+  swiftwasm_bundle:
     runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
-      - uses: swiftwasm/swiftwasm-action@master
+      - uses: swiftwasm/swiftwasm-action@v5.3
         with:
-          shell-action: swift build --triple wasm32-unknown-wasi --product TokamakDemo
+          shell-action: carton bundle --product TokamakDemo
 
-  macos_build:
-    runs-on: macos-10.15
+  swiftwasm_test:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: swiftwasm/swiftwasm-action@v5.3
+        with:
+          shell-action: carton test
+
+  core_macos_build:
+    runs-on: macos-11.0
 
     steps:
       - uses: actions/checkout@v2
@@ -25,10 +33,75 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo xcode-select --switch /Applications/Xcode_12_beta.app/Contents/Developer/
-          # swift test
+          sudo xcode-select --switch /Applications/Xcode_12.4.app/Contents/Developer/
+          # avoid building unrelated products for testing by specifying the test product explicitly
+          swift build --product TokamakPackageTests
+          `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest ||
+            find /var/folders -iname SnapshotTests -exec cp -r {} . \;
+
+          rm -rf Sources/TokamakGTKCHelpers/*.c
+
           xcodebuild -version
+
+          # make sure Tokamak can be built on macOS so that Xcode autocomplete works
+          xcodebuild -scheme TokamakDemo -destination 'generic/platform=macOS' \
+            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
+            xcpretty --color
+
           cd "NativeDemo"
           xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
             CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
             xcpretty --color
+          cd ..
+
+          ./benchmark.sh
+
+      - name: Upload failed snapshots
+        uses: actions/upload-artifact@v2
+        if: ${{ failure() }}
+        with:
+          name: Failed snapshots
+          path: SnapshotTests
+
+  gtk_macos_build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the GTK renderer on macOS
+        shell: bash
+        run: |
+          set -ex
+          sudo xcode-select --switch /Applications/Xcode_12.4.app/Contents/Developer/
+
+          brew install gtk+3
+
+          make build
+
+  gtk_ubuntu_18_04_build:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the GTK renderer on Ubuntu 18.04
+        shell: bash
+        run: |
+          set -ex
+          sudo apt-get update
+          sudo apt-get install libgtk+-3.0 gtk+-3.0
+
+          make build
+
+  gtk_ubuntu_20_04_build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the GTK renderer on Ubuntu 20.04
+        shell: bash
+        run: |
+          set -ex
+          sudo apt-get update
+          sudo apt-get install libgtk+-3.0 gtk+-3.0
+
+          make build

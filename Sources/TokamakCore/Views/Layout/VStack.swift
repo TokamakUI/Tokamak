@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,6 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+import Foundation
 
 /// An alignment position along the horizontal axis.
 public enum HorizontalAlignment: Equatable {
@@ -25,9 +27,9 @@ public enum HorizontalAlignment: Equatable {
 ///       Text("Hello")
 ///       Text("World")
 ///     }
-public struct VStack<Content>: View where Content: View {
+public struct VStack<Content>: _PrimitiveView where Content: View {
   public let alignment: HorizontalAlignment
-  public let spacing: CGFloat?
+  let spacing: CGFloat
   public let content: Content
 
   public init(
@@ -36,17 +38,22 @@ public struct VStack<Content>: View where Content: View {
     @ViewBuilder content: () -> Content
   ) {
     self.alignment = alignment
-    self.spacing = spacing
+    self.spacing = spacing ?? defaultStackSpacing
     self.content = content()
-  }
-
-  public var body: Never {
-    neverBody("VStack")
   }
 }
 
 extension VStack: ParentView {
+  @_spi(TokamakCore)
   public var children: [AnyView] {
     (content as? GroupView)?.children ?? [AnyView(content)]
   }
+}
+
+public struct _VStackProxy<Content> where Content: View {
+  public let subject: VStack<Content>
+
+  public init(_ subject: VStack<Content>) { self.subject = subject }
+
+  public var spacing: CGFloat { subject.spacing }
 }

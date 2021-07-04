@@ -27,17 +27,21 @@ extension HorizontalAlignment {
   }
 }
 
-extension VStack: ViewDeferredToRenderer, SpacerContainer {
+extension VStack: _HTMLPrimitive, SpacerContainer {
   public var axis: SpacerContainerAxis { .vertical }
 
-  public var deferredBody: AnyView {
-    AnyView(HTML("div", [
+  @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
+    let spacing = _VStackProxy(self).spacing
+
+    return AnyView(HTML("div", [
       "style": """
-      display: flex; flex-direction: column; align-items: \(alignment.cssValue);
+      justify-items: \(alignment.cssValue);
       \(hasSpacer ? "height: 100%;" : "")
       \(fillCrossAxis ? "width: 100%;" : "")
+      \(spacing != defaultStackSpacing ? "--tokamak-stack-gap: \(spacing)px" : "")
       """,
-      "class": "_tokamak-stack",
+      "class": "_tokamak-stack _tokamak-vstack",
     ]) { content })
   }
 }

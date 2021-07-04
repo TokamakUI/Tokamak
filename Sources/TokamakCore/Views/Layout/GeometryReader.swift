@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,6 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+import Foundation
 
 public struct GeometryProxy {
   public let size: CGSize
@@ -40,13 +42,9 @@ public func makeProxy(from size: CGSize) -> GeometryProxy {
 //   public subscript<T>(anchor: Anchor<T>) -> T {}
 // }
 
-public struct GeometryReader<Content>: View where Content: View {
+public struct GeometryReader<Content>: _PrimitiveView where Content: View {
   public let content: (GeometryProxy) -> Content
   public init(@ViewBuilder content: @escaping (GeometryProxy) -> Content) {
     self.content = content
-  }
-
-  public var body: Never {
-    neverBody("GeometryReader")
   }
 }

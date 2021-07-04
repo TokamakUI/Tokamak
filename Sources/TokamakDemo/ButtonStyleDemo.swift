@@ -30,12 +30,41 @@ public struct ButtonStyleDemo: View {
       Button("Default Style") {
         print("tapped")
       }
+      Button(action: { print("tapped") }, label: {
+        HStack {
+          Text("Default").padding(.trailing, 5)
+          Circle().frame(width: 10, height: 10, alignment: .center)
+          Text("Style").padding(.horizontal, 5)
+          Ellipse().fill(Color.red).frame(width: 20, height: 10, alignment: .center)
+          Text("With").padding(.horizontal, 5)
+          Capsule().fill(Color.green).frame(width: 20, height: 10, alignment: .center)
+          Text("Complex").padding(.horizontal, 5)
+          Rectangle().fill(Color.blue).frame(width: 10, height: 10, alignment: .center)
+          Text("Label").padding(.leading, 5)
+        }
+      })
       Button("Pressed Button Style") {
         print("tapped")
       }
       .buttonStyle(
         PressedButtonStyle(pressedColor: Color.red)
       )
+      Button(action: { print("tapped") }, label: {
+        HStack {
+          Text("Pressed").padding(.trailing, 5)
+          Circle().frame(width: 10, height: 10, alignment: .center)
+          Text("Style").padding(.horizontal, 5)
+          Ellipse().fill(Color.red).frame(width: 20, height: 10, alignment: .center)
+          Text("With").padding(.horizontal, 5)
+          Capsule().fill(Color.green).frame(width: 20, height: 10, alignment: .center)
+          Text("Complex").padding(.horizontal, 5)
+          Rectangle().fill(Color.blue).frame(width: 10, height: 10, alignment: .center)
+          Text("Label").padding(.leading, 5)
+        }
+      })
+        .buttonStyle(
+          PressedButtonStyle(pressedColor: Color.red)
+        )
     }
   }
 }

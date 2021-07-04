@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,11 @@ import TokamakCore
 // MARK: Environment & State
 
 public typealias Environment = TokamakCore.Environment
+public typealias EnvironmentKey = TokamakCore.EnvironmentKey
 public typealias EnvironmentObject = TokamakCore.EnvironmentObject
+public typealias EnvironmentValues = TokamakCore.EnvironmentValues
+
+public typealias PreferenceKey = TokamakCore.PreferenceKey
 
 public typealias Binding = TokamakCore.Binding
 public typealias ObservableObject = TokamakCore.ObservableObject
@@ -59,6 +63,10 @@ public typealias ButtonStyle = TokamakCore.ButtonStyle
 public typealias ButtonStyleConfiguration = TokamakCore.ButtonStyleConfiguration
 public typealias DefaultButtonStyle = TokamakCore.DefaultButtonStyle
 
+public typealias FillStyle = TokamakCore.FillStyle
+public typealias ShapeStyle = TokamakCore.ShapeStyle
+public typealias StrokeStyle = TokamakCore.StrokeStyle
+
 public typealias ColorScheme = TokamakCore.ColorScheme
 
 // MARK: Shapes
@@ -77,14 +85,20 @@ public typealias RoundedRectangle = TokamakCore.RoundedRectangle
 public typealias Color = TokamakCore.Color
 public typealias Font = TokamakCore.Font
 
+#if !canImport(CoreGraphics)
 public typealias CGAffineTransform = TokamakCore.CGAffineTransform
-public typealias CGPoint = TokamakCore.CGPoint
-public typealias CGRect = TokamakCore.CGRect
-public typealias CGSize = TokamakCore.CGSize
+#endif
+
+public typealias Angle = TokamakCore.Angle
+public typealias UnitPoint = TokamakCore.UnitPoint
+
+public typealias Edge = TokamakCore.Edge
 
 // MARK: Views
 
+public typealias Alignment = TokamakCore.Alignment
 public typealias Button = TokamakCore.Button
+public typealias DatePicker = TokamakCore.DatePicker
 public typealias DisclosureGroup = TokamakCore.DisclosureGroup
 public typealias Divider = TokamakCore.Divider
 public typealias ForEach = TokamakCore.ForEach
@@ -93,8 +107,10 @@ public typealias GeometryReader = TokamakCore.GeometryReader
 public typealias GridItem = TokamakCore.GridItem
 public typealias Group = TokamakCore.Group
 public typealias HStack = TokamakCore.HStack
+public typealias Image = TokamakCore.Image
 public typealias LazyHGrid = TokamakCore.LazyHGrid
 public typealias LazyVGrid = TokamakCore.LazyVGrid
+public typealias Link = TokamakCore.Link
 public typealias List = TokamakCore.List
 public typealias NavigationLink = TokamakCore.NavigationLink
 public typealias NavigationView = TokamakCore.NavigationView
@@ -106,6 +122,7 @@ public typealias SecureField = TokamakCore.SecureField
 public typealias Slider = TokamakCore.Slider
 public typealias Spacer = TokamakCore.Spacer
 public typealias Text = TokamakCore.Text
+public typealias TextEditor = TokamakCore.TextEditor
 public typealias TextField = TokamakCore.TextField
 public typealias Toggle = TokamakCore.Toggle
 public typealias VStack = TokamakCore.VStack
@@ -116,6 +133,10 @@ public typealias ZStack = TokamakCore.ZStack
 public typealias View = TokamakCore.View
 public typealias AnyView = TokamakCore.AnyView
 public typealias EmptyView = TokamakCore.EmptyView
+
+// MARK: Text
+
+public typealias TextAlignment = TokamakCore.TextAlignment
 
 // MARK: App & Scene
 
@@ -132,8 +153,10 @@ public typealias ViewBuilder = TokamakCore.ViewBuilder
 
 // FIXME: I would put this inside TokamakCore, but for
 // some reason it doesn't get exported with the typealias
-extension Text {
-  public static func + (lhs: Self, rhs: Self) -> Self {
+public extension Text {
+  static func + (lhs: Self, rhs: Self) -> Self {
     _concatenating(lhs: lhs, rhs: rhs)
   }
 }
+
+public typealias PreviewProvider = TokamakCore.PreviewProvider
