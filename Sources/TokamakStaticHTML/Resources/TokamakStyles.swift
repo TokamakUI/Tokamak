@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// FIXME: `._tokamak-stack` children margin should be replaced with
-// [`gap`](https://developer.mozilla.org/en-US/docs/Web/CSS/gap) when it's supported by all
-// browsers with enough adoption
 public let tokamakStyles = """
 ._tokamak-stack {
   display: grid;
