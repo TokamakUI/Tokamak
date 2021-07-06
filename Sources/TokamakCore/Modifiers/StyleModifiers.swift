@@ -58,6 +58,30 @@ public extension View {
   ) -> some View where Background: View {
     modifier(_BackgroundModifier(background: background, alignment: alignment))
   }
+  
+  @inlinable func background<V>(
+    alignment: Alignment = .center,
+    @ViewBuilder content: () -> V
+  ) -> some View where V: View {
+    background(content(), alignment: alignment)
+  }
+  
+  @inlinable func background<S, T>(
+    _ style: S,
+    in shape: T,
+    fillStyle: FillStyle = FillStyle()
+  ) -> some View where S: ShapeStyle, T: Shape {
+    background {
+      shape.fill(style, style: fillStyle)
+    }
+  }
+  
+  @inlinable func background<S>(
+    in shape: S,
+    fillStyle: FillStyle = FillStyle()
+  ) -> some View where S: Shape {
+    background(ForegroundStyle(), in: shape, fillStyle: fillStyle)
+  }
 }
 
 public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
