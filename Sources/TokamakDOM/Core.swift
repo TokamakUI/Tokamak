@@ -63,6 +63,8 @@ public typealias ButtonStyle = TokamakCore.ButtonStyle
 public typealias ButtonStyleConfiguration = TokamakCore.ButtonStyleConfiguration
 public typealias DefaultButtonStyle = TokamakCore.DefaultButtonStyle
 
+public typealias TextFieldStyle = TokamakCore.TextFieldStyle
+
 public typealias FillStyle = TokamakCore.FillStyle
 public typealias ShapeStyle = TokamakCore.ShapeStyle
 public typealias StrokeStyle = TokamakCore.StrokeStyle
@@ -79,6 +81,7 @@ public typealias Ellipse = TokamakCore.Ellipse
 public typealias Path = TokamakCore.Path
 public typealias Rectangle = TokamakCore.Rectangle
 public typealias RoundedRectangle = TokamakCore.RoundedRectangle
+public typealias ContainerRelativeShape = TokamakCore.ContainerRelativeShape
 
 // MARK: Primitive values
 
