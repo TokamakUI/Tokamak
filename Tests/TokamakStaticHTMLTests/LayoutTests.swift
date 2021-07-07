@@ -95,6 +95,21 @@ final class LayoutTests: XCTestCase {
       timeout: 10
     )
   }
+
+  func testContainerRelativeShape() {
+    assertSnapshot(
+      matching: ZStack {
+        ContainerRelativeShape()
+          .fill(Color.blue)
+          .frame(width: 100, height: 100, alignment: .center)
+        ContainerRelativeShape()
+          .fill(Color.green)
+          .frame(width: 50, height: 50)
+      }.containerShape(Circle()),
+      as: .image(size: .init(width: 150, height: 150)),
+      timeout: 10
+    )
+  }
 }
 
 #endif

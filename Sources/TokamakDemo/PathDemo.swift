@@ -67,6 +67,17 @@ struct PathDemo: View {
           .frame(width: 50, height: 25)
       }
       .foregroundColor(Color.blue)
+      if #available(macOS 12.0, iOS 15, *) {
+        ZStack {
+          ContainerRelativeShape()
+            .fill(Color.blue)
+            .frame(width: 100, height: 100, alignment: .center)
+          ContainerRelativeShape()
+            .fill(Color.green)
+            .frame(width: 50, height: 50)
+        }
+        .containerShape(Circle())
+      }
     }
   }
 }

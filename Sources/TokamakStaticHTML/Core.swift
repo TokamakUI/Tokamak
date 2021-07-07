@@ -43,6 +43,8 @@ public typealias Path = TokamakCore.Path
 public typealias Rectangle = TokamakCore.Rectangle
 public typealias RoundedRectangle = TokamakCore.RoundedRectangle
 
+public typealias ContainerRelativeShape = TokamakCore.ContainerRelativeShape
+
 // MARK: Primitive values
 
 public typealias Color = TokamakCore.Color
