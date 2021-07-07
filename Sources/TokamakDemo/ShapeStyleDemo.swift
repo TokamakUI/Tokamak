@@ -15,26 +15,78 @@
 import TokamakShim
 
 struct ShapeStyleDemo: View {
+  
   var body: some View {
-    HStack {
-      VStack {
-        Text("Red Style")
-        Rectangle()
-          .frame(width: 25, height: 25)
+    VStack {
+      HStack {
+        VStack {
+          Text("Red Style")
+          Rectangle()
+            .frame(width: 50, height: 50)
+        }
+        .foregroundStyle(Color.red)
+        VStack {
+          Text("Green Style")
+          Rectangle()
+            .frame(width: 25, height: 25)
+        }
+        .foregroundStyle(Color.green)
+        VStack {
+          Text("Blue Style")
+          Rectangle()
+            .frame(width: 25, height: 25)
+        }
+        .foregroundStyle(Color.blue)
       }
-      .foregroundStyle(Color.red)
-      VStack {
-        Text("Green Style")
-        Rectangle()
-          .frame(width: 25, height: 25)
+      ZStack {
+        HStack(spacing: 0) {
+          Rectangle()
+            .foregroundStyle(Color.red)
+            .frame(width: 60, height: 100)
+          Rectangle()
+            .foregroundStyle(Color.orange)
+            .frame(width: 60, height: 100)
+          Rectangle()
+            .foregroundStyle(Color.yellow)
+            .frame(width: 60, height: 100)
+          Rectangle()
+            .foregroundStyle(Color.green)
+            .frame(width: 60, height: 100)
+          Rectangle()
+            .foregroundStyle(Color.blue)
+            .frame(width: 60, height: 100)
+          Rectangle()
+            .foregroundStyle(Color.purple)
+            .frame(width: 60, height: 100)
+        }
+        VStack(spacing: 0) {
+          HStack {
+            Text("Ultra Thin")
+            Spacer()
+          }
+          .background(Material.ultraThin)
+          HStack {
+            Text("Thin")
+            Spacer()
+          }
+          .background(Material.thin)
+          HStack {
+            Text("Regular")
+            Spacer()
+          }
+          .background(Material.regular)
+          HStack {
+            Text("Thick")
+            Spacer()
+          }
+          .background(Material.thick)
+          HStack {
+            Text("Ultra Thick")
+            Spacer()
+          }
+          .background(Material.ultraThick)
+        }
       }
-      .foregroundStyle(Color.green)
-      VStack {
-        Text("Blue Style")
-        Rectangle()
-          .frame(width: 25, height: 25)
-      }
-      .foregroundStyle(Color.blue)
     }
   }
 }
