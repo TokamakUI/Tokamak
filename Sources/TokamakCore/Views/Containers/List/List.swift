@@ -39,7 +39,7 @@ public struct List<SelectionValue, Content>: View
   }
 
   var listStack: some View {
-    VStack(alignment: .leading) { () -> AnyView in
+    VStack(alignment: .leading, spacing: 0) { () -> AnyView in
       if let contentContainer = content as? ParentView {
         var sections = [AnyView]()
         var currentSection = [AnyView]()
@@ -103,7 +103,7 @@ public enum _ListRow {
     @ViewBuilder rowView: @escaping (AnyView, Bool) -> RowView
   ) -> some View where RowView: View {
     ForEach(Array(children.enumerated()), id: \.offset) { offset, view in
-      VStack(alignment: .leading) {
+      VStack(alignment: .leading, spacing: 0) {
         HStack { Spacer() }
         rowView(view, offset == children.count - 1)
       }

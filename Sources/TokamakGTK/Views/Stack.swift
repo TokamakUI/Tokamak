@@ -59,7 +59,7 @@ extension VStack: GTKPrimitive {
       Box(
         content: content,
         orientation: GTK_ORIENTATION_VERTICAL,
-        spacing: spacing ?? 8,
+        spacing: _VStackProxy(self).spacing,
         alignment: .init(horizontal: alignment, vertical: .center)
       )
     )
@@ -73,7 +73,7 @@ extension HStack: GTKPrimitive {
       Box(
         content: content,
         orientation: GTK_ORIENTATION_HORIZONTAL,
-        spacing: spacing ?? 8,
+        spacing: _HStackProxy(self).spacing,
         alignment: .init(horizontal: .center, vertical: alignment)
       )
     )

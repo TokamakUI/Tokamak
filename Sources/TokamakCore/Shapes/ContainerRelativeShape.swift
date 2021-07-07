@@ -17,14 +17,18 @@
 
 import Foundation
 
-public struct ContainerRelativeShape: Shape {
-  @Environment(\._containerShape) var containerShape
+public struct ContainerRelativeShape: Shape, EnvironmentReader {
+  var containerShape: (CGRect, GeometryProxy) -> Path? = { _, _ in nil }
 
   public func path(in rect: CGRect) -> Path {
     containerShape(rect, GeometryProxy(size: rect.size)) ?? Rectangle().path(in: rect)
   }
 
   public init() {}
+
+  public mutating func setContent(from values: EnvironmentValues) {
+    containerShape = values._containerShape
+  }
 }
 
 extension ContainerRelativeShape: InsettableShape {
