@@ -1,4 +1,4 @@
-// Copyright 2018-2020 Tokamak contributors
+// Copyright 2020-2021 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,11 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 10/24/2020.
+//  Created by Carson Katri on 7/6/21.
 //
 
-/// Allows "late-binding tokens" to be resolved in an environment by a `Renderer` (or `TokamakCore`)
-public protocol AnyTokenBox: AnyObject {
-  associatedtype ResolvedValue
-  func resolve(in environment: EnvironmentValues) -> ResolvedValue
+public struct ForegroundStyle: ShapeStyle {
+  public init() {}
+
+  public func _apply(to shape: inout _ShapeStyle_Shape) {
+    if let foregroundStyle = shape.environment._foregroundStyle {
+      foregroundStyle._apply(to: &shape)
+    } else {
+      shape.result = .color(shape.environment.foregroundColor ?? .primary)
+    }
+  }
+
+  public static func _apply(to shape: inout _ShapeStyle_ShapeType) {}
 }

@@ -15,7 +15,7 @@
 //  Created by Max Desiatov on 13/06/2021.
 //
 
-// SnapshotTesting with image snapshots are only supported on iOS.
+// SnapshotTesting with image snapshots are only supported on macOS.
 #if os(macOS)
 import SnapshotTesting
 import TokamakStaticHTML
@@ -168,7 +168,6 @@ final class RenderingTests: XCTestCase {
   }
 
   func testContainerRelativeShape() {
-    #if compiler(>=5.5) || os(WASI)
     assertSnapshot(
       matching: ZStack {
         ContainerRelativeShape()
@@ -179,9 +178,26 @@ final class RenderingTests: XCTestCase {
           .frame(width: 50, height: 50)
       }.containerShape(Circle()),
       as: .image(size: .init(width: 150, height: 150)),
-      timeout: 10
+      timeout: defaultSnapshotTimeout
     )
-    #endif
+  }
+
+  func testForegroundStyle() {
+    assertSnapshot(
+      matching: HStack(spacing: 0) {
+        Rectangle()
+          .frame(width: 50, height: 50)
+          .foregroundStyle(Color.red)
+        Rectangle()
+          .frame(width: 50, height: 50)
+          .foregroundStyle(Color.green)
+        Rectangle()
+          .frame(width: 50, height: 50)
+          .foregroundStyle(Color.blue)
+      },
+      as: .image(size: .init(width: 200, height: 100)),
+      timeout: defaultSnapshotTimeout
+    )
   }
 }
 
