@@ -48,11 +48,11 @@ extension _ZIndexModifier: DOMViewModifier {
 extension _BackgroundStyleModifier: DOMViewModifier {
   public var isOrderDependent: Bool { true }
   public var attributes: [HTMLAttribute: String] {
-    if case let .resolved(resolved) = style.resolve(
-              for: .resolveStyle(levels: 0..<1),
-              in: environment,
-              role: .fill
-            ) {
+    if let resolved = style.resolve(
+         for: .resolveStyle(levels: 0..<1),
+         in: environment,
+         role: .fill
+       ) {
       if case let .foregroundMaterial(rgba, material) = resolved {
         let blur: (opacity: Double, radius: Double)
         switch material {
@@ -76,7 +76,9 @@ extension _BackgroundStyleModifier: DOMViewModifier {
           """
         ]
       } else if let color = resolved.color(at: 0) {
-        return ["style": "background-color: \(color.cssValue(environment));"]
+        return [
+          "style": "background-color: \(color.cssValue(environment))"
+        ]
       }
     }
     return [:]
