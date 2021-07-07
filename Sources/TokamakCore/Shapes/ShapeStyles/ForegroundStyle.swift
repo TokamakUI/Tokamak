@@ -28,3 +28,56 @@ public struct ForegroundStyle: ShapeStyle {
 
   public static func _apply(to shape: inout _ShapeStyle_ShapeType) {}
 }
+
+extension EnvironmentValues {
+  private struct ForegroundStyleKey: EnvironmentKey {
+    static let defaultValue: AnyShapeStyle? = nil
+  }
+
+  public var _foregroundStyle: AnyShapeStyle? {
+    get {
+      self[ForegroundStyleKey.self]
+    }
+    set {
+      self[ForegroundStyleKey.self] = newValue
+    }
+  }
+}
+
+public extension View {
+  @inlinable
+  func foregroundStyle<S>(_ style: S) -> some View
+    where S: ShapeStyle
+  {
+    foregroundStyle(style, style, style)
+  }
+
+  @inlinable
+  func foregroundStyle<S1, S2>(_ primary: S1, _ secondary: S2) -> some View
+    where S1: ShapeStyle, S2: ShapeStyle
+  {
+    foregroundStyle(primary, secondary, secondary)
+  }
+
+  @inlinable
+  func foregroundStyle<S1, S2, S3>(_ primary: S1, _ secondary: S2,
+                                   _ tertiary: S3) -> some View
+    where S1: ShapeStyle, S2: ShapeStyle, S3: ShapeStyle
+  {
+    modifier(_ForegroundStyleModifier(styles: [primary, secondary, tertiary]))
+  }
+}
+
+@frozen public struct _ForegroundStyleModifier: ViewModifier, EnvironmentModifier {
+  public var styles: [ShapeStyle]
+
+  @inlinable
+  public init(styles: [ShapeStyle]) {
+    self.styles = styles
+  }
+
+  public typealias Body = Never
+  public func modifyEnvironment(_ values: inout EnvironmentValues) {
+    values._foregroundStyle = .init(styles: styles, environment: values)
+  }
+}

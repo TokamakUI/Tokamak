@@ -83,6 +83,9 @@ public typealias Rectangle = TokamakCore.Rectangle
 public typealias RoundedRectangle = TokamakCore.RoundedRectangle
 public typealias ContainerRelativeShape = TokamakCore.ContainerRelativeShape
 
+public typealias ForegroundStyle = TokamakCore.ForegroundStyle
+public typealias Material = TokamakCore.Material
+
 // MARK: Primitive values
 
 public typealias Color = TokamakCore.Color

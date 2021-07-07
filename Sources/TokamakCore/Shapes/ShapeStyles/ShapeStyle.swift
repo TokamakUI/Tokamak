@@ -127,8 +127,7 @@ public struct _ShapeStyle_ShapeType {}
 public indirect enum _ResolvedStyle {
   case color(AnyColorBox.ResolvedValue)
 //  case paint(AnyResolvedPaint) // I think is used for Image as a ShapeStyle (SwiftUI.ImagePaint).
-  // TODO: Material
-//  case foregroundMaterial(AnyColorBox.ResolvedValue, MaterialStyle)
+  case foregroundMaterial(AnyColorBox.ResolvedValue, _MaterialStyle)
 //  case backgroundMaterial(AnyColorBox.ResolvedValue)
   case array([_ResolvedStyle])
   case opacity(Float, _ResolvedStyle)
@@ -138,64 +137,13 @@ public indirect enum _ResolvedStyle {
     switch self {
     case let .color(resolved):
       return Color(_ConcreteColorBox(resolved))
+    case let .foregroundMaterial(resolved, _):
+      return Color(_ConcreteColorBox(resolved))
     case let .array(children):
       return children[level].color(at: level)
     case let .opacity(opacity, resolved):
       guard let color = resolved.color(at: level) else { return nil }
       return color.opacity(Double(opacity))
     }
-  }
-}
-
-extension EnvironmentValues {
-  private struct ForegroundStyleKey: EnvironmentKey {
-    static let defaultValue: AnyShapeStyle? = nil
-  }
-
-  public var _foregroundStyle: AnyShapeStyle? {
-    get {
-      self[ForegroundStyleKey.self]
-    }
-    set {
-      self[ForegroundStyleKey.self] = newValue
-    }
-  }
-}
-
-public extension View {
-  @inlinable
-  func foregroundStyle<S>(_ style: S) -> some View
-    where S: ShapeStyle
-  {
-    foregroundStyle(style, style, style)
-  }
-
-  @inlinable
-  func foregroundStyle<S1, S2>(_ primary: S1, _ secondary: S2) -> some View
-    where S1: ShapeStyle, S2: ShapeStyle
-  {
-    foregroundStyle(primary, secondary, secondary)
-  }
-
-  @inlinable
-  func foregroundStyle<S1, S2, S3>(_ primary: S1, _ secondary: S2,
-                                   _ tertiary: S3) -> some View
-    where S1: ShapeStyle, S2: ShapeStyle, S3: ShapeStyle
-  {
-    modifier(_ForegroundStyleModifier(styles: [primary, secondary, tertiary]))
-  }
-}
-
-@frozen public struct _ForegroundStyleModifier: ViewModifier, EnvironmentModifier {
-  public var styles: [ShapeStyle]
-
-  @inlinable
-  public init(styles: [ShapeStyle]) {
-    self.styles = styles
-  }
-
-  public typealias Body = Never
-  public func modifyEnvironment(_ values: inout EnvironmentValues) {
-    values._foregroundStyle = .init(styles: styles, environment: values)
   }
 }
