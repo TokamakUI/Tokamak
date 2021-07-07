@@ -25,10 +25,10 @@ extension PrimaryContentStyle: ShapeStyle {
     if !shape.inRecursiveStyle,
        let foregroundStyle = shape.environment._foregroundStyle
     {
-      if foregroundStyle.styles[0] is Self {
+      if foregroundStyle.styles.primary is Self {
         shape.inRecursiveStyle = true
       }
-      foregroundStyle.styles[0]._apply(to: &shape)
+      foregroundStyle.styles.primary._apply(to: &shape)
     } else {
       shape.result = .color(shape.environment.foregroundColor ?? .primary)
     }
@@ -47,10 +47,10 @@ extension SecondaryContentStyle: ShapeStyle {
     if !shape.inRecursiveStyle,
        let foregroundStyle = shape.environment._foregroundStyle
     {
-      if foregroundStyle.styles[1] is Self {
+      if foregroundStyle.styles.secondary is Self {
         shape.inRecursiveStyle = true
       }
-      foregroundStyle.styles[1]._apply(to: &shape)
+      foregroundStyle.styles.secondary._apply(to: &shape)
     } else {
       shape.result = .color((shape.environment.foregroundColor ?? .primary).opacity(0.5))
     }
@@ -69,10 +69,10 @@ extension TertiaryContentStyle: ShapeStyle {
     if !shape.inRecursiveStyle,
        let foregroundStyle = shape.environment._foregroundStyle
     {
-      if foregroundStyle.styles[2] is Self {
+      if foregroundStyle.styles.tertiary is Self {
         shape.inRecursiveStyle = true
       }
-      foregroundStyle.styles[2]._apply(to: &shape)
+      foregroundStyle.styles.tertiary._apply(to: &shape)
     } else {
       shape.result = .color((shape.environment.foregroundColor ?? .primary).opacity(0.3))
     }
@@ -91,10 +91,10 @@ extension QuaternaryContentStyle: ShapeStyle {
     if !shape.inRecursiveStyle,
        let foregroundStyle = shape.environment._foregroundStyle
     {
-      if foregroundStyle.styles[2] is Self {
+      if foregroundStyle.styles.tertiary is Self {
         shape.inRecursiveStyle = true
       }
-      foregroundStyle.styles[2]._apply(to: &shape)
+      foregroundStyle.styles.tertiary._apply(to: &shape)
     } else {
       shape.result = .color((shape.environment.foregroundColor ?? .primary).opacity(0.2))
     }
