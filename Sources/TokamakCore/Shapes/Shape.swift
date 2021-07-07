@@ -44,20 +44,6 @@ public protocol InsettableShape: Shape {
   func inset(by amount: CGFloat) -> InsetShape
 }
 
-public struct ForegroundStyle: ShapeStyle {
-  public init() {}
-  
-  public func _apply(to shape: inout _ShapeStyle_Shape) {
-    if let foregroundStyle = shape.environment._foregroundStyle {
-      foregroundStyle._apply(to: &shape)
-    } else {
-      shape.result = .color(shape.environment.foregroundColor ?? .primary)
-    }
-  }
-  
-  public static func _apply(to shape: inout _ShapeStyle_ShapeType) {}
-}
-
 public struct FillStyle: Equatable {
   public var isEOFilled: Bool
   public var isAntialiased: Bool
