@@ -102,6 +102,7 @@ public typealias DatePicker = TokamakCore.DatePicker
 public typealias DisclosureGroup = TokamakCore.DisclosureGroup
 public typealias Divider = TokamakCore.Divider
 public typealias ForEach = TokamakCore.ForEach
+public typealias Form = TokamakCore.Form
 public typealias GeometryReader = TokamakCore.GeometryReader
 public typealias GridItem = TokamakCore.GridItem
 public typealias Group = TokamakCore.Group

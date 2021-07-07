@@ -56,6 +56,7 @@ public typealias CGAffineTransform = TokamakCore.CGAffineTransform
 
 public typealias Divider = TokamakCore.Divider
 public typealias ForEach = TokamakCore.ForEach
+public typealias Form = TokamakCore.Form
 public typealias GridItem = TokamakCore.GridItem
 public typealias Group = TokamakCore.Group
 public typealias HStack = TokamakCore.HStack
