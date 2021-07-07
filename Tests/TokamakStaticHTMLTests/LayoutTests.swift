@@ -79,12 +79,42 @@ struct Star: Shape {
   }
 }
 
+struct Stacks: View {
+  let spacing: CGFloat
+
+  var body: some View {
+    VStack(spacing: spacing) {
+      HStack(spacing: spacing) {
+        Rectangle()
+          .fill(Color.red)
+          .frame(width: 100, height: 100)
+
+        Rectangle()
+          .fill(Color.green)
+          .frame(width: 100, height: 100)
+      }
+
+      HStack(spacing: spacing) {
+        Rectangle()
+          .fill(Color.blue)
+          .frame(width: 100, height: 100)
+
+        Rectangle()
+          .fill(Color.black)
+          .frame(width: 100, height: 100)
+      }
+    }
+  }
+}
+
+private let defaultSnapshotTimeout: TimeInterval = 10
+
 final class LayoutTests: XCTestCase {
   func testPath() {
     assertSnapshot(
       matching: Star().fill(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1)),
       as: .image(size: .init(width: 100, height: 100)),
-      timeout: 10
+      timeout: defaultSnapshotTimeout
     )
   }
 
@@ -92,7 +122,21 @@ final class LayoutTests: XCTestCase {
     assertSnapshot(
       matching: Circle().stroke(Color.green).frame(width: 100, height: 100, alignment: .center),
       as: .image(size: .init(width: 150, height: 150)),
-      timeout: 10
+      timeout: defaultSnapshotTimeout
+    )
+  }
+
+  func testStacks() {
+    assertSnapshot(
+      matching: Stacks(spacing: 10),
+      as: .image(size: .init(width: 210, height: 210)),
+      timeout: defaultSnapshotTimeout
+    )
+
+    assertSnapshot(
+      matching: Stacks(spacing: 20),
+      as: .image(size: .init(width: 220, height: 220)),
+      timeout: defaultSnapshotTimeout
     )
   }
 }

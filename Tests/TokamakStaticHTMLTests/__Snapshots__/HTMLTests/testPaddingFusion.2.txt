@@ -2,8 +2,16 @@
 <head>
   <title></title>
   <style>
-    ._tokamak-stack > * {
-  flex-shrink: 0;
+    ._tokamak-stack {
+  display: grid;
+}
+._tokamak-hstack {
+  grid-auto-flow: column;
+  column-gap: var(--tokamak-stack-gap, 8px);
+}
+._tokamak-vstack {
+  grid-auto-flow: row;
+  row-gap: var(--tokamak-stack-gap, 8px);
 }
 ._tokamak-scrollview-hideindicators {
   scrollbar-color: transparent;

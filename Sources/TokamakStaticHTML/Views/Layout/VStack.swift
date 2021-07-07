@@ -32,13 +32,16 @@ extension VStack: _HTMLPrimitive, SpacerContainer {
 
   @_spi(TokamakStaticHTML)
   public var renderedBody: AnyView {
-    AnyView(HTML("div", [
+    let spacing = _VStackProxy(self).spacing
+
+    return AnyView(HTML("div", [
       "style": """
-      display: flex; flex-direction: column; align-items: \(alignment.cssValue);
+      justify-items: \(alignment.cssValue);
       \(hasSpacer ? "height: 100%;" : "")
       \(fillCrossAxis ? "width: 100%;" : "")
+      \(spacing != defaultStackSpacing ? "--tokamak-stack-gap: \(spacing)px" : "")
       """,
-      "class": "_tokamak-stack",
+      "class": "_tokamak-stack _tokamak-vstack",
     ]) { content })
   }
 }
