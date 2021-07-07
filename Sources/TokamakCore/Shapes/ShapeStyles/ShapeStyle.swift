@@ -195,7 +195,25 @@ public extension View {
   }
 
   public typealias Body = Never
+
   public func modifyEnvironment(_ values: inout EnvironmentValues) {
+    var styles = self.styles
+    // Passthrough inert styles.
+    if styles[0] is PrimaryContentStyle {
+      styles[0] = values._foregroundStyle?.styles[0] ?? styles[0]
+    }
+    if styles[1] is SecondaryContentStyle {
+      styles[1] = values._foregroundStyle?.styles[1] ?? styles[1]
+    }
+    if styles[2] is TertiaryContentStyle {
+      styles[2] = values._foregroundStyle?.styles[2] ?? styles[2]
+    }
+    if styles[0] is QuaternaryContentStyle,
+       styles[1] is QuaternaryContentStyle,
+       styles[2] is QuaternaryContentStyle
+    {
+      styles[2] = values._foregroundStyle?.styles[2] ?? styles[2]
+    }
     values._foregroundStyle = .init(styles: styles, environment: values)
   }
 }

@@ -83,6 +83,13 @@ public typealias Rectangle = TokamakCore.Rectangle
 public typealias RoundedRectangle = TokamakCore.RoundedRectangle
 public typealias ContainerRelativeShape = TokamakCore.ContainerRelativeShape
 
+// MARK: Shape Styles
+
+public typealias PrimaryContentStyle = TokamakCore.PrimaryContentStyle
+public typealias SecondaryContentStyle = TokamakCore.SecondaryContentStyle
+public typealias TertiaryContentStyle = TokamakCore.TertiaryContentStyle
+public typealias QuaternaryContentStyle = TokamakCore.QuaternaryContentStyle
+
 // MARK: Primitive values
 
 public typealias Color = TokamakCore.Color
