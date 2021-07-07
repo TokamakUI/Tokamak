@@ -95,7 +95,11 @@ public struct _TextProxy {
   public init(_ subject: Text) {
     // Resolve the foregroundStyle.
     if let foregroundStyle = subject.environment._foregroundStyle {
-      var shape = _ShapeStyle_Shape(for: .prepare(subject, level: 0), in: subject.environment, role: .fill)
+      var shape = _ShapeStyle_Shape(
+        for: .prepare(subject, level: 0),
+        in: subject.environment,
+        role: .fill
+      )
       foregroundStyle._apply(to: &shape)
       if case let .prepared(text) = shape.result {
         self.subject = text

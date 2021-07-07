@@ -17,7 +17,7 @@ import JavaScriptKit
 @_spi(TokamakCore) import TokamakCore
 import TokamakStaticHTML
 
-//extension _ContainerShapeModifier._ContainerShapeView : _DOMPrimitive {
+// extension _ContainerShapeModifier._ContainerShapeView : _DOMPrimitive {
 //  public var renderedBody: AnyView {
 //    AnyView(
 //      content
@@ -29,4 +29,4 @@ import TokamakStaticHTML
 //        })
 //    )
 //  }
-//}
+// }

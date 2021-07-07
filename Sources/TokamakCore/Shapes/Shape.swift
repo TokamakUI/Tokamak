@@ -19,7 +19,7 @@ import Foundation
 
 public protocol Shape: View {
   func path(in rect: CGRect) -> Path
-  
+
   static var role: ShapeRole { get }
 }
 

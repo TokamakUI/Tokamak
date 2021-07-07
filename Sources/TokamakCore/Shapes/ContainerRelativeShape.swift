@@ -19,7 +19,7 @@ import Foundation
 
 public struct ContainerRelativeShape: Shape {
   @Environment(\._containerShape) var containerShape
-  
+
   public func path(in rect: CGRect) -> Path {
     containerShape(rect, GeometryProxy(size: rect.size)) ?? Rectangle().path(in: rect)
   }
@@ -28,23 +28,28 @@ public struct ContainerRelativeShape: Shape {
 }
 
 extension ContainerRelativeShape: InsettableShape {
-  @inlinable public func inset(by amount: CGFloat) -> some InsettableShape {
-    return _Inset(amount: amount)
+  @inlinable
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    _Inset(amount: amount)
   }
-  
+
   @usableFromInline
   @frozen internal struct _Inset: InsettableShape, DynamicProperty {
     @usableFromInline
     internal var amount: CGFloat
-    @inlinable internal init(amount: CGFloat) {
+    @inlinable
+    internal init(amount: CGFloat) {
       self.amount = amount
     }
+
     @usableFromInline
     internal func path(in rect: CGRect) -> Path {
       // FIXME: Inset the container shape.
       Rectangle().path(in: rect)
     }
-    @inlinable internal func inset(by amount: CGFloat) -> ContainerRelativeShape._Inset {
+
+    @inlinable
+    internal func inset(by amount: CGFloat) -> ContainerRelativeShape._Inset {
       var copy = self
       copy.amount += amount
       return copy
@@ -53,10 +58,10 @@ extension ContainerRelativeShape: InsettableShape {
 }
 
 private extension EnvironmentValues {
-  enum ContainerShapeKey : EnvironmentKey {
+  enum ContainerShapeKey: EnvironmentKey {
     static let defaultValue: (CGRect, GeometryProxy) -> Path? = { _, _ in nil }
   }
-  
+
   var _containerShape: (CGRect, GeometryProxy) -> Path? {
     get {
       self[ContainerShapeKey.self]
@@ -69,29 +74,31 @@ private extension EnvironmentValues {
 
 @frozen public struct _ContainerShapeModifier<Shape>: ViewModifier where Shape: InsettableShape {
   public var shape: Shape
-  @inlinable public init(shape: Shape) { self.shape = shape }
-  
+  @inlinable
+  public init(shape: Shape) { self.shape = shape }
+
   public func body(content: Content) -> some View {
     _ContainerShapeView(content: content, shape: shape)
   }
-  
+
   public struct _ContainerShapeView: View {
     public let content: Content
     public let shape: Shape
-    
+
     public var body: some View {
       content
-        .environment(\._containerShape, { rect, proxy in
-          return shape
+        .environment(\._containerShape) { rect, proxy in
+          shape
             .inset(by: proxy.size.width) // TODO: Calculate the offset using content's geometry
             .path(in: rect)
-        })
+        }
     }
   }
 }
 
 public extension View {
-  @inlinable func containerShape<T>(_ shape: T) -> some View where T: InsettableShape {
+  @inlinable
+  func containerShape<T>(_ shape: T) -> some View where T: InsettableShape {
     modifier(_ContainerShapeModifier(shape: shape))
   }
 }

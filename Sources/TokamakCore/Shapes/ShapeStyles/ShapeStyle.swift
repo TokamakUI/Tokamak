@@ -22,35 +22,25 @@ public protocol ShapeStyle {
   static func _apply(to type: inout _ShapeStyle_ShapeType)
 }
 
-class ShapeStyleBox: AnyTokenBox {
-  let styles: [ShapeStyle]
-  
-  init(styles: [ShapeStyle]) {
-    self.styles = styles
-  }
-  
-  func resolve(in environment: EnvironmentValues) -> AnyShapeStyle {
-    AnyShapeStyle(styles: styles, environment: environment)
-  }
-}
-
 public struct AnyShapeStyle: ShapeStyle {
   let styles: [ShapeStyle]
   let environment: EnvironmentValues
-  
+
   public func _apply(to shape: inout _ShapeStyle_Shape) {
     shape.environment = environment
     if styles.count > 1 {
-      let results = styles.map { (style) -> _ShapeStyle_Shape.Result in
+      let results = styles.map { style -> _ShapeStyle_Shape.Result in
         var copy = shape
         style._apply(to: &copy)
         return copy.result
       }
-      shape.result = .resolved(.array(results.compactMap { $0.resolvedStyle(on: shape, in: environment) }))
+      shape
+        .result =
+        .resolved(.array(results.compactMap { $0.resolvedStyle(on: shape, in: environment) }))
     } else if let first = styles.first {
       first._apply(to: &shape)
     }
-    
+
     switch shape.operation {
     case let .prepare(text, level):
       var modifiers = text.modifiers
@@ -71,7 +61,7 @@ public struct AnyShapeStyle: ShapeStyle {
       break
     }
   }
-  
+
   public static func _apply(to type: inout _ShapeStyle_ShapeType) {}
 }
 
@@ -82,20 +72,20 @@ public struct _ShapeStyle_Shape {
   public var bounds: CGRect?
   public var role: ShapeRole
   public var inRecursiveStyle: Bool
-  
+
   public init(
     for operation: Operation,
     in environment: EnvironmentValues,
     role: ShapeRole
   ) {
     self.operation = operation
-    self.result = .none
+    result = .none
     self.environment = environment
-    self.bounds = nil
+    bounds = nil
     self.role = role
-    self.inRecursiveStyle = false
+    inRecursiveStyle = false
   }
-  
+
   public enum Operation {
     case prepare(Text, level: Int)
     case resolveStyle(levels: Range<Int>)
@@ -105,7 +95,7 @@ public struct _ShapeStyle_Shape {
     case primaryStyle
     case modifyBackground
   }
-  
+
   public enum Result {
     case prepared(Text)
     case resolved(_ResolvedStyle)
@@ -113,8 +103,10 @@ public struct _ShapeStyle_Shape {
     case color(Color)
     case bool(Bool)
     case none
-    
-    public func resolvedStyle(on shape: _ShapeStyle_Shape, in environment: EnvironmentValues) -> _ResolvedStyle? {
+
+    public func resolvedStyle(on shape: _ShapeStyle_Shape,
+                              in environment: EnvironmentValues) -> _ResolvedStyle?
+    {
       switch self {
       case let .resolved(resolved): return resolved
       case let .style(anyStyle):
@@ -129,18 +121,19 @@ public struct _ShapeStyle_Shape {
     }
   }
 }
+
 public struct _ShapeStyle_ShapeType {}
 
 public indirect enum _ResolvedStyle {
   case color(AnyColorBox.ResolvedValue)
 //  case paint(AnyResolvedPaint) // I think is used for Image as a ShapeStyle (SwiftUI.ImagePaint).
-// TODO: Material
+  // TODO: Material
 //  case foregroundMaterial(AnyColorBox.ResolvedValue, MaterialStyle)
 //  case backgroundMaterial(AnyColorBox.ResolvedValue)
   case array([_ResolvedStyle])
   case opacity(Float, _ResolvedStyle)
 //  case multicolor(ResolvedMulticolorStyle)
-  
+
   public func color(at level: Int) -> Color? {
     switch self {
     case let .color(resolved):
@@ -158,7 +151,7 @@ extension EnvironmentValues {
   private struct ForegroundStyleKey: EnvironmentKey {
     static let defaultValue: AnyShapeStyle? = nil
   }
-  
+
   public var _foregroundStyle: AnyShapeStyle? {
     get {
       self[ForegroundStyleKey.self]
@@ -170,29 +163,37 @@ extension EnvironmentValues {
 }
 
 public extension View {
-  @inlinable func foregroundStyle<S>(_ style: S) -> some View
-  where S: ShapeStyle {
+  @inlinable
+  func foregroundStyle<S>(_ style: S) -> some View
+    where S: ShapeStyle
+  {
     foregroundStyle(style, style, style)
   }
-  
-  @inlinable func foregroundStyle<S1, S2>(_ primary: S1, _ secondary: S2) -> some View
-  where S1: ShapeStyle, S2: ShapeStyle {
+
+  @inlinable
+  func foregroundStyle<S1, S2>(_ primary: S1, _ secondary: S2) -> some View
+    where S1: ShapeStyle, S2: ShapeStyle
+  {
     foregroundStyle(primary, secondary, secondary)
   }
-  
-  @inlinable func foregroundStyle<S1, S2, S3>(_ primary: S1, _ secondary: S2, _ tertiary: S3) -> some View
-  where S1: ShapeStyle, S2: ShapeStyle, S3: ShapeStyle {
+
+  @inlinable
+  func foregroundStyle<S1, S2, S3>(_ primary: S1, _ secondary: S2,
+                                   _ tertiary: S3) -> some View
+    where S1: ShapeStyle, S2: ShapeStyle, S3: ShapeStyle
+  {
     modifier(_ForegroundStyleModifier(styles: [primary, secondary, tertiary]))
   }
 }
 
 @frozen public struct _ForegroundStyleModifier: ViewModifier, EnvironmentModifier {
   public var styles: [ShapeStyle]
-  
-  @inlinable public init(styles: [ShapeStyle]) {
+
+  @inlinable
+  public init(styles: [ShapeStyle]) {
     self.styles = styles
   }
-  
+
   public typealias Body = Never
   public func modifyEnvironment(_ values: inout EnvironmentValues) {
     values._foregroundStyle = .init(styles: styles, environment: values)

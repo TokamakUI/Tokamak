@@ -17,7 +17,7 @@
 
 public struct ForegroundStyle: ShapeStyle {
   public init() {}
-  
+
   public func _apply(to shape: inout _ShapeStyle_Shape) {
     if let foregroundStyle = shape.environment._foregroundStyle {
       foregroundStyle._apply(to: &shape)
@@ -25,6 +25,6 @@ public struct ForegroundStyle: ShapeStyle {
       shape.result = .color(shape.environment.foregroundColor ?? .primary)
     }
   }
-  
+
   public static func _apply(to shape: inout _ShapeStyle_ShapeType) {}
 }
