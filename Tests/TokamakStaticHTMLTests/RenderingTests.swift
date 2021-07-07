@@ -166,6 +166,23 @@ final class RenderingTests: XCTestCase {
       timeout: defaultSnapshotTimeout
     )
   }
+
+  func testContainerRelativeShape() {
+    #if compiler(>=5.5) || os(WASI)
+    assertSnapshot(
+      matching: ZStack {
+        ContainerRelativeShape()
+          .fill(Color.blue)
+          .frame(width: 100, height: 100, alignment: .center)
+        ContainerRelativeShape()
+          .fill(Color.green)
+          .frame(width: 50, height: 50)
+      }.containerShape(Circle()),
+      as: .image(size: .init(width: 150, height: 150)),
+      timeout: 10
+    )
+    #endif
+  }
 }
 
 #endif
