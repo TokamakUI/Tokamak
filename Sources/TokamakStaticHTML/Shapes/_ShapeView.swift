@@ -26,7 +26,7 @@ extension ShapeStyle {
     for operation: _ShapeStyle_Shape.Operation,
     in environment: EnvironmentValues,
     role: ShapeRole
-  ) -> _ShapeStyle_Shape.Result {
+  ) -> _ResolvedStyle? {
     var shape = _ShapeStyle_Shape(
       for: operation,
       in: environment,
@@ -34,17 +34,17 @@ extension ShapeStyle {
     )
     _apply(to: &shape)
     return shape.result
+      .resolvedStyle(on: shape, in: environment)
   }
 }
 
 extension _StrokedShape: ShapeAttributes {
   func attributes(_ style: ShapeStyle) -> [HTMLAttribute: String] {
-    if case let .resolved(resolved) = style.resolve(
-      for: .resolveStyle(levels: 0..<1),
-      in: environment,
-      role: .stroke
-    ),
-       let color = resolved.color(at: 0) {
+    if let color = style.resolve(
+         for: .resolveStyle(levels: 0..<1),
+         in: environment,
+         role: .stroke
+       )?.color(at: 0) {
       return ["style": "stroke: \(color.cssValue(environment)); fill: none;"]
     } else {
       return ["style": "stroke: black; fill: none;"]
@@ -57,26 +57,23 @@ extension _ShapeView: _HTMLPrimitive {
   public var renderedBody: AnyView {
     let path = shape.path(in: .zero).renderedBody
     let attributes: [HTMLAttribute: String]
-
+    
     if let shapeAttributes = shape as? ShapeAttributes {
       attributes = shapeAttributes.attributes(style)
-    } else if case let .resolved(resolved) = style.resolve(
+    } else if let color = style.resolve(
                 for: .resolveStyle(levels: 0..<1),
                 in: environment,
-                role: .stroke
-              ),
-              let color = resolved.color(at: 0) {
+                   role: Content.role
+              )?.color(at: 0) {
+      print("resolved style color as \(color)")
       attributes = ["style": "fill: \(color.cssValue(environment));"]
     } else if let foregroundStyle = environment._foregroundStyle,
-              case let .resolved(resolved) = foregroundStyle.resolve(
+              let color = foregroundStyle.resolve(
                 for: .resolveStyle(levels: 0..<1),
                 in: environment,
-                role: .stroke
-              ),
-              let color = resolved.color(at: 0) {
+                role: Content.role
+              )?.color(at: 0) {
       attributes = ["style": "fill: \(color.cssValue(environment));"]
-    } else if let foregroundColor = foregroundColor {
-      attributes = ["style": "fill: \(foregroundColor.cssValue(environment));"]
     } else {
       return path
     }

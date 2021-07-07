@@ -17,11 +17,6 @@
 
 import Foundation
 
-//public protocol _PrimitiveShapeStyle {
-//  func _applyRendered(to shape: inout _ShapeStyle_Shape)
-//  static func _applyRendered(to type: inout _ShapeStyle_ShapeType)
-//}
-
 public protocol ShapeStyle {
   func _apply(to shape: inout _ShapeStyle_Shape)
   static func _apply(to type: inout _ShapeStyle_ShapeType)
@@ -119,7 +114,7 @@ public struct _ShapeStyle_Shape {
     case bool(Bool)
     case none
     
-    func resolvedStyle(on shape: _ShapeStyle_Shape, in environment: EnvironmentValues) -> _ResolvedStyle? {
+    public func resolvedStyle(on shape: _ShapeStyle_Shape, in environment: EnvironmentValues) -> _ResolvedStyle? {
       switch self {
       case let .resolved(resolved): return resolved
       case let .style(anyStyle):
