@@ -205,7 +205,6 @@ final class RenderingTests: XCTestCase {
   }
 
   func testMaterial() {
-    #if compiler(>=5.5) || os(WASI)
     assertSnapshot(
       matching: ZStack {
         HStack(spacing: 0) {
@@ -226,7 +225,6 @@ final class RenderingTests: XCTestCase {
       as: .image(size: .init(width: 100, height: 100)),
       timeout: defaultSnapshotTimeout
     )
-    #endif
   }
 }
 
