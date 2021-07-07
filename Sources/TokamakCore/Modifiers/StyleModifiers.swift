@@ -66,16 +66,42 @@ public extension View {
   ) -> some View where V: View {
     background(content(), alignment: alignment)
   }
+}
 
+@frozen public struct _BackgroundShapeModifier<Style, Bounds>: ViewModifier, EnvironmentReader
+  where Style: ShapeStyle, Bounds: Shape
+{
+  public var environment: EnvironmentValues!
+
+  public var style: Style
+  public var shape: Bounds
+  public var fillStyle: FillStyle
+
+  @inlinable
+  public init(style: Style, shape: Bounds, fillStyle: FillStyle) {
+    self.style = style
+    self.shape = shape
+    self.fillStyle = fillStyle
+  }
+
+  public func body(content: Content) -> some View {
+    content
+      .background(shape.fill(style, style: fillStyle))
+  }
+
+  public mutating func setContent(from values: EnvironmentValues) {
+    environment = values
+  }
+}
+
+public extension View {
   @inlinable
   func background<S, T>(
     _ style: S,
     in shape: T,
     fillStyle: FillStyle = FillStyle()
   ) -> some View where S: ShapeStyle, T: Shape {
-    background {
-      shape.fill(style, style: fillStyle)
-    }
+    modifier(_BackgroundShapeModifier(style: style, shape: shape, fillStyle: fillStyle))
   }
 
   @inlinable
@@ -83,7 +109,7 @@ public extension View {
     in shape: S,
     fillStyle: FillStyle = FillStyle()
   ) -> some View where S: Shape {
-    background(ForegroundStyle(), in: shape, fillStyle: fillStyle)
+    background(BackgroundStyle(), in: shape, fillStyle: fillStyle)
   }
 }
 

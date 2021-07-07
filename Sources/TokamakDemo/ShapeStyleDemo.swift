@@ -80,12 +80,12 @@ struct ShapeStyleDemo: View {
             Text("Thick")
             Spacer()
           }
-          .background(Material.thick)
+          .background(Material.thick, in: Rectangle())
           HStack {
             Text("Ultra Thick")
             Spacer()
           }
-          .background(Material.ultraThick)
+          .background(Material.ultraThick, in: Rectangle())
         }
       }
     }
