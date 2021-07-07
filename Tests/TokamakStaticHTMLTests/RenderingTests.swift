@@ -66,6 +66,8 @@ public extension Snapshotting where Value: View, Format == NSImage {
   }
 }
 
+private let defaultSnapshotTimeout: TimeInterval = 10
+
 struct Star: Shape {
   func path(in rect: CGRect) -> Path {
     Path { path in
@@ -107,9 +109,26 @@ struct Stacks: View {
   }
 }
 
-private let defaultSnapshotTimeout: TimeInterval = 10
+struct Opacity: View {
+  var body: some View {
+    ZStack {
+      Circle()
+        .fill(Color.red)
+        .opacity(0.5)
+        .frame(width: 25, height: 25)
+      Circle()
+        .fill(Color.green)
+        .opacity(0.5)
+        .frame(width: 50, height: 50)
+      Circle()
+        .fill(Color.blue)
+        .opacity(0.5)
+        .frame(width: 75, height: 75)
+    }
+  }
+}
 
-final class LayoutTests: XCTestCase {
+final class RenderingTests: XCTestCase {
   func testPath() {
     assertSnapshot(
       matching: Star().fill(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1)),
@@ -136,6 +155,14 @@ final class LayoutTests: XCTestCase {
     assertSnapshot(
       matching: Stacks(spacing: 20),
       as: .image(size: .init(width: 220, height: 220)),
+      timeout: defaultSnapshotTimeout
+    )
+  }
+
+  func testOpacity() {
+    assertSnapshot(
+      matching: Opacity().preferredColorScheme(.light),
+      as: .image(size: .init(width: 75, height: 75)),
       timeout: defaultSnapshotTimeout
     )
   }
