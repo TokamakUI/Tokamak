@@ -14,6 +14,7 @@
 
 import TokamakShim
 
+@available(macOS 12.0, iOS 15.0, *)
 struct ShapeStyleDemo: View {
   var body: some View {
     HStack {

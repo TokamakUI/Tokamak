@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		207C05702610E16E00BBBE54 /* DatePickerDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207C056F2610E16E00BBBE54 /* DatePickerDemo.swift */; };
 		207C05712610E16E00BBBE54 /* DatePickerDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207C056F2610E16E00BBBE54 /* DatePickerDemo.swift */; };
+		262DA7B32695D99500CABEAE /* ShapeStyleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262DA7B22695D99500CABEAE /* ShapeStyleDemo.swift */; };
+		262DA7B42695D99500CABEAE /* ShapeStyleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262DA7B22695D99500CABEAE /* ShapeStyleDemo.swift */; };
 		3DCDE44424CA6AD400910F17 /* SidebarDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */; };
 		3DCDE44524CA6AD400910F17 /* SidebarDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */; };
 		4550BD5225B642B80088F4EA /* ShadowDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4550BD5125B642B80088F4EA /* ShadowDemo.swift */; };
@@ -95,6 +97,7 @@
 
 /* Begin PBXFileReference section */
 		207C056F2610E16E00BBBE54 /* DatePickerDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerDemo.swift; sourceTree = "<group>"; };
+		262DA7B22695D99500CABEAE /* ShapeStyleDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeStyleDemo.swift; sourceTree = "<group>"; };
 		3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidebarDemo.swift; sourceTree = "<group>"; };
 		4550BD5125B642B80088F4EA /* ShadowDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowDemo.swift; sourceTree = "<group>"; };
 		8500293E24D2FF3E001A2E84 /* SliderDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderDemo.swift; sourceTree = "<group>"; };
@@ -109,7 +112,7 @@
 		85ED189A24AD425E0085DFA0 /* SpacerDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpacerDemo.swift; sourceTree = "<group>"; };
 		85ED189B24AD425E0085DFA0 /* TextDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextDemo.swift; sourceTree = "<group>"; };
 		85ED189C24AD425E0085DFA0 /* ForEachDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForEachDemo.swift; sourceTree = "<group>"; };
-		85ED189D24AD425E0085DFA0 /* TokamakDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokamakDemo.swift; sourceTree = "<group>"; };
+		85ED189D24AD425E0085DFA0 /* TokamakDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = TokamakDemo.swift; sourceTree = "<group>"; tabWidth = 2; };
 		85ED189E24AD425E0085DFA0 /* Counter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		85ED189F24AD425E0085DFA0 /* TextFieldDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldDemo.swift; sourceTree = "<group>"; };
 		85ED18A024AD425E0085DFA0 /* EnvironmentDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentDemo.swift; sourceTree = "<group>"; };
@@ -188,6 +191,7 @@
 		85ED189924AD425E0085DFA0 /* TokamakDemo */ = {
 			isa = PBXGroup;
 			children = (
+				262DA7B22695D99500CABEAE /* ShapeStyleDemo.swift */,
 				D120FDDA257E7145008FFBAD /* TextEditorDemo.swift */,
 				D1D6B62224D817350041E1D9 /* GeometryReaderDemo.swift */,
 				D1C726F224CB63C6003B576D /* ButtonStyleDemo.swift */,
@@ -375,6 +379,7 @@
 				B5C76E4A24C73ED5003EABB2 /* AppStorageDemo.swift in Sources */,
 				3DCDE44424CA6AD400910F17 /* SidebarDemo.swift in Sources */,
 				85ED18AD24AD425E0085DFA0 /* TextFieldDemo.swift in Sources */,
+				262DA7B32695D99500CABEAE /* ShapeStyleDemo.swift in Sources */,
 				85ED18A724AD425E0085DFA0 /* ForEachDemo.swift in Sources */,
 				D1C726F324CB63C6003B576D /* ButtonStyleDemo.swift in Sources */,
 				854A1A9124B3E3630027BC32 /* ToggleDemo.swift in Sources */,
@@ -407,6 +412,7 @@
 				B5C76E4B24C73ED5003EABB2 /* AppStorageDemo.swift in Sources */,
 				3DCDE44524CA6AD400910F17 /* SidebarDemo.swift in Sources */,
 				85ED18AC24AD425E0085DFA0 /* Counter.swift in Sources */,
+				262DA7B42695D99500CABEAE /* ShapeStyleDemo.swift in Sources */,
 				85ED18A824AD425E0085DFA0 /* ForEachDemo.swift in Sources */,
 				D1C726F424CB63C6003B576D /* ButtonStyleDemo.swift in Sources */,
 				854A1A9324B3F28F0027BC32 /* ToggleDemo.swift in Sources */,

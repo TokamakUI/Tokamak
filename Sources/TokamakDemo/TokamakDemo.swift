@@ -141,7 +141,9 @@ struct TokamakDemoView: View {
               NavItem("Preferences", destination: PreferenceKeyDemo())
             }
             NavItem("Color", destination: ColorDemo())
-            NavItem("Shape Styles", destination: ShapeStyleDemo())
+            if #available(macOS 12.0, iOS 15.0, *) {
+              NavItem("Shape Styles", destination: ShapeStyleDemo())
+            }
             if #available(OSX 11.0, iOS 14.0, *) {
               NavItem("AppStorage", destination: AppStorageDemo())
             } else {
