@@ -168,6 +168,7 @@ final class RenderingTests: XCTestCase {
   }
 
   func testContainerRelativeShape() {
+    #if compiler(>=5.5) || os(WASI)
     assertSnapshot(
       matching: ZStack {
         ContainerRelativeShape()
@@ -180,6 +181,7 @@ final class RenderingTests: XCTestCase {
       as: .image(size: .init(width: 150, height: 150)),
       timeout: 10
     )
+    #endif
   }
 }
 
