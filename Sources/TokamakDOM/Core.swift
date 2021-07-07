@@ -90,6 +90,11 @@ public typealias SecondaryContentStyle = TokamakCore.SecondaryContentStyle
 public typealias TertiaryContentStyle = TokamakCore.TertiaryContentStyle
 public typealias QuaternaryContentStyle = TokamakCore.QuaternaryContentStyle
 
+public typealias ForegroundStyle = TokamakCore.ForegroundStyle
+public typealias BackgroundStyle = TokamakCore.BackgroundStyle
+
+public typealias Material = TokamakCore.Material
+
 // MARK: Primitive values
 
 public typealias Color = TokamakCore.Color

@@ -42,7 +42,6 @@ public typealias Ellipse = TokamakCore.Ellipse
 public typealias Path = TokamakCore.Path
 public typealias Rectangle = TokamakCore.Rectangle
 public typealias RoundedRectangle = TokamakCore.RoundedRectangle
-
 public typealias ContainerRelativeShape = TokamakCore.ContainerRelativeShape
 
 // MARK: Shape Styles
@@ -51,6 +50,11 @@ public typealias PrimaryContentStyle = TokamakCore.PrimaryContentStyle
 public typealias SecondaryContentStyle = TokamakCore.SecondaryContentStyle
 public typealias TertiaryContentStyle = TokamakCore.TertiaryContentStyle
 public typealias QuaternaryContentStyle = TokamakCore.QuaternaryContentStyle
+
+public typealias ForegroundStyle = TokamakCore.ForegroundStyle
+public typealias BackgroundStyle = TokamakCore.BackgroundStyle
+
+public typealias Material = TokamakCore.Material
 
 // MARK: Primitive values
 
