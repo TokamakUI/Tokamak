@@ -23,23 +23,23 @@ public protocol ShapeStyle {
 }
 
 public struct AnyShapeStyle: ShapeStyle {
-  let styles: [ShapeStyle]
+  let styles: (primary: ShapeStyle, secondary: ShapeStyle, tertiary: ShapeStyle)
+  var stylesArray: [ShapeStyle] {
+    [styles.primary, styles.secondary, styles.tertiary]
+  }
+
   let environment: EnvironmentValues
 
   public func _apply(to shape: inout _ShapeStyle_Shape) {
     shape.environment = environment
-    if styles.count > 1 {
-      let results = styles.map { style -> _ShapeStyle_Shape.Result in
-        var copy = shape
-        style._apply(to: &copy)
-        return copy.result
-      }
-      shape
-        .result =
-        .resolved(.array(results.compactMap { $0.resolvedStyle(on: shape, in: environment) }))
-    } else if let first = styles.first {
-      first._apply(to: &shape)
+    let results = stylesArray.map { style -> _ShapeStyle_Shape.Result in
+      var copy = shape
+      style._apply(to: &copy)
+      return copy.result
     }
+    shape
+      .result =
+      .resolved(.array(results.compactMap { $0.resolvedStyle(on: shape, in: environment) }))
 
     switch shape.operation {
     case let .prepare(text, level):
@@ -50,7 +50,9 @@ public struct AnyShapeStyle: ShapeStyle {
       shape.result = .prepared(Text(storage: text.storage, modifiers: modifiers))
     case let .resolveStyle(levels):
       if case let .resolved(resolved) = shape.result {
-        if case let .array(children) = resolved {
+        if case let .array(children) = resolved,
+           children.count >= levels.upperBound
+        {
           shape.result = .resolved(.array(.init(children[levels])))
         }
       } else if let resolved = shape.result.resolvedStyle(on: shape, in: environment) {

@@ -89,6 +89,18 @@ struct ShapeStyleDemo: View {
         }
       }
     }
+    HStack {
+      VStack {
+        Text("Primary")
+          .foregroundStyle(PrimaryContentStyle())
+        Text("Secondary")
+          .foregroundStyle(SecondaryContentStyle())
+        Text("Tertiary")
+          .foregroundStyle(TertiaryContentStyle())
+        Text("Quaternary")
+          .foregroundStyle(QuaternaryContentStyle())
+      }
+    }
     #endif
   }
 }

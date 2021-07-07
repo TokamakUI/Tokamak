@@ -74,6 +74,9 @@ public extension View {
   }
 
   public func modifyEnvironment(_ values: inout EnvironmentValues) {
-    values._backgroundStyle = .init(styles: [style, style, style], environment: values)
+    values._backgroundStyle = .init(
+      styles: (primary: style, secondary: style, tertiary: style),
+      environment: values
+    )
   }
 }

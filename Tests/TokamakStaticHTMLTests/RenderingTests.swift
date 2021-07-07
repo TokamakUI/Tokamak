@@ -200,6 +200,28 @@ final class RenderingTests: XCTestCase {
     )
   }
 
+  func testContentStyles() {
+    assertSnapshot(
+      matching: HStack {
+        Rectangle()
+          .frame(width: 50, height: 50)
+          .foregroundStyle(PrimaryContentStyle())
+        Rectangle()
+          .frame(width: 50, height: 50)
+          .foregroundStyle(SecondaryContentStyle())
+        Rectangle()
+          .frame(width: 50, height: 50)
+          .foregroundStyle(TertiaryContentStyle())
+        Rectangle()
+          .frame(width: 50, height: 50)
+          .foregroundStyle(QuaternaryContentStyle())
+      }
+      .foregroundColor(.blue),
+      as: .image(size: .init(width: 275, height: 100)),
+      timeout: defaultSnapshotTimeout
+    )
+  }
+
   func testMaterial() {
     assertSnapshot(
       matching: ZStack {

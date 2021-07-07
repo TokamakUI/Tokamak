@@ -60,24 +60,36 @@ public extension View {
   }
 
   @inlinable
-  func foregroundStyle<S1, S2, S3>(_ primary: S1, _ secondary: S2,
-                                   _ tertiary: S3) -> some View
+  func foregroundStyle<S1, S2, S3>(
+    _ primary: S1,
+    _ secondary: S2,
+    _ tertiary: S3
+  ) -> some View
     where S1: ShapeStyle, S2: ShapeStyle, S3: ShapeStyle
   {
-    modifier(_ForegroundStyleModifier(styles: [primary, secondary, tertiary]))
+    modifier(_ForegroundStyleModifier(primary: primary, secondary: secondary, tertiary: tertiary))
   }
 }
 
-@frozen public struct _ForegroundStyleModifier: ViewModifier, EnvironmentModifier {
-  public var styles: [ShapeStyle]
+@frozen public struct _ForegroundStyleModifier<Primary, Secondary, Tertiary>: ViewModifier,
+  EnvironmentModifier
+  where Primary: ShapeStyle, Secondary: ShapeStyle, Tertiary: ShapeStyle
+{
+  public var primary: Primary
+  public var secondary: Secondary
+  public var tertiary: Tertiary
 
   @inlinable
-  public init(styles: [ShapeStyle]) {
-    self.styles = styles
+  public init(
+    primary: Primary,
+    secondary: Secondary,
+    tertiary: Tertiary
+  ) {
+    (self.primary, self.secondary, self.tertiary) = (primary, secondary, tertiary)
   }
 
   public typealias Body = Never
   public func modifyEnvironment(_ values: inout EnvironmentValues) {
-    values._foregroundStyle = .init(styles: styles, environment: values)
+    values._foregroundStyle = .init(styles: (primary, secondary, tertiary), environment: values)
   }
 }
