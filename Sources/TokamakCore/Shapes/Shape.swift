@@ -19,9 +19,19 @@ import Foundation
 
 public protocol Shape: View {
   func path(in rect: CGRect) -> Path
+  
+  static var role: ShapeRole { get }
 }
 
-public protocol ShapeStyle {}
+public enum ShapeRole: Hashable {
+  case fill
+  case stroke
+  case separator
+}
+
+public extension Shape {
+  static var role: ShapeRole { .fill }
+}
 
 public extension ShapeStyle where Self: View, Self.Body == _ShapeView<Rectangle, Self> {
   var body: some View {
@@ -36,9 +46,19 @@ public protocol InsettableShape: Shape {
 
 public struct ForegroundStyle: ShapeStyle {
   public init() {}
+  
+  public func _apply(to shape: inout _ShapeStyle_Shape) {
+    if let foregroundStyle = shape.environment._foregroundStyle {
+      foregroundStyle._apply(to: &shape)
+    } else {
+      shape.result = .color(shape.environment.foregroundColor ?? .primary)
+    }
+  }
+  
+  public static func _apply(to shape: inout _ShapeStyle_ShapeType) {}
 }
 
-public struct FillStyle: Equatable, ShapeStyle {
+public struct FillStyle: Equatable {
   public var isEOFilled: Bool
   public var isAntialiased: Bool
 

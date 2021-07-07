@@ -32,6 +32,8 @@ public struct _StrokedShape<S>: Shape, DynamicProperty where S: Shape {
       .path(in: rect)
       .strokedPath(style)
   }
+
+  public static var role: ShapeRole { .stroke }
 }
 
 public struct _TrimmedShape<S>: Shape where S: Shape {

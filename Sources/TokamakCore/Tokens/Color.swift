@@ -39,7 +39,7 @@ public protocol AnyColorBoxDeferredToRenderer: AnyColorBox {
   func deferredResolve(in environment: EnvironmentValues) -> AnyColorBox.ResolvedValue
 }
 
-public class AnyColorBox: AnyTokenBox, Equatable {
+public class AnyColorBox: AnyTokenBox, Hashable {
   public struct _RGBA: Hashable, Equatable {
     public let red: Double
     public let green: Double
@@ -120,6 +120,38 @@ public class _EnvironmentDependentColorBox: AnyColorBox {
 
   override public func resolve(in environment: EnvironmentValues) -> ResolvedValue {
     resolver(environment).provider.resolve(in: environment)
+  }
+}
+
+public class _OpacityColorBox: AnyColorBox {
+  public let parent: AnyColorBox
+  public let opacity: Double
+
+  override public func equals(_ other: AnyColorBox) -> Bool {
+    guard let other = other as? _OpacityColorBox
+    else { return false }
+    return parent.equals(other.parent) && opacity == other.opacity
+  }
+
+  override public func hash(into hasher: inout Hasher) {
+    hasher.combine(parent)
+    hasher.combine(opacity)
+  }
+
+  init(_ parent: AnyColorBox, opacity: Double) {
+    self.parent = parent
+    self.opacity = opacity
+  }
+
+  override public func resolve(in environment: EnvironmentValues) -> ResolvedValue {
+    let resolved = parent.resolve(in: environment)
+    return .init(
+      red: resolved.red,
+      green: resolved.green,
+      blue: resolved.blue,
+      opacity: opacity,
+      space: resolved.space
+    )
   }
 }
 
@@ -209,7 +241,7 @@ public struct Color: Hashable, Equatable {
 
   let provider: AnyColorBox
 
-  private init(_ provider: AnyColorBox) {
+  internal init(_ provider: AnyColorBox) {
     self.provider = provider
   }
 
@@ -246,6 +278,12 @@ public struct Color: Hashable, Equatable {
     .init(_EnvironmentDependentColorBox {
       resolver($0.colorScheme)
     })
+  }
+}
+
+public extension Color {
+  func opacity(_ opacity: Double) -> Self {
+    Self.init(_OpacityColorBox(provider, opacity: opacity))
   }
 }
 
@@ -343,7 +381,12 @@ public extension Color {
   }
 }
 
-extension Color: ShapeStyle {}
+extension Color: ShapeStyle {
+  public func _apply(to shape: inout _ShapeStyle_Shape) {
+    shape.result = .color(self)
+  }
+  public static func _apply(to type: inout _ShapeStyle_ShapeType) {}
+}
 extension Color: View {
   @_spi(TokamakCore)
   public var body: some View {
