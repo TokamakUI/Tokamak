@@ -168,7 +168,6 @@ final class RenderingTests: XCTestCase {
   }
 
   func testContainerRelativeShape() {
-    #if compiler(>=5.5) || os(WASI)
     assertSnapshot(
       matching: ZStack {
         ContainerRelativeShape()
@@ -181,11 +180,9 @@ final class RenderingTests: XCTestCase {
       as: .image(size: .init(width: 150, height: 150)),
       timeout: defaultSnapshotTimeout
     )
-    #endif
   }
 
   func testForegroundStyle() {
-    #if compiler(>=5.5) || os(WASI)
     assertSnapshot(
       matching: HStack(spacing: 0) {
         Rectangle()
@@ -201,7 +198,6 @@ final class RenderingTests: XCTestCase {
       as: .image(size: .init(width: 200, height: 100)),
       timeout: defaultSnapshotTimeout
     )
-    #endif
   }
 
   func testMaterial() {
