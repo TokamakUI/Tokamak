@@ -58,15 +58,17 @@ public extension View {
   ) -> some View where Background: View {
     modifier(_BackgroundModifier(background: background, alignment: alignment))
   }
-  
-  @inlinable func background<V>(
+
+  @inlinable
+  func background<V>(
     alignment: Alignment = .center,
     @ViewBuilder content: () -> V
   ) -> some View where V: View {
     background(content(), alignment: alignment)
   }
-  
-  @inlinable func background<S, T>(
+
+  @inlinable
+  func background<S, T>(
     _ style: S,
     in shape: T,
     fillStyle: FillStyle = FillStyle()
@@ -75,8 +77,9 @@ public extension View {
       shape.fill(style, style: fillStyle)
     }
   }
-  
-  @inlinable func background<S>(
+
+  @inlinable
+  func background<S>(
     in shape: S,
     fillStyle: FillStyle = FillStyle()
   ) -> some View where S: Shape {

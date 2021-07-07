@@ -22,32 +22,6 @@ public struct Rectangle: Shape {
   public init() {}
 }
 
-public struct RoundedRectangle: Shape {
-  public var cornerSize: CGSize
-  public var style: RoundedCornerStyle
-
-  public init(cornerSize: CGSize, style: RoundedCornerStyle = .circular) {
-    self.cornerSize = cornerSize
-    self.style = style
-  }
-
-  public init(cornerRadius: CGFloat, style: RoundedCornerStyle = .circular) {
-    let cornerSize = CGSize(width: cornerRadius, height: cornerRadius)
-    self.init(cornerSize: cornerSize, style: style)
-  }
-
-  public func path(in rect: CGRect) -> Path {
-    .init(
-      storage: .roundedRect(.init(
-        rect: rect,
-        cornerSize: cornerSize,
-        style: style
-      )),
-      sizing: .flexible
-    )
-  }
-}
-
 extension Rectangle: InsettableShape {
   public func inset(by amount: CGFloat) -> _Inset {
     _Inset(amount: amount)
@@ -78,5 +52,31 @@ extension Rectangle: InsettableShape {
       copy.amount += amount
       return copy
     }
+  }
+}
+
+public struct RoundedRectangle: Shape {
+  public var cornerSize: CGSize
+  public var style: RoundedCornerStyle
+
+  public init(cornerSize: CGSize, style: RoundedCornerStyle = .circular) {
+    self.cornerSize = cornerSize
+    self.style = style
+  }
+
+  public init(cornerRadius: CGFloat, style: RoundedCornerStyle = .circular) {
+    let cornerSize = CGSize(width: cornerRadius, height: cornerRadius)
+    self.init(cornerSize: cornerSize, style: style)
+  }
+
+  public func path(in rect: CGRect) -> Path {
+    .init(
+      storage: .roundedRect(.init(
+        rect: rect,
+        cornerSize: cornerSize,
+        style: style
+      )),
+      sizing: .flexible
+    )
   }
 }

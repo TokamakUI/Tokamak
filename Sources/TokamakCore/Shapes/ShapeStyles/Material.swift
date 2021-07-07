@@ -17,11 +17,11 @@
 
 public struct Material {
   private let style: _MaterialStyle
-  
+
   private init(_ style: _MaterialStyle) {
     self.style = style
   }
-  
+
   public static let regular = Self(.regular)
   public static let thick = Self(.thick)
   public static let thin = Self(.thin)
@@ -48,6 +48,7 @@ extension Material: ShapeStyle {
       )
     )
   }
+
   public static func _apply(to shape: inout _ShapeStyle_ShapeType) {}
 }
 

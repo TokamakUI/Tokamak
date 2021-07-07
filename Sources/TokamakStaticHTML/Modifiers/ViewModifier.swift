@@ -49,10 +49,10 @@ extension _BackgroundStyleModifier: DOMViewModifier {
   public var isOrderDependent: Bool { true }
   public var attributes: [HTMLAttribute: String] {
     if let resolved = style.resolve(
-         for: .resolveStyle(levels: 0..<1),
-         in: environment,
-         role: .fill
-       ) {
+      for: .resolveStyle(levels: 0..<1),
+      in: environment,
+      role: .fill
+    ) {
       if case let .foregroundMaterial(rgba, material) = resolved {
         let blur: (opacity: Double, radius: Double)
         switch material {
@@ -69,15 +69,17 @@ extension _BackgroundStyleModifier: DOMViewModifier {
         }
         return [
           "style":
-          """
-          background-color: rgba(\(rgba.red * 255), \(rgba.green * 255), \(rgba.blue * 255), \(blur.opacity));
-          -webkit-backdrop-filter: blur(\(blur.radius)px);
-          backdrop-filter: blur(\(blur.radius)px);
-          """
+            """
+            background-color: rgba(\(rgba.red * 255), \(rgba.green * 255), \(rgba
+              .blue * 255), \(blur
+              .opacity));
+            -webkit-backdrop-filter: blur(\(blur.radius)px);
+            backdrop-filter: blur(\(blur.radius)px);
+            """,
         ]
       } else if let color = resolved.color(at: 0) {
         return [
-          "style": "background-color: \(color.cssValue(environment))"
+          "style": "background-color: \(color.cssValue(environment))",
         ]
       }
     }

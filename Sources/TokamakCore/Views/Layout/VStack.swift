@@ -29,7 +29,7 @@ public enum HorizontalAlignment: Equatable {
 ///     }
 public struct VStack<Content>: _PrimitiveView where Content: View {
   public let alignment: HorizontalAlignment
-  public let spacing: CGFloat?
+  let spacing: CGFloat
   public let content: Content
 
   public init(
@@ -38,7 +38,7 @@ public struct VStack<Content>: _PrimitiveView where Content: View {
     @ViewBuilder content: () -> Content
   ) {
     self.alignment = alignment
-    self.spacing = spacing
+    self.spacing = spacing ?? defaultStackSpacing
     self.content = content()
   }
 }
@@ -48,4 +48,12 @@ extension VStack: ParentView {
   public var children: [AnyView] {
     (content as? GroupView)?.children ?? [AnyView(content)]
   }
+}
+
+public struct _VStackProxy<Content> where Content: View {
+  public let subject: VStack<Content>
+
+  public init(_ subject: VStack<Content>) { self.subject = subject }
+
+  public var spacing: CGFloat { subject.spacing }
 }

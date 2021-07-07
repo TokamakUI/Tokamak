@@ -283,7 +283,7 @@ public struct Color: Hashable, Equatable {
 
 public extension Color {
   func opacity(_ opacity: Double) -> Self {
-    Self.init(_OpacityColorBox(provider, opacity: opacity))
+    Self(_OpacityColorBox(provider, opacity: opacity))
   }
 }
 
@@ -385,8 +385,10 @@ extension Color: ShapeStyle {
   public func _apply(to shape: inout _ShapeStyle_Shape) {
     shape.result = .color(self)
   }
+
   public static func _apply(to type: inout _ShapeStyle_ShapeType) {}
 }
+
 extension Color: View {
   @_spi(TokamakCore)
   public var body: some View {

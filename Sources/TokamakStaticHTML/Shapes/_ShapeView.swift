@@ -41,10 +41,10 @@ extension ShapeStyle {
 extension _StrokedShape: ShapeAttributes {
   func attributes(_ style: ShapeStyle) -> [HTMLAttribute: String] {
     if let color = style.resolve(
-         for: .resolveStyle(levels: 0..<1),
-         in: environment,
-         role: .stroke
-       )?.color(at: 0) {
+      for: .resolveStyle(levels: 0..<1),
+      in: environment,
+      role: .stroke
+    )?.color(at: 0) {
       return ["style": "stroke: \(color.cssValue(environment)); fill: none;"]
     } else {
       return ["style": "stroke: black; fill: none;"]
@@ -57,22 +57,22 @@ extension _ShapeView: _HTMLPrimitive {
   public var renderedBody: AnyView {
     let path = shape.path(in: .zero).renderedBody
     let attributes: [HTMLAttribute: String]
-    
+
     if let shapeAttributes = shape as? ShapeAttributes {
       attributes = shapeAttributes.attributes(style)
     } else if let color = style.resolve(
-                for: .resolveStyle(levels: 0..<1),
-                in: environment,
-                   role: Content.role
-              )?.color(at: 0) {
-      print("resolved style color as \(color)")
+      for: .resolveStyle(levels: 0..<1),
+      in: environment,
+      role: Content.role
+    )?.color(at: 0) {
       attributes = ["style": "fill: \(color.cssValue(environment));"]
     } else if let foregroundStyle = environment._foregroundStyle,
               let color = foregroundStyle.resolve(
                 for: .resolveStyle(levels: 0..<1),
                 in: environment,
                 role: Content.role
-              )?.color(at: 0) {
+              )?.color(at: 0)
+    {
       attributes = ["style": "fill: \(color.cssValue(environment));"]
     } else {
       return path

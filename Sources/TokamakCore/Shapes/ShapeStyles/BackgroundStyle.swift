@@ -17,7 +17,7 @@
 
 public struct BackgroundStyle: ShapeStyle {
   public init() {}
-  
+
   public func _apply(to shape: inout _ShapeStyle_Shape) {
     if let backgroundStyle = shape.environment._backgroundStyle {
       backgroundStyle._apply(to: &shape)
@@ -25,7 +25,7 @@ public struct BackgroundStyle: ShapeStyle {
       shape.result = .none
     }
   }
-  
+
   public static func _apply(to shape: inout _ShapeStyle_ShapeType) {}
 }
 
@@ -33,7 +33,7 @@ extension EnvironmentValues {
   private struct BackgroundStyleKey: EnvironmentKey {
     static let defaultValue: AnyShapeStyle? = nil
   }
-  
+
   public var _backgroundStyle: AnyShapeStyle? {
     get {
       self[BackgroundStyleKey.self]
@@ -45,28 +45,34 @@ extension EnvironmentValues {
 }
 
 public extension View {
-  @inlinable func background() -> some View {
+  @inlinable
+  func background() -> some View {
     modifier(_BackgroundStyleModifier(style: BackgroundStyle()))
   }
-  
-  @inlinable func background<S>(_ style: S) -> some View where S: ShapeStyle {
+
+  @inlinable
+  func background<S>(_ style: S) -> some View where S: ShapeStyle {
     modifier(_BackgroundStyleModifier(style: style))
   }
 }
 
-@frozen public struct _BackgroundStyleModifier<Style>: ViewModifier, EnvironmentModifier, EnvironmentReader
-where Style: ShapeStyle {
+@frozen public struct _BackgroundStyleModifier<Style>: ViewModifier, EnvironmentModifier,
+  EnvironmentReader
+  where Style: ShapeStyle
+{
   public var environment: EnvironmentValues!
   public var style: Style
-  
-  @inlinable public init(style: Style) {
+
+  @inlinable
+  public init(style: Style) {
     self.style = style
   }
-  
+
   public typealias Body = Never
   public mutating func setContent(from values: EnvironmentValues) {
-    self.environment = values
+    environment = values
   }
+
   public func modifyEnvironment(_ values: inout EnvironmentValues) {
     values._backgroundStyle = .init(styles: [style, style, style], environment: values)
   }

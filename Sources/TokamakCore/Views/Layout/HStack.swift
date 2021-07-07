@@ -24,6 +24,8 @@ public enum VerticalAlignment: Equatable {
   case bottom
 }
 
+public let defaultStackSpacing: CGFloat = 8
+
 /// A view that arranges its children in a horizontal line.
 ///
 ///     HStack {
@@ -32,7 +34,7 @@ public enum VerticalAlignment: Equatable {
 ///     }
 public struct HStack<Content>: _PrimitiveView where Content: View {
   public let alignment: VerticalAlignment
-  public let spacing: CGFloat?
+  let spacing: CGFloat
   public let content: Content
 
   public init(
@@ -41,7 +43,7 @@ public struct HStack<Content>: _PrimitiveView where Content: View {
     @ViewBuilder content: () -> Content
   ) {
     self.alignment = alignment
-    self.spacing = spacing
+    self.spacing = spacing ?? defaultStackSpacing
     self.content = content()
   }
 }
@@ -51,4 +53,12 @@ extension HStack: ParentView {
   public var children: [AnyView] {
     (content as? GroupView)?.children ?? [AnyView(content)]
   }
+}
+
+public struct _HStackProxy<Content> where Content: View {
+  public let subject: HStack<Content>
+
+  public init(_ subject: HStack<Content>) { self.subject = subject }
+
+  public var spacing: CGFloat { subject.spacing }
 }

@@ -42,6 +42,7 @@ public typealias Ellipse = TokamakCore.Ellipse
 public typealias Path = TokamakCore.Path
 public typealias Rectangle = TokamakCore.Rectangle
 public typealias RoundedRectangle = TokamakCore.RoundedRectangle
+public typealias ContainerRelativeShape = TokamakCore.ContainerRelativeShape
 
 public typealias ForegroundStyle = TokamakCore.ForegroundStyle
 public typealias Material = TokamakCore.Material

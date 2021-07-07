@@ -15,7 +15,7 @@
 //  Created by Max Desiatov on 13/06/2021.
 //
 
-// SnapshotTesting with image snapshots are only supported on iOS.
+// SnapshotTesting with image snapshots are only supported on macOS.
 #if os(macOS)
 import SnapshotTesting
 import TokamakStaticHTML
@@ -66,6 +66,8 @@ public extension Snapshotting where Value: View, Format == NSImage {
   }
 }
 
+private let defaultSnapshotTimeout: TimeInterval = 10
+
 struct Star: Shape {
   func path(in rect: CGRect) -> Path {
     Path { path in
@@ -79,12 +81,59 @@ struct Star: Shape {
   }
 }
 
-final class LayoutTests: XCTestCase {
+struct Stacks: View {
+  let spacing: CGFloat
+
+  var body: some View {
+    VStack(spacing: spacing) {
+      HStack(spacing: spacing) {
+        Rectangle()
+          .fill(Color.red)
+          .frame(width: 100, height: 100)
+
+        Rectangle()
+          .fill(Color.green)
+          .frame(width: 100, height: 100)
+      }
+
+      HStack(spacing: spacing) {
+        Rectangle()
+          .fill(Color.blue)
+          .frame(width: 100, height: 100)
+
+        Rectangle()
+          .fill(Color.black)
+          .frame(width: 100, height: 100)
+      }
+    }
+  }
+}
+
+struct Opacity: View {
+  var body: some View {
+    ZStack {
+      Circle()
+        .fill(Color.red)
+        .opacity(0.5)
+        .frame(width: 25, height: 25)
+      Circle()
+        .fill(Color.green)
+        .opacity(0.5)
+        .frame(width: 50, height: 50)
+      Circle()
+        .fill(Color.blue)
+        .opacity(0.5)
+        .frame(width: 75, height: 75)
+    }
+  }
+}
+
+final class RenderingTests: XCTestCase {
   func testPath() {
     assertSnapshot(
       matching: Star().fill(Color(red: 1, green: 0.75, blue: 0.1, opacity: 1)),
       as: .image(size: .init(width: 100, height: 100)),
-      timeout: 10
+      timeout: defaultSnapshotTimeout
     )
   }
 
@@ -92,8 +141,67 @@ final class LayoutTests: XCTestCase {
     assertSnapshot(
       matching: Circle().stroke(Color.green).frame(width: 100, height: 100, alignment: .center),
       as: .image(size: .init(width: 150, height: 150)),
-      timeout: 10
+      timeout: defaultSnapshotTimeout
     )
+  }
+
+  func testStacks() {
+    assertSnapshot(
+      matching: Stacks(spacing: 10),
+      as: .image(size: .init(width: 210, height: 210)),
+      timeout: defaultSnapshotTimeout
+    )
+
+    assertSnapshot(
+      matching: Stacks(spacing: 20),
+      as: .image(size: .init(width: 220, height: 220)),
+      timeout: defaultSnapshotTimeout
+    )
+  }
+
+  func testOpacity() {
+    assertSnapshot(
+      matching: Opacity().preferredColorScheme(.light),
+      as: .image(size: .init(width: 75, height: 75)),
+      timeout: defaultSnapshotTimeout
+    )
+  }
+
+  func testContainerRelativeShape() {
+    #if compiler(>=5.5) || os(WASI)
+    assertSnapshot(
+      matching: ZStack {
+        ContainerRelativeShape()
+          .fill(Color.blue)
+          .frame(width: 100, height: 100, alignment: .center)
+        ContainerRelativeShape()
+          .fill(Color.green)
+          .frame(width: 50, height: 50)
+      }.containerShape(Circle()),
+      as: .image(size: .init(width: 150, height: 150)),
+      timeout: defaultSnapshotTimeout
+    )
+    #endif
+  }
+
+  func testForegroundStyle() {
+    #if compiler(>=5.5) || os(WASI)
+    assertSnapshot(
+      matching: HStack(spacing: 0) {
+        Rectangle()
+          .frame(width: 50, height: 50)
+          .foregroundStyle(Color.red)
+        Rectangle()
+          .frame(width: 50, height: 50)
+          .foregroundStyle(Color.green)
+        Rectangle()
+          .frame(width: 50, height: 50)
+          .foregroundStyle(Color.blue)
+      },
+      as: .image(size: .init(width: 200, height: 100)),
+      timeout: defaultSnapshotTimeout
+    )
+    #endif
   }
 }
 
