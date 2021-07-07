@@ -128,6 +128,8 @@ struct Opacity: View {
   }
 }
 
+private let defaultSnapshotTimeout: TimeInterval = 10
+
 final class RenderingTests: XCTestCase {
   func testPath() {
     assertSnapshot(
