@@ -179,7 +179,7 @@ final class RenderingTests: XCTestCase {
           .frame(width: 50, height: 50)
       }.containerShape(Circle()),
       as: .image(size: .init(width: 150, height: 150)),
-      timeout: 10
+      timeout: defaultSnapshotTimeout
     )
     #endif
   }
@@ -199,7 +199,7 @@ final class RenderingTests: XCTestCase {
           .foregroundStyle(Color.blue)
       },
       as: .image(size: .init(width: 200, height: 100)),
-      timeout: 10
+      timeout: defaultSnapshotTimeout
     )
     #endif
   }
