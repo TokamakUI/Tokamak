@@ -203,6 +203,31 @@ final class RenderingTests: XCTestCase {
     )
     #endif
   }
+
+  func testMaterial() {
+    #if compiler(>=5.5) || os(WASI)
+    assertSnapshot(
+      matching: ZStack {
+        HStack(spacing: 0) {
+          Color.red
+          Color.orange
+          Color.yellow
+          Color.green
+          Color.blue
+          Color.purple
+        }
+        VStack(spacing: 0) {
+          Color.clear
+            .background(Material.ultraThin)
+          Color.clear
+            .background(Material.ultraThick)
+        }
+      },
+      as: .image(size: .init(width: 100, height: 100)),
+      timeout: defaultSnapshotTimeout
+    )
+    #endif
+  }
 }
 
 #endif
