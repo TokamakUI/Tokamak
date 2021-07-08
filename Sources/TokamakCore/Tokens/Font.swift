@@ -69,7 +69,14 @@ public class AnyFontBox: AnyTokenBox, Hashable, Equatable {
     }
   }
 
-  public static func == (lhs: AnyFontBox, rhs: AnyFontBox) -> Bool { false }
+  public static func == (lhs: AnyFontBox, rhs: AnyFontBox) -> Bool {
+    lhs.equals(rhs)
+  }
+
+  public func equals(_ other: AnyFontBox) -> Bool {
+    fatalError("implement \(#function) in subclass")
+  }
+
   public func hash(into hasher: inout Hasher) {
     fatalError("implement \(#function) in subclass")
   }
@@ -97,6 +104,11 @@ public class _ConcreteFontBox: AnyFontBox {
   override public func resolve(in environment: EnvironmentValues) -> ResolvedValue {
     font
   }
+
+  override public func equals(_ other: AnyFontBox) -> Bool {
+    guard let other = other as? _ConcreteFontBox else { return false }
+    return other.font == font
+  }
 }
 
 public class _ModifiedFontBox: AnyFontBox {
@@ -120,6 +132,15 @@ public class _ModifiedFontBox: AnyFontBox {
     var font = provider.resolve(in: environment)
     modifier(&font)
     return font
+  }
+
+  override public func equals(_ other: AnyFontBox) -> Bool {
+    guard let other = other as? _ModifiedFontBox else { return false }
+    var resolved = provider.resolve(in: .init())
+    modifier(&resolved)
+    var otherResolved = other.provider.resolve(in: .init())
+    other.modifier(&otherResolved)
+    return other.provider.equals(provider) && resolved == otherResolved
   }
 }
 
@@ -167,6 +188,11 @@ public class _SystemFontBox: AnyFontBox {
     case .caption2: return .init(name: .system, size: 11)
     }
   }
+
+  override public func equals(_ other: AnyFontBox) -> Bool {
+    guard let other = other as? _SystemFontBox else { return false }
+    return other.value == value
+  }
 }
 
 public class _CustomFontBox: AnyFontBox {
@@ -210,6 +236,11 @@ public class _CustomFontBox: AnyFontBox {
         size: size
       )
     }
+  }
+
+  override public func equals(_ other: AnyFontBox) -> Bool {
+    guard let other = other as? _CustomFontBox else { return false }
+    return other.name == name && other.size == size && other.textStyle == textStyle
   }
 }
 
@@ -399,17 +430,30 @@ public struct _FontProxy {
   }
 }
 
-struct FontKey: EnvironmentKey {
-  static let defaultValue: Font? = nil
+enum FontPathKey: EnvironmentKey {
+  static let defaultValue: [Font] = []
 }
 
 public extension EnvironmentValues {
-  var font: Font? {
+  var _fontPath: [Font] {
     get {
-      self[FontKey.self]
+      self[FontPathKey.self]
     }
     set {
-      self[FontKey.self] = newValue
+      self[FontPathKey.self] = newValue
+    }
+  }
+
+  var font: Font? {
+    get {
+      _fontPath.first
+    }
+    set {
+      if let newFont = newValue {
+        _fontPath = [newFont] + _fontPath.filter { $0 != newFont }
+      } else {
+        _fontPath = []
+      }
     }
   }
 }

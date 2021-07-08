@@ -20,27 +20,71 @@ import Foundation
 protocol Sanitizer {
   associatedtype Input
   associatedtype Output
+  static func validate(_ input: Input) -> Bool
   static func sanitize(_ input: Input) -> Output
 }
 
 enum Sanitizers {
   enum CSS {
-    static func sanitize(string inputs: [String]) -> String {
-      inputs.map(StringValue.sanitize).joined(separator: ", ")
+    /// Automatically sanitizes a value.
+    static func sanitize(_ value: String) -> String {
+      if value.starts(with: "'") || value.starts(with: "\"") {
+        return sanitize(string: value)
+      } else {
+        return validate(identifier: value)
+          ? sanitize(identifier: value)
+          : sanitize(string: value)
+      }
     }
 
-    static func sanitize(string inputs: String...) -> String {
-      sanitize(string: inputs)
+    static func sanitize(identifier: String) -> String {
+      Identifier.sanitize(identifier)
     }
 
+    static func sanitize(string: String) -> String {
+      StringValue.sanitize(string)
+    }
+
+    static func validate(identifier: String) -> Bool {
+      Identifier.validate(identifier)
+    }
+
+    static func validate(string: String) -> Bool {
+      StringValue.validate(string)
+    }
+
+    /// Sanitizes an identifier.
+    enum Identifier: Sanitizer {
+      static func isIdentifierChar(_ char: Character) -> Bool {
+        char.isLetter || char.isNumber
+          || char == "-" || char == "_"
+          || char.unicodeScalars.allSatisfy { $0 > "\u{00A0}" }
+      }
+
+      static func validate(_ input: String) -> Bool {
+        input.allSatisfy(isIdentifierChar)
+      }
+
+      static func sanitize(_ input: String) -> String {
+        input.filter(isIdentifierChar)
+      }
+    }
+
+    /// Sanitizes a quoted string.
     enum StringValue: Sanitizer {
+      static func isStringContent(_ char: Character) -> Bool {
+        char != "'" && char != "\""
+      }
+
+      static func validate(_ input: String) -> Bool {
+        input.starts(with: "'") || input.starts(with: "\"")
+          && !input.dropFirst().dropLast().allSatisfy(isStringContent)
+          && input.last == input.first
+      }
+
       static func sanitize(_ input: String) -> String {
         """
-        '\(input.filter {
-          $0.isLetter || $0.isNumber
-            || $0 == "-" || $0 == "_" || $0 == " "
-            || $0.unicodeScalars.allSatisfy { $0 > "\u{00A0}" }
-        })'
+        '\(input.filter(isStringContent))'
         """
       }
     }

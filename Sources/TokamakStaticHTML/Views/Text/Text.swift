@@ -80,20 +80,29 @@ extension Font.Leading: CustomStringConvertible {
 public extension Font {
   func styles(in environment: EnvironmentValues) -> [String: String] {
     let proxy = _FontProxy(self).resolve(in: environment)
-    let family: [String]
-    switch proxy._name {
-    case .system: family = proxy._design.families
-    case let .custom(custom):
-      family = [custom] + Font.Design.default.families // Fallback
-    }
     return [
-      "font-family": Sanitizers.CSS.sanitize(string: family),
+      "font-family": families(in: environment).joined(separator: ", "),
       "font-weight": "\(proxy._bold ? Font.Weight.bold.value : proxy._weight.value)",
       "font-style": proxy._italic ? "italic" : "normal",
       "font-size": "\(proxy._size)",
       "line-height": proxy._leading.description,
       "font-variant": proxy._smallCaps ? "small-caps" : "normal",
     ]
+  }
+
+  func families(in environment: EnvironmentValues) -> [String] {
+    let proxy = _FontProxy(self).resolve(in: environment)
+    switch proxy._name {
+    case .system:
+      return proxy._design.families
+    case let .custom(custom):
+      return [Sanitizers.CSS.sanitize(custom)]
+        + environment._fontPath.dropFirst().flatMap { font -> [String] in
+          var env = environment
+          env._fontPath = []
+          return font.families(in: env)
+        } // Fallback
+    }
   }
 }
 
@@ -157,7 +166,7 @@ extension Text {
   ) -> [HTMLAttribute: String] {
     let isRedacted = environment.redactionReasons.contains(.placeholder)
 
-    var font: Font?
+    var fontStack: [Font] = []
     var color: Color?
     var italic: Bool = false
     var weight: Font.Weight?
@@ -169,8 +178,12 @@ extension Text {
       switch modifier {
       case let .color(_color):
         color = _color
-      case let .font(_font):
-        font = _font
+      case let .font(font):
+        if let font = font {
+          fontStack.append(font)
+        } else {
+          fontStack = []
+        }
       case .italic:
         italic = true
       case let .weight(_weight):
@@ -194,14 +207,19 @@ extension Text {
     let decorationColor = strikethrough?.1?.cssValue(environment)
       ?? underline?.1?.cssValue(environment)
       ?? "inherit"
-    let resolvedFont = font == nil ? nil : _FontProxy(font!).resolve(in: environment)
+
+    var fontPathEnv = environment
+    fontPathEnv._fontPath = fontStack + fontPathEnv._fontPath.filter { !fontStack.contains($0) }
+    let resolvedFont = fontPathEnv._fontPath
+      .isEmpty ? nil : _FontProxy(fontPathEnv._fontPath.first!).resolve(in: environment)
 
     return [
       "style": """
-      \(font?.styles(in: environment).filter { weight != nil ? $0.key != "font-weight" : true }
+      \(fontPathEnv._fontPath.first?.styles(in: fontPathEnv)
+        .filter { weight != nil ? $0.key != "font-weight" : true }
         .inlineStyles ?? "")
-      \(font == nil ?
-        "font-family: \(Sanitizers.CSS.sanitize(string: Font.Design.default.families));" : "")
+      \(fontPathEnv._fontPath
+        .isEmpty ? "font-family: \(Font.Design.default.families.joined(separator: ", "));" : "")
       color: \((color ?? .primary).cssValue(environment));
       font-style: \(italic ? "italic" : "normal");
       font-weight: \(weight?.value ?? resolvedFont?._weight.value ?? 400);
