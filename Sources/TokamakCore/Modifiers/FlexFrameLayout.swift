@@ -26,11 +26,11 @@ public struct _FlexFrameLayout: ViewModifier {
   // These are special cases in SwiftUI, where the child
   // will request the entire width/height of the parent.
   public var fillWidth: Bool {
-    minWidth == 0 && maxWidth == .infinity
+    minWidth == 0 || minWidth == nil && maxWidth == .infinity
   }
 
   public var fillHeight: Bool {
-    minHeight == 0 && maxHeight == .infinity
+    minHeight == 0 || minHeight == nil && maxHeight == .infinity
   }
 
   init(
