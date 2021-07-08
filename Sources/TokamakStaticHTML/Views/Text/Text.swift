@@ -15,51 +15,51 @@
 import Foundation
 import TokamakCore
 
-extension Font.Design: CustomStringConvertible {
+public extension Font.Design {
   /// Some default font stacks for the various designs
-  public var description: String {
+  var families: [String] {
     switch self {
     case .default:
-      return #"""
-      system,
-      -apple-system,
-      '.SFNSText-Regular',
-      'San Francisco',
-      'Roboto',
-      'Segoe UI',
-      'Helvetica Neue',
-      'Lucida Grande',
-      sans-serif
-      """#
+      return [
+        "system",
+        "-apple-system",
+        "'.SFNSText-Regular'",
+        "'San Francisco'",
+        "'Roboto'",
+        "'Segoe UI'",
+        "'Helvetica Neue'",
+        "'Lucida Grande'",
+        "sans-serif",
+      ]
     case .monospaced:
-      return #"""
-      Consolas,
-      'Andale Mono WT',
-      'Andale Mono',
-      'Lucida Console',
-      'Lucida Sans Typewriter',
-      'DejaVu Sans Mono',
-      'Bitstream Vera Sans Mono',
-      'Liberation Mono',
-      'Nimbus Mono L',
-      Monaco,
-      'Courier New',
-      Courier,
-      monospace
-      """#
+      return [
+        "Consolas",
+        "'Andale Mono WT'",
+        "'Andale Mono'",
+        "'Lucida Console'",
+        "'Lucida Sans Typewriter'",
+        "'DejaVu Sans Mono'",
+        "'Bitstream Vera Sans Mono'",
+        "'Liberation Mono'",
+        "'Nimbus Mono L'",
+        "Monaco",
+        "'Courier New'",
+        "Courier",
+        "monospace",
+      ]
     case .rounded: // Not supported due to browsers not having a rounded font builtin
-      return Self.default.description
+      return Self.default.families
     case .serif:
-      return #"""
-      Cambria,
-      'Hoefler Text',
-      Utopia,
-      'Liberation Serif',
-      'Nimbus Roman No9 L Regular',
-      Times,
-      'Times New Roman',
-      serif
-      """#
+      return [
+        "Cambria",
+        "'Hoefler Text'",
+        "Utopia",
+        "'Liberation Serif'",
+        "'Nimbus Roman No9 L Regular'",
+        "Times",
+        "'Times New Roman'",
+        "serif",
+      ]
     }
   }
 }
@@ -80,13 +80,13 @@ extension Font.Leading: CustomStringConvertible {
 public extension Font {
   func styles(in environment: EnvironmentValues) -> [String: String] {
     let proxy = _FontProxy(self).resolve(in: environment)
-    let family: String
+    let family: [String]
     switch proxy._name {
-    case .system: family = proxy._design.description
-    case let .custom(custom): family = custom
+    case .system: family = proxy._design.families
+    case let .custom(custom): family = [custom]
     }
     return [
-      "font-family": family,
+      "font-family": Sanitizers.CSS.sanitize(string: family),
       "font-weight": "\(proxy._bold ? Font.Weight.bold.value : proxy._weight.value)",
       "font-style": proxy._italic ? "italic" : "normal",
       "font-size": "\(proxy._size)",
@@ -199,7 +199,8 @@ extension Text {
       "style": """
       \(font?.styles(in: environment).filter { weight != nil ? $0.key != "font-weight" : true }
         .inlineStyles ?? "")
-      \(font == nil ? "font-family: \(Font.Design.default.description);" : "")
+      \(font == nil ?
+        "font-family: \(Sanitizers.CSS.sanitize(string: Font.Design.default.families));" : "")
       color: \((color ?? .primary).cssValue(environment));
       font-style: \(italic ? "italic" : "normal");
       font-weight: \(weight?.value ?? resolvedFont?._weight.value ?? 400);
