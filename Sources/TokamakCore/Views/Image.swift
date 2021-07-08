@@ -17,27 +17,121 @@
 
 import Foundation
 
-public struct Image: _PrimitiveView {
-  let label: Text?
+public class AnyImageProviderBox: AnyTokenBox, Equatable {
+  public struct _Image {
+    public indirect enum Storage {
+      case named(String, bundle: Bundle?)
+      case resizable(Storage, capInsets: EdgeInsets, resizingMode: Image.ResizingMode)
+    }
+
+    public let storage: Storage
+    public let label: Text?
+  }
+
+  public static func == (lhs: AnyImageProviderBox, rhs: AnyImageProviderBox) -> Bool {
+    lhs.equals(rhs)
+  }
+
+  public func equals(_ other: AnyImageProviderBox) -> Bool {
+    fatalError("implement \(#function) in subclass")
+  }
+
+  public func resolve(in environment: EnvironmentValues) -> _Image {
+    fatalError("implement \(#function) in subclass")
+  }
+}
+
+private class NamedImageProvider: AnyImageProviderBox {
   let name: String
   let bundle: Bundle?
+  let label: Text?
 
-  public init(_ name: String, bundle: Bundle? = nil) {
-    label = Text(name)
+  init(name: String, bundle: Bundle?, label: Text?) {
     self.name = name
     self.bundle = bundle
-  }
-
-  public init(_ name: String, bundle: Bundle? = nil, label: Text) {
     self.label = label
-    self.name = name
-    self.bundle = bundle
   }
 
-  public init(decorative name: String, bundle: Bundle? = nil) {
-    label = nil
-    self.name = name
-    self.bundle = bundle
+  override func equals(_ other: AnyImageProviderBox) -> Bool {
+    guard let other = other as? NamedImageProvider else { return false }
+    return other.name == name
+      && other.bundle?.bundlePath == bundle?.bundlePath
+      && other.label == label
+  }
+
+  override func resolve(in environment: EnvironmentValues) -> ResolvedValue {
+    .init(storage: .named(name, bundle: bundle), label: label)
+  }
+}
+
+private class ResizableProvider: AnyImageProviderBox {
+  let parent: AnyImageProviderBox
+  let capInsets: EdgeInsets
+  let resizingMode: Image.ResizingMode
+
+  init(parent: AnyImageProviderBox, capInsets: EdgeInsets, resizingMode: Image.ResizingMode) {
+    self.parent = parent
+    self.capInsets = capInsets
+    self.resizingMode = resizingMode
+  }
+
+  override func equals(_ other: AnyImageProviderBox) -> Bool {
+    guard let other = other as? ResizableProvider else { return false }
+    return other.parent.equals(parent)
+      && other.capInsets == capInsets
+      && other.resizingMode == resizingMode
+  }
+
+  override func resolve(in environment: EnvironmentValues) -> ResolvedValue {
+    let resolved = parent.resolve(in: environment)
+    return .init(
+      storage: .resizable(
+        resolved.storage,
+        capInsets: capInsets,
+        resizingMode: resizingMode
+      ),
+      label: resolved.label
+    )
+  }
+}
+
+public struct Image: _PrimitiveView, Equatable {
+  let provider: AnyImageProviderBox
+  @Environment(\.self) var environment
+
+  public static func == (lhs: Self, rhs: Self) -> Bool {
+    lhs.provider == rhs.provider
+  }
+
+  init(_ provider: AnyImageProviderBox) {
+    self.provider = provider
+  }
+}
+
+public extension Image {
+  init(_ name: String, bundle: Bundle? = nil) {
+    self.init(name, bundle: bundle, label: Text(name))
+  }
+
+  init(_ name: String, bundle: Bundle? = nil, label: Text) {
+    self.init(NamedImageProvider(name: name, bundle: bundle, label: label))
+  }
+
+  init(decorative name: String, bundle: Bundle? = nil) {
+    self.init(NamedImageProvider(name: name, bundle: bundle, label: nil))
+  }
+}
+
+public extension Image {
+  enum ResizingMode: Hashable {
+    case tile
+    case stretch
+  }
+
+  func resizable(capInsets: EdgeInsets = EdgeInsets(),
+                 resizingMode: ResizingMode = .stretch) -> Image
+  {
+    .init(ResizableProvider(parent: provider, capInsets: capInsets, resizingMode: resizingMode))
   }
 }
 
@@ -47,7 +141,6 @@ public struct _ImageProxy {
 
   public init(_ subject: Image) { self.subject = subject }
 
-  public var labelString: String? { subject.label?.storage.rawText }
-  public var name: String { subject.name }
-  public var path: String? { subject.bundle?.path(forResource: subject.name, ofType: nil) }
+  public var provider: AnyImageProviderBox { subject.provider }
+  public var environment: EnvironmentValues { subject.environment }
 }
