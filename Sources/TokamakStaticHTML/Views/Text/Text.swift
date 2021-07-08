@@ -83,7 +83,8 @@ public extension Font {
     let family: [String]
     switch proxy._name {
     case .system: family = proxy._design.families
-    case let .custom(custom): family = [custom]
+    case let .custom(custom):
+      family = [custom] + Font.Design.default.families // Fallback
     }
     return [
       "font-family": Sanitizers.CSS.sanitize(string: family),
