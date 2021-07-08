@@ -80,9 +80,13 @@ extension Font.Leading: CustomStringConvertible {
 public extension Font {
   func styles(in environment: EnvironmentValues) -> [String: String] {
     let proxy = _FontProxy(self).resolve(in: environment)
+    let family: String
+    switch proxy._name {
+    case .system: family = proxy._design.description
+    case let .custom(custom): family = custom
+    }
     return [
-      "font-family": proxy._name == _FontNames.system.rawValue ? proxy._design.description : proxy
-        ._name,
+      "font-family": family,
       "font-weight": "\(proxy._bold ? Font.Weight.bold.value : proxy._weight.value)",
       "font-style": proxy._italic ? "italic" : "normal",
       "font-size": "\(proxy._size)",

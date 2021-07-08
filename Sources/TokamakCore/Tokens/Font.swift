@@ -36,7 +36,7 @@ public protocol AnyFontBoxDeferredToRenderer: AnyFontBox {
 
 public class AnyFontBox: AnyTokenBox, Hashable, Equatable {
   public struct _Font: Hashable, Equatable {
-    public var _name: String
+    public var _name: _FontNames
     public var _size: CGFloat
     public var _design: Font.Design
     public var _weight: Font.Weight
@@ -57,7 +57,7 @@ public class AnyFontBox: AnyTokenBox, Hashable, Equatable {
       monospaceDigit: Bool = false,
       leading: Font.Leading = .standard
     ) {
-      _name = name.rawValue
+      _name = name
       _size = size
       _design = design
       _weight = weight
@@ -169,6 +169,50 @@ public class _SystemFontBox: AnyFontBox {
   }
 }
 
+public class _CustomFontBox: AnyFontBox {
+  public let name: String
+  public let size: Size
+  public enum Size: Hashable {
+    // FIXME: Update size with dynamic type.
+    case dynamic(CGFloat)
+    case fixed(CGFloat)
+  }
+
+  // FIXME: Update size with dynamic type using `textStyle`.
+  public let textStyle: Font.TextStyle?
+
+  public static func == (lhs: _CustomFontBox, rhs: _CustomFontBox) -> Bool {
+    lhs.name == rhs.name
+      && lhs.size == rhs.size
+      && lhs.textStyle == rhs.textStyle
+  }
+
+  override public func hash(into hasher: inout Hasher) {
+    hasher.combine(name)
+    hasher.combine(size)
+    hasher.combine(textStyle)
+  }
+
+  init(_ name: String, size: Size, relativeTo textStyle: Font.TextStyle? = nil) {
+    (self.name, self.size, self.textStyle) = (name, size, textStyle)
+  }
+
+  override public func resolve(in environment: EnvironmentValues) -> ResolvedValue {
+    switch size {
+    case let .dynamic(size):
+      return .init(
+        name: .custom(name),
+        size: size
+      )
+    case let .fixed(size):
+      return .init(
+        name: .custom(name),
+        size: size
+      )
+    }
+  }
+}
+
 public struct Font: Hashable {
   let provider: AnyFontBox
 
@@ -245,8 +289,9 @@ public extension Font {
   }
 }
 
-public enum _FontNames: String, CaseIterable {
+public enum _FontNames: Hashable {
   case system
+  case custom(String)
 }
 
 public extension Font {
@@ -325,6 +370,20 @@ public extension Font {
       case .caption2: return .caption2
       }
     }
+  }
+}
+
+public extension Font {
+  static func custom(_ name: String, size: CGFloat) -> Self {
+    .init(_CustomFontBox(name, size: .dynamic(size)))
+  }
+
+  static func custom(_ name: String, size: CGFloat, relativeTo textStyle: TextStyle) -> Self {
+    .init(_CustomFontBox(name, size: .dynamic(size), relativeTo: textStyle))
+  }
+
+  static func custom(_ name: String, fixedSize: CGFloat) -> Self {
+    .init(_CustomFontBox(name, size: .fixed(fixedSize)))
   }
 }
 
