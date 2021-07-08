@@ -133,7 +133,7 @@ extension InsetGroupedListStyle: ListStyleDeferredToRenderer {
         .font(.caption)
         .padding([.top, .leading])
         .padding(.leading)
-        .frame(minWidth: 0, maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: .leading)
     )
   }
 
@@ -144,7 +144,7 @@ extension InsetGroupedListStyle: ListStyleDeferredToRenderer {
         .background(Color.listGroupBackground)
         .cornerRadius(10)
         .padding([.horizontal, .top])
-        .frame(minWidth: 0, maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: .leading)
     )
   }
 
@@ -180,7 +180,7 @@ extension SidebarListStyle: ListStyleDeferredToRenderer {
   }
 
   public func listRow<Row>(_ row: Row) -> AnyView where Row: View {
-    AnyView(row.frame(minWidth: 0, maxWidth: .infinity))
+    AnyView(row.frame(maxWidth: .infinity, alignment: .leading))
   }
 
   public func listBody<ListBody>(_ content: ListBody) -> AnyView where ListBody: View {

@@ -33,7 +33,28 @@ private extension DOMViewModifier {
   }
 }
 
+private extension VerticalAlignment {
+  var flexAlignment: String {
+    switch self {
+    case .top: return "flex-start"
+    case .center: return "center"
+    case .bottom: return "flex-end"
+    }
+  }
+}
+
+private extension HorizontalAlignment {
+  var flexAlignment: String {
+    switch self {
+    case .leading: return "flex-start"
+    case .center: return "center"
+    case .trailing: return "flex-end"
+    }
+  }
+}
+
 extension _FrameLayout: DOMViewModifier {
+  public var isOrderDependent: Bool { true }
   public var attributes: [HTMLAttribute: String] {
     ["style": """
     \(unwrapToStyle(\.width, property: "width"))
@@ -43,11 +64,15 @@ extension _FrameLayout: DOMViewModifier {
     white-space: nowrap;
     flex-grow: 0;
     flex-shrink: 0;
+    display: flex;
+    align-items: \(alignment.vertical.flexAlignment);
+    justify-content: \(alignment.horizontal.flexAlignment);
     """]
   }
 }
 
 extension _FlexFrameLayout: DOMViewModifier {
+  public var isOrderDependent: Bool { true }
   public var attributes: [HTMLAttribute: String] {
     ["style": """
     \(unwrapToStyle(\.minWidth, property: "min-width"))
@@ -61,6 +86,9 @@ extension _FlexFrameLayout: DOMViewModifier {
     white-space: nowrap;
     flex-grow: 0;
     flex-shrink: 0;
+    display: flex;
+    align-items: \(alignment.vertical.flexAlignment);
+    justify-content: \(alignment.horizontal.flexAlignment);
     """]
   }
 }

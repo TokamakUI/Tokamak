@@ -244,6 +244,16 @@ final class RenderingTests: XCTestCase {
       timeout: defaultSnapshotTimeout
     )
   }
+
+  func testFrames() {
+    assertSnapshot(
+      matching: Color.red
+        .frame(width: 20, height: 20)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing),
+      as: .image(size: .init(width: 50, height: 50)),
+      timeout: defaultSnapshotTimeout
+    )
+  }
 }
 
 #endif
