@@ -32,7 +32,7 @@ enum Sanitizers {
         return sanitize(string: value)
       } else {
         return validate(identifier: value)
-          ? sanitize(identifier: value)
+          ? value
           : sanitize(string: "'\(value)'")
       }
     }
