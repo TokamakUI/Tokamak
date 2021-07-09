@@ -81,12 +81,14 @@ public struct List<SelectionValue, Content>: View
   @_spi(TokamakCore)
   public var body: some View {
     if let style = style as? ListStyleDeferredToRenderer {
-      style.listBody(ScrollView {
-        HStack { Spacer() }
-        listStack
-          .environment(\._outlineGroupStyle, _ListOutlineGroupStyle())
-      })
-        .frame(minHeight: 0, maxHeight: .infinity)
+      ScrollView {
+        style.listBody(Group {
+          HStack { Spacer() }
+          listStack
+            .environment(\._outlineGroupStyle, _ListOutlineGroupStyle())
+        })
+      }
+      .frame(maxHeight: .infinity, alignment: .topLeading)
     } else {
       ScrollView {
         HStack { Spacer() }

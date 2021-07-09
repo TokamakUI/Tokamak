@@ -86,7 +86,7 @@ extension Section: View, SectionView where Parent: View, Content: View, Footer: 
         sectionContent(style)
         footerView(style)
       }
-      .frame(minWidth: 0, maxWidth: .infinity)
+      .frame(maxWidth: .infinity, alignment: .leading)
     )
   }
 }
