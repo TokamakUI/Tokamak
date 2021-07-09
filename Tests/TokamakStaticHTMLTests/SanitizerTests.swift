@@ -17,16 +17,26 @@ import XCTest
 
 final class SanitizerTests: XCTestCase {
   func testCSSString() {
-    XCTAssertEqual(Sanitizers.CSS.sanitize(string: "hello"), "'hello'")
+    XCTAssertFalse(Sanitizers.CSS.validate(string: "hello"))
+    XCTAssertTrue(Sanitizers.CSS.validate(string: "\"hello\""))
+    XCTAssertTrue(Sanitizers.CSS.validate(string: "\'hello\'"))
+
     XCTAssertEqual(Sanitizers.CSS.sanitize(string: "'hello world'"), "'hello world'")
-    XCTAssertEqual(Sanitizers.CSS.sanitize(string: "\"hello world\""), "'hello world'")
-    XCTAssertEqual(Sanitizers.CSS.sanitize(string: "hello'''world"), "'helloworld'")
+    XCTAssertEqual(Sanitizers.CSS.sanitize(string: "\"hello world\""), "&quot;hello world&quot;")
+    XCTAssertEqual(Sanitizers.CSS.sanitize(string: "hello'''world"), "''")
   }
 
   func testCSSIdentifier() {
+    XCTAssertFalse(Sanitizers.CSS.validate(identifier: "\"hey there\""))
+    XCTAssertTrue(Sanitizers.CSS.validate(identifier: "hey-there"))
+    XCTAssertTrue(Sanitizers.CSS.validate(identifier: "-hey-there2"))
+
     XCTAssertEqual(Sanitizers.CSS.sanitize(identifier: "hello"), "hello")
     XCTAssertEqual(Sanitizers.CSS.sanitize(identifier: "hello-world"), "hello-world")
     XCTAssertEqual(Sanitizers.CSS.sanitize(identifier: "-hello-world_1"), "-hello-world_1")
-    XCTAssertEqual(Sanitizers.CSS.sanitize(string: "hello'''world"), "'helloworld'")
+  }
+
+  func testCSSSanitizer() {
+    XCTAssertEqual(Sanitizers.CSS.sanitize("hello world"), "'hello world'")
   }
 }

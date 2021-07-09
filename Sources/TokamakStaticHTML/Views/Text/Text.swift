@@ -211,6 +211,10 @@ extension Text {
     var fontPathEnv = environment
     fontPathEnv._fontPath = fontStack.reversed() + fontPathEnv._fontPath
       .filter { !fontStack.contains($0) }
+    if fontPathEnv._fontPath.allSatisfy({ _FontProxy($0).provider is _CustomFontBox }) {
+      // Add a fallback
+      fontPathEnv._fontPath.append(.body)
+    }
     let resolvedFont = fontPathEnv._fontPath
       .isEmpty ? nil : _FontProxy(fontPathEnv._fontPath.first!).resolve(in: environment)
 

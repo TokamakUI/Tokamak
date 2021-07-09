@@ -147,6 +147,9 @@ public extension Font {
 public struct _FontProxy {
   let subject: Font
   public init(_ subject: Font) { self.subject = subject }
+
+  public var provider: AnyFontBox { subject.provider }
+
   public func resolve(in environment: EnvironmentValues) -> AnyFontBox.ResolvedValue {
     if let deferred = subject.provider as? AnyFontBoxDeferredToRenderer {
       return deferred.deferredResolve(in: environment)
