@@ -21,12 +21,7 @@ struct CustomScene: Scene {
   var body: some Scene {
     print("In CustomScene.body scenePhase is \(scenePhase)")
     return WindowGroup("Tokamak Demo") {
-//      TokamakDemoView()
-      VStack {
-        Text("Fallback Font")
-          .font(.custom("\"Marker-Felt\"", size: 17))
-      }
-      .font(.system(.body, design: .serif))
+      TokamakDemoView()
     }
   }
 }
