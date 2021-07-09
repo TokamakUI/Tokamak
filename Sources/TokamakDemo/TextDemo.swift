@@ -66,9 +66,11 @@ struct TextDemo: View {
       }
       Text("Custom Font")
         .font(.custom("\"Marker Felt\"", size: 17))
-      Text("Fallback Font")
-        .font(.custom("\"Marker-Felt\"", size: 17))
-        .font(.system(.body, design: .serif))
+      VStack {
+        Text("Fallback Font")
+          .font(.custom("\"Marker-Felt\"", size: 17))
+      }
+      .font(.system(.body, design: .serif))
     }
   }
 }

@@ -209,7 +209,8 @@ extension Text {
       ?? "inherit"
 
     var fontPathEnv = environment
-    fontPathEnv._fontPath = fontStack + fontPathEnv._fontPath.filter { !fontStack.contains($0) }
+    fontPathEnv._fontPath = fontStack.reversed() + fontPathEnv._fontPath
+      .filter { !fontStack.contains($0) }
     let resolvedFont = fontPathEnv._fontPath
       .isEmpty ? nil : _FontProxy(fontPathEnv._fontPath.first!).resolve(in: environment)
 
@@ -217,7 +218,7 @@ extension Text {
       "style": """
       \(fontPathEnv._fontPath.first?.styles(in: fontPathEnv)
         .filter { weight != nil ? $0.key != "font-weight" : true }
-        .inlineStyles ?? "")
+        .inlineStyles(shouldSortDeclarations: true) ?? "")
       \(fontPathEnv._fontPath
         .isEmpty ? "font-family: \(Font.Design.default.families.joined(separator: ", "));" : "")
       color: \((color ?? .primary).cssValue(environment));

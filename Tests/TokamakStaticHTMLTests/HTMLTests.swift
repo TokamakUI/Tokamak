@@ -23,16 +23,16 @@ import XCTest
 
 final class HTMLTests: XCTestCase {
   struct Model {
-    let text: Text
+    let color: Color
   }
 
   private struct OptionalBody: View {
     var model: Model?
 
     var body: some View {
-      if let text = model?.text {
+      if let color = model?.color {
         VStack {
-          text
+          color
 
           Spacer()
         }
@@ -41,7 +41,7 @@ final class HTMLTests: XCTestCase {
   }
 
   func testOptional() {
-    let resultingHTML = StaticHTMLRenderer(OptionalBody(model: Model(text: Text("text"))))
+    let resultingHTML = StaticHTMLRenderer(OptionalBody(model: Model(color: Color.red)))
       .render(shouldSortAttributes: true)
 
     assertSnapshot(matching: resultingHTML, as: .lines)
@@ -49,16 +49,35 @@ final class HTMLTests: XCTestCase {
 
   func testPaddingFusion() {
     let nestedTwice = StaticHTMLRenderer(
-      Text("text").padding(10).padding(20)
+      Color.red.padding(10).padding(20)
     ).render(shouldSortAttributes: true)
 
     assertSnapshot(matching: nestedTwice, as: .lines)
 
     let nestedThrice = StaticHTMLRenderer(
-      Text("text").padding(20).padding(20).padding(20)
+      Color.red.padding(20).padding(20).padding(20)
     ).render(shouldSortAttributes: true)
 
     assertSnapshot(matching: nestedThrice, as: .lines)
+  }
+
+  func testFontStacks() {
+    let customFont = StaticHTMLRenderer(
+      Text("Hello, world!")
+        .font(.custom("Marker Felt", size: 17))
+    ).render(shouldSortAttributes: true)
+
+    assertSnapshot(matching: customFont, as: .lines)
+
+    let fallbackFont = StaticHTMLRenderer(
+      VStack {
+        Text("Hello, world!")
+          .font(.custom("Marker Felt", size: 17))
+      }
+      .font(.system(.body, design: .serif))
+    ).render(shouldSortAttributes: true)
+
+    assertSnapshot(matching: fallbackFont, as: .lines)
   }
 }
 
