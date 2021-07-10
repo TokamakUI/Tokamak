@@ -65,7 +65,13 @@ public struct _CustomProgressView<Label, CurrentValueLabel>: View
   }
 }
 
-#if !os(WASI)
+#if os(WASI)
+public struct _FoundationProgressView: View {
+  public var body: Never {
+    fatalError("`Foundation.Progress` is not available.")
+  }
+}
+#else
 public struct _FoundationProgressView: View {
   let progress: Progress
   @State private var state: ProgressState?
@@ -180,11 +186,13 @@ public extension ProgressView {
   }
 }
 
+#if !os(WASI)
 public extension ProgressView {
   init(_ progress: Progress) where Label == EmptyView, CurrentValueLabel == EmptyView {
     self.init(storage: .foundation(.init(progress)))
   }
 }
+#endif
 
 public extension ProgressView {
   init(_ configuration: ProgressViewStyleConfiguration)
