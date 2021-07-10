@@ -61,7 +61,7 @@ enum Sanitizers {
       static let h: RegularExpression = #"[0-9a-f]"#
 
       /// `[\240-\377]`
-      static let nonAscii: RegularExpression = #"[\240-\377]"#
+      static let nonAscii: RegularExpression = #"[\0240-\0377]"#
 
       /// `\\{h}{1,6}(\r\n|[ \t\r\n\f])?`
       static let unicode: RegularExpression = #"\\\#(h){1,6}(\r\n|[ \t\r\n\f])?"#
@@ -75,9 +75,11 @@ enum Sanitizers {
       static let nmChar: RegularExpression = #"[_a-z0-9-]|\#(nonAscii)|\#(escape)"#
 
       /// `\"([^\n\r\f\\"]|\\{nl}|{escape})*\"`
-      static let string1: RegularExpression = #"\"([^\n\r\f\\"]|\\\#(nl)|\#(escape))*\""#
+      static let string1Content: RegularExpression = #"([^\n\r\f\\"]|\\\#(nl)|\#(escape))*"#
+      static let string1: RegularExpression = #""\#(string1Content)""#
       /// `\'([^\n\r\f\\']|\\{nl}|{escape})*\'`
-      static let string2: RegularExpression = #"\'([^\n\r\f\\']|\\\#(nl)|\#(escape))*\'"#
+      static let string2Content: RegularExpression = #"([^\n\r\f\\']|\\\#(nl)|\#(escape))*"#
+      static let string2: RegularExpression = #"'\#(string2Content)'"#
 
       /// `-?{nmstart}{nmchar}*`
       static let ident: RegularExpression = #"-?\#(nmStart)\#(nmChar)*"#
@@ -105,12 +107,13 @@ enum Sanitizers {
       }
 
       static func sanitize(_ input: String) -> String {
-        (
+        """
+        '\(
           Parsers.string1.matches(input)
-            ? Parsers.string1.filter(input)
-            : Parsers.string2.filter(input)
-        )
-        .replacingOccurrences(of: "\"", with: "&quot;")
+            ? Parsers.string1Content.filter(input)
+            : Parsers.string2Content.filter(input)
+            .replacingOccurrences(of: "\"", with: "&quot;"))'
+        """
       }
     }
   }

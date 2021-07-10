@@ -22,12 +22,13 @@ final class SanitizerTests: XCTestCase {
     XCTAssertTrue(Sanitizers.CSS.validate(string: "\'hello\'"))
 
     XCTAssertEqual(Sanitizers.CSS.sanitize(string: "'hello world'"), "'hello world'")
-    XCTAssertEqual(Sanitizers.CSS.sanitize(string: "\"hello world\""), "&quot;hello world&quot;")
-    XCTAssertEqual(Sanitizers.CSS.sanitize(string: "hello'''world"), "''")
+    XCTAssertEqual(Sanitizers.CSS.sanitize(string: "\"hello world\""), "'hello world'")
+    XCTAssertEqual(Sanitizers.CSS.sanitize(string: "hello'''world"), "'helloworld'")
   }
 
   func testCSSIdentifier() {
     XCTAssertFalse(Sanitizers.CSS.validate(identifier: "\"hey there\""))
+    XCTAssertFalse(Sanitizers.CSS.validate(identifier: "1hey-there"))
     XCTAssertTrue(Sanitizers.CSS.validate(identifier: "hey-there"))
     XCTAssertTrue(Sanitizers.CSS.validate(identifier: "-hey-there2"))
 
@@ -38,5 +39,6 @@ final class SanitizerTests: XCTestCase {
 
   func testCSSSanitizer() {
     XCTAssertEqual(Sanitizers.CSS.sanitize("hello world"), "'hello world'")
+    XCTAssertEqual(Sanitizers.CSS.sanitize("hello-world"), "hello-world")
   }
 }
