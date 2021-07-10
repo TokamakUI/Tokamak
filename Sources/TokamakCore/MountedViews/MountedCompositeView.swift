@@ -70,6 +70,10 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
       if let preferenceReader = self.view.view as? _PreferenceReadingViewProtocol {
         preferenceReader.preferenceStore(self.preferenceStore)
       }
+
+      if let traitModifier = self.view.view as? _ViewTraitWritingViewProtocol {
+        self.view = traitModifier.modifyViewTraitStore(&self.viewTraitStore)
+      }
     })
   }
 

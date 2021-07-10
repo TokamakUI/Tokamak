@@ -95,10 +95,13 @@ public class MountedElement<R: Renderer> {
     }
   }
 
+  var viewTraitStore: _ViewTraitStore
+
   init(_ app: _AnyApp, _ environmentValues: EnvironmentValues, _ parent: MountedElement<R>?) {
     element = .app(app)
     self.parent = parent
     self.environmentValues = environmentValues
+    viewTraitStore = .init()
     updateEnvironment()
   }
 
@@ -106,6 +109,7 @@ public class MountedElement<R: Renderer> {
     element = .scene(scene)
     self.parent = parent
     self.environmentValues = environmentValues
+    viewTraitStore = .init()
     updateEnvironment()
   }
 
@@ -113,6 +117,7 @@ public class MountedElement<R: Renderer> {
     element = .view(view)
     self.parent = parent
     self.environmentValues = environmentValues
+    viewTraitStore = .init()
     updateEnvironment()
   }
 
