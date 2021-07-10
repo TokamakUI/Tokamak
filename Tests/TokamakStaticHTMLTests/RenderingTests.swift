@@ -254,6 +254,21 @@ final class RenderingTests: XCTestCase {
       timeout: defaultSnapshotTimeout
     )
   }
+
+  func testProgressView() {
+    assertSnapshot(
+      matching: VStack(spacing: 0) {
+        ProgressView(value: 0.5) {
+          Text("Loading")
+        } currentValueLabel: {
+          Text("0.5")
+        }
+        ProgressView(Progress(totalUnitCount: 3))
+      },
+      as: .image(size: .init(width: 200, height: 200)),
+      timeout: defaultSnapshotTimeout
+    )
+  }
 }
 
 #endif

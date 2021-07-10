@@ -24,13 +24,13 @@ public struct ProgressView<Label, CurrentValueLabel>: View
 
   enum Storage {
     case custom(_CustomProgressView<Label, CurrentValueLabel>)
-//    case foundation(_FoundationProgressView)
+    case foundation(_FoundationProgressView)
   }
 
   public var body: some View {
     switch storage {
     case let .custom(custom): custom
-//    case let .foundation(foundation): foundation
+    case let .foundation(foundation): foundation
     }
   }
 }
@@ -65,31 +65,32 @@ public struct _CustomProgressView<Label, CurrentValueLabel>: View
   }
 }
 
-// FIXME: `Foundation.Progress` not found.
-// public struct _FoundationProgressView: View {
-//  let progress: Progress
-//  @State private var state: ProgressState?
-//
-//  struct ProgressState {
-//    var progress: Double
-//    var isIndeterminate: Bool
-//    var description: String
-//  }
-//
-//  init(_ progress: Progress) {
-//    self.progress = progress
-//  }
-//
-//  public var body: some View {
-//    ProgressView(
-//      value: progress.isIndeterminate ? nil : progress.fractionCompleted
-//    ) {
-//      Text("\(Int(progress.fractionCompleted * 100))% completed")
-//    } currentValueLabel: {
-//      Text("\(progress.completedUnitCount)/\(progress.totalUnitCount)")
-//    }
-//  }
-// }
+#if !os(WASI)
+public struct _FoundationProgressView: View {
+  let progress: Progress
+  @State private var state: ProgressState?
+
+  struct ProgressState {
+    var progress: Double
+    var isIndeterminate: Bool
+    var description: String
+  }
+
+  init(_ progress: Progress) {
+    self.progress = progress
+  }
+
+  public var body: some View {
+    ProgressView(
+      value: progress.isIndeterminate ? nil : progress.fractionCompleted
+    ) {
+      Text("\(Int(progress.fractionCompleted * 100))% completed")
+    } currentValueLabel: {
+      Text("\(progress.completedUnitCount)/\(progress.totalUnitCount)")
+    }
+  }
+}
+#endif
 
 /// Override in renderers to provide a default body for determinate progress views.
 public struct _FractionalProgressView: _PrimitiveView {
@@ -179,11 +180,11 @@ public extension ProgressView {
   }
 }
 
-// public extension ProgressView {
-//  init(_ progress: Progress) where Label == EmptyView, CurrentValueLabel == EmptyView {
-//    self.init(storage: .foundation(.init(progress)))
-//  }
-// }
+public extension ProgressView {
+  init(_ progress: Progress) where Label == EmptyView, CurrentValueLabel == EmptyView {
+    self.init(storage: .foundation(.init(progress)))
+  }
+}
 
 public extension ProgressView {
   init(_ configuration: ProgressViewStyleConfiguration)
