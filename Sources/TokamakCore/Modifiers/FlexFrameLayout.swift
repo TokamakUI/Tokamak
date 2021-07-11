@@ -56,6 +56,10 @@ public struct _FlexFrameLayout: ViewModifier {
   }
 }
 
+extension _FlexFrameLayout: Animatable {
+  public typealias AnimatableData = EmptyAnimatableData
+}
+
 public extension View {
   func frame(
     minWidth: CGFloat? = nil,

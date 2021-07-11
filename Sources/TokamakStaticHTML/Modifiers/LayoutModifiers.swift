@@ -131,9 +131,11 @@ extension _PaddingLayout: DOMViewModifier {
   }
 }
 
-extension _ShadowLayout: DOMViewModifier {
+extension _ShadowEffect._Resolved: DOMViewModifier {
   public var attributes: [HTMLAttribute: String] {
-    ["style": "box-shadow: \(x)px \(y)px \(radius * 2)px 0px \(color.cssValue(environment));"]
+    [
+      "style": "box-shadow: \(offset.width)px \(offset.height)px \(radius * 2)px 0px \(color.cssValue);",
+    ]
   }
 
   public var isOrderDependent: Bool { true }

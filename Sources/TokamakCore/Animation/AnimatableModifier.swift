@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,28 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 1/20/21.
+//  Created by Carson Katri on 7/11/21.
 //
 
-public struct _OpacityEffect: Animatable, ViewModifier, Equatable {
-  public var opacity: Double
-
-  public init(opacity: Double) {
-    self.opacity = opacity
-  }
-
-  public func body(content: Content) -> some View {
-    content
-  }
-
-  public var animatableData: Double {
-    get { opacity }
-    set { opacity = newValue }
-  }
-}
-
-public extension View {
-  func opacity(_ opacity: Double) -> some View {
-    modifier(_OpacityEffect(opacity: opacity))
-  }
-}
+public protocol AnimatableModifier: Animatable, ViewModifier {}

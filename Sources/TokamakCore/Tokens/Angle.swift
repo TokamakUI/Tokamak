@@ -68,3 +68,10 @@ extension Angle: Hashable, Comparable {
     lhs.radians < rhs.radians
   }
 }
+
+extension Angle: Animatable, _VectorMath {
+  public var animatableData: Double {
+    get { radians }
+    set { radians = newValue }
+  }
+}
