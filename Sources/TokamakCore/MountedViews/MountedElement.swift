@@ -86,7 +86,7 @@ public class MountedElement<R: Renderer> {
 
   var mountedChildren = [MountedElement<R>]()
 
-  public internal(set) var transaction: Transaction?
+  public internal(set) var transaction: Transaction = .init(animation: nil)
 
   var environmentValues: EnvironmentValues
 

@@ -13,7 +13,8 @@
 // limitations under the License.
 
 public struct Transaction {
-  /// The current `Transaction` being passed from `Binding`.
+  /// The overriden transaction for a state change in a `withTransaction` block.
+  /// Is always set back to `nil` when the block exits.
   static var _active: Self?
 
   public var animation: Animation?

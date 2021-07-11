@@ -16,8 +16,23 @@ import JavaScriptKit
 import TokamakCore
 import TokamakStaticHTML
 
+private extension String {
+  var animatableProperty: String {
+    if self == "float" {
+      return "cssFloat"
+    } else if self == "offset" {
+      return "cssProperty"
+    } else {
+      return split(separator: "-")
+        .reduce("") { prev, next in
+          "\(prev)\(prev.isEmpty ? next : next.prefix(1).uppercased() + next.dropFirst())"
+        }
+    }
+  }
+}
+
 extension AnyHTML {
-  func update(dom: DOMNode, transaction: Transaction?) {
+  func update(dom: DOMNode, transaction: Transaction) {
     // FIXME: is there a sensible way to diff attributes and listeners to avoid
     // crossing the JavaScript bridge and touching DOM if not needed?
 
@@ -28,6 +43,9 @@ extension AnyHTML {
     // need to check whether it exists or not, and set the property if it doesn't.
     var containsChecked = false
     for (attribute, value) in attributes {
+      // Animate styles with the Web Animations API further down.
+      guard transaction.animation == nil || attribute != "style"
+      else { continue }
       if attribute.isUpdatedAsProperty {
         dom.ref[dynamicMember: attribute.value] = .string(value)
       } else {
@@ -37,6 +55,44 @@ extension AnyHTML {
       if attribute == .checked {
         containsChecked = true
       }
+    }
+
+    // Animate styles
+    if let style = attributes["style"],
+       let animation = transaction.animation
+    {
+      func extractStyles() -> [String: String] {
+        var res = [String: String]()
+        for i in 0..<Int(dom.ref.style.object?.length.number ?? 0) {
+          guard let key = dom.ref.style.object?[i].string else { continue }
+          res[key] = dom.ref.style.object?[key].string
+        }
+        return res
+      }
+      let startStyle = Dictionary(uniqueKeysWithValues: extractStyles().map {
+        ($0.animatableProperty, $1)
+      })
+      dom.ref.style.object?.cssText = .string(style)
+      let endStyle = Dictionary(uniqueKeysWithValues: extractStyles().map {
+        ($0.animatableProperty, $1)
+      })
+      _ = dom.ref.animate?(
+        [
+          startStyle
+//              .merging(
+//                ["composite": "auto", "offset": "0", "easing": "linear"],
+//                uniquingKeysWith: { $1 }
+//              )
+            .jsValue(),
+          endStyle
+//              .merging(
+//                ["composite": "auto", "offset": "1", "easing": "linear"],
+//                uniquingKeysWith: { $1 }
+//              )
+            .jsValue(),
+        ],
+        2000
+      )
     }
 
     if !containsChecked && dom.ref.type == "checkbox" &&
