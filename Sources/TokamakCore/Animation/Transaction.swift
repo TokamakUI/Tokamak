@@ -13,7 +13,7 @@
 // limitations under the License.
 
 public struct Transaction {
-  static var _transactionOverride: Self?
+  static var _active: Self?
 
   public var animation: Animation?
 
@@ -32,8 +32,8 @@ public func withTransaction<Result>(
   _ transaction: Transaction,
   _ body: () throws -> Result
 ) rethrows -> Result {
-  Transaction._transactionOverride = transaction
-  defer { Transaction._transactionOverride = nil }
+  Transaction._active = transaction
+  defer { Transaction._active = nil }
   return try body()
 }
 

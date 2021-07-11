@@ -17,7 +17,7 @@ import TokamakCore
 import TokamakStaticHTML
 
 extension AnyHTML {
-  func update(dom: DOMNode) {
+  func update(dom: DOMNode, transaction: Transaction?) {
     // FIXME: is there a sensible way to diff attributes and listeners to avoid
     // crossing the JavaScript bridge and touching DOM if not needed?
 

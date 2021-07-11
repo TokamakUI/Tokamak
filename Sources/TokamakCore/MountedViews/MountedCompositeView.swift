@@ -81,15 +81,17 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     }
   }
 
-  override func update(with reconciler: StackReconciler<R>) {
+  override func update(in reconciler: StackReconciler<R>, with transaction: Transaction?) {
     let element = reconciler.render(compositeView: self)
     reconciler.reconcile(
       self,
       with: element,
+      transaction: transaction,
       getElementType: { $0.type },
       updateChild: {
         $0.environmentValues = environmentValues
         $0.view = AnyView(element)
+        $0.transaction = transaction
       },
       mountChild: {
         $0.makeMountedView(reconciler.renderer, parentTarget, environmentValues, self)

@@ -35,7 +35,20 @@ public final class StackReconciler<R: Renderer> {
    haven't been proven in the absence of benchmarks, so this could be updated to a simple `Array` in
    the future if that's proven to be more effective.
    */
-  private var queuedRerenders = Set<MountedCompositeElement<R>>()
+  private var queuedRerenders = Set<Rerender>()
+
+  struct Rerender: Hashable {
+    let element: MountedCompositeElement<R>
+    let transaction: Transaction?
+
+    func hash(into hasher: inout Hasher) {
+      hasher.combine(element)
+    }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+      lhs.element == rhs.element
+    }
+  }
 
   /** A root renderer's target instance. We establish the "host-target" terminology where a "host"
    is a primitive `View` that doesn't have any children, and a "target" is an instance of a type
@@ -114,7 +127,12 @@ public final class StackReconciler<R: Renderer> {
 
   internal func queueUpdate(for mountedElement: MountedCompositeElement<R>) {
     let shouldSchedule = queuedRerenders.isEmpty
-    queuedRerenders.insert(mountedElement)
+    queuedRerenders.insert(
+      .init(
+        element: mountedElement,
+        transaction: Transaction._active
+      )
+    )
 
     guard shouldSchedule else { return }
 
@@ -126,7 +144,7 @@ public final class StackReconciler<R: Renderer> {
     queuedRerenders.removeAll()
 
     for mountedView in queued {
-      mountedView.update(with: self)
+      mountedView.element.update(in: self, with: mountedView.transaction)
     }
 
     performPostrenderCallbacks()
@@ -250,6 +268,7 @@ public final class StackReconciler<R: Renderer> {
   func reconcile<Element>(
     _ mountedElement: MountedCompositeElement<R>,
     with element: Element,
+    transaction: Transaction?,
     getElementType: (Element) -> Any.Type,
     updateChild: (MountedElement<R>) -> (),
     mountChild: (Element) -> MountedElement<R>
@@ -272,7 +291,7 @@ public final class StackReconciler<R: Renderer> {
       // new child has the same type as existing child
       if mountedChild.typeConstructorName == typeConstructorName(childBodyType) {
         updateChild(mountedChild)
-        mountedChild.update(with: self)
+        mountedChild.update(in: self, with: transaction)
       } else {
         // new child is of a different type, complete rerender, i.e. unmount the old
         // wrapper, then mount a new one with the new `childBody`
