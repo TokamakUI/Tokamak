@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Foundation
+
 public let defaultDuration = 0.35
 
 public struct Animation: Equatable {
@@ -41,7 +43,16 @@ public struct Animation: Equatable {
     dampingFraction: Double = 0.825,
     blendDuration: Double = 0
   ) -> Animation {
-    .init()
+    if response == 0 { // Infinitely stiff spring
+      // (well, not .infinity, but a very high number)
+      return interpolatingSpring(stiffness: 999, damping: 999)
+    } else {
+      return interpolatingSpring(
+        mass: 1,
+        stiffness: pow(2 * .pi / response, 2),
+        damping: 4 * .pi * dampingFraction / response
+      )
+    }
   }
 
   public static func interactiveSpring(
