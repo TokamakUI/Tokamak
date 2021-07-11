@@ -83,7 +83,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     }
   }
 
-  override func update(in reconciler: StackReconciler<R>, with transaction: Transaction?) {
+  override func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
     guard let target = target else { return }
 
     updateEnvironment()

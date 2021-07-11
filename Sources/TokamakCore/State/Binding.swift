@@ -15,8 +15,6 @@
 //  Created by Max Desiatov on 09/02/2019.
 //
 
-typealias Updater<T> = (inout T) -> ()
-
 /** Note that `set` functions are not `mutating`, they never update the
  view's state in-place synchronously, but only schedule an update with
  the renderer at a later time.

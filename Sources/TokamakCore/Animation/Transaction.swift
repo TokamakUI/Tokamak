@@ -13,6 +13,7 @@
 // limitations under the License.
 
 public struct Transaction {
+  /// The current `Transaction` being passed from `Binding`.
   static var _active: Self?
 
   public var animation: Animation?

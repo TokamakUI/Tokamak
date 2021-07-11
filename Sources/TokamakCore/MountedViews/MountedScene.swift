@@ -45,7 +45,7 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
     mountedChildren.forEach { $0.unmount(with: reconciler) }
   }
 
-  override func update(in reconciler: StackReconciler<R>, with transaction: Transaction?) {
+  override func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
     let element = reconciler.render(mountedScene: self)
     reconciler.reconcile(
       self,

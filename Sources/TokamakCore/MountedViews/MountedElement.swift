@@ -143,7 +143,7 @@ public class MountedElement<R: Renderer> {
     fatalError("implement \(#function) in subclass")
   }
 
-  func update(in reconciler: StackReconciler<R>, with transaction: Transaction?) {
+  func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
     fatalError("implement \(#function) in subclass")
   }
 

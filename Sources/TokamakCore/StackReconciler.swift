@@ -39,7 +39,7 @@ public final class StackReconciler<R: Renderer> {
 
   struct Rerender: Hashable {
     let element: MountedCompositeElement<R>
-    let transaction: Transaction?
+    let transaction: Transaction
 
     func hash(into hasher: inout Hasher) {
       hasher.combine(element)
@@ -119,18 +119,22 @@ public final class StackReconciler<R: Renderer> {
   private func queueStorageUpdate(
     for mountedElement: MountedCompositeElement<R>,
     id: Int,
+    transaction: Transaction,
     updater: (inout Any) -> ()
   ) {
     updater(&mountedElement.storage[id])
-    queueUpdate(for: mountedElement)
+    queueUpdate(for: mountedElement, transaction: transaction)
   }
 
-  internal func queueUpdate(for mountedElement: MountedCompositeElement<R>) {
+  internal func queueUpdate(
+    for mountedElement: MountedCompositeElement<R>,
+    transaction: Transaction
+  ) {
     let shouldSchedule = queuedRerenders.isEmpty
     queuedRerenders.insert(
       .init(
         element: mountedElement,
-        transaction: Transaction._active
+        transaction: transaction
       )
     )
 
@@ -173,9 +177,9 @@ public final class StackReconciler<R: Renderer> {
 
       // Avoiding an indirect reference cycle here: this closure can be owned by callbacks
       // owned by view's target, which is strongly referenced by the reconciler.
-      writableStorage.setter = { [weak self, weak compositeElement] newValue in
+      writableStorage.setter = { [weak self, weak compositeElement] newValue, transaction in
         guard let element = compositeElement else { return }
-        self?.queueStorageUpdate(for: element, id: id) { $0 = newValue }
+        self?.queueStorageUpdate(for: element, id: id, transaction: transaction) { $0 = newValue }
       }
 
       property.set(value: writableStorage, on: &compositeElement[keyPath: bodyKeypath])
@@ -198,7 +202,7 @@ public final class StackReconciler<R: Renderer> {
     // instance property
     observed.objectWillChange.sink { [weak self, weak compositeElement] _ in
       if let compositeElement = compositeElement {
-        self?.queueUpdate(for: compositeElement)
+        self?.queueUpdate(for: compositeElement, transaction: .init(animation: nil))
       }
     }.store(in: &compositeElement.transientSubscriptions)
   }
@@ -215,7 +219,7 @@ public final class StackReconciler<R: Renderer> {
       else { return }
 
       mountedApp.environmentValues[keyPath: keyPath] = value
-      self?.queueUpdate(for: mountedApp)
+      self?.queueUpdate(for: mountedApp, transaction: .init(animation: nil))
     }.store(in: &mountedApp.persistentSubscriptions)
   }
 
@@ -265,10 +269,11 @@ public final class StackReconciler<R: Renderer> {
     mountedScene.scene.bodyClosure(body(of: mountedScene, keyPath: \.scene.scene))
   }
 
+  // swiftlint:disable function_parameter_count
   func reconcile<Element>(
     _ mountedElement: MountedCompositeElement<R>,
     with element: Element,
-    transaction: Transaction?,
+    transaction: Transaction,
     getElementType: (Element) -> Any.Type,
     updateChild: (MountedElement<R>) -> (),
     mountChild: (Element) -> MountedElement<R>
@@ -303,6 +308,8 @@ public final class StackReconciler<R: Renderer> {
       }
     }
   }
+
+  // swiftlint:enable function_parameter_count
 
   private var queuedPostrenderCallbacks = [() -> ()]()
   func afterCurrentRender(perform callback: @escaping () -> ()) {

@@ -20,7 +20,7 @@ protocol ValueStorage {
 }
 
 protocol WritableValueStorage: ValueStorage {
-  var setter: ((Any) -> ())? { get set }
+  var setter: ((Any, Transaction) -> ())? { get set }
 }
 
 @propertyWrapper public struct State<Value>: DynamicProperty {
@@ -29,7 +29,7 @@ protocol WritableValueStorage: ValueStorage {
   var anyInitialValue: Any { initialValue }
 
   var getter: (() -> Any)?
-  var setter: ((Any) -> ())?
+  var setter: ((Any, Transaction) -> ())?
 
   public init(wrappedValue value: Value) {
     initialValue = value
@@ -37,15 +37,21 @@ protocol WritableValueStorage: ValueStorage {
 
   public var wrappedValue: Value {
     get { getter?() as? Value ?? initialValue }
-    nonmutating set { setter?(newValue) }
+    nonmutating set { setter?(newValue, Transaction._active ?? .init(animation: nil)) }
   }
 
   public var projectedValue: Binding<Value> {
     guard let getter = getter, let setter = setter else {
       fatalError("\(#function) not available outside of `body`")
     }
-    // swiftlint:disable:next force_cast
-    return .init(get: { getter() as! Value }, set: { setter($0) })
+    // swiftlint:disable force_cast
+    return .init(
+      get: { getter() as! Value },
+      set: { newValue, transaction in
+        setter(newValue, Transaction._active ?? transaction)
+      }
+    )
+    // swiftlint:enable force_cast
   }
 }
 
