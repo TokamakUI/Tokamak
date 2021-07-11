@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-let defaultDuration = 0.35
+public let defaultDuration = 0.35
 
 public struct Animation: Equatable {
-  static let `default` = Animation()
+  public static let `default` = Animation()
 
   public func delay(_ delay: Double) -> Animation {
     .init()

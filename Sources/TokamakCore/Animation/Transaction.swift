@@ -13,6 +13,8 @@
 // limitations under the License.
 
 public struct Transaction {
+  static var _transactionOverride: Self?
+
   public var animation: Animation?
 
   /** `true` in the first part of the transition update, this avoids situations when `animation(_:)`
@@ -24,4 +26,20 @@ public struct Transaction {
     self.animation = animation
     disablesAnimations = true
   }
+}
+
+public func withTransaction<Result>(
+  _ transaction: Transaction,
+  _ body: () throws -> Result
+) rethrows -> Result {
+  Transaction._transactionOverride = transaction
+  defer { Transaction._transactionOverride = nil }
+  return try body()
+}
+
+public func withAnimation<Result>(
+  _ animation: Animation? = .default,
+  _ body: () throws -> Result
+) rethrows -> Result {
+  try withTransaction(.init(animation: animation), body)
 }
