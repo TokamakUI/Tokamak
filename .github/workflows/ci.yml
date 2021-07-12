@@ -61,7 +61,7 @@ jobs:
         if: ${{ failure() }}
         with:
           name: Failed snapshots
-          path: SnapshotTests
+          path: RenderingTests
 
   gtk_macos_build:
     runs-on: macos-latest
