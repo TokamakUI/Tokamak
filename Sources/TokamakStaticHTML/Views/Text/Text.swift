@@ -15,51 +15,51 @@
 import Foundation
 import TokamakCore
 
-extension Font.Design: CustomStringConvertible {
+public extension Font.Design {
   /// Some default font stacks for the various designs
-  public var description: String {
+  var families: [String] {
     switch self {
     case .default:
-      return #"""
-      system,
-      -apple-system,
-      '.SFNSText-Regular',
-      'San Francisco',
-      'Roboto',
-      'Segoe UI',
-      'Helvetica Neue',
-      'Lucida Grande',
-      sans-serif
-      """#
+      return [
+        "system",
+        "-apple-system",
+        "'.SFNSText-Regular'",
+        "'San Francisco'",
+        "'Roboto'",
+        "'Segoe UI'",
+        "'Helvetica Neue'",
+        "'Lucida Grande'",
+        "sans-serif",
+      ]
     case .monospaced:
-      return #"""
-      Consolas,
-      'Andale Mono WT',
-      'Andale Mono',
-      'Lucida Console',
-      'Lucida Sans Typewriter',
-      'DejaVu Sans Mono',
-      'Bitstream Vera Sans Mono',
-      'Liberation Mono',
-      'Nimbus Mono L',
-      Monaco,
-      'Courier New',
-      Courier,
-      monospace
-      """#
+      return [
+        "Consolas",
+        "'Andale Mono WT'",
+        "'Andale Mono'",
+        "'Lucida Console'",
+        "'Lucida Sans Typewriter'",
+        "'DejaVu Sans Mono'",
+        "'Bitstream Vera Sans Mono'",
+        "'Liberation Mono'",
+        "'Nimbus Mono L'",
+        "Monaco",
+        "'Courier New'",
+        "Courier",
+        "monospace",
+      ]
     case .rounded: // Not supported due to browsers not having a rounded font builtin
-      return Self.default.description
+      return Self.default.families
     case .serif:
-      return #"""
-      Cambria,
-      'Hoefler Text',
-      Utopia,
-      'Liberation Serif',
-      'Nimbus Roman No9 L Regular',
-      Times,
-      'Times New Roman',
-      serif
-      """#
+      return [
+        "Cambria",
+        "'Hoefler Text'",
+        "Utopia",
+        "'Liberation Serif'",
+        "'Nimbus Roman No9 L Regular'",
+        "Times",
+        "'Times New Roman'",
+        "serif",
+      ]
     }
   }
 }
@@ -81,14 +81,28 @@ public extension Font {
   func styles(in environment: EnvironmentValues) -> [String: String] {
     let proxy = _FontProxy(self).resolve(in: environment)
     return [
-      "font-family": proxy._name == _FontNames.system.rawValue ? proxy._design.description : proxy
-        ._name,
+      "font-family": families(in: environment).joined(separator: ", "),
       "font-weight": "\(proxy._bold ? Font.Weight.bold.value : proxy._weight.value)",
       "font-style": proxy._italic ? "italic" : "normal",
       "font-size": "\(proxy._size)",
       "line-height": proxy._leading.description,
       "font-variant": proxy._smallCaps ? "small-caps" : "normal",
     ]
+  }
+
+  func families(in environment: EnvironmentValues) -> [String] {
+    let proxy = _FontProxy(self).resolve(in: environment)
+    switch proxy._name {
+    case .system:
+      return proxy._design.families
+    case let .custom(custom):
+      return [Sanitizers.CSS.sanitize(custom)]
+        + environment._fontPath.dropFirst().flatMap { font -> [String] in
+          var env = environment
+          env._fontPath = []
+          return font.families(in: env)
+        } // Fallback
+    }
   }
 }
 
@@ -152,7 +166,7 @@ extension Text {
   ) -> [HTMLAttribute: String] {
     let isRedacted = environment.redactionReasons.contains(.placeholder)
 
-    var font: Font?
+    var fontStack: [Font] = []
     var color: Color?
     var italic: Bool = false
     var weight: Font.Weight?
@@ -164,8 +178,12 @@ extension Text {
       switch modifier {
       case let .color(_color):
         color = _color
-      case let .font(_font):
-        font = _font
+      case let .font(font):
+        if let font = font {
+          fontStack.append(font)
+        } else {
+          fontStack = []
+        }
       case .italic:
         italic = true
       case let .weight(_weight):
@@ -189,13 +207,24 @@ extension Text {
     let decorationColor = strikethrough?.1?.cssValue(environment)
       ?? underline?.1?.cssValue(environment)
       ?? "inherit"
-    let resolvedFont = font == nil ? nil : _FontProxy(font!).resolve(in: environment)
+
+    var fontPathEnv = environment
+    fontPathEnv._fontPath = fontStack.reversed() + fontPathEnv._fontPath
+      .filter { !fontStack.contains($0) }
+    if fontPathEnv._fontPath.allSatisfy({ _FontProxy($0).provider is _CustomFontBox }) {
+      // Add a fallback
+      fontPathEnv._fontPath.append(.body)
+    }
+    let resolvedFont = fontPathEnv._fontPath
+      .isEmpty ? nil : _FontProxy(fontPathEnv._fontPath.first!).resolve(in: environment)
 
     return [
       "style": """
-      \(font?.styles(in: environment).filter { weight != nil ? $0.key != "font-weight" : true }
-        .inlineStyles ?? "")
-      \(font == nil ? "font-family: \(Font.Design.default.description);" : "")
+      \(fontPathEnv._fontPath.first?.styles(in: fontPathEnv)
+        .filter { weight != nil ? $0.key != "font-weight" : true }
+        .inlineStyles(shouldSortDeclarations: true) ?? "")
+      \(fontPathEnv._fontPath
+        .isEmpty ? "font-family: \(Font.Design.default.families.joined(separator: ", "));" : "")
       color: \((color ?? .primary).cssValue(environment));
       font-style: \(italic ? "italic" : "normal");
       font-weight: \(weight?.value ?? resolvedFont?._weight.value ?? 400);
