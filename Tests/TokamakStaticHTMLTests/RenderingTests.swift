@@ -288,10 +288,39 @@ final class RenderingTests: XCTestCase {
         Circle()
           .fill(Color.blue)
           .frame(width: 50, height: 50)
-          .zIndex(1)
           .opacity(0.5)
       },
       as: .image(size: .init(width: 100, height: 100)),
+      timeout: defaultSnapshotTimeout
+    )
+  }
+
+  func testAnchoredModifiers() {
+    assertSnapshot(
+      matching: ZStack {
+        Circle()
+          .fill(Color.red)
+          .frame(width: 50, height: 50)
+          .scaleEffect(2, anchor: .topLeading)
+          .opacity(0.5)
+        Circle()
+          .fill(Color.blue)
+          .frame(width: 50, height: 50)
+          .scaleEffect(2, anchor: .center)
+          .opacity(0.5)
+
+        Rectangle()
+          .fill(Color.red)
+          .frame(width: 50, height: 50)
+          .rotationEffect(.degrees(45), anchor: .topLeading)
+          .opacity(0.5)
+        Rectangle()
+          .fill(Color.blue)
+          .frame(width: 50, height: 50)
+          .rotationEffect(.degrees(45), anchor: .center)
+          .opacity(0.5)
+      },
+      as: .image(size: .init(width: 200, height: 200)),
       timeout: defaultSnapshotTimeout
     )
   }

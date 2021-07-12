@@ -37,3 +37,9 @@ extension GridItem: CustomStringConvertible {
     }
   }
 }
+
+extension UnitPoint {
+  var cssValue: String {
+    "\(x * 100)% \((1 - y) * 100)%"
+  }
+}

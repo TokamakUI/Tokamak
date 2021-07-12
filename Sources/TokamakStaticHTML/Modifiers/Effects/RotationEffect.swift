@@ -19,6 +19,11 @@ import TokamakCore
 
 extension _RotationEffect: DOMViewModifier {
   public var attributes: [HTMLAttribute: String] {
-    ["style": "transform: rotate(\(angle.degrees)deg)"]
+    [
+      "style": """
+      transform: rotate(\(angle.degrees)deg);
+      transform-origin: \(anchor.cssValue);
+      """,
+    ]
   }
 }
