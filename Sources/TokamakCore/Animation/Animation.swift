@@ -17,25 +17,31 @@ import Foundation
 public let defaultDuration = 0.35
 
 public struct Animation: Equatable {
-  public static let `default` = Animation()
+  fileprivate var box: _AnimationBoxBase
+
+  private init(_ box: _AnimationBoxBase) {
+    self.box = box
+  }
+
+  public static let `default` = Self.easeInOut
 
   public func delay(_ delay: Double) -> Animation {
-    .init()
+    .init(DelayedAnimationBox(delay: delay, parent: box))
   }
 
   public func speed(_ speed: Double) -> Animation {
-    .init()
+    .init(RetimedAnimationBox(speed: speed, parent: box))
   }
 
   public func repeatCount(
     _ repeatCount: Int,
     autoreverses: Bool = true
   ) -> Animation {
-    .init()
+    .init(RepeatedAnimationBox(style: .fixed(repeatCount, autoreverses: autoreverses), parent: box))
   }
 
   public func repeatForever(autoreverses: Bool = true) -> Animation {
-    .init()
+    .init(RepeatedAnimationBox(style: .forever(autoreverses: autoreverses), parent: box))
   }
 
   public static func spring(
@@ -60,7 +66,11 @@ public struct Animation: Equatable {
     dampingFraction: Double = 0.86,
     blendDuration: Double = 0.25
   ) -> Animation {
-    .init()
+    spring(
+      response: response,
+      dampingFraction: dampingFraction,
+      blendDuration: blendDuration
+    )
   }
 
   public static func interpolatingSpring(
@@ -69,11 +79,16 @@ public struct Animation: Equatable {
     damping: Double,
     initialVelocity: Double = 0.0
   ) -> Animation {
-    .init()
+    .init(StyleAnimationBox(style: .solver(_AnimationSolvers.Spring(
+      mass: mass,
+      stiffness: stiffness,
+      damping: damping,
+      initialVelocity: initialVelocity
+    ))))
   }
 
   public static func easeInOut(duration: Double) -> Animation {
-    .init()
+    .init(StyleAnimationBox(style: .easeInOut(duration: duration)))
   }
 
   public static var easeInOut: Animation {
@@ -81,7 +96,7 @@ public struct Animation: Equatable {
   }
 
   public static func easeIn(duration: Double) -> Animation {
-    .init()
+    .init(StyleAnimationBox(style: .easeIn(duration: duration)))
   }
 
   public static var easeIn: Animation {
@@ -89,7 +104,7 @@ public struct Animation: Equatable {
   }
 
   public static func easeOut(duration: Double) -> Animation {
-    .init()
+    .init(StyleAnimationBox(style: .easeOut(duration: duration)))
   }
 
   public static var easeOut: Animation {
@@ -111,6 +126,14 @@ public struct Animation: Equatable {
     _ c1y: Double,
     duration: Double = defaultDuration
   ) -> Animation {
-    .init()
+    .init(StyleAnimationBox(style: .timingCurve(c0x, c0y, c1x, c1y, duration: duration)))
   }
+}
+
+public struct _AnimationProxy {
+  let subject: Animation
+
+  public init(_ subject: Animation) { self.subject = subject }
+
+  public func resolve() -> _AnimationBoxBase._Resolved { subject.box.resolve() }
 }

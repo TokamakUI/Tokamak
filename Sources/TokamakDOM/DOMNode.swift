@@ -31,6 +31,30 @@ private extension String {
   }
 }
 
+extension _AnimationBoxBase._Resolved._Style {
+  var cssValue: String {
+    switch self {
+    case .easeIn: return "ease-in"
+    case .easeOut: return "ease-out"
+    case .easeInOut: return "ease-in-out"
+    case let .timingCurve(c0x, c0y, c1x, c1y, _):
+      return "cubic-bezier(\(c0x), \(c0y), \(c1x), \(c1y))"
+    case .solver: return "linear"
+    }
+  }
+}
+
+extension _AnimationBoxBase._Resolved._RepeatStyle {
+  var jsValue: JSValue {
+    switch self {
+    case let .fixed(count, _):
+      return count.jsValue()
+    case .forever:
+      return JSObject.global.Infinity
+    }
+  }
+}
+
 extension AnyHTML {
   func update(dom: DOMNode, transaction: Transaction) {
     // FIXME: is there a sensible way to diff attributes and listeners to avoid
@@ -46,6 +70,11 @@ extension AnyHTML {
       // Animate styles with the Web Animations API further down.
       guard transaction.animation == nil || attribute != "style"
       else { continue }
+
+      if attribute == "style" { // Clear animations
+        dom.ref.getAnimations?().array?.forEach { _ = $0.cancel() }
+      }
+
       if attribute.isUpdatedAsProperty {
         dom.ref[dynamicMember: attribute.value] = .string(value)
       } else {
@@ -61,6 +90,7 @@ extension AnyHTML {
     if let style = attributes["style"],
        let animation = transaction.animation
     {
+      let resolved = _AnimationProxy(animation).resolve()
       func extractStyles() -> [String: String] {
         var res = [String: String]()
         for i in 0..<Int(dom.ref.style.object?.length.number ?? 0) {
@@ -69,29 +99,38 @@ extension AnyHTML {
         }
         return res
       }
-      let startStyle = Dictionary(uniqueKeysWithValues: extractStyles().map {
-        ($0.animatableProperty, $1)
-      })
+
+      let startStyle: JSValue
+      // Check for a previous animation, and use its end as our current start.
+      if let prevAnimations: JSArray = dom.ref.getAnimations?().array,
+         let lastKeyframes: JSArray = prevAnimations.last?.effect.object?.getKeyframes?().array,
+         let lastKeyframe: JSObject = lastKeyframes.last?.object
+      {
+        startStyle = lastKeyframe.jsValue()
+      } else {
+        // Use the current css as the start
+        startStyle = Dictionary(uniqueKeysWithValues: extractStyles().map {
+          ($0.animatableProperty, $1)
+        }).jsValue()
+      }
       dom.ref.style.object?.cssText = .string(style)
       let endStyle = Dictionary(uniqueKeysWithValues: extractStyles().map {
         ($0.animatableProperty, $1)
       })
       _ = dom.ref.animate?(
         [
-          startStyle
-//              .merging(
-//                ["composite": "auto", "offset": "0", "easing": "linear"],
-//                uniquingKeysWith: { $1 }
-//              )
-            .jsValue(),
-          endStyle
-//              .merging(
-//                ["composite": "auto", "offset": "1", "easing": "linear"],
-//                uniquingKeysWith: { $1 }
-//              )
-            .jsValue(),
+          startStyle,
+          endStyle.jsValue(),
         ],
-        2000
+        [
+          "duration": (resolved.duration / resolved.speed) * 1000,
+          "delay": resolved.delay * 1000,
+          "easing": resolved.style.cssValue,
+          "iterations": resolved.repeatStyle.jsValue,
+          "direction": resolved.repeatStyle.autoreverses ? "alternate" : "normal",
+          // Keep the last keyframe applied when done, and the first applied during a delay.
+          "fill": "both",
+        ]
       )
     }
 

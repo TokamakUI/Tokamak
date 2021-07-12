@@ -19,21 +19,81 @@ import Foundation
 import TokamakShim
 
 struct AnimationDemo: View {
+  @State private var animation: AnimationStyle = .easeIn
+  @State private var delay: Double = 0
+  @State private var speed: Double = 1
   @State private var on = false
 
-  var body: some View {
+  enum AnimationStyle: Hashable, Identifiable {
+    case easeIn, easeOut, easeInOut, spring
+
+    var id: Int { hashValue }
+    var animation: Animation {
+      switch self {
+      case .easeIn: return .easeIn
+      case .easeOut: return .easeOut
+      case .easeInOut: return .easeInOut
+      case .spring: return .spring()
+      }
+    }
+  }
+
+  var withAnimationDemo: some View {
     VStack {
+      Text("withAnimation")
+        .font(.headline)
       Circle()
         .fill(on ? Color.green : .red)
-        .frame(width: 100, height: 100)
+        .frame(width: on ? 50 : 100, height: on ? 50 : 100)
+      Picker("Animation", selection: $animation) {
+        ForEach([
+          AnimationStyle.easeIn,
+          AnimationStyle.easeOut,
+          AnimationStyle.easeInOut,
+          AnimationStyle.spring,
+        ]) {
+          Text(String(describing: $0))
+        }
+      }
+      Text("Delay")
+      Slider(value: $delay, in: 0...3)
+      Text("Speed")
+      Slider(value: $speed, in: 1...2)
       Button("Toggle with Animation") {
-        withAnimation(.easeInOut) {
+        withAnimation(animation.animation.delay(delay).speed(speed)) {
           on = !on
         }
       }
       Button("Toggle without Animation") {
         on = !on
       }
+    }
+  }
+
+  @State private var foreverAnimation = false
+
+  var repeatedAnimationDemo: some View {
+    VStack {
+      Text("Repeated Animation")
+        .font(.headline)
+      ZStack {
+        Circle()
+          .fill(foreverAnimation ? Color.green : .red)
+          .frame(width: foreverAnimation ? 50 : 100, height: foreverAnimation ? 50 : 100)
+      }
+      .frame(width: 100, height: 100)
+      Button("Start") {
+        withAnimation(Animation.default.repeatForever()) {
+          foreverAnimation = !foreverAnimation
+        }
+      }
+    }
+  }
+
+  var body: some View {
+    HStack {
+      withAnimationDemo
+      repeatedAnimationDemo
     }
   }
 }
