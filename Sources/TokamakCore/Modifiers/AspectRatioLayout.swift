@@ -25,7 +25,8 @@ public struct _AspectRatioLayout: ViewModifier {
 
   @inlinable
   public init(aspectRatio: CGFloat?, contentMode: ContentMode) {
-    (self.aspectRatio, self.contentMode) = (aspectRatio, contentMode)
+    self.aspectRatio = aspectRatio
+    self.contentMode = contentMode
   }
 
   public func body(content: Content) -> some View {
