@@ -26,6 +26,7 @@ extension _PickerContainer: DOMPrimitive {
           let valueString = $0.target.object!.value.string,
           let value = Int(valueString) as? SelectionValue
         else { return }
+        print("assigned \(value) to selection")
         selection = value
       }]) {
         content
