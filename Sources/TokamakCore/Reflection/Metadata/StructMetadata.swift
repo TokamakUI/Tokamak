@@ -77,22 +77,9 @@ struct StructMetadata {
     }
   }
 
-  func genericArguments() -> UnsafeBufferPointer<Any.Type> {
-    guard isGeneric else { return .init(start: nil, count: 0) }
-
-    let count = pointer.pointee
-      .typeDescriptor
-      .pointee
-      .genericContextHeader
-      .base
-      .numberOfParams
-    return genericArgumentVector().buffer(n: Int(count))
-  }
-
-  func genericArgumentVector() -> UnsafePointer<Any.Type> {
+  func genericArgumentVector() -> UnsafeRawPointer {
     pointer
       .raw.advanced(by: genericArgumentOffset * MemoryLayout<UnsafeRawPointer>.size)
-      .assumingMemoryBound(to: Any.Type.self)
   }
 
   var type: Any.Type {
