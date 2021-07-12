@@ -17,7 +17,7 @@
 
 import Foundation
 
-public class AnyImageProviderBox: AnyTokenBox, Equatable {
+public class _AnyImageProviderBox: AnyTokenBox, Equatable {
   public struct _Image {
     public indirect enum Storage {
       case named(String, bundle: Bundle?)
@@ -28,11 +28,11 @@ public class AnyImageProviderBox: AnyTokenBox, Equatable {
     public let label: Text?
   }
 
-  public static func == (lhs: AnyImageProviderBox, rhs: AnyImageProviderBox) -> Bool {
+  public static func == (lhs: _AnyImageProviderBox, rhs: _AnyImageProviderBox) -> Bool {
     lhs.equals(rhs)
   }
 
-  public func equals(_ other: AnyImageProviderBox) -> Bool {
+  public func equals(_ other: _AnyImageProviderBox) -> Bool {
     fatalError("implement \(#function) in subclass")
   }
 
@@ -41,7 +41,7 @@ public class AnyImageProviderBox: AnyTokenBox, Equatable {
   }
 }
 
-private class NamedImageProvider: AnyImageProviderBox {
+private class NamedImageProvider: _AnyImageProviderBox {
   let name: String
   let bundle: Bundle?
   let label: Text?
@@ -52,7 +52,7 @@ private class NamedImageProvider: AnyImageProviderBox {
     self.label = label
   }
 
-  override func equals(_ other: AnyImageProviderBox) -> Bool {
+  override func equals(_ other: _AnyImageProviderBox) -> Bool {
     guard let other = other as? NamedImageProvider else { return false }
     return other.name == name
       && other.bundle?.bundlePath == bundle?.bundlePath
@@ -64,18 +64,18 @@ private class NamedImageProvider: AnyImageProviderBox {
   }
 }
 
-private class ResizableProvider: AnyImageProviderBox {
-  let parent: AnyImageProviderBox
+private class ResizableProvider: _AnyImageProviderBox {
+  let parent: _AnyImageProviderBox
   let capInsets: EdgeInsets
   let resizingMode: Image.ResizingMode
 
-  init(parent: AnyImageProviderBox, capInsets: EdgeInsets, resizingMode: Image.ResizingMode) {
+  init(parent: _AnyImageProviderBox, capInsets: EdgeInsets, resizingMode: Image.ResizingMode) {
     self.parent = parent
     self.capInsets = capInsets
     self.resizingMode = resizingMode
   }
 
-  override func equals(_ other: AnyImageProviderBox) -> Bool {
+  override func equals(_ other: _AnyImageProviderBox) -> Bool {
     guard let other = other as? ResizableProvider else { return false }
     return other.parent.equals(parent)
       && other.capInsets == capInsets
@@ -96,14 +96,14 @@ private class ResizableProvider: AnyImageProviderBox {
 }
 
 public struct Image: _PrimitiveView, Equatable {
-  let provider: AnyImageProviderBox
+  let provider: _AnyImageProviderBox
   @Environment(\.self) var environment
 
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.provider == rhs.provider
   }
 
-  init(_ provider: AnyImageProviderBox) {
+  init(_ provider: _AnyImageProviderBox) {
     self.provider = provider
   }
 }
@@ -141,6 +141,6 @@ public struct _ImageProxy {
 
   public init(_ subject: Image) { self.subject = subject }
 
-  public var provider: AnyImageProviderBox { subject.provider }
+  public var provider: _AnyImageProviderBox { subject.provider }
   public var environment: EnvironmentValues { subject.environment }
 }
