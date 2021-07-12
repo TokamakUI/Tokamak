@@ -254,6 +254,28 @@ final class RenderingTests: XCTestCase {
       timeout: defaultSnapshotTimeout
     )
   }
+
+  func testAspectRatio() {
+    assertSnapshot(
+      matching: Ellipse()
+        .fill(Color.purple)
+        .aspectRatio(0.75, contentMode: .fit)
+        .frame(width: 100, height: 100)
+        .border(Color(white: 0.75)),
+      as: .image(size: .init(width: 125, height: 125)),
+      timeout: defaultSnapshotTimeout
+    )
+
+    assertSnapshot(
+      matching: Ellipse()
+        .fill(Color.purple)
+        .aspectRatio(0.75, contentMode: .fill)
+        .frame(width: 100, height: 100)
+        .border(Color(white: 0.75)),
+      as: .image(size: .init(width: 125, height: 125)),
+      timeout: defaultSnapshotTimeout
+    )
+  }
 }
 
 #endif
