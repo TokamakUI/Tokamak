@@ -42,9 +42,23 @@ struct AnimationDemo: View {
     VStack {
       Text("withAnimation")
         .font(.headline)
-      Circle()
-        .fill(on ? Color.green : .red)
-        .frame(width: on ? 50 : 100, height: on ? 50 : 100)
+      HStack {
+        VStack {
+          Text("on withAnimation")
+            .font(.caption)
+          Circle()
+            .fill(on ? Color.green : .red)
+            .frame(width: on ? 50 : 100, height: on ? 50 : 100)
+        }
+        VStack {
+          Text("on value change")
+            .font(.caption)
+          Circle()
+            .fill(on ? Color.green : .red)
+            .frame(width: on ? 50 : 100, height: on ? 50 : 100)
+            .animation(animation.animation, value: on)
+        }
+      }
       Picker("Animation", selection: $animation) {
         ForEach([
           AnimationStyle.easeIn,
@@ -91,6 +105,13 @@ struct AnimationDemo: View {
   }
 
   var body: some View {
+//    Circle()
+//      .fill(on ? Color.red : Color.green)
+//      .frame(width: 100, height: 100)
+//      .animation(.easeInOut, value: on)
+//    Button("Toggle") {
+//      on = !on
+//    }
     HStack {
       withAnimationDemo
       repeatedAnimationDemo

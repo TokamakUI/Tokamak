@@ -137,3 +137,79 @@ public struct _AnimationProxy {
 
   public func resolve() -> _AnimationBoxBase._Resolved { subject.box.resolve() }
 }
+
+@frozen public struct _AnimationModifier<Value>: ViewModifier, Equatable
+  where Value: Equatable
+{
+  public var animation: Animation?
+  public var value: Value
+
+  @inlinable
+  public init(animation: Animation?, value: Value) {
+    self.animation = animation
+    self.value = value
+  }
+
+  private struct ContentWrapper: View, Equatable {
+    let content: Content
+    let animation: Animation?
+    let value: Value
+    @State private var lastValue: Value?
+
+    var body: some View {
+      content.transaction {
+        if lastValue != value {
+          $0.animation = animation
+        }
+      }
+    }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+      lhs.value == rhs.value
+    }
+  }
+
+  public func body(content: Content) -> some View {
+    ContentWrapper(content: content, animation: animation, value: value)
+  }
+
+  public static func == (lhs: Self, rhs: Self) -> Bool {
+    lhs.value == rhs.value
+      && lhs.animation == rhs.animation
+  }
+}
+
+@frozen public struct _AnimationView<Content>: View
+  where Content: Equatable, Content: View
+{
+  public var content: Content
+  public var animation: Animation?
+
+  @inlinable
+  public init(content: Content, animation: Animation?) {
+    self.content = content
+    self.animation = animation
+  }
+
+  public var body: some View {
+    content
+      .modifier(_AnimationModifier(animation: animation, value: content))
+  }
+}
+
+public extension View {
+  @inlinable
+  func animation<V>(
+    _ animation: Animation?,
+    value: V
+  ) -> some View where V: Equatable {
+    modifier(_AnimationModifier(animation: animation, value: value))
+  }
+}
+
+public extension View where Self: Equatable {
+  @inlinable
+  func animation(_ animation: Animation?) -> some View {
+    _AnimationView(content: self, animation: animation)
+  }
+}

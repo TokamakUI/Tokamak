@@ -45,3 +45,81 @@ public func withAnimation<Result>(
 ) rethrows -> Result {
   try withTransaction(.init(animation: animation), body)
 }
+
+protocol _TransactionModifierProtocol {
+  func modifyTransaction(_ transaction: inout Transaction)
+}
+
+@frozen public struct _TransactionModifier: ViewModifier {
+  public var transform: (inout Transaction) -> ()
+
+  @inlinable
+  public init(transform: @escaping (inout Transaction) -> ()) {
+    self.transform = transform
+  }
+
+  public func body(content: Content) -> some View {
+    content
+  }
+}
+
+extension _TransactionModifier: _TransactionModifierProtocol {
+  func modifyTransaction(_ transaction: inout Transaction) {
+    transform(&transaction)
+  }
+}
+
+extension ModifiedContent: _TransactionModifierProtocol
+  where Modifier: _TransactionModifierProtocol
+{
+  func modifyTransaction(_ transaction: inout Transaction) {
+    modifier.modifyTransaction(&transaction)
+  }
+}
+
+@frozen public struct _PushPopTransactionModifier<V>: ViewModifier where V: ViewModifier {
+  public var content: V
+  public var base: _TransactionModifier
+
+  @inlinable
+  public init(
+    content: V,
+    transform: @escaping (inout Transaction) -> ()
+  ) {
+    self.content = content
+    base = .init(transform: transform)
+  }
+
+  public func body(content: Content) -> some View {
+    content
+      .modifier(self.content)
+      .modifier(base)
+  }
+}
+
+public extension View {
+  @inlinable
+  func transaction(_ transform: @escaping (inout Transaction) -> ()) -> some View {
+    modifier(_TransactionModifier(transform: transform))
+  }
+}
+
+public extension ViewModifier {
+  @inlinable
+  func transaction(
+    _ transform: @escaping (inout Transaction) -> ()
+  ) -> some ViewModifier {
+    _PushPopTransactionModifier(content: self, transform: transform)
+  }
+
+  @inlinable
+  func animation(
+    _ animation: Animation?
+  ) -> some ViewModifier {
+    transaction { t in
+      if !t.disablesAnimations {
+        t.animation = animation
+      }
+    }
+  }
+}

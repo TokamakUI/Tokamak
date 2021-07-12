@@ -23,6 +23,8 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     on parent: MountedElement<R>? = nil,
     with reconciler: StackReconciler<R>
   ) {
+    (view.view as? _TransactionModifierProtocol)?.modifyTransaction(&transaction)
+
     let childBody = reconciler.render(compositeView: self)
 
     let child: MountedElement<R> = childBody.makeMountedView(
@@ -82,6 +84,8 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
   }
 
   override func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
+    var transaction = transaction
+    (view.view as? _TransactionModifierProtocol)?.modifyTransaction(&transaction)
     let element = reconciler.render(compositeView: self)
     reconciler.reconcile(
       self,
