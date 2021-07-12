@@ -19,20 +19,19 @@ import Foundation
 import TokamakShim
 
 struct AnimationDemo: View {
-  @State private var animation: AnimationStyle = .easeIn
   @State private var delay: Double = 0
   @State private var speed: Double = 1
   @State private var on = false
 
-  enum AnimationStyle: Hashable, Identifiable {
+  enum AnimationStyle: String, Identifiable, CaseIterable {
     case easeIn, easeOut, easeInOut, spring
 
-    var id: Int { hashValue }
+    var id: RawValue { rawValue }
     var animation: Animation {
       switch self {
-      case .easeIn: return .easeIn
-      case .easeOut: return .easeOut
-      case .easeInOut: return .easeInOut
+      case .easeIn: return .easeIn(duration: 5)
+      case .easeOut: return .easeOut(duration: 5)
+      case .easeInOut: return .easeInOut(duration: 5)
       case .spring: return .spring()
       }
     }
@@ -42,44 +41,43 @@ struct AnimationDemo: View {
     VStack {
       Text("withAnimation")
         .font(.headline)
-      HStack {
-        VStack {
-          Text("on withAnimation")
-            .font(.caption)
-          Circle()
-            .fill(on ? Color.green : .red)
-            .frame(width: on ? 50 : 100, height: on ? 50 : 100)
-        }
-        VStack {
-          Text("on value change")
-            .font(.caption)
-          Circle()
-            .fill(on ? Color.green : .red)
-            .frame(width: on ? 50 : 100, height: on ? 50 : 100)
-            .animation(animation.animation, value: on)
-        }
+      Circle()
+        .fill(on ? Color.green : .red)
+        .frame(width: on ? 100 : 50, height: on ? 100 : 50)
+      Slider(value: $delay, in: 0...3) {
+        Text("Delay")
       }
-      Picker("Animation", selection: $animation) {
-        ForEach([
-          AnimationStyle.easeIn,
-          AnimationStyle.easeOut,
-          AnimationStyle.easeInOut,
-          AnimationStyle.spring,
-        ]) {
-          Text(String(describing: $0))
-        }
+      Slider(value: $speed, in: 1...2) {
+        Text("Speed")
       }
-      Text("Delay")
-      Slider(value: $delay, in: 0...3)
-      Text("Speed")
-      Slider(value: $speed, in: 1...2)
       Button("Toggle with Animation") {
-        withAnimation(animation.animation.delay(delay).speed(speed)) {
+        withAnimation(
+          Animation.default.delay(delay).speed(speed)
+        ) {
           on = !on
         }
       }
       Button("Toggle without Animation") {
         on = !on
+      }
+    }
+  }
+
+  var easingDemo: some View {
+    VStack(alignment: .leading) {
+      Text("Styles")
+        .font(.headline)
+      Rectangle()
+        .fill(Color.gray)
+        .frame(width: 100, height: 10)
+      ForEach(AnimationStyle.allCases) {
+        Text(".\($0.rawValue)")
+          .font(.system(.caption, design: .monospaced))
+        Rectangle()
+          .fill(on ? Color.green : .red)
+          .frame(width: 10, height: 10)
+          .offset(x: on ? 100 : 0)
+          .animation($0.animation, value: on)
       }
     }
   }
@@ -107,6 +105,7 @@ struct AnimationDemo: View {
   var body: some View {
     HStack {
       withAnimationDemo
+      easingDemo
       repeatedAnimationDemo
     }
   }

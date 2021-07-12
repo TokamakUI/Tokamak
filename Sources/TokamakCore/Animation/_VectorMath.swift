@@ -61,24 +61,24 @@ public extension _VectorMath {
   }
 
   @inlinable
-  static func *= (lhs: inout Self, rhs: Swift.Double) {
+  static func *= (lhs: inout Self, rhs: Double) {
     lhs.animatableData.scale(by: rhs)
   }
 
   @inlinable
-  static func * (lhs: Self, rhs: Swift.Double) -> Self {
+  static func * (lhs: Self, rhs: Double) -> Self {
     var result = lhs
     result *= rhs
     return result
   }
 
   @inlinable
-  static func /= (lhs: inout Self, rhs: Swift.Double) {
+  static func /= (lhs: inout Self, rhs: Double) {
     lhs *= 1 / rhs
   }
 
   @inlinable
-  static func / (lhs: Self, rhs: Swift.Double) -> Self {
+  static func / (lhs: Self, rhs: Double) -> Self {
     var result = lhs
     result /= rhs
     return result

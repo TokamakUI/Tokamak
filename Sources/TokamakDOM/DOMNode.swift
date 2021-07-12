@@ -34,12 +34,10 @@ private extension String {
 extension _AnimationBoxBase._Resolved._Style {
   var cssValue: String {
     switch self {
-    case .easeIn: return "ease-in"
-    case .easeOut: return "ease-out"
-    case .easeInOut: return "ease-in-out"
     case let .timingCurve(c0x, c0y, c1x, c1y, _):
       return "cubic-bezier(\(c0x), \(c0y), \(c1x), \(c1y))"
-    case .solver: return "linear"
+    case .solver:
+      return "linear"
     }
   }
 }
@@ -91,40 +89,74 @@ extension AnyHTML {
        let animation = transaction.animation
     {
       let resolved = _AnimationProxy(animation).resolve()
-      func extractStyles() -> [String: String] {
+      func extractStyles(compute: Bool = false) -> [String: String] {
         var res = [String: String]()
+        let computedStyle = JSObject.global.getComputedStyle?(dom.ref)
         for i in 0..<Int(dom.ref.style.object?.length.number ?? 0) {
           guard let key = dom.ref.style.object?[i].string else { continue }
-          res[key] = dom.ref.style.object?[key].string
+          if compute {
+            res[key] = computedStyle?[dynamicMember: key].string
+              ?? dom.ref.style.object?[key].string
+          } else {
+            res[key] = dom.ref.style.object?[key].string
+          }
         }
         return res
       }
 
-      let startStyle: JSValue
-      // Check for a previous animation, and use its end as our current start.
-      if let prevAnimations: JSArray = dom.ref.getAnimations?().array,
-         let lastKeyframes: JSArray = prevAnimations.last?.effect.object?.getKeyframes?().array,
-         let lastKeyframe: JSObject = lastKeyframes.last?.object
-      {
-        startStyle = lastKeyframe.jsValue()
-      } else {
-        // Use the current css as the start
-        startStyle = Dictionary(uniqueKeysWithValues: extractStyles().map {
-          ($0.animatableProperty, $1)
-        }).jsValue()
-      }
+      let startStyle = extractStyles(compute: true).jsValue()
       dom.ref.style.object?.cssText = .string(style)
       let endStyle = Dictionary(uniqueKeysWithValues: extractStyles().map {
         ($0.animatableProperty, $1)
       })
+
+      let duration = (resolved.duration / resolved.speed) * 1000
+      let delay = resolved.delay * 1000
+
+      let keyframes: [JSValue]
+      if case let .solver(solver) = resolved.style {
+        // Compute styles at several intervals.
+        var values = [[String: String]]()
+        for iterationStart in stride(from: 0, to: 1, by: 0.01) {
+          // Create and immediately cancel an animation after reading the computed values.
+          if let animation = dom.ref.animate?(
+            [startStyle, endStyle.jsValue()],
+            [
+              "duration": duration,
+              "delay": delay,
+              "easing": "linear",
+              "iterationStart": iterationStart,
+            ]
+          ).object,
+            let computedStyle = JSObject.global.getComputedStyle?(dom.ref)
+          {
+            var styles = [String: String]()
+            for key in endStyle.keys {
+              if let string = computedStyle[dynamicMember: key].string {
+                styles[key] = string
+              }
+            }
+            values.append(styles)
+            _ = animation.cancel?()
+          }
+        }
+        // Solve the values
+        keyframes = (0..<values.count).map { t in
+          let offset = Double(t) / Double(values.count - 1)
+          let solved = solver.solve(at: offset * (duration / 1000)) * Double(values.count - 1)
+          var res = values[Int(solved)]
+          res["offset"] = "\(offset)"
+          return res.jsValue()
+        } + [endStyle.jsValue()] // Add the end for good measure.
+      } else {
+        keyframes = [startStyle, endStyle.jsValue()]
+      }
+      // Animate the styles.
       _ = dom.ref.animate?(
+        keyframes.jsValue(),
         [
-          startStyle,
-          endStyle.jsValue(),
-        ],
-        [
-          "duration": (resolved.duration / resolved.speed) * 1000,
-          "delay": resolved.delay * 1000,
+          "duration": duration,
+          "delay": delay,
           "easing": resolved.style.cssValue,
           "iterations": resolved.repeatStyle.jsValue,
           "direction": resolved.repeatStyle.autoreverses ? "alternate" : "normal",

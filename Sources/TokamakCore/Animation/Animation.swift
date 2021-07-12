@@ -89,7 +89,7 @@ public struct Animation: Equatable {
   }
 
   public static func easeInOut(duration: Double) -> Animation {
-    .init(StyleAnimationBox(style: .easeInOut(duration: duration)))
+    timingCurve(0.42, 0, 0.58, 1.0, duration: duration)
   }
 
   public static var easeInOut: Animation {
@@ -97,7 +97,7 @@ public struct Animation: Equatable {
   }
 
   public static func easeIn(duration: Double) -> Animation {
-    .init(StyleAnimationBox(style: .easeIn(duration: duration)))
+    timingCurve(0.42, 0, 1.0, 1.0, duration: duration)
   }
 
   public static var easeIn: Animation {
@@ -105,7 +105,7 @@ public struct Animation: Equatable {
   }
 
   public static func easeOut(duration: Double) -> Animation {
-    .init(StyleAnimationBox(style: .easeOut(duration: duration)))
+    timingCurve(0, 0, 0.58, 1.0, duration: duration)
   }
 
   public static var easeOut: Animation {

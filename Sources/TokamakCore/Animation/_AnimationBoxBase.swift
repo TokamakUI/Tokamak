@@ -21,10 +21,7 @@ public class _AnimationBoxBase: Equatable {
   public struct _Resolved {
     public var duration: Double {
       switch style {
-      case let .easeIn(duration),
-           let .easeOut(duration),
-           let .easeInOut(duration),
-           let .timingCurve(_, _, _, _, duration):
+      case let .timingCurve(_, _, _, _, duration):
         return duration
       case let .solver(solver):
         return solver.restingPoint(precision: 0.01)
@@ -37,26 +34,11 @@ public class _AnimationBoxBase: Equatable {
     public var style: _Style
 
     public enum _Style: Equatable {
-      case easeIn(duration: Double),
-           easeOut(duration: Double),
-           easeInOut(duration: Double)
       case timingCurve(Double, Double, Double, Double, duration: Double)
       case solver(_AnimationSolver)
 
       public static func == (lhs: Self, rhs: Self) -> Bool {
         switch lhs {
-        case let .easeIn(lhsDuration):
-          if case let .easeIn(rhsDuration) = rhs {
-            return lhsDuration == rhsDuration
-          }
-        case let .easeOut(lhsDuration):
-          if case let .easeOut(rhsDuration) = rhs {
-            return lhsDuration == rhsDuration
-          }
-        case let .easeInOut(lhsDuration):
-          if case let .easeInOut(rhsDuration) = rhs {
-            return lhsDuration == rhsDuration
-          }
         case let .timingCurve(lhs0, lhs1, lhs2, lhs3, lhsDuration):
           if case let .timingCurve(rhs0, rhs1, rhs2, rhs3, rhsDuration) = rhs {
             return lhs0 == rhs0
@@ -160,7 +142,7 @@ final class RetimedAnimationBox: _AnimationBoxBase {
   }
 }
 
-class RepeatedAnimationBox: _AnimationBoxBase {
+final class RepeatedAnimationBox: _AnimationBoxBase {
   let style: _AnimationBoxBase._Resolved._RepeatStyle
   let parent: _AnimationBoxBase
 
