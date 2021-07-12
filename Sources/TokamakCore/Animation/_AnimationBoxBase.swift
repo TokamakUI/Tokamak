@@ -101,7 +101,7 @@ public class _AnimationBoxBase: Equatable {
   }
 }
 
-class StyleAnimationBox: _AnimationBoxBase {
+final class StyleAnimationBox: _AnimationBoxBase {
   let style: _Resolved._Style
 
   init(style: _Resolved._Style) {
@@ -118,7 +118,7 @@ class StyleAnimationBox: _AnimationBoxBase {
   }
 }
 
-class DelayedAnimationBox: _AnimationBoxBase {
+final class DelayedAnimationBox: _AnimationBoxBase {
   let delay: Double
   let parent: _AnimationBoxBase
 
@@ -139,7 +139,7 @@ class DelayedAnimationBox: _AnimationBoxBase {
   }
 }
 
-class RetimedAnimationBox: _AnimationBoxBase {
+final class RetimedAnimationBox: _AnimationBoxBase {
   let speed: Double
   let parent: _AnimationBoxBase
 

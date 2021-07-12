@@ -105,13 +105,6 @@ struct AnimationDemo: View {
   }
 
   var body: some View {
-//    Circle()
-//      .fill(on ? Color.red : Color.green)
-//      .frame(width: 100, height: 100)
-//      .animation(.easeInOut, value: on)
-//    Button("Toggle") {
-//      on = !on
-//    }
     HStack {
       withAnimationDemo
       repeatedAnimationDemo

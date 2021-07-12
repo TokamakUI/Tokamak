@@ -26,10 +26,13 @@ public protocol _AnimationSolver {
 }
 
 public enum _AnimationSolvers {
+  // swiftlint:disable line_length
   /// Calculates the animation of a spring with certain properties.
   ///
-  /// For some useful information, see [Demystifying UIKit Spring Animations](https://medium.com/ios-os-x-development/demystifying-uikit-spring-animations-2bb868446773)
+  /// For some useful information, see
+  /// [Demystifying UIKit Spring Animations](https://medium.com/ios-os-x-development/demystifying-uikit-spring-animations-2bb868446773)
   public struct Spring: _AnimationSolver {
+    // swiftlint:enable line_length
     let ƛ: Double
     let w0: Double
     let wd: Double
@@ -49,7 +52,7 @@ public enum _AnimationSolvers {
       let y: Double
       if ƛ < w0 {
         y = pow(M_E, -(ƛ * t)) * ((s0 * cos(wd * t)) + ((v0 + s0) * sin(wd * t)))
-//      } else if ƛ > w0 { // Skip overdamping
+//      } else if ƛ > w0 { // Overdamping is unsupported on Apple platforms
       } else {
         y = pow(M_E, -(ƛ * t)) * (s0 + ((v0 + (ƛ * s0)) * t))
       }

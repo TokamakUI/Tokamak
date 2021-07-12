@@ -27,6 +27,7 @@ public protocol _PrimitiveAnimatable {}
 public extension Animatable where Self: VectorArithmetic {
   var animatableData: Self {
     get { self }
+    // swiftlint:disable:next unused_setter_value
     set {}
   }
 }
@@ -34,6 +35,7 @@ public extension Animatable where Self: VectorArithmetic {
 public extension Animatable where Self.AnimatableData == EmptyAnimatableData {
   var animatableData: EmptyAnimatableData {
     @inlinable get { EmptyAnimatableData() }
+    // swiftlint:disable:next unused_setter_value
     @inlinable set {}
   }
 }

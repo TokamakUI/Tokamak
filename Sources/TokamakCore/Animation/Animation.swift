@@ -14,6 +14,7 @@
 
 import Foundation
 
+/// This default is specified in SwiftUI on `Animation.timingCurve` as `0.35`.
 public let defaultDuration = 0.35
 
 public struct Animation: Equatable {

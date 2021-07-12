@@ -134,7 +134,9 @@ extension _PaddingLayout: DOMViewModifier {
 extension _ShadowEffect._Resolved: DOMViewModifier {
   public var attributes: [HTMLAttribute: String] {
     [
-      "style": "box-shadow: \(offset.width)px \(offset.height)px \(radius * 2)px 0px \(color.cssValue);",
+      "style": """
+      box-shadow: \(offset.width)px \(offset.height)px \(radius * 2)px 0px \(color.cssValue);
+      """,
     ]
   }
 
