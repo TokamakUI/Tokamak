@@ -37,7 +37,7 @@ jobs:
           # avoid building unrelated products for testing by specifying the test product explicitly
           swift build --product TokamakPackageTests
           `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest ||
-            ls -l find /var/folders -iname RenderingTests -exec cp -r {} . \; ||
+            find /var/folders -iname RenderingTests -exec cp -r {} . \; ||
             ls -l RenderingTests
 
           rm -rf Sources/TokamakGTKCHelpers/*.c
