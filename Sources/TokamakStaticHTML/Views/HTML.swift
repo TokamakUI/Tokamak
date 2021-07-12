@@ -141,9 +141,17 @@ public protocol StylesConvertible {
   var styles: [String: String] { get }
 }
 
-public extension Dictionary {
-  var inlineStyles: String {
-    map { "\($0.0): \($0.1);" }
-      .joined(separator: " ")
+public extension Dictionary
+  where Key: Comparable & CustomStringConvertible, Value: CustomStringConvertible
+{
+  func inlineStyles(shouldSortDeclarations: Bool = false) -> String {
+    let declarations = map { "\($0.key): \($0.value);" }
+    if shouldSortDeclarations {
+      return declarations
+        .sorted()
+        .joined(separator: " ")
+    } else {
+      return declarations.joined(separator: " ")
+    }
   }
 }
