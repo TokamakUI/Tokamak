@@ -138,3 +138,17 @@ extension _ShadowLayout: DOMViewModifier {
 
   public var isOrderDependent: Bool { true }
 }
+
+extension _AspectRatioLayout: DOMViewModifier {
+  public var isOrderDependent: Bool { true }
+  public var attributes: [HTMLAttribute: String] {
+    [
+      "style": """
+      aspect-ratio: \(aspectRatio ?? 1)/1;
+      margin: 0 auto;
+      \(contentMode == ((aspectRatio ?? 1) > 1 ? .fill : .fit) ? "height: 100%" : "width: 100%");
+      """,
+      "class": "_tokamak-aspect-ratio-\(contentMode == .fill ? "fill" : "fit")",
+    ]
+  }
+}

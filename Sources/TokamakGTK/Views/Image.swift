@@ -22,19 +22,26 @@ import TokamakCore
 extension Image: AnyWidget {
   func new(_ application: UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget> {
     let proxy = _ImageProxy(self)
-    let imagePath = proxy.path ?? proxy.name
-    let img = gtk_image_new_from_file(imagePath)!
+    let img = gtk_image_new_from_file(imagePath(for: proxy))!
     return img
   }
 
   func update(widget: Widget) {
     if case let .widget(w) = widget.storage {
       let proxy = _ImageProxy(self)
-      let imagePath = proxy.path ?? proxy.name
-
       w.withMemoryRebound(to: GtkImage.self, capacity: 1) {
-        gtk_image_set_from_file($0, imagePath)
+        gtk_image_set_from_file($0, imagePath(for: proxy))
       }
+    }
+  }
+
+  func imagePath(for proxy: _ImageProxy) -> String {
+    let resolved = proxy.provider.resolve(in: proxy.environment)
+    switch resolved.storage {
+    case let .named(name, bundle),
+         let .resizable(.named(name, bundle), _, _):
+      return bundle?.path(forResource: name, ofType: nil) ?? name
+    default: return ""
     }
   }
 }
