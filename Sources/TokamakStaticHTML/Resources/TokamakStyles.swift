@@ -72,6 +72,9 @@ public let tokamakStyles = """
   padding: 0;
   font-size: inherit;
 }
+._tokamak-button-prominence-increased {
+  -webkit-appearance: default-button;
+}
 
 ._tokamak-text-redacted {
   position: relative;

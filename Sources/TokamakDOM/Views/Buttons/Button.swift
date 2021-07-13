@@ -21,7 +21,6 @@ import TokamakStaticHTML
 extension _Button: DOMPrimitive {
   @_spi(TokamakCore)
   public var renderedBody: AnyView {
-    var attributes: [HTMLAttribute: String] = [:]
     let listeners: [String: Listener] = [
       "pointerdown": { _ in isPressed = true },
       "pointerup": { _ in
@@ -29,21 +28,48 @@ extension _Button: DOMPrimitive {
         action()
       },
     ]
-    if buttonStyle.type != DefaultButtonStyle.self {
+    return AnyView(DynamicHTML(
+      "button",
+      ["class": "_tokamak-buttonstyle-reset"],
+      listeners: listeners
+    ) {
+      self.makeStyleBody()
+        .colorScheme(.light)
+    })
+  }
+}
+
+extension _PrimitiveButton: DOMPrimitive {
+  @_spi(TokamakCore)
+  public var renderedBody: AnyView {
+    let listeners: [String: Listener] = [
+      "pointerup": { _ in
+        action()
+      },
+    ]
+    let isResetStyle = style is PlainButtonStyle.Type
+      || style is BorderlessButtonStyle.Type
+      || style is LinkButtonStyle.Type
+    var attributes = [HTMLAttribute: String]()
+    if isResetStyle {
       attributes["class"] = "_tokamak-buttonstyle-reset"
+    } else if style is BorderedButtonStyle.Type && controlProminence == .increased {
+      attributes["class"] = "_tokamak-button-prominence-increased"
     }
     return AnyView(DynamicHTML(
       "button",
       attributes,
       listeners: listeners
     ) {
-      buttonStyle.makeBody(
-        configuration: _ButtonStyleConfigurationProxy(
-          label: AnyView(label),
-          isPressed: isPressed
-        ).subject
-      )
-      .colorScheme(.light)
+      if !isResetStyle {
+        self.makeStyleBody()
+          .colorScheme(.light)
+          .foregroundColor(
+            style is LinkButtonStyle.Type ? .accentColor : nil
+          )
+      } else {
+        self.makeStyleBody()
+      }
     })
   }
 }
