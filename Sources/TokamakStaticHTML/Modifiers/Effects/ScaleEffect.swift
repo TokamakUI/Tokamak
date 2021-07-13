@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 7/3/20.
+//  Created by Carson Katri on 7/9/21.
 //
 
 import TokamakCore
 
-extension _RotationEffect: DOMViewModifier {
+extension _ScaleEffect: DOMViewModifier {
   public var attributes: [HTMLAttribute: String] {
     [
       "style": """
-      transform: rotate(\(angle.degrees)deg);
+      transform: scale(\(scale.width), \(scale.height));
       transform-origin: \(anchor.cssValue);
       """,
     ]
