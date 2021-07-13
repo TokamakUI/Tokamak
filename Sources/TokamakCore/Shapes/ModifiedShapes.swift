@@ -34,6 +34,16 @@ public struct _StrokedShape<S>: Shape, DynamicProperty where S: Shape {
   }
 
   public static var role: ShapeRole { .stroke }
+
+  public typealias AnimatableData = AnimatablePair<S.AnimatableData, StrokeStyle.AnimatableData>
+  public var animatableData: AnimatableData {
+    get {
+      .init(shape.animatableData, style.animatableData)
+    }
+    set {
+      (shape.animatableData, style.animatableData) = newValue[]
+    }
+  }
 }
 
 public struct _TrimmedShape<S>: Shape where S: Shape {
@@ -52,6 +62,20 @@ public struct _TrimmedShape<S>: Shape where S: Shape {
       .path(in: rect)
       .trimmedPath(from: startFraction, to: endFraction)
   }
+
+  public typealias AnimatableData = AnimatablePair<
+    S.AnimatableData,
+    AnimatablePair<CGFloat, CGFloat>
+  >
+  public var animatableData: AnimatableData {
+    get {
+      .init(shape.animatableData, .init(startFraction, endFraction))
+    }
+    set {
+      shape.animatableData = newValue[].0
+      (startFraction, endFraction) = newValue[].1[]
+    }
+  }
 }
 
 public struct OffsetShape<Content>: Shape where Content: Shape {
@@ -67,6 +91,16 @@ public struct OffsetShape<Content>: Shape where Content: Shape {
     shape
       .path(in: rect)
       .offsetBy(dx: offset.width, dy: offset.height)
+  }
+
+  public typealias AnimatableData = AnimatablePair<Content.AnimatableData, CGSize.AnimatableData>
+  public var animatableData: AnimatableData {
+    get {
+      .init(shape.animatableData, offset.animatableData)
+    }
+    set {
+      (shape.animatableData, offset.animatableData) = newValue[]
+    }
   }
 }
 
@@ -94,6 +128,20 @@ public struct ScaledShape<Content>: Shape where Content: Shape {
       .path(in: rect)
       .applying(.init(scaleX: scale.width, y: scale.height))
   }
+
+  public typealias AnimatableData = AnimatablePair<
+    Content.AnimatableData,
+    AnimatablePair<CGSize.AnimatableData, UnitPoint.AnimatableData>
+  >
+  public var animatableData: AnimatableData {
+    get {
+      .init(shape.animatableData, .init(scale.animatableData, anchor.animatableData))
+    }
+    set {
+      shape.animatableData = newValue[].0
+      (scale.animatableData, anchor.animatableData) = newValue[].1[]
+    }
+  }
 }
 
 public struct RotatedShape<Content>: Shape where Content: Shape {
@@ -111,6 +159,20 @@ public struct RotatedShape<Content>: Shape where Content: Shape {
     shape
       .path(in: rect)
       .applying(.init(rotationAngle: CGFloat(angle.radians)))
+  }
+
+  public typealias AnimatableData = AnimatablePair<
+    Content.AnimatableData,
+    AnimatablePair<Angle.AnimatableData, UnitPoint.AnimatableData>
+  >
+  public var animatableData: AnimatableData {
+    get {
+      .init(shape.animatableData, .init(angle.animatableData, anchor.animatableData))
+    }
+    set {
+      shape.animatableData = newValue[].0
+      (angle.animatableData, anchor.animatableData) = newValue[].1[]
+    }
   }
 }
 
@@ -134,6 +196,11 @@ public struct TransformedShape<Content>: Shape where Content: Shape {
       .path(in: rect)
       .applying(transform)
   }
+
+  public var animatableData: Content.AnimatableData {
+    get { shape.animatableData }
+    set { shape.animatableData = newValue }
+  }
 }
 
 public struct _SizedShape<S>: Shape where S: Shape {
@@ -149,5 +216,15 @@ public struct _SizedShape<S>: Shape where S: Shape {
   public func path(in rect: CGRect) -> Path {
     shape
       .path(in: rect)
+  }
+
+  public typealias AnimatableData = AnimatablePair<S.AnimatableData, CGSize.AnimatableData>
+  public var animatableData: AnimatableData {
+    get {
+      .init(shape.animatableData, size.animatableData)
+    }
+    set {
+      (shape.animatableData, size.animatableData) = newValue[]
+    }
   }
 }

@@ -136,6 +136,7 @@ struct TokamakDemoView: View {
             NavItem("TextEditor", destination: TextEditorDemo())
           }
           Section(header: Text("Misc")) {
+            NavItem("Animation", destination: AnimationDemo())
             NavItem("Path", destination: PathDemo())
             NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8)))
             if #available(macOS 11.0, iOS 14.0, *) {

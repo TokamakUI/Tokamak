@@ -159,7 +159,7 @@ final class DOMRenderer: Renderer {
     guard let html = mapAnyView(host.view, transform: { (html: AnyHTML) in html })
     else { return }
 
-    html.update(dom: target)
+    html.update(dom: target, transaction: host.transaction)
 
     fixSpacers(host: host, target: target.ref)
   }

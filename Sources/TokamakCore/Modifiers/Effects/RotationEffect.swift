@@ -33,6 +33,15 @@ public struct _RotationEffect: GeometryEffect {
   public func body(content: Content) -> some View {
     content
   }
+
+  public var animatableData: AnimatablePair<Angle.AnimatableData, UnitPoint.AnimatableData> {
+    get {
+      .init(angle.animatableData, anchor.animatableData)
+    }
+    set {
+      (angle.animatableData, anchor.animatableData) = newValue[]
+    }
+  }
 }
 
 public extension View {

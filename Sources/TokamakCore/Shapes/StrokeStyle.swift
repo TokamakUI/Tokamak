@@ -41,3 +41,16 @@ public struct StrokeStyle: Equatable {
     self.dashPhase = dashPhase
   }
 }
+
+extension StrokeStyle: Animatable {
+  public var animatableData: AnimatablePair<CGFloat, AnimatablePair<CGFloat, CGFloat>> {
+    get {
+      .init(lineWidth, .init(miterLimit, dashPhase))
+    }
+    set {
+      lineWidth = newValue[].0
+      miterLimit = newValue[].1[].0
+      dashPhase = newValue[].1[].1
+    }
+  }
+}

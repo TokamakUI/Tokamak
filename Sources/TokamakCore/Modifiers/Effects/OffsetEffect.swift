@@ -11,18 +11,31 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 7/12/21.
+//
 
 import Foundation
 
-public struct _FrameLayout: ViewModifier {
-  public let width: CGFloat?
-  public let height: CGFloat?
-  public let alignment: Alignment
+@frozen public struct _OffsetEffect: GeometryEffect, Equatable {
+  public var offset: CGSize
 
-  init(width: CGFloat?, height: CGFloat?, alignment: Alignment) {
-    self.width = width
-    self.height = height
-    self.alignment = alignment
+  @inlinable
+  public init(offset: CGSize) {
+    self.offset = offset
+  }
+
+  public func effectValue(size: CGSize) -> ProjectionTransform {
+    .init(.init(translationX: offset.width, y: offset.height))
+  }
+
+  public var animatableData: CGSize.AnimatableData {
+    get {
+      offset.animatableData
+    }
+    set {
+      offset.animatableData = newValue
+    }
   }
 
   public func body(content: Content) -> some View {
@@ -30,16 +43,14 @@ public struct _FrameLayout: ViewModifier {
   }
 }
 
-extension _FrameLayout: Animatable {
-  public typealias AnimatableData = EmptyAnimatableData
-}
-
 public extension View {
-  func frame(
-    width: CGFloat? = nil,
-    height: CGFloat? = nil,
-    alignment: Alignment = .center
-  ) -> some View {
-    modifier(_FrameLayout(width: width, height: height, alignment: alignment))
+  @inlinable
+  func offset(_ offset: CGSize) -> some View {
+    modifier(_OffsetEffect(offset: offset))
+  }
+
+  @inlinable
+  func offset(x: CGFloat = 0, y: CGFloat = 0) -> some View {
+    offset(CGSize(width: x, height: y))
   }
 }
