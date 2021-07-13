@@ -29,6 +29,11 @@ public struct _ClipEffect<ClipShape>: ViewModifier where ClipShape: Shape {
   public func body(content: Content) -> some View {
     content
   }
+
+  public var animatableData: ClipShape.AnimatableData {
+    get { shape.animatableData }
+    set { shape.animatableData = newValue }
+  }
 }
 
 public extension View {

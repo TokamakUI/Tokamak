@@ -15,8 +15,8 @@
 //  Created by Carson Katri on 1/20/21.
 //
 
-public struct _OpacityEffect: ViewModifier, Equatable {
-  public let opacity: Double
+public struct _OpacityEffect: Animatable, ViewModifier, Equatable {
+  public var opacity: Double
 
   public init(opacity: Double) {
     self.opacity = opacity
@@ -24,6 +24,11 @@ public struct _OpacityEffect: ViewModifier, Equatable {
 
   public func body(content: Content) -> some View {
     content
+  }
+
+  public var animatableData: Double {
+    get { opacity }
+    set { opacity = newValue }
   }
 }
 

@@ -45,11 +45,12 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
     mountedChildren.forEach { $0.unmount(with: reconciler) }
   }
 
-  override func update(with reconciler: StackReconciler<R>) {
+  override func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
     let element = reconciler.render(mountedScene: self)
     reconciler.reconcile(
       self,
       with: element,
+      transaction: transaction,
       getElementType: { $0.type },
       updateChild: {
         $0.environmentValues = environmentValues
@@ -59,6 +60,7 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
         case let .view(view):
           $0.view = AnyView(view)
         }
+        $0.transaction = transaction
       },
       mountChild: {
         $0.makeMountedElement(reconciler.renderer, parentTarget, environmentValues, self)

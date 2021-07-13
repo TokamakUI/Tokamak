@@ -17,7 +17,7 @@
 
 import Foundation
 
-public protocol Shape: View {
+public protocol Shape: Animatable, View {
   func path(in rect: CGRect) -> Path
 
   static var role: ShapeRole { get }

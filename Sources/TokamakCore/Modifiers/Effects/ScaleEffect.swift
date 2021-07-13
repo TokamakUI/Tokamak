@@ -12,40 +12,45 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 7/3/20.
+//  Created by Carson Katri on 7/9/21.
 //
 
 import Foundation
 
-public struct _RotationEffect: GeometryEffect {
-  public var angle: Angle
+@frozen public struct _ScaleEffect: GeometryEffect, Equatable {
+  public var scale: CGSize
   public var anchor: UnitPoint
 
-  public init(angle: Angle, anchor: UnitPoint = .center) {
-    self.angle = angle
+  @inlinable
+  public init(scale: CGSize, anchor: UnitPoint = .center) {
+    self.scale = scale
     self.anchor = anchor
   }
 
   public func effectValue(size: CGSize) -> ProjectionTransform {
-    .init(CGAffineTransform.identity.rotated(by: CGFloat(angle.radians)))
+    .init(.init(scaleX: scale.width, y: scale.height))
   }
 
   public func body(content: Content) -> some View {
     content
   }
-
-  public var animatableData: AnimatablePair<Angle.AnimatableData, UnitPoint.AnimatableData> {
-    get {
-      .init(angle.animatableData, anchor.animatableData)
-    }
-    set {
-      (angle.animatableData, anchor.animatableData) = newValue[]
-    }
-  }
 }
 
 public extension View {
-  func rotationEffect(_ angle: Angle, anchor: UnitPoint = .center) -> some View {
-    modifier(_RotationEffect(angle: angle, anchor: anchor))
+  @inlinable
+  func scaleEffect(_ scale: CGSize, anchor: UnitPoint = .center) -> some View {
+    modifier(_ScaleEffect(scale: scale, anchor: anchor))
+  }
+
+  @inlinable
+  func scaleEffect(_ s: CGFloat, anchor: UnitPoint = .center) -> some View {
+    scaleEffect(CGSize(width: s, height: s), anchor: anchor)
+  }
+
+  @inlinable
+  func scaleEffect(x: CGFloat = 1.0, y: CGFloat = 1.0,
+                   anchor: UnitPoint = .center) -> some View
+  {
+    scaleEffect(CGSize(width: x, height: y), anchor: anchor)
   }
 }

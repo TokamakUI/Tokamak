@@ -166,6 +166,31 @@ public typealias SceneStorage = TokamakCore.SceneStorage
 
 public typealias ViewBuilder = TokamakCore.ViewBuilder
 
+// MARK: Animation
+
+public typealias Animation = TokamakCore.Animation
+public typealias Transaction = TokamakCore.Transaction
+
+public typealias Animatable = TokamakCore.Animatable
+public typealias AnimatablePair = TokamakCore.AnimatablePair
+public typealias EmptyAnimatableData = TokamakCore.EmptyAnimatableData
+
+public typealias AnimatableModifier = TokamakCore.AnimatableModifier
+
+public func withTransaction<Result>(
+  _ transaction: Transaction,
+  _ body: () throws -> Result
+) rethrows -> Result {
+  try TokamakCore.withTransaction(transaction, body)
+}
+
+public func withAnimation<Result>(
+  _ animation: Animation? = .default,
+  _ body: () throws -> Result
+) rethrows -> Result {
+  try TokamakCore.withAnimation(animation, body)
+}
+
 // FIXME: I would put this inside TokamakCore, but for
 // some reason it doesn't get exported with the typealias
 public extension Text {

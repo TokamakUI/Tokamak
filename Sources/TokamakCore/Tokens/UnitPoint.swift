@@ -41,3 +41,14 @@ public struct UnitPoint: Hashable {
   public static let bottomLeading: UnitPoint = .init(x: 0, y: 0)
   public static let bottomTrailing: UnitPoint = .init(x: 1, y: 0)
 }
+
+extension UnitPoint: Animatable {
+  public var animatableData: AnimatablePair<CGFloat, CGFloat> {
+    get {
+      .init(x, y)
+    }
+    set {
+      (x, y) = newValue[]
+    }
+  }
+}
