@@ -83,7 +83,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     }
   }
 
-  override func update(with reconciler: StackReconciler<R>) {
+  override func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
     guard let target = target else { return }
 
     updateEnvironment()
@@ -119,7 +119,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
           mountedChild.environmentValues = environmentValues
           mountedChild.view = childView
           mountedChild.updateEnvironment()
-          mountedChild.update(with: reconciler)
+          mountedChild.update(in: reconciler, with: transaction)
           newChild = mountedChild
         } else {
           /* note the order of operations here: we mount the new child first, use the mounted child

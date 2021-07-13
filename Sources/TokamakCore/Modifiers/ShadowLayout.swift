@@ -14,29 +14,93 @@
 
 import Foundation
 
-public struct _ShadowLayout: ViewModifier, EnvironmentReader {
+public struct _ShadowEffect: EnvironmentalModifier, Equatable {
   public var color: Color
   public var radius: CGFloat
-  public var x: CGFloat
-  public var y: CGFloat
-  public var environment: EnvironmentValues!
+  public var offset: CGSize
 
-  public func body(content: Content) -> some View {
-    content
+  @inlinable
+  init(
+    color: Color,
+    radius: CGFloat,
+    offset: CGSize
+  ) {
+    self.color = color
+    self.radius = radius
+    self.offset = offset
   }
 
-  mutating func setContent(from values: EnvironmentValues) {
-    environment = values
+  public func resolve(in environment: EnvironmentValues) -> _Resolved {
+    .init(
+      color: color.provider.resolve(in: environment),
+      radius: radius,
+      offset: offset
+    )
+  }
+
+  public struct _Resolved: ViewModifier, Animatable {
+    public var color: AnyColorBox.ResolvedValue
+    public var radius: CGFloat
+    public var offset: CGSize
+
+    public func body(content: Content) -> some View {
+      content
+    }
+
+    public typealias AnimatableData = AnimatablePair<
+      AnimatablePair<
+        Float,
+        AnimatablePair<
+          Float,
+          AnimatablePair<Float, Float>
+        >
+      >,
+      AnimatablePair<CGFloat, CGSize.AnimatableData>
+    >
+    public var animatableData: _Resolved.AnimatableData {
+      get {
+        .init(
+          .init(
+            Float(color.red),
+            .init(
+              Float(color.green),
+              .init(
+                Float(color.blue),
+                Float(color.opacity)
+              )
+            )
+          ),
+          .init(radius, offset.animatableData)
+        )
+      }
+      set {
+        color = .init(
+          red: Double(newValue[].0[].0),
+          green: Double(newValue[].0[].1[].0),
+          blue: Double(newValue[].0[].1[].1[].0),
+          opacity: Double(newValue[].0[].1[].1[].1),
+          space: .sRGB
+        )
+        (radius, offset.animatableData) = newValue[].1[]
+      }
+    }
   }
 }
 
 public extension View {
+  @inlinable
   func shadow(
     color: Color = Color(.sRGBLinear, white: 0, opacity: 0.33),
     radius: CGFloat,
     x: CGFloat = 0,
     y: CGFloat = 0
   ) -> some View {
-    modifier(_ShadowLayout(color: color, radius: radius, x: x, y: y))
+    modifier(
+      _ShadowEffect(
+        color: color,
+        radius: radius,
+        offset: .init(width: x, height: y)
+      )
+    )
   }
 }

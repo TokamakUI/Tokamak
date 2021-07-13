@@ -85,6 +85,9 @@ public class MountedElement<R: Renderer> {
   }
 
   var mountedChildren = [MountedElement<R>]()
+
+  public internal(set) var transaction: Transaction = .init(animation: nil)
+
   var environmentValues: EnvironmentValues
 
   unowned var parent: MountedElement<R>?
@@ -145,7 +148,7 @@ public class MountedElement<R: Renderer> {
     fatalError("implement \(#function) in subclass")
   }
 
-  func update(with reconciler: StackReconciler<R>) {
+  func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
     fatalError("implement \(#function) in subclass")
   }
 
