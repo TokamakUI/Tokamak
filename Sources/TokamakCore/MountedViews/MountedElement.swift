@@ -88,7 +88,7 @@ public class MountedElement<R: Renderer> {
 
   public internal(set) var transaction: Transaction = .init(animation: nil)
 
-  var environmentValues: EnvironmentValues
+  public internal(set) var environmentValues: EnvironmentValues
 
   unowned var parent: MountedElement<R>?
   /// `didSet` on this field propagates the preference changes up the view tree.
@@ -98,13 +98,13 @@ public class MountedElement<R: Renderer> {
     }
   }
 
-  var viewTraitStore: _ViewTraitStore
+  public internal(set) var viewTraits: _ViewTraitStore
 
   init(_ app: _AnyApp, _ environmentValues: EnvironmentValues, _ parent: MountedElement<R>?) {
     element = .app(app)
     self.parent = parent
     self.environmentValues = environmentValues
-    viewTraitStore = .init()
+    viewTraits = .init()
     updateEnvironment()
   }
 
@@ -112,7 +112,7 @@ public class MountedElement<R: Renderer> {
     element = .scene(scene)
     self.parent = parent
     self.environmentValues = environmentValues
-    viewTraitStore = .init()
+    viewTraits = .init()
     updateEnvironment()
   }
 
@@ -120,7 +120,7 @@ public class MountedElement<R: Renderer> {
     element = .view(view)
     self.parent = parent
     self.environmentValues = environmentValues
-    viewTraitStore = .init()
+    viewTraits = .init()
     updateEnvironment()
   }
 
@@ -139,12 +139,13 @@ public class MountedElement<R: Renderer> {
   func mount(
     before sibling: R.TargetType? = nil,
     on parent: MountedElement<R>? = nil,
-    with reconciler: StackReconciler<R>
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction
   ) {
     fatalError("implement \(#function) in subclass")
   }
 
-  func unmount(with reconciler: StackReconciler<R>) {
+  func unmount(in reconciler: StackReconciler<R>, with transaction: Transaction) {
     fatalError("implement \(#function) in subclass")
   }
 

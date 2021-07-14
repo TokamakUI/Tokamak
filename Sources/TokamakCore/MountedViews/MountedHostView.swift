@@ -43,8 +43,11 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
   override func mount(
     before sibling: R.TargetType? = nil,
     on parent: MountedElement<R>? = nil,
-    with reconciler: StackReconciler<R>
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction
   ) {
+    self.transaction = transaction
+
     guard let target = reconciler.renderer.mountTarget(
       before: sibling,
       to: parentTarget,
@@ -67,11 +70,11 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
      */
     let isGroupView = view.type is GroupView.Type
     mountedChildren.forEach {
-      $0.mount(before: isGroupView ? sibling : nil, on: self, with: reconciler)
+      $0.mount(before: isGroupView ? sibling : nil, on: self, in: reconciler, with: transaction)
     }
   }
 
-  override func unmount(with reconciler: StackReconciler<R>) {
+  override func unmount(in reconciler: StackReconciler<R>, with transaction: Transaction) {
     guard let target = target else { return }
 
     reconciler.renderer.unmount(
@@ -79,7 +82,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
       from: parentTarget,
       with: self
     ) {
-      self.mountedChildren.forEach { $0.unmount(with: reconciler) }
+      self.mountedChildren.forEach { $0.unmount(in: reconciler, with: transaction) }
     }
   }
 
@@ -96,7 +99,9 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     // if existing children present and new children array is empty
     // then unmount all existing children
     case (false, true):
-      mountedChildren.forEach { $0.unmount(with: reconciler) }
+      mountedChildren.forEach {
+        $0.unmount(in: reconciler, with: transaction)
+      }
       mountedChildren = []
 
     // if no existing children then mount all new children
@@ -104,7 +109,9 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
       mountedChildren = childrenViews.map {
         $0.makeMountedView(reconciler.renderer, target, environmentValues, self)
       }
-      mountedChildren.forEach { $0.mount(on: self, with: reconciler) }
+      mountedChildren.forEach {
+        $0.mount(on: self, in: reconciler, with: transaction)
+      }
 
     // if both arrays have items then reconcile by types and keys
     case (false, false):
@@ -132,8 +139,10 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
             environmentValues,
             self
           )
-          newChild.mount(before: mountedChild.firstDescendantTarget, on: self, with: reconciler)
-          mountedChild.unmount(with: reconciler)
+          newChild.mount(
+            before: mountedChild.firstDescendantTarget, on: self, in: reconciler, with: transaction
+          )
+          mountedChild.unmount(in: reconciler, with: transaction)
         }
         newChildren.append(newChild)
         mountedChildren.removeFirst()
@@ -144,15 +153,17 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
       // unmount remaining `mountedChildren`
       if !mountedChildren.isEmpty {
         for child in mountedChildren {
-          child.unmount(with: reconciler)
+          child.unmount(in: reconciler, with: transaction)
         }
       } else {
         // more views left than children were mounted,
         // mount remaining views
         for firstChild in childrenViews {
           let newChild: MountedElement<R> =
-            firstChild.makeMountedView(reconciler.renderer, target, environmentValues, self)
-          newChild.mount(on: self, with: reconciler)
+            firstChild.makeMountedView(
+              reconciler.renderer, target, environmentValues, self
+            )
+          newChild.mount(on: self, in: reconciler, with: transaction)
           newChildren.append(newChild)
         }
       }

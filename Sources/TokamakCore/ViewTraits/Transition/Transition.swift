@@ -18,30 +18,30 @@
 import Foundation
 
 @frozen public struct AnyTransition {
-  fileprivate let box: AnyTransitionBox
+  fileprivate let box: _AnyTransitionBox
 
-  private init(_ box: AnyTransitionBox) {
+  private init(_ box: _AnyTransitionBox) {
     self.box = box
   }
 }
 
 @usableFromInline
 struct TransitionTraitKey: _ViewTraitKey {
-  @inlinable static var defaultValue: AnyTransition {
-    .opacity
-  }
+  @inlinable static var defaultValue: AnyTransition { .opacity }
 
   @usableFromInline typealias Value = AnyTransition
 }
 
 @usableFromInline
 struct CanTransitionTraitKey: _ViewTraitKey {
-  @inlinable static var defaultValue: Bool {
-    false
-  }
+  @inlinable static var defaultValue: Bool { false }
 
-  @usableFromInline
-  typealias Value = Bool
+  @usableFromInline typealias Value = Bool
+}
+
+public extension _ViewTraitStore {
+  var transition: AnyTransition { value(forKey: TransitionTraitKey.self) }
+  var canTransition: Bool { value(forKey: CanTransitionTraitKey.self) }
 }
 
 public extension View {
@@ -51,11 +51,33 @@ public extension View {
   }
 }
 
+/// A `ViewModifier` used to apply a primitive transition to a `View`.
+public protocol _AnyTransitionModifier: AnimatableModifier
+  where Body == Self.Content
+{
+  var isActive: Bool { get }
+}
+
+public extension _AnyTransitionModifier {
+  func body(content: Content) -> Body {
+    content
+  }
+}
+
+public struct _MoveTransition: _AnyTransitionModifier {
+  public let edge: Edge
+  public let isActive: Bool
+  public typealias Body = Self.Content
+}
+
 public extension AnyTransition {
   static let identity: AnyTransition = .init(IdentityTransitionBox())
 
   static func move(edge: Edge) -> AnyTransition {
-    .init(MoveTransitionBox(edge: edge))
+    modifier(
+      active: _MoveTransition(edge: edge, isActive: true),
+      identity: _MoveTransition(edge: edge, isActive: false)
+    )
   }
 
   static func asymmetric(
@@ -66,7 +88,10 @@ public extension AnyTransition {
   }
 
   static func offset(_ offset: CGSize) -> AnyTransition {
-    .init(OffsetTransitionBox(offset: offset))
+    modifier(
+      active: _OffsetEffect(offset: offset),
+      identity: _OffsetEffect(offset: .zero)
+    )
   }
 
   static func offset(
@@ -78,23 +103,54 @@ public extension AnyTransition {
 
   static var scale: AnyTransition { scale(scale: 0) }
   static func scale(scale: CGFloat, anchor: UnitPoint = .center) -> AnyTransition {
-    .init(ScaleTransitionBox(scale: scale, anchor: anchor))
+    modifier(
+      active: _ScaleEffect(scale: .init(width: scale, height: scale), anchor: anchor),
+      identity: _ScaleEffect(scale: .init(width: 1, height: 1), anchor: anchor)
+    )
   }
 
-  static let opacity: AnyTransition = .init(OpacityTransitionBox())
+  static let opacity: AnyTransition = modifier(
+    active: _OpacityEffect(opacity: 0),
+    identity: _OpacityEffect(opacity: 1)
+  )
 
-  static var slide: AnyTransition { .init(SlideTransitionBox()) }
+  static let slide: AnyTransition = asymmetric(
+    insertion: .move(edge: .leading),
+    removal: .move(edge: .trailing)
+  )
 
   static func modifier<E>(
     active: E,
     identity: E
   ) -> AnyTransition where E: ViewModifier {
-    .init(ModifierTransitionBox(active: active, identity: identity))
+    .init(
+      ConcreteTransitionBox(
+        (active: {
+          AnyView($0.modifier(active))
+        }, identity: {
+          AnyView($0.modifier(identity))
+        })
+      )
+    )
   }
 
   func combined(with other: AnyTransition) -> AnyTransition {
     .init(CombinedTransitionBox(a: box, b: other.box))
   }
 
-//  func animation(_ animation: Animation?) -> AnyTransition
+  func animation(_ animation: Animation?) -> AnyTransition {
+    .init(AnimatedTransitionBox(animation: animation, parent: box))
+  }
+}
+
+public struct _AnyTransitionProxy {
+  let subject: AnyTransition
+
+  public init(_ subject: AnyTransition) { self.subject = subject }
+
+  public func resolve(
+    in environment: EnvironmentValues
+  ) -> _AnyTransitionBox.ResolvedValue {
+    subject.box.resolve(in: environment)
+  }
 }

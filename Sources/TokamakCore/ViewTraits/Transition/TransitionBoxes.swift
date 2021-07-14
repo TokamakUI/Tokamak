@@ -17,31 +17,40 @@
 
 import Foundation
 
-public class AnyTransitionBox: AnyTokenBox {
+public class _AnyTransitionBox: AnyTokenBox {
   public typealias ResolvedValue = ResolvedTransition
 
   public struct ResolvedTransition {
-    public let insertion: [Transition]
-    public let removal: [Transition]
-//    public let animation: Animation?
+    public var insertion: [Transition]
+    public var removal: [Transition]
+    public var insertionAnimation: Animation?
+    public var removalAnimation: Animation?
 
-    init(insertion: [Transition], removal: [Transition]) {
+    init(
+      insertion: [Transition],
+      removal: [Transition],
+      insertionAnimation: Animation?,
+      removalAnimation: Animation?
+    ) {
       self.insertion = insertion
       self.removal = removal
+      self.insertionAnimation = insertionAnimation
+      self.removalAnimation = removalAnimation
     }
 
     init(transitions: [Transition]) {
-      self.init(insertion: transitions, removal: transitions)
+      self.init(
+        insertion: transitions,
+        removal: transitions,
+        insertionAnimation: nil,
+        removalAnimation: nil
+      )
     }
 
-    public indirect enum Transition {
-      case opacity,
-           slide
-      case move(edge: Edge)
-      case scale(scale: CGFloat, anchor: UnitPoint)
-      case offset(CGSize)
-      case modifier(active: (AnyView) -> AnyView, identity: (AnyView) -> AnyView)
-    }
+    public typealias Transition = (
+      active: (AnyView) -> AnyView,
+      identity: (AnyView) -> AnyView
+    )
   }
 
   public func resolve(in environment: EnvironmentValues) -> ResolvedValue {
@@ -49,112 +58,79 @@ public class AnyTransitionBox: AnyTokenBox {
   }
 }
 
-class IdentityTransitionBox: AnyTransitionBox {
-  override func resolve(in environment: EnvironmentValues) -> AnyTransitionBox.ResolvedValue {
+final class IdentityTransitionBox: _AnyTransitionBox {
+  override func resolve(in environment: EnvironmentValues) -> _AnyTransitionBox.ResolvedValue {
     .init(transitions: [])
   }
 }
 
-class OpacityTransitionBox: AnyTransitionBox {
-  override func resolve(in environment: EnvironmentValues) -> ResolvedValue {
-    .init(transitions: [.opacity])
+final class ConcreteTransitionBox: _AnyTransitionBox {
+  let transition: ResolvedTransition.Transition
+
+  init(_ transition: ResolvedTransition.Transition) {
+    self.transition = transition
+  }
+
+  override func resolve(in environment: EnvironmentValues) -> _AnyTransitionBox.ResolvedValue {
+    .init(transitions: [transition])
   }
 }
 
-class SlideTransitionBox: AnyTransitionBox {
-  override func resolve(in environment: EnvironmentValues) -> ResolvedValue {
-    .init(transitions: [.slide])
-  }
-}
+final class AsymmetricTransitionBox: _AnyTransitionBox {
+  let insertion: _AnyTransitionBox
+  let removal: _AnyTransitionBox
 
-class MoveTransitionBox: AnyTransitionBox {
-  let edge: Edge
-
-  init(edge: Edge) {
-    self.edge = edge
-  }
-
-  override func resolve(in environment: EnvironmentValues) -> ResolvedValue {
-    .init(transitions: [.move(edge: edge)])
-  }
-}
-
-class ScaleTransitionBox: AnyTransitionBox {
-  let scale: CGFloat
-  let anchor: UnitPoint
-
-  init(scale: CGFloat, anchor: UnitPoint) {
-    self.scale = scale
-    self.anchor = anchor
-  }
-
-  override func resolve(in environment: EnvironmentValues) -> ResolvedValue {
-    .init(transitions: [.scale(scale: scale, anchor: anchor)])
-  }
-}
-
-class OffsetTransitionBox: AnyTransitionBox {
-  let offset: CGSize
-
-  init(offset: CGSize) {
-    self.offset = offset
-  }
-
-  override func resolve(in environment: EnvironmentValues) -> ResolvedValue {
-    .init(transitions: [.offset(offset)])
-  }
-}
-
-class ModifierTransitionBox<E>: AnyTransitionBox
-  where E: ViewModifier
-{
-  let active: E
-  let identity: E
-
-  init(active: E, identity: E) {
-    self.active = active
-    self.identity = identity
-  }
-
-  override func resolve(in environment: EnvironmentValues) -> ResolvedValue {
-    .init(transitions: [.modifier(active: {
-      AnyView($0.modifier(self.active))
-    }, identity: {
-      AnyView($0.modifier(self.identity))
-    })])
-  }
-}
-
-class AsymmetricTransitionBox: AnyTransitionBox {
-  let insertion: AnyTransitionBox
-  let removal: AnyTransitionBox
-
-  init(insertion: AnyTransitionBox, removal: AnyTransitionBox) {
+  init(insertion: _AnyTransitionBox, removal: _AnyTransitionBox) {
     self.insertion = insertion
     self.removal = removal
   }
 
   override func resolve(in environment: EnvironmentValues) -> ResolvedValue {
-    .init(
-      insertion: insertion.resolve(in: environment).insertion,
-      removal: removal.resolve(in: environment).removal
+    let insertionResolved = insertion.resolve(in: environment)
+    let removalResolved = removal.resolve(in: environment)
+    return .init(
+      insertion: insertionResolved.insertion,
+      removal: removalResolved.removal,
+      insertionAnimation: insertionResolved.insertionAnimation,
+      removalAnimation: removalResolved.removalAnimation
     )
   }
 }
 
-class CombinedTransitionBox: AnyTransitionBox {
-  let a: AnyTransitionBox
-  let b: AnyTransitionBox
+final class CombinedTransitionBox: _AnyTransitionBox {
+  let a: _AnyTransitionBox
+  let b: _AnyTransitionBox
 
-  init(a: AnyTransitionBox, b: AnyTransitionBox) {
+  init(a: _AnyTransitionBox, b: _AnyTransitionBox) {
     self.a = a
     self.b = b
   }
 
   override func resolve(in environment: EnvironmentValues) -> ResolvedValue {
-    .init(
-      insertion: a.resolve(in: environment).insertion + b.resolve(in: environment).insertion,
-      removal: a.resolve(in: environment).removal + b.resolve(in: environment).removal
+    let aResolved = a.resolve(in: environment)
+    let bResolved = b.resolve(in: environment)
+    return .init(
+      insertion: aResolved.insertion + bResolved.insertion,
+      removal: aResolved.removal + bResolved.removal,
+      insertionAnimation: bResolved.insertionAnimation,
+      removalAnimation: bResolved.removalAnimation
     )
+  }
+}
+
+final class AnimatedTransitionBox: _AnyTransitionBox {
+  let animation: Animation?
+  let parent: _AnyTransitionBox
+
+  init(animation: Animation?, parent: _AnyTransitionBox) {
+    self.animation = animation
+    self.parent = parent
+  }
+
+  override func resolve(in environment: EnvironmentValues) -> ResolvedValue {
+    var resolved = parent.resolve(in: environment)
+    resolved.insertionAnimation = animation
+    resolved.removalAnimation = animation
+    return resolved
   }
 }

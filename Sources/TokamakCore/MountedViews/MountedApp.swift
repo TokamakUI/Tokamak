@@ -24,7 +24,8 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
   override func mount(
     before _: R.TargetType? = nil,
     on _: MountedElement<R>? = nil,
-    with reconciler: StackReconciler<R>
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction
   ) {
     // `App` elements have no siblings, hence the `before` argument is discarded.
     // They also have no parents, so the `parent` argument is discarded as well.
@@ -32,11 +33,15 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
 
     let child: MountedElement<R> = mountChild(reconciler.renderer, childBody)
     mountedChildren = [child]
-    child.mount(before: nil, on: self, with: reconciler)
+    child.transaction = transaction
+    child.mount(before: nil, on: self, in: reconciler, with: transaction)
   }
 
-  override func unmount(with reconciler: StackReconciler<R>) {
-    mountedChildren.forEach { $0.unmount(with: reconciler) }
+  override func unmount(
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction
+  ) {
+    mountedChildren.forEach { $0.unmount(in: reconciler, with: transaction) }
   }
 
   /// Mounts a child scene within the app.

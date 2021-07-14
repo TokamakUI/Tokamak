@@ -21,11 +21,16 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
   override func mount(
     before sibling: R.TargetType? = nil,
     on parent: MountedElement<R>? = nil,
-    with reconciler: StackReconciler<R>
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction
   ) {
+    var transaction = transaction
     (view.view as? _TransactionModifierProtocol)?.modifyTransaction(&transaction)
+    self.transaction = transaction
 
     let childBody = reconciler.render(compositeView: self)
+
+    (view.view as? _TraitWritingModifierProtocol)?.modifyViewTraitStore(&viewTraits)
 
     let child: MountedElement<R> = childBody.makeMountedView(
       reconciler.renderer,
@@ -33,8 +38,11 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
       environmentValues,
       self
     )
+    if child is MountedHostView {
+      child.viewTraits = viewTraits
+    }
     mountedChildren = [child]
-    child.mount(before: sibling, on: self, with: reconciler)
+    child.mount(before: sibling, on: self, in: reconciler, with: transaction)
 
     // `_TargetRef` (and `TargetRefType` generic eraser protocol it conforms to) is a composite
     // view, so it's enough check for it only here.
@@ -72,15 +80,14 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
       if let preferenceReader = self.view.view as? _PreferenceReadingViewProtocol {
         preferenceReader.preferenceStore(self.preferenceStore)
       }
-
-      if let traitModifier = self.view.view as? _ViewTraitWritingViewProtocol {
-        self.view = traitModifier.modifyViewTraitStore(&self.viewTraitStore)
-      }
     })
   }
 
-  override func unmount(with reconciler: StackReconciler<R>) {
-    mountedChildren.forEach { $0.unmount(with: reconciler) }
+  override func unmount(in reconciler: StackReconciler<R>, with transaction: Transaction) {
+    var transaction = transaction
+    (view.view as? _TransactionModifierProtocol)?.modifyTransaction(&transaction)
+
+    mountedChildren.forEach { $0.unmount(in: reconciler, with: transaction) }
 
     if let appearanceAction = view.view as? AppearanceActionType {
       appearanceAction.disappear?()

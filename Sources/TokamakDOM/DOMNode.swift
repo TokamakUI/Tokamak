@@ -54,7 +54,13 @@ extension _AnimationBoxBase._Resolved._RepeatStyle {
 }
 
 extension AnyHTML {
-  func update(dom: DOMNode, transaction: Transaction) {
+  func update(
+    dom: DOMNode,
+    additionalAttributes: [HTMLAttribute: String],
+    transaction: Transaction
+  ) {
+    let attributes = self.attributes.merging(additionalAttributes, uniquingKeysWith: +)
+
     // FIXME: is there a sensible way to diff attributes and listeners to avoid
     // crossing the JavaScript bridge and touching DOM if not needed?
 

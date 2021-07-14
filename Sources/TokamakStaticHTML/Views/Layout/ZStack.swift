@@ -31,7 +31,7 @@ extension ZStack: _HTMLPrimitive {
       grid-template-columns: 1fr;
       width: fit-content;
       justify-items: \(alignment.horizontal.cssValue);
-      align-items: \(alignment.vertical.cssValue)
+      align-items: \(alignment.vertical.cssValue);
       """,
     ]) {
       TupleView(

@@ -122,17 +122,46 @@ final class DOMRenderer: Renderer {
       return nil
     }
 
+    // Transition the insertion.
+    let transition = _AnyTransitionProxy(host.viewTraits.transition)
+      .resolve(in: host.environmentValues)
+    var additionalAttributes = [HTMLAttribute: String]()
+    var runTransition: ((DOMNode) -> ())?
+    if let animation = transition.insertionAnimation ?? host.transaction.animation {
+      print("Animated mount")
+      var view = host.view
+      transition.insertion.forEach {
+        view = $0.active(view)
+      }
+      if let modifiedContent = mapAnyView(view, transform: { (v: _AnyModifiedContent) in v }) {
+        additionalAttributes = modifiedContent.anyModifier.attributes
+      }
+      runTransition = { node in
+        withAnimation(animation) {
+          self.update(target: node, with: host)
+        }
+      }
+    }
+
     let maybeNode: JSObject?
     if let sibling = sibling {
       _ = sibling.ref.insertAdjacentHTML!(
         "beforebegin",
-        anyHTML.outerHTML(shouldSortAttributes: false, children: [])
+        anyHTML.outerHTML(
+          shouldSortAttributes: false,
+          additonalAttributes: additionalAttributes,
+          children: []
+        )
       )
       maybeNode = sibling.ref.previousSibling.object
     } else {
       _ = parent.ref.insertAdjacentHTML!(
         "beforeend",
-        anyHTML.outerHTML(shouldSortAttributes: false, children: [])
+        anyHTML.outerHTML(
+          shouldSortAttributes: false,
+          additonalAttributes: additionalAttributes,
+          children: []
+        )
       )
 
       guard
@@ -148,18 +177,40 @@ final class DOMRenderer: Renderer {
 
     fixSpacers(host: host, target: resultingNode)
 
+    let node: DOMNode
     if let dynamicHTML = anyHTML as? AnyDynamicHTML {
-      return DOMNode(host.view, resultingNode, dynamicHTML.listeners)
+      node = DOMNode(host.view, resultingNode, dynamicHTML.listeners)
     } else {
-      return DOMNode(host.view, resultingNode, [:])
+      node = DOMNode(host.view, resultingNode, [:])
     }
+
+    runTransition?(node)
+    return node
   }
 
   func update(target: DOMNode, with host: MountedHost) {
     guard let html = mapAnyView(host.view, transform: { (html: AnyHTML) in html })
     else { return }
 
-    html.update(dom: target, transaction: host.transaction)
+    // Apply the identity transition.
+    let transition = _AnyTransitionProxy(host.viewTraits.transition)
+      .resolve(in: host.environmentValues)
+    var additionalAttributes = [HTMLAttribute: String]()
+    var view = host.view
+    transition.insertion.forEach {
+      view = $0.identity(view)
+    }
+    if let modifiedContent = mapAnyView(view, transform: { (v: _AnyModifiedContent) in v }),
+       let style = modifiedContent.anyModifier.attributes["style"]
+    {
+      additionalAttributes["style"] = additionalAttributes["style", default: ""] + style
+    }
+
+    html.update(
+      dom: target,
+      additionalAttributes: additionalAttributes,
+      transaction: host.transaction
+    )
 
     fixSpacers(host: host, target: target.ref)
   }
@@ -172,8 +223,39 @@ final class DOMRenderer: Renderer {
   ) {
     defer { completion() }
 
-    guard mapAnyView(host.view, transform: { (html: AnyHTML) in html }) != nil
+    guard let anyHTML = mapAnyView(host.view, transform: { (html: AnyHTML) in html })
     else { return }
+
+    // Transition the removal.
+    let transition = _AnyTransitionProxy(host.viewTraits.transition)
+      .resolve(in: host.environmentValues)
+    if let animation = transition.removalAnimation ?? host.transaction.animation {
+      var view = host.view
+      transition.removal.forEach {
+        view = $0.active(view)
+      }
+      if let modifiedContent = mapAnyView(view, transform: { (v: _AnyModifiedContent) in v }),
+         let style = modifiedContent.anyModifier.attributes["style"]
+      {
+        var additionalAttributes = [HTMLAttribute: String]()
+        additionalAttributes["style"] = additionalAttributes["style", default: ""] + style
+        anyHTML.update(
+          dom: target,
+          additionalAttributes: additionalAttributes,
+          transaction: .init(animation: animation)
+        )
+
+        _ = JSObject.global.setTimeout!(
+          JSOneshotClosure { _ in
+            _ = try? parent.ref.throwing.removeChild!(target.ref)
+            return .undefined
+          },
+          _AnimationProxy(animation).resolve().duration * 1000
+        )
+
+        return
+      }
+    }
 
     _ = try? parent.ref.throwing.removeChild!(target.ref)
   }

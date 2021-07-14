@@ -20,29 +20,11 @@ public protocol _ViewTraitKey {
   static var defaultValue: Value { get }
 }
 
-protocol _ViewTraitWritingViewProtocol {
-  func modifyViewTraitStore(_ viewTraitStore: inout _ViewTraitStore) -> AnyView
+public protocol _TraitWritingModifierProtocol {
+  func modifyViewTraitStore(_ viewTraitStore: inout _ViewTraitStore)
 }
 
-struct _ViewTraitWritingView<Trait, Content>: _PrimitiveView, _ViewTraitWritingViewProtocol
-  where Trait: _ViewTraitKey, Content: View
-{
-  let value: Trait.Value
-  let content: Content
-
-  init(key _: Trait.Type = Trait.self, value: Trait.Value, _ content: Content) {
-    self.value = value
-    self.content = content
-  }
-
-  typealias Body = Never
-  func modifyViewTraitStore(_ viewTraitStore: inout _ViewTraitStore) -> AnyView {
-    viewTraitStore.insert(value, forKey: Trait.self)
-    return AnyView(content)
-  }
-}
-
-@frozen public struct _TraitWritingModifier<Trait>: ViewModifier
+@frozen public struct _TraitWritingModifier<Trait>: ViewModifier, _TraitWritingModifierProtocol
   where Trait: _ViewTraitKey
 {
   public let value: Trait.Value
@@ -51,8 +33,20 @@ struct _ViewTraitWritingView<Trait, Content>: _PrimitiveView, _ViewTraitWritingV
     self.value = value
   }
 
-  public func body(content: Content) -> some View {
-    _ViewTraitWritingView(key: Trait.self, value: value, content)
+  public func modifyViewTraitStore(_ viewTraitStore: inout _ViewTraitStore) {
+    viewTraitStore.insert(value, forKey: Trait.self)
+  }
+
+  public func body(content: Content) -> Self.Content {
+    content
+  }
+}
+
+extension ModifiedContent: _TraitWritingModifierProtocol
+  where Content: View, Modifier: _TraitWritingModifierProtocol
+{
+  public func modifyViewTraitStore(_ viewTraitStore: inout _ViewTraitStore) {
+    modifier.modifyViewTraitStore(&viewTraitStore)
   }
 }
 
