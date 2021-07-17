@@ -187,7 +187,14 @@ let package = Package(
     ),
     .target(
       name: "TokamakTestRenderer",
-      dependencies: ["TokamakCore"]
+      dependencies: [
+        "TokamakCore",
+        .product(
+          name: "JavaScriptKit",
+          package: "JavaScriptKit",
+          condition: .when(platforms: [.wasi])
+        ),
+      ]
     ),
     .testTarget(
       name: "TokamakTests",
