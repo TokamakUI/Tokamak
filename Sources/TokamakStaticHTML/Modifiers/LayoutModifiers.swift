@@ -156,3 +156,33 @@ extension _AspectRatioLayout: DOMViewModifier {
     ]
   }
 }
+
+extension _BackgroundLayout: _HTMLPrimitive {
+  public var renderedBody: AnyView {
+    AnyView(
+      HTML(
+        "div",
+        ["style": "display: inline-grid; grid-template-columns: auto auto;"]
+      ) {
+        HTML(
+          "div",
+          ["style": """
+          display: flex;
+          justify-items: \(alignment.horizontal.cssValue);
+          align-items: \(alignment.vertical.cssValue);
+          grid-area: a;
+
+          width: 0; min-width: 100%;
+          height: 0; min-height: 100%;
+          overflow: hidden;
+          """]
+        ) {
+          background
+        }
+        HTML("div", ["style": "grid-area: a;"]) {
+          content
+        }
+      }
+    )
+  }
+}

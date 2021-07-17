@@ -339,6 +339,19 @@ final class RenderingTests: XCTestCase {
       timeout: defaultSnapshotTimeout
     )
   }
+
+  func testBackground() {
+    assertSnapshot(
+      matching: Rectangle()
+        .fill(Color.blue)
+        .opacity(0.5)
+        .frame(width: 80, height: 80)
+        .background(
+          RoundedRectangle(cornerRadius: 10).fill(Color.red)
+        ),
+      as: .image(size: .init(width: 100, height: 100))
+    )
+  }
 }
 
 #endif
