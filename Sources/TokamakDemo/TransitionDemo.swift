@@ -32,7 +32,7 @@ struct TransitionDemo: View {
   var body: some View {
     VStack {
       Button(isVisible ? "Hide" : "Show") {
-        withAnimation {
+        withAnimation(.easeInOut(duration: 1)) {
           isVisible = !isVisible
         }
       }
@@ -63,6 +63,5 @@ struct TransitionDemo: View {
       }
       .font(.system(.headline, design: .monospaced))
     }
-    .frame(height: 300, alignment: .top)
   }
 }

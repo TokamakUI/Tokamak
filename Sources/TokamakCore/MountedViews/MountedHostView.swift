@@ -60,7 +60,9 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     guard !view.children.isEmpty else { return }
 
     mountedChildren = view.children.map {
-      $0.makeMountedView(reconciler.renderer, target, environmentValues, self)
+      let child = $0.makeMountedView(reconciler.renderer, target, environmentValues, self)
+      child.viewTraits = self.viewTraits
+      return child
     }
 
     /* Remember that `GroupView`s are always "flattened", their `target` instances are targets of

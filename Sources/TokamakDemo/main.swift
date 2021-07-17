@@ -18,6 +18,8 @@ import TokamakShim
 struct CustomScene: Scene {
   @Environment(\.scenePhase) private var scenePhase
 
+  func action() { print("Tapped") }
+
   var body: some Scene {
     print("In CustomScene.body scenePhase is \(scenePhase)")
     return WindowGroup("Tokamak Demo") {

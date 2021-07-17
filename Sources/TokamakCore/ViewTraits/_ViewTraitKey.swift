@@ -33,17 +33,17 @@ public protocol _TraitWritingModifierProtocol {
     self.value = value
   }
 
-  public func modifyViewTraitStore(_ viewTraitStore: inout _ViewTraitStore) {
-    viewTraitStore.insert(value, forKey: Trait.self)
+  public func body(content: Content) -> some View {
+    content
   }
 
-  public func body(content: Content) -> Self.Content {
-    content
+  public func modifyViewTraitStore(_ viewTraitStore: inout _ViewTraitStore) {
+    viewTraitStore.insert(value, forKey: Trait.self)
   }
 }
 
 extension ModifiedContent: _TraitWritingModifierProtocol
-  where Content: View, Modifier: _TraitWritingModifierProtocol
+  where Modifier: _TraitWritingModifierProtocol
 {
   public func modifyViewTraitStore(_ viewTraitStore: inout _ViewTraitStore) {
     modifier.modifyViewTraitStore(&viewTraitStore)

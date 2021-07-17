@@ -30,14 +30,15 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
 
     let childBody = reconciler.render(compositeView: self)
 
-    (view.view as? _TraitWritingModifierProtocol)?.modifyViewTraitStore(&viewTraits)
-
     let child: MountedElement<R> = childBody.makeMountedView(
       reconciler.renderer,
       parentTarget,
       environmentValues,
       self
     )
+    if let traitModifier = view.view as? _TraitWritingModifierProtocol {
+      traitModifier.modifyViewTraitStore(&viewTraits)
+    }
     if child is MountedHostView {
       child.viewTraits = viewTraits
     }

@@ -128,15 +128,14 @@ final class DOMRenderer: Renderer {
     var additionalAttributes = [HTMLAttribute: String]()
     var runTransition: ((DOMNode) -> ())?
     if let animation = transition.insertionAnimation ?? host.transaction.animation {
-      print("Animated mount")
-      var view = host.view
-      transition.insertion.forEach {
-        view = $0.active(view)
-      }
-      if let modifiedContent = mapAnyView(view, transform: { (v: _AnyModifiedContent) in v }) {
-        additionalAttributes = modifiedContent.anyModifier.attributes
-      }
+      // Apply the active insertion modifier on mount.
+      additionalAttributes = apply(
+        transition: transition, \.insertion,
+        as: \.active,
+        to: host.view
+      )
       runTransition = { node in
+        // Then apply the identity insertion modifier on update with animation.
         withAnimation(animation) {
           self.update(target: node, with: host)
         }
@@ -192,23 +191,16 @@ final class DOMRenderer: Renderer {
     guard let html = mapAnyView(host.view, transform: { (html: AnyHTML) in html })
     else { return }
 
-    // Apply the identity transition.
+    // Apply the identity insertion modifier.
     let transition = _AnyTransitionProxy(host.viewTraits.transition)
       .resolve(in: host.environmentValues)
-    var additionalAttributes = [HTMLAttribute: String]()
-    var view = host.view
-    transition.insertion.forEach {
-      view = $0.identity(view)
-    }
-    if let modifiedContent = mapAnyView(view, transform: { (v: _AnyModifiedContent) in v }),
-       let style = modifiedContent.anyModifier.attributes["style"]
-    {
-      additionalAttributes["style"] = additionalAttributes["style", default: ""] + style
-    }
-
     html.update(
       dom: target,
-      additionalAttributes: additionalAttributes,
+      additionalAttributes: apply(
+        transition: transition, \.insertion,
+        as: \.identity,
+        to: host.view
+      ),
       transaction: host.transaction
     )
 
@@ -230,31 +222,38 @@ final class DOMRenderer: Renderer {
     let transition = _AnyTransitionProxy(host.viewTraits.transition)
       .resolve(in: host.environmentValues)
     if let animation = transition.removalAnimation ?? host.transaction.animation {
-      var view = host.view
-      transition.removal.forEach {
-        view = $0.active(view)
-      }
-      if let modifiedContent = mapAnyView(view, transform: { (v: _AnyModifiedContent) in v }),
-         let style = modifiedContent.anyModifier.attributes["style"]
-      {
-        var additionalAttributes = [HTMLAttribute: String]()
-        additionalAttributes["style"] = additionalAttributes["style", default: ""] + style
-        anyHTML.update(
-          dom: target,
-          additionalAttributes: additionalAttributes,
-          transaction: .init(animation: animation)
-        )
+      // First, apply the identity removal modifier /without/ animation
+      // to be in the initial state.
+      anyHTML.update(
+        dom: target,
+        additionalAttributes: apply(
+          transition: transition, \.removal,
+          as: \.identity,
+          to: host.view
+        ),
+        transaction: .init(animation: nil)
+      )
 
-        _ = JSObject.global.setTimeout!(
-          JSOneshotClosure { _ in
-            _ = try? parent.ref.throwing.removeChild!(target.ref)
-            return .undefined
-          },
-          _AnimationProxy(animation).resolve().duration * 1000
-        )
+      // Then apply the active removal modifier /with/ animation.
+      anyHTML.update(
+        dom: target,
+        additionalAttributes: apply(
+          transition: transition, \.removal,
+          as: \.active,
+          to: host.view
+        ),
+        transaction: .init(animation: animation)
+      )
 
-        return
-      }
+      _ = JSObject.global.setTimeout!(
+        JSOneshotClosure { _ in
+          _ = try? parent.ref.throwing.removeChild!(target.ref)
+          return .undefined
+        },
+        _AnimationProxy(animation).resolve().duration * 1000
+      )
+
+      return
     }
 
     _ = try? parent.ref.throwing.removeChild!(target.ref)
@@ -266,6 +265,33 @@ final class DOMRenderer: Renderer {
 
   func isPrimitiveView(_ type: Any.Type) -> Bool {
     type is DOMPrimitive.Type || type is _HTMLPrimitive.Type
+  }
+
+  private func apply(
+    transition: _AnyTransitionBox.ResolvedTransition,
+    _ direction: KeyPath<
+      _AnyTransitionBox.ResolvedTransition,
+      [_AnyTransitionBox.ResolvedTransition.Transition]
+    >,
+    as state: KeyPath<
+      _AnyTransitionBox.ResolvedTransition.Transition,
+      (AnyView) -> AnyView
+    >,
+    to view: AnyView
+  ) -> [HTMLAttribute: String] {
+    transition[keyPath: direction].reduce([HTMLAttribute: String]()) {
+      if let modifiedContent = mapAnyView(
+        $1[keyPath: state](view),
+        transform: { (v: _AnyModifiedContent) in v }
+      ) {
+        return $0.merging(
+          modifiedContent.anyModifier.attributes,
+          uniquingKeysWith: +
+        )
+      } else {
+        return $0
+      }
+    }
   }
 }
 
