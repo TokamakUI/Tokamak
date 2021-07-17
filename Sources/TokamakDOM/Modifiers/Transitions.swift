@@ -11,30 +11,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 7/13/21.
+//
 
-import TokamakShim
+import TokamakCore
+import TokamakStaticHTML
 
-@available(OSX 10.16, iOS 14.0, *)
-struct CustomScene: Scene {
-  @Environment(\.scenePhase) private var scenePhase
-
-  var body: some Scene {
-    print("In CustomScene.body scenePhase is \(scenePhase)")
-    return WindowGroup("Tokamak Demo") {
-      TokamakDemoView()
+extension _MoveTransition: DOMViewModifier {
+  public var attributes: [HTMLAttribute: String] {
+    let offset: (String, String)
+    switch edge {
+    case .leading: offset = ("-100%", "0")
+    case .trailing: offset = ("100%", "0")
+    case .top: offset = ("-100%", "0")
+    case .bottom: offset = ("100%", "0")
     }
+    return [
+      "style":
+        "transform: translate(\(isActive ? offset.0 : "0"), \(isActive ? offset.1 : "0"));",
+    ]
   }
-}
-
-@available(OSX 10.16, iOS 14.0, *)
-struct TokamakDemoApp: App {
-  var body: some Scene {
-    CustomScene()
-  }
-}
-
-// If @main was supported for executable Swift Packages,
-// this would match SwiftUI 100%
-if #available(OSX 10.16, iOS 14.0, *) {
-  TokamakDemoApp.main()
 }
