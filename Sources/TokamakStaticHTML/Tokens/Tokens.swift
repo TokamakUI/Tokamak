@@ -16,8 +16,13 @@ import TokamakCore
 
 extension Color {
   func cssValue(_ environment: EnvironmentValues) -> String {
-    let rgba = _ColorProxy(self).resolve(in: environment)
-    return "rgba(\(rgba.red * 255), \(rgba.green * 255), \(rgba.blue * 255), \(rgba.opacity))"
+    _ColorProxy(self).resolve(in: environment).cssValue
+  }
+}
+
+extension AnyColorBox.ResolvedValue {
+  var cssValue: String {
+    "rgba(\(red * 255), \(green * 255), \(blue * 255), \(opacity))"
   }
 }
 
@@ -35,5 +40,11 @@ extension GridItem: CustomStringConvertible {
       let max = max == .infinity ? "1fr" : max.description
       return "minmax(\(min), \(max))"
     }
+  }
+}
+
+extension UnitPoint {
+  var cssValue: String {
+    "\(x * 100)% \((1 - y) * 100)%"
   }
 }

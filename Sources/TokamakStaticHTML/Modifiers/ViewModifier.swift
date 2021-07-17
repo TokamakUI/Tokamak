@@ -44,10 +44,3 @@ extension _ZIndexModifier: DOMViewModifier {
     ["style": "z-index: \(index);"]
   }
 }
-
-extension _BackgroundModifier: DOMViewModifier where Background == Color {
-  public var isOrderDependent: Bool { true }
-  public var attributes: [HTMLAttribute: String] {
-    ["style": "background-color: \(background.cssValue(environment))"]
-  }
-}

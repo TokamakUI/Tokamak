@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Max Desiatov on 16/10/2018.
+//  Created by Carson Katri on 7/12/21.
 //
 
 /// Override `TokamakCore`'s default `Color` resolvers with a Renderer-specific one.
@@ -39,7 +39,7 @@ public protocol AnyColorBoxDeferredToRenderer: AnyColorBox {
   func deferredResolve(in environment: EnvironmentValues) -> AnyColorBox.ResolvedValue
 }
 
-public class AnyColorBox: AnyTokenBox, Equatable {
+public class AnyColorBox: AnyTokenBox, Hashable {
   public struct _RGBA: Hashable, Equatable {
     public let red: Double
     public let green: Double
@@ -79,7 +79,7 @@ public class AnyColorBox: AnyTokenBox, Equatable {
   }
 }
 
-public class _ConcreteColorBox: AnyColorBox {
+public final class _ConcreteColorBox: AnyColorBox {
   public let rgba: AnyColorBox._RGBA
 
   override public func equals(_ other: AnyColorBox) -> Bool {
@@ -101,7 +101,7 @@ public class _ConcreteColorBox: AnyColorBox {
   }
 }
 
-public class _EnvironmentDependentColorBox: AnyColorBox {
+public final class _EnvironmentDependentColorBox: AnyColorBox {
   public let resolver: (EnvironmentValues) -> Color
 
   override public func equals(_ other: AnyColorBox) -> Bool {
@@ -123,7 +123,39 @@ public class _EnvironmentDependentColorBox: AnyColorBox {
   }
 }
 
-public class _SystemColorBox: AnyColorBox, CustomStringConvertible {
+public final class _OpacityColorBox: AnyColorBox {
+  public let parent: AnyColorBox
+  public let opacity: Double
+
+  override public func equals(_ other: AnyColorBox) -> Bool {
+    guard let other = other as? _OpacityColorBox
+    else { return false }
+    return parent.equals(other.parent) && opacity == other.opacity
+  }
+
+  override public func hash(into hasher: inout Hasher) {
+    hasher.combine(parent)
+    hasher.combine(opacity)
+  }
+
+  init(_ parent: AnyColorBox, opacity: Double) {
+    self.parent = parent
+    self.opacity = opacity
+  }
+
+  override public func resolve(in environment: EnvironmentValues) -> ResolvedValue {
+    let resolved = parent.resolve(in: environment)
+    return .init(
+      red: resolved.red,
+      green: resolved.green,
+      blue: resolved.blue,
+      opacity: opacity,
+      space: resolved.space
+    )
+  }
+}
+
+public final class _SystemColorBox: AnyColorBox, CustomStringConvertible {
   public enum SystemColor: String, Equatable, Hashable {
     case clear
     case black
@@ -156,7 +188,7 @@ public class _SystemColorBox: AnyColorBox, CustomStringConvertible {
     hasher.combine(value)
   }
 
-  fileprivate init(_ value: SystemColor) {
+  init(_ value: SystemColor) {
     self.value = value
   }
 
@@ -195,238 +227,5 @@ public class _SystemColorBox: AnyColorBox, CustomStringConvertible {
       case .secondary: return .init(red: 0.55, green: 0.55, blue: 0.57, opacity: 1, space: .sRGB)
       }
     }
-  }
-}
-
-public struct Color: Hashable, Equatable {
-  public static func == (lhs: Self, rhs: Self) -> Bool {
-    lhs.provider == rhs.provider
-  }
-
-  public func hash(into hasher: inout Hasher) {
-    hasher.combine(provider)
-  }
-
-  let provider: AnyColorBox
-
-  private init(_ provider: AnyColorBox) {
-    self.provider = provider
-  }
-
-  public init(
-    _ colorSpace: RGBColorSpace = .sRGB,
-    red: Double,
-    green: Double,
-    blue: Double,
-    opacity: Double = 1
-  ) {
-    self.init(_ConcreteColorBox(
-      .init(red: red, green: green, blue: blue, opacity: opacity, space: colorSpace)
-    ))
-  }
-
-  public init(_ colorSpace: RGBColorSpace = .sRGB, white: Double, opacity: Double = 1) {
-    self.init(colorSpace, red: white, green: white, blue: white, opacity: opacity)
-  }
-
-  // Source for the formula:
-  // https://en.wikipedia.org/wiki/HSL_and_HSV#HSL_to_RGB_alternative
-  public init(hue: Double, saturation: Double, brightness: Double, opacity: Double = 1) {
-    let a = saturation * min(brightness / 2, 1 - (brightness / 2))
-    let f = { (n: Int) -> Double in
-      let k = Double((n + Int(hue * 12)) % 12)
-      return brightness - (a * max(-1, min(k - 3, 9 - k, 1)))
-    }
-    self.init(.sRGB, red: f(0), green: f(8), blue: f(4), opacity: opacity)
-  }
-
-  /// Create a `Color` dependent on the current `ColorScheme`.
-  @_spi(TokamakCore)
-  public static func _withScheme(_ resolver: @escaping (ColorScheme) -> Self) -> Self {
-    .init(_EnvironmentDependentColorBox {
-      resolver($0.colorScheme)
-    })
-  }
-}
-
-public struct _ColorProxy {
-  let subject: Color
-  public init(_ subject: Color) { self.subject = subject }
-  public func resolve(in environment: EnvironmentValues) -> AnyColorBox.ResolvedValue {
-    if let deferred = subject.provider as? AnyColorBoxDeferredToRenderer {
-      return deferred.deferredResolve(in: environment)
-    } else {
-      return subject.provider.resolve(in: environment)
-    }
-  }
-}
-
-public extension Color {
-  enum RGBColorSpace {
-    case sRGB
-    case sRGBLinear
-    case displayP3
-  }
-}
-
-extension Color: CustomStringConvertible {
-  public var description: String {
-    if let providerDescription = provider as? CustomStringConvertible {
-      return providerDescription.description
-    } else {
-      return "Color: \(provider.self)"
-    }
-  }
-}
-
-public extension Color {
-  private init(systemColor: _SystemColorBox.SystemColor) {
-    self.init(_SystemColorBox(systemColor))
-  }
-
-  static let clear: Self = .init(systemColor: .clear)
-  static let black: Self = .init(systemColor: .black)
-  static let white: Self = .init(systemColor: .white)
-  static let gray: Self = .init(systemColor: .gray)
-  static let red: Self = .init(systemColor: .red)
-  static let green: Self = .init(systemColor: .green)
-  static let blue: Self = .init(systemColor: .blue)
-  static let orange: Self = .init(systemColor: .orange)
-  static let yellow: Self = .init(systemColor: .yellow)
-  static let pink: Self = .init(systemColor: .pink)
-  static let purple: Self = .init(systemColor: .purple)
-  static let primary: Self = .init(systemColor: .primary)
-
-  static let secondary: Self = .init(systemColor: .secondary)
-  static let accentColor: Self = .init(_EnvironmentDependentColorBox {
-    $0.accentColor ?? Self.blue
-  })
-
-  init(_ color: UIColor) {
-    self = color.color
-  }
-}
-
-extension Color: ExpressibleByIntegerLiteral {
-  /// Allows initializing value of `Color` type from hex values
-  public init(integerLiteral bitMask: UInt32) {
-    self.init(
-      .sRGB,
-      red: Double((bitMask & 0xFF0000) >> 16) / 255,
-      green: Double((bitMask & 0x00FF00) >> 8) / 255,
-      blue: Double(bitMask & 0x0000FF) / 255,
-      opacity: 1
-    )
-  }
-}
-
-public extension Color {
-  init?(hex: String) {
-    let cArray = Array(hex.count > 6 ? String(hex.dropFirst()) : hex)
-
-    guard cArray.count == 6 else { return nil }
-
-    guard
-      let red = Int(String(cArray[0...1]), radix: 16),
-      let green = Int(String(cArray[2...3]), radix: 16),
-      let blue = Int(String(cArray[4...5]), radix: 16)
-    else {
-      return nil
-    }
-    self.init(
-      .sRGB,
-      red: Double(red) / 255,
-      green: Double(green) / 255,
-      blue: Double(blue) / 255,
-      opacity: 1
-    )
-  }
-}
-
-public class _TransparentColorBox: AnyColorBox {
-  public let base: AnyColorBox
-  public let opacity: Double
-
-  override public func equals(_ other: AnyColorBox) -> Bool {
-    guard let other = other as? _TransparentColorBox
-    else { return false }
-    return base.equals(other.base) && opacity == other.opacity
-  }
-
-  override public func hash(into hasher: inout Hasher) {
-    hasher.combine(base)
-    hasher.combine(opacity)
-  }
-
-  init(_ base: AnyColorBox, opacity: Double) {
-    self.base = base
-    self.opacity = opacity
-  }
-
-  override public func resolve(in environment: EnvironmentValues) -> ResolvedValue {
-    let resolvedBase = base.resolve(in: environment)
-    return .init(
-      red: resolvedBase.red,
-      green: resolvedBase.green,
-      blue: resolvedBase.blue,
-      opacity: opacity,
-      space: resolvedBase.space
-    )
-  }
-}
-
-public extension Color {
-  func opacity(_ opacity: Double) -> Self {
-    .init(_TransparentColorBox(provider, opacity: opacity))
-  }
-}
-
-extension Color: ShapeStyle {}
-extension Color: View {
-  @_spi(TokamakCore)
-  public var body: some View {
-    _ShapeView(shape: Rectangle(), style: self)
-  }
-}
-
-struct AccentColorKey: EnvironmentKey {
-  static let defaultValue: Color? = nil
-}
-
-public extension EnvironmentValues {
-  var accentColor: Color? {
-    get {
-      self[AccentColorKey.self]
-    }
-    set {
-      self[AccentColorKey.self] = newValue
-    }
-  }
-}
-
-public extension View {
-  func accentColor(_ accentColor: Color?) -> some View {
-    environment(\.accentColor, accentColor)
-  }
-}
-
-struct ForegroundColorKey: EnvironmentKey {
-  static let defaultValue: Color? = nil
-}
-
-public extension EnvironmentValues {
-  var foregroundColor: Color? {
-    get {
-      self[ForegroundColorKey.self]
-    }
-    set {
-      self[ForegroundColorKey.self] = newValue
-    }
-  }
-}
-
-public extension View {
-  func foregroundColor(_ color: Color?) -> some View {
-    environment(\.foregroundColor, color)
   }
 }

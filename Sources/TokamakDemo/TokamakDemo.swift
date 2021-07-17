@@ -93,10 +93,21 @@ struct TokamakDemoView: View {
           } else {
             NavItem("List", destination: ListDemo())
           }
-          if #available(iOS 14.0, *) {
-            NavItem("Sidebar", destination: SidebarListDemo().listStyle(SidebarListStyle()))
-          } else {
-            NavItem(unavailable: "Sidebar")
+          Section(header: Text("Layout")) {
+            NavItem("HStack/VStack", destination: StackDemo())
+            if #available(OSX 10.16, iOS 14.0, *) {
+              NavItem("Grid", destination: GridDemo())
+            } else {
+              NavItem(unavailable: "Grid")
+            }
+            NavItem("Spacer", destination: SpacerDemo())
+            NavItem("ZStack", destination: ZStack {
+              Text("I'm on bottom")
+              Text("I'm forced to the top")
+                .zIndex(1)
+              Text("I'm on top")
+            }.padding(20))
+            NavItem("GeometryReader", destination: GeometryReaderDemo())
           }
           if #available(OSX 10.16, iOS 14.0, *) {
             NavItem("OutlineGroup", destination: OutlineGroupDemo())
@@ -138,11 +149,28 @@ struct TokamakDemoView: View {
           if #available(macOS 11.0, iOS 14.0, *) {
             NavItem("Preferences", destination: PreferenceKeyDemo())
           }
-          NavItem("Color", destination: ColorDemo())
-          if #available(OSX 11.0, iOS 14.0, *) {
-            NavItem("AppStorage", destination: AppStorageDemo())
-          } else {
-            NavItem(unavailable: "AppStorage")
+          Section(header: Text("Misc")) {
+            NavItem("Animation", destination: AnimationDemo())
+            NavItem("Path", destination: PathDemo())
+            NavItem("ProgressView", destination: ProgressViewDemo())
+            NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8)))
+            if #available(macOS 11.0, iOS 14.0, *) {
+              NavItem("Preferences", destination: PreferenceKeyDemo())
+            }
+            NavItem("Color", destination: ColorDemo())
+            if #available(macOS 12.0, iOS 15.0, *) {
+              NavItem("Shape Styles", destination: ShapeStyleDemo())
+            }
+            if #available(OSX 11.0, iOS 14.0, *) {
+              NavItem("AppStorage", destination: AppStorageDemo())
+            } else {
+              NavItem(unavailable: "AppStorage")
+            }
+            if #available(OSX 11.0, iOS 14.0, *) {
+              NavItem("Redaction", destination: RedactionDemo())
+            } else {
+              NavItem(unavailable: "Redaction")
+            }
           }
           if #available(OSX 11.0, iOS 14.0, *) {
             NavItem("Redaction", destination: RedactionDemo())

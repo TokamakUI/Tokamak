@@ -42,6 +42,19 @@ public typealias Ellipse = TokamakCore.Ellipse
 public typealias Path = TokamakCore.Path
 public typealias Rectangle = TokamakCore.Rectangle
 public typealias RoundedRectangle = TokamakCore.RoundedRectangle
+public typealias ContainerRelativeShape = TokamakCore.ContainerRelativeShape
+
+// MARK: Shape Styles
+
+public typealias PrimaryContentStyle = TokamakCore.PrimaryContentStyle
+public typealias SecondaryContentStyle = TokamakCore.SecondaryContentStyle
+public typealias TertiaryContentStyle = TokamakCore.TertiaryContentStyle
+public typealias QuaternaryContentStyle = TokamakCore.QuaternaryContentStyle
+
+public typealias ForegroundStyle = TokamakCore.ForegroundStyle
+public typealias BackgroundStyle = TokamakCore.BackgroundStyle
+
+public typealias Material = TokamakCore.Material
 
 // MARK: Primitive values
 
@@ -62,6 +75,7 @@ public typealias HStack = TokamakCore.HStack
 public typealias LazyHGrid = TokamakCore.LazyHGrid
 public typealias LazyVGrid = TokamakCore.LazyVGrid
 public typealias List = TokamakCore.List
+public typealias ProgressView = TokamakCore.ProgressView
 public typealias ScrollView = TokamakCore.ScrollView
 public typealias Section = TokamakCore.Section
 public typealias Spacer = TokamakCore.Spacer

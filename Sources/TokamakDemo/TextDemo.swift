@@ -64,6 +64,13 @@ struct TextDemo: View {
         )
         .multilineTextAlignment(alignment)
       }
+      Text("Custom Font")
+        .font(.custom("\"Marker Felt\"", size: 17))
+      VStack {
+        Text("Fallback Font")
+          .font(.custom("\"Marker-Felt\"", size: 17))
+      }
+      .font(.system(.body, design: .serif))
     }
   }
 }

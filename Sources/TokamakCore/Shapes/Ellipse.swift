@@ -33,6 +33,39 @@ public struct Circle: Shape {
   public init() {}
 }
 
+extension Circle: InsettableShape {
+  public func inset(by amount: CGFloat) -> _Inset {
+    _Inset(amount: amount)
+  }
+
+  public struct _Inset: InsettableShape {
+    public var amount: CGFloat
+
+    init(amount: CGFloat) {
+      self.amount = amount
+    }
+
+    public func path(in rect: CGRect) -> Path {
+      .init(
+        storage: .ellipse(CGRect(
+          origin: rect.origin,
+          size: CGSize(
+            width: rect.size.width - (amount / 2),
+            height: rect.size.height - (amount / 2)
+          )
+        )),
+        sizing: .flexible
+      )
+    }
+
+    public func inset(by amount: CGFloat) -> Circle._Inset {
+      var copy = self
+      copy.amount += amount
+      return copy
+    }
+  }
+}
+
 public struct Capsule: Shape {
   public var style: RoundedCornerStyle
 

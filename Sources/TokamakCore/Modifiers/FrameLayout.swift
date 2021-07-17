@@ -30,6 +30,10 @@ public struct _FrameLayout: ViewModifier {
   }
 }
 
+extension _FrameLayout: Animatable {
+  public typealias AnimatableData = EmptyAnimatableData
+}
+
 public extension View {
   func frame(
     width: CGFloat? = nil,

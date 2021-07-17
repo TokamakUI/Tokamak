@@ -33,7 +33,28 @@ private extension DOMViewModifier {
   }
 }
 
+private extension VerticalAlignment {
+  var flexAlignment: String {
+    switch self {
+    case .top: return "flex-start"
+    case .center: return "center"
+    case .bottom: return "flex-end"
+    }
+  }
+}
+
+private extension HorizontalAlignment {
+  var flexAlignment: String {
+    switch self {
+    case .leading: return "flex-start"
+    case .center: return "center"
+    case .trailing: return "flex-end"
+    }
+  }
+}
+
 extension _FrameLayout: DOMViewModifier {
+  public var isOrderDependent: Bool { true }
   public var attributes: [HTMLAttribute: String] {
     ["style": """
     \(unwrapToStyle(\.width, property: "width"))
@@ -43,11 +64,15 @@ extension _FrameLayout: DOMViewModifier {
     white-space: nowrap;
     flex-grow: 0;
     flex-shrink: 0;
+    display: flex;
+    align-items: \(alignment.vertical.flexAlignment);
+    justify-content: \(alignment.horizontal.flexAlignment);
     """]
   }
 }
 
 extension _FlexFrameLayout: DOMViewModifier {
+  public var isOrderDependent: Bool { true }
   public var attributes: [HTMLAttribute: String] {
     ["style": """
     \(unwrapToStyle(\.minWidth, property: "min-width"))
@@ -61,6 +86,9 @@ extension _FlexFrameLayout: DOMViewModifier {
     white-space: nowrap;
     flex-grow: 0;
     flex-shrink: 0;
+    display: flex;
+    align-items: \(alignment.vertical.flexAlignment);
+    justify-content: \(alignment.horizontal.flexAlignment);
     """]
   }
 }
@@ -103,10 +131,28 @@ extension _PaddingLayout: DOMViewModifier {
   }
 }
 
-extension _ShadowLayout: DOMViewModifier {
+extension _ShadowEffect._Resolved: DOMViewModifier {
   public var attributes: [HTMLAttribute: String] {
-    ["style": "box-shadow: \(x)px \(y)px \(radius * 2)px 0px \(color.cssValue(environment));"]
+    [
+      "style": """
+      box-shadow: \(offset.width)px \(offset.height)px \(radius * 2)px 0px \(color.cssValue);
+      """,
+    ]
   }
 
   public var isOrderDependent: Bool { true }
+}
+
+extension _AspectRatioLayout: DOMViewModifier {
+  public var isOrderDependent: Bool { true }
+  public var attributes: [HTMLAttribute: String] {
+    [
+      "style": """
+      aspect-ratio: \(aspectRatio ?? 1)/1;
+      margin: 0 auto;
+      \(contentMode == ((aspectRatio ?? 1) > 1 ? .fill : .fit) ? "height: 100%" : "width: 100%");
+      """,
+      "class": "_tokamak-aspect-ratio-\(contentMode == .fill ? "fill" : "fit")",
+    ]
+  }
 }

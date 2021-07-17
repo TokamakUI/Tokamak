@@ -28,6 +28,10 @@ public struct _PaddingLayout: ViewModifier {
   }
 }
 
+extension _PaddingLayout: Animatable {
+  public typealias AnimatableData = EmptyAnimatableData
+}
+
 public extension View {
   func padding(_ insets: EdgeInsets) -> ModifiedContent<Self, _PaddingLayout> {
     modifier(_PaddingLayout(insets: insets))

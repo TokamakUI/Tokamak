@@ -17,11 +17,21 @@
 
 import Foundation
 
-public protocol Shape: View {
+public protocol Shape: Animatable, View {
   func path(in rect: CGRect) -> Path
+
+  static var role: ShapeRole { get }
 }
 
-public protocol ShapeStyle {}
+public enum ShapeRole: Hashable {
+  case fill
+  case stroke
+  case separator
+}
+
+public extension Shape {
+  static var role: ShapeRole { .fill }
+}
 
 public extension ShapeStyle where Self: View, Self.Body == _ShapeView<Rectangle, Self> {
   var body: some View {
@@ -34,11 +44,7 @@ public protocol InsettableShape: Shape {
   func inset(by amount: CGFloat) -> InsetShape
 }
 
-public struct ForegroundStyle: ShapeStyle {
-  public init() {}
-}
-
-public struct FillStyle: Equatable, ShapeStyle {
+public struct FillStyle: Equatable {
   public var isEOFilled: Bool
   public var isAntialiased: Bool
 

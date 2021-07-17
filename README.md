@@ -123,9 +123,9 @@ app.
 Any browser that [supports WebAssembly](https://caniuse.com/#feat=wasm) should work, which currently includes:
 
 - Edge 16+
-- Firefox 53+
-- Chrome 57+
-- (Mobile) Safari 11+
+- Firefox 61+
+- Chrome 66+
+- (Mobile) Safari 12+
 
 Not all of these were tested though, compatibility reports are very welcome!
 

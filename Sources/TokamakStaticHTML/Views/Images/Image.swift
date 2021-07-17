@@ -29,12 +29,23 @@ extension Image: _HTMLPrimitive {
 struct _HTMLImage: View {
   let proxy: _ImageProxy
   public var body: some View {
-    var attributes: [HTMLAttribute: String] = [
-      "src": proxy.path ?? proxy.name,
-      "style": "max-width: 100%; max-height: 100%",
-    ]
-    if let label = proxy.labelString {
-      attributes["alt"] = label
+    let resolved = proxy.provider.resolve(in: proxy.environment)
+    var attributes: [HTMLAttribute: String] = [:]
+    switch resolved.storage {
+    case let .named(name, bundle):
+      attributes = [
+        "src": bundle?.path(forResource: name, ofType: nil) ?? name,
+        "style": "max-width: 100%; max-height: 100%",
+      ]
+    case let .resizable(.named(name, bundle), _, _):
+      attributes = [
+        "src": bundle?.path(forResource: name, ofType: nil) ?? name,
+        "style": "width: 100%; height: 100%",
+      ]
+    default: break
+    }
+    if let label = resolved.label {
+      attributes["alt"] = _TextProxy(label).rawText
     }
     return AnyView(HTML("img", attributes))
   }

@@ -55,15 +55,17 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     return mountedScene
   }
 
-  override func update(with reconciler: StackReconciler<R>) {
+  override func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
     let element = reconciler.render(mountedApp: self)
     reconciler.reconcile(
       self,
       with: element,
+      transaction: transaction,
       getElementType: { $0.type },
       updateChild: {
         $0.environmentValues = environmentValues
         $0.scene = _AnyScene(element)
+        $0.transaction = transaction
       },
       mountChild: { mountChild(reconciler.renderer, $0) }
     )

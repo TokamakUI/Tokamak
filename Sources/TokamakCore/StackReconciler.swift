@@ -35,7 +35,20 @@ public final class StackReconciler<R: Renderer> {
    haven't been proven in the absence of benchmarks, so this could be updated to a simple `Array` in
    the future if that's proven to be more effective.
    */
-  private var queuedRerenders = Set<MountedCompositeElement<R>>()
+  private var queuedRerenders = Set<Rerender>()
+
+  struct Rerender: Hashable {
+    let element: MountedCompositeElement<R>
+    let transaction: Transaction
+
+    func hash(into hasher: inout Hasher) {
+      hasher.combine(element)
+    }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+      lhs.element == rhs.element
+    }
+  }
 
   /** A root renderer's target instance. We establish the "host-target" terminology where a "host"
    is a primitive `View` that doesn't have any children, and a "target" is an instance of a type
@@ -106,15 +119,24 @@ public final class StackReconciler<R: Renderer> {
   private func queueStorageUpdate(
     for mountedElement: MountedCompositeElement<R>,
     id: Int,
+    transaction: Transaction,
     updater: (inout Any) -> ()
   ) {
     updater(&mountedElement.storage[id])
-    queueUpdate(for: mountedElement)
+    queueUpdate(for: mountedElement, transaction: transaction)
   }
 
-  internal func queueUpdate(for mountedElement: MountedCompositeElement<R>) {
+  internal func queueUpdate(
+    for mountedElement: MountedCompositeElement<R>,
+    transaction: Transaction
+  ) {
     let shouldSchedule = queuedRerenders.isEmpty
-    queuedRerenders.insert(mountedElement)
+    queuedRerenders.insert(
+      .init(
+        element: mountedElement,
+        transaction: transaction
+      )
+    )
 
     guard shouldSchedule else { return }
 
@@ -126,7 +148,7 @@ public final class StackReconciler<R: Renderer> {
     queuedRerenders.removeAll()
 
     for mountedView in queued {
-      mountedView.update(with: self)
+      mountedView.element.update(in: self, with: mountedView.transaction)
     }
 
     performPostrenderCallbacks()
@@ -155,9 +177,9 @@ public final class StackReconciler<R: Renderer> {
 
       // Avoiding an indirect reference cycle here: this closure can be owned by callbacks
       // owned by view's target, which is strongly referenced by the reconciler.
-      writableStorage.setter = { [weak self, weak compositeElement] newValue in
+      writableStorage.setter = { [weak self, weak compositeElement] newValue, transaction in
         guard let element = compositeElement else { return }
-        self?.queueStorageUpdate(for: element, id: id) { $0 = newValue }
+        self?.queueStorageUpdate(for: element, id: id, transaction: transaction) { $0 = newValue }
       }
 
       property.set(value: writableStorage, on: &compositeElement[keyPath: bodyKeypath])
@@ -180,7 +202,7 @@ public final class StackReconciler<R: Renderer> {
     // instance property
     observed.objectWillChange.sink { [weak self, weak compositeElement] _ in
       if let compositeElement = compositeElement {
-        self?.queueUpdate(for: compositeElement)
+        self?.queueUpdate(for: compositeElement, transaction: .init(animation: nil))
       }
     }.store(in: &compositeElement.transientSubscriptions)
   }
@@ -197,7 +219,7 @@ public final class StackReconciler<R: Renderer> {
       else { return }
 
       mountedApp.environmentValues[keyPath: keyPath] = value
-      self?.queueUpdate(for: mountedApp)
+      self?.queueUpdate(for: mountedApp, transaction: .init(animation: nil))
     }.store(in: &mountedApp.persistentSubscriptions)
   }
 
@@ -247,9 +269,11 @@ public final class StackReconciler<R: Renderer> {
     mountedScene.scene.bodyClosure(body(of: mountedScene, keyPath: \.scene.scene))
   }
 
+  // swiftlint:disable function_parameter_count
   func reconcile<Element>(
     _ mountedElement: MountedCompositeElement<R>,
     with element: Element,
+    transaction: Transaction,
     getElementType: (Element) -> Any.Type,
     updateChild: (MountedElement<R>) -> (),
     mountChild: (Element) -> MountedElement<R>
@@ -272,7 +296,7 @@ public final class StackReconciler<R: Renderer> {
       // new child has the same type as existing child
       if mountedChild.typeConstructorName == typeConstructorName(childBodyType) {
         updateChild(mountedChild)
-        mountedChild.update(with: self)
+        mountedChild.update(in: self, with: transaction)
       } else {
         // new child is of a different type, complete rerender, i.e. unmount the old
         // wrapper, then mount a new one with the new `childBody`
@@ -284,6 +308,8 @@ public final class StackReconciler<R: Renderer> {
       }
     }
   }
+
+  // swiftlint:enable function_parameter_count
 
   private var queuedPostrenderCallbacks = [() -> ()]()
   func afterCurrentRender(perform callback: @escaping () -> ()) {

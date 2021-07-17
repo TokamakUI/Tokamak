@@ -31,15 +31,35 @@ import Foundation
 ///       .bold()
 ///       .italic()
 ///       .underline(true, color: .red)
-public struct Text: _PrimitiveView {
+public struct Text: _PrimitiveView, Equatable {
   let storage: _Storage
   let modifiers: [_Modifier]
 
   @Environment(\.self) var environment
 
-  public enum _Storage {
+  public static func == (lhs: Text, rhs: Text) -> Bool {
+    lhs.storage == rhs.storage
+      && lhs.modifiers == rhs.modifiers
+  }
+
+  public enum _Storage: Equatable {
     case verbatim(String)
     case segmentedText([(_Storage, [_Modifier])])
+
+    public static func == (lhs: Text._Storage, rhs: Text._Storage) -> Bool {
+      switch lhs {
+      case let .verbatim(lhsVerbatim):
+        guard case let .verbatim(rhsVerbatim) = rhs else { return false }
+        return lhsVerbatim == rhsVerbatim
+      case let .segmentedText(lhsSegments):
+        guard case let .segmentedText(rhsSegments) = rhs,
+              lhsSegments.count == rhsSegments.count else { return false }
+        return lhsSegments.enumerated().allSatisfy {
+          $0.element.0 == rhsSegments[$0.offset].0
+            && $0.element.1 == rhsSegments[$0.offset].1
+        }
+      }
+    }
   }
 
   public enum _Modifier: Equatable {
@@ -92,7 +112,22 @@ public extension Text._Storage {
 public struct _TextProxy {
   public let subject: Text
 
-  public init(_ subject: Text) { self.subject = subject }
+  public init(_ subject: Text) {
+    // Resolve the foregroundStyle.
+    if let foregroundStyle = subject.environment._foregroundStyle {
+      var shape = _ShapeStyle_Shape(
+        for: .prepare(subject, level: 0),
+        in: subject.environment,
+        role: .fill
+      )
+      foregroundStyle._apply(to: &shape)
+      if case let .prepared(text) = shape.result {
+        self.subject = text
+        return
+      }
+    }
+    self.subject = subject
+  }
 
   public var storage: Text._Storage { subject.storage }
   public var rawText: String {
