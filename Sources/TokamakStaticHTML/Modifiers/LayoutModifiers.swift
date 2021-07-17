@@ -168,8 +168,8 @@ extension _BackgroundLayout: _HTMLPrimitive {
           "div",
           ["style": """
           display: flex;
-          justify-items: \(alignment.horizontal.cssValue);
-          align-items: \(alignment.vertical.cssValue);
+          justify-content: \(alignment.horizontal.flexAlignment);
+          align-items: \(alignment.vertical.flexAlignment);
           grid-area: a;
 
           width: 0; min-width: 100%;
@@ -181,6 +181,36 @@ extension _BackgroundLayout: _HTMLPrimitive {
         }
         HTML("div", ["style": "grid-area: a;"]) {
           content
+        }
+      }
+    )
+  }
+}
+
+extension _OverlayLayout: _HTMLPrimitive {
+  public var renderedBody: AnyView {
+    AnyView(
+      HTML(
+        "div",
+        ["style": "display: inline-grid; grid-template-columns: auto auto;"]
+      ) {
+        HTML("div", ["style": "grid-area: a;"]) {
+          content
+        }
+        HTML(
+          "div",
+          ["style": """
+          display: flex;
+          justify-content: \(alignment.horizontal.flexAlignment);
+          align-items: \(alignment.vertical.flexAlignment);
+          grid-area: a;
+
+          width: 0; min-width: 100%;
+          height: 0; min-height: 100%;
+          overflow: hidden;
+          """]
+        ) {
+          overlay
         }
       }
     )

@@ -351,6 +351,46 @@ final class RenderingTests: XCTestCase {
         ),
       as: .image(size: .init(width: 100, height: 100))
     )
+
+    assertSnapshot(
+      matching: Rectangle()
+        .fill(Color.blue)
+        .opacity(0.5)
+        .frame(width: 80, height: 80)
+        .background(
+          RoundedRectangle(cornerRadius: 10)
+            .fill(Color.red)
+            .frame(width: 40, height: 40),
+          alignment: .bottomTrailing
+        ),
+      as: .image(size: .init(width: 100, height: 100))
+    )
+  }
+
+  func testOverlay() {
+    assertSnapshot(
+      matching: Rectangle()
+        .fill(Color.blue)
+        .frame(width: 80, height: 80)
+        .overlay(
+          RoundedRectangle(cornerRadius: 10)
+            .fill(Color.red.opacity(0.5))
+        ),
+      as: .image(size: .init(width: 100, height: 100))
+    )
+
+    assertSnapshot(
+      matching: Rectangle()
+        .fill(Color.blue)
+        .frame(width: 80, height: 80)
+        .overlay(
+          RoundedRectangle(cornerRadius: 10)
+            .fill(Color.red)
+            .frame(width: 40, height: 40),
+          alignment: .bottomTrailing
+        ),
+      as: .image(size: .init(width: 100, height: 100))
+    )
   }
 }
 
