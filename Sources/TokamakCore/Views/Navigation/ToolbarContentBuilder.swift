@@ -23,7 +23,6 @@
   }
 }
 
-// swiftlint:disable line_length
 // swiftlint:disable large_tuple
 // swiftlint:disable function_parameter_count
 
@@ -253,7 +252,6 @@ extension ToolbarItemGroup: View {
     _items = [AnyView(v1), AnyView(v2), AnyView(v3)]
   }
 
-  // swiftlint:disable line_length
   init<T1: View, T2: View, T3: View, T4: View>(
     _ v1: ToolbarItem<ID, T1>,
     _ v2: ToolbarItem<ID, T2>,
