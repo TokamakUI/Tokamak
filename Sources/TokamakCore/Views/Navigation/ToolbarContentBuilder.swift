@@ -23,6 +23,7 @@
   }
 }
 
+// swiftlint:disable file_length
 // swiftlint:disable large_tuple
 // swiftlint:disable function_parameter_count
 
