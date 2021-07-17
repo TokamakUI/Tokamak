@@ -38,6 +38,20 @@ public struct _DelayedPreferenceView<Key, Content>: View, _PreferenceReadingView
   }
 }
 
+public struct _PreferenceReadingView<Key, Content>: View where Key: PreferenceKey, Content: View {
+  public let value: _PreferenceValue<Key>
+  public let transform: (Key.Value) -> Content
+
+  public init(value: _PreferenceValue<Key>, transform: @escaping (Key.Value) -> Content) {
+    self.value = value
+    self.transform = transform
+  }
+
+  public var body: some View {
+    transform(value.value)
+  }
+}
+
 public extension PreferenceKey {
   static func _delay<T>(
     _ transform: @escaping (_PreferenceValue<Self>) -> T

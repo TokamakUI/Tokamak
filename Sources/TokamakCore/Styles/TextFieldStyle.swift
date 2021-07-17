@@ -15,30 +15,60 @@
 //  Created by Jed Fox on 06/30/2020.
 //
 
-public protocol TextFieldStyle {}
+public struct _TextFieldStyleLabel: View {
+  public let body: AnyView
+}
+
+public protocol TextFieldStyle: _AnyTextFieldStyle {
+  associatedtype _Body: View
+  typealias _Label = _TextFieldStyleLabel
+  func _body(configuration: TextField<Self._Label>) -> Self._Body
+}
 
 public struct DefaultTextFieldStyle: TextFieldStyle {
   public init() {}
+  public func _body(configuration: TextField<_Label>) -> some View {
+    configuration
+  }
 }
 
 public struct PlainTextFieldStyle: TextFieldStyle {
   public init() {}
+  public func _body(configuration: TextField<_Label>) -> some View {
+    configuration
+  }
 }
 
 public struct RoundedBorderTextFieldStyle: TextFieldStyle {
   public init() {}
+  public func _body(configuration: TextField<_Label>) -> some View {
+    configuration
+  }
 }
 
 public struct SquareBorderTextFieldStyle: TextFieldStyle {
   public init() {}
+  public func _body(configuration: TextField<_Label>) -> some View {
+    configuration
+  }
+}
+
+public protocol _AnyTextFieldStyle {
+  func _anyBody(configuration: TextField<_TextFieldStyleLabel>) -> AnyView
+}
+
+public extension TextFieldStyle {
+  func _anyBody(configuration: TextField<_TextFieldStyleLabel>) -> AnyView {
+    .init(_body(configuration: configuration))
+  }
 }
 
 enum TextFieldStyleKey: EnvironmentKey {
-  static let defaultValue: TextFieldStyle = DefaultTextFieldStyle()
+  static let defaultValue: _AnyTextFieldStyle = DefaultTextFieldStyle()
 }
 
 extension EnvironmentValues {
-  var textFieldStyle: TextFieldStyle {
+  var textFieldStyle: _AnyTextFieldStyle {
     get {
       self[TextFieldStyleKey.self]
     }
@@ -49,7 +79,7 @@ extension EnvironmentValues {
 }
 
 public extension View {
-  func textFieldStyle(_ style: TextFieldStyle) -> some View {
+  func textFieldStyle<S>(_ style: S) -> some View where S: TextFieldStyle {
     environment(\.textFieldStyle, style)
   }
 }

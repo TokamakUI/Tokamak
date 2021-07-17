@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Tokamak contributors
+// Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,13 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 1/20/21.
+//  Created by Carson Katri on 1/19/21.
 //
 
-import TokamakCore
+public struct NavigationBarItem: Equatable {
+  let displayMode: TitleDisplayMode
 
-extension _OpacityEffect: DOMViewModifier {
-  public var attributes: [HTMLAttribute: String] {
-    ["style": "opacity: \(opacity); "]
+  public enum TitleDisplayMode: Hashable {
+    case automatic
+    case inline
+    case large
+  }
+}
+
+public struct _NavigationBarItemProxy {
+  let subject: NavigationBarItem
+
+  public init(_ subject: NavigationBarItem) {
+    self.subject = subject
+  }
+
+  public var displayMode: NavigationBarItem.TitleDisplayMode {
+    subject.displayMode
   }
 }

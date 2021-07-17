@@ -72,13 +72,13 @@ extension TextField: ParentView {
 
 /// This is a helper type that works around absence of "package private" access control in Swift
 public struct _TextFieldProxy {
-  public let subject: TextField<Text>
+  public let subject: TextField<_TextFieldStyleLabel>
 
-  public init(_ subject: TextField<Text>) { self.subject = subject }
+  public init(_ subject: TextField<_TextFieldStyleLabel>) { self.subject = subject }
 
-  public var label: _TextProxy { _TextProxy(subject.label) }
+  public var label: _TextFieldStyleLabel { subject.label }
   public var textBinding: Binding<String> { subject.textBinding }
   public var onCommit: () -> () { subject.onCommit }
   public var onEditingChanged: (Bool) -> () { subject.onEditingChanged }
-  public var textFieldStyle: TextFieldStyle { subject.style }
+  public var textFieldStyle: _AnyTextFieldStyle { subject.style }
 }

@@ -29,8 +29,27 @@ extension _Button: DOMPrimitive {
         action()
       },
     ]
-    if buttonStyle.type != DefaultButtonStyle.self {
-      attributes["class"] = "_tokamak-buttonstyle-reset"
+    if buttonStyle.type == DefaultButtonStyle.self {
+      return AnyView(DynamicHTML(
+        "button",
+        ["class": "_tokamak-buttonstyle-default"],
+        listeners: listeners
+      ) {
+        label
+      })
+    } else {
+      return AnyView(DynamicHTML(
+        "button",
+        ["class": "_tokamak-buttonstyle-reset"],
+        listeners: listeners
+      ) {
+        buttonStyle.makeBody(
+          configuration: _ButtonStyleConfigurationProxy(
+            label: AnyView(label),
+            isPressed: isPressed
+          ).subject
+        )
+      })
     }
     return AnyView(DynamicHTML(
       "button",

@@ -23,6 +23,31 @@ public extension View {
     navigationTitle(title)
   }
 
+  @available(
+    *,
+    deprecated,
+    message: "Use navigationTitle(_:) with navigationBarTitleDisplayMode(_:)"
+  )
+  func navigationBarTitle(_ title: Text,
+                          displayMode: NavigationBarItem.TitleDisplayMode) -> some View
+  {
+    navigationTitle(title)
+      .navigationBarTitleDisplayMode(displayMode)
+  }
+
+  @available(
+    *,
+    deprecated,
+    message: "Use navigationTitle(_:) with navigationBarTitleDisplayMode(_:)"
+  )
+  func navigationBarTitle<S: StringProtocol>(
+    _ title: S,
+    displayMode: NavigationBarItem.TitleDisplayMode
+  ) -> some View {
+    navigationTitle(title)
+      .navigationBarTitleDisplayMode(displayMode)
+  }
+
   func navigationTitle(_ title: Text) -> some View {
     navigationTitle { title }
   }
@@ -35,5 +60,11 @@ public extension View {
     where V: View
   {
     preference(key: NavigationTitleKey.self, value: AnyView(title()))
+  }
+
+  func navigationBarTitleDisplayMode(_ displayMode: NavigationBarItem
+    .TitleDisplayMode) -> some View
+  {
+    preference(key: NavigationBarItemKey.self, value: .init(displayMode: displayMode))
   }
 }
