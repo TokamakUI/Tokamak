@@ -53,7 +53,7 @@ Table columns:
 
 |     |                                                                                |     |
 | --- | ------------------------------------------------------------------------------ | :-: |
-|     | [ProgressView](https://developer.apple.com/documentation/swiftui/progressview) |     |
+| 🚧  | [ProgressView](https://developer.apple.com/documentation/swiftui/progressview) |     |
 |     | [Gauge](https://developer.apple.com/documentation/swiftui/gauge)               |     |
 |     | [Label](https://developer.apple.com/documentation/swiftui/label)               |     |
 | ✅  | [Link](https://developer.apple.com/documentation/swiftui/link)                 |     |

@@ -130,6 +130,7 @@ public typealias NavigationLink = TokamakCore.NavigationLink
 public typealias NavigationView = TokamakCore.NavigationView
 public typealias OutlineGroup = TokamakCore.OutlineGroup
 public typealias Picker = TokamakCore.Picker
+public typealias ProgressView = TokamakCore.ProgressView
 public typealias ScrollView = TokamakCore.ScrollView
 public typealias Section = TokamakCore.Section
 public typealias SecureField = TokamakCore.SecureField
