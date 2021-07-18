@@ -34,7 +34,6 @@ extension _Button: DOMPrimitive {
       listeners: listeners
     ) {
       self.makeStyleBody()
-        .colorScheme(.light)
     })
   }
 }
@@ -56,6 +55,13 @@ extension _PrimitiveButton: DOMPrimitive {
     } else if style is BorderedButtonStyle.Type && controlProminence == .increased {
       attributes["class"] = "_tokamak-button-prominence-increased"
     }
+    let font: Font?
+    switch controlSize {
+    case .mini: font = .caption2
+    case .small: font = .caption
+    case .regular: font = .body
+    case .large: font = .title3
+    }
     return AnyView(DynamicHTML(
       "button",
       attributes,
@@ -64,12 +70,9 @@ extension _PrimitiveButton: DOMPrimitive {
       if !isResetStyle {
         self.makeStyleBody()
           .colorScheme(.light)
-          .foregroundColor(
-            style is LinkButtonStyle.Type ? .accentColor : nil
-          )
       } else {
         self.makeStyleBody()
       }
-    })
+    }.font(font))
   }
 }

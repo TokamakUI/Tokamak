@@ -42,11 +42,12 @@ public struct DefaultButtonStyle: PrimitiveButtonStyle {
   }
 }
 
-public struct PlainButtonStyle: PrimitiveButtonStyle {
+public struct PlainButtonStyle: ButtonStyle {
   public init() {}
 
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label.body
+      .foregroundColor(configuration.isPressed ? .secondary : .primary)
   }
 }
 
@@ -58,19 +59,24 @@ public struct BorderedButtonStyle: PrimitiveButtonStyle {
   }
 }
 
-public struct BorderlessButtonStyle: PrimitiveButtonStyle {
+public struct BorderlessButtonStyle: ButtonStyle {
   public init() {}
 
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label.body
+      .foregroundColor(configuration.isPressed ? .primary : .secondary)
   }
 }
 
-public struct LinkButtonStyle: PrimitiveButtonStyle {
+public struct LinkButtonStyle: ButtonStyle {
   public init() {}
 
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label.body
+      .foregroundColor(
+        configuration
+          .isPressed ? Color(red: 128 / 255, green: 192 / 255, blue: 240 / 255) : .blue
+      )
   }
 }
 
