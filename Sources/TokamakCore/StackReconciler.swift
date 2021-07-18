@@ -86,7 +86,7 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootElement = AnyView(view).makeMountedView(renderer, target, environment, nil)
+    rootElement = AnyView(view).makeMountedView(renderer, target, environment, .init(), nil)
 
     performInitialMount()
   }

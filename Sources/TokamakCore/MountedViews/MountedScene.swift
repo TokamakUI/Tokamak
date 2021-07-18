@@ -90,7 +90,7 @@ extension _AnyScene.BodyResult {
     case let .scene(scene):
       return scene.makeMountedScene(renderer, parentTarget, environmentValues, parent)
     case let .view(view):
-      return view.makeMountedView(renderer, parentTarget, environmentValues, parent)
+      return view.makeMountedView(renderer, parentTarget, environmentValues, .init(), parent)
     }
   }
 }
@@ -115,6 +115,7 @@ extension _AnyScene {
           renderer,
           parentTarget,
           environmentValues,
+          .init(),
           parent
         ),
       ]

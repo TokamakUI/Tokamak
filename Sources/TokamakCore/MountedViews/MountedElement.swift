@@ -234,12 +234,13 @@ extension AnyView {
     _ renderer: R,
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues,
+    _ viewTraits: _ViewTraitStore,
     _ parent: MountedElement<R>?
   ) -> MountedElement<R> {
     if type == EmptyView.self {
       return MountedEmptyView(self, environmentValues, parent)
     } else if bodyType == Never.self && !renderer.isPrimitiveView(type) {
-      return MountedHostView(self, parentTarget, environmentValues, parent)
+      return MountedHostView(self, parentTarget, environmentValues, viewTraits, parent)
     } else {
       return MountedCompositeView(self, parentTarget, environmentValues, parent)
     }

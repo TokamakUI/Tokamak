@@ -30,18 +30,16 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
 
     let childBody = reconciler.render(compositeView: self)
 
+    if let traitModifier = view.view as? _TraitWritingModifierProtocol {
+      traitModifier.modifyViewTraitStore(&viewTraits)
+    }
     let child: MountedElement<R> = childBody.makeMountedView(
       reconciler.renderer,
       parentTarget,
       environmentValues,
+      viewTraits,
       self
     )
-    if let traitModifier = view.view as? _TraitWritingModifierProtocol {
-      traitModifier.modifyViewTraitStore(&viewTraits)
-    }
-    if child is MountedHostView {
-      child.viewTraits = viewTraits
-    }
     mountedChildren = [child]
     child.mount(before: sibling, on: self, in: reconciler, with: transaction)
 
@@ -110,7 +108,13 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
         $0.transaction = transaction
       },
       mountChild: {
-        $0.makeMountedView(reconciler.renderer, parentTarget, environmentValues, self)
+        $0.makeMountedView(
+          reconciler.renderer,
+          parentTarget,
+          environmentValues,
+          viewTraits,
+          self
+        )
       }
     )
   }

@@ -33,11 +33,14 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     _ view: AnyView,
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues,
+    _ viewTraits: _ViewTraitStore,
     _ parent: MountedElement<R>?
   ) {
     self.parentTarget = parentTarget
 
     super.init(view, environmentValues, parent)
+
+    self.viewTraits = viewTraits
   }
 
   override func mount(
@@ -60,9 +63,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     guard !view.children.isEmpty else { return }
 
     mountedChildren = view.children.map {
-      let child = $0.makeMountedView(reconciler.renderer, target, environmentValues, self)
-      child.viewTraits = self.viewTraits
-      return child
+      $0.makeMountedView(reconciler.renderer, target, environmentValues, self.viewTraits, self)
     }
 
     /* Remember that `GroupView`s are always "flattened", their `target` instances are targets of
@@ -109,7 +110,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     // if no existing children then mount all new children
     case (true, false):
       mountedChildren = childrenViews.map {
-        $0.makeMountedView(reconciler.renderer, target, environmentValues, self)
+        $0.makeMountedView(reconciler.renderer, target, environmentValues, self.viewTraits, self)
       }
       mountedChildren.forEach {
         $0.mount(on: self, in: reconciler, with: transaction)
@@ -139,6 +140,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
             reconciler.renderer,
             target,
             environmentValues,
+            viewTraits,
             self
           )
           newChild.mount(
@@ -163,7 +165,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
         for firstChild in childrenViews {
           let newChild: MountedElement<R> =
             firstChild.makeMountedView(
-              reconciler.renderer, target, environmentValues, self
+              reconciler.renderer, target, environmentValues, viewTraits, self
             )
           newChild.mount(on: self, in: reconciler, with: transaction)
           newChildren.append(newChild)
