@@ -24,5 +24,5 @@ final class MountedEmptyView<R: Renderer>: MountedElement<R> {
 
   override func unmount(with reconciler: StackReconciler<R>) {}
 
-  override func update(with reconciler: StackReconciler<R>) {}
+  override func update(in reconciler: StackReconciler<R>, with transaction: Transaction?) {}
 }

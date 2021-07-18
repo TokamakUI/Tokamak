@@ -17,6 +17,15 @@
 
 import Foundation
 
+/// Override this View's body to provide a layout that fits the background to the content.
+public struct _BackgroundLayout<Content, Background>: _PrimitiveView
+  where Content: View, Background: View
+{
+  public let content: Content
+  public let background: Background
+  public let alignment: Alignment
+}
+
 public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
   where Background: View
 {
@@ -30,11 +39,11 @@ public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
   }
 
   public func body(content: Content) -> some View {
-    // FIXME: Clip to bounds of foreground.
-    ZStack(alignment: alignment) {
-      background
-      content
-    }
+    _BackgroundLayout(
+      content: content,
+      background: background,
+      alignment: alignment
+    )
   }
 
   mutating func setContent(from values: EnvironmentValues) {
@@ -113,6 +122,15 @@ public extension View {
   }
 }
 
+/// Override this View's body to provide a layout that fits the background to the content.
+public struct _OverlayLayout<Content, Overlay>: _PrimitiveView
+  where Content: View, Overlay: View
+{
+  public let content: Content
+  public let overlay: Overlay
+  public let alignment: Alignment
+}
+
 public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
   where Overlay: View
 {
@@ -126,11 +144,11 @@ public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
   }
 
   public func body(content: Content) -> some View {
-    // FIXME: Clip to content shape.
-    ZStack(alignment: alignment) {
-      content
-      overlay
-    }
+    _OverlayLayout(
+      content: content,
+      overlay: overlay,
+      alignment: alignment
+    )
   }
 
   mutating func setContent(from values: EnvironmentValues) {

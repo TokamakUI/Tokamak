@@ -131,9 +131,13 @@ extension _PaddingLayout: DOMViewModifier {
   }
 }
 
-extension _ShadowLayout: DOMViewModifier {
+extension _ShadowEffect._Resolved: DOMViewModifier {
   public var attributes: [HTMLAttribute: String] {
-    ["style": "box-shadow: \(x)px \(y)px \(radius * 2)px 0px \(color.cssValue(environment));"]
+    [
+      "style": """
+      box-shadow: \(offset.width)px \(offset.height)px \(radius * 2)px 0px \(color.cssValue);
+      """,
+    ]
   }
 
   public var isOrderDependent: Bool { true }
@@ -150,5 +154,65 @@ extension _AspectRatioLayout: DOMViewModifier {
       """,
       "class": "_tokamak-aspect-ratio-\(contentMode == .fill ? "fill" : "fit")",
     ]
+  }
+}
+
+extension _BackgroundLayout: _HTMLPrimitive {
+  public var renderedBody: AnyView {
+    AnyView(
+      HTML(
+        "div",
+        ["style": "display: inline-grid; grid-template-columns: auto auto;"]
+      ) {
+        HTML(
+          "div",
+          ["style": """
+          display: flex;
+          justify-content: \(alignment.horizontal.flexAlignment);
+          align-items: \(alignment.vertical.flexAlignment);
+          grid-area: a;
+
+          width: 0; min-width: 100%;
+          height: 0; min-height: 100%;
+          overflow: hidden;
+          """]
+        ) {
+          background
+        }
+        HTML("div", ["style": "grid-area: a;"]) {
+          content
+        }
+      }
+    )
+  }
+}
+
+extension _OverlayLayout: _HTMLPrimitive {
+  public var renderedBody: AnyView {
+    AnyView(
+      HTML(
+        "div",
+        ["style": "display: inline-grid; grid-template-columns: auto auto;"]
+      ) {
+        HTML("div", ["style": "grid-area: a;"]) {
+          content
+        }
+        HTML(
+          "div",
+          ["style": """
+          display: flex;
+          justify-content: \(alignment.horizontal.flexAlignment);
+          align-items: \(alignment.vertical.flexAlignment);
+          grid-area: a;
+
+          width: 0; min-width: 100%;
+          height: 0; min-height: 100%;
+          overflow: hidden;
+          """]
+        ) {
+          overlay
+        }
+      }
+    )
   }
 }

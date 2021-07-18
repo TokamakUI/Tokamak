@@ -11,6 +11,10 @@
 		207C05712610E16E00BBBE54 /* DatePickerDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207C056F2610E16E00BBBE54 /* DatePickerDemo.swift */; };
 		262DA7B32695D99500CABEAE /* ShapeStyleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262DA7B22695D99500CABEAE /* ShapeStyleDemo.swift */; };
 		262DA7B42695D99500CABEAE /* ShapeStyleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262DA7B22695D99500CABEAE /* ShapeStyleDemo.swift */; };
+		26AC04B62698D33A0057784E /* ProgressViewDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26AC04B52698D33A0057784E /* ProgressViewDemo.swift */; };
+		26AC04B72698D33A0057784E /* ProgressViewDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26AC04B52698D33A0057784E /* ProgressViewDemo.swift */; };
+		26A3BFB0269BD18A0004DA16 /* AnimationDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A3BFAF269BD18A0004DA16 /* AnimationDemo.swift */; };
+		26A3BFB1269BD18A0004DA16 /* AnimationDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A3BFAF269BD18A0004DA16 /* AnimationDemo.swift */; };
 		3DCDE44424CA6AD400910F17 /* SidebarDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */; };
 		3DCDE44524CA6AD400910F17 /* SidebarDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */; };
 		4550BD5225B642B80088F4EA /* ShadowDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4550BD5125B642B80088F4EA /* ShadowDemo.swift */; };
@@ -100,6 +104,8 @@
 /* Begin PBXFileReference section */
 		207C056F2610E16E00BBBE54 /* DatePickerDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerDemo.swift; sourceTree = "<group>"; };
 		262DA7B22695D99500CABEAE /* ShapeStyleDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeStyleDemo.swift; sourceTree = "<group>"; };
+		26AC04B52698D33A0057784E /* ProgressViewDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressViewDemo.swift; sourceTree = "<group>"; };
+		26A3BFAF269BD18A0004DA16 /* AnimationDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationDemo.swift; sourceTree = "<group>"; };
 		3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidebarDemo.swift; sourceTree = "<group>"; };
 		4550BD5125B642B80088F4EA /* ShadowDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowDemo.swift; sourceTree = "<group>"; };
 		8500293E24D2FF3E001A2E84 /* SliderDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderDemo.swift; sourceTree = "<group>"; };
@@ -194,10 +200,9 @@
 		85ED189924AD425E0085DFA0 /* TokamakDemo */ = {
 			isa = PBXGroup;
 			children = (
+				26A3BFAF269BD18A0004DA16 /* AnimationDemo.swift */,
 				262DA7B22695D99500CABEAE /* ShapeStyleDemo.swift */,
 				D120FDDA257E7145008FFBAD /* TextEditorDemo.swift */,
-				D1D6B62224D817350041E1D9 /* GeometryReaderDemo.swift */,
-				D1C726F224CB63C6003B576D /* ButtonStyleDemo.swift */,
 				B5C76E4924C73ED4003EABB2 /* AppStorageDemo.swift */,
 				D1C726F224CB63C6003B576D /* ButtonStyleDemo.swift */,
 				B56F22DF24BC89FD001738DF /* ColorDemo.swift */,
@@ -212,6 +217,7 @@
 				B51F214F24B920B400CF2583 /* PathDemo.swift */,
 				D1EE7EA624C0DD2100C0D127 /* PickerDemo.swift */,
 				B5F2BE022571443D00FB3653 /* PreferenceKeyDemo.swift */,
+				26AC04B52698D33A0057784E /* ProgressViewDemo.swift */,
 				B5DBA22A24D509B4003D3347 /* RedactDemo.swift */,
 				3DCDE44324CA6AD400910F17 /* SidebarDemo.swift */,
 				8500293E24D2FF3E001A2E84 /* SliderDemo.swift */,
@@ -372,6 +378,7 @@
 				D1D6B62324D817350041E1D9 /* GeometryReaderDemo.swift in Sources */,
 				B5DBA22B24D509B4003D3347 /* RedactDemo.swift in Sources */,
 				B56F22E024BC89FD001738DF /* ColorDemo.swift in Sources */,
+				26A3BFB0269BD18A0004DA16 /* AnimationDemo.swift in Sources */,
 				B51F215024B920B400CF2583 /* PathDemo.swift in Sources */,
 				85ED18AF24AD425E0085DFA0 /* EnvironmentDemo.swift in Sources */,
 				85ED18A324AD425E0085DFA0 /* SpacerDemo.swift in Sources */,
@@ -391,6 +398,7 @@
 				D1C726F324CB63C6003B576D /* ButtonStyleDemo.swift in Sources */,
 				854A1A9124B3E3630027BC32 /* ToggleDemo.swift in Sources */,
 				85ED18A524AD425E0085DFA0 /* TextDemo.swift in Sources */,
+				26AC04B62698D33A0057784E /* ProgressViewDemo.swift in Sources */,
 				85ED18AB24AD425E0085DFA0 /* Counter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -406,6 +414,7 @@
 				D1B4229324B3B9BB00682F74 /* OutlineGroupDemo.swift in Sources */,
 				D1D6B62424D817350041E1D9 /* GeometryReaderDemo.swift in Sources */,
 				B5DBA22C24D509B4003D3347 /* RedactDemo.swift in Sources */,
+				26A3BFB1269BD18A0004DA16 /* AnimationDemo.swift in Sources */,
 				B56F22E124BC89FD001738DF /* ColorDemo.swift in Sources */,
 				B51F215124B920B400CF2583 /* PathDemo.swift in Sources */,
 				85ED18A424AD425E0085DFA0 /* SpacerDemo.swift in Sources */,
@@ -425,6 +434,7 @@
 				D1C726F424CB63C6003B576D /* ButtonStyleDemo.swift in Sources */,
 				854A1A9324B3F28F0027BC32 /* ToggleDemo.swift in Sources */,
 				85ED18AE24AD425E0085DFA0 /* TextFieldDemo.swift in Sources */,
+				26AC04B72698D33A0057784E /* ProgressViewDemo.swift in Sources */,
 				85ED18A624AD425E0085DFA0 /* TextDemo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -255,6 +255,21 @@ final class RenderingTests: XCTestCase {
     )
   }
 
+  func testProgressView() {
+    assertSnapshot(
+      matching: VStack(spacing: 0) {
+        ProgressView(value: 0.5) {
+          Text("Loading")
+        } currentValueLabel: {
+          Text("0.5")
+        }
+        ProgressView(Progress(totalUnitCount: 3))
+      },
+      as: .image(size: .init(width: 200, height: 200)),
+      timeout: defaultSnapshotTimeout
+    )
+  }
+
   func testAspectRatio() {
     assertSnapshot(
       matching: Ellipse()
@@ -274,6 +289,107 @@ final class RenderingTests: XCTestCase {
         .border(Color(white: 0.75)),
       as: .image(size: .init(width: 125, height: 125)),
       timeout: defaultSnapshotTimeout
+    )
+  }
+
+  func testScaleEffect() {
+    assertSnapshot(
+      matching: ZStack {
+        Circle()
+          .fill(Color.red)
+          .frame(width: 50, height: 50)
+          .scaleEffect(2)
+          .opacity(0.5)
+        Circle()
+          .fill(Color.blue)
+          .frame(width: 50, height: 50)
+          .opacity(0.5)
+      },
+      as: .image(size: .init(width: 100, height: 100)),
+      timeout: defaultSnapshotTimeout
+    )
+  }
+
+  func testAnchoredModifiers() {
+    assertSnapshot(
+      matching: ZStack {
+        Circle()
+          .fill(Color.red)
+          .frame(width: 50, height: 50)
+          .scaleEffect(2, anchor: .topLeading)
+          .opacity(0.5)
+        Circle()
+          .fill(Color.blue)
+          .frame(width: 50, height: 50)
+          .scaleEffect(2, anchor: .center)
+          .opacity(0.5)
+
+        Rectangle()
+          .fill(Color.red)
+          .frame(width: 50, height: 50)
+          .rotationEffect(.degrees(45), anchor: .topLeading)
+          .opacity(0.5)
+        Rectangle()
+          .fill(Color.blue)
+          .frame(width: 50, height: 50)
+          .rotationEffect(.degrees(45), anchor: .center)
+          .opacity(0.5)
+      },
+      as: .image(size: .init(width: 200, height: 200)),
+      timeout: defaultSnapshotTimeout
+    )
+  }
+
+  func testBackground() {
+    assertSnapshot(
+      matching: Rectangle()
+        .fill(Color.blue)
+        .opacity(0.5)
+        .frame(width: 80, height: 80)
+        .background(
+          RoundedRectangle(cornerRadius: 10).fill(Color.red)
+        ),
+      as: .image(size: .init(width: 100, height: 100))
+    )
+
+    assertSnapshot(
+      matching: Rectangle()
+        .fill(Color.blue)
+        .opacity(0.5)
+        .frame(width: 80, height: 80)
+        .background(
+          RoundedRectangle(cornerRadius: 10)
+            .fill(Color.red)
+            .frame(width: 40, height: 40),
+          alignment: .bottomTrailing
+        ),
+      as: .image(size: .init(width: 100, height: 100))
+    )
+  }
+
+  func testOverlay() {
+    assertSnapshot(
+      matching: Rectangle()
+        .fill(Color.blue)
+        .frame(width: 80, height: 80)
+        .overlay(
+          RoundedRectangle(cornerRadius: 10)
+            .fill(Color.red.opacity(0.5))
+        ),
+      as: .image(size: .init(width: 100, height: 100))
+    )
+
+    assertSnapshot(
+      matching: Rectangle()
+        .fill(Color.blue)
+        .frame(width: 80, height: 80)
+        .overlay(
+          RoundedRectangle(cornerRadius: 10)
+            .fill(Color.red)
+            .frame(width: 40, height: 40),
+          alignment: .bottomTrailing
+        ),
+      as: .image(size: .init(width: 100, height: 100))
     )
   }
 }
