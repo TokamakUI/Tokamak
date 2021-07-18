@@ -25,16 +25,13 @@ struct PressedButtonStyle: ButtonStyle {
 }
 
 public struct ButtonStyleDemo: View {
-  var allStyles: some View {
+  var allSizes: some View {
     HStack {
       if #available(iOS 15.0, macOS 12.0, *) {
         ForEach(Array(ControlSize.allCases.enumerated()), id: \.offset) { controlSize in
           VStack {
-            Button("Normal", role: .cancel) {}
+            Button("Button", role: .cancel) {}
               .controlSize(controlSize.element)
-            Button("Prominent", role: .cancel) {}
-              .controlSize(controlSize.element)
-              .controlProminence(.increased)
           }
         }
       }
@@ -81,26 +78,30 @@ public struct ButtonStyleDemo: View {
         .buttonStyle(
           PressedButtonStyle(pressedColor: Color.red)
         )
+      if #available(iOS 15.0, macOS 12.0, *) {
+        Button("Prominent") {}
+          .controlProminence(.increased)
+      }
       VStack {
         Text("automatic")
           .font(.headline)
-        allStyles
+        allSizes
           .buttonStyle(DefaultButtonStyle())
         Text("borderless")
           .font(.headline)
-        allStyles
+        allSizes
           .buttonStyle(BorderlessButtonStyle())
         Text("bordered")
           .font(.headline)
-        allStyles
+        allSizes
           .buttonStyle(BorderedButtonStyle())
         Text("link")
           .font(.headline)
-        allStyles
+        allSizes
           .buttonStyle(LinkButtonStyle())
         Text("plain")
           .font(.headline)
-        allStyles
+        allSizes
           .buttonStyle(PlainButtonStyle())
       }
     }

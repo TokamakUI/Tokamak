@@ -72,8 +72,29 @@ public let tokamakStyles = """
   padding: 0;
   font-size: inherit;
 }
-._tokamak-button-prominence-increased {
-  -webkit-appearance: default-button;
+@supports (-webkit-appearance: default-button) {
+  ._tokamak-button-prominence-increased {
+    -webkit-appearance: default-button;
+  }
+}
+@supports not (-webkit-appearance: default-button) {
+  ._tokamak-button-prominence-increased {
+    background-color: rgb(55, 120, 246);
+    border: 1px solid rgb(88, 156, 248);
+    border-radius: 4px;
+  }
+  ._tokamak-button-prominence-increased:active {
+    background-color: rgb(38, 99, 226);
+  }
+
+  @media (prefers-color-scheme:dark) {
+    ._tokamak-button-prominence-increased {
+      background-color: rgb(56, 116, 225);
+    }
+    ._tokamak-button-prominence-increased:active {
+      background-color: rgb(56, 134, 247);
+    }
+  }
 }
 
 ._tokamak-text-redacted {

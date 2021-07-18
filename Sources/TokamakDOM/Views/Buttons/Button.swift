@@ -49,10 +49,12 @@ extension _PrimitiveButton: DOMPrimitive {
     let isResetStyle = style is PlainButtonStyle.Type
       || style is BorderlessButtonStyle.Type
       || style is LinkButtonStyle.Type
+    let isBordered = style is BorderedButtonStyle.Type
+      || style is DefaultButtonStyle.Type
     var attributes = [HTMLAttribute: String]()
     if isResetStyle {
       attributes["class"] = "_tokamak-buttonstyle-reset"
-    } else if style is BorderedButtonStyle.Type && controlProminence == .increased {
+    } else if isBordered && controlProminence == .increased {
       attributes["class"] = "_tokamak-button-prominence-increased"
     }
     let font: Font?
@@ -68,8 +70,13 @@ extension _PrimitiveButton: DOMPrimitive {
       listeners: listeners
     ) {
       if !isResetStyle {
-        self.makeStyleBody()
-          .colorScheme(.light)
+        if isBordered && controlProminence == .increased {
+          self.makeStyleBody()
+            .foregroundColor(.white)
+        } else {
+          self.makeStyleBody()
+            .colorScheme(.light)
+        }
       } else {
         self.makeStyleBody()
       }
