@@ -24,8 +24,8 @@ extension _MoveTransition: DOMViewModifier {
     switch edge {
     case .leading: offset = ("-100%", "0")
     case .trailing: offset = ("100%", "0")
-    case .top: offset = ("-100%", "0")
-    case .bottom: offset = ("100%", "0")
+    case .top: offset = ("0", "-100%")
+    case .bottom: offset = ("0", "100%")
     }
     return [
       "style":
