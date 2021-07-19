@@ -22,6 +22,7 @@ extension CGPoint {
   func rotate(_ angle: Angle, around origin: Self) -> Self {
     let cosAngle = CGFloat(cos(angle.radians))
     let sinAngle = CGFloat(sin(angle.radians))
+      
     return .init(
       x: cosAngle * (x - origin.x) - sinAngle * (y - origin.y) + origin.x,
       y: sinAngle * (x - origin.x) + cosAngle * (y - origin.y) + origin.y
@@ -69,24 +70,28 @@ public enum CGLineJoin {
 ///     a   b   0
 ///     c   d   0
 ///     tx  ty  1
-public struct CGAffineTransform: Equatable {
+public struct CGAffineTransform: Equatable, Codable {
+  /// The value at position [1,1] in the matrix.
   public var a: CGFloat
+  /// The value at position [1,2] in the matrix.
   public var b: CGFloat
+  /// The value at position [2,1] in the matrix.
   public var c: CGFloat
+  /// The value at position [2,2] in the matrix.
   public var d: CGFloat
+  /// The value at position [3,1] in the matrix.
   public var tx: CGFloat
+  /// The value at position [3,2] in the matrix.
   public var ty: CGFloat
-
-  /// The identity matrix
-  public static let identity: Self = .init(
-    a: 1,
-    b: 0, // 0
-    c: 0,
-    d: 1, // 0
-    tx: 0,
-    ty: 0
-  ) // 1
-
+  
+  /// Creates an affine transform with the given matrix values.
+  /// - Parameters:
+  ///   - a: The value at position [1,1] in the matrix.
+  ///   - b: The value at position [1,2] in the matrix.
+  ///   - c: The value at position [2,1] in the matrix.
+  ///   - d: The value at position [2,2] in the matrix.
+  ///   - tx: The value at position [3,1] in the matrix.
+  ///   - ty: The value at position [3,2] in the matrix.
   public init(
     a: CGFloat, b: CGFloat,
     c: CGFloat, d: CGFloat,
@@ -99,14 +104,40 @@ public struct CGAffineTransform: Equatable {
     self.tx = tx
     self.ty = ty
   }
+}
 
+extension CGAffineTransform {
+  /// The identity matrix.
+  public static let identity = Self(
+    a:  1, b:  0, // 0
+    c:  0, d:  1, // 0
+    tx: 0, ty: 0  // 1
+  )
+  
+  public init() {
+    self = .identity
+  }
+  
+  public var isIdentity: Bool {
+    self == .identity
+  }
+}
+
+extension CGAffineTransform {
   /// Returns an affine transformation matrix constructed from a rotation value you provide.
   /// - Parameters:
-  ///   - angle: The angle, in radians, by which this matrix rotates the coordinate system axes.
-  ///            A positive value specifies clockwise rotation and anegative value specifies
-  ///            counterclockwise rotation.
+  ///   - angle: The angle, in radians, by which this matrix rotates the coordinate
+  ///   system axes. A positive value specifies clockwise rotation and a negative value
+  ///    specifies counterclockwise rotation.
   public init(rotationAngle angle: CGFloat) {
-    self.init(a: cos(angle), b: sin(angle), c: -sin(angle), d: cos(angle), tx: 0, ty: 0)
+    let angleSine = sin(angle)
+    let angleCosine = cos(angle)
+    
+    self.init(
+      a: angleCosine, b: angleSine,
+      c: -angleSine,  d: angleCosine,
+      tx: 0,          ty: 0
+    )
   }
 
   /// Returns an affine transformation matrix constructed from scaling values you provide.
@@ -115,12 +146,9 @@ public struct CGAffineTransform: Equatable {
   ///   - sy: The factor by which to scale the y-axis of the coordinate system.
   public init(scaleX sx: CGFloat, y sy: CGFloat) {
     self.init(
-      a: sx,
-      b: 0,
-      c: 0,
-      d: sy,
-      tx: 0,
-      ty: 0
+      a: sx, b: 0,
+      c: 0,  d: sy,
+      tx: 0, ty: 0
     )
   }
 
@@ -130,60 +158,64 @@ public struct CGAffineTransform: Equatable {
   ///   - ty: The value by which to move the y-axis of the coordinate system.
   public init(translationX tx: CGFloat, y ty: CGFloat) {
     self.init(
-      a: 1,
-      b: 0,
-      c: 0,
-      d: 1,
-      tx: tx,
-      ty: ty
+      a: 1,   b: 0,
+      c: 0,   d: 1,
+      tx: tx, ty: ty
     )
   }
+}
 
+extension CGAffineTransform {
   /// Returns an affine transformation matrix constructed by combining two existing affine
   /// transforms.
+  ///
+  /// Note that concatenation is not commutative, meaning that order is important. For instance, `t1.concatenating(t2)` != `t2.concatenating(t1)` — where `t1` and
+  /// `t2` are`CGAffineTransform` instances.
+  ///
   /// - Parameters:
   ///   - t2: The affine transform to concatenate to this affine transform.
   /// - Returns: A new affine transformation matrix. That is, `t’ = t1*t2`.
   public func concatenating(_ t2: Self) -> Self {
-    let t1m = [[a, b, 0],
-               [c, d, 0],
-               [tx, ty, 1]]
-    let t2m = [[t2.a, t2.b, 0],
-               [t2.c, t2.d, 0],
-               [t2.tx, t2.ty, 1]]
-    var res: [[CGFloat]] = [[0, 0, 0],
-                            [0, 0, 0],
-                            [0, 0, 0]]
-    for i in 0..<3 {
-      for j in 0..<3 {
-        res[i][j] = 0
-        for k in 0..<3 {
-          res[i][j] += t1m[i][k] * t2m[k][j]
-        }
-      }
-    }
-    return .init(
-      a: res[0][0],
-      b: res[0][1],
-      c: res[1][0],
-      d: res[1][1],
-      tx: res[2][0],
-      ty: res[2][1]
+    let t1 = self
+            
+    return AffineTransform(
+        a: (t1.a * t2.a) + (t1.b * t2.c),
+        b: (t1.a * t2.b) + (t1.b * t2.d),
+        c: (t1.c * t2.a) + (t1.d * t2.c),
+        d: (t1.c * t2.b) + (t1.d * t2.d),
+        tX: (t1.tX * t2.a) + (t1.tY * t2.c) + t2.tX,
+        tY: (t1.tX * t2.b) + (t1.tY * t2.d) + t2.tY
     )
   }
+}
 
+extension CGAffineTransform {
   /// Returns an affine transformation matrix constructed by inverting an existing affine transform.
+  /// - Returns: A new affine transformation matrix. If the affine transform passed in
+  /// parameter t cannot be inverted, the affine transform is returned unchanged.
   public func inverted() -> Self {
-    .init(a: -a, b: -b, c: -c, d: -d, tx: -tx, ty: -ty)
+    let determinant = (a * d) - (b * c)
+    
+    guard determinant != 0 else { return self }
+    
+    return Self(
+      a: d / determinant, b:  -b / determinant,
+      c: -c / determinant, d: a / determinant,
+      tx: (c * tY - d * tX) / determinant,
+      ty: (b * tX - a * tY) / determinant
+    )
   }
+}
 
+// TODO: - Optimize operators.
+extension CGAffineTransform {
   /// Returns an affine transformation matrix constructed by rotating an existing affine transform.
   /// - Parameters:
   ///   - angle: The angle, in radians, by which to rotate the affine transform.
   ///   A positive value specifies clockwise rotation and a negative value specifies
   ///   counterclockwise rotation.
   public func rotated(by angle: CGFloat) -> Self {
-    Self(a: cos(angle), b: sin(angle), c: -sin(angle), d: cos(angle), tx: 0, ty: 0)
+    Self(rotationAngle: angle).concatenating(self)
   }
 
   /// Returns an affine transformation matrix constructed by translating an existing
@@ -192,7 +224,7 @@ public struct CGAffineTransform: Equatable {
   ///   - tx: The value by which to move x values with the affine transform.
   ///   - ty: The value by which to move y values with the affine transform.
   public func translatedBy(x tx: CGFloat, y ty: CGFloat) -> Self {
-    .init(a: a, b: b, c: c, d: d, tx: self.tx + tx, ty: self.ty + ty)
+    Self(translationX: tx, y: ty).concatenating(self)
   }
 
   /// Returns an affine transformation matrix constructed by scaling an existing affine transform.
@@ -200,11 +232,7 @@ public struct CGAffineTransform: Equatable {
   ///   - sx: The value by which to scale x values of the affine transform.
   ///   - sy: The value by which to scale y values of the affine transform.
   public func scaledBy(x sx: CGFloat, y sy: CGFloat) -> Self {
-    .init(a: a + sx, b: b, c: c, d: d + sy, tx: tx, ty: ty)
-  }
-
-  public var isIdentity: Bool {
-    self == Self.identity
+    Self(scaleX: sx, y: sy).concatenating(self)
   }
 }
 
