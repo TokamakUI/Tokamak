@@ -110,7 +110,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
 
     var childrenViews = view.children
 
-    let isGroupView = view.type is GroupView.Type
+    let traits = view.type is GroupView.Type ? viewTraits : .init()
 
     switch (mountedChildren.isEmpty, childrenViews.isEmpty) {
     // if existing children present and new children array is empty
@@ -124,13 +124,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     // if no existing children then mount all new children
     case (true, false):
       mountedChildren = childrenViews.map {
-        $0.makeMountedView(
-          reconciler.renderer,
-          target,
-          environmentValues,
-          isGroupView ? self.viewTraits : .init(),
-          self
-        )
+        $0.makeMountedView(reconciler.renderer, target, environmentValues, traits, self)
       }
       mountedChildren.forEach {
         $0.mount(on: self, in: reconciler, with: transaction)
@@ -160,7 +154,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
             reconciler.renderer,
             target,
             environmentValues,
-            isGroupView ? viewTraits : .init(),
+            traits,
             self
           )
           newChild.mount(
@@ -184,13 +178,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
         // mount remaining views
         for firstChild in childrenViews {
           let newChild: MountedElement<R> =
-            firstChild.makeMountedView(
-              reconciler.renderer,
-              target,
-              environmentValues,
-              isGroupView ? viewTraits : .init(),
-              self
-            )
+            firstChild.makeMountedView(reconciler.renderer, target, environmentValues, traits, self)
           newChild.mount(on: self, in: reconciler, with: transaction)
           newChildren.append(newChild)
         }

@@ -150,9 +150,7 @@ final class DOMRenderer: Renderer {
       _ = sibling.ref.insertAdjacentHTML!(
         "beforebegin",
         anyHTML.outerHTML(
-          shouldSortAttributes: false,
-          additonalAttributes: additionalAttributes,
-          children: []
+          shouldSortAttributes: false, additonalAttributes: additionalAttributes, children: []
         )
       )
       maybeNode = sibling.ref.previousSibling.object
@@ -160,9 +158,7 @@ final class DOMRenderer: Renderer {
       _ = parent.ref.insertAdjacentHTML!(
         "beforeend",
         anyHTML.outerHTML(
-          shouldSortAttributes: false,
-          additonalAttributes: additionalAttributes,
-          children: []
+          shouldSortAttributes: false, additonalAttributes: additionalAttributes, children: []
         )
       )
 
