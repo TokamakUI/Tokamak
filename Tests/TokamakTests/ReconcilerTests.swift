@@ -68,7 +68,9 @@ final class ReconcilerTests: XCTestCase {
     let root = renderer.rootTarget
     let stack = root.subviews[0].subviews[0]
 
-    guard let button = stack.subviews[0].subviews[0].view.view as? _PrimitiveButton<Text> else {
+    guard let button = stack.subviews[0].subviews[0].view
+      .view as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
+    else {
       XCTAssert(false, "counter has no button")
       return
     }
@@ -94,7 +96,9 @@ final class ReconcilerTests: XCTestCase {
     let root = renderer.rootTarget
     let stack = root.subviews[0].subviews[0]
 
-    guard let button = stack.subviews[0].subviews[0].view.view as? _PrimitiveButton<Text> else {
+    guard let button = stack.subviews[0].subviews[0].view
+      .view as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
+    else {
       XCTAssert(false, "counter has no button")
       return
     }
@@ -114,7 +118,9 @@ final class ReconcilerTests: XCTestCase {
     XCTAssertTrue(originalLabel === newStack.subviews[1])
     XCTAssertEqual((stack.subviews[1].view.view as? Text)?.verbatim, "43")
 
-    guard let newButton = stack.subviews[0].subviews[0].view.view as? _PrimitiveButton<Text> else {
+    guard let newButton = stack.subviews[0].subviews[0].view
+      .view as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
+    else {
       XCTAssert(false, "counter has no button")
       return
     }
@@ -138,21 +144,26 @@ final class ReconcilerTests: XCTestCase {
     let root = renderer.rootTarget
 
     let stack = root.subviews[0].subviews[0]
-    guard let button = stack.subviews[0].subviews[0].view.view as? _PrimitiveButton<Text> else {
+    guard let button = stack.subviews[0].subviews[0].view
+      .view as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
+    else {
       XCTAssert(false, "counter has no button")
       return
     }
 
     button.action()
 
-    guard let newButton = stack.subviews[0].subviews[0].view.view as? _PrimitiveButton<Text> else {
+    guard let newButton = stack.subviews[0].subviews[0].view
+      .view as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
+    else {
       XCTAssert(false, "counter has no button")
       return
     }
 
     newButton.action()
 
-    guard let newestButton = stack.subviews[0].subviews[0].view.view as? _PrimitiveButton<Text>
+    guard let newestButton = stack.subviews[0].subviews[0].view
+      .view as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
     else {
       XCTAssert(false, "counter has no button")
       return

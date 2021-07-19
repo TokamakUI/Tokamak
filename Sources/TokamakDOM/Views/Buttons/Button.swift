@@ -38,7 +38,7 @@ extension _Button: DOMPrimitive {
   }
 }
 
-extension _PrimitiveButton: DOMPrimitive {
+extension _PrimitiveButtonStyleBody: DOMPrimitive {
   @_spi(TokamakCore)
   public var renderedBody: AnyView {
     let listeners: [String: Listener] = [
@@ -71,14 +71,14 @@ extension _PrimitiveButton: DOMPrimitive {
     ) {
       if !isResetStyle {
         if isBordered && controlProminence == .increased {
-          self.makeStyleBody()
+          self.label
             .foregroundColor(.white)
         } else {
-          self.makeStyleBody()
+          self.label
             .colorScheme(.light)
         }
       } else {
-        self.makeStyleBody()
+        self.label
       }
     }.font(font))
   }

@@ -50,12 +50,10 @@ public struct Button<Label>: View where Label: View {
   public var body: some View {
     switch buttonStyle {
     case let .primitiveButtonStyle(style):
-      _PrimitiveButton(
-        label: label,
-        role: role,
-        action: action,
-        anyStyle: style
-      )
+      style.makeBody(configuration: .init(
+        role: role, label: .init(body: AnyView(label)),
+        action: action
+      ))
     case let .buttonStyle(style):
       _Button(
         label: label,
@@ -67,7 +65,7 @@ public struct Button<Label>: View where Label: View {
   }
 }
 
-public struct _PrimitiveButton<Label>: _PrimitiveView where Label: View {
+public struct _PrimitiveButtonStyleBody<Label>: _PrimitiveView where Label: View {
   public let label: Label
   public let role: ButtonRole?
   public let action: () -> ()
@@ -75,18 +73,19 @@ public struct _PrimitiveButton<Label>: _PrimitiveView where Label: View {
   let anyStyle: AnyPrimitiveButtonStyle
   public var style: Any.Type { anyStyle.type }
 
+  init<S: PrimitiveButtonStyle>(
+    style: S,
+    configuration: PrimitiveButtonStyleConfiguration,
+    @ViewBuilder label: () -> Label
+  ) {
+    role = configuration.role
+    action = configuration.action
+    self.label = label()
+    anyStyle = .init(style)
+  }
+
   @Environment(\.controlProminence) public var controlProminence
   @Environment(\.controlSize) public var controlSize
-
-  public func makeStyleBody() -> some View {
-    anyStyle.makeBody(
-      configuration: .init(
-        role: role,
-        label: .init(body: AnyView(label)),
-        action: action
-      )
-    )
-  }
 }
 
 public struct _Button<Label>: _PrimitiveView where Label: View {

@@ -30,10 +30,8 @@ public struct ButtonStyleDemo: View {
     HStack {
       if #available(iOS 15.0, macOS 12.0, *) {
         ForEach(Array(ControlSize.allCases.enumerated()), id: \.offset) { controlSize in
-          VStack {
-            Button("Button", role: .cancel) {}
-              .controlSize(controlSize.element)
-          }
+          Button("Button", role: .cancel) {}
+            .controlSize(controlSize.element)
         }
       }
     }
@@ -84,28 +82,22 @@ public struct ButtonStyleDemo: View {
         #if compiler(>=5.5) || os(WASI) // Xcode 13 required for `controlProminence`.
         Button("Prominent") {}
           .controlProminence(.increased)
-        VStack {
-          Text("automatic")
-            .font(.headline)
-          allSizes
-            .buttonStyle(DefaultButtonStyle())
-          Text("borderless")
-            .font(.headline)
-          allSizes
-            .buttonStyle(BorderlessButtonStyle())
-          Text("bordered")
-            .font(.headline)
-          allSizes
-            .buttonStyle(BorderedButtonStyle())
-          Text("link")
-            .font(.headline)
-          allSizes
-            .buttonStyle(LinkButtonStyle())
-          Text("plain")
-            .font(.headline)
-          allSizes
-            .buttonStyle(PlainButtonStyle())
-        }
+        Text("borderless")
+          .font(.headline)
+        allSizes
+          .buttonStyle(BorderlessButtonStyle())
+        Text("bordered")
+          .font(.headline)
+        allSizes
+          .buttonStyle(BorderedButtonStyle())
+        Text("link")
+          .font(.headline)
+        allSizes
+          .buttonStyle(LinkButtonStyle())
+        Text("plain")
+          .font(.headline)
+        allSizes
+          .buttonStyle(PlainButtonStyle())
         #endif
       }
     }
