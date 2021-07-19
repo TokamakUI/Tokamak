@@ -34,15 +34,19 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
     in reconciler: StackReconciler<R>,
     with transaction: Transaction
   ) {
+    super.prepareForMount()
     let childBody = reconciler.render(mountedScene: self)
 
     let child: MountedElement<R> = childBody
       .makeMountedElement(reconciler.renderer, parentTarget, environmentValues, self)
     mountedChildren = [child]
     child.mount(before: sibling, on: self, in: reconciler, with: transaction)
+
+    super.mount(before: sibling, on: parent, in: reconciler, with: transaction)
   }
 
   override func unmount(in reconciler: StackReconciler<R>, with transaction: Transaction) {
+    super.unmount(in: reconciler, with: transaction)
     mountedChildren.forEach { $0.unmount(in: reconciler, with: transaction) }
   }
 

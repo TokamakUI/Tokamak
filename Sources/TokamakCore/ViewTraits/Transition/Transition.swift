@@ -44,6 +44,12 @@ public extension _ViewTraitStore {
   var canTransition: Bool { value(forKey: CanTransitionTraitKey.self) }
 }
 
+enum TransitionPhase: Hashable {
+  case willMount
+  case normal
+  case willUnmount
+}
+
 public extension View {
   @inlinable
   func transition(_ t: AnyTransition) -> some View {

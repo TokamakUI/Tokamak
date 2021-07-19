@@ -28,40 +28,48 @@ private struct ColorOverlayModifier: ViewModifier {
 
 struct TransitionDemo: View {
   @State private var isVisible = false
+  @State private var isInnerVisible = false
 
   var body: some View {
     VStack {
       Button(isVisible ? "Hide" : "Show") {
-        withAnimation(.easeInOut(duration: 1)) {
-          isVisible = !isVisible
-        }
+        withAnimation(.easeInOut(duration: 3)) { isVisible.toggle() }
       }
-      Group {
-        if isVisible {
-          Text(".opacity")
-            .transition(AnyTransition.opacity)
-          Text(".offset(x: 100, y: 100)")
-            .transition(AnyTransition.offset(x: 100, y: 100))
-          Text(".move(edge: .leading)")
-            .transition(AnyTransition.move(edge: .leading))
-          Text(".slide")
-            .transition(AnyTransition.slide)
-          Text(".scale")
-            .transition(AnyTransition.scale)
-          Text(".opacity/.scale")
-            .transition(AnyTransition.asymmetric(insertion: .opacity, removal: .scale))
-          Text(".opacity + .slide")
-            .transition(AnyTransition.opacity.combined(with: .slide))
-          Text(".modifier")
-            .transition(AnyTransition.modifier(
-              active: ColorOverlayModifier(color: .red),
-              identity: ColorOverlayModifier(color: .clear)
-            ))
-          Text(".animation")
-            .transition(AnyTransition.scale.animation(.spring()))
+      if isVisible {
+        Text(".opacity")
+          .transition(AnyTransition.opacity)
+        Text(".offset(x: 100, y: 100)")
+          .transition(AnyTransition.offset(x: 100, y: 100))
+        Text(".move(edge: .leading)")
+          .transition(AnyTransition.move(edge: .leading))
+        Text(".slide")
+          .transition(AnyTransition.slide)
+        Text(".scale")
+          .transition(AnyTransition.scale)
+        Text(".opacity/.scale")
+          .transition(AnyTransition.asymmetric(insertion: .opacity, removal: .scale))
+        Text(".opacity + .slide")
+          .transition(AnyTransition.opacity.combined(with: .slide))
+        Text(".modifier")
+          .transition(AnyTransition.modifier(
+            active: ColorOverlayModifier(color: .red),
+            identity: ColorOverlayModifier(color: .clear)
+          ))
+        Text(".animation")
+          .transition(AnyTransition.scale.animation(.spring()))
+        VStack {
+          Text("Grouped Transition")
+          Button(isInnerVisible ? "Hide Inner" : "Show Inner") {
+            withAnimation(.easeInOut(duration: 3)) { isInnerVisible.toggle() }
+          }
+          Text(".slide").transition(AnyTransition.slide)
+          if isInnerVisible {
+            Text(".slide").transition(AnyTransition.slide)
+          }
         }
+        .transition(AnyTransition.scale)
       }
-      .font(.system(.headline, design: .monospaced))
     }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
 }

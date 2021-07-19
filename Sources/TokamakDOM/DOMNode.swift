@@ -63,8 +63,8 @@ extension AnyHTML {
 
     dom.applyAttributes(attributes, with: transaction)
 
-    // Animate styles
-    if let animation = transaction.animation,
+    if !transaction.disablesAnimations,
+       let animation = transaction.animation,
        let style = attributes["style"]
     {
       dom.animateStyles(to: style, with: animation)
@@ -136,7 +136,9 @@ final class DOMNode: Target {
     // need to check whether it exists or not, and set the property if it doesn't.
     for (attribute, value) in attributes {
       // Animate styles with the Web Animations API in `animateStyles`.
-      guard transaction.animation == nil || attribute != "style"
+      guard transaction.disablesAnimations
+        || transaction.animation == nil
+        || attribute != "style"
       else { continue }
 
       if attribute == "style" { // Clear animations

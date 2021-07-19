@@ -24,8 +24,13 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     in reconciler: StackReconciler<R>,
     with transaction: Transaction
   ) {
+    super.prepareForMount()
+
     var transaction = transaction
     (view.view as? _TransactionModifierProtocol)?.modifyTransaction(&transaction)
+    // Disable animations on mount so `animation(_:)` doesn't try to animate
+    // until the transition finishes.
+    transaction.disablesAnimations = true
     self.transaction = transaction
 
     let childBody = reconciler.render(compositeView: self)
@@ -80,13 +85,21 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
         preferenceReader.preferenceStore(self.preferenceStore)
       }
     })
+
+    super.mount(before: sibling, on: parent, in: reconciler, with: transaction)
   }
 
   override func unmount(in reconciler: StackReconciler<R>, with transaction: Transaction) {
+    super.unmount(in: reconciler, with: transaction)
+
     var transaction = transaction
+    transaction.disablesAnimations = false
     (view.view as? _TransactionModifierProtocol)?.modifyTransaction(&transaction)
 
-    mountedChildren.forEach { $0.unmount(in: reconciler, with: transaction) }
+    mountedChildren.forEach {
+      $0.viewTraits = self.viewTraits
+      $0.unmount(in: reconciler, with: transaction)
+    }
 
     if let appearanceAction = view.view as? AppearanceActionType {
       appearanceAction.disappear?()
@@ -95,6 +108,7 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
 
   override func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
     var transaction = transaction
+    transaction.disablesAnimations = false
     (view.view as? _TransactionModifierProtocol)?.modifyTransaction(&transaction)
     let element = reconciler.render(compositeView: self)
     reconciler.reconcile(

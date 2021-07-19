@@ -127,7 +127,9 @@ final class DOMRenderer: Renderer {
       .resolve(in: host.environmentValues)
     var additionalAttributes = [HTMLAttribute: String]()
     var runTransition: ((DOMNode) -> ())?
-    if let animation = transition.insertionAnimation ?? host.transaction.animation {
+    if host.viewTraits.canTransition,
+       let animation = transition.insertionAnimation ?? host.transaction.animation
+    {
       // Apply the active insertion modifier on mount.
       additionalAttributes = apply(
         transition: transition, \.insertion,
@@ -136,6 +138,7 @@ final class DOMRenderer: Renderer {
       )
       runTransition = { node in
         // Then apply the identity insertion modifier on update with animation.
+        host.transaction.disablesAnimations = false
         withAnimation(animation) {
           self.update(target: node, with: host)
         }
@@ -213,15 +216,15 @@ final class DOMRenderer: Renderer {
     with host: MountedHost,
     completion: @escaping () -> ()
   ) {
-    defer { completion() }
-
     guard let anyHTML = mapAnyView(host.view, transform: { (html: AnyHTML) in html })
-    else { return }
+    else { return completion() }
 
     // Transition the removal.
     let transition = _AnyTransitionProxy(host.viewTraits.transition)
       .resolve(in: host.environmentValues)
-    if let animation = transition.removalAnimation ?? host.transaction.animation {
+    if host.viewTraits.canTransition,
+       let animation = transition.removalAnimation ?? host.transaction.animation
+    {
       // First, apply the identity removal modifier /without/ animation
       // to be in the initial state.
       anyHTML.update(
@@ -248,6 +251,7 @@ final class DOMRenderer: Renderer {
       _ = JSObject.global.setTimeout!(
         JSOneshotClosure { _ in
           _ = try? parent.ref.throwing.removeChild!(target.ref)
+          completion()
           return .undefined
         },
         _AnimationProxy(animation).resolve().duration * 1000
@@ -257,6 +261,7 @@ final class DOMRenderer: Renderer {
     }
 
     _ = try? parent.ref.throwing.removeChild!(target.ref)
+    completion()
   }
 
   func primitiveBody(for view: Any) -> AnyView? {

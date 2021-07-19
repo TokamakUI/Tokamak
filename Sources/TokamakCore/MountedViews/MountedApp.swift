@@ -22,11 +22,13 @@ import OpenCombineShim
 // `View`s
 final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
   override func mount(
-    before _: R.TargetType? = nil,
-    on _: MountedElement<R>? = nil,
+    before sibling: R.TargetType? = nil,
+    on parent: MountedElement<R>? = nil,
     in reconciler: StackReconciler<R>,
     with transaction: Transaction
   ) {
+    super.prepareForMount()
+
     // `App` elements have no siblings, hence the `before` argument is discarded.
     // They also have no parents, so the `parent` argument is discarded as well.
     let childBody = reconciler.render(mountedApp: self)
@@ -35,12 +37,12 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     mountedChildren = [child]
     child.transaction = transaction
     child.mount(before: nil, on: self, in: reconciler, with: transaction)
+
+    super.mount(before: sibling, on: parent, in: reconciler, with: transaction)
   }
 
-  override func unmount(
-    in reconciler: StackReconciler<R>,
-    with transaction: Transaction
-  ) {
+  override func unmount(in reconciler: StackReconciler<R>, with transaction: Transaction) {
+    super.unmount(in: reconciler, with: transaction)
     mountedChildren.forEach { $0.unmount(in: reconciler, with: transaction) }
   }
 

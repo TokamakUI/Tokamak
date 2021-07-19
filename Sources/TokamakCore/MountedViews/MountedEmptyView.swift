@@ -21,9 +21,14 @@ final class MountedEmptyView<R: Renderer>: MountedElement<R> {
     on parent: MountedElement<R>? = nil,
     in reconciler: StackReconciler<R>,
     with transaction: Transaction
-  ) {}
+  ) {
+    super.prepareForMount()
+    super.mount(before: sibling, on: parent, in: reconciler, with: transaction)
+  }
 
-  override func unmount(in reconciler: StackReconciler<R>, with transaction: Transaction) {}
+  override func unmount(in reconciler: StackReconciler<R>, with transaction: Transaction) {
+    super.unmount(in: reconciler, with: transaction)
+  }
 
   override func update(in reconciler: StackReconciler<R>, with transaction: Transaction?) {}
 }

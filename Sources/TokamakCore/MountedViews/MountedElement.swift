@@ -86,7 +86,9 @@ public class MountedElement<R: Renderer> {
 
   var mountedChildren = [MountedElement<R>]()
 
-  public internal(set) var transaction: Transaction = .init(animation: nil)
+  public var transaction: Transaction = .init(animation: nil)
+  /// Where this element is the process of mounting/unmounting.
+  var transitionPhase = TransitionPhase.willMount
 
   public internal(set) var environmentValues: EnvironmentValues
 
@@ -116,11 +118,16 @@ public class MountedElement<R: Renderer> {
     updateEnvironment()
   }
 
-  init(_ view: AnyView, _ environmentValues: EnvironmentValues, _ parent: MountedElement<R>?) {
+  init(
+    _ view: AnyView,
+    _ environmentValues: EnvironmentValues,
+    _ viewTraits: _ViewTraitStore,
+    _ parent: MountedElement<R>?
+  ) {
     element = .view(view)
     self.parent = parent
     self.environmentValues = environmentValues
-    viewTraits = .init()
+    self.viewTraits = viewTraits
     updateEnvironment()
   }
 
@@ -136,17 +143,35 @@ public class MountedElement<R: Renderer> {
     }
   }
 
+  /// You must call `super.prepareForMount` before all other mounting work.
+  func prepareForMount() {
+    // Allow the root of a mount to transition
+    // (if their parent isn't mounting, then they are the root of the mount).
+    if parent?.transitionPhase == .normal {
+      viewTraits.insert(true, forKey: CanTransitionTraitKey.self)
+    }
+  }
+
+  /// You must call `super.mount` after all other mounting work.
   func mount(
     before sibling: R.TargetType? = nil,
     on parent: MountedElement<R>? = nil,
     in reconciler: StackReconciler<R>,
     with transaction: Transaction
   ) {
-    fatalError("implement \(#function) in subclass")
+    // Set the phase to `normal` after finished mounting.
+    transitionPhase = .normal
   }
 
+  /// You must call `super.unmount` before all other unmounting work.
   func unmount(in reconciler: StackReconciler<R>, with transaction: Transaction) {
-    fatalError("implement \(#function) in subclass")
+    // Set the phase to `willUnmount` before unmounting.
+    transitionPhase = .willUnmount
+    // Allow the root of an unmount to transition
+    // (if their parent isn't unmounting, then they are the root of the unmount).
+    if parent?.transitionPhase == .normal {
+      viewTraits.insert(true, forKey: CanTransitionTraitKey.self)
+    }
   }
 
   func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
@@ -238,11 +263,11 @@ extension AnyView {
     _ parent: MountedElement<R>?
   ) -> MountedElement<R> {
     if type == EmptyView.self {
-      return MountedEmptyView(self, environmentValues, parent)
+      return MountedEmptyView(self, environmentValues, viewTraits, parent)
     } else if bodyType == Never.self && !renderer.isPrimitiveView(type) {
       return MountedHostView(self, parentTarget, environmentValues, viewTraits, parent)
     } else {
-      return MountedCompositeView(self, parentTarget, environmentValues, parent)
+      return MountedCompositeView(self, parentTarget, environmentValues, viewTraits, parent)
     }
   }
 }
