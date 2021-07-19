@@ -81,28 +81,28 @@ public struct ButtonStyleDemo: View {
       if #available(iOS 15.0, macOS 12.0, *) {
         Button("Prominent") {}
           .controlProminence(.increased)
-      }
-      VStack {
-        Text("automatic")
-          .font(.headline)
-        allSizes
-          .buttonStyle(DefaultButtonStyle())
-        Text("borderless")
-          .font(.headline)
-        allSizes
-          .buttonStyle(BorderlessButtonStyle())
-        Text("bordered")
-          .font(.headline)
-        allSizes
-          .buttonStyle(BorderedButtonStyle())
-        Text("link")
-          .font(.headline)
-        allSizes
-          .buttonStyle(LinkButtonStyle())
-        Text("plain")
-          .font(.headline)
-        allSizes
-          .buttonStyle(PlainButtonStyle())
+        VStack {
+          Text("automatic")
+            .font(.headline)
+          allSizes
+            .buttonStyle(DefaultButtonStyle())
+          Text("borderless")
+            .font(.headline)
+          allSizes
+            .buttonStyle(BorderlessButtonStyle())
+          Text("bordered")
+            .font(.headline)
+          allSizes
+            .buttonStyle(BorderedButtonStyle())
+          Text("link")
+            .font(.headline)
+          allSizes
+            .buttonStyle(LinkButtonStyle())
+          Text("plain")
+            .font(.headline)
+          allSizes
+            .buttonStyle(PlainButtonStyle())
+        }
       }
     }
   }
