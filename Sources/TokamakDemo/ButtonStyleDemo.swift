@@ -25,6 +25,7 @@ struct PressedButtonStyle: ButtonStyle {
 }
 
 public struct ButtonStyleDemo: View {
+  #if compiler(>=5.5) || os(WASI) // Xcode 13 required for `controlSize` & `ButtonRole`.
   var allSizes: some View {
     HStack {
       if #available(iOS 15.0, macOS 12.0, *) {
@@ -37,6 +38,7 @@ public struct ButtonStyleDemo: View {
       }
     }
   }
+  #endif
 
   public var body: some View {
     VStack {
@@ -79,6 +81,7 @@ public struct ButtonStyleDemo: View {
           PressedButtonStyle(pressedColor: Color.red)
         )
       if #available(iOS 15.0, macOS 12.0, *) {
+        #if compiler(>=5.5) || os(WASI) // Xcode 13 required for `controlProminence`.
         Button("Prominent") {}
           .controlProminence(.increased)
         VStack {
@@ -103,6 +106,7 @@ public struct ButtonStyleDemo: View {
           allSizes
             .buttonStyle(PlainButtonStyle())
         }
+        #endif
       }
     }
   }
