@@ -25,6 +25,19 @@ struct PressedButtonStyle: ButtonStyle {
 }
 
 public struct ButtonStyleDemo: View {
+  #if compiler(>=5.5) || os(WASI) // Xcode 13 required for `controlSize` & `ButtonRole`.
+  var allSizes: some View {
+    HStack {
+      if #available(iOS 15.0, macOS 12.0, *) {
+        ForEach(Array(ControlSize.allCases.enumerated()), id: \.offset) { controlSize in
+          Button("Button", role: .cancel) {}
+            .controlSize(controlSize.element)
+        }
+      }
+    }
+  }
+  #endif
+
   public var body: some View {
     VStack {
       Button("Default Style") {
@@ -65,6 +78,28 @@ public struct ButtonStyleDemo: View {
         .buttonStyle(
           PressedButtonStyle(pressedColor: Color.red)
         )
+      if #available(iOS 15.0, macOS 12.0, *) {
+        #if compiler(>=5.5) || os(WASI) // Xcode 13 required for `controlProminence`.
+        Button("Prominent") {}
+          .controlProminence(.increased)
+        Text("borderless")
+          .font(.headline)
+        allSizes
+          .buttonStyle(BorderlessButtonStyle())
+        Text("bordered")
+          .font(.headline)
+        allSizes
+          .buttonStyle(BorderedButtonStyle())
+        Text("link")
+          .font(.headline)
+        allSizes
+          .buttonStyle(LinkButtonStyle())
+        Text("plain")
+          .font(.headline)
+        allSizes
+          .buttonStyle(PlainButtonStyle())
+        #endif
+      }
     }
   }
 }

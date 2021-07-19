@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2018-2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,13 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Gene Z. Ragan on 07/22/2020.
+//  Created by Carson Katri on 7/12/21.
 //
 
-import TokamakCore
+public struct ButtonRole: Equatable {
+  public static let destructive = ButtonRole(rawValue: 0)
+  public static let cancel = ButtonRole(rawValue: 1)
 
-extension ButtonStyleConfiguration.Label: DOMPrimitive {
-  var renderedBody: AnyView {
-    _ButtonStyleConfigurationProxy.Label(self).content
+  private let rawValue: Int
+  private init(rawValue: Int) {
+    self.rawValue = rawValue
   }
 }
