@@ -53,7 +53,12 @@ public protocol AnyHTML {
 }
 
 public extension AnyHTML {
-  func outerHTML(shouldSortAttributes: Bool, children: [HTMLTarget]) -> String {
+  func outerHTML(
+    shouldSortAttributes: Bool,
+    additonalAttributes: [HTMLAttribute: String] = [:],
+    children: [HTMLTarget]
+  ) -> String {
+    let attributes = self.attributes.merging(additonalAttributes, uniquingKeysWith: +)
     let renderedAttributes: String
     if attributes.isEmpty {
       renderedAttributes = ""

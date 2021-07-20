@@ -61,10 +61,11 @@ class MountedCompositeElement<R: Renderer>: MountedElement<R> {
     _ view: AnyView,
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues,
+    _ viewTraits: _ViewTraitStore,
     _ parent: MountedElement<R>?
   ) {
     self.parentTarget = parentTarget
-    super.init(view, environmentValues, parent)
+    super.init(view, environmentValues, viewTraits, parent)
   }
 }
 

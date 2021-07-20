@@ -39,7 +39,7 @@ extension HStack: _HTMLPrimitive, SpacerContainer {
       align-items: \(alignment.cssValue);
       \(hasSpacer ? "width: 100%;" : "")
       \(fillCrossAxis ? "height: 100%;" : "")
-      \(spacing != defaultStackSpacing ? "--tokamak-stack-gap: \(spacing)px" : "")
+      \(spacing != defaultStackSpacing ? "--tokamak-stack-gap: \(spacing)px;" : "")
       """,
       "class": "_tokamak-stack _tokamak-hstack",
     ]) { content })

@@ -58,13 +58,12 @@ public protocol Renderer: AnyObject {
    unmounted: removed from the parent and most likely destroyed.
    - parameter target: Existing target instance to be unmounted.
    - parameter parent: Parent of target to direct interaction with parent.
-   - parameter view: The host view that renders to the updated target.
+   - parameter task: The state associated with the unmount.
    */
   func unmount(
     target: TargetType,
     from parent: TargetType,
-    with host: MountedHost,
-    completion: @escaping () -> ()
+    with task: UnmountHostTask<Self>
   )
 
   /** Returns a body of a given pritimive view, or `nil` if `view` is not a primitive view for

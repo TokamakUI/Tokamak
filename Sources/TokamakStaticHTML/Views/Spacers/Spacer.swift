@@ -60,7 +60,7 @@ extension Spacer: _HTMLPrimitive {
   @_spi(TokamakStaticHTML)
   public var renderedBody: AnyView {
     AnyView(HTML("div", [
-      "style": "flex-grow: 1; \(minLength != nil ? "min-width: \(minLength!)" : "")",
+      "style": "flex-grow: 1; \(minLength != nil ? "min-width: \(minLength!);" : "")",
     ]))
   }
 }

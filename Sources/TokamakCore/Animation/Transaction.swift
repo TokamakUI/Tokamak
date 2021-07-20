@@ -26,7 +26,7 @@ public struct Transaction {
 
   public init(animation: Animation?) {
     self.animation = animation
-    disablesAnimations = true
+    disablesAnimations = false
   }
 }
 

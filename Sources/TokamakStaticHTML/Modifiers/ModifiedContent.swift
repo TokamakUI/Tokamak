@@ -14,17 +14,17 @@
 
 import TokamakCore
 
-private protocol AnyModifiedContent {
+public protocol _AnyModifiedContent {
   var anyContent: AnyView { get }
   var anyModifier: DOMViewModifier { get }
 }
 
-extension ModifiedContent: AnyModifiedContent where Modifier: DOMViewModifier, Content: View {
-  var anyContent: AnyView {
+extension ModifiedContent: _AnyModifiedContent where Modifier: DOMViewModifier, Content: View {
+  public var anyContent: AnyView {
     AnyView(content)
   }
 
-  var anyModifier: DOMViewModifier {
+  public var anyModifier: DOMViewModifier {
     modifier
   }
 }
@@ -33,7 +33,7 @@ extension ModifiedContent: _HTMLPrimitive where Content: View, Modifier: ViewMod
   @_spi(TokamakStaticHTML)
   public var renderedBody: AnyView {
     if let domModifier = modifier as? DOMViewModifier {
-      if let adjacentModifier = content as? AnyModifiedContent,
+      if let adjacentModifier = content as? _AnyModifiedContent,
          !(adjacentModifier.anyModifier.isOrderDependent || domModifier.isOrderDependent)
       {
         // Flatten non-order-dependent modifiers

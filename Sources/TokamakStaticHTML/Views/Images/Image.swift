@@ -35,12 +35,12 @@ struct _HTMLImage: View {
     case let .named(name, bundle):
       attributes = [
         "src": bundle?.path(forResource: name, ofType: nil) ?? name,
-        "style": "max-width: 100%; max-height: 100%",
+        "style": "max-width: 100%; max-height: 100%;",
       ]
     case let .resizable(.named(name, bundle), _, _):
       attributes = [
         "src": bundle?.path(forResource: name, ofType: nil) ?? name,
-        "style": "width: 100%; height: 100%",
+        "style": "width: 100%; height: 100%;",
       ]
     default: break
     }

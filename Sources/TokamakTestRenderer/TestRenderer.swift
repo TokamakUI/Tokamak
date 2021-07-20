@@ -68,10 +68,10 @@ public final class TestRenderer: Renderer {
   public func unmount(
     target: TestView,
     from parent: TestView,
-    with mountedHost: TestRenderer.MountedHost,
-    completion: () -> ()
+    with task: UnmountHostTask<TestRenderer>
   ) {
     target.removeFromSuperview()
+    task.finish()
   }
 
   public func primitiveBody(for view: Any) -> AnyView? {

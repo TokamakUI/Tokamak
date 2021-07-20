@@ -137,6 +137,7 @@ struct TokamakDemoView: View {
           }
           Section(header: Text("Misc")) {
             NavItem("Animation", destination: AnimationDemo())
+            NavItem("Transitions", destination: TransitionDemo())
             NavItem("Path", destination: PathDemo())
             NavItem("ProgressView", destination: ProgressViewDemo())
             NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8)))

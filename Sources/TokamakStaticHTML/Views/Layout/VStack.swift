@@ -39,7 +39,7 @@ extension VStack: _HTMLPrimitive, SpacerContainer {
       justify-items: \(alignment.cssValue);
       \(hasSpacer ? "height: 100%;" : "")
       \(fillCrossAxis ? "width: 100%;" : "")
-      \(spacing != defaultStackSpacing ? "--tokamak-stack-gap: \(spacing)px" : "")
+      \(spacing != defaultStackSpacing ? "--tokamak-stack-gap: \(spacing)px;" : "")
       """,
       "class": "_tokamak-stack _tokamak-vstack",
     ]) { content })
