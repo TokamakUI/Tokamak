@@ -300,7 +300,7 @@ public final class StackReconciler<R: Renderer> {
       } else {
         // new child is of a different type, complete rerender, i.e. unmount the old
         // wrapper, then mount a new one with the new `childBody`
-        mountedChild.unmount(in: self, with: transaction)
+        mountedChild.unmount(in: self, with: transaction, parentTask: nil)
 
         let newMountedChild: MountedElement<R> = mountChild(childBody)
         mountedElement.mountedChildren = [newMountedChild]

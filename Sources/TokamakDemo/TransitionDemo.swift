@@ -70,6 +70,5 @@ struct TransitionDemo: View {
         .transition(AnyTransition.scale)
       }
     }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
 }

@@ -209,17 +209,16 @@ final class DOMRenderer: Renderer {
   func unmount(
     target: DOMNode,
     from parent: DOMNode,
-    with host: MountedHost,
-    completion: @escaping () -> ()
+    with task: UnmountHostTask<DOMRenderer>
   ) {
-    guard let anyHTML = mapAnyView(host.view, transform: { (html: AnyHTML) in html })
-    else { return completion() }
+    guard let anyHTML = mapAnyView(task.host.view, transform: { (html: AnyHTML) in html })
+    else { return task.finish() }
 
     // Transition the removal.
-    let transition = _AnyTransitionProxy(host.viewTraits.transition)
-      .resolve(in: host.environmentValues)
-    if host.viewTraits.canTransition,
-       let animation = transition.removalAnimation ?? host.transaction.animation
+    let transition = _AnyTransitionProxy(task.host.viewTraits.transition)
+      .resolve(in: task.host.environmentValues)
+    if task.host.viewTraits.canTransition,
+       let animation = transition.removalAnimation ?? task.host.transaction.animation
     {
       // First, apply the identity removal modifier /without/ animation
       // to be in the initial state.
@@ -228,7 +227,7 @@ final class DOMRenderer: Renderer {
         additionalAttributes: apply(
           transition: transition, \.removal,
           as: \.identity,
-          to: host.view
+          to: task.host.view
         ),
         transaction: .init(animation: nil)
       )
@@ -239,15 +238,16 @@ final class DOMRenderer: Renderer {
         additionalAttributes: apply(
           transition: transition, \.removal,
           as: \.active,
-          to: host.view
+          to: task.host.view
         ),
         transaction: .init(animation: animation)
       )
 
       _ = JSObject.global.setTimeout!(
         JSOneshotClosure { _ in
+          guard !task.isCancelled else { return .undefined }
           _ = try? parent.ref.throwing.removeChild!(target.ref)
-          completion()
+          task.finish()
           return .undefined
         },
         _AnimationProxy(animation).resolve().duration * 1000
@@ -257,7 +257,7 @@ final class DOMRenderer: Renderer {
     }
 
     _ = try? parent.ref.throwing.removeChild!(target.ref)
-    completion()
+    task.finish()
   }
 
   func primitiveBody(for view: Any) -> AnyView? {

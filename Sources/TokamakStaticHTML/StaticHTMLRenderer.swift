@@ -136,8 +136,7 @@ public final class StaticHTMLRenderer: Renderer {
   public func unmount(
     target: HTMLTarget,
     from parent: HTMLTarget,
-    with host: MountedHost,
-    completion: @escaping () -> ()
+    with host: UnmountHostTask<StaticHTMLRenderer>
   ) {
     fatalError("Stateful apps cannot be created with TokamakStaticHTML")
   }

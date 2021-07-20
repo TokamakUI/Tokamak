@@ -89,8 +89,12 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     super.mount(before: sibling, on: parent, in: reconciler, with: transaction)
   }
 
-  override func unmount(in reconciler: StackReconciler<R>, with transaction: Transaction) {
-    super.unmount(in: reconciler, with: transaction)
+  override func unmount(
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction,
+    parentTask: UnmountTask<R>?
+  ) {
+    super.unmount(in: reconciler, with: transaction, parentTask: parentTask)
 
     var transaction = transaction
     transaction.disablesAnimations = false
@@ -98,7 +102,7 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
 
     mountedChildren.forEach {
       $0.viewTraits = self.viewTraits
-      $0.unmount(in: reconciler, with: transaction)
+      $0.unmount(in: reconciler, with: transaction, parentTask: parentTask)
     }
 
     if let appearanceAction = view.view as? AppearanceActionType {

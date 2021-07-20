@@ -87,22 +87,38 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     super.mount(before: sibling, on: parent, in: reconciler, with: transaction)
   }
 
-  override func unmount(in reconciler: StackReconciler<R>, with transaction: Transaction) {
-    super.unmount(in: reconciler, with: transaction)
+  private var parentUnmountTask = UnmountTask<R>()
+  override func unmount(
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction,
+    parentTask: UnmountTask<R>?
+  ) {
+    super.unmount(in: reconciler, with: transaction, parentTask: parentTask)
 
     guard let target = target else { return }
 
+    let task = UnmountHostTask(self, in: reconciler) {
+      self.mountedChildren.forEach {
+        $0.unmount(in: reconciler, with: transaction, parentTask: self.unmountTask)
+      }
+    }
+    task.isCancelled = parentTask?.isCancelled ?? false
+    unmountTask = task
+    parentTask?.childTasks.append(task)
     reconciler.renderer.unmount(
       target: target,
       from: parentTarget,
-      with: self
-    ) {
-      self.mountedChildren.forEach { $0.unmount(in: reconciler, with: transaction) }
-    }
+      with: task
+    )
   }
 
   override func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
     guard let target = target else { return }
+
+    // Stop any unfinished unmounts and complete them without transitions.
+    parentUnmountTask.cancel()
+    parentUnmountTask.completeImmediately()
+    parentUnmountTask = .init()
 
     updateEnvironment()
     target.view = view
@@ -117,7 +133,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     // then unmount all existing children
     case (false, true):
       mountedChildren.forEach {
-        $0.unmount(in: reconciler, with: transaction)
+        $0.unmount(in: reconciler, with: transaction, parentTask: self.parentUnmountTask)
       }
       mountedChildren = []
 
@@ -160,7 +176,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
           newChild.mount(
             before: mountedChild.firstDescendantTarget, on: self, in: reconciler, with: transaction
           )
-          mountedChild.unmount(in: reconciler, with: transaction)
+          mountedChild.unmount(in: reconciler, with: transaction, parentTask: parentUnmountTask)
         }
         newChildren.append(newChild)
         mountedChildren.removeFirst()
@@ -171,7 +187,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
       // unmount remaining `mountedChildren`
       if !mountedChildren.isEmpty {
         for child in mountedChildren {
-          child.unmount(in: reconciler, with: transaction)
+          child.unmount(in: reconciler, with: transaction, parentTask: parentUnmountTask)
         }
       } else {
         // more views left than children were mounted,

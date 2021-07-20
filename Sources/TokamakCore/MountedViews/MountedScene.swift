@@ -45,9 +45,14 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
     super.mount(before: sibling, on: parent, in: reconciler, with: transaction)
   }
 
-  override func unmount(in reconciler: StackReconciler<R>, with transaction: Transaction) {
-    super.unmount(in: reconciler, with: transaction)
-    mountedChildren.forEach { $0.unmount(in: reconciler, with: transaction) }
+  override func unmount(
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction,
+    parentTask: UnmountTask<R>?
+  ) {
+    super.unmount(in: reconciler, with: transaction, parentTask: parentTask)
+    mountedChildren
+      .forEach { $0.unmount(in: reconciler, with: transaction, parentTask: parentTask) }
   }
 
   override func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {

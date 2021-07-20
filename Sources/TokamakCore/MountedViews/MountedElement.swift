@@ -89,6 +89,8 @@ public class MountedElement<R: Renderer> {
   public var transaction: Transaction = .init(animation: nil)
   /// Where this element is the process of mounting/unmounting.
   var transitionPhase = TransitionPhase.willMount
+  /// The current `UnmountTask` of this element.
+  var unmountTask: UnmountTask<R>?
 
   public internal(set) var environmentValues: EnvironmentValues
 
@@ -164,7 +166,15 @@ public class MountedElement<R: Renderer> {
   }
 
   /// You must call `super.unmount` before all other unmounting work.
-  func unmount(in reconciler: StackReconciler<R>, with transaction: Transaction) {
+  func unmount(
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction,
+    parentTask: UnmountTask<R>?
+  ) {
+    if !(self is MountedHostView<R>) {
+      unmountTask = parentTask?.appendChild()
+    }
+
     // Set the phase to `willUnmount` before unmounting.
     transitionPhase = .willUnmount
     // Allow the root of an unmount to transition

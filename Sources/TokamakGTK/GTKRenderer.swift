@@ -123,10 +123,9 @@ final class GTKRenderer: Renderer {
   func unmount(
     target: Widget,
     from parent: Widget,
-    with host: MountedHost,
-    completion: @escaping () -> ()
+    with task: UnmountHostTask<GTKRenderer>
   ) {
-    defer { completion() }
+    defer { task.finish() }
 
     guard mapAnyView(host.view, transform: { (widget: AnyWidget) in widget }) != nil
     else { return }
