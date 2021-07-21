@@ -230,8 +230,10 @@ public extension CGAffineTransform {
     guard determinant != 0 else { return self }
 
     return Self(
-      a: d / determinant, b: -b / determinant,
-      c: -c / determinant, d: a / determinant,
+      a: d / determinant,
+      b: -b / determinant,
+      c: -c / determinant,
+      d: a / determinant,
       tx: (c * ty - d * tx) / determinant,
       ty: (b * tx - a * ty) / determinant
     )
@@ -254,17 +256,42 @@ public extension CGAffineTransform {
     Self(rotationAngle: angle).concatenating(self)
   }
 
-  /// Returns an affine transformation matrix constructed by scaling an existing affine transform.
+  /// Returns an affine transformation matrix constructed by scaling an existing affine
+  /// transform.
   ///
-  /// - Postcondition: Invertibility is preserved if both `sx` and `sy` aren't `0`.
-  /// This means that if the aforementioned non-zero requirements are met and `self`
-  /// is invertible, so will be the returned transformation.
+  /// - Precondition: The scaling coefficients (`sx` and `sy`) must not be `0`.
+  ///
+  /// - Postcondition: Invertibility is preserved, meaning that if `self` is
+  /// invertible, so will be the returned transformation.
   ///
   /// - Parameters:
   ///   - sx: The value by which to scale x values of the affine transform.
   ///   - sy: The value by which to scale y values of the affine transform.
   func scaledBy(x sx: CGFloat, y sy: CGFloat) -> Self {
-    Self(scaleX: sx, y: sy).concatenating(self)
+    // To scale, we concatenate the scaling matrix (S) and
+    // self (A): A'=S×A, producing the concatenated matrix
+    // A'. A', given two non-zero scaling coefficients `sx` and
+    // `sy`, is:
+    //
+    //       [ sx  0   0 ]   [ a   b   0 ]
+    // S×A = [ 0   sy  0 ] × [ c   d   0 ]
+    //       [ 0   0   1 ]   [ x   y   1 ]
+    //
+    //       [ sx*a+0*c    sx*b+0*d      0 ]
+    // S×A = [ 0*a+sy*c    0*b+sy*d      0 ]
+    //       [ 0*a+0*c+x   0*b+0*d+y     1 ]
+    //
+    //       [ sx*a sx*b  0 ]
+    // S×A = [ sy*c sy*d  0 ]
+    //       [  x    y    1 ]
+
+    precondition(sx != 0 && sy != 0, "Scaling a transformation by 0 is prohibited.")
+
+    return Self(
+      a: sx * a, b: sx * b,
+      c: sy * c, d: sy * d,
+      tx: tx, ty: ty
+    )
   }
 
   /// Returns an affine transformation matrix constructed by translating an existing
@@ -277,18 +304,19 @@ public extension CGAffineTransform {
   ///   - tx: The value by which to move x values with the affine transform.
   ///   - ty: The value by which to move y values with the affine transform.
   func translatedBy(x tx: CGFloat, y ty: CGFloat) -> Self {
-    // To translate, we concatenate the translation matrix (T) with self (A):
+    // To translate, we concatenate the translation matrix (T)
+    // with self (A):
     //
     //       [ 1   0   0 ]   [ a   b   0 ]
-    // A×B = [ 0   1   0 ] × [ c   d   0 ]
+    // T×A = [ 0   1   0 ] × [ c   d   0 ]
     //       [ tx  ty  1 ]   [ x   y   1 ]
     //
     //       [   1*a+0*c       1*b+0*d         0 ]
-    // A×B = [   0*a+1*c       0*b+1*d         0 ]
+    // T×A = [   0*a+1*c       0*b+1*d         0 ]
     //       [ tx*a+ty*c+x   tx*b+ty*d+y       1 ]
     //
     //       [      a           b          0 ]
-    // A×B = [      c           d          0 ]
+    // T×A = [      c           d          0 ]
     //       [ tx*a+ty*c+x  tx*b+ty*d+y    1 ]
 
     Self(
