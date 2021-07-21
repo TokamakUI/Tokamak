@@ -86,6 +86,10 @@ public struct CGAffineTransform: Equatable, Codable {
   public var ty: CGFloat
 
   /// Creates an affine transform with the given matrix values.
+  ///
+  /// - Postcondition: The created transformation is invertible if its determinant is
+  /// not `0`: `a*d-b*c≠0`.
+  ///
   /// - Parameters:
   ///   - a: The value at position [1,1] in the matrix.
   ///   - b: The value at position [1,2] in the matrix.
@@ -108,13 +112,18 @@ public struct CGAffineTransform: Equatable, Codable {
 }
 
 public extension CGAffineTransform {
-  /// The identity matrix.
+  /// The identity transformation matrix.
+  ///
+  /// - Postcondition: The created transformation is invertible.
   static let identity = Self(
     a: 1, b: 0, // 0
     c: 0, d: 1, // 0
     tx: 0, ty: 0 // 1
   )
 
+  /// Creates the identity transformation matrix.
+  ///
+  /// - Postcondition: The created transformation is invertible.
   init() {
     self = .identity
   }
@@ -125,11 +134,15 @@ public extension CGAffineTransform {
 }
 
 public extension CGAffineTransform {
-  /// Returns an affine transformation matrix constructed from a rotation value you provide.
+  /// Creates an affine transformation matrix constructed from a rotation value you
+  /// provide.
+  ///
+  /// - Postcondition: The created transformation is invertible.
+  ///
   /// - Parameters:
   ///   - angle: The angle, in radians, by which this matrix rotates the coordinate
   ///   system axes. A positive value specifies clockwise rotation and a negative value
-  ///    specifies counterclockwise rotation.
+  ///   specifies counterclockwise rotation.
   init(rotationAngle angle: CGFloat) {
     let angleSine = sin(angle)
     let angleCosine = cos(angle)
@@ -141,7 +154,11 @@ public extension CGAffineTransform {
     )
   }
 
-  /// Returns an affine transformation matrix constructed from scaling values you provide.
+  /// Creates an affine transformation matrix constructed from scaling values you provide.
+  ///
+  /// - Postcondition: The created transformation is invertible if both `sx` and
+  /// `sy` are not `0`.
+  ///
   /// - Parameters:
   ///   - sx: The factor by which to scale the x-axis of the coordinate system.
   ///   - sy: The factor by which to scale the y-axis of the coordinate system.
@@ -153,7 +170,11 @@ public extension CGAffineTransform {
     )
   }
 
-  /// Returns an affine transformation matrix constructed from translation values you provide.
+  /// Creates an affine transformation matrix constructed from translation values you
+  /// provide.
+  ///
+  /// - Postcondition: The created transformation is invertible.
+  ///
   /// - Parameters:
   ///   - tx: The value by which to move the x-axis of the coordinate system.
   ///   - ty: The value by which to move the y-axis of the coordinate system.
@@ -170,8 +191,12 @@ public extension CGAffineTransform {
   /// Returns an affine transformation matrix constructed by combining two existing affine
   /// transforms.
   ///
-  /// Note that concatenation is not commutative, meaning that order is important. For instance, `t1.concatenating(t2)` != `t2.concatenating(t1)` — where `t1` and
-  /// `t2` are`CGAffineTransform` instances.
+  /// Note that concatenation is not commutative, meaning that order is important. For
+  /// instance, `t1.concatenating(t2)` != `t2.concatenating(t1)` — where
+  /// `t1` and `t2` are`CGAffineTransform` instances.
+  ///
+  /// - Postcondition: The returned transformation is invertible if both `self` and
+  /// the given transformation (`t2`) are invertible.
   ///
   /// - Parameters:
   ///   - t2: The affine transform to concatenate to this affine transform.
@@ -191,9 +216,14 @@ public extension CGAffineTransform {
 }
 
 public extension CGAffineTransform {
-  /// Returns an affine transformation matrix constructed by inverting an existing affine transform.
-  /// - Returns: A new affine transformation matrix. If the affine transform passed in
-  /// parameter t cannot be inverted, the affine transform is returned unchanged.
+  /// Returns an affine transformation matrix constructed by inverting an existing affine
+  /// transform.
+  ///
+  /// - Postcondition: Invertibility is preserved, meaning that if `self` is
+  /// invertible, so will be the returned transformation.
+  ///
+  /// - Returns: A new affine transformation matrix. If `self` is not invertible, it's
+  /// returned unchanged.
   func inverted() -> Self {
     let determinant = (a * d) - (b * c)
 
@@ -210,7 +240,11 @@ public extension CGAffineTransform {
 
 // TODO: - Optimize operators.
 public extension CGAffineTransform {
-  /// Returns an affine transformation matrix constructed by rotating an existing affine transform.
+  /// Returns an affine transformation matrix constructed by rotating an existing affine
+  /// transform.
+  ///
+  /// - Postcondition: Invertibility is preserved, meaning that if `self` is
+  /// invertible, so will be the returned transformation.
   ///
   /// - Parameters:
   ///   - angle: The angle, in radians, by which to rotate the affine transform.
@@ -222,6 +256,10 @@ public extension CGAffineTransform {
 
   /// Returns an affine transformation matrix constructed by scaling an existing affine transform.
   ///
+  /// - Postcondition: Invertibility is preserved if both `sx` and `sy` aren't `0`.
+  /// This means that if the aforementioned non-zero requirements are met and `self`
+  /// is invertible, so will be the returned transformation.
+  ///
   /// - Parameters:
   ///   - sx: The value by which to scale x values of the affine transform.
   ///   - sy: The value by which to scale y values of the affine transform.
@@ -231,6 +269,9 @@ public extension CGAffineTransform {
 
   /// Returns an affine transformation matrix constructed by translating an existing
   /// affine transform.
+  ///
+  /// - Postcondition: Invertibility is preserved, meaning that if `self` is
+  /// invertible, so will be the returned transformation.
   ///
   /// - Parameters:
   ///   - tx: The value by which to move x values with the affine transform.
