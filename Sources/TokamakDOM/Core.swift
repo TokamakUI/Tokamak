@@ -62,6 +62,14 @@ public typealias ToggleStyleConfiguration = TokamakCore.ToggleStyleConfiguration
 public typealias ButtonStyle = TokamakCore.ButtonStyle
 public typealias ButtonStyleConfiguration = TokamakCore.ButtonStyleConfiguration
 public typealias DefaultButtonStyle = TokamakCore.DefaultButtonStyle
+public typealias PlainButtonStyle = TokamakCore.PlainButtonStyle
+public typealias BorderedButtonStyle = TokamakCore.BorderedButtonStyle
+public typealias BorderlessButtonStyle = TokamakCore.BorderlessButtonStyle
+public typealias LinkButtonStyle = TokamakCore.LinkButtonStyle
+
+public typealias ControlGroupStyle = TokamakCore.ControlGroupStyle
+public typealias AutomaticControlGroupStyle = TokamakCore.AutomaticControlGroupStyle
+public typealias NavigationControlGroupStyle = TokamakCore.NavigationControlGroupStyle
 
 public typealias TextFieldStyle = TokamakCore.TextFieldStyle
 
@@ -109,10 +117,14 @@ public typealias UnitPoint = TokamakCore.UnitPoint
 
 public typealias Edge = TokamakCore.Edge
 
+public typealias Prominence = TokamakCore.Prominence
+
 // MARK: Views
 
 public typealias Alignment = TokamakCore.Alignment
 public typealias Button = TokamakCore.Button
+public typealias ControlGroup = TokamakCore.ControlGroup
+public typealias ControlSize = TokamakCore.ControlSize
 public typealias DatePicker = TokamakCore.DatePicker
 public typealias DisclosureGroup = TokamakCore.DisclosureGroup
 public typealias Divider = TokamakCore.Divider
@@ -130,6 +142,7 @@ public typealias NavigationLink = TokamakCore.NavigationLink
 public typealias NavigationView = TokamakCore.NavigationView
 public typealias OutlineGroup = TokamakCore.OutlineGroup
 public typealias Picker = TokamakCore.Picker
+public typealias ProgressView = TokamakCore.ProgressView
 public typealias ScrollView = TokamakCore.ScrollView
 public typealias Section = TokamakCore.Section
 public typealias SecureField = TokamakCore.SecureField
