@@ -94,7 +94,7 @@ public class MountedElement<R: Renderer> {
 
   public internal(set) var environmentValues: EnvironmentValues
 
-  unowned var parent: MountedElement<R>?
+  weak var parent: MountedElement<R>?
   /// `didSet` on this field propagates the preference changes up the view tree.
   var preferenceStore: _PreferenceStore = .init() {
     didSet {
