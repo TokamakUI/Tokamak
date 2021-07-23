@@ -127,7 +127,7 @@ final class GTKRenderer: Renderer {
   ) {
     defer { task.finish() }
 
-    guard mapAnyView(host.view, transform: { (widget: AnyWidget) in widget }) != nil
+    guard mapAnyView(task.host.view, transform: { (widget: AnyWidget) in widget }) != nil
     else { return }
 
     target.destroy()
