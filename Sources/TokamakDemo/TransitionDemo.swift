@@ -67,7 +67,7 @@ struct TransitionDemo: View {
             Text(".slide").transition(AnyTransition.slide)
           }
         }
-        .transition(AnyTransition.scale)
+        .transition(AnyTransition.slide)
       }
     }
   }

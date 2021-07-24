@@ -137,11 +137,16 @@ final class DOMRenderer: Renderer {
         to: host.view
       )
       runTransition = { node in
-        // Then apply the identity insertion modifier on update with animation.
-        host.transaction.disablesAnimations = false
-        withAnimation(animation) {
-          self.update(target: node, with: host)
-        }
+        anyHTML.update(
+          dom: node,
+          computeStart: false,
+          additionalAttributes: self.apply(
+            transition: transition, \.insertion,
+            as: \.identity,
+            to: host.view
+          ),
+          transaction: .init(animation: animation)
+        )
       }
     }
 
@@ -190,16 +195,9 @@ final class DOMRenderer: Renderer {
     guard let html = mapAnyView(host.view, transform: { (html: AnyHTML) in html })
     else { return }
 
-    // Apply the identity insertion modifier.
-    let transition = _AnyTransitionProxy(host.viewTraits.transition)
-      .resolve(in: host.environmentValues)
     html.update(
       dom: target,
-      additionalAttributes: apply(
-        transition: transition, \.insertion,
-        as: \.identity,
-        to: host.view
-      ),
+      additionalAttributes: [:],
       transaction: host.transaction
     )
 

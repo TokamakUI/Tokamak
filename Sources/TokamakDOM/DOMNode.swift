@@ -56,6 +56,7 @@ extension _AnimationBoxBase._Resolved._RepeatStyle {
 extension AnyHTML {
   func update(
     dom: DOMNode,
+    computeStart: Bool = true,
     additionalAttributes: [HTMLAttribute: String],
     transaction: Transaction
   ) {
@@ -67,7 +68,7 @@ extension AnyHTML {
        let animation = transaction.animation,
        let style = attributes["style"]
     {
-      dom.animateStyles(to: style, with: animation)
+      dom.animateStyles(to: style, computeStart: computeStart, with: animation)
     }
 
     if attributes[.checked] == nil && dom.ref.type == "checkbox" &&
@@ -192,11 +193,14 @@ final class DOMNode: Target {
 
   func animateStyles(
     to style: String,
+    computeStart: Bool,
     with animation: Animation
   ) {
     let resolved = _AnimationProxy(animation).resolve()
 
-    let startStyle = extractStyles(compute: true).jsValue()
+    let startStyle = Dictionary(uniqueKeysWithValues: extractStyles(compute: computeStart).map {
+      ($0.animatableProperty, $1)
+    }).jsValue()
     ref.style.object?.cssText = .string(style)
     let endStyle = Dictionary(uniqueKeysWithValues: extractStyles().map {
       ($0.animatableProperty, $1)

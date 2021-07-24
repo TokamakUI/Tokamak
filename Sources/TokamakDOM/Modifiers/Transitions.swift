@@ -22,14 +22,14 @@ extension _MoveTransition: DOMViewModifier {
   public var attributes: [HTMLAttribute: String] {
     let offset: (String, String)
     switch edge {
-    case .leading: offset = ("-100%", "0")
-    case .trailing: offset = ("100%", "0")
-    case .top: offset = ("0", "-100%")
-    case .bottom: offset = ("0", "100%")
+    case .leading: offset = ("-100%", "0%")
+    case .trailing: offset = ("100%", "0%")
+    case .top: offset = ("0%", "-100%")
+    case .bottom: offset = ("0%", "100%")
     }
     return [
       "style":
-        "transform: translate(\(isActive ? offset.0 : "0"), \(isActive ? offset.1 : "0"));",
+        "transform: translate(\(isActive ? offset.0 : "0%"), \(isActive ? offset.1 : "0%"));",
     ]
   }
 }
