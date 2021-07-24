@@ -24,7 +24,7 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     in reconciler: StackReconciler<R>,
     with transaction: Transaction
   ) {
-    super.prepareForMount()
+    super.prepareForMount(with: transaction)
 
     var transaction = transaction
     (view.view as? _TransactionModifierProtocol)?.modifyTransaction(&transaction)

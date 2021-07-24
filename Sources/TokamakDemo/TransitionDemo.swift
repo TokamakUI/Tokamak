@@ -33,7 +33,9 @@ struct TransitionDemo: View {
   var body: some View {
     VStack {
       Button(isVisible ? "Hide" : "Show") {
-        withAnimation(.easeInOut(duration: 3)) { isVisible.toggle() }
+        withAnimation(.easeInOut(duration: 3)) {
+          isVisible.toggle()
+        }
       }
       if isVisible {
         Text(".opacity")

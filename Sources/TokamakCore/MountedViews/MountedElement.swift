@@ -146,11 +146,17 @@ public class MountedElement<R: Renderer> {
   }
 
   /// You must call `super.prepareForMount` before all other mounting work.
-  func prepareForMount() {
+  func prepareForMount(with transaction: Transaction) {
     // Allow the root of a mount to transition
     // (if their parent isn't mounting, then they are the root of the mount).
     if parent?.transitionPhase == .normal {
-      viewTraits.insert(true, forKey: CanTransitionTraitKey.self)
+      viewTraits.insert(
+        transaction.animation != nil
+          || _AnyTransitionProxy(viewTraits.transition)
+          .resolve(in: environmentValues)
+          .insertionAnimation != nil,
+        forKey: CanTransitionTraitKey.self
+      )
     }
   }
 
@@ -180,7 +186,13 @@ public class MountedElement<R: Renderer> {
     // Allow the root of an unmount to transition
     // (if their parent isn't unmounting, then they are the root of the unmount).
     if parent?.transitionPhase == .normal {
-      viewTraits.insert(transaction.animation != nil, forKey: CanTransitionTraitKey.self)
+      viewTraits.insert(
+        transaction.animation != nil
+          || _AnyTransitionProxy(viewTraits.transition)
+          .resolve(in: environmentValues)
+          .removalAnimation != nil,
+        forKey: CanTransitionTraitKey.self
+      )
     }
   }
 

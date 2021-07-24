@@ -22,7 +22,7 @@ final class MountedEmptyView<R: Renderer>: MountedElement<R> {
     in reconciler: StackReconciler<R>,
     with transaction: Transaction
   ) {
-    super.prepareForMount()
+    super.prepareForMount(with: transaction)
     super.mount(before: sibling, on: parent, in: reconciler, with: transaction)
   }
 

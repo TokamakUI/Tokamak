@@ -47,7 +47,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     in reconciler: StackReconciler<R>,
     with transaction: Transaction
   ) {
-    super.prepareForMount()
+    super.prepareForMount(with: transaction)
 
     self.transaction = transaction
 

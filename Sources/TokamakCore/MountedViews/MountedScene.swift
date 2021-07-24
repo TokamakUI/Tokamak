@@ -34,7 +34,7 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
     in reconciler: StackReconciler<R>,
     with transaction: Transaction
   ) {
-    super.prepareForMount()
+    super.prepareForMount(with: transaction)
     let childBody = reconciler.render(mountedScene: self)
 
     let child: MountedElement<R> = childBody

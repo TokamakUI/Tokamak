@@ -27,7 +27,7 @@ final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
     in reconciler: StackReconciler<R>,
     with transaction: Transaction
   ) {
-    super.prepareForMount()
+    super.prepareForMount(with: transaction)
 
     // `App` elements have no siblings, hence the `before` argument is discarded.
     // They also have no parents, so the `parent` argument is discarded as well.
