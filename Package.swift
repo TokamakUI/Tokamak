@@ -179,8 +179,10 @@ let package = Package(
       ],
       resources: [.copy("logo-header.png")],
       linkerSettings: [
-        .unsafeFlags(["-Xlinker", "--stack-first", "-Xlinker", "-z", "-Xlinker",
-                      "stack-size=16777216"]),
+        .unsafeFlags(
+          ["-Xlinker", "--stack-first", "-Xlinker", "-z", "-Xlinker", "stack-size=16777216"],
+          condition: .when(platforms: [.wasi])
+        ),
       ]
     ),
     .target(
