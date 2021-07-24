@@ -180,7 +180,7 @@ public class MountedElement<R: Renderer> {
     // Allow the root of an unmount to transition
     // (if their parent isn't unmounting, then they are the root of the unmount).
     if parent?.transitionPhase == .normal {
-      viewTraits.insert(true, forKey: CanTransitionTraitKey.self)
+      viewTraits.insert(transaction.animation != nil, forKey: CanTransitionTraitKey.self)
     }
   }
 
