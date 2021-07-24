@@ -26,8 +26,7 @@ public class UnmountTask<R> where R: Renderer {
   }
 
   func cancel() {
-    isCancelled = true
-    childTasks.forEach { $0.cancel() }
+    forEach { $0.isCancelled = true }
   }
 
   /// Call after completely unmounting the `host`.
@@ -45,7 +44,18 @@ public class UnmountTask<R> where R: Renderer {
 
   /// Forces the element and all child tasks to unmount without transition.
   func completeImmediately() {
-    childTasks.forEach { $0.completeImmediately() }
+    forEach {
+      guard $0 is UnmountHostTask<R> else { return }
+      $0.completeImmediately()
+    }
+  }
+
+  func forEach(_ f: (UnmountTask<R>) -> ()) {
+    var stack = [self]
+    while let last = stack.popLast() {
+      f(last)
+      stack.insert(contentsOf: last.childTasks, at: 0)
+    }
   }
 }
 
@@ -67,6 +77,5 @@ public final class UnmountHostTask<R>: UnmountTask<R> where R: Renderer {
   override func completeImmediately() {
     host.viewTraits.insert(false, forKey: CanTransitionTraitKey.self)
     host.unmount(in: reconciler, with: .init(animation: nil), parentTask: nil)
-    super.completeImmediately()
   }
 }
