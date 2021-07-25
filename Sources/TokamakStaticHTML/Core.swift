@@ -75,6 +75,7 @@ public typealias HStack = TokamakCore.HStack
 public typealias LazyHGrid = TokamakCore.LazyHGrid
 public typealias LazyVGrid = TokamakCore.LazyVGrid
 public typealias List = TokamakCore.List
+public typealias ProgressView = TokamakCore.ProgressView
 public typealias ScrollView = TokamakCore.ScrollView
 public typealias Section = TokamakCore.Section
 public typealias Spacer = TokamakCore.Spacer
