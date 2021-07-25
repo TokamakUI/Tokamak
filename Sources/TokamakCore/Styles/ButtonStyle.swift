@@ -14,88 +14,35 @@
 //
 //  Created by Gene Z. Ragan on 07/22/2020.
 
-public struct ButtonStyleConfiguration {
-  public struct Label: _PrimitiveView {
-    let content: AnyView
-  }
-
-  public let label: Label
-  public let isPressed: Bool
-}
-
-public struct DefaultButtonStyle: ButtonStyle {
-  public init() {}
-  public func makeBody(configuration: ButtonStyleConfiguration) -> some View {
-    configuration.label
-  }
-}
-
-/// This is a helper type that works around absence of "package private" access control in Swift
-public struct _ButtonStyleConfigurationProxy {
-  public struct Label {
-    public typealias Subject = ButtonStyleConfiguration.Label
-    public let subject: Subject
-
-    public init(_ subject: Subject) { self.subject = subject }
-
-    public var content: AnyView { subject.content }
-  }
-
-  public typealias Subject = ButtonStyleConfiguration
-  public let subject: Subject
-
-  public init(label: AnyView, isPressed: Bool) {
-    subject = .init(label: .init(content: label), isPressed: isPressed)
-  }
-
-  public var label: ButtonStyleConfiguration.Label { subject.label }
-}
-
 public protocol ButtonStyle {
   associatedtype Body: View
-
+  @ViewBuilder
   func makeBody(configuration: Self.Configuration) -> Self.Body
-
   typealias Configuration = ButtonStyleConfiguration
 }
 
-public struct _AnyButtonStyle: ButtonStyle {
-  public typealias Body = AnyView
+public struct ButtonStyleConfiguration {
+  public struct Label: View {
+    public let body: AnyView
+  }
 
-  private let bodyClosure: (ButtonStyleConfiguration) -> AnyView
-  public let type: Any.Type
+  public let role: ButtonRole?
+  public let label: ButtonStyleConfiguration.Label
+  public let isPressed: Bool
+}
 
-  public init<S: ButtonStyle>(_ style: S) {
+struct AnyButtonStyle: ButtonStyle {
+  let bodyClosure: (ButtonStyleConfiguration) -> AnyView
+  let type: Any.Type
+
+  init<S: ButtonStyle>(_ style: S) {
     type = S.self
-    bodyClosure = { configuration in
-      AnyView(style.makeBody(configuration: configuration))
+    bodyClosure = {
+      AnyView(style.makeBody(configuration: $0))
     }
   }
 
-  public func makeBody(configuration: ButtonStyleConfiguration) -> AnyView {
+  func makeBody(configuration: Configuration) -> some View {
     bodyClosure(configuration)
-  }
-}
-
-public enum _ButtonStyleKey: EnvironmentKey {
-  public static var defaultValue: _AnyButtonStyle {
-    _AnyButtonStyle(DefaultButtonStyle())
-  }
-}
-
-extension EnvironmentValues {
-  var buttonStyle: _AnyButtonStyle {
-    get {
-      self[_ButtonStyleKey.self]
-    }
-    set {
-      self[_ButtonStyleKey.self] = newValue
-    }
-  }
-}
-
-public extension View {
-  func buttonStyle<S>(_ style: S) -> some View where S: ButtonStyle {
-    environment(\.buttonStyle, _AnyButtonStyle(style))
   }
 }
