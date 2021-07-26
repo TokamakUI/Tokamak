@@ -112,8 +112,8 @@ final class CombinedTransitionBox: _AnyTransitionBox {
     return .init(
       insertion: aResolved.insertion + bResolved.insertion,
       removal: aResolved.removal + bResolved.removal,
-      insertionAnimation: bResolved.insertionAnimation,
-      removalAnimation: bResolved.removalAnimation
+      insertionAnimation: bResolved.insertionAnimation ?? aResolved.insertionAnimation,
+      removalAnimation: bResolved.removalAnimation ?? aResolved.removalAnimation
     )
   }
 }

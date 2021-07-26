@@ -147,6 +147,12 @@ public class MountedElement<R: Renderer> {
 
   /// You must call `super.prepareForMount` before all other mounting work.
   func prepareForMount(with transaction: Transaction) {
+    // `GroupView`'s don't really mount, so let their children transition if the group can.
+    if case let .view(view) = element,
+       view.type is GroupView.Type
+    {
+      transitionPhase = parent?.transitionPhase ?? .normal
+    }
     // Allow the root of a mount to transition
     // (if their parent isn't mounting, then they are the root of the mount).
     if parent?.transitionPhase == .normal {
@@ -181,8 +187,15 @@ public class MountedElement<R: Renderer> {
       unmountTask = parentTask?.appendChild()
     }
 
-    // Set the phase to `willUnmount` before unmounting.
-    transitionPhase = .willUnmount
+    // `GroupView`'s don't really unmount, so let their children transition if the group can.
+    if case let .view(view) = element,
+       view.type is GroupView.Type
+    {
+      transitionPhase = parent?.transitionPhase ?? .normal
+    } else {
+      // Set the phase to `willUnmount` before unmounting.
+      transitionPhase = .willUnmount
+    }
     // Allow the root of an unmount to transition
     // (if their parent isn't unmounting, then they are the root of the unmount).
     if parent?.transitionPhase == .normal {
