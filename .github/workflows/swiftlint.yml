@@ -12,7 +12,11 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v1
+      - name: Fetch base ref
+        run: |
+          git fetch --prune --no-tags --depth=1 origin +refs/heads/${{ github.base_ref }}:refs/heads/${{ github.base_ref }}
       - name: GitHub Action for SwiftLint
-        uses: norio-nomura/action-swiftlint@3.1.0
+        uses: ezraberch/action-swiftlint@3.2.3
         env:
           DIFF_BASE: ${{ github.base_ref }}
+          DIFF_HEAD: HEAD
