@@ -110,10 +110,7 @@ final class DOMRenderer: Renderer {
     to parent: DOMNode,
     with host: MountedHost
   ) -> DOMNode? {
-    guard let anyHTML = mapAnyView(
-      host.view,
-      transform: { (html: AnyHTML) in html }
-    ) else {
+    guard let anyHTML: AnyHTML = mapAnyView(host.view, transform: { $0 }) else {
       // handle `GroupView` cases (such as `TupleView`, `Group` etc)
       if mapAnyView(host.view, transform: { (view: ParentView) in view }) != nil {
         return parent
@@ -180,12 +177,7 @@ final class DOMRenderer: Renderer {
 
     fixSpacers(host: host, target: resultingNode)
 
-    let node: DOMNode
-    if let dynamicHTML = anyHTML as? AnyDynamicHTML {
-      node = DOMNode(host.view, resultingNode, dynamicHTML.listeners)
-    } else {
-      node = DOMNode(host.view, resultingNode, [:])
-    }
+    let node = DOMNode(host.view, resultingNode, (anyHTML as? AnyDynamicHTML)?.listeners ?? [:])
 
     runTransition?(node)
     return node

@@ -112,13 +112,17 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     )
   }
 
-  override func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
-    guard let target = target else { return }
-
-    // Stop any unfinished unmounts and complete them without transitions.
+  /// Stop any unfinished unmounts and complete them without transitions.
+  private func invalidateUnmount() {
     parentUnmountTask.cancel()
     parentUnmountTask.completeImmediately()
     parentUnmountTask = .init()
+  }
+
+  override func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
+    guard let target = target else { return }
+
+    invalidateUnmount()
 
     updateEnvironment()
     target.view = view
@@ -142,9 +146,7 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
       mountedChildren = childrenViews.map {
         $0.makeMountedView(reconciler.renderer, target, environmentValues, traits, self)
       }
-      mountedChildren.forEach {
-        $0.mount(on: self, in: reconciler, with: transaction)
-      }
+      mountedChildren.forEach { $0.mount(on: self, in: reconciler, with: transaction) }
 
     // if both arrays have items then reconcile by types and keys
     case (false, false):
