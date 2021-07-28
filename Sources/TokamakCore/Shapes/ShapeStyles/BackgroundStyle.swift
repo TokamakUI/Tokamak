@@ -75,8 +75,12 @@ public extension View {
 
   public func modifyEnvironment(_ values: inout EnvironmentValues) {
     values._backgroundStyle = .init(
-      styles: (primary: style, secondary: style, tertiary: style),
+      styles: (primary: style, secondary: style, tertiary: style, quaternary: style),
       environment: values
     )
   }
+}
+
+public extension ShapeStyle where Self == BackgroundStyle {
+  static var background: Self { .init() }
 }

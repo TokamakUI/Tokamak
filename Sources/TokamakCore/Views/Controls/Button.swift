@@ -84,7 +84,6 @@ public struct _PrimitiveButtonStyleBody<Label>: _PrimitiveView where Label: View
     anyStyle = .init(style)
   }
 
-  @Environment(\.controlProminence) public var controlProminence
   @Environment(\.controlSize) public var controlSize
 }
 

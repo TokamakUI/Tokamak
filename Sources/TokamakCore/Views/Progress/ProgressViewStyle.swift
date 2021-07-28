@@ -45,7 +45,7 @@ public struct DefaultProgressViewStyle: ProgressViewStyle {
     VStack(alignment: .leading, spacing: 0) {
       HStack { Spacer() }
       configuration.label
-        .foregroundStyle(PrimaryContentStyle())
+        .foregroundStyle(HierarchicalShapeStyle.primary)
       if let fractionCompleted = configuration.fractionCompleted {
         _FractionalProgressView(fractionCompleted)
       } else {
@@ -53,7 +53,7 @@ public struct DefaultProgressViewStyle: ProgressViewStyle {
       }
       configuration.currentValueLabel
         .font(.caption)
-        .foregroundStyle(PrimaryContentStyle())
+        .foregroundStyle(HierarchicalShapeStyle.primary)
         .opacity(0.5)
     }
   }

@@ -205,18 +205,38 @@ final class RenderingTests: XCTestCase {
       matching: HStack {
         Rectangle()
           .frame(width: 50, height: 50)
-          .foregroundStyle(PrimaryContentStyle())
+          .foregroundStyle(HierarchicalShapeStyle.primary)
         Rectangle()
           .frame(width: 50, height: 50)
-          .foregroundStyle(SecondaryContentStyle())
+          .foregroundStyle(HierarchicalShapeStyle.secondary)
         Rectangle()
           .frame(width: 50, height: 50)
-          .foregroundStyle(TertiaryContentStyle())
+          .foregroundStyle(HierarchicalShapeStyle.tertiary)
         Rectangle()
           .frame(width: 50, height: 50)
-          .foregroundStyle(QuaternaryContentStyle())
+          .foregroundStyle(HierarchicalShapeStyle.quaternary)
       }
       .foregroundColor(.blue),
+      as: .image(size: .init(width: 275, height: 100)),
+      timeout: defaultSnapshotTimeout
+    )
+
+    assertSnapshot(
+      matching: HStack {
+        Rectangle()
+          .frame(width: 50, height: 50)
+          .foregroundStyle(HierarchicalShapeStyle.primary)
+        Rectangle()
+          .frame(width: 50, height: 50)
+          .foregroundStyle(HierarchicalShapeStyle.secondary)
+        Rectangle()
+          .frame(width: 50, height: 50)
+          .foregroundStyle(HierarchicalShapeStyle.tertiary)
+        Rectangle()
+          .frame(width: 50, height: 50)
+          .foregroundStyle(HierarchicalShapeStyle.quaternary)
+      }
+      .foregroundStyle(Color.red, Color.green, Color.blue),
       as: .image(size: .init(width: 275, height: 100)),
       timeout: defaultSnapshotTimeout
     )

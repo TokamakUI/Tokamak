@@ -56,26 +56,77 @@ extension _ShapeView: _HTMLPrimitive {
   @_spi(TokamakStaticHTML)
   public var renderedBody: AnyView {
     let path = shape.path(in: .zero).renderedBody
-    let attributes: [HTMLAttribute: String]
+    var attributes: [HTMLAttribute: String] = [:]
+    var svgDefs: AnyView?
 
     if let shapeAttributes = shape as? ShapeAttributes {
       attributes = shapeAttributes.attributes(style)
-    } else if let color = style.resolve(
-      for: .resolveStyle(levels: 0..<1),
-      in: environment,
-      role: Content.role
-    )?.color(at: 0) {
-      attributes = ["style": "fill: \(color.cssValue(environment));"]
-    } else if let foregroundStyle = environment._foregroundStyle,
-              let color = foregroundStyle.resolve(
-                for: .resolveStyle(levels: 0..<1),
-                in: environment,
-                role: Content.role
-              )?.color(at: 0)
-    {
-      attributes = ["style": "fill: \(color.cssValue(environment));"]
     } else {
-      return path
+      let resolved = style.resolve(
+        for: .resolveStyle(levels: 0..<1),
+        in: environment,
+        role: Content.role
+      )
+      switch resolved {
+      case let .gradient(gradient, style):
+        let stops = ForEach(Array(gradient.stops.enumerated()), id: \.offset) {
+          HTML("stop", [
+            "offset": "\($0.element.location * 100)%",
+            "stop-color": $0.element.color.cssValue(environment),
+          ])
+        }
+        let id = Int.random(in: 0..<Int.max)
+        attributes = ["style": "fill: url(#gradient\(id));"]
+        switch style {
+        case let .linear(startPoint, endPoint):
+          svgDefs = AnyView(HTML(
+            "linearGradient",
+            [
+              "id": "gradient\(id)",
+              "x1": "\(startPoint.x * 100)%",
+              "y1": "\((1 - startPoint.y) * 100)%",
+              "x2": "\(endPoint.x * 100)%",
+              "y2": "\((1 - endPoint.y) * 100)%",
+              "gradientUnits": "userSpaceOnUse",
+            ]
+          ) {
+            stops
+          })
+        case let .radial(center, startRadius, endRadius):
+          svgDefs = AnyView(
+            HTML(
+              "radialGradient",
+              [
+                "id": "gradient\(id)",
+                "fx": "\(center.x * 100)%",
+                "fy": "\((1 - center.y) * 100)%",
+                "cx": "\(center.x * 100)%",
+                "cy": "\((1 - center.y) * 100)%",
+                "gradientUnits": "userSpaceOnUse",
+                "fr": "\(startRadius)",
+                "r": "\(endRadius)",
+              ]
+            ) {
+              stops
+            }
+          )
+        default: return path
+        }
+      default:
+        if let color = resolved?.color(at: 0) {
+          attributes = ["style": "fill: \(color.cssValue(environment));"]
+        } else if let foregroundStyle = environment._foregroundStyle,
+                  let color = foregroundStyle.resolve(
+                    for: .resolveStyle(levels: 0..<1),
+                    in: environment,
+                    role: Content.role
+                  )?.color(at: 0)
+        {
+          attributes = ["style": "fill: \(color.cssValue(environment));"]
+        } else {
+          return path
+        }
+      }
     }
 
     if let view = mapAnyView(path, transform: { (html: HTML<AnyView>) -> AnyView in
@@ -84,7 +135,12 @@ extension _ShapeView: _HTMLPrimitive {
         attributes,
         uniquingKeysWith: uniqueKeys
       )
-      return AnyView(HTML(html.tag, mergedAttributes) { html.content })
+      return AnyView(HTML(html.tag, mergedAttributes) {
+        html.content
+        HTML("defs") {
+          svgDefs
+        }
+      })
     }) {
       return view
     } else {

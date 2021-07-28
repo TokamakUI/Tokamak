@@ -71,8 +71,9 @@ public extension View {
   }
 }
 
-@frozen public struct _ForegroundStyleModifier<Primary, Secondary, Tertiary>: ViewModifier,
-  EnvironmentModifier
+@frozen public struct _ForegroundStyleModifier<
+  Primary, Secondary, Tertiary
+>: ViewModifier, EnvironmentModifier
   where Primary: ShapeStyle, Secondary: ShapeStyle, Tertiary: ShapeStyle
 {
   public var primary: Primary
@@ -90,6 +91,13 @@ public extension View {
 
   public typealias Body = Never
   public func modifyEnvironment(_ values: inout EnvironmentValues) {
-    values._foregroundStyle = .init(styles: (primary, secondary, tertiary), environment: values)
+    values._foregroundStyle = .init(
+      styles: (primary, secondary, tertiary, tertiary),
+      environment: values
+    )
   }
+}
+
+public extension ShapeStyle where Self == ForegroundStyle {
+  static var foreground: Self { .init() }
 }

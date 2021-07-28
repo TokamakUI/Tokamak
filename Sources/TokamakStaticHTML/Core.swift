@@ -46,15 +46,18 @@ public typealias ContainerRelativeShape = TokamakCore.ContainerRelativeShape
 
 // MARK: Shape Styles
 
-public typealias PrimaryContentStyle = TokamakCore.PrimaryContentStyle
-public typealias SecondaryContentStyle = TokamakCore.SecondaryContentStyle
-public typealias TertiaryContentStyle = TokamakCore.TertiaryContentStyle
-public typealias QuaternaryContentStyle = TokamakCore.QuaternaryContentStyle
+public typealias HierarchicalShapeStyle = TokamakCore.HierarchicalShapeStyle
 
 public typealias ForegroundStyle = TokamakCore.ForegroundStyle
 public typealias BackgroundStyle = TokamakCore.BackgroundStyle
 
 public typealias Material = TokamakCore.Material
+
+public typealias Gradient = TokamakCore.Gradient
+public typealias LinearGradient = TokamakCore.LinearGradient
+public typealias RadialGradient = TokamakCore.RadialGradient
+public typealias EllipticalGradient = TokamakCore.EllipticalGradient
+public typealias AngularGradient = TokamakCore.AngularGradient
 
 // MARK: Primitive values
 

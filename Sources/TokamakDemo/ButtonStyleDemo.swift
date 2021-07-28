@@ -81,7 +81,7 @@ public struct ButtonStyleDemo: View {
       if #available(iOS 15.0, macOS 12.0, *) {
         #if compiler(>=5.5) || os(WASI) // Xcode 13 required for `controlProminence`.
         Button("Prominent") {}
-          .controlProminence(.increased)
+          .buttonStyle(BorderedProminentButtonStyle())
         Text("borderless")
           .font(.headline)
         allSizes

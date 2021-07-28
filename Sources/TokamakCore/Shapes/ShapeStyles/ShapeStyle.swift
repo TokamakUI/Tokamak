@@ -23,9 +23,14 @@ public protocol ShapeStyle {
 }
 
 public struct AnyShapeStyle: ShapeStyle {
-  let styles: (primary: ShapeStyle, secondary: ShapeStyle, tertiary: ShapeStyle)
+  let styles: (
+    primary: ShapeStyle,
+    secondary: ShapeStyle,
+    tertiary: ShapeStyle,
+    quaternary: ShapeStyle
+  )
   var stylesArray: [ShapeStyle] {
-    [styles.primary, styles.secondary, styles.tertiary]
+    [styles.primary, styles.secondary, styles.tertiary, styles.quaternary]
   }
 
   let environment: EnvironmentValues
@@ -106,9 +111,10 @@ public struct _ShapeStyle_Shape {
     case bool(Bool)
     case none
 
-    public func resolvedStyle(on shape: _ShapeStyle_Shape,
-                              in environment: EnvironmentValues) -> _ResolvedStyle?
-    {
+    public func resolvedStyle(
+      on shape: _ShapeStyle_Shape,
+      in environment: EnvironmentValues
+    ) -> _ResolvedStyle? {
       switch self {
       case let .resolved(resolved): return resolved
       case let .style(anyStyle):
@@ -134,6 +140,7 @@ public indirect enum _ResolvedStyle {
   case array([_ResolvedStyle])
   case opacity(Float, _ResolvedStyle)
 //  case multicolor(ResolvedMulticolorStyle)
+  case gradient(Gradient, style: _GradientStyle)
 
   public func color(at level: Int) -> Color? {
     switch self {
@@ -146,6 +153,8 @@ public indirect enum _ResolvedStyle {
     case let .opacity(opacity, resolved):
       guard let color = resolved.color(at: level) else { return nil }
       return color.opacity(Double(opacity))
+    case let .gradient(gradient, _):
+      return gradient.stops.first?.color
     }
   }
 }
