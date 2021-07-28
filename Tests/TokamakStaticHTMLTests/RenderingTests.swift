@@ -412,6 +412,29 @@ final class RenderingTests: XCTestCase {
       as: .image(size: .init(width: 100, height: 100))
     )
   }
+
+  func testGradients() {
+    assertSnapshot(
+      matching: HStack {
+        Rectangle()
+          .fill(LinearGradient(
+            colors: [.red, .orange, .yellow, .green, .blue, .purple],
+            startPoint: .bottomLeading,
+            endPoint: .topTrailing
+          ))
+          .frame(width: 80, height: 80)
+        Circle()
+          .fill(RadialGradient(
+            colors: [.red, .orange, .yellow, .green, .blue, .purple],
+            center: .center,
+            startRadius: 5,
+            endRadius: 40
+          ))
+          .frame(width: 80, height: 80)
+      },
+      as: .image(size: .init(width: 200, height: 100))
+    )
+  }
 }
 
 #endif
