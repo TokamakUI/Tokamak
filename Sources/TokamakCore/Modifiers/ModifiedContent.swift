@@ -39,7 +39,7 @@ extension ModifiedContent: EnvironmentReader where Modifier: EnvironmentReader {
   }
 }
 
-extension ModifiedContent: View, ParentView where Content: View, Modifier: ViewModifier {
+extension ModifiedContent: View, GroupView, ParentView where Content: View, Modifier: ViewModifier {
   public var body: Body {
     neverBody("ModifiedContent<View, ViewModifier>")
   }

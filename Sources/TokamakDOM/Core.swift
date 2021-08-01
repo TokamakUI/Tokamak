@@ -196,6 +196,8 @@ public typealias EmptyAnimatableData = TokamakCore.EmptyAnimatableData
 
 public typealias AnimatableModifier = TokamakCore.AnimatableModifier
 
+public typealias AnyTransition = TokamakCore.AnyTransition
+
 public func withTransaction<Result>(
   _ transaction: Transaction,
   _ body: () throws -> Result

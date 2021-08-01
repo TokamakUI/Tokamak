@@ -19,10 +19,20 @@ final class MountedEmptyView<R: Renderer>: MountedElement<R> {
   override func mount(
     before sibling: R.TargetType? = nil,
     on parent: MountedElement<R>? = nil,
-    with reconciler: StackReconciler<R>
-  ) {}
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction
+  ) {
+    super.prepareForMount(with: transaction)
+    super.mount(before: sibling, on: parent, in: reconciler, with: transaction)
+  }
 
-  override func unmount(with reconciler: StackReconciler<R>) {}
+  override func unmount(
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction,
+    parentTask: UnmountTask<R>?
+  ) {
+    super.unmount(in: reconciler, with: transaction, parentTask: parentTask)
+  }
 
   override func update(in reconciler: StackReconciler<R>, with transaction: Transaction?) {}
 }

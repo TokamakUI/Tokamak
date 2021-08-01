@@ -18,7 +18,9 @@ public protocol ViewModifier {
   func body(content: Content) -> Self.Body
 }
 
-public struct _ViewModifier_Content<Modifier>: View where Modifier: ViewModifier {
+public struct _ViewModifier_Content<Modifier>: View
+  where Modifier: ViewModifier
+{
   public let modifier: Modifier
   public let view: AnyView
 
@@ -27,7 +29,7 @@ public struct _ViewModifier_Content<Modifier>: View where Modifier: ViewModifier
     self.view = view
   }
 
-  public var body: AnyView {
+  public var body: some View {
     view
   }
 }
