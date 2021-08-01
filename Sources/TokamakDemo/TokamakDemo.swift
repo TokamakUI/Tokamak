@@ -66,32 +66,44 @@ struct NavItem: View {
 struct TokamakDemoView: View {
   var body: some View {
     NavigationView { () -> AnyView in
-      let list = List {
-        Image("logo-header.png", label: Text("Tokamak Demo"))
-          .frame(height: 50)
-          .padding(.bottom, 20)
-        Section(header: Text("Buttons")) {
-          NavItem(
-            "Counter",
-            destination:
-            Counter(count: Count(value: 5), limit: 15)
-              .padding()
-              .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
-              .border(Color.red, width: 3)
-              .foregroundColor(.black)
-          )
-          NavItem("ButtonStyle", destination: ButtonStyleDemo())
-        }
-        Section(header: Text("Containers")) {
-          NavItem("ForEach", destination: ForEachDemo())
-          if #available(iOS 14.0, *) {
-            #if os(macOS)
-            NavItem("List", destination: ListDemo())
-            #else
-            NavItem("List", destination: ListDemo().listStyle(InsetGroupedListStyle()))
-            #endif
-          } else {
-            NavItem("List", destination: ListDemo())
+      let list = title(
+        List {
+          Image("logo-header.png", label: Text("Tokamak Demo"))
+            .frame(height: 50)
+            .padding(.bottom, 20)
+          Section(header: Text("Buttons")) {
+            NavItem(
+              "Counter",
+              destination:
+              Counter(count: Count(value: 5), limit: 15)
+                .padding()
+                .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
+                .border(Color.red, width: 3)
+                .foregroundColor(.black)
+            )
+            NavItem("ButtonStyle", destination: ButtonStyleDemo())
+          }
+          Section(header: Text("Containers")) {
+            NavItem("ForEach", destination: ForEachDemo())
+            if #available(iOS 14.0, *) {
+              #if os(macOS)
+              NavItem("List", destination: ListDemo())
+              #else
+              NavItem("List", destination: ListDemo().listStyle(InsetGroupedListStyle()))
+              #endif
+            } else {
+              NavItem("List", destination: ListDemo())
+            }
+            if #available(iOS 14.0, *) {
+              NavItem("Sidebar", destination: SidebarListDemo().listStyle(SidebarListStyle()))
+            } else {
+              NavItem(unavailable: "Sidebar")
+            }
+            if #available(OSX 10.16, iOS 14.0, *) {
+              NavItem("OutlineGroup", destination: OutlineGroupDemo())
+            } else {
+              NavItem(unavailable: "OutlineGroup")
+            }
           }
           Section(header: Text("Layout")) {
             NavItem("HStack/VStack", destination: StackDemo())
@@ -109,45 +121,19 @@ struct TokamakDemoView: View {
             }.padding(20))
             NavItem("GeometryReader", destination: GeometryReaderDemo())
           }
-          if #available(OSX 10.16, iOS 14.0, *) {
-            NavItem("OutlineGroup", destination: OutlineGroupDemo())
-          } else {
-            NavItem(unavailable: "OutlineGroup")
+          Section(header: Text("Modifiers")) {
+            NavItem("Shadow", destination: ShadowDemo())
           }
-        }
-        Section(header: Text("Layout")) {
-          if #available(OSX 10.16, iOS 14.0, *) {
-            NavItem("Grid", destination: GridDemo())
-          } else {
-            NavItem(unavailable: "Grid")
+          Section(header: Text("Selectors")) {
+            NavItem("DatePicker", destination: DatePickerDemo())
+            NavItem("Picker", destination: PickerDemo())
+            NavItem("Slider", destination: SliderDemo())
+            NavItem("Toggle", destination: ToggleDemo())
           }
-          NavItem("Spacer", destination: SpacerDemo())
-          NavItem("ZStack", destination: ZStack {
-            Text("I'm on bottom")
-            Text("I'm forced to the top")
-              .zIndex(1)
-            Text("I'm on top")
-          }.padding(20))
-          NavItem("GeometryReader", destination: GeometryReaderDemo())
-        }
-        Section(header: Text("Modifiers")) {
-          NavItem("Shadow", destination: ShadowDemo())
-        }
-        Section(header: Text("Selectors")) {
-          NavItem("Picker", destination: PickerDemo())
-          NavItem("Slider", destination: SliderDemo())
-          NavItem("Toggle", destination: ToggleDemo())
-        }
-        Section(header: Text("Text")) {
-          NavItem("Text", destination: TextDemo())
-          NavItem("TextField", destination: TextFieldDemo())
-          NavItem("TextEditor", destination: TextEditorDemo())
-        }
-        Section(header: Text("Misc")) {
-          NavItem("Path", destination: PathDemo())
-          NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8)))
-          if #available(macOS 11.0, iOS 14.0, *) {
-            NavItem("Preferences", destination: PreferenceKeyDemo())
+          Section(header: Text("Text")) {
+            NavItem("Text", destination: TextDemo())
+            NavItem("TextField", destination: TextFieldDemo())
+            NavItem("TextEditor", destination: TextEditorDemo())
           }
           Section(header: Text("Misc")) {
             NavItem("Animation", destination: AnimationDemo())
@@ -173,29 +159,18 @@ struct TokamakDemoView: View {
               NavItem(unavailable: "Redaction")
             }
           }
-          if #available(OSX 11.0, iOS 14.0, *) {
-            NavItem("Redaction", destination: RedactionDemo())
-          } else {
-            NavItem(unavailable: "Redaction")
+          #if os(WASI)
+          Section(header: Text("TokamakDOM")) {
+            NavItem("DOM reference", destination: DOMRefDemo())
+            NavItem("URL hash changes", destination: URLHashDemo())
           }
+          #endif
         }
-        #if os(WASI)
-        Section(header: Text("TokamakDOM")) {
-          NavItem("DOM reference", destination: DOMRefDemo())
-          NavItem("URL hash changes", destination: URLHashDemo())
-        }
-        #endif
-      }
-      .frame(minHeight: 300)
+        .frame(minHeight: 300),
+        title: "Demos"
+      )
       if #available(iOS 14.0, *) {
-        return AnyView(
-          Group {
-            list
-              .listStyle(SidebarListStyle())
-            Text("Choose a demo")
-              .navigationTitle("Demos")
-          }
-        )
+        return AnyView(list.listStyle(SidebarListStyle()))
       } else {
         return AnyView(list)
       }
