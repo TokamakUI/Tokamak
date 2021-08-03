@@ -110,10 +110,7 @@ final class DOMRenderer: Renderer {
     to parent: DOMNode,
     with host: MountedHost
   ) -> DOMNode? {
-    guard let anyHTML = mapAnyView(
-      host.view,
-      transform: { (html: AnyHTML) in html }
-    ) else {
+    guard let anyHTML: AnyHTML = mapAnyView(host.view, transform: { $0 }) else {
       // handle `GroupView` cases (such as `TupleView`, `Group` etc)
       if mapAnyView(host.view, transform: { (view: ParentView) in view }) != nil {
         return parent
@@ -122,17 +119,49 @@ final class DOMRenderer: Renderer {
       return nil
     }
 
+    // Transition the insertion.
+    let transition = _AnyTransitionProxy(host.viewTraits.transition)
+      .resolve(in: host.environmentValues)
+    var additionalAttributes = [HTMLAttribute: String]()
+    var runTransition: ((DOMNode) -> ())?
+    if host.viewTraits.canTransition,
+       let animation = transition.insertionAnimation ?? host.transaction.animation
+    {
+      // Apply the active insertion modifier on mount.
+      additionalAttributes = apply(
+        transition: transition, \.insertion,
+        as: \.active,
+        to: host.view
+      )
+      runTransition = { node in
+        anyHTML.update(
+          dom: node,
+          computeStart: false,
+          additionalAttributes: self.apply(
+            transition: transition, \.insertion,
+            as: \.identity,
+            to: host.view
+          ),
+          transaction: .init(animation: animation)
+        )
+      }
+    }
+
     let maybeNode: JSObject?
     if let sibling = sibling {
       _ = sibling.ref.insertAdjacentHTML!(
         "beforebegin",
-        anyHTML.outerHTML(shouldSortAttributes: false, children: [])
+        anyHTML.outerHTML(
+          shouldSortAttributes: false, additonalAttributes: additionalAttributes, children: []
+        )
       )
       maybeNode = sibling.ref.previousSibling.object
     } else {
       _ = parent.ref.insertAdjacentHTML!(
         "beforeend",
-        anyHTML.outerHTML(shouldSortAttributes: false, children: [])
+        anyHTML.outerHTML(
+          shouldSortAttributes: false, additonalAttributes: additionalAttributes, children: []
+        )
       )
 
       guard
@@ -148,18 +177,21 @@ final class DOMRenderer: Renderer {
 
     fixSpacers(host: host, target: resultingNode)
 
-    if let dynamicHTML = anyHTML as? AnyDynamicHTML {
-      return DOMNode(host.view, resultingNode, dynamicHTML.listeners)
-    } else {
-      return DOMNode(host.view, resultingNode, [:])
-    }
+    let node = DOMNode(host.view, resultingNode, (anyHTML as? AnyDynamicHTML)?.listeners ?? [:])
+
+    runTransition?(node)
+    return node
   }
 
   func update(target: DOMNode, with host: MountedHost) {
     guard let html = mapAnyView(host.view, transform: { (html: AnyHTML) in html })
     else { return }
 
-    html.update(dom: target, transaction: host.transaction)
+    html.update(
+      dom: target,
+      additionalAttributes: [:],
+      transaction: host.transaction
+    )
 
     fixSpacers(host: host, target: target.ref)
   }
@@ -167,15 +199,55 @@ final class DOMRenderer: Renderer {
   func unmount(
     target: DOMNode,
     from parent: DOMNode,
-    with host: MountedHost,
-    completion: @escaping () -> ()
+    with task: UnmountHostTask<DOMRenderer>
   ) {
-    defer { completion() }
+    guard let anyHTML = mapAnyView(task.host.view, transform: { (html: AnyHTML) in html })
+    else { return task.finish() }
 
-    guard mapAnyView(host.view, transform: { (html: AnyHTML) in html }) != nil
-    else { return }
+    // Transition the removal.
+    let transition = _AnyTransitionProxy(task.host.viewTraits.transition)
+      .resolve(in: task.host.environmentValues)
+    if task.host.viewTraits.canTransition,
+       let animation = transition.removalAnimation ?? task.host.transaction.animation
+    {
+      // First, apply the identity removal modifier /without/ animation
+      // to be in the initial state.
+      anyHTML.update(
+        dom: target,
+        additionalAttributes: apply(
+          transition: transition, \.removal,
+          as: \.identity,
+          to: task.host.view
+        ),
+        transaction: .init(animation: nil)
+      )
+
+      // Then apply the active removal modifier /with/ animation.
+      anyHTML.update(
+        dom: target,
+        additionalAttributes: apply(
+          transition: transition, \.removal,
+          as: \.active,
+          to: task.host.view
+        ),
+        transaction: .init(animation: animation)
+      )
+
+      _ = JSObject.global.setTimeout!(
+        JSOneshotClosure { _ in
+          guard !task.isCancelled else { return .undefined }
+          _ = try? parent.ref.throwing.removeChild!(target.ref)
+          task.finish()
+          return .undefined
+        },
+        _AnimationProxy(animation).resolve().duration * 1000
+      )
+
+      return
+    }
 
     _ = try? parent.ref.throwing.removeChild!(target.ref)
+    task.finish()
   }
 
   func primitiveBody(for view: Any) -> AnyView? {
@@ -184,6 +256,33 @@ final class DOMRenderer: Renderer {
 
   func isPrimitiveView(_ type: Any.Type) -> Bool {
     type is DOMPrimitive.Type || type is _HTMLPrimitive.Type
+  }
+
+  private func apply(
+    transition: _AnyTransitionBox.ResolvedTransition,
+    _ direction: KeyPath<
+      _AnyTransitionBox.ResolvedTransition,
+      [_AnyTransitionBox.ResolvedTransition.Transition]
+    >,
+    as state: KeyPath<
+      _AnyTransitionBox.ResolvedTransition.Transition,
+      (AnyView) -> AnyView
+    >,
+    to view: AnyView
+  ) -> [HTMLAttribute: String] {
+    transition[keyPath: direction].reduce([HTMLAttribute: String]()) {
+      if let modifiedContent = mapAnyView(
+        $1[keyPath: state](view),
+        transform: { (v: _AnyModifiedContent) in v }
+      ) {
+        return $0.merging(
+          modifiedContent.anyModifier.attributes,
+          uniquingKeysWith: +
+        )
+      } else {
+        return $0
+      }
+    }
   }
 }
 

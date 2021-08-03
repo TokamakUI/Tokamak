@@ -22,21 +22,33 @@ import OpenCombineShim
 // `View`s
 final class MountedApp<R: Renderer>: MountedCompositeElement<R> {
   override func mount(
-    before _: R.TargetType? = nil,
-    on _: MountedElement<R>? = nil,
-    with reconciler: StackReconciler<R>
+    before sibling: R.TargetType? = nil,
+    on parent: MountedElement<R>? = nil,
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction
   ) {
+    super.prepareForMount(with: transaction)
+
     // `App` elements have no siblings, hence the `before` argument is discarded.
     // They also have no parents, so the `parent` argument is discarded as well.
     let childBody = reconciler.render(mountedApp: self)
 
     let child: MountedElement<R> = mountChild(reconciler.renderer, childBody)
     mountedChildren = [child]
-    child.mount(before: nil, on: self, with: reconciler)
+    child.transaction = transaction
+    child.mount(before: nil, on: self, in: reconciler, with: transaction)
+
+    super.mount(before: sibling, on: parent, in: reconciler, with: transaction)
   }
 
-  override func unmount(with reconciler: StackReconciler<R>) {
-    mountedChildren.forEach { $0.unmount(with: reconciler) }
+  override func unmount(
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction,
+    parentTask: UnmountTask<R>?
+  ) {
+    super.unmount(in: reconciler, with: transaction, parentTask: parentTask)
+    mountedChildren
+      .forEach { $0.unmount(in: reconciler, with: transaction, parentTask: parentTask) }
   }
 
   /// Mounts a child scene within the app.

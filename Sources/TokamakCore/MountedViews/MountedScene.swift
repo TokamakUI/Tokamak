@@ -31,18 +31,28 @@ final class MountedScene<R: Renderer>: MountedCompositeElement<R> {
   override func mount(
     before sibling: R.TargetType? = nil,
     on parent: MountedElement<R>? = nil,
-    with reconciler: StackReconciler<R>
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction
   ) {
+    super.prepareForMount(with: transaction)
     let childBody = reconciler.render(mountedScene: self)
 
     let child: MountedElement<R> = childBody
       .makeMountedElement(reconciler.renderer, parentTarget, environmentValues, self)
     mountedChildren = [child]
-    child.mount(before: sibling, on: self, with: reconciler)
+    child.mount(before: sibling, on: self, in: reconciler, with: transaction)
+
+    super.mount(before: sibling, on: parent, in: reconciler, with: transaction)
   }
 
-  override func unmount(with reconciler: StackReconciler<R>) {
-    mountedChildren.forEach { $0.unmount(with: reconciler) }
+  override func unmount(
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction,
+    parentTask: UnmountTask<R>?
+  ) {
+    super.unmount(in: reconciler, with: transaction, parentTask: parentTask)
+    mountedChildren
+      .forEach { $0.unmount(in: reconciler, with: transaction, parentTask: parentTask) }
   }
 
   override func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
@@ -89,7 +99,7 @@ extension _AnyScene.BodyResult {
     case let .scene(scene):
       return scene.makeMountedScene(renderer, parentTarget, environmentValues, parent)
     case let .view(view):
-      return view.makeMountedView(renderer, parentTarget, environmentValues, parent)
+      return view.makeMountedView(renderer, parentTarget, environmentValues, .init(), parent)
     }
   }
 }
@@ -114,6 +124,7 @@ extension _AnyScene {
           renderer,
           parentTarget,
           environmentValues,
+          .init(),
           parent
         ),
       ]

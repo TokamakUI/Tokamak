@@ -86,7 +86,7 @@ public final class StackReconciler<R: Renderer> {
     self.scheduler = scheduler
     rootTarget = target
 
-    rootElement = AnyView(view).makeMountedView(renderer, target, environment, nil)
+    rootElement = AnyView(view).makeMountedView(renderer, target, environment, .init(), nil)
 
     performInitialMount()
   }
@@ -112,7 +112,7 @@ public final class StackReconciler<R: Renderer> {
   }
 
   private func performInitialMount() {
-    rootElement.mount(with: self)
+    rootElement.mount(in: self, with: .init(animation: nil))
     performPostrenderCallbacks()
   }
 
@@ -287,7 +287,7 @@ public final class StackReconciler<R: Renderer> {
     case let (nil, childBody):
       let child: MountedElement<R> = mountChild(childBody)
       mountedElement.mountedChildren = [child]
-      child.mount(with: self)
+      child.mount(in: self, with: transaction)
 
     // some mounted children before and now
     case let (mountedChild?, childBody):
@@ -300,11 +300,11 @@ public final class StackReconciler<R: Renderer> {
       } else {
         // new child is of a different type, complete rerender, i.e. unmount the old
         // wrapper, then mount a new one with the new `childBody`
-        mountedChild.unmount(with: self)
+        mountedChild.unmount(in: self, with: transaction, parentTask: nil)
 
         let newMountedChild: MountedElement<R> = mountChild(childBody)
         mountedElement.mountedChildren = [newMountedChild]
-        newMountedChild.mount(with: self)
+        newMountedChild.mount(in: self, with: transaction)
       }
     }
   }

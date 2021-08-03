@@ -33,18 +33,24 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
     _ view: AnyView,
     _ parentTarget: R.TargetType,
     _ environmentValues: EnvironmentValues,
+    _ viewTraits: _ViewTraitStore,
     _ parent: MountedElement<R>?
   ) {
     self.parentTarget = parentTarget
 
-    super.init(view, environmentValues, parent)
+    super.init(view, environmentValues, viewTraits, parent)
   }
 
   override func mount(
     before sibling: R.TargetType? = nil,
     on parent: MountedElement<R>? = nil,
-    with reconciler: StackReconciler<R>
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction
   ) {
+    super.prepareForMount(with: transaction)
+
+    self.transaction = transaction
+
     guard let target = reconciler.renderer.mountTarget(
       before: sibling,
       to: parentTarget,
@@ -56,8 +62,17 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
 
     guard !view.children.isEmpty else { return }
 
+    let isGroupView = view.type is GroupView.Type
+    // Don't allow children to transition their mounting since they aren't individually
+    // appearing (unless its a `GroupView`, which is flattened).
     mountedChildren = view.children.map {
-      $0.makeMountedView(reconciler.renderer, target, environmentValues, self)
+      $0.makeMountedView(
+        reconciler.renderer,
+        target,
+        environmentValues,
+        isGroupView ? self.viewTraits : .init(),
+        self
+      )
     }
 
     /* Remember that `GroupView`s are always "flattened", their `target` instances are targets of
@@ -65,26 +80,49 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
      are mounted in that case. Thus pass the `sibling` target to the children if `view` is a
      `GroupView`.
      */
-    let isGroupView = view.type is GroupView.Type
     mountedChildren.forEach {
-      $0.mount(before: isGroupView ? sibling : nil, on: self, with: reconciler)
+      $0.mount(before: isGroupView ? sibling : nil, on: self, in: reconciler, with: transaction)
     }
+
+    super.mount(before: sibling, on: parent, in: reconciler, with: transaction)
   }
 
-  override func unmount(with reconciler: StackReconciler<R>) {
+  private var parentUnmountTask = UnmountTask<R>()
+  override func unmount(
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction,
+    parentTask: UnmountTask<R>?
+  ) {
+    super.unmount(in: reconciler, with: transaction, parentTask: parentTask)
+
     guard let target = target else { return }
 
+    let task = UnmountHostTask(self, in: reconciler) {
+      self.mountedChildren.forEach {
+        $0.unmount(in: reconciler, with: transaction, parentTask: self.unmountTask)
+      }
+    }
+    task.isCancelled = parentTask?.isCancelled ?? false
+    unmountTask = task
+    parentTask?.childTasks.append(task)
     reconciler.renderer.unmount(
       target: target,
       from: parentTarget,
-      with: self
-    ) {
-      self.mountedChildren.forEach { $0.unmount(with: reconciler) }
-    }
+      with: task
+    )
+  }
+
+  /// Stop any unfinished unmounts and complete them without transitions.
+  private func invalidateUnmount() {
+    parentUnmountTask.cancel()
+    parentUnmountTask.completeImmediately()
+    parentUnmountTask = .init()
   }
 
   override func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
     guard let target = target else { return }
+
+    invalidateUnmount()
 
     updateEnvironment()
     target.view = view
@@ -92,19 +130,23 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
 
     var childrenViews = view.children
 
+    let traits = view.type is GroupView.Type ? viewTraits : .init()
+
     switch (mountedChildren.isEmpty, childrenViews.isEmpty) {
     // if existing children present and new children array is empty
     // then unmount all existing children
     case (false, true):
-      mountedChildren.forEach { $0.unmount(with: reconciler) }
+      mountedChildren.forEach {
+        $0.unmount(in: reconciler, with: transaction, parentTask: self.parentUnmountTask)
+      }
       mountedChildren = []
 
     // if no existing children then mount all new children
     case (true, false):
       mountedChildren = childrenViews.map {
-        $0.makeMountedView(reconciler.renderer, target, environmentValues, self)
+        $0.makeMountedView(reconciler.renderer, target, environmentValues, traits, self)
       }
-      mountedChildren.forEach { $0.mount(on: self, with: reconciler) }
+      mountedChildren.forEach { $0.mount(on: self, in: reconciler, with: transaction) }
 
     // if both arrays have items then reconcile by types and keys
     case (false, false):
@@ -130,10 +172,13 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
             reconciler.renderer,
             target,
             environmentValues,
+            traits,
             self
           )
-          newChild.mount(before: mountedChild.firstDescendantTarget, on: self, with: reconciler)
-          mountedChild.unmount(with: reconciler)
+          newChild.mount(
+            before: mountedChild.firstDescendantTarget, on: self, in: reconciler, with: transaction
+          )
+          mountedChild.unmount(in: reconciler, with: transaction, parentTask: parentUnmountTask)
         }
         newChildren.append(newChild)
         mountedChildren.removeFirst()
@@ -144,15 +189,15 @@ public final class MountedHostView<R: Renderer>: MountedElement<R> {
       // unmount remaining `mountedChildren`
       if !mountedChildren.isEmpty {
         for child in mountedChildren {
-          child.unmount(with: reconciler)
+          child.unmount(in: reconciler, with: transaction, parentTask: parentUnmountTask)
         }
       } else {
         // more views left than children were mounted,
         // mount remaining views
         for firstChild in childrenViews {
           let newChild: MountedElement<R> =
-            firstChild.makeMountedView(reconciler.renderer, target, environmentValues, self)
-          newChild.mount(on: self, with: reconciler)
+            firstChild.makeMountedView(reconciler.renderer, target, environmentValues, traits, self)
+          newChild.mount(on: self, in: reconciler, with: transaction)
           newChildren.append(newChild)
         }
       }
