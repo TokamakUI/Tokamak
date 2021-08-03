@@ -48,7 +48,7 @@ extension _BackgroundStyleModifier: DOMViewModifier {
         ]
       } else if let color = resolved.color(at: 0) {
         return [
-          "style": "background-color: \(color.cssValue(environment))",
+          "style": "background-color: \(color.cssValue(environment));",
         ]
       }
     }

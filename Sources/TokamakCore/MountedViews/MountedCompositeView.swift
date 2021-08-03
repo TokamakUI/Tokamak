@@ -21,20 +21,32 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
   override func mount(
     before sibling: R.TargetType? = nil,
     on parent: MountedElement<R>? = nil,
-    with reconciler: StackReconciler<R>
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction
   ) {
+    super.prepareForMount(with: transaction)
+
+    var transaction = transaction
     (view.view as? _TransactionModifierProtocol)?.modifyTransaction(&transaction)
+    // Disable animations on mount so `animation(_:)` doesn't try to animate
+    // until the transition finishes.
+    transaction.disablesAnimations = true
+    self.transaction = transaction
 
     let childBody = reconciler.render(compositeView: self)
 
+    if let traitModifier = view.view as? _TraitWritingModifierProtocol {
+      traitModifier.modifyViewTraitStore(&viewTraits)
+    }
     let child: MountedElement<R> = childBody.makeMountedView(
       reconciler.renderer,
       parentTarget,
       environmentValues,
+      viewTraits,
       self
     )
     mountedChildren = [child]
-    child.mount(before: sibling, on: self, with: reconciler)
+    child.mount(before: sibling, on: self, in: reconciler, with: transaction)
 
     // `_TargetRef` (and `TargetRefType` generic eraser protocol it conforms to) is a composite
     // view, so it's enough check for it only here.
@@ -73,10 +85,25 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
         preferenceReader.preferenceStore(self.preferenceStore)
       }
     })
+
+    super.mount(before: sibling, on: parent, in: reconciler, with: transaction)
   }
 
-  override func unmount(with reconciler: StackReconciler<R>) {
-    mountedChildren.forEach { $0.unmount(with: reconciler) }
+  override func unmount(
+    in reconciler: StackReconciler<R>,
+    with transaction: Transaction,
+    parentTask: UnmountTask<R>?
+  ) {
+    super.unmount(in: reconciler, with: transaction, parentTask: parentTask)
+
+    var transaction = transaction
+    transaction.disablesAnimations = false
+    (view.view as? _TransactionModifierProtocol)?.modifyTransaction(&transaction)
+
+    mountedChildren.forEach {
+      $0.viewTraits = self.viewTraits
+      $0.unmount(in: reconciler, with: transaction, parentTask: parentTask)
+    }
 
     if let appearanceAction = view.view as? AppearanceActionType {
       appearanceAction.disappear?()
@@ -85,6 +112,7 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
 
   override func update(in reconciler: StackReconciler<R>, with transaction: Transaction) {
     var transaction = transaction
+    transaction.disablesAnimations = false
     (view.view as? _TransactionModifierProtocol)?.modifyTransaction(&transaction)
     let element = reconciler.render(compositeView: self)
     reconciler.reconcile(
@@ -98,7 +126,13 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
         $0.transaction = transaction
       },
       mountChild: {
-        $0.makeMountedView(reconciler.renderer, parentTarget, environmentValues, self)
+        $0.makeMountedView(
+          reconciler.renderer,
+          parentTarget,
+          environmentValues,
+          viewTraits,
+          self
+        )
       }
     )
   }
