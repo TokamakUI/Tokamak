@@ -72,3 +72,25 @@ public struct ToolbarItem<ID, Content>: View, AnyToolbarItem where Content: View
     content
   }
 }
+
+public extension ToolbarItem where ID == () {
+  init(
+    placement: ToolbarItemPlacement = .automatic,
+    @ViewBuilder content: () -> Content
+  ) {
+    self.init(id: (), placement: placement, showsByDefault: true, content: content)
+  }
+}
+
+extension ToolbarItem: Identifiable where ID: Hashable {}
+
+/// This is a helper class that works around absence of "package private" access control in Swift
+public struct _ToolbarItemProxy<ID, Content> where Content: View {
+  public let subject: ToolbarItem<ID, Content>
+
+  public init(_ subject: ToolbarItem<ID, Content>) { self.subject = subject }
+
+  public var placement: ToolbarItemPlacement { subject.placement }
+  public var showsByDefault: Bool { subject.showsByDefault }
+  public var content: Content { subject.content }
+}

@@ -21,12 +21,81 @@ extension NavigationView: _HTMLPrimitive {
     return AnyView(HTML("div", [
       "class": "_tokamak-navigationview",
     ]) {
-      proxy.content
-      HTML("div", [
-        "class": "_tokamak-navigationview-content",
-      ]) {
-        proxy.destination
+      proxy.makeToolbar { title, toolbarContent in
+        if let toolbarContent = toolbarContent {
+          HTML("div", [
+            "class": "_tokamak-toolbar",
+          ]) {
+            Group {
+              if toolbarContent.isEmpty {
+                HTML("div", ["class": "_tokamak-toolbar-content _tokamak-toolbar-leading"]) {
+                  title.font(.headline)
+                }
+              } else {
+                HTML("div", ["class": "_tokamak-toolbar-content _tokamak-toolbar-leading"]) {
+                  items(from: toolbarContent, at: .navigationBarLeading)
+                  items(from: toolbarContent, at: .navigation)
+                  title
+                    .font(.headline)
+                  items(from: toolbarContent, at: .navigationBarTrailing)
+                  items(from: toolbarContent, at: .automatic, .primaryAction)
+                  items(from: toolbarContent, at: .destructiveAction)
+                    .foregroundColor(.red)
+                }
+                HTML("div", ["class": "_tokamak-toolbar-content _tokamak-toolbar-center"]) {
+                  items(from: toolbarContent, at: .principal, .status)
+                }
+                HTML("div", ["class": "_tokamak-toolbar-content _tokamak-toolbar-trailing"]) {
+                  items(from: toolbarContent, at: .cancellationAction)
+                  items(from: toolbarContent, at: .confirmationAction)
+                    .foregroundColor(.accentColor)
+                }
+              }
+            }
+            .font(.caption)
+            .buttonStyle(ToolbarButtonStyle())
+            .textFieldStyle(ToolbarTextFieldStyle())
+          }
+        }
+        HTML("div", [
+          "class": toolbarContent != nil ? "_tokamak-navigationview-with-toolbar-content" : "",
+        ]) {
+          proxy.content
+        }
+        HTML("div", [
+          "class": "_tokamak-navigationview-destination",
+          "style": toolbarContent != nil ? "padding-top: 50px;" : "",
+        ]) {
+          proxy.destination
+        }
       }
     })
+  }
+
+  func items(from items: [AnyToolbarItem], at placements: ToolbarItemPlacement...) -> some View {
+    ForEach(
+      Array(items.filter { placements.contains($0.placement) }.enumerated()),
+      id: \.offset
+    ) { item in
+      item.element.anyContent
+    }
+  }
+}
+
+struct ToolbarButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    HTML("div", ["class": "_tokamak-toolbar-button"]) {
+      configuration.label
+        .opacity(configuration.isPressed ? 1 : 0.75)
+    }
+  }
+}
+
+struct ToolbarTextFieldStyle: TextFieldStyle {
+  func _body(configuration: TextField<_Label>) -> some View {
+    HTML("div", ["class": "_tokamak-toolbar-textfield"]) {
+      configuration
+    }
+    .frame(height: 27)
   }
 }

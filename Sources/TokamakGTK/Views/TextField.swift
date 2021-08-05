@@ -78,11 +78,11 @@ extension TextField: GTKPrimitive where Label == Text {
     let proxy = _TextFieldProxy(self)
     return AnyView(WidgetView(
       build: { _ in
-        build(textBinding: proxy.textBinding, label: proxy.label)
+        build(textBinding: proxy.textBinding, label: _TextProxy(proxy.label))
       },
       update: { a in
         guard case let .widget(widget) = a.storage else { return }
-        update(entry: widget, textBinding: proxy.textBinding, label: proxy.label)
+        update(entry: widget, textBinding: proxy.textBinding, label: _TextProxy(proxy.label))
       }
     ) {})
   }
