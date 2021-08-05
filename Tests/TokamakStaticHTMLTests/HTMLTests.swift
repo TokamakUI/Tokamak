@@ -79,6 +79,17 @@ final class HTMLTests: XCTestCase {
 
     assertSnapshot(matching: fallbackFont, as: .lines)
   }
+
+  func testHTMLSanitizer() {
+    let sanitizedHTML = StaticHTMLRenderer(Text("<b>\"Hello\" & 'World'</b> "))
+      .render(shouldSortAttributes: true)
+    assertSnapshot(matching: sanitizedHTML, as: .lines)
+
+    let insecureHTML =
+      StaticHTMLRenderer(Text("<b>\"Hello\" & 'World'</b> ", sanitizer: Sanitizers.HTML.insecure))
+        .render(shouldSortAttributes: true)
+    assertSnapshot(matching: insecureHTML, as: .lines)
+  }
 }
 
 #endif

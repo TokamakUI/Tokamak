@@ -130,6 +130,8 @@ extension Text: AnyHTML {
     let innerHTML: String
     switch proxy.storage {
     case let .verbatim(text):
+      innerHTML = Sanitizers.HTML.Default.sanitize(text)
+    case let .sanitized(text):
       innerHTML = text
     case let .segmentedText(segments):
       innerHTML = segments
@@ -238,4 +240,16 @@ extension Text {
     ]
   }
   // swiftlint:enable function_body_length
+}
+
+public extension Text {
+  init(verbatim content: String, sanitizer: (String) -> String) {
+    let proxy = _TextProxy(storage: .sanitized(sanitizer(content)))
+    self = proxy.subject
+  }
+
+  init<S>(_ content: S, sanitizer: (String) -> String) where S: StringProtocol {
+    let proxy = _TextProxy(storage: .sanitized(sanitizer(String(content))))
+    self = proxy.subject
+  }
 }

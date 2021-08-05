@@ -20,6 +20,8 @@ import OpenCombineJS
 @_spi(TokamakCore) import TokamakCore
 import TokamakStaticHTML
 
+public typealias Sanitizers = TokamakStaticHTML.Sanitizers
+
 extension EnvironmentValues {
   /// Returns default settings for the DOM environment
   static var defaultEnvironment: Self {

@@ -41,4 +41,24 @@ final class SanitizerTests: XCTestCase {
     XCTAssertEqual(Sanitizers.CSS.sanitize("hello world"), "'hello world'")
     XCTAssertEqual(Sanitizers.CSS.sanitize("hello-world"), "hello-world")
   }
+
+  func testHTMLSanitizer() {
+    XCTAssertTrue(Sanitizers.HTML.Insecure.validate("<b>\"Hello' & 'World\"</b>"))
+    XCTAssertEqual(Sanitizers.HTML.Insecure.sanitize("<b>Hello</b>"), "<b>Hello</b>")
+    XCTAssertEqual(Sanitizers.HTML.insecure("\"Hello\" & 'World'"), "\"Hello\" & 'World'")
+
+    XCTAssertFalse(Sanitizers.HTML.Encode.validate("<b>\"Hello' & 'World\"</b>"))
+    XCTAssertEqual(Sanitizers.HTML.Encode.sanitize("<b>Hello</b>"), "&lt;b&gt;Hello&lt;/b&gt;")
+    XCTAssertEqual(
+      Sanitizers.HTML.encode("\"Hello\" & 'World'"),
+      "&quot;Hello&quot; &amp; &#x27;World&#x27;"
+    )
+
+    XCTAssertFalse(Sanitizers.HTML.Default.validate("<b>\"Hello' & 'World\"</b>"))
+    XCTAssertEqual(Sanitizers.HTML.Default.sanitize("<b>Hello</b>"), "&lt;b&gt;Hello&lt;/b&gt;")
+    XCTAssertEqual(
+      Sanitizers.HTML.Default.sanitize("\"Hello\" & 'World'"),
+      "&quot;Hello&quot; &amp; &#x27;World&#x27;"
+    )
+  }
 }

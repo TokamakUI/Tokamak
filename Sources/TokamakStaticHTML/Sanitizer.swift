@@ -24,7 +24,7 @@ protocol Sanitizer {
   static func sanitize(_ input: Input) -> Output
 }
 
-enum Sanitizers {
+public enum Sanitizers {
   enum CSS {
     /// Automatically sanitizes a value.
     static func sanitize(_ value: String) -> String {
@@ -115,6 +115,37 @@ enum Sanitizers {
             .replacingOccurrences(of: "\"", with: "&quot;"))'
         """
       }
+    }
+  }
+
+  public enum HTML {
+    public static let encode = Encode.sanitize
+    public static let insecure = Insecure.sanitize
+
+    typealias Default = Encode
+
+    enum Encode: Sanitizer {
+      static func validate(_ input: String) -> Bool {
+        input == sanitize(input)
+      }
+
+      static func sanitize(_ input: String) -> String {
+        let controlCharacters = [("&", "&amp;"),
+                                 ("<", "&lt;"),
+                                 (">", "&gt;"),
+                                 ("\"", "&quot;"),
+                                 ("'", "&#x27;")]
+
+        return controlCharacters.reduce(input) { input, replacement in
+          let (from, to) = replacement
+          return input.replacingOccurrences(of: from, with: to)
+        }
+      }
+    }
+
+    enum Insecure: Sanitizer {
+      static func validate(_ input: String) -> Bool { true }
+      static func sanitize(_ input: String) -> String { input }
     }
   }
 }

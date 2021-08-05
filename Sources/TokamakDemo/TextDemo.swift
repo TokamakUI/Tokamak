@@ -25,6 +25,8 @@ struct TextDemo: View {
     VStack {
       Text("This is the inital text")
         .modifier(CustomModifier())
+      Text("<font color='red'>Unsanitized Text</font>", sanitizer: Sanitizers.HTML.insecure)
+      Text("<font color='red'>Sanitized Text</font>")
       Text("I'm all fancy")
         .font(.system(size: 16, weight: .regular, design: .serif))
         .italic()
@@ -39,8 +41,8 @@ struct TextDemo: View {
           .heavy,
           .black,
         ], id: \.self) { weight in
-            Text("a")
-              .fontWeight(weight)
+          Text("a")
+            .fontWeight(weight)
         }
       }
       VStack {

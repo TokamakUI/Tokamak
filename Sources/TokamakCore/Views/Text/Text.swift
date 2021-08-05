@@ -44,6 +44,7 @@ public struct Text: _PrimitiveView, Equatable {
 
   public enum _Storage: Equatable {
     case verbatim(String)
+    case sanitized(String)
     case segmentedText([(_Storage, [_Modifier])])
 
     public static func == (lhs: Text._Storage, rhs: Text._Storage) -> Bool {
@@ -51,6 +52,9 @@ public struct Text: _PrimitiveView, Equatable {
       case let .verbatim(lhsVerbatim):
         guard case let .verbatim(rhsVerbatim) = rhs else { return false }
         return lhsVerbatim == rhsVerbatim
+      case let .sanitized(lhsSanitized):
+        guard case let .sanitized(rhsSanitized) = rhs else { return false }
+        return lhsSanitized == rhsSanitized
       case let .segmentedText(lhsSegments):
         guard case let .segmentedText(rhsSegments) = rhs,
               lhsSegments.count == rhsSegments.count else { return false }
@@ -102,7 +106,7 @@ public extension Text._Storage {
       return segments
         .map(\.0.rawText)
         .reduce("", +)
-    case let .verbatim(text):
+    case let .verbatim(text), let .sanitized(text):
       return text
     }
   }
@@ -127,6 +131,10 @@ public struct _TextProxy {
       }
     }
     self.subject = subject
+  }
+
+  public init(storage: Text._Storage, modifiers: [Text._Modifier] = []) {
+    subject = Text(storage: storage, modifiers: modifiers)
   }
 
   public var storage: Text._Storage { subject.storage }
