@@ -1,3 +1,71 @@
+# 0.8.0 (10 August 2021)
+
+This release adds support for more SwiftUI types and modifiers, and fixes bugs. Including, but not
+limited to:
+
+- `Toolbar` type and `toolbar` modifier
+- `ProgressView` type
+- `Animation` and related types and modifiers
+- `opacity`, `scaleEffect`, `aspectRatio`, `controlSize`, and `controlProminence` modifiers
+- `Material` type
+- `Primary`/`Secondary`/`Tertiary`/`QuaternaryContentStyle` types
+- `ContainerRelativeShape` type
+- `spacing` argument support for initializers of `HStack` and `VStack`
+- support for standard Foundation types, such as `CGRect`, `CGSize` (we previously used our own
+  implementation of those, which weren't fully compatible with Foundation)
+- ability to sort HTML attributes when generating static HTML, which is essential for end-to-end
+  tests that cover generated output.
+
+Many thanks to [@carson-katri](https://github.com/carson-katri),
+[@ezraberch](https://github.com/ezraberch), and [@yonihemi](https://github.com/yonihemi) for
+their contributions to this release!
+
+**Closed issues:**
+
+- Is there anyway to compile this from Xcode? ([#406](https://github.com/TokamakUI/Tokamak/issues/406))
+- Xcode doesn't compile — gtk/gtk.h not found ([#405](https://github.com/TokamakUI/Tokamak/issues/405))
+- Use `NSGeometry` types from Foundation ([#404](https://github.com/TokamakUI/Tokamak/issues/404))
+- Adding padding to a view contained in a Button causes the Button to disappear ([#403](https://github.com/TokamakUI/Tokamak/issues/403))
+- .background modifier with contained shape causes view to expand to full vertical size of the screen ([#402](https://github.com/TokamakUI/Tokamak/issues/402))
+- Multi-line string handling in Text views ([#400](https://github.com/TokamakUI/Tokamak/issues/400))
+- Content with spacer jumps when blurring and focusing the page ([#395](https://github.com/TokamakUI/Tokamak/issues/395))
+- Frame sizes do not match expected behavior. ([#387](https://github.com/TokamakUI/Tokamak/issues/387))
+- URL hash change demo crashes ([#369](https://github.com/TokamakUI/Tokamak/issues/369))
+- Infinite loops w/ 100% CPU usage caused by stack overflows ([#367](https://github.com/TokamakUI/Tokamak/issues/367))
+- TokamakDemo breaks after use of `_domRef` ([#326](https://github.com/TokamakUI/Tokamak/issues/326))
+- Add support for `toolbar` modifier and related types ([#316](https://github.com/TokamakUI/Tokamak/issues/316))
+
+**Merged pull requests:**
+
+- Add `Toolbar` implementation for HTML renderer ([#169](https://github.com/TokamakUI/Tokamak/pull/169)) via [@carson-katri](https://github.com/carson-katri)
+- Fix SwiftLint action ([#434](https://github.com/TokamakUI/Tokamak/pull/434)) via [@ezraberch](https://github.com/ezraberch)
+- Add View Traits and transitions ([#426](https://github.com/TokamakUI/Tokamak/pull/426)) via [@carson-katri](https://github.com/carson-katri)
+- Add `ToolbarItem` and its builder functions ([#430](https://github.com/TokamakUI/Tokamak/pull/430)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add `controlSize`/`controlProminence` modifiers ([#431](https://github.com/TokamakUI/Tokamak/pull/431)) via [@carson-katri](https://github.com/carson-katri)
+- Fix background/overlay layout in DOM/HTML renderers ([#429](https://github.com/TokamakUI/Tokamak/pull/429)) via [@carson-katri](https://github.com/carson-katri)
+- Add `ProgressView` ([#425](https://github.com/TokamakUI/Tokamak/pull/425)) via [@carson-katri](https://github.com/carson-katri)
+- Add support for custom fonts ([#421](https://github.com/TokamakUI/Tokamak/pull/421)) via [@carson-katri](https://github.com/carson-katri)
+- Animation implementation using the Web Animations API ([#427](https://github.com/TokamakUI/Tokamak/pull/427)) via [@carson-katri](https://github.com/carson-katri)
+- Add `scaleEffect` modifier ([#424](https://github.com/TokamakUI/Tokamak/pull/424)) via [@carson-katri](https://github.com/carson-katri)
+- Add `aspectRatio` modifier ([#422](https://github.com/TokamakUI/Tokamak/pull/422)) via [@carson-katri](https://github.com/carson-katri)
+- Check minWidth/Height == nil ([#420](https://github.com/TokamakUI/Tokamak/pull/420)) via [@carson-katri](https://github.com/carson-katri)
+- Add Primary/Secondary/Tertiary/QuaternaryContentStyle ([#419](https://github.com/TokamakUI/Tokamak/pull/419)) via [@carson-katri](https://github.com/carson-katri)
+- Add `Material` to the HTML renderer ([#418](https://github.com/TokamakUI/Tokamak/pull/418)) via [@carson-katri](https://github.com/carson-katri)
+- Improve ShapeStyles to match iOS 15+ ([#417](https://github.com/TokamakUI/Tokamak/pull/417)) via [@carson-katri](https://github.com/carson-katri)
+- Add ContainerRelativeShape ([#416](https://github.com/TokamakUI/Tokamak/pull/416)) via [@carson-katri](https://github.com/carson-katri)
+- Add HTML implementation for `opacity` modifier ([#415](https://github.com/TokamakUI/Tokamak/pull/415)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Support `spacing` property on `HStack`/`VStack` ([#273](https://github.com/TokamakUI/Tokamak/pull/273)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Explicitly import CoreFoundation ([#413](https://github.com/TokamakUI/Tokamak/pull/413)) via [@yonihemi](https://github.com/yonihemi)
+- Fix handling of stroked shapes ([#414](https://github.com/TokamakUI/Tokamak/pull/414)) via [@ezraberch](https://github.com/ezraberch)
+- Add a snapshot test for `Path` SVG layout ([#412](https://github.com/TokamakUI/Tokamak/pull/412)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Attempt `padding` modifier fusion to avoid nested `div`s ([#253](https://github.com/TokamakUI/Tokamak/pull/253)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Use `CGFloat`, `CGPoint`, `CGRect` from Foundation ([#411](https://github.com/TokamakUI/Tokamak/pull/411)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add reconciler stress tests for elaborate testing ([#381](https://github.com/TokamakUI/Tokamak/pull/381)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Fix spacers after `DOMRenderer.update` ([#410](https://github.com/TokamakUI/Tokamak/pull/410)) via [@ezraberch](https://github.com/ezraberch)
+- Replace `ViewDeferredToRenderer`, fix renderer tests ([#408](https://github.com/TokamakUI/Tokamak/pull/408)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Allow DOMRenderer to render buttons with non-Text labels (#403) ([#409](https://github.com/TokamakUI/Tokamak/pull/409)) via [@ezraberch](https://github.com/ezraberch)
+- Sort attributes in HTML nodes when rendering ([#346](https://github.com/TokamakUI/Tokamak/pull/346)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
 # 0.7.0 (3 May 2021)
 
 This release introduces new view types such as `DatePicker`, new modifiers such as `shadow`,
