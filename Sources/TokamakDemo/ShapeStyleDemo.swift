@@ -121,6 +121,7 @@ struct ShapeStyleDemo: View {
             endPoint: .topTrailing
           )
         )
+        .frame(width: 300, height: 100)
       Rectangle()
         .fill(
           RadialGradient(
@@ -130,6 +131,7 @@ struct ShapeStyleDemo: View {
             endRadius: 100
           )
         )
+        .frame(width: 300, height: 100)
     }
     #endif
   }
