@@ -115,12 +115,13 @@ extension _ShapeView: _HTMLPrimitive {
       default:
         if let color = resolved?.color(at: 0) {
           attributes = ["style": "fill: \(color.cssValue(environment));"]
-        } else if let foregroundStyle = environment._foregroundStyle,
-                  let color = foregroundStyle.resolve(
-                    for: .resolveStyle(levels: 0..<1),
-                    in: environment,
-                    role: Content.role
-                  )?.color(at: 0)
+        } else if
+          let foregroundStyle = environment._foregroundStyle,
+          let color = foregroundStyle.resolve(
+            for: .resolveStyle(levels: 0..<1),
+            in: environment,
+            role: Content.role
+          )?.color(at: 0)
         {
           attributes = ["style": "fill: \(color.cssValue(environment));"]
         } else {
@@ -137,8 +138,10 @@ extension _ShapeView: _HTMLPrimitive {
       )
       return AnyView(HTML(html.tag, mergedAttributes) {
         html.content
-        HTML("defs") {
-          svgDefs
+        if let svgDefs = svgDefs {
+          HTML("defs") {
+            svgDefs
+          }
         }
       })
     }) {

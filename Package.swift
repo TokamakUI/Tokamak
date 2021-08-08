@@ -209,7 +209,7 @@ let package = Package(
           condition: .when(platforms: [.macOS])
         ),
       ],
-      exclude: ["__Snapshots__"]
+      exclude: ["__Snapshots__", "RenderingTests/__Snapshots__"]
     ),
   ]
 )
