@@ -21,7 +21,7 @@ extension EnvironmentValues {
   /// Returns default settings for the static HTML environment
   static var defaultEnvironment: Self {
     var environment = EnvironmentValues()
-    environment[_ColorSchemeKey] = .light
+    environment[_ColorSchemeKey.self] = .light
 
     return environment
   }

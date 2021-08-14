@@ -61,6 +61,16 @@ public struct BorderedButtonStyle: PrimitiveButtonStyle {
   }
 }
 
+public struct BorderedProminentButtonStyle: PrimitiveButtonStyle {
+  public init() {}
+
+  public func makeBody(configuration: Configuration) -> some View {
+    _PrimitiveButtonStyleBody(style: self, configuration: configuration) {
+      configuration.label
+    }
+  }
+}
+
 public struct BorderlessButtonStyle: ButtonStyle {
   public init() {}
 

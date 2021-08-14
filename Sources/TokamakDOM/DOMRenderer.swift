@@ -26,7 +26,7 @@ extension EnvironmentValues {
     var environment = EnvironmentValues()
 
     // `.toggleStyle` property is internal
-    environment[_ToggleStyleKey] = _AnyToggleStyle(DefaultToggleStyle())
+    environment[_ToggleStyleKey.self] = _AnyToggleStyle(DefaultToggleStyle())
 
     environment.colorScheme = .init(matchMediaDarkScheme: matchMediaDarkScheme)
     environment._defaultAppStorage = LocalStorage.standard

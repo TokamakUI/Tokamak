@@ -23,7 +23,7 @@ struct ShapeStyleDemo: View {
         VStack {
           Text("Red Style")
           Rectangle()
-            .frame(width: 50, height: 50)
+            .frame(width: 25, height: 25)
         }
         .foregroundStyle(Color.red)
         VStack {
@@ -92,14 +92,46 @@ struct ShapeStyleDemo: View {
     HStack {
       VStack {
         Text("Primary")
-          .foregroundStyle(PrimaryContentStyle())
+          .foregroundStyle(HierarchicalShapeStyle.primary)
         Text("Secondary")
-          .foregroundStyle(SecondaryContentStyle())
+          .foregroundStyle(HierarchicalShapeStyle.secondary)
         Text("Tertiary")
-          .foregroundStyle(TertiaryContentStyle())
+          .foregroundStyle(HierarchicalShapeStyle.tertiary)
         Text("Quaternary")
-          .foregroundStyle(QuaternaryContentStyle())
+          .foregroundStyle(HierarchicalShapeStyle.quaternary)
       }
+      VStack {
+        Text("Primary")
+          .foregroundStyle(HierarchicalShapeStyle.primary)
+        Text("Secondary")
+          .foregroundStyle(HierarchicalShapeStyle.secondary)
+        Text("Tertiary")
+          .foregroundStyle(HierarchicalShapeStyle.tertiary)
+        Text("Quaternary")
+          .foregroundStyle(HierarchicalShapeStyle.quaternary)
+      }
+      .foregroundStyle(Color.red, Color.green, Color.blue)
+    }
+    VStack {
+      Rectangle()
+        .fill(
+          LinearGradient(
+            colors: [.red, .green, .blue],
+            startPoint: .bottomLeading,
+            endPoint: .topTrailing
+          )
+        )
+        .frame(width: 300, height: 100)
+      Rectangle()
+        .fill(
+          RadialGradient(
+            colors: [.red, .green, .blue],
+            center: .topLeading,
+            startRadius: 50,
+            endRadius: 100
+          )
+        )
+        .frame(width: 300, height: 100)
     }
     #endif
   }
