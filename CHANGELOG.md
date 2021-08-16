@@ -6,9 +6,9 @@ limited to:
 - `Toolbar` type and `toolbar` modifier
 - `ProgressView` type
 - `Animation` and related types and modifiers
-- `opacity`, `scaleEffect`, `aspectRatio`, `controlSize`, and `controlProminence` modifiers
+- `opacity`, `scaleEffect`, `aspectRatio`, and `controlSize` modifiers
 - `Material` and `Gradient` types
-- `Primary`/`Secondary`/`Tertiary`/`QuaternaryContentStyle` types
+- `HierarchicalShapeStyle` (`.primary`/`.secondary`/`.tertiary`/`.quaternary`) type
 - `ContainerRelativeShape` type
 - `spacing` argument support for initializers of `HStack` and `VStack`
 - support for standard Foundation types, such as `CGRect`, `CGSize` (we previously used our own
