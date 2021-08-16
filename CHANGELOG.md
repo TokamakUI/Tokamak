@@ -1,4 +1,4 @@
-# 0.8.0 (10 August 2021)
+# 0.8.0 (17 August 2021)
 
 This release adds support for more SwiftUI types and modifiers, and fixes bugs. Including, but not
 limited to:
@@ -7,7 +7,7 @@ limited to:
 - `ProgressView` type
 - `Animation` and related types and modifiers
 - `opacity`, `scaleEffect`, `aspectRatio`, `controlSize`, and `controlProminence` modifiers
-- `Material` type
+- `Material` and `Gradient` types
 - `Primary`/`Secondary`/`Tertiary`/`QuaternaryContentStyle` types
 - `ContainerRelativeShape` type
 - `spacing` argument support for initializers of `HStack` and `VStack`
@@ -37,6 +37,7 @@ their contributions to this release!
 
 **Merged pull requests:**
 
+- Revise `ShapeStyle` and add `Gradient`s ([#435](https://github.com/TokamakUI/Tokamak/pull/435)) via [@carson-katri](https://github.com/carson-katri)
 - Add `Toolbar` implementation for HTML renderer ([#169](https://github.com/TokamakUI/Tokamak/pull/169)) via [@carson-katri](https://github.com/carson-katri)
 - Fix SwiftLint action ([#434](https://github.com/TokamakUI/Tokamak/pull/434)) via [@ezraberch](https://github.com/ezraberch)
 - Add View Traits and transitions ([#426](https://github.com/TokamakUI/Tokamak/pull/426)) via [@carson-katri](https://github.com/carson-katri)
