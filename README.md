@@ -287,7 +287,7 @@ appreciated and helps in maintaining the project.
 ## Maintainers
 
 In alphabetical order: [Carson Katri](https://github.com/carson-katri),
-[David Hunt](https://github.com/foscomputerservices), [@ezraberch](https://github.com/ezraberch),
+[David Hunt](https://github.com/foscomputerservices), [Ezra Berch](https://github.com/ezraberch),
 [Jed Fox](https://jedfox.com), [Max Desiatov](https://desiatov.com),
 [Morten Bek Ditlevsen](https://github.com/mortenbekditlevsen/), [Yuta Saito](https://github.com/kateinoigakukun/).
 
