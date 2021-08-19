@@ -40,6 +40,17 @@ extension CGPoint {
 public extension CGAffineTransform {
   /// Transform the point into the transform's coordinate system.
   func transform(point: CGPoint) -> CGPoint {
+    // To transform, we multiply the given point's matrix with the
+    // scale-rotation sub-matrix:
+    //
+    // [ x' y' ] = [ px  py ] × [ a  b ] = [ px*a+py*c  px*b+py*d ]
+    //                          [ c  d ]
+    //
+    // And then add the translation values `tx` and `ty`:
+    //
+    // [ x' y' ] = [ px*a+py*c  px*b+py*d ] + [ tx  ty ]
+    //
+    // [ x' y' ] = [ px*a+py*c+tx  px*b+py*d+ty ]
     CGPoint(
       x: (a * point.x) + (c * point.y) + tx,
       y: (b * point.x) + (d * point.y) + ty
@@ -87,9 +98,6 @@ public struct CGAffineTransform: Equatable, Codable {
 
   /// Creates an affine transform with the given matrix values.
   ///
-  /// - Postcondition: The created transformation is invertible if its determinant is
-  /// not `0`: `a*d-b*c≠0`.
-  ///
   /// - Parameters:
   ///   - a: The value at position [1,1] in the matrix.
   ///   - b: The value at position [1,2] in the matrix.
@@ -113,8 +121,6 @@ public struct CGAffineTransform: Equatable, Codable {
 
 public extension CGAffineTransform {
   /// The identity transformation matrix.
-  ///
-  /// - Postcondition: The created transformation is invertible.
   static let identity = Self(
     a: 1, b: 0, // 0
     c: 0, d: 1, // 0
@@ -122,8 +128,6 @@ public extension CGAffineTransform {
   )
 
   /// Creates the identity transformation matrix.
-  ///
-  /// - Postcondition: The created transformation is invertible.
   init() {
     self = .identity
   }
@@ -136,8 +140,6 @@ public extension CGAffineTransform {
 public extension CGAffineTransform {
   /// Creates an affine transformation matrix constructed from a rotation value you
   /// provide.
-  ///
-  /// - Postcondition: The created transformation is invertible.
   ///
   /// - Parameters:
   ///   - angle: The angle, in radians, by which this matrix rotates the coordinate
@@ -173,8 +175,6 @@ public extension CGAffineTransform {
   /// Creates an affine transformation matrix constructed from translation values you
   /// provide.
   ///
-  /// - Postcondition: The created transformation is invertible.
-  ///
   /// - Parameters:
   ///   - tx: The value by which to move the x-axis of the coordinate system.
   ///   - ty: The value by which to move the y-axis of the coordinate system.
@@ -202,6 +202,17 @@ public extension CGAffineTransform {
   ///   - t2: The affine transform to concatenate to this affine transform.
   /// - Returns: A new affine transformation matrix. That is, `t’ = t1*t2`.
   func concatenating(_ t2: Self) -> Self {
+    //            [ a1, b1, 0 ]          [ a2, b2, 0 ]
+    // Given: A = [ c1, d1, 0 ] and: B = [ c2, d2, 0 ]
+    //            [ x1, y1, 1 ]          [ x2, y2, 1 ]
+    //
+    //       [ a1*a2+b1*c2+0*x2 a1*b2+b1*d2+0*y2 a1*0+b1*0+0*1 ]
+    // A×B = [ c1*a2+d1*c2+0*x2 c1*b2+d1*d2+0*y2 c1*0+d1*0+0*1 ]
+    //       [ x1*a2+y1*c2+1*x2 x1*b2+y1*d2+1*y2 x1*0+y1*0+1*1 ]
+    //
+    //       [   a1*a2+b1*c2    a1*b2+b1*d2        0 ]
+    // A×B = [   c1*a2+d1*c2    c1*b2+d1*d2        0 ]
+    //       [ x1*a2+y1*c2+x2  x1*b2+y1*d2+y2      1 ]
     let t1 = self
 
     return CGAffineTransform(
@@ -220,15 +231,75 @@ public extension CGAffineTransform {
   /// transform.
   ///
   /// - Postcondition: Invertibility is preserved, meaning that if `self` is
-  /// invertible, so will be the returned transformation.
+  /// invertible, so the returned transformation will also be invertible.
   ///
   /// - Returns: A new affine transformation matrix. If `self` is not invertible, it's
   /// returned unchanged.
   func inverted() -> Self {
+    // Before finding the inverse matrix we first have to find the
+    // determinant |A| by which we'll divide later. So given:
+    //     [ a b 0 ]
+    // A = [ c d 0 ]
+    //     [ x y 1 ]
+    //
+    // The determinant |A| is:
+    //
+    // |A| = a(d*1-y*0) - b(c*1-x*0) + 0(d*x-c*y) = a*d - b*c
     let determinant = (a * d) - (b * c)
-
+    
+    // Since we're going divide by the determinant we must check
+    // that |A|≠0. Note that floating-point rounding could also
+    // produce infinity (the division-by-zero result), but we
+    // just want to detect simple cases, like scaling by 0.
     guard determinant != 0 else { return self }
-
+    
+    // Then, we have to find the matrix of cofactors. To do that,
+    // we first need to calculate the minors of each element —
+    // where the minor of an element Ai,j is the determinant of
+    // the matrix derived from deleting the ith row and jth column:
+    //
+    //     [ |d y|  |c x|  |c x| ]
+    //     [ |0 1|  |0 1|  |d y| ]
+    //     [                     ]
+    //     [ |b y|  |a x|  |a x| ]
+    // M = [ |0 1|  |0 1|  |b y| ]
+    //     [                     ]
+    //     [ |b d|  |a c|  |a c| ]
+    //     [ |0 0|  |0 0|  |b d| ]
+    //
+    //     [ d*1-y*0  c*1-x*0  c*y-x*d ]
+    // M = [ b*1-y*0  a*1-x*0  a*y-x*b ]
+    //     [ b*0-d*0  a*0-c*0  a*d-c*b ]
+    //
+    //     [ d    c    c*y-x*d ]
+    // M = [ b    a    a*y-x*b ]
+    //     [ 0    0      |A|   ]
+    //
+    // Now we can calculate the matrix of cofactors by negating
+    // each element Ai,j when i+j is odd:
+    //
+    //     [  d    -c     c*y-x*d   ]
+    // C = [ -b     a   -(a*y-x*b)  ]
+    //     [  0    -0       |A|     ]
+    //
+    // Next, we can calculate the adjugate matrix, which is the
+    // transposed matrix of cofactors — a matrix whose ith
+    // column is the ith row of the matrix of C:
+    //
+    //          [    d         -b          0  ]
+    // adj(A) = [   -c          a         -0  ]
+    //          [ c*y-x*d  -(a*y-x*b)     |A| ]
+    //
+    // Finally, the inverse matrix is the product of the
+    // reciprocal of |A| times adj(A):
+    //
+    //        [     d/|A|          -b/|A|         0/|A|  ]
+    // A^-1 = [    -c/|A|           a/|A|        -0/|A|  ]
+    //        [ (c*y-x*d)/|A|  -(a*y-x*b)/|A|    |A|/|A| ]
+    //
+    //        [     d/|A|          -b/|A|          0 ]
+    // A^-1 = [    -c/|A|           a/|A|          0 ]
+    //        [ (c*y-x*d)/|A|   (x*b-a*y)/|A|      1 ]
     return Self(
       a: d / determinant,
       b: -b / determinant,
@@ -244,9 +315,6 @@ public extension CGAffineTransform {
 public extension CGAffineTransform {
   /// Returns an affine transformation matrix constructed by rotating an existing affine
   /// transform.
-  ///
-  /// - Postcondition: Invertibility is preserved, meaning that if `self` is
-  /// invertible, so will be the returned transformation.
   ///
   /// - Parameters:
   ///   - angle: The angle, in radians, by which to rotate the affine transform.
@@ -281,10 +349,7 @@ public extension CGAffineTransform {
   /// Returns an affine transformation matrix constructed by scaling an existing affine
   /// transform.
   ///
-  /// - Precondition: The scaling coefficients (`sx` and `sy`) must not be `0`.
-  ///
-  /// - Postcondition: Invertibility is preserved, meaning that if `self` is
-  /// invertible, so will be the returned transformation.
+  /// - Postcondition: Invertibility is preserved if both `sx` and `sy` aren't `0`.
   ///
   /// - Parameters:
   ///   - sx: The value by which to scale x values of the affine transform.
@@ -306,10 +371,8 @@ public extension CGAffineTransform {
     //       [ sx*a sx*b  0 ]
     // S×A = [ sy*c sy*d  0 ]
     //       [  x    y    1 ]
-
-    precondition(sx != 0 && sy != 0, "Scaling a transformation by 0 is prohibited.")
-
-    return Self(
+    
+    Self(
       a: sx * a, b: sx * b,
       c: sy * c, d: sy * d,
       tx: tx, ty: ty
@@ -318,9 +381,6 @@ public extension CGAffineTransform {
 
   /// Returns an affine transformation matrix constructed by translating an existing
   /// affine transform.
-  ///
-  /// - Postcondition: Invertibility is preserved, meaning that if `self` is
-  /// invertible, so will be the returned transformation.
   ///
   /// - Parameters:
   ///   - tx: The value by which to move x values with the affine transform.
