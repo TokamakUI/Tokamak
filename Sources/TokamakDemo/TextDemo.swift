@@ -25,6 +25,7 @@ struct TextDemo: View {
     VStack {
       Text("This is the inital text")
         .modifier(CustomModifier())
+      #if os(WASI)
       Group {
         Text("<font color='red'>Unsanitized Text</font>")
           ._domTextSanitizer(Sanitizers.HTML.insecure)
@@ -37,6 +38,7 @@ struct TextDemo: View {
         ._domTextSanitizer(Sanitizers.HTML.insecure)
         Text("<font color='red'>Segmented ") + Text("Text</font>")
       }
+      #endif
       Text("I'm all fancy")
         .font(.system(size: 16, weight: .regular, design: .serif))
         .italic()
