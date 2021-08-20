@@ -81,12 +81,14 @@ final class HTMLTests: XCTestCase {
   }
 
   func testHTMLSanitizer() {
-    let sanitizedHTML = StaticHTMLRenderer(Text("<b>\"Hello\" & 'World'</b> "))
+    let text = "<b>\"Hello\" & 'World'</b> "
+    
+    let sanitizedHTML = StaticHTMLRenderer(Text(text))
       .render(shouldSortAttributes: true)
     assertSnapshot(matching: sanitizedHTML, as: .lines)
 
     let insecureHTML =
-      StaticHTMLRenderer(Text("<b>\"Hello\" & 'World'</b> ", sanitizer: Sanitizers.HTML.insecure))
+      StaticHTMLRenderer(Text(text)._domTextSanitizer(Sanitizers.HTML.insecure))
         .render(shouldSortAttributes: true)
     assertSnapshot(matching: insecureHTML, as: .lines)
   }

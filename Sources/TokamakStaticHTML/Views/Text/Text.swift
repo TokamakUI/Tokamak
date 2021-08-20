@@ -130,14 +130,12 @@ extension Text: AnyHTML {
     let innerHTML: String
     switch proxy.storage {
     case let .verbatim(text):
-      innerHTML = Sanitizers.HTML.Default.sanitize(text)
-    case let .sanitized(text):
-      innerHTML = text
+      innerHTML = proxy.environment.domTextSanitizer(text)
     case let .segmentedText(segments):
       innerHTML = segments
         .map {
           TextSpan(
-            content: $0.0.rawText,
+            content: proxy.environment.domTextSanitizer($0.0.rawText),
             attributes: Self.attributes(
               from: $0.1,
               environment: proxy.environment
@@ -240,16 +238,4 @@ extension Text {
     ]
   }
   // swiftlint:enable function_body_length
-}
-
-public extension Text {
-  init(verbatim content: String, sanitizer: (String) -> String) {
-    let proxy = _TextProxy(storage: .sanitized(sanitizer(content)))
-    self = proxy.subject
-  }
-
-  init<S>(_ content: S, sanitizer: (String) -> String) where S: StringProtocol {
-    let proxy = _TextProxy(storage: .sanitized(sanitizer(String(content))))
-    self = proxy.subject
-  }
 }
