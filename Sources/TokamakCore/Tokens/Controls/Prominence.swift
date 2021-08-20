@@ -21,19 +21,6 @@ public enum Prominence: Hashable {
 }
 
 extension EnvironmentValues {
-  private enum ControlProminenceKey: EnvironmentKey {
-    static var defaultValue: Prominence = .standard
-  }
-
-  public var controlProminence: Prominence {
-    get {
-      self[ControlProminenceKey.self]
-    }
-    set {
-      self[ControlProminenceKey.self] = newValue
-    }
-  }
-
   private enum HeaderProminenceKey: EnvironmentKey {
     static var defaultValue: Prominence = .standard
   }
@@ -49,10 +36,6 @@ extension EnvironmentValues {
 }
 
 public extension View {
-  func controlProminence(_ prominence: Prominence) -> some View {
-    environment(\.controlProminence, prominence)
-  }
-
   func headerProminence(_ prominence: Prominence) -> some View {
     environment(\.headerProminence, prominence)
   }

@@ -55,3 +55,12 @@ extension Material: ShapeStyle {
 public extension Material {
   static let bar = Self.regular
 }
+
+public extension ShapeStyle where Self == Material {
+  static var regularMaterial: Self { .regular }
+  static var thickMaterial: Self { .thick }
+  static var thinMaterial: Self { .thin }
+  static var ultraThinMaterial: Self { .ultraThin }
+  static var ultraThickMaterial: Self { .ultraThick }
+  static var bar: Self { .bar }
+}

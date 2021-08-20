@@ -34,7 +34,7 @@ public extension Shape {
 }
 
 public extension ShapeStyle where Self: View, Self.Body == _ShapeView<Rectangle, Self> {
-  var body: some View {
+  var body: Body {
     _ShapeView(shape: Rectangle(), style: self)
   }
 }

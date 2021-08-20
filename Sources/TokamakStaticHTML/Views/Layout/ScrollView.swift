@@ -37,7 +37,8 @@ extension ScrollView: _HTMLPrimitive, SpacerContainer {
       \(fillCrossAxis && scrollX ? "height: 100%;" : "")
       \(fillCrossAxis && scrollY ? "width: 100%;" : "")
       """,
-      "class": !showsIndicators ? "_tokamak-scrollview-hideindicators" : "",
+      "class": !showsIndicators ? "_tokamak-scrollview _tokamak-scrollview-hideindicators" :
+        "_tokamak-scrollview",
     ]) {
       VStack {
         content

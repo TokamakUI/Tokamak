@@ -170,7 +170,31 @@ struct TokamakDemoView: View {
         title: "Demos"
       )
       if #available(iOS 14.0, *) {
-        return AnyView(list.listStyle(SidebarListStyle()))
+        return AnyView(
+          list
+            .listStyle(SidebarListStyle())
+            .navigationTitle("Tokamak")
+            .toolbar {
+              ToolbarItem(placement: .cancellationAction) {
+                Button("Cancellation Action") {}
+              }
+              ToolbarItem(placement: .confirmationAction) {
+                Button("Confirmation Action") {}
+              }
+              ToolbarItem(placement: .destructiveAction) {
+                Button("Destructive Action") {}
+              }
+              ToolbarItem(placement: .navigation) {
+                Text("Some nav-text")
+                  .italic()
+              }
+              ToolbarItem(placement: .status) {
+                Text("Status: Live")
+                  .bold()
+                  .foregroundColor(.green)
+              }
+            }
+        )
       } else {
         return AnyView(list)
       }
