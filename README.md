@@ -174,6 +174,23 @@ carton dev
 You can also clone this repository and run `carton dev --product TokamakDemo` in its root
 directory. This will build the demo app that shows almost all of the currently implemented APIs.
 
+## Security
+
+By default, the DOM renderer will escape HTML control characters in `Text` views. If you wish
+to override this functionality, you can use the `_domTextSanitizer` modifier:
+
+```swift
+Text("<font color='red'>Unsanitized Text</font>")
+  ._domTextSanitizer(Sanitizers.HTML.insecure)
+```
+
+You can also use custom sanitizers; the argument to `_domTextSanitizer` is simply a
+`String -> String` closure. If `_domTextSanitizer` is applied to a non-`Text` view,
+it will apply to all `Text` in subviews, unless overridden.
+
+If you use user-generated or otherwise unsafe strings elsewhere, make sure to properly
+sanitize them yourself.
+
 ## Troubleshooting
 
 ### `unable to find utility "xctest"` error when building

@@ -130,12 +130,12 @@ extension Text: AnyHTML {
     let innerHTML: String
     switch proxy.storage {
     case let .verbatim(text):
-      innerHTML = text
+      innerHTML = proxy.environment.domTextSanitizer(text)
     case let .segmentedText(segments):
       innerHTML = segments
         .map {
           TextSpan(
-            content: $0.0.rawText,
+            content: proxy.environment.domTextSanitizer($0.0.rawText),
             attributes: Self.attributes(
               from: $0.1,
               environment: proxy.environment
