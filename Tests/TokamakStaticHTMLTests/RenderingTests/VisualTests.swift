@@ -18,6 +18,7 @@
 // SnapshotTesting with image snapshots are only supported on macOS.
 #if os(macOS)
 import SnapshotTesting
+import TokamakCore
 import TokamakStaticHTML
 import XCTest
 
@@ -100,8 +101,18 @@ final class VisualRenderingTests: XCTestCase {
             endRadius: 40
           ))
           .frame(width: 80, height: 80)
+        Ellipse()
+          .fill(
+            AngularGradient(
+              colors: [.red, .orange, .yellow, .green, .blue, .purple],
+              center: UnitPoint(x: 0.3, y: 0.6),
+              startAngle: .degrees(45),
+              endAngle: .degrees(120)
+            )
+          )
+          .frame(width: 80, height: 80)
       },
-      as: .image(size: .init(width: 200, height: 100))
+      as: .image(size: .init(width: 300, height: 100))
     )
   }
 

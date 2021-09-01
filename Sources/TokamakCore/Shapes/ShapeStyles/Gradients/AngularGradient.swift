@@ -54,7 +54,12 @@ import Foundation
   }
 
   public init(gradient: Gradient, center: UnitPoint, angle: Angle = .zero) {
-    self.init(gradient: gradient, center: center, startAngle: angle, endAngle: angle)
+    self.init(
+      gradient: gradient,
+      center: center,
+      startAngle: angle,
+      endAngle: angle + .degrees(360)
+    )
   }
 
   public init(colors: [Color], center: UnitPoint, angle: Angle = .zero) {
