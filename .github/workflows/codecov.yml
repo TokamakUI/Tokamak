@@ -9,7 +9,7 @@ on:
 jobs:
   codecov:
     container:
-      image: swift:5.3.2-bionic
+      image: swift:5.4-bionic
     runs-on: ubuntu-latest
     steps:
     - run: apt-get update && apt-get install -y gtk+-3.0 libgtk+-3.0
