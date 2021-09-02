@@ -39,8 +39,8 @@ struct TextDemo: View {
           .heavy,
           .black,
         ], id: \.self) { weight in
-            Text("a")
-              .fontWeight(weight)
+          Text("a")
+            .fontWeight(weight)
         }
       }
       VStack {

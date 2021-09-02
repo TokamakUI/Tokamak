@@ -15,7 +15,8 @@
 //  Created by Carson Katri on 7/7/20.
 //
 
-@_functionBuilder public enum ToolbarContentBuilder<ID> {
+@resultBuilder
+public enum ToolbarContentBuilder<ID> {
   public static func buildBlock<V>(_ content: ToolbarItem<ID, V>)
     -> ToolbarItemGroup<ID, ToolbarItem<ID, V>> where V: View
   {
