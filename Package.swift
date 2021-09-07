@@ -125,7 +125,7 @@ let package = Package(
         ),
       ]
     ),
-    .target(
+    .executableTarget(
       name: "TokamakGTKDemo",
       dependencies: ["TokamakGTK"],
       resources: [.copy("logo-header.png")]
@@ -136,14 +136,14 @@ let package = Package(
         "TokamakCore",
       ]
     ),
-    .target(
+    .executableTarget(
       name: "TokamakCoreBenchmark",
       dependencies: [
         "Benchmark",
         "TokamakCore",
       ]
     ),
-    .target(
+    .executableTarget(
       name: "TokamakStaticHTMLBenchmark",
       dependencies: [
         "Benchmark",
@@ -167,7 +167,7 @@ let package = Package(
         "OpenCombineJS",
       ]
     ),
-    .target(
+    .executableTarget(
       name: "TokamakDemo",
       dependencies: [
         "TokamakShim",
@@ -185,7 +185,7 @@ let package = Package(
         ),
       ]
     ),
-    .target(
+    .executableTarget(
       name: "TokamakStaticHTMLDemo",
       dependencies: [
         "TokamakStaticHTML",
