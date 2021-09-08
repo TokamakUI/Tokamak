@@ -113,9 +113,8 @@ app.
 
 ## Requirements for app developers
 
-- macOS 10.15 and Xcode 11.4 or later. macOS 11.0 and Xcode 12.0 or later are required if you're
-  building a multi-platform app with Tokamak that also needs to support SwiftUI on macOS.
-- [Swift 5.2 or later](https://swift.org/download/) and Ubuntu 18.04 if you'd like to use Linux.
+- macOS 11 and Xcode 12.5. Xcode 13 is currently not supported.
+- [Swift 5.4 or later](https://swift.org/download/) and Ubuntu 18.04 if you'd like to use Linux.
   Other Linux distributions are currently not supported.
 
 ## Requirements for app users
@@ -142,7 +141,7 @@ app by following these steps:
 brew install swiftwasm/tap/carton
 ```
 
-If you had `carton` installed before this, make sure you have version 0.9.0 or greater:
+If you had `carton` installed before this, make sure you have version 0.11.0 or greater:
 
 ```
 carton --version

@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: swiftwasm/swiftwasm-action@v5.3
+      - uses: swiftwasm/swiftwasm-action@v5.4
         with:
           shell-action: carton bundle --product TokamakDemo
 
@@ -20,12 +20,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: swiftwasm/swiftwasm-action@v5.3
+      - uses: swiftwasm/swiftwasm-action@v5.4
         with:
           shell-action: carton test
 
   core_macos_build:
-    runs-on: macos-11.0
+    runs-on: macos-11
 
     steps:
       - uses: actions/checkout@v2
@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo xcode-select --switch /Applications/Xcode_12.4.app/Contents/Developer/
+          sudo xcode-select --switch /Applications/Xcode_12.5.app/Contents/Developer/
           # avoid building unrelated products for testing by specifying the test product explicitly
           swift build --product TokamakPackageTests
           `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest ||
@@ -64,7 +64,7 @@ jobs:
           path: RenderingTests
 
   gtk_macos_build:
-    runs-on: macos-latest
+    runs-on: macos-11
 
     steps:
       - uses: actions/checkout@v2
@@ -72,7 +72,7 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo xcode-select --switch /Applications/Xcode_12.4.app/Contents/Developer/
+          sudo xcode-select --switch /Applications/Xcode_12.5.app/Contents/Developer/
 
           brew install gtk+3
 

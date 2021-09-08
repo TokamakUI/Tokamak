@@ -18,7 +18,7 @@ jobs:
           git fetch --prune --no-tags --depth=1 origin +refs/heads/${{ github.base_ref }}:refs/heads/${{ github.base_ref }}
       # Diff pull request to current files, then SwiftLint changed files
       - name: GitHub Action for SwiftLint
-        uses: ezraberch/action-swiftlint@3.2.3
+        uses: mayk-it/action-swiftlint@3.2.2
         env:
           DIFF_BASE: ${{ github.base_ref }}
           DIFF_HEAD: HEAD
