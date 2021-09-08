@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/16/20.
 //
 
-@_functionBuilder
+@resultBuilder
 public enum SceneBuilder {
   public static func buildBlock<Content: Scene>(_ content: Content) -> some Scene {
     content

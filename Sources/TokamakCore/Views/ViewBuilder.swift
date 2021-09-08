@@ -67,7 +67,8 @@ extension Optional: AnyOptional {
   }
 }
 
-@_functionBuilder public enum ViewBuilder {
+@resultBuilder
+public enum ViewBuilder {
   public static func buildBlock() -> EmptyView { EmptyView() }
 
   public static func buildBlock<Content>(
