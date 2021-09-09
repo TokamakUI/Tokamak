@@ -84,36 +84,50 @@ final class VisualRenderingTests: XCTestCase {
   }
 
   func testGradients() {
-    assertSnapshot(
-      matching: HStack {
-        Rectangle()
-          .fill(LinearGradient(
+    let size = CGSize(width: 300, height: 100)
+    let gradient = HStack {
+      Rectangle()
+        .fill(LinearGradient(
+          colors: [.red, .orange, .yellow, .green, .blue, .purple],
+          startPoint: .bottomLeading,
+          endPoint: .topTrailing
+        ))
+        .frame(width: 80, height: 80)
+      Circle()
+        .fill(RadialGradient(
+          colors: [.red, .orange, .yellow, .green, .blue, .purple],
+          center: .center,
+          startRadius: 5,
+          endRadius: 40
+        ))
+        .frame(width: 80, height: 80)
+      Ellipse()
+        .fill(
+          AngularGradient(
             colors: [.red, .orange, .yellow, .green, .blue, .purple],
-            startPoint: .bottomLeading,
-            endPoint: .topTrailing
-          ))
-          .frame(width: 80, height: 80)
-        Circle()
-          .fill(RadialGradient(
-            colors: [.red, .orange, .yellow, .green, .blue, .purple],
-            center: .center,
-            startRadius: 5,
-            endRadius: 40
-          ))
-          .frame(width: 80, height: 80)
-        Ellipse()
-          .fill(
-            AngularGradient(
-              colors: [.red, .orange, .yellow, .green, .blue, .purple],
-              center: UnitPoint(x: 0.3, y: 0.6),
-              startAngle: .degrees(45),
-              endAngle: .degrees(120)
-            )
+            center: UnitPoint(x: 0.3, y: 0.6),
+            startAngle: .degrees(45),
+            endAngle: .degrees(120)
           )
-          .frame(width: 80, height: 80)
-      },
-      as: .image(size: .init(width: 300, height: 100))
+        )
+        .frame(width: 80, height: 80)
+    }
+
+    let matchA = verifySnapshot(
+      matching: gradient,
+      as: .image(size: size),
+      testName: "\(#function)A"
     )
+    let matchB = verifySnapshot(
+      matching: gradient,
+      as: .image(size: size),
+      testName: "\(#function)B"
+    )
+
+    if matchA == nil { print("\(#function) version A matches") }
+    if matchB == nil { print("\(#function) version B matches") }
+
+    XCTAssert(matchA == nil || matchB == nil)
   }
 
   func testMaterial() {
