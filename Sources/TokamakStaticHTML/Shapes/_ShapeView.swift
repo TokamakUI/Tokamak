@@ -15,6 +15,7 @@
 //  Created by Carson Katri on 6/29/20.
 //
 
+import Foundation
 import TokamakCore
 
 protocol ShapeAttributes {
@@ -58,6 +59,7 @@ extension _ShapeView: _HTMLPrimitive {
     let path = shape.path(in: .zero).renderedBody
     var attributes: [HTMLAttribute: String] = [:]
     var svgDefs: AnyView?
+    var cssGradient: String?
 
     if let shapeAttributes = shape as? ShapeAttributes {
       attributes = shapeAttributes.attributes(style)
@@ -84,9 +86,9 @@ extension _ShapeView: _HTMLPrimitive {
             [
               "id": "gradient\(id)",
               "x1": "\(startPoint.x * 100)%",
-              "y1": "\((1 - startPoint.y) * 100)%",
+              "y1": "\(startPoint.y * 100)%",
               "x2": "\(endPoint.x * 100)%",
-              "y2": "\((1 - endPoint.y) * 100)%",
+              "y2": "\(endPoint.y * 100)%",
               "gradientUnits": "userSpaceOnUse",
             ]
           ) {
@@ -99,9 +101,9 @@ extension _ShapeView: _HTMLPrimitive {
               [
                 "id": "gradient\(id)",
                 "fx": "\(center.x * 100)%",
-                "fy": "\((1 - center.y) * 100)%",
+                "fy": "\(center.y * 100)%",
                 "cx": "\(center.x * 100)%",
-                "cy": "\((1 - center.y) * 100)%",
+                "cy": "\(center.y * 100)%",
                 "gradientUnits": "userSpaceOnUse",
                 "fr": "\(startRadius)",
                 "r": "\(endRadius)",
@@ -110,6 +112,26 @@ extension _ShapeView: _HTMLPrimitive {
               stops
             }
           )
+        case let .angular(center, startAngle, endAngle):
+          let ratio = CGFloat((endAngle - startAngle).degrees / 360.0)
+          var cssStops = gradient.stops.enumerated().map {
+            $0.element.color.cssValue(environment) + " \($0.element.location * 100.0 * ratio)%"
+          }
+          if ratio < 1.0 && cssStops.count > 0 {
+            cssStops
+              .append("\(gradient.stops.last!.color.cssValue(environment)) \(50.0 + 50 * ratio)%")
+            cssStops
+              .append(
+                "\(gradient.stops.first!.color.cssValue(environment)) \(50.0 + 50 * ratio)%"
+              )
+          }
+          if cssStops.count == 1 {
+            cssStops.append(cssStops[0])
+          }
+          cssGradient = "background:conic-gradient(from \(startAngle.degrees + 90)deg at " +
+            "\(center.x * 100)% \(center.y * 100)%, " +
+            "\(cssStops.joined(separator: ", ")));"
+          attributes["style"] = nil
         default: return path
         }
       default:
@@ -137,10 +159,20 @@ extension _ShapeView: _HTMLPrimitive {
         uniquingKeysWith: uniqueKeys
       )
       return AnyView(HTML(html.tag, mergedAttributes) {
-        html.content
-        if let svgDefs = svgDefs {
-          HTML("defs") {
-            svgDefs
+        if let cssGradient = cssGradient {
+          HTML("clipPath", ["id": "clip", "width": "100%", "height": "100%"]) {
+            html.content
+          }
+          HTML(
+            "foreignObject",
+            ["clip-path": "url(#clip)", "width": "100%", "height": "100%", "style": cssGradient]
+          )
+        } else {
+          html.content
+          if let svgDefs = svgDefs {
+            HTML("defs") {
+              svgDefs
+            }
           }
         }
       })

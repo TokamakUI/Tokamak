@@ -132,6 +132,16 @@ struct ShapeStyleDemo: View {
           )
         )
         .frame(width: 300, height: 100)
+      Rectangle()
+        .fill(
+          AngularGradient(
+            colors: [.red, .green, .blue],
+            center: UnitPoint(x: 0.25, y: 0.25),
+            startAngle: .degrees(45),
+            endAngle: .degrees(130)
+          )
+        )
+        .frame(width: 300, height: 100)
     }
     #endif
   }

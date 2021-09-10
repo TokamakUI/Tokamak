@@ -37,7 +37,7 @@ jobs:
           # avoid building unrelated products for testing by specifying the test product explicitly
           swift build --product TokamakPackageTests
           `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest ||
-            (cp -r `find /var/folders -iname RenderingTests` . ; exit 1)
+            (cp -r /var/folders/*/*/*/*Tests . ; exit 1)
 
           rm -rf Sources/TokamakGTKCHelpers/*.c
 
@@ -61,7 +61,7 @@ jobs:
         if: ${{ failure() }}
         with:
           name: Failed snapshots
-          path: RenderingTests
+          path: '*Tests'
 
   gtk_macos_build:
     runs-on: macos-11

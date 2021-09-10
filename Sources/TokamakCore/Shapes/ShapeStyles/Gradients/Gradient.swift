@@ -24,7 +24,7 @@ import Foundation
 
     public init(color: Color, location: CGFloat) {
       self.color = color
-      self.location = location
+      self.location = location.isNaN ? .zero : location
     }
   }
 
