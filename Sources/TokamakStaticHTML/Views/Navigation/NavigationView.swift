@@ -15,6 +15,39 @@
 import TokamakCore
 
 extension NavigationView: _HTMLPrimitive {
+  private struct NavBody: View {
+    let toolbarContent: [AnyToolbarItem]
+    let title: AnyView?
+    let view: NavigationView
+
+    init(_ toolbarContent: [AnyToolbarItem], _ title: AnyView?, _ view: NavigationView) {
+      self.toolbarContent = toolbarContent
+      self.title = title
+      self.view = view
+    }
+
+    var body: some View {
+      HTML("div", ["class": "_tokamak-toolbar-content _tokamak-toolbar-leading"]) {
+        view.items(from: toolbarContent, at: .navigationBarLeading)
+        view.items(from: toolbarContent, at: .navigation)
+        title
+          .font(.headline)
+        view.items(from: toolbarContent, at: .navigationBarTrailing)
+        view.items(from: toolbarContent, at: .automatic, .primaryAction)
+        view.items(from: toolbarContent, at: .destructiveAction)
+          .foregroundColor(.red)
+      }
+      HTML("div", ["class": "_tokamak-toolbar-content _tokamak-toolbar-center"]) {
+        view.items(from: toolbarContent, at: .principal, .status)
+      }
+      HTML("div", ["class": "_tokamak-toolbar-content _tokamak-toolbar-trailing"]) {
+        view.items(from: toolbarContent, at: .cancellationAction)
+        view.items(from: toolbarContent, at: .confirmationAction)
+          .foregroundColor(.accentColor)
+      }
+    }
+  }
+
   @_spi(TokamakStaticHTML)
   public var renderedBody: AnyView {
     let proxy = _NavigationViewProxy(self)
@@ -32,24 +65,7 @@ extension NavigationView: _HTMLPrimitive {
                   title.font(.headline)
                 }
               } else {
-                HTML("div", ["class": "_tokamak-toolbar-content _tokamak-toolbar-leading"]) {
-                  items(from: toolbarContent, at: .navigationBarLeading)
-                  items(from: toolbarContent, at: .navigation)
-                  title
-                    .font(.headline)
-                  items(from: toolbarContent, at: .navigationBarTrailing)
-                  items(from: toolbarContent, at: .automatic, .primaryAction)
-                  items(from: toolbarContent, at: .destructiveAction)
-                    .foregroundColor(.red)
-                }
-                HTML("div", ["class": "_tokamak-toolbar-content _tokamak-toolbar-center"]) {
-                  items(from: toolbarContent, at: .principal, .status)
-                }
-                HTML("div", ["class": "_tokamak-toolbar-content _tokamak-toolbar-trailing"]) {
-                  items(from: toolbarContent, at: .cancellationAction)
-                  items(from: toolbarContent, at: .confirmationAction)
-                    .foregroundColor(.accentColor)
-                }
+                NavBody(toolbarContent, title, self)
               }
             }
             .font(.caption)
