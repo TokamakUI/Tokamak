@@ -44,7 +44,7 @@ final class HTMLTests: XCTestCase {
     let resultingHTML = StaticHTMLRenderer(OptionalBody(model: Model(color: Color.red)))
       .render(shouldSortAttributes: true)
 
-    assertSnapshot(matching: resultingHTML, as: .lines)
+    assertSnapshot(matching: resultingHTML, as: .html)
   }
 
   func testPaddingFusion() {
@@ -52,13 +52,13 @@ final class HTMLTests: XCTestCase {
       Color.red.padding(10).padding(20)
     ).render(shouldSortAttributes: true)
 
-    assertSnapshot(matching: nestedTwice, as: .lines)
+    assertSnapshot(matching: nestedTwice, as: .html)
 
     let nestedThrice = StaticHTMLRenderer(
       Color.red.padding(20).padding(20).padding(20)
     ).render(shouldSortAttributes: true)
 
-    assertSnapshot(matching: nestedThrice, as: .lines)
+    assertSnapshot(matching: nestedThrice, as: .html)
   }
 
   func testFontStacks() {
@@ -67,7 +67,7 @@ final class HTMLTests: XCTestCase {
         .font(.custom("Marker Felt", size: 17))
     ).render(shouldSortAttributes: true)
 
-    assertSnapshot(matching: customFont, as: .lines)
+    assertSnapshot(matching: customFont, as: .html)
 
     let fallbackFont = StaticHTMLRenderer(
       VStack {
@@ -77,7 +77,7 @@ final class HTMLTests: XCTestCase {
       .font(.system(.body, design: .serif))
     ).render(shouldSortAttributes: true)
 
-    assertSnapshot(matching: fallbackFont, as: .lines)
+    assertSnapshot(matching: fallbackFont, as: .html)
   }
 
   func testHTMLSanitizer() {
@@ -85,12 +85,12 @@ final class HTMLTests: XCTestCase {
 
     let sanitizedHTML = StaticHTMLRenderer(Text(text))
       .render(shouldSortAttributes: true)
-    assertSnapshot(matching: sanitizedHTML, as: .lines)
+    assertSnapshot(matching: sanitizedHTML, as: .html)
 
     let insecureHTML =
       StaticHTMLRenderer(Text(text)._domTextSanitizer(Sanitizers.HTML.insecure))
         .render(shouldSortAttributes: true)
-    assertSnapshot(matching: insecureHTML, as: .lines)
+    assertSnapshot(matching: insecureHTML, as: .html)
   }
 }
 
