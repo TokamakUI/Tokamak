@@ -12,11 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if canImport(SnapshotTesting)
-import SnapshotTesting
+import TokamakCore
 
-public extension Snapshotting where Value == String, Format == String {
-  static let html = Snapshotting(pathExtension: "html", diffing: .lines)
+// TOOD: Add _AnyModifiedActionContent similar to TokamakStaticHTML/ModifiedContent.swift?
+extension ModifiedContent: DOMPrimitive where Content: View, Modifier: DOMActionModifier {
+  public var renderedBody: AnyView {
+    // TODO: Combine DOM nodes when possible, rather than generating arbitrary new ones
+    AnyView(DynamicHTML("div", listeners: modifier.listeners) {
+      content
+    })
+  }
 }
-
-#endif
