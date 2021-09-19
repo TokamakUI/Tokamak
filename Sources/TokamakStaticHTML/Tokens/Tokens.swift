@@ -20,7 +20,7 @@ extension Color {
   }
 }
 
-extension AnyColorBox.ResolvedValue {
+public extension AnyColorBox.ResolvedValue {
   var cssValue: String {
     "rgba(\(red * 255), \(green * 255), \(blue * 255), \(opacity))"
   }

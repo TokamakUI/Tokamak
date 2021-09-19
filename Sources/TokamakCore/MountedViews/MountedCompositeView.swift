@@ -135,5 +135,9 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
         )
       }
     )
+
+    if let lifecycleActions = view.view as? LifecycleActionType {
+      lifecycleActions.update?()
+    }
   }
 }
