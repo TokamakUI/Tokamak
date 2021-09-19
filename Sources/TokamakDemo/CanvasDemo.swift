@@ -18,12 +18,14 @@
 import Foundation
 import TokamakShim
 
+@available(macOS 12.0, iOS 15.0, *)
 public struct CanvasDemo: View {
   public var body: some View {
     Confetti()
   }
 }
 
+@available(macOS 12.0, iOS 15.0, *)
 struct Confetti: View {
   static let colors: [Color] = [
     Color.red,
