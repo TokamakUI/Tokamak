@@ -20,7 +20,7 @@ import Foundation
 /// The outline of a 2D shape.
 public struct Path: Equatable, LosslessStringConvertible {
   public class _PathBox: Equatable {
-    var elements: [Element] = []
+    public var elements: [Element] = []
     public static func == (lhs: Path._PathBox, rhs: Path._PathBox) -> Bool {
       lhs.elements == rhs.elements
     }

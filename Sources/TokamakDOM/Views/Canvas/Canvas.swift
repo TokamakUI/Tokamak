@@ -263,8 +263,36 @@ private struct _Canvas<Symbols: View>: View {
         Double(rect.rect.minX + cornerSize.width),
         Double(rect.rect.minY)
       )
+    case let .path(box):
+      for element in box.elements {
+        switch element {
+        case let .move(point):
+          _ = canvasContext.moveTo!(Double(point.x), Double(point.y))
+        case let .line(point):
+          _ = canvasContext.lineTo!(Double(point.x), Double(point.y))
+        case let .quadCurve(endPoint, controlPoint):
+          _ = canvasContext.quadraticCurveTo!(
+            Double(controlPoint.x),
+            Double(controlPoint.y),
+            Double(endPoint.x),
+            Double(endPoint.y)
+          )
+        case let .curve(endPoint, control1, control2):
+          _ = canvasContext.bezierCurveTo!(
+            Double(control1.x),
+            Double(control1.y),
+            Double(control2.x),
+            Double(control2.y),
+            Double(endPoint.x),
+            Double(endPoint.y)
+          )
+        case .closeSubpath:
+          _ = canvasContext.closePath!()
+          _ = canvasContext.beginPath!()
+        }
+      }
     default:
-      print("TODO: push \(path)")
+      print("TODO: push \(path) (\(path.storage))")
     }
     _ = canvasContext.closePath!()
   }
