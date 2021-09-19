@@ -16,7 +16,7 @@
 //
 
 import Foundation
-import TokamakDOM
+import TokamakShim
 
 public struct CanvasDemo: View {
   public var body: some View {
