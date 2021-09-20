@@ -12,11 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if canImport(SnapshotTesting)
-import SnapshotTesting
+import TokamakCore
 
-public extension Snapshotting where Value == String, Format == String {
-  static let html = Snapshotting(pathExtension: "html", diffing: .lines)
+public protocol DOMActionModifier {
+  var listeners: [String: Listener] { get }
 }
 
-#endif
+extension ModifiedContent
+  where Content: AnyDynamicHTML, Modifier: DOMActionModifier
+{
+  // Merge listeners
+  var listeners: [String: Listener] {
+    var attr = content.listeners
+    for (key, val) in modifier.listeners {
+      if let prev = attr[key] {
+        attr[key] = { input in
+          val(input)
+          prev(input)
+        }
+      }
+    }
+
+    return attr
+  }
+}

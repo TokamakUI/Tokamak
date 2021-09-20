@@ -11,12 +11,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+/// Underscore is present in the name for SwiftUI compatibility.
+public struct _HoverActionModifier: ViewModifier {
+  public var hover: ((Bool) -> ())?
 
-#if canImport(SnapshotTesting)
-import SnapshotTesting
-
-public extension Snapshotting where Value == String, Format == String {
-  static let html = Snapshotting(pathExtension: "html", diffing: .lines)
+  public typealias Body = Never
 }
 
-#endif
+extension ModifiedContent
+  where Content: View, Modifier == _HoverActionModifier
+{
+  var hover: ((Bool) -> ())? { modifier.hover }
+}
+
+public extension View {
+  func onHover(perform action: ((Bool) -> ())?) -> some View {
+    modifier(_HoverActionModifier(hover: action))
+  }
+}

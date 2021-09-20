@@ -12,11 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if canImport(SnapshotTesting)
-import SnapshotTesting
+import TokamakCore
 
-public extension Snapshotting where Value == String, Format == String {
-  static let html = Snapshotting(pathExtension: "html", diffing: .lines)
+extension _HoverActionModifier: DOMActionModifier {
+  public var listeners: [String: Listener] {
+    [
+      "mouseover":
+        { _ in hover?(true) },
+      "mouseout":
+        { _ in hover?(false) },
+    ]
+  }
 }
-
-#endif
