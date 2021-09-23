@@ -56,9 +56,10 @@ private struct _TimelineView<Content: View, Schedule: TimelineSchedule>: View {
     }
 
     func queueNext() {
-      // Animated timelines are handled differently on the web, as updating the DOM every frame is costly.
-      // Therefore, animated timelines are only supported by views that read the `inAnimatedTimelineView`
-      // environment value, such as `Canvas`, which updates without DOM manipulation.
+      // Animated timelines are handled differently on the web, as updating the DOM every frame
+      // is costly. Therefore, animated timelines are only supported by views that read the
+      // `inAnimatedTimelineView` environment value, such as `Canvas`, which updates without
+      // DOM manipulation.
       guard !(Schedule.self == AnimationTimelineSchedule.self),
             let next = iterator.next()
       else { return }

@@ -20,12 +20,19 @@ import JavaScriptKit
 import TokamakCore
 import TokamakStaticHTML
 
+extension Canvas: DOMPrimitive {
+  public var renderedBody: AnyView {
+    AnyView(_Canvas(parent: self))
+  }
+}
+
 private let devicePixelRatio = JSObject.global.devicePixelRatio.number ?? 1
 
-private struct _Canvas<Symbols: View>: View {
+struct _Canvas<Symbols: View>: View {
   let parent: Canvas<Symbols>
   @StateObject private var coordinator = Coordinator()
   @Environment(\.inAnimatingTimelineView) private var inAnimatingTimelineView
+
   final class Coordinator: ObservableObject {
     @Published var canvas: JSObject?
     var currentDrawLoop: UUID?
@@ -43,6 +50,8 @@ private struct _Canvas<Symbols: View>: View {
   }
 
   private func draw(in size: CGSize) {
+    // Tag the current draw call with an ID so we can replace it
+    // when animating if the canvas size changes.
     let drawCallID = UUID()
     coordinator.currentDrawLoop = drawCallID
     guard let canvas = coordinator.canvas,
@@ -87,11 +96,11 @@ private struct _Canvas<Symbols: View>: View {
     canvasContext.globalCompositeOperation = .string(storage.blendMode.cssValue)
     switch operation {
     case let .clip(path, _, _):
-      pushPath(path, in: canvasContext)
-      _ = canvasContext.clip!()
+      clip(to: path, in: canvasContext)
     case .beginClipLayer:
-      break
+      _ = canvasContext.save!()
     case .endClipLayer:
+      _ = canvasContext.restore!()
       _ = canvasContext.clip!()
     case let .addFilter(filter, _):
       applyFilter(filter, to: canvasContext)
@@ -100,173 +109,16 @@ private struct _Canvas<Symbols: View>: View {
     case .endLayer:
       _ = canvasContext.restore!()
     case let .fill(path, shading, fillStyle):
-      _ = canvasContext.save!()
-      pushPath(path, in: canvasContext)
-      canvasContext.fillStyle = shading.cssValue(
-        in: parent._environment,
-        with: canvasContext,
-        bounds: path.boundingRect
-      )
-      _ = canvasContext.fill!(fillStyle.isEOFilled ? "evenodd" : "nonzero")
-      _ = canvasContext.restore!()
+      fillPath(path, with: shading, style: fillStyle, in: canvasContext)
     case let .stroke(path, shading, strokeStyle):
-      _ = canvasContext.save!()
-      pushPath(path, in: canvasContext)
-      canvasContext.strokeStyle = shading.cssValue(
-        in: parent._environment,
-        with: canvasContext,
-        bounds: path.boundingRect
-      )
-      canvasContext.lineWidth = .number(Double(strokeStyle.lineWidth))
-      _ = canvasContext.stroke!()
-      _ = canvasContext.restore!()
+      strokePath(path, with: shading, style: strokeStyle, in: canvasContext)
     case .drawImage:
       break
     case let .drawText(text, positioning):
-      let proxy = _TextProxy(text._text)
-
-      _ = canvasContext.save!()
-      canvasContext.fillStyle = text.shading.cssValue(
-        in: parent._environment,
-        with: canvasContext,
-        bounds: .zero
-      )
-      switch positioning {
-      case let .in(rect):
-        _ = canvasContext.fillText!(
-          _TextProxy(text._text).rawText,
-          Double(rect.origin.x),
-          Double(rect.origin.y),
-          Double(rect.size.width)
-        )
-      case let .at(point, anchor):
-        // Horizontal alignment
-        canvasContext.textAlign = .string(
-          anchor.x == 0 ? "start" : (anchor.x == 0.5 ? "center" : "end")
-        )
-        // Vertical alignment
-        canvasContext.textBaseline = .string(
-          anchor
-            .y == 0 ? "top" :
-            (anchor.y == 0.5 ? "middle" : (anchor.y == 1 ? "bottom" : "alphabetic"))
-        )
-        applyModifiers(proxy.modifiers, to: canvasContext, in: parent._environment)
-        _ = canvasContext.fillText!(proxy.rawText, Double(point.x), Double(point.y))
-      }
-      _ = canvasContext.restore!()
+      drawText(text, at: positioning, in: canvasContext)
     case let .drawSymbol(symbol, positioning):
-      // Create an SVG element containing the View's rendered HTML. This was resolved to SVG earlier.
-      let img = JSObject.global.Image.function!.new()
-      let svgData = JSObject.global.Blob.function!.new(
-        [symbol._resolved as? String ?? ""],
-        ["type": "image/svg+xml;charset=utf-8"]
-      )
-      // Create a URL to the SVG data.
-      let objectURL = JSObject.global.URL.function!.createObjectURL!(svgData)
-
-      img.onload = .object(JSOneshotClosure { _ in
-        // Draw the SVG on the canvas.
-        switch positioning {
-        case let .in(rect):
-          _ = canvasContext.drawImage!(
-            img,
-            Double(rect.origin.x), Double(rect.origin.y),
-            Double(rect.size.width), Double(rect.size.height)
-          )
-        case let .at(point, anchor):
-          _ = canvasContext.drawImage!(
-            img,
-            Double(point.x - (anchor.x * symbol.size.width)),
-            Double(point.y - (anchor.y * symbol.size.width))
-          )
-        }
-        _ = JSObject.global.URL.function!.revokeObjectURL!(objectURL)
-        return .undefined
-      })
-
-      img.src = objectURL
+      drawSymbol(symbol, at: positioning, in: canvasContext)
     }
-  }
-
-  private func resolveImage(_ image: Image, _ environment: EnvironmentValues) -> GraphicsContext
-    .ResolvedImage
-  {
-    ._resolved(image, size: .zero, baseline: 0)
-  }
-
-  private func resolveText(in canvasContext: JSObject)
-    -> (Text, EnvironmentValues) -> GraphicsContext.ResolvedText
-  {
-    { text, environment in
-      ._resolved(
-        text,
-        shading: .foreground,
-        lazyLayoutComputer: { _ in
-          _ = canvasContext.save!()
-          applyModifiers(
-            _TextProxy(text).modifiers,
-            to: canvasContext,
-            in: environment
-          )
-          let metrics = canvasContext.measureText!(_TextProxy(text).rawText)
-          _ = canvasContext.restore!()
-          let baselineToTop = metrics.actualBoundingBoxAscent.number ?? 0
-          let baselineToBottom = metrics.actualBoundingBoxDescent.number ?? 0
-          return .init(
-            size: .init(
-              width: CGFloat(metrics.width.number ?? 0),
-              height: CGFloat(baselineToTop + baselineToBottom)
-            ),
-            firstBaseline: CGFloat(baselineToTop),
-            lastBaseline: CGFloat(baselineToBottom)
-          )
-        }
-      )
-    }
-  }
-
-  private func resolveSymbol(
-    _ symbol: AnyView,
-    _ environment: EnvironmentValues
-  ) -> GraphicsContext.ResolvedSymbol {
-    let id = "_resolvable_symbol_body_\(UUID().uuidString)"
-    let divWrapped = HTML(
-      "div",
-      ["xmlns": "http://www.w3.org/1999/xhtml", "id": id, "style": "display: inline-block;"]
-    ) {
-      symbol
-        .environmentValues(environment)
-    }
-    let innerHTML = StaticHTMLRenderer(divWrapped, environment).render()
-    // Add the element to the document to read its size.
-    let unhostedElement = document.createElement!("div").object!
-    unhostedElement.innerHTML = JSValue.string(innerHTML)
-    _ = document.body.appendChild(unhostedElement)
-    let bounds = document.getElementById!(id).object!.getBoundingClientRect!().object!
-    let size = CGSize(width: bounds.width.number!, height: bounds.height.number!)
-    // Remove it from the document.
-    _ = unhostedElement.parentNode.removeChild(unhostedElement)
-
-    // Render the element with the StaticHTMLRenderer, wrapping it in an SVG tag.
-    return ._resolve(
-      StaticHTMLRenderer(
-        HTML(
-          "svg",
-          [
-            "xmlns": "http://www.w3.org/2000/svg",
-            "width": "\(size.width)",
-            "height": "\(size.height)",
-          ]
-        ) {
-          HTML("foreignObject", ["width": "100%", "height": "100%"]) {
-            divWrapped
-          }
-        },
-        environment
-      )
-      .renderRoot(),
-      size: size
-    )
   }
 
   private func applyFilter(_ filter: GraphicsContext.Filter, to canvasContext: JSObject) {
@@ -312,149 +164,9 @@ private struct _Canvas<Symbols: View>: View {
       break
     }
   }
-
-  private func pushPath(_ path: Path, in canvasContext: JSObject) {
-    _ = canvasContext.beginPath!()
-    switch path.storage {
-    case let .rect(rect):
-      _ = canvasContext.rect!(
-        Double(rect.origin.x),
-        Double(rect.origin.y),
-        Double(rect.size.width),
-        Double(rect.size.height)
-      )
-    case let .ellipse(rect):
-      _ = canvasContext.ellipse!(
-        Double(rect.origin.x + rect.size.width / 2),
-        Double(rect.origin.y + rect.size.height / 2),
-        Double(rect.size.width / 2),
-        Double(rect.size.height / 2),
-        0,
-        0,
-        Double.pi * 2
-      )
-    case let .roundedRect(rect):
-      let cornerSize = rect.cornerSize ?? CGSize(
-        width: min(rect.rect.size.width, rect.rect.size.height) / 2,
-        height: min(rect.rect.size.width, rect.rect.size.height) / 2
-      ) // Capsule rounding
-      _ = canvasContext.moveTo!(Double(rect.rect.minX + cornerSize.width), Double(rect.rect.minY))
-      _ = canvasContext.lineTo!(Double(rect.rect.maxX - cornerSize.width), Double(rect.rect.minY))
-      _ = canvasContext.quadraticCurveTo!(
-        Double(rect.rect.maxX),
-        Double(rect.rect.minY),
-        Double(rect.rect.maxX),
-        Double(rect.rect.minY + cornerSize.height)
-      )
-      _ = canvasContext.lineTo!(Double(rect.rect.maxX), Double(rect.rect.maxY - cornerSize.height))
-      _ = canvasContext.quadraticCurveTo!(
-        Double(rect.rect.maxX),
-        Double(rect.rect.maxY),
-        Double(rect.rect.maxX - cornerSize.width),
-        Double(rect.rect.maxY)
-      )
-      _ = canvasContext.lineTo!(Double(rect.rect.minX + cornerSize.width), Double(rect.rect.maxY))
-      _ = canvasContext.quadraticCurveTo!(
-        Double(rect.rect.minX),
-        Double(rect.rect.maxY),
-        Double(rect.rect.minX),
-        Double(rect.rect.maxY - cornerSize.height)
-      )
-      _ = canvasContext.lineTo!(Double(rect.rect.minX), Double(rect.rect.minY + cornerSize.height))
-      _ = canvasContext.quadraticCurveTo!(
-        Double(rect.rect.minX),
-        Double(rect.rect.minY),
-        Double(rect.rect.minX + cornerSize.width),
-        Double(rect.rect.minY)
-      )
-    case let .path(box):
-      for element in box.elements {
-        switch element {
-        case let .move(point):
-          _ = canvasContext.moveTo!(Double(point.x), Double(point.y))
-        case let .line(point):
-          _ = canvasContext.lineTo!(Double(point.x), Double(point.y))
-        case let .quadCurve(endPoint, controlPoint):
-          _ = canvasContext.quadraticCurveTo!(
-            Double(controlPoint.x),
-            Double(controlPoint.y),
-            Double(endPoint.x),
-            Double(endPoint.y)
-          )
-        case let .curve(endPoint, control1, control2):
-          _ = canvasContext.bezierCurveTo!(
-            Double(control1.x),
-            Double(control1.y),
-            Double(control2.x),
-            Double(control2.y),
-            Double(endPoint.x),
-            Double(endPoint.y)
-          )
-        case .closeSubpath:
-          _ = canvasContext.closePath!()
-          _ = canvasContext.beginPath!()
-        }
-      }
-    default:
-      print("TODO: push \(path) (\(path.storage))")
-    }
-    _ = canvasContext.closePath!()
-  }
-
-  private func applyModifiers(
-    _ modifiers: [Text._Modifier],
-    to canvas: JSObject,
-    in environment: EnvironmentValues
-  ) {
-    var style = ""
-    var variant = ""
-    var weight = ""
-    var size: String?
-    var lineHeight = ""
-    var family: String?
-    for modifier in modifiers {
-      switch modifier {
-      case let .color(color):
-        if let color = color {
-          canvas.fillStyle = GraphicsContext.Shading.color(color)
-            .cssValue(in: environment, with: canvas, bounds: .zero)
-        }
-      case let .font(font):
-        if let font = font {
-          let styles = font.styles(in: environment)
-          style += styles["font-style"] ?? ""
-          variant += styles["font-variant"] ?? ""
-          weight = styles["font-weight"] ?? ""
-          size = styles["font-size"] ?? ""
-          lineHeight = styles["line-height"] ?? ""
-          family = styles["font-family"] ?? ""
-        }
-      case .italic:
-        style += "italic"
-      case let .weight(w):
-        if let value = w?.value {
-          weight = "\(value)"
-        }
-      case .kerning, .tracking, .rounded, .baseline, .strikethrough,
-           .underline: break // Not supported in <canvas>.
-      }
-    }
-
-    canvas
-      .font =
-      .string(
-        "\(style) \(variant) \(weight) \(size ?? "17")pt \(lineHeight) \(family ?? Font.Design.default.families.joined(separator: " "))"
-      )
-  }
 }
 
-extension Canvas: DOMPrimitive {
-  public var renderedBody: AnyView {
-    AnyView(_Canvas(parent: self))
-  }
-}
-
-private extension GraphicsContext.Shading {
+extension GraphicsContext.Shading {
   func cssValue(in environment: EnvironmentValues, with canvas: JSObject,
                 bounds: CGRect) -> JSValue
   {
@@ -465,7 +177,7 @@ private extension GraphicsContext.Shading {
   }
 }
 
-private extension GraphicsContext._ResolvedShading {
+extension GraphicsContext._ResolvedShading {
   func cssValue(in environment: EnvironmentValues, with canvas: JSObject,
                 bounds: CGRect) -> JSValue
   {
@@ -512,7 +224,7 @@ private extension GraphicsContext._ResolvedShading {
   }
 }
 
-private extension _ResolvedStyle {
+extension _ResolvedStyle {
   func cssValue(
     in environment: EnvironmentValues,
     opacity: Float = 1,
@@ -582,7 +294,7 @@ private extension _ResolvedStyle {
   }
 }
 
-private extension GraphicsContext.BlendMode {
+extension GraphicsContext.BlendMode {
   var cssValue: String {
     switch self {
     case .normal: return "normal"

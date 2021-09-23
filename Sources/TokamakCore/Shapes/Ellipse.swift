@@ -30,10 +30,9 @@ public struct Circle: Shape {
     .init(
       storage: .ellipse(
         .init(
-          x: rect.origin
-            .x + (rect.width > rect.height ? (rect.width / 2) - (rect.width - rect.height) : 0),
-          y: rect.origin
-            .y + (rect.height > rect.width ? (rect.height / 2) - (rect.height - rect.width) : 0),
+          // Center the circle in the rect.
+          x: rect.origin.x + (rect.width > rect.height ? (rect.width - rect.height) / 2 : 0),
+          y: rect.origin.y + (rect.height > rect.width ? (rect.height - rect.width) / 2 : 0),
           width: min(rect.width, rect.height),
           height: min(rect.width, rect.height)
         )
