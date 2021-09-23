@@ -115,16 +115,39 @@ public extension GraphicsContext {
   }
 
   struct ResolvedSymbol {
-    public let _id: AnyHashable
+    /// The renderer-specific resolved `View` data.
+    public let _resolved: Any
     public let size: CGSize
 
-    public static func _resolve(_ id: AnyHashable, size: CGSize) -> Self {
-      .init(_id: id, size: size)
+    public static func _resolve(_ resolved: Any, size: CGSize) -> Self {
+      .init(_resolved: resolved, size: size)
     }
   }
 
+  /// Resolves a symbol marked with the tag `id`.
   func resolveSymbol<ID>(id: ID) -> ResolvedSymbol? where ID: Hashable {
-    _storage.symbolResolver(AnyHashable(id))
+    _storage.symbolResolver(
+      AnyView(
+        _VariadicView.Tree(SymbolResolverLayout(id: id)) {
+          _storage.symbols
+        }
+      ),
+      _storage.environment
+    )
+  }
+
+  private struct SymbolResolverLayout<ID: Hashable>: _VariadicView.ViewRoot {
+    let id: ID
+
+    func body(children: _VariadicView.Children) -> some View {
+      ForEach(children) {
+        if case let .tagged(tag) = $0[TagValueTraitKey<ID>.self],
+           tag == id
+        {
+          $0
+        }
+      }
+    }
   }
 
   func draw(_ symbol: ResolvedSymbol, in rect: CGRect) {

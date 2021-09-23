@@ -16,8 +16,10 @@ protocol ModifierContainer {
   var environmentModifier: EnvironmentModifier? { get }
 }
 
+protocol ModifiedContentProtocol {}
+
 /// A value with a modifier applied to it.
-public struct ModifiedContent<Content, Modifier> {
+public struct ModifiedContent<Content, Modifier>: ModifiedContentProtocol {
   @Environment(\.self) public var environment
   public typealias Body = Never
   public private(set) var content: Content

@@ -18,7 +18,7 @@
 import TokamakCore
 import TokamakStaticHTML
 
-extension TextField: DOMPrimitive where Label == _TextFieldStyleLabel {
+extension TextField: DOMPrimitive where Label == Text {
   func css(for style: _AnyTextFieldStyle) -> String {
     if style is PlainTextFieldStyle {
       return """
@@ -45,9 +45,7 @@ extension TextField: DOMPrimitive where Label == _TextFieldStyleLabel {
     return AnyView(DynamicHTML("input", [
       "type": proxy.textFieldStyle is RoundedBorderTextFieldStyle ? "search" : "text",
       .value: proxy.textBinding.wrappedValue,
-      "placeholder": mapAnyView(proxy.label.body, transform: { (v: Text) in
-        _TextProxy(v).rawText
-      }) ?? "",
+      "placeholder": _TextProxy(proxy.label).rawText,
       "style": css(for: proxy.textFieldStyle),
       "class": className(for: proxy.textFieldStyle),
     ], listeners: [

@@ -18,116 +18,186 @@
 import Foundation
 import JavaScriptKit
 import TokamakCore
+import TokamakStaticHTML
 
 private let devicePixelRatio = JSObject.global.devicePixelRatio.number ?? 1
 
 private struct _Canvas<Symbols: View>: View {
   let parent: Canvas<Symbols>
-  @State private var canvas: JSObject?
+  @StateObject private var coordinator = Coordinator()
   @Environment(\.inAnimatingTimelineView) private var inAnimatingTimelineView
+  final class Coordinator: ObservableObject {
+    @Published var canvas: JSObject?
+    var currentDrawLoop: UUID?
+  }
 
   var body: some View {
     GeometryReader { proxy in
       HTML("canvas", [
         "style": "width: 100%; height: 100%;",
-        "width": "\(proxy.size.width * CGFloat(devicePixelRatio))",
-        "height": "\(proxy.size.height * CGFloat(devicePixelRatio))",
       ])
-        ._domRef($canvas)
-        .onAppear(perform: draw)
-        ._onUpdate(perform: draw)
+        ._domRef($coordinator.canvas)
+        .onAppear { draw(in: proxy.size) }
+        ._onUpdate { draw(in: proxy.size) }
     }
   }
 
-  private func draw() {
-    guard let canvas = canvas,
+  private func draw(in size: CGSize) {
+    let drawCallID = UUID()
+    coordinator.currentDrawLoop = drawCallID
+    guard let canvas = coordinator.canvas,
           let canvasContext = canvas.getContext!("2d").object
     else { return }
-    let size = CGSize(
-      width: canvas.width.number! / devicePixelRatio,
-      height: canvas.height.number! / devicePixelRatio
-    )
+    // Setup the canvas size
+    canvas.width = .number(Double(size.width * CGFloat(devicePixelRatio)))
+    canvas.height = .number(Double(size.height * CGFloat(devicePixelRatio)))
+    // Restore the initial state.
     _ = canvasContext.restore!()
+    // Clear the canvas.
     _ = canvasContext.clearRect!(0, 0, canvas.width, canvas.height)
+    // Save the cleared state for the next redraw to restore.
     _ = canvasContext.save!()
+    // Scale for retina displays
     _ = canvasContext.scale!(devicePixelRatio, devicePixelRatio)
-    var graphicsContext = parent._makeContext { storage, operation in
-      canvasContext.globalCompositeOperation = .string(storage.blendMode.cssValue)
-      switch operation {
-      case let .clip(path, _, _):
-        pushPath(path, in: canvasContext)
-        _ = canvasContext.clip!()
-      case .beginClipLayer:
-        break
-      case .endClipLayer:
-        _ = canvasContext.clip!()
-      case let .addFilter(filter, _):
-        applyFilter(filter, to: canvasContext)
-      case .beginLayer:
-        _ = canvasContext.save!()
-      case .endLayer:
-        _ = canvasContext.restore!()
-      case let .fill(path, shading, fillStyle):
-        _ = canvasContext.save!()
-        pushPath(path, in: canvasContext)
-        canvasContext.fillStyle = shading.cssValue(
-          in: self.parent._environment,
-          with: canvasContext,
-          bounds: path.boundingRect
-        )
-        _ = canvasContext.fill!(fillStyle.isEOFilled ? "evenodd" : "nonzero")
-        _ = canvasContext.restore!()
-      case let .stroke(path, shading, strokeStyle):
-        _ = canvasContext.save!()
-        pushPath(path, in: canvasContext)
-        canvasContext.strokeStyle = shading.cssValue(
-          in: self.parent._environment,
-          with: canvasContext,
-          bounds: path.boundingRect
-        )
-        canvasContext.lineWidth = .number(Double(strokeStyle.lineWidth))
-        _ = canvasContext.stroke!()
-        _ = canvasContext.restore!()
-      case .drawImage:
-        break
-      case let .drawText(text, positioning):
-        let proxy = _TextProxy(text._text)
+    // Create a fresh context.
+    var graphicsContext = parent._makeContext(
+      onOperation: { storage, operation in
+        handleOperation(storage, operation, in: canvasContext)
+      },
+      imageResolver: resolveImage,
+      textResolver: resolveText(in: canvasContext),
+      symbolResolver: resolveSymbol
+    )
+    // Render into the context.
+    parent.renderer(&graphicsContext, size)
+    if inAnimatingTimelineView {
+      _ = JSObject.global.requestAnimationFrame!(JSOneshotClosure { [weak coordinator] _ in
+        guard coordinator?.currentDrawLoop == drawCallID else { return .undefined }
+        draw(in: size)
+        return .undefined
+      })
+    }
+  }
 
-        _ = canvasContext.save!()
-        canvasContext.fillStyle = text.shading.cssValue(
-          in: self.parent._environment,
-          with: canvasContext,
-          bounds: .zero
+  private func handleOperation(
+    _ storage: GraphicsContext._Storage,
+    _ operation: GraphicsContext._Storage._Operation,
+    in canvasContext: JSObject
+  ) {
+    canvasContext.globalCompositeOperation = .string(storage.blendMode.cssValue)
+    switch operation {
+    case let .clip(path, _, _):
+      pushPath(path, in: canvasContext)
+      _ = canvasContext.clip!()
+    case .beginClipLayer:
+      break
+    case .endClipLayer:
+      _ = canvasContext.clip!()
+    case let .addFilter(filter, _):
+      applyFilter(filter, to: canvasContext)
+    case .beginLayer:
+      _ = canvasContext.save!()
+    case .endLayer:
+      _ = canvasContext.restore!()
+    case let .fill(path, shading, fillStyle):
+      _ = canvasContext.save!()
+      pushPath(path, in: canvasContext)
+      canvasContext.fillStyle = shading.cssValue(
+        in: parent._environment,
+        with: canvasContext,
+        bounds: path.boundingRect
+      )
+      _ = canvasContext.fill!(fillStyle.isEOFilled ? "evenodd" : "nonzero")
+      _ = canvasContext.restore!()
+    case let .stroke(path, shading, strokeStyle):
+      _ = canvasContext.save!()
+      pushPath(path, in: canvasContext)
+      canvasContext.strokeStyle = shading.cssValue(
+        in: parent._environment,
+        with: canvasContext,
+        bounds: path.boundingRect
+      )
+      canvasContext.lineWidth = .number(Double(strokeStyle.lineWidth))
+      _ = canvasContext.stroke!()
+      _ = canvasContext.restore!()
+    case .drawImage:
+      break
+    case let .drawText(text, positioning):
+      let proxy = _TextProxy(text._text)
+
+      _ = canvasContext.save!()
+      canvasContext.fillStyle = text.shading.cssValue(
+        in: parent._environment,
+        with: canvasContext,
+        bounds: .zero
+      )
+      switch positioning {
+      case let .in(rect):
+        _ = canvasContext.fillText!(
+          _TextProxy(text._text).rawText,
+          Double(rect.origin.x),
+          Double(rect.origin.y),
+          Double(rect.size.width)
         )
+      case let .at(point, anchor):
+        // Horizontal alignment
+        canvasContext.textAlign = .string(
+          anchor.x == 0 ? "start" : (anchor.x == 0.5 ? "center" : "end")
+        )
+        // Vertical alignment
+        canvasContext.textBaseline = .string(
+          anchor
+            .y == 0 ? "top" :
+            (anchor.y == 0.5 ? "middle" : (anchor.y == 1 ? "bottom" : "alphabetic"))
+        )
+        applyModifiers(proxy.modifiers, to: canvasContext, in: parent._environment)
+        _ = canvasContext.fillText!(proxy.rawText, Double(point.x), Double(point.y))
+      }
+      _ = canvasContext.restore!()
+    case let .drawSymbol(symbol, positioning):
+      // Create an SVG element containing the View's rendered HTML. This was resolved to SVG earlier.
+      let img = JSObject.global.Image.function!.new()
+      let svgData = JSObject.global.Blob.function!.new(
+        [symbol._resolved as? String ?? ""],
+        ["type": "image/svg+xml;charset=utf-8"]
+      )
+      // Create a URL to the SVG data.
+      let objectURL = JSObject.global.URL.function!.createObjectURL!(svgData)
+
+      img.onload = .object(JSOneshotClosure { _ in
+        // Draw the SVG on the canvas.
         switch positioning {
         case let .in(rect):
-          _ = canvasContext.fillText!(
-            _TextProxy(text._text).rawText,
-            Double(rect.origin.x),
-            Double(rect.origin.y),
-            Double(rect.size.width)
+          _ = canvasContext.drawImage!(
+            img,
+            Double(rect.origin.x), Double(rect.origin.y),
+            Double(rect.size.width), Double(rect.size.height)
           )
         case let .at(point, anchor):
-          // Horizontal alignment
-          canvasContext.textAlign = .string(
-            anchor.x == 0 ? "start" : (anchor.x == 0.5 ? "center" : "end")
+          _ = canvasContext.drawImage!(
+            img,
+            Double(point.x - (anchor.x * symbol.size.width)),
+            Double(point.y - (anchor.y * symbol.size.width))
           )
-          // Vertical alignment
-          canvasContext.textBaseline = .string(
-            anchor
-              .y == 0 ? "top" :
-              (anchor.y == 0.5 ? "middle" : (anchor.y == 1 ? "bottom" : "alphabetic"))
-          )
-          applyModifiers(proxy.modifiers, to: canvasContext, in: self.parent._environment)
-          _ = canvasContext.fillText!(proxy.rawText, Double(point.x), Double(point.y))
         }
-        _ = canvasContext.restore!()
-      case .drawSymbol:
-        break
-      }
-    } imageResolver: { image, _ in
-      ._resolved(image, size: .zero, baseline: 0)
-    } textResolver: { text, _ in
+        _ = JSObject.global.URL.function!.revokeObjectURL!(objectURL)
+        return .undefined
+      })
+
+      img.src = objectURL
+    }
+  }
+
+  private func resolveImage(_ image: Image, _ environment: EnvironmentValues) -> GraphicsContext
+    .ResolvedImage
+  {
+    ._resolved(image, size: .zero, baseline: 0)
+  }
+
+  private func resolveText(in canvasContext: JSObject)
+    -> (Text, EnvironmentValues) -> GraphicsContext.ResolvedText
+  {
+    { text, environment in
       ._resolved(
         text,
         shading: .foreground,
@@ -136,7 +206,7 @@ private struct _Canvas<Symbols: View>: View {
           applyModifiers(
             _TextProxy(text).modifiers,
             to: canvasContext,
-            in: self.parent._environment
+            in: environment
           )
           let metrics = canvasContext.measureText!(_TextProxy(text).rawText)
           _ = canvasContext.restore!()
@@ -152,17 +222,51 @@ private struct _Canvas<Symbols: View>: View {
           )
         }
       )
-    } symbolResolver: { id in
-      print("RESOLVE \(id)")
-      return ._resolve(id, size: .zero)
     }
-    parent.renderer(&graphicsContext, size)
-    if inAnimatingTimelineView {
-      _ = JSObject.global.requestAnimationFrame!(JSOneshotClosure { _ in
-        draw()
-        return .undefined
-      })
+  }
+
+  private func resolveSymbol(
+    _ symbol: AnyView,
+    _ environment: EnvironmentValues
+  ) -> GraphicsContext.ResolvedSymbol {
+    let id = "_resolvable_symbol_body_\(UUID().uuidString)"
+    let divWrapped = HTML(
+      "div",
+      ["xmlns": "http://www.w3.org/1999/xhtml", "id": id, "style": "display: inline-block;"]
+    ) {
+      symbol
+        .environmentValues(environment)
     }
+    let innerHTML = StaticHTMLRenderer(divWrapped, environment).render()
+    // Add the element to the document to read its size.
+    let unhostedElement = document.createElement!("div").object!
+    unhostedElement.innerHTML = JSValue.string(innerHTML)
+    _ = document.body.appendChild(unhostedElement)
+    let bounds = document.getElementById!(id).object!.getBoundingClientRect!().object!
+    let size = CGSize(width: bounds.width.number!, height: bounds.height.number!)
+    // Remove it from the document.
+    _ = unhostedElement.parentNode.removeChild(unhostedElement)
+
+    // Render the element with the StaticHTMLRenderer, wrapping it in an SVG tag.
+    return ._resolve(
+      StaticHTMLRenderer(
+        HTML(
+          "svg",
+          [
+            "xmlns": "http://www.w3.org/2000/svg",
+            "width": "\(size.width)",
+            "height": "\(size.height)",
+          ]
+        ) {
+          HTML("foreignObject", ["width": "100%", "height": "100%"]) {
+            divWrapped
+          }
+        },
+        environment
+      )
+      .renderRoot(),
+      size: size
+    )
   }
 
   private func applyFilter(_ filter: GraphicsContext.Filter, to canvasContext: JSObject) {

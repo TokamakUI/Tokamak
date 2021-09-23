@@ -64,7 +64,6 @@ private struct _TimelineView<Content: View, Schedule: TimelineSchedule>: View {
       else { return }
       timeoutID = JSObject.global.setTimeout!(
         JSOneshotClosure { [weak self] _ in
-          print("Timeline updated")
           self?.date = next
           self?.queueNext()
           return .undefined

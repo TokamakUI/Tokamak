@@ -132,6 +132,9 @@ public typealias EveryMinuteTimelineSchedule = TokamakCore.EveryMinuteTimelineSc
 public typealias ExplicitTimelineSchedule = TokamakCore.ExplicitTimelineSchedule
 public typealias PeriodicTimelineSchedule = TokamakCore.PeriodicTimelineSchedule
 
+public typealias HorizontalAlignment = TokamakCore.HorizontalAlignment
+public typealias VerticalAlignment = TokamakCore.VerticalAlignment
+
 // MARK: Views
 
 public typealias Alignment = TokamakCore.Alignment

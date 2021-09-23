@@ -142,7 +142,7 @@
 		D1316F1F2500352200224A67 /* StackDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackDemo.swift; sourceTree = "<group>"; };
 		D1B4228E24B3B9BB00682F74 /* ListDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDemo.swift; sourceTree = "<group>"; };
 		D1B4228F24B3B9BB00682F74 /* OutlineGroupDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutlineGroupDemo.swift; sourceTree = "<group>"; };
-		D1C726F224CB63C6003B576D /* ButtonStyleDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStyleDemo.swift; sourceTree = "<group>"; };
+		D1C726F224CB63C6003B576D /* ButtonStyleDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = ButtonStyleDemo.swift; sourceTree = "<group>"; tabWidth = 2; };
 		D1D6B62224D817350041E1D9 /* GeometryReaderDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeometryReaderDemo.swift; sourceTree = "<group>"; };
 		D1E5FDA424C1D54B00E7485E /* libTokamakShim.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTokamakShim.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1E5FDAC24C1D57000E7485E /* TokamakShim.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokamakShim.swift; sourceTree = "<group>"; };
