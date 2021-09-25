@@ -22,6 +22,7 @@ import TokamakStaticHTML
 
 extension _Canvas {
   func resolveSymbol(
+    _ symbolID: AnyHashable,
     _ symbol: AnyView,
     _ environment: EnvironmentValues
   ) -> GraphicsContext.ResolvedSymbol {
@@ -59,8 +60,8 @@ extension _Canvas {
           }
         },
         environment
-      )
-      .renderRoot(),
+      ).renderRoot(),
+      id: symbolID,
       size: size
     )
   }
@@ -70,17 +71,7 @@ extension _Canvas {
     at positioning: GraphicsContext._Storage._Operation._ResolvedPositioning,
     in canvasContext: JSObject
   ) {
-    // Create an SVG element containing the View's rendered HTML.
-    // This was resolved to SVG earlier.
-    let img = JSObject.global.Image.function!.new()
-    let svgData = JSObject.global.Blob.function!.new(
-      [symbol._resolved as? String ?? ""],
-      ["type": "image/svg+xml;charset=utf-8"]
-    )
-    // Create a URL to the SVG data.
-    let objectURL = JSObject.global.URL.function!.createObjectURL!(svgData)
-
-    img.onload = .object(JSOneshotClosure { _ in
+    func draw(_ img: JSObject) {
       // Draw the SVG on the canvas.
       switch positioning {
       case let .in(rect):
@@ -93,13 +84,32 @@ extension _Canvas {
         _ = canvasContext.drawImage!(
           img,
           Double(point.x - (anchor.x * symbol.size.width)),
-          Double(point.y - (anchor.y * symbol.size.width))
+          Double(point.y - (anchor.y * symbol.size.height))
         )
       }
-      _ = JSObject.global.URL.function!.revokeObjectURL!(objectURL)
-      return .undefined
-    })
+//      _ = JSObject.global.URL.function!.revokeObjectURL!(objectURL)
+    }
 
-    img.src = objectURL
+    if let cached = cachedSymbol(id: symbol._id) {
+      draw(cached)
+    } else {
+      // Create an SVG element containing the View's rendered HTML.
+      // This was resolved to SVG earlier.
+      let img = JSObject.global.Image.function!.new()
+      let svgData = JSObject.global.Blob.function!.new(
+        [symbol._resolved as? String ?? ""],
+        ["type": "image/svg+xml;charset=utf-8"]
+      )
+      // Create a URL to the SVG data.
+      let objectURL = JSObject.global.URL.function!.createObjectURL!(svgData)
+
+      img.onload = .object(JSOneshotClosure { _ in
+        draw(img)
+        return .undefined
+      })
+
+      img.src = objectURL
+      cacheSymbol(id: symbol._id, img)
+    }
   }
 }

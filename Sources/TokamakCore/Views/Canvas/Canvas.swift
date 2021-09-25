@@ -29,7 +29,8 @@ public struct Canvas<Symbols> where Symbols: View {
     onOperation: @escaping (GraphicsContext._Storage, GraphicsContext._Storage._Operation) -> (),
     imageResolver: @escaping (Image, EnvironmentValues) -> GraphicsContext.ResolvedImage,
     textResolver: @escaping (Text, EnvironmentValues) -> GraphicsContext.ResolvedText,
-    symbolResolver: @escaping (AnyView, EnvironmentValues) -> GraphicsContext.ResolvedSymbol
+    symbolResolver: @escaping (AnyHashable, AnyView, EnvironmentValues) -> GraphicsContext
+      .ResolvedSymbol
   ) -> GraphicsContext {
     .init(_storage: .init(
       in: _environment,

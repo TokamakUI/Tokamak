@@ -26,6 +26,11 @@ public class _AnyImageProviderBox: AnyTokenBox, Equatable {
 
     public let storage: Storage
     public let label: Text?
+
+    public init(storage: Storage, label: Text?) {
+      self.storage = storage
+      self.label = label
+    }
   }
 
   public static func == (lhs: _AnyImageProviderBox, rhs: _AnyImageProviderBox) -> Bool {

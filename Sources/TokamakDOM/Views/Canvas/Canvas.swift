@@ -36,6 +36,18 @@ struct _Canvas<Symbols: View>: View {
   final class Coordinator: ObservableObject {
     @Published var canvas: JSObject?
     var currentDrawLoop: UUID?
+
+    /// A cache of resolved symbols by their tag.
+    /// This allows symbols to be used in an animated canvas.
+    var symbolCache: [AnyHashable: JSObject] = [:]
+  }
+
+  func cacheSymbol(id: AnyHashable, _ img: JSObject) {
+    coordinator.symbolCache[id] = img
+  }
+
+  func cachedSymbol(id: AnyHashable) -> JSObject? {
+    coordinator.symbolCache[id]
   }
 
   var body: some View {
@@ -112,8 +124,8 @@ struct _Canvas<Symbols: View>: View {
       fillPath(path, with: shading, style: fillStyle, in: canvasContext)
     case let .stroke(path, shading, strokeStyle):
       strokePath(path, with: shading, style: strokeStyle, in: canvasContext)
-    case .drawImage:
-      break
+    case let .drawImage(image, positioning, style):
+      drawImage(image, at: positioning, with: style, in: canvasContext)
     case let .drawText(text, positioning):
       drawText(text, at: positioning, in: canvasContext)
     case let .drawSymbol(symbol, positioning):
@@ -233,13 +245,7 @@ extension _ResolvedStyle {
   ) -> JSValue {
     switch self {
     case let .color(color):
-      return .string(AnyColorBox.ResolvedValue(
-        red: color.red,
-        green: color.green,
-        blue: color.blue,
-        opacity: color.opacity * Double(opacity),
-        space: color.space
-      ).cssValue)
+      return .string(color.opacity(color.opacity * Double(opacity)).cssValue)
     case .foregroundMaterial:
       break
     case let .array(palette):
@@ -291,6 +297,18 @@ extension _ResolvedStyle {
       return .object(canvasGradient)
     }
     return .string("")
+  }
+}
+
+extension AnyColorBox.ResolvedValue {
+  func opacity(_ opacity: Double) -> Self {
+    .init(
+      red: red,
+      green: green,
+      blue: blue,
+      opacity: opacity,
+      space: space
+    )
   }
 }
 

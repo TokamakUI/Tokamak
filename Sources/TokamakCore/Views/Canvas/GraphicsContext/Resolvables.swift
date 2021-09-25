@@ -19,19 +19,19 @@ import Foundation
 
 public extension GraphicsContext {
   struct ResolvedImage {
-    public let _image: Image
+    public let _resolved: _AnyImageProviderBox.ResolvedValue
 
     public let size: CGSize
     public let baseline: CGFloat
     public var shading: Shading?
 
     public static func _resolved(
-      _ image: Image,
+      _ resolved: _AnyImageProviderBox.ResolvedValue,
       size: CGSize,
       baseline: CGFloat,
       shading: Shading? = nil
     ) -> Self {
-      self.init(_image: image, size: size, baseline: baseline, shading: shading)
+      self.init(_resolved: resolved, size: size, baseline: baseline, shading: shading)
     }
   }
 
@@ -117,16 +117,18 @@ public extension GraphicsContext {
   struct ResolvedSymbol {
     /// The renderer-specific resolved `View` data.
     public let _resolved: Any
+    public let _id: AnyHashable
     public let size: CGSize
 
-    public static func _resolve(_ resolved: Any, size: CGSize) -> Self {
-      .init(_resolved: resolved, size: size)
+    public static func _resolve(_ resolved: Any, id: AnyHashable, size: CGSize) -> Self {
+      .init(_resolved: resolved, _id: id, size: size)
     }
   }
 
   /// Resolves a symbol marked with the tag `id`.
   func resolveSymbol<ID>(id: ID) -> ResolvedSymbol? where ID: Hashable {
     _storage.symbolResolver(
+      AnyHashable(id),
       AnyView(
         _VariadicView.Tree(SymbolResolverLayout(id: id)) {
           _storage.symbols

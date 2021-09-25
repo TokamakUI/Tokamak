@@ -29,7 +29,7 @@ public struct GraphicsContext {
     public var imageResolver: (Image, EnvironmentValues) -> ResolvedImage
     public var textResolver: (Text, EnvironmentValues) -> ResolvedText
     let symbols: AnyView
-    public var symbolResolver: (AnyView, EnvironmentValues) -> ResolvedSymbol
+    public var symbolResolver: (AnyHashable, AnyView, EnvironmentValues) -> ResolvedSymbol
 
     init(
       in environment: EnvironmentValues,
@@ -37,7 +37,7 @@ public struct GraphicsContext {
       imageResolver: @escaping (Image, EnvironmentValues) -> ResolvedImage,
       textResolver: @escaping (Text, EnvironmentValues) -> ResolvedText,
       symbols: AnyView,
-      symbolResolver: @escaping (AnyView, EnvironmentValues) -> ResolvedSymbol
+      symbolResolver: @escaping (AnyHashable, AnyView, EnvironmentValues) -> ResolvedSymbol
     ) {
       opacity = 1
       blendMode = .normal
