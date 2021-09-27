@@ -166,7 +166,7 @@ public extension TimelineSchedule where Self == AnimationTimelineSchedule {
 
 public struct AnimationTimelineSchedule: TimelineSchedule {
   private let minimumInterval: Double?
-  private let paused: Bool
+  public let _paused: Bool
 
   public struct Entries: Sequence, IteratorProtocol {
     var date: Date
@@ -185,10 +185,10 @@ public struct AnimationTimelineSchedule: TimelineSchedule {
 
   public init(minimumInterval: Double? = nil, paused: Bool = false) {
     self.minimumInterval = minimumInterval
-    self.paused = paused
+    _paused = paused
   }
 
   public func entries(from startDate: Date, mode: TimelineScheduleMode) -> Entries {
-    Entries(date: startDate, minimumInterval: minimumInterval, paused: paused)
+    Entries(date: startDate, minimumInterval: minimumInterval, paused: _paused)
   }
 }

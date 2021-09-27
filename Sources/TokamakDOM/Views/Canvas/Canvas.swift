@@ -26,12 +26,19 @@ extension Canvas: DOMPrimitive {
   }
 }
 
+extension Canvas: SpacerContainer {
+  public var hasSpacer: Bool { true }
+  public var axis: SpacerContainerAxis { .vertical }
+  public var fillCrossAxis: Bool { true }
+}
+
 private let devicePixelRatio = JSObject.global.devicePixelRatio.number ?? 1
 
 struct _Canvas<Symbols: View>: View {
   let parent: Canvas<Symbols>
   @StateObject private var coordinator = Coordinator()
   @Environment(\.inAnimatingTimelineView) private var inAnimatingTimelineView
+  @Environment(\.isAnimatingTimelineViewPaused) private var isAnimatingTimelineViewPaused
 
   final class Coordinator: ObservableObject {
     @Published var canvas: JSObject?
@@ -93,7 +100,7 @@ struct _Canvas<Symbols: View>: View {
     )
     // Render into the context.
     parent.renderer(&graphicsContext, size)
-    if inAnimatingTimelineView {
+    if inAnimatingTimelineView && !isAnimatingTimelineViewPaused {
       coordinator.currentDrawLoop = JSObject.global.requestAnimationFrame!(JSOneshotClosure { _ in
         draw(in: size)
         return .undefined

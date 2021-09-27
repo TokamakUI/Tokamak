@@ -20,7 +20,7 @@ import JavaScriptKit
 import TokamakCore
 
 extension EnvironmentValues {
-  enum InAnimatingTimelineViewKey: EnvironmentKey {
+  private enum InAnimatingTimelineViewKey: EnvironmentKey {
     static let defaultValue: Bool = false
   }
 
@@ -28,12 +28,22 @@ extension EnvironmentValues {
     get { self[InAnimatingTimelineViewKey.self] }
     set { self[InAnimatingTimelineViewKey.self] = newValue }
   }
+
+  private enum IsAnimatingTimelineViewPausedKey: EnvironmentKey {
+    static let defaultValue: Bool = false
+  }
+
+  var isAnimatingTimelineViewPaused: Bool {
+    get { self[IsAnimatingTimelineViewPausedKey.self] }
+    set { self[IsAnimatingTimelineViewPausedKey.self] = newValue }
+  }
 }
 
 private struct _TimelineView<Content: View, Schedule: TimelineSchedule>: View {
   let parent: _TimelineViewProxy<Schedule, Content>
   @StateObject private var coordinator: Coordinator
   @Environment(\.inAnimatingTimelineView) private var inAnimatingTimelineView
+  @Environment(\.isAnimatingTimelineViewPaused) private var isAnimatingTimelineViewPaused
 
   init(parent: TimelineView<Schedule, Content>) {
     self.parent = _TimelineViewProxy(parent)
@@ -58,7 +68,7 @@ private struct _TimelineView<Content: View, Schedule: TimelineSchedule>: View {
     func queueNext() {
       // Animated timelines are handled differently on the web, as updating the DOM every frame
       // is costly. Therefore, animated timelines are only supported by views that read the
-      // `inAnimatedTimelineView` environment value, such as `Canvas`, which updates without
+      // `inAnimatingTimelineView` environment value, such as `Canvas`, which updates without
       // DOM manipulation.
       guard !(Schedule.self == AnimationTimelineSchedule.self),
             let next = iterator.next()
@@ -94,6 +104,11 @@ private struct _TimelineView<Content: View, Schedule: TimelineSchedule>: View {
     .environment(
       \.inAnimatingTimelineView,
       inAnimatingTimelineView || (parent.schedule is AnimationTimelineSchedule)
+    )
+    .environment(
+      \.isAnimatingTimelineViewPaused,
+      ((parent.schedule as? AnimationTimelineSchedule)?._paused ?? false) &&
+        (!inAnimatingTimelineView || isAnimatingTimelineViewPaused)
     )
   }
 }
