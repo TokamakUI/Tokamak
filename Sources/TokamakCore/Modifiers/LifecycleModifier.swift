@@ -19,6 +19,7 @@ public extension View {
     modifier(_AppearanceActionModifier(appear: action))
   }
 
+  @_spi(TokamakCore)
   func _onUpdate(perform action: (() -> ())? = nil) -> some View {
     modifier(_LifecycleActionModifier(update: action))
   }

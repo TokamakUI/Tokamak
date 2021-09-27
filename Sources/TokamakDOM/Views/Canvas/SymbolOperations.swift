@@ -87,7 +87,6 @@ extension _Canvas {
           Double(point.y - (anchor.y * symbol.size.height))
         )
       }
-//      _ = JSObject.global.URL.function!.revokeObjectURL!(objectURL)
     }
 
     if let cached = cachedSymbol(id: symbol._id) {

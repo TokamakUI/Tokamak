@@ -66,7 +66,7 @@ struct Confetti: View {
         let elapsed = CGFloat(
           timeline.date.timeIntervalSince1970 - startDate
             .timeIntervalSince1970
-        ) * 10
+        ).truncatingRemainder(dividingBy: 4) * 10
         let sqElapsed = elapsed * elapsed
 
         for piece in pieces {

@@ -96,8 +96,8 @@ public struct PeriodicTimelineSchedule: TimelineSchedule {
   private let entries: Entries
 
   public struct Entries: Sequence, IteratorProtocol {
-    internal var date: Date
-    internal let interval: TimeInterval
+    var date: Date
+    let interval: TimeInterval
 
     public mutating func next() -> Date? {
       defer { date.addTimeInterval(interval) }
@@ -119,7 +119,7 @@ public struct PeriodicTimelineSchedule: TimelineSchedule {
 
 public struct EveryMinuteTimelineSchedule: TimelineSchedule {
   public struct Entries: Sequence, IteratorProtocol {
-    internal var date: Date
+    var date: Date
 
     public mutating func next() -> Date? {
       defer { date.addTimeInterval(60) }
@@ -165,8 +165,23 @@ public extension TimelineSchedule where Self == AnimationTimelineSchedule {
 }
 
 public struct AnimationTimelineSchedule: TimelineSchedule {
-  let minimumInterval: Double?
-  let paused: Bool
+  private let minimumInterval: Double?
+  private let paused: Bool
+
+  public struct Entries: Sequence, IteratorProtocol {
+    var date: Date
+    let minimumInterval: Double?
+    let paused: Bool
+
+    public mutating func next() -> Date? {
+      guard !paused else { return nil }
+      defer { date.addTimeInterval(minimumInterval ?? (1 / 60)) }
+      return date
+    }
+
+    public typealias Element = Date
+    public typealias Iterator = Self
+  }
 
   public init(minimumInterval: Double? = nil, paused: Bool = false) {
     self.minimumInterval = minimumInterval
@@ -174,23 +189,6 @@ public struct AnimationTimelineSchedule: TimelineSchedule {
   }
 
   public func entries(from startDate: Date, mode: TimelineScheduleMode) -> Entries {
-    Entries(startDate: startDate, minimumInterval: minimumInterval, paused: paused)
-  }
-
-  public struct Entries: Sequence, IteratorProtocol {
-    internal let startDate: Date
-    internal let minimumInterval: Double?
-    internal let paused: Bool
-
-    public mutating func next() -> Date? {
-      guard !paused else { return nil }
-      guard let minimumInterval = minimumInterval else {
-        return .init()
-      }
-      return startDate.addingTimeInterval(minimumInterval)
-    }
-
-    public typealias Element = Date
-    public typealias Iterator = Self
+    Entries(date: startDate, minimumInterval: minimumInterval, paused: paused)
   }
 }

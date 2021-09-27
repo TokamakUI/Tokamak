@@ -131,7 +131,11 @@ extension _Canvas {
     canvas
       .font =
       .string(
-        "\(style) \(variant) \(weight) \(size ?? "17")pt \(lineHeight) \(family ?? Font.Design.default.families.joined(separator: " "))"
+        """
+        \(style) \(variant) \(weight) \(size ?? "17")pt \(lineHeight) \(
+          family ?? Font.Design.default.families.joined(separator: ", ")
+        )
+        """
       )
   }
 }

@@ -33,7 +33,8 @@ extension _Canvas {
     _ image: Image,
     _ environment: EnvironmentValues
   ) -> GraphicsContext.ResolvedImage {
-    // FIXME: We don't have a way of calculating the size, since we need to wait for the image to load.
+    // FIXME: We don't have a way of calculating the size, since we need to wait for the image
+    // to load.
     ._resolved(_ImageProxy(image).provider.resolve(in: environment), size: .zero, baseline: 0)
   }
 

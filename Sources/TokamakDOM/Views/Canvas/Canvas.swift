@@ -17,7 +17,7 @@
 
 import Foundation
 import JavaScriptKit
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 import TokamakStaticHTML
 
 extension Canvas: DOMPrimitive {
@@ -35,7 +35,7 @@ struct _Canvas<Symbols: View>: View {
 
   final class Coordinator: ObservableObject {
     @Published var canvas: JSObject?
-    var currentDrawLoop: UUID?
+    var currentDrawLoop: JSValue?
 
     /// A cache of resolved symbols by their tag.
     /// This allows symbols to be used in an animated canvas.
@@ -57,15 +57,17 @@ struct _Canvas<Symbols: View>: View {
       ])
         ._domRef($coordinator.canvas)
         .onAppear { draw(in: proxy.size) }
-        ._onUpdate { draw(in: proxy.size) }
+        ._onUpdate {
+          // Cancel the previous animation loop.
+          if let currentDrawLoop = coordinator.currentDrawLoop {
+            _ = JSObject.global.cancelAnimationFrame!(currentDrawLoop)
+          }
+          draw(in: proxy.size)
+        }
     }
   }
 
   private func draw(in size: CGSize) {
-    // Tag the current draw call with an ID so we can replace it
-    // when animating if the canvas size changes.
-    let drawCallID = UUID()
-    coordinator.currentDrawLoop = drawCallID
     guard let canvas = coordinator.canvas,
           let canvasContext = canvas.getContext!("2d").object
     else { return }
@@ -92,8 +94,7 @@ struct _Canvas<Symbols: View>: View {
     // Render into the context.
     parent.renderer(&graphicsContext, size)
     if inAnimatingTimelineView {
-      _ = JSObject.global.requestAnimationFrame!(JSOneshotClosure { [weak coordinator] _ in
-        guard coordinator?.currentDrawLoop == drawCallID else { return .undefined }
+      coordinator.currentDrawLoop = JSObject.global.requestAnimationFrame!(JSOneshotClosure { _ in
         draw(in: size)
         return .undefined
       })

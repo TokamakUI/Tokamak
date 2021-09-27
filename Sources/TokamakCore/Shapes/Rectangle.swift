@@ -39,8 +39,8 @@ extension Rectangle: InsettableShape {
         storage: .rect(CGRect(
           origin: rect.origin,
           size: CGSize(
-            width: rect.size.width - (amount / 2),
-            height: rect.size.height - (amount / 2)
+            width: max(0, rect.size.width - (amount / 2)),
+            height: max(0, rect.size.height - (amount / 2))
           )
         )),
         sizing: .flexible
@@ -105,8 +105,8 @@ extension RoundedRectangle: InsettableShape {
           rect: CGRect(
             origin: rect.origin,
             size: CGSize(
-              width: rect.size.width - (amount / 2),
-              height: rect.size.height - (amount / 2)
+              width: max(0, rect.size.width - (amount / 2)),
+              height: max(0, rect.size.height - (amount / 2))
             )
           ),
           cornerSize: CGSize(
