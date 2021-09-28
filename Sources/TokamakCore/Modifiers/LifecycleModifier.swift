@@ -20,7 +20,28 @@ public extension View {
   }
 
   @_spi(TokamakCore)
+  func _onUpdate(perform action: (() -> ())? = nil) -> some View {
+    modifier(_LifecycleActionModifier(update: action))
+  }
+
+  @_spi(TokamakCore)
   func _onUnmount(perform action: (() -> ())? = nil) -> some View {
     modifier(_AppearanceActionModifier(disappear: action))
   }
+}
+
+protocol LifecycleActionType {
+  var update: (() -> ())? { get }
+}
+
+struct _LifecycleActionModifier: ViewModifier {
+  var update: (() -> ())?
+
+  typealias Body = Never
+}
+
+extension ModifiedContent: LifecycleActionType
+  where Content: View, Modifier == _LifecycleActionModifier
+{
+  var update: (() -> ())? { modifier.update }
 }

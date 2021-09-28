@@ -27,7 +27,18 @@ public struct Ellipse: Shape {
 
 public struct Circle: Shape {
   public func path(in rect: CGRect) -> Path {
-    .init(storage: .ellipse(rect), sizing: .flexible)
+    .init(
+      storage: .ellipse(
+        .init(
+          // Center the circle in the rect.
+          x: rect.origin.x + (rect.width > rect.height ? (rect.width - rect.height) / 2 : 0),
+          y: rect.origin.y + (rect.height > rect.width ? (rect.height - rect.width) / 2 : 0),
+          width: min(rect.width, rect.height),
+          height: min(rect.width, rect.height)
+        )
+      ),
+      sizing: .flexible
+    )
   }
 
   public init() {}

@@ -105,6 +105,16 @@ struct TokamakDemoView: View {
               NavItem(unavailable: "OutlineGroup")
             }
           }
+          Section(header: Text("Drawing")) {
+            if #available(macOS 12.0, iOS 15.0, *) {
+              NavItem("Canvas", destination: CanvasDemo())
+            }
+            NavItem("Color", destination: ColorDemo())
+            NavItem("Path", destination: PathDemo())
+            if #available(macOS 12.0, iOS 15.0, *) {
+              NavItem("Shape Styles", destination: ShapeStyleDemo())
+            }
+          }
           Section(header: Text("Layout")) {
             NavItem("HStack/VStack", destination: StackDemo())
             if #available(OSX 10.16, iOS 14.0, *) {
@@ -138,15 +148,10 @@ struct TokamakDemoView: View {
           Section(header: Text("Misc")) {
             NavItem("Animation", destination: AnimationDemo())
             NavItem("Transitions", destination: TransitionDemo())
-            NavItem("Path", destination: PathDemo())
             NavItem("ProgressView", destination: ProgressViewDemo())
             NavItem("Environment", destination: EnvironmentDemo().font(.system(size: 8)))
             if #available(macOS 11.0, iOS 14.0, *) {
               NavItem("Preferences", destination: PreferenceKeyDemo())
-            }
-            NavItem("Color", destination: ColorDemo())
-            if #available(macOS 12.0, iOS 15.0, *) {
-              NavItem("Shape Styles", destination: ShapeStyleDemo())
             }
             if #available(OSX 11.0, iOS 14.0, *) {
               NavItem("AppStorage", destination: AppStorageDemo())

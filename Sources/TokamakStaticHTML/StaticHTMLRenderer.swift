@@ -79,6 +79,11 @@ public final class StaticHTMLRenderer: Renderer {
     """
   }
 
+  /// Renders only the root child of the top level `<body>` tag.
+  public func renderRoot(shouldSortAttributes: Bool = false) -> String {
+    rootTarget.children.first?.outerHTML(shouldSortAttributes: shouldSortAttributes) ?? ""
+  }
+
   public init<V: View>(_ view: V, _ rootEnvironment: EnvironmentValues? = nil) {
     rootTarget = HTMLTarget(view, HTMLBody())
 

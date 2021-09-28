@@ -123,10 +123,23 @@ public typealias Edge = TokamakCore.Edge
 
 public typealias Prominence = TokamakCore.Prominence
 
+public typealias GraphicsContext = TokamakCore.GraphicsContext
+
+public typealias TimelineSchedule = TokamakCore.TimelineSchedule
+public typealias TimelineScheduleMode = TokamakCore.TimelineScheduleMode
+public typealias AnimationTimelineSchedule = TokamakCore.AnimationTimelineSchedule
+public typealias EveryMinuteTimelineSchedule = TokamakCore.EveryMinuteTimelineSchedule
+public typealias ExplicitTimelineSchedule = TokamakCore.ExplicitTimelineSchedule
+public typealias PeriodicTimelineSchedule = TokamakCore.PeriodicTimelineSchedule
+
+public typealias HorizontalAlignment = TokamakCore.HorizontalAlignment
+public typealias VerticalAlignment = TokamakCore.VerticalAlignment
+
 // MARK: Views
 
 public typealias Alignment = TokamakCore.Alignment
 public typealias Button = TokamakCore.Button
+public typealias Canvas = TokamakCore.Canvas
 public typealias ControlGroup = TokamakCore.ControlGroup
 public typealias ControlSize = TokamakCore.ControlSize
 public typealias DatePicker = TokamakCore.DatePicker
@@ -155,6 +168,7 @@ public typealias Spacer = TokamakCore.Spacer
 public typealias Text = TokamakCore.Text
 public typealias TextEditor = TokamakCore.TextEditor
 public typealias TextField = TokamakCore.TextField
+public typealias TimelineView = TokamakCore.TimelineView
 public typealias Toggle = TokamakCore.Toggle
 public typealias VStack = TokamakCore.VStack
 public typealias ZStack = TokamakCore.ZStack

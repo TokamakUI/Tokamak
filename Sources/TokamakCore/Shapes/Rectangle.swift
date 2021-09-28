@@ -39,8 +39,8 @@ extension Rectangle: InsettableShape {
         storage: .rect(CGRect(
           origin: rect.origin,
           size: CGSize(
-            width: rect.size.width - (amount / 2),
-            height: rect.size.height - (amount / 2)
+            width: max(0, rect.size.width - (amount / 2)),
+            height: max(0, rect.size.height - (amount / 2))
           )
         )),
         sizing: .flexible
@@ -78,5 +78,52 @@ public struct RoundedRectangle: Shape {
       )),
       sizing: .flexible
     )
+  }
+}
+
+extension RoundedRectangle: InsettableShape {
+  @inlinable
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    _Inset(base: self, amount: amount)
+  }
+
+  @usableFromInline
+  struct _Inset: InsettableShape {
+    @usableFromInline var base: RoundedRectangle
+    @usableFromInline var amount: CGFloat
+
+    @inlinable
+    init(base: RoundedRectangle, amount: CGFloat) {
+      self.base = base
+      self.amount = amount
+    }
+
+    @usableFromInline
+    func path(in rect: CGRect) -> Path {
+      .init(
+        storage: .roundedRect(.init(
+          rect: CGRect(
+            origin: rect.origin,
+            size: CGSize(
+              width: max(0, rect.size.width - (amount / 2)),
+              height: max(0, rect.size.height - (amount / 2))
+            )
+          ),
+          cornerSize: CGSize(
+            width: max(0, base.cornerSize.width - (amount / 2)),
+            height: max(0, base.cornerSize.height - (amount / 2))
+          ),
+          style: base.style
+        )),
+        sizing: .flexible
+      )
+    }
+
+    @usableFromInline
+    func inset(by amount: CGFloat) -> Self {
+      var copy = self
+      copy.amount += amount
+      return copy
+    }
   }
 }

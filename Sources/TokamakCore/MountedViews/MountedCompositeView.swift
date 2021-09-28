@@ -33,6 +33,8 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     transaction.disablesAnimations = true
     self.transaction = transaction
 
+    updateVariadicView()
+
     let childBody = reconciler.render(compositeView: self)
 
     if let traitModifier = view.view as? _TraitWritingModifierProtocol {
@@ -114,6 +116,7 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
     var transaction = transaction
     transaction.disablesAnimations = false
     (view.view as? _TransactionModifierProtocol)?.modifyTransaction(&transaction)
+    updateVariadicView()
     let element = reconciler.render(compositeView: self)
     reconciler.reconcile(
       self,
@@ -135,5 +138,47 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
         )
       }
     )
+
+    if let lifecycleActions = view.view as? LifecycleActionType {
+      lifecycleActions.update?()
+    }
+  }
+
+  private func updateVariadicView() {
+    if var tree = view.view as? _VariadicView_AnyTree {
+      let elements = ((tree.anyContent.view as? GroupView)?.recursiveChildren ?? [tree.anyContent])
+        .enumerated()
+        .map { (pair: EnumeratedSequence<[AnyView]>.Element) -> _VariadicView_Children.Element in
+          var viewTraits = _ViewTraitStore(values: [:])
+          if let traitModifier = pair.element.view as? _TraitWritingModifierProtocol {
+            traitModifier.modifyViewTraitStore(&viewTraits)
+          }
+          return _VariadicView_Children.Element(
+            view: pair.element,
+            id: AnyHashable(pair.offset),
+            // TODO: Retrieve the ID from the `IDView`. Maybe this should use traits too.
+            viewTraits: viewTraits,
+            onTraitsUpdated: { _ in }
+          )
+        }
+      tree.children = _VariadicView_Children(elements: elements)
+      view.view = tree
+    }
+  }
+}
+
+private extension GroupView {
+  var recursiveChildren: [AnyView] {
+    var allChildren = [AnyView]()
+    for child in children {
+      if !(child.view is ModifiedContentProtocol),
+         let group = child.view as? GroupView
+      {
+        allChildren.append(contentsOf: group.recursiveChildren)
+      } else {
+        allChildren.append(child)
+      }
+    }
+    return allChildren
   }
 }

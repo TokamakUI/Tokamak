@@ -169,6 +169,21 @@ public extension View {
     modifier(_OverlayModifier(overlay: overlay, alignment: alignment))
   }
 
+  @inlinable
+  func overlay<V>(
+    alignment: Alignment = .center,
+    @ViewBuilder content: () -> V
+  ) -> some View where V: View {
+    modifier(_OverlayModifier(overlay: content(), alignment: alignment))
+  }
+
+  @inlinable
+  func overlay<S>(
+    _ style: S
+  ) -> some View where S: ShapeStyle {
+    overlay(Rectangle().fill(style))
+  }
+
   func border<S>(_ content: S, width: CGFloat = 1) -> some View where S: ShapeStyle {
     overlay(Rectangle().strokeBorder(content, lineWidth: width))
   }
