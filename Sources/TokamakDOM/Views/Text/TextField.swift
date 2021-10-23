@@ -46,7 +46,10 @@ extension TextField: DOMPrimitive where Label == Text {
       "type": proxy.textFieldStyle is RoundedBorderTextFieldStyle ? "search" : "text",
       .value: proxy.textBinding.wrappedValue,
       "placeholder": _TextProxy(proxy.label).rawText,
-      "style": css(for: proxy.textFieldStyle),
+      "style": """
+      \(css(for: proxy.textFieldStyle)) \
+      \(proxy.foregroundColor.map { "color: \($0.cssValue);" } ?? "")
+      """,
       "class": className(for: proxy.textFieldStyle),
     ], listeners: [
       "focus": { _ in proxy.onEditingChanged(true) },
