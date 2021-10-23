@@ -73,7 +73,7 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo xcode-select --switch /Applications/Xcode_12.5.app/Contents/Developer/
+          sudo xcode-select --switch /Applications/Xcode_13.0.app/Contents/Developer/
 
           brew install gtk+3
 
