@@ -113,7 +113,7 @@ app.
 
 ## Requirements for app developers
 
-- macOS 11 and Xcode 13.
+- macOS 11 and Xcode 13.0. *Xcode 13.1 is currently not supported.*
 - [Swift 5.4 or later](https://swift.org/download/) and Ubuntu 18.04 if you'd like to use Linux.
   Other Linux distributions are currently not supported.
 
