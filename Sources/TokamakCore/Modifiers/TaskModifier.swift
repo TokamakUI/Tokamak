@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if compiler(>=5.5)
+#if canImport(Concurrency)
 
-@available(macOS 12.0, *)
 public extension View {
   func task(
     priority: TaskPriority = .userInitiated,
