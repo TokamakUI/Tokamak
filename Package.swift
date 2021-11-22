@@ -76,7 +76,7 @@ let package = Package(
     // .package(url: /* package url */, from: "1.0.0"),
     .package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
-      .upToNextMinor(from: "0.11.0")
+      .upToNextMinor(from: "0.11.1")
     ),
     .package(
       url: "https://github.com/OpenCombine/OpenCombine.git",
