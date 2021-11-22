@@ -133,7 +133,7 @@ struct TokamakDemoView: View {
           }
           Section(header: Text("Modifiers")) {
             NavItem("Shadow", destination: ShadowDemo())
-            #if os(WASI) && compiler(>=5.5)
+            #if os(WASI) && swift(>=5.5)
             NavItem("Task", destination: TaskDemo())
             #endif
           }
