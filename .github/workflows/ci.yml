@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo xcode-select --switch /Applications/Xcode_13.0.app/Contents/Developer/
+          sudo xcode-select --switch /Applications/Xcode_13.2.app/Contents/Developer/
           # avoid building unrelated products for testing by specifying the test product explicitly
           swift build --product TokamakPackageTests
           `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest ||
@@ -73,7 +73,7 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo xcode-select --switch /Applications/Xcode_13.0.app/Contents/Developer/
+          sudo xcode-select --switch /Applications/Xcode_13.2.app/Contents/Developer/
 
           brew install gtk+3
 
