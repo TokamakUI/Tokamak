@@ -19,7 +19,7 @@ var tokamakDOMDependencies: [Target.Dependency] = [
   "OpenCombineJS",
 ]
 
-#if canImport(Concurrency)
+#if compiler(>=5.5) && canImport(Concurrency)
 tokamakDOMDependencies.append(
   .product(
     name: "JavaScriptEventLoop",
