@@ -14,6 +14,7 @@
 
 #if compiler(>=5.5)
 
+@available(macOS 12.0, *)
 public extension View {
   func task(
     priority: TaskPriority = .userInitiated,
