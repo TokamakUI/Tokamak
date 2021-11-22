@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if swift(>=5.5)
+#if compiler(>=5.5)
 
 public extension View {
   func task(
