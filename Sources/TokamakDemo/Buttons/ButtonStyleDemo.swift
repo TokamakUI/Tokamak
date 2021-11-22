@@ -75,9 +75,9 @@ public struct ButtonStyleDemo: View {
           Text("Label").padding(.leading, 5)
         }
       })
-        .buttonStyle(
-          PressedButtonStyle(pressedColor: Color.red)
-        )
+      .buttonStyle(
+        PressedButtonStyle(pressedColor: Color.red)
+      )
       if #available(iOS 15.0, macOS 12.0, *) {
         Button("Prominent") {}
           .buttonStyle(BorderedProminentButtonStyle())

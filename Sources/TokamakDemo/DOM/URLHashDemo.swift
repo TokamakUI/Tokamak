@@ -36,7 +36,9 @@ private final class HashState: ObservableObject {
 
   deinit {
     window.onhashchange = .undefined
+    #if JAVASCRIPTKIT_WITHOUT_WEAKREFS
     onHashChange.release()
+    #endif
   }
 }
 

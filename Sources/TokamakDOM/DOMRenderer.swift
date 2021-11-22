@@ -20,6 +20,10 @@ import OpenCombineJS
 @_spi(TokamakCore) import TokamakCore
 import TokamakStaticHTML
 
+#if compiler(>=5.5)
+import JavaScriptEventLoop
+#endif
+
 public typealias Sanitizers = TokamakStaticHTML.Sanitizers
 
 extension EnvironmentValues {
@@ -86,6 +90,10 @@ final class DOMRenderer: Renderer {
   init<A: App>(_ app: A, _ ref: JSObject, _ rootEnvironment: EnvironmentValues? = nil) {
     rootRef = ref
     appendRootStyle(ref)
+
+    #if compiler(>=5.5)
+    JavaScriptEventLoop.installGlobalExecutor()
+    #endif
 
     let scheduler = JSScheduler()
     self.scheduler = scheduler

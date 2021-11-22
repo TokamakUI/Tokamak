@@ -58,7 +58,7 @@ public extension AnyHTML {
     additonalAttributes: [HTMLAttribute: String] = [:],
     children: [HTMLTarget]
   ) -> String {
-    let attributes = self.attributes.merging(additonalAttributes, uniquingKeysWith: +)
+    let attributes = attributes.merging(additonalAttributes, uniquingKeysWith: +)
     let renderedAttributes: String
     if attributes.isEmpty {
       renderedAttributes = ""

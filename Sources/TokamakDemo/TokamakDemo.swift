@@ -133,6 +133,9 @@ struct TokamakDemoView: View {
           }
           Section(header: Text("Modifiers")) {
             NavItem("Shadow", destination: ShadowDemo())
+            #if os(WASI)
+            NavItem("Task", destination: TaskDemo())
+            #endif
           }
           Section(header: Text("Selectors")) {
             NavItem("DatePicker", destination: DatePickerDemo())

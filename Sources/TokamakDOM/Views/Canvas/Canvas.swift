@@ -62,15 +62,15 @@ struct _Canvas<Symbols: View>: View {
       HTML("canvas", [
         "style": "width: 100%; height: 100%;",
       ])
-        ._domRef($coordinator.canvas)
-        .onAppear { draw(in: proxy.size) }
-        ._onUpdate {
-          // Cancel the previous animation loop.
-          if let currentDrawLoop = coordinator.currentDrawLoop {
-            _ = JSObject.global.cancelAnimationFrame!(currentDrawLoop)
-          }
-          draw(in: proxy.size)
+      ._domRef($coordinator.canvas)
+      .onAppear { draw(in: proxy.size) }
+      ._onUpdate {
+        // Cancel the previous animation loop.
+        if let currentDrawLoop = coordinator.currentDrawLoop {
+          _ = JSObject.global.cancelAnimationFrame!(currentDrawLoop)
         }
+        draw(in: proxy.size)
+      }
     }
   }
 

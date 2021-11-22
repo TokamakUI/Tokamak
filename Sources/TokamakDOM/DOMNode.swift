@@ -60,7 +60,7 @@ extension AnyHTML {
     additionalAttributes: [HTMLAttribute: String],
     transaction: Transaction
   ) {
-    let attributes = self.attributes.merging(additionalAttributes, uniquingKeysWith: +)
+    let attributes = attributes.merging(additionalAttributes, uniquingKeysWith: +)
 
     dom.applyAttributes(attributes, with: transaction)
 
@@ -109,7 +109,9 @@ final class DOMNode: Target {
   func reinstall(_ listeners: [String: Listener]) {
     for (event, jsClosure) in self.listeners {
       _ = ref.removeEventListener!(event, jsClosure)
+      #if JAVASCRIPTKIT_WITHOUT_WEAKREFS
       jsClosure.release()
+      #endif
     }
     self.listeners = [:]
 
