@@ -113,7 +113,7 @@ app.
 
 ## Requirements for app developers
 
-- macOS 11 and Xcode 13.0 or later. Xcode 13.2 or later are recommended if you're developing
+- macOS 11 and Xcode 13.0 or later. Xcode 13.2 or later is recommended if you're developing
 multi-platform apps that target WebAssembly and macOS at the same time, as these versions support
 Swift concurrency back-deployment.
 - [Swift 5.4 or later](https://swift.org/download/) and Ubuntu 18.04 if you'd like to use Linux.
