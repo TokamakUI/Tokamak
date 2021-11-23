@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if os(WASI) && compiler(>=5.5) && canImport(Concurrency)
+#if os(WASI) && compiler(>=5.5) && (canImport(Concurrency) || canImport(_Concurrency))
 import JavaScriptKit
 import TokamakDOM
 

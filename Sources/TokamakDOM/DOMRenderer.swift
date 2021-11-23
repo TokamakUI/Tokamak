@@ -20,7 +20,7 @@ import OpenCombineJS
 @_spi(TokamakCore) import TokamakCore
 import TokamakStaticHTML
 
-#if compiler(>=5.5) && canImport(Concurrency)
+#if compiler(>=5.5) && (canImport(Concurrency) || canImport(_Concurrency))
 import JavaScriptEventLoop
 #endif
 
@@ -91,7 +91,7 @@ final class DOMRenderer: Renderer {
     rootRef = ref
     appendRootStyle(ref)
 
-    #if compiler(>=5.5) && canImport(Concurrency)
+    #if compiler(>=5.5) && (canImport(Concurrency) || canImport(_Concurrency))
     JavaScriptEventLoop.installGlobalExecutor()
     #endif
 

@@ -133,7 +133,7 @@ struct TokamakDemoView: View {
           }
           Section(header: Text("Modifiers")) {
             NavItem("Shadow", destination: ShadowDemo())
-            #if os(WASI) && compiler(>=5.5) && canImport(Concurrency)
+            #if os(WASI) && compiler(>=5.5) && (canImport(Concurrency) || canImport(_Concurrency))
             NavItem("Task", destination: TaskDemo())
             #endif
           }
