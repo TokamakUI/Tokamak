@@ -114,7 +114,7 @@ extension UnsafeMutablePointer where Pointee == GtkWidget {
         OpaquePointer,
         ()
       >>
-        .fromOpaque(closureBox)
+      .fromOpaque(closureBox)
       if let widget = widget {
         unpackedAction.takeUnretainedValue().closure(widget, context)
       }
@@ -125,7 +125,7 @@ extension UnsafeMutablePointer where Pointee == GtkWidget {
         OpaquePointer,
         ()
       >>
-        .fromOpaque(closureBox)
+      .fromOpaque(closureBox)
       unpackedAction.release()
     })
   }

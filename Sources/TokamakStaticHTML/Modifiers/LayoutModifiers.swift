@@ -119,7 +119,7 @@ extension _PaddingLayout: DOMViewModifier {
   public var isOrderDependent: Bool { true }
   public var attributes: [HTMLAttribute: String] {
     var padding = [(String, CGFloat)]()
-    let insets = self.insets ?? .init(_all: 10)
+    let insets = insets ?? .init(_all: 10)
     for edge in Edge.allCases {
       if edges.contains(.init(edge)) {
         padding.append((edge.cssValue, insets.inset(for: edge)))

@@ -4,6 +4,31 @@
 
 import PackageDescription
 
+var tokamakDOMDependencies: [Target.Dependency] = [
+  "TokamakCore",
+  "TokamakStaticHTML",
+  .product(
+    name: "OpenCombineShim",
+    package: "OpenCombine"
+  ),
+  .product(
+    name: "JavaScriptKit",
+    package: "JavaScriptKit",
+    condition: .when(platforms: [.wasi])
+  ),
+  "OpenCombineJS",
+]
+
+#if compiler(>=5.5) && (canImport(Concurrency) || canImport(_Concurrency))
+tokamakDOMDependencies.append(
+  .product(
+    name: "JavaScriptEventLoop",
+    package: "JavaScriptKit",
+    condition: .when(platforms: [.wasi])
+  )
+)
+#endif
+
 let package = Package(
   name: "Tokamak",
   platforms: [
@@ -51,7 +76,7 @@ let package = Package(
     // .package(url: /* package url */, from: "1.0.0"),
     .package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
-      .upToNextMinor(from: "0.10.0")
+      .upToNextMinor(from: "0.11.1")
     ),
     .package(
       url: "https://github.com/OpenCombine/OpenCombine.git",
@@ -59,7 +84,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/swiftwasm/OpenCombineJS.git",
-      .upToNextMinor(from: "0.1.1")
+      .upToNextMinor(from: "0.1.2")
     ),
     .package(
       name: "Benchmark",
@@ -152,20 +177,7 @@ let package = Package(
     ),
     .target(
       name: "TokamakDOM",
-      dependencies: [
-        "TokamakCore",
-        "TokamakStaticHTML",
-        .product(
-          name: "OpenCombineShim",
-          package: "OpenCombine"
-        ),
-        .product(
-          name: "JavaScriptKit",
-          package: "JavaScriptKit",
-          condition: .when(platforms: [.wasi])
-        ),
-        "OpenCombineJS",
-      ]
+      dependencies: tokamakDOMDependencies
     ),
     .executableTarget(
       name: "TokamakDemo",

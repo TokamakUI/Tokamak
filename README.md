@@ -113,20 +113,33 @@ app.
 
 ## Requirements for app developers
 
-- macOS 11 and Xcode 13.0. *Xcode 13.1 is currently not supported.*
+- macOS 11 and Xcode 13.0 or later. Xcode 13.2 or later is recommended if you're developing
+multi-platform apps that target WebAssembly and macOS at the same time, as these versions support
+Swift concurrency back-deployment.
 - [Swift 5.4 or later](https://swift.org/download/) and Ubuntu 18.04 if you'd like to use Linux.
   Other Linux distributions are currently not supported.
 
 ## Requirements for app users
 
-Any browser that [supports WebAssembly](https://caniuse.com/#feat=wasm) should work, which currently includes:
+Any recent browser that [supports WebAssembly](https://caniuse.com/#feat=wasm) and [required
+JavaScript features](https://caniuse.com/?search=finalizationregistry) should work, which currently includes:
+
+- Edge 84+
+- Firefox 79+
+- Chrome 84+
+- Desktop Safari 14.1+
+- Mobile Safari 14.8+
+
+If you need to support older browser versions, you'll have to build with
+`JAVASCRIPTKIT_WITHOUT_WEAKREFS` flag, passing `-Xswiftc -DJAVASCRIPTKIT_WITHOUT_WEAKREFS` flags
+when compiling. This should lower browser requirements to these versions:
 
 - Edge 16+
 - Firefox 61+
 - Chrome 66+
 - (Mobile) Safari 12+
 
-Not all of these were tested though, compatibility reports are very welcome!
+Not all of these versions are tested on regular basis though, compatibility reports are very welcome!
 
 ## Getting started
 
@@ -141,7 +154,7 @@ app by following these steps:
 brew install swiftwasm/tap/carton
 ```
 
-If you had `carton` installed before this, make sure you have version 0.11.0 or greater:
+If you had `carton` installed before this, make sure you have version 0.12.0 or greater:
 
 ```
 carton --version

@@ -223,7 +223,7 @@ public extension Path {
 
   func applying(_ transform: CGAffineTransform) -> Path {
     guard transform != .identity else { return self }
-    let elements = self.elements.map { transform.transform(element: $0) }
+    let elements = elements.map { transform.transform(element: $0) }
     let box = _PathBox(elements: elements)
     return Path(storage: .path(box), sizing: .fixed)
   }
