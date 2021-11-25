@@ -1,16 +1,16 @@
-# 0.9.0 (27 November 2021)
+# 0.9.0 (29 November 2021)
 
 This release adds support for SwiftWasm 5.5 and bumps the minimum required version to Swift 5.4.
 It now depends on JavaScriptKit 0.11.1, which no longer requires manual memory management of
-`JSClosure` instances. The downside is that minimum browser version requirements are significantly
-higher now. See [`README.md`](README.md#requirements) for more details.
+`JSClosure` instances. The downside of that update is that minimum browser version requirements are
+significantly higher now. See [`README.md`](README.md#requirements) for more details.
 
 Additionally, a few new features were added to the DOM renderer:
 
-* `Canvas` and `TimelineView`;
-* `onHover` modifier;
-* `task` modifier for running `async` functions;
-* Sanitizers for `Text` view.
+- `Canvas` and `TimelineView`;
+- `onHover` modifier;
+- `task` modifier for running `async` functions;
+- Sanitizers for `Text` view.
 
 Many thanks (in alphabetical order) to [@agg23](https://github.com/agg23),
 [@carson-katri](https://github.com/carson-katri), [@ezraberch](https://github.com/ezraberch),
