@@ -1,3 +1,40 @@
+# 0.9.0 (26 November 2021)
+
+This release adds support for SwiftWasm 5.5 and bumps the minimum required version to Swift 5.4.
+It now depends on JavaScriptKit 0.11.1, which no longer requires manual memory management of
+`JSClosure` instances. The downside of that update is that minimum browser version requirements are
+significantly higher now. See [`README.md`](README.md#requirements) for more details.
+
+Additionally, a few new features were added to the DOM renderer:
+
+- `Canvas` and `TimelineView`;
+- `onHover` modifier;
+- `task` modifier for running `async` functions;
+- Sanitizers for `Text` view.
+
+Many thanks (in alphabetical order) to [@agg23](https://github.com/agg23),
+[@carson-katri](https://github.com/carson-katri), [@ezraberch](https://github.com/ezraberch),
+and [@mbrandonw](https://github.com/mbrandonw) for their contributions to this release!
+
+**Closed issues:**
+
+- `TextField` Not Rendering the field ([#455](https://github.com/TokamakUI/Tokamak/issues/455))
+- Can't find `CGSize` or `CGFloat` type ([#450](https://github.com/TokamakUI/Tokamak/issues/450))
+- `UnitPoint` constants don't match SwiftUI ([#443](https://github.com/TokamakUI/Tokamak/issues/443))
+
+**Merged pull requests:**
+
+- Update for JSKit 0.11.1, add async `task` modifier ([#457](https://github.com/TokamakUI/Tokamak/pull/457)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Switch to Xcode 13.0 in `gtk_macos_build` job ([#454](https://github.com/TokamakUI/Tokamak/pull/454)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add `Canvas` and `TimelineView` to DOM renderer ([#449](https://github.com/TokamakUI/Tokamak/pull/449)) via [@carson-katri](https://github.com/carson-katri)
+- Initial implementation of `onHover` ([#448](https://github.com/TokamakUI/Tokamak/pull/448)) via [@agg23](https://github.com/agg23)
+- Refactor `NavigationView` ([#446](https://github.com/TokamakUI/Tokamak/pull/446)) via [@ezraberch](https://github.com/ezraberch)
+- Save HTML snapshots with .html extension. ([#447](https://github.com/TokamakUI/Tokamak/pull/447)) via [@mbrandonw](https://github.com/mbrandonw)
+- Add HTML renderer support for AngularGradient ([#444](https://github.com/TokamakUI/Tokamak/pull/444)) via [@ezraberch](https://github.com/ezraberch)
+- Bump requirements to Swift 5.4, migrate to `@resultBuilder` ([#442](https://github.com/TokamakUI/Tokamak/pull/442)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Add HTML sanitizer to `Text` ([#437](https://github.com/TokamakUI/Tokamak/pull/437)) via [@ezraberch](https://github.com/ezraberch)
+- Add `@ezraberch` to the list of maintainers ([#440](https://github.com/TokamakUI/Tokamak/pull/440)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
 # 0.8.0 (17 August 2021)
 
 This release adds support for more SwiftUI types and modifiers, and fixes bugs. Including, but not
