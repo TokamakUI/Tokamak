@@ -1,4 +1,4 @@
-# 0.9.0 (29 November 2021)
+# 0.9.0 (26 November 2021)
 
 This release adds support for SwiftWasm 5.5 and bumps the minimum required version to Swift 5.4.
 It now depends on JavaScriptKit 0.11.1, which no longer requires manual memory management of
