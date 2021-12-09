@@ -52,6 +52,7 @@ struct Counter: View {
   }
 }
 
+@main
 struct CounterApp: App {
   var body: some Scene {
     WindowGroup("Counter Demo") {
@@ -59,10 +60,6 @@ struct CounterApp: App {
     }
   }
 }
-
-// @main attribute is not supported in SwiftPM apps.
-// See https://bugs.swift.org/browse/SR-12683 for more details.
-CounterApp.main()
 ```
 
 ### Arbitrary HTML
@@ -85,6 +82,36 @@ struct SVGCircle: View {
 `HTML` doesn't support event listeners, and is declared in the `TokamakStaticHTML` module, which `TokamakDOM` re-exports. The benefit of `HTML` is that you can use it for static rendering in libraries like [TokamakVapor](https://github.com/TokamakUI/TokamakVapor) and [TokamakPublish](https://github.com/TokamakUI/TokamakPublish).
 
 Another option is the `DynamicHTML` view provided by the `TokamakDOM` module, which has a `listeners` property with a corresponding initializer parameter. You can pass closures that can handle `onclick`, `onmouseover` and other DOM events for you in the `listeners` dictionary. Check out [MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers) for the full list.
+
+An example of mouse events handling with `DynamicHTML` would look like this:
+
+```swift
+struct MouseEventsView: View {
+  @State var position: CGPoint = .zero
+  @State var isMouseButtonDown: Bool = false
+
+  var body: some View {
+    DynamicHTML(
+      "div",
+      ["style": "width: 200px; height: 200px; background-color: red;"],
+      listeners: [
+        "mousemove": { event in
+          guard
+            let x = event.offsetX.jsValue().number,
+            let y = event.offsetY.jsValue().number
+          else { return }
+
+          position = CGPoint(x: x, y: y)
+        },
+        "mousedown": { _ in isMouseButtonDown = true },
+        "mouseup": { _ in isMouseButtonDown = false },
+      ]
+    ) {
+      Text("position is \(position), is mouse button down? \(isMouseButtonDown)")
+    }
+  }
+}
+```
 
 ### Arbitrary styles and scripts
 
