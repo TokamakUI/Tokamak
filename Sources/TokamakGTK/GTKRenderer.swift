@@ -56,7 +56,7 @@ final class GTKRenderer: Renderer {
         self.reconciler = StackReconciler(
           app: app,
           target: Widget(window),
-          environment: .defaultEnvironment,
+          environment: rootEnvironment ?? .defaultEnvironment,
           renderer: self,
           scheduler: { next in
             DispatchQueue.main.async {

@@ -90,7 +90,7 @@ public final class StaticHTMLRenderer: Renderer {
     reconciler = StackReconciler(
       view: view,
       target: rootTarget,
-      environment: .defaultEnvironment,
+      environment: rootEnvironment ?? .defaultEnvironment,
       renderer: self,
       scheduler: { _ in
         fatalError("Stateful apps cannot be created with TokamakStaticHTML")
@@ -104,7 +104,7 @@ public final class StaticHTMLRenderer: Renderer {
     reconciler = StackReconciler(
       app: app,
       target: rootTarget,
-      environment: .defaultEnvironment,
+      environment: rootEnvironment ?? .defaultEnvironment,
       renderer: self,
       scheduler: { _ in
         fatalError("Stateful apps cannot be created with TokamakStaticHTML")

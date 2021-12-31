@@ -100,7 +100,7 @@ final class DOMRenderer: Renderer {
     reconciler = StackReconciler(
       app: app,
       target: DOMNode(ref),
-      environment: .defaultEnvironment,
+      environment: rootEnvironment ?? .defaultEnvironment,
       renderer: self
     ) { scheduler.schedule(options: nil, $0) }
   }
