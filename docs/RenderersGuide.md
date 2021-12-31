@@ -312,7 +312,7 @@ public protocol Renderer: AnyObject {
   // ...
   // Functions unrelated to this feature skipped for brevity.
 
-  /** Returns a body of a given pritimive view, or `nil` if `view` is not a primitive view for
+  /** Returns a body of a given primitive view, or `nil` if `view` is not a primitive view for
    this renderer.
    */
   func primitiveBody(for view: Any) -> AnyView?
@@ -372,7 +372,7 @@ struct HTML: View, AnyHTML {
 
 Here we define an `HTML` view to have a body type of `Never`, like other primitive `Views`. It also
 conforms to `AnyHTML`, which allows our `Renderer` to access the attributes of the `HTML` without
-worrying about the `associatedtypes` involved with `View`.
+worrying about the `associatedtype`s involved with `View`.
 
 ### `HTMLPrimitive`
 
