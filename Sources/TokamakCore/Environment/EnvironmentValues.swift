@@ -43,6 +43,20 @@ public struct EnvironmentValues: CustomStringConvertible {
       values[bindable] = newValue
     }
   }
+
+  public mutating func merge(_ other: Self?) {
+    if let other = other {
+      values.merge(other.values) { existing, new in
+        new
+      }
+    }
+  }
+
+  public func merging(_ other: Self?) -> Self {
+    var merged = self
+    merged.merge(other)
+    return merged
+  }
 }
 
 struct IsEnabledKey: EnvironmentKey {
