@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/20/20.
 //
 
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 
 extension EnvironmentValues {
   /// Returns default settings for the static HTML environment

@@ -17,7 +17,7 @@
 
 import CGTK
 import Dispatch
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 
 extension EnvironmentValues {
   /// Returns default settings for the GTK environment
