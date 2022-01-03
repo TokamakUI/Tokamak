@@ -43,6 +43,22 @@ public struct EnvironmentValues: CustomStringConvertible {
       values[bindable] = newValue
     }
   }
+
+  @_spi(TokamakCore)
+  public mutating func merge(_ other: Self?) {
+    if let other = other {
+      values.merge(other.values) { existing, new in
+        new
+      }
+    }
+  }
+
+  @_spi(TokamakCore)
+  public func merging(_ other: Self?) -> Self {
+    var merged = self
+    merged.merge(other)
+    return merged
+  }
 }
 
 struct IsEnabledKey: EnvironmentKey {

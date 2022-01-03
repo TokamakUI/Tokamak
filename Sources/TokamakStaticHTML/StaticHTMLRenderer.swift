@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 7/20/20.
 //
 
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 
 extension EnvironmentValues {
   /// Returns default settings for the static HTML environment
@@ -90,7 +90,7 @@ public final class StaticHTMLRenderer: Renderer {
     reconciler = StackReconciler(
       view: view,
       target: rootTarget,
-      environment: .defaultEnvironment,
+      environment: .defaultEnvironment.merging(rootEnvironment),
       renderer: self,
       scheduler: { _ in
         fatalError("Stateful apps cannot be created with TokamakStaticHTML")
@@ -104,7 +104,7 @@ public final class StaticHTMLRenderer: Renderer {
     reconciler = StackReconciler(
       app: app,
       target: rootTarget,
-      environment: .defaultEnvironment,
+      environment: .defaultEnvironment.merging(rootEnvironment),
       renderer: self,
       scheduler: { _ in
         fatalError("Stateful apps cannot be created with TokamakStaticHTML")

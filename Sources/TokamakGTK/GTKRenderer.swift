@@ -17,7 +17,7 @@
 
 import CGTK
 import Dispatch
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 
 extension EnvironmentValues {
   /// Returns default settings for the GTK environment
@@ -56,7 +56,7 @@ final class GTKRenderer: Renderer {
         self.reconciler = StackReconciler(
           app: app,
           target: Widget(window),
-          environment: .defaultEnvironment,
+          environment: .defaultEnvironment.merging(rootEnvironment),
           renderer: self,
           scheduler: { next in
             DispatchQueue.main.async {
