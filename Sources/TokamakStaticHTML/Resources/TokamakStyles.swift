@@ -15,16 +15,22 @@
 import TokamakCore
 
 public let tokamakStyles = """
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 ._tokamak-stack {
-  display: grid;
+  display: flex;
 }
 ._tokamak-hstack {
-  grid-auto-flow: column;
-  column-gap: var(--tokamak-stack-gap, \(Int(defaultStackSpacing))px);
+  flex-direction: row;
+  gap: var(--tokamak-stack-gap, \(Int(defaultStackSpacing))px);
 }
 ._tokamak-vstack {
-  grid-auto-flow: row;
-  row-gap: var(--tokamak-stack-gap, \(Int(defaultStackSpacing))px);
+  flex-direction: column;
+  gap: var(--tokamak-stack-gap, \(Int(defaultStackSpacing))px);
 }
 ._tokamak-scrollview-hideindicators {
   scrollbar-color: transparent;

@@ -18,14 +18,17 @@ import TokamakShim
 struct StackDemo: View {
   @State private var horizontalSpacing: CGFloat = 8
   @State private var verticalSpacing: CGFloat = 8
+  @State private var horizontalAlignment: Int = 0
 
   var body: some View {
     VStack(spacing: verticalSpacing) {
+
       Text("Horizontal Spacing")
       Slider(value: $horizontalSpacing, in: 0...100)
 
       Text("Vertical Spacing")
       Slider(value: $verticalSpacing, in: 0...100)
+
       HStack(spacing: horizontalSpacing) {
         Rectangle()
           .fill(Color.red)
@@ -35,6 +38,10 @@ struct StackDemo: View {
           .fill(Color.green)
           .frame(width: 100, height: 100)
       }
+
+      Rectangle()
+          .fill(Color.yellow)
+          .frame(width: 100, height: 100)
     }
   }
 }

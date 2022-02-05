@@ -23,6 +23,8 @@ struct SpacerDemo: View {
       HStack {
         Text("Left side.")
         Spacer()
+        Text("Center.")
+        Spacer()
         Text("Right side.")
       }
       Spacer()
