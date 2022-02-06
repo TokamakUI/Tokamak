@@ -207,6 +207,7 @@ let package = Package(
       name: "TokamakTestRenderer",
       dependencies: ["TokamakCore"]
     ),
+    .testTarget(name: "TokamakReconcilerTests", dependencies: ["TokamakCore"]),
     .testTarget(
       name: "TokamakTests",
       dependencies: ["TokamakTestRenderer"]

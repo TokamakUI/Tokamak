@@ -32,7 +32,7 @@ public let defaultStackSpacing: CGFloat = 8
 ///       Text("Hello")
 ///       Text("World")
 ///     }
-public struct HStack<Content>: _PrimitiveView where Content: View {
+public struct HStack<Content>: View where Content: View {
   public let alignment: VerticalAlignment
   let spacing: CGFloat
   public let content: Content
@@ -45,6 +45,10 @@ public struct HStack<Content>: _PrimitiveView where Content: View {
     self.alignment = alignment
     self.spacing = spacing ?? defaultStackSpacing
     self.content = content()
+  }
+
+  public var body: some View {
+    content
   }
 }
 

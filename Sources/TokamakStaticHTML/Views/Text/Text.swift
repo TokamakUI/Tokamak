@@ -168,9 +168,9 @@ extension Text {
 
     var fontStack: [Font] = []
     var color: Color?
-    var italic: Bool = false
+    var italic = false
     var weight: Font.Weight?
-    var kerning: String = "normal"
+    var kerning = "normal"
     var baseline: CGFloat?
     var strikethrough: (Bool, Color?)?
     var underline: (Bool, Color?)?

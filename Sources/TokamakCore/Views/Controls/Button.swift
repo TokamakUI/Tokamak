@@ -65,7 +65,7 @@ public struct Button<Label>: View where Label: View {
   }
 }
 
-public struct _PrimitiveButtonStyleBody<Label>: _PrimitiveView where Label: View {
+public struct _PrimitiveButtonStyleBody<Label>: View where Label: View {
   public let label: Label
   public let role: ButtonRole?
   public let action: () -> ()
@@ -85,9 +85,13 @@ public struct _PrimitiveButtonStyleBody<Label>: _PrimitiveView where Label: View
   }
 
   @Environment(\.controlSize) public var controlSize
+
+  public var body: some View {
+    label
+  }
 }
 
-public struct _Button<Label>: _PrimitiveView where Label: View {
+public struct _Button<Label>: View where Label: View {
   public let label: Label
   public let role: ButtonRole?
   public let action: () -> ()
@@ -103,6 +107,10 @@ public struct _Button<Label>: _PrimitiveView where Label: View {
         isPressed: isPressed
       )
     )
+  }
+
+  public var body: some View {
+    makeStyleBody()
   }
 }
 

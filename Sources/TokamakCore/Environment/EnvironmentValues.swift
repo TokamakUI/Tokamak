@@ -47,7 +47,7 @@ public struct EnvironmentValues: CustomStringConvertible {
   @_spi(TokamakCore)
   public mutating func merge(_ other: Self?) {
     if let other = other {
-      values.merge(other.values) { existing, new in
+      values.merge(other.values) { _, new in
         new
       }
     }

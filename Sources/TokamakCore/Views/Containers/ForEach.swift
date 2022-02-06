@@ -48,6 +48,12 @@ public struct ForEach<Data, ID, Content>: _PrimitiveView where Data: RandomAcces
     self.id = id
     self.content = content
   }
+
+  public func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
+    for element in data {
+      visitor.visit(content(element))
+    }
+  }
 }
 
 extension ForEach: ForEachProtocol where Data.Index == Int {

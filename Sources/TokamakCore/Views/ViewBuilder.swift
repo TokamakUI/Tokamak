@@ -31,6 +31,15 @@ public struct _ConditionalContent<TrueContent, FalseContent>: _PrimitiveView
   }
 
   let storage: Storage
+
+  public func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
+    switch storage {
+    case let .trueContent(view):
+      visitor.visit(view)
+    case let .falseContent(view):
+      visitor.visit(view)
+    }
+  }
 }
 
 extension _ConditionalContent: GroupView {
@@ -44,12 +53,13 @@ extension _ConditionalContent: GroupView {
   }
 }
 
-extension Optional: View where Wrapped: View {
-  public var body: some View {
-    if let view = self {
-      view
-    } else {
-      EmptyView()
+extension Optional: View, _PrimitiveView where Wrapped: View {
+  public func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
+    switch self {
+    case .none:
+      break
+    case let .some(wrapped):
+      visitor.visit(wrapped)
     }
   }
 }
