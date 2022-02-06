@@ -100,10 +100,23 @@ final class TestElement: Element, CustomStringConvertible {
   var description: String {
     "\(renderedValue)\(closingTag)"
   }
+
+  init(renderedValue: String, closingTag: String) {
+    self.renderedValue = renderedValue
+    self.closingTag = closingTag
+  }
+
+  static var root: Self { .init(renderedValue: "<root>", closingTag: "</root>") }
 }
 
 struct TestRenderer: GraphRenderer {
   typealias ElementType = TestElement
+
+  let rootElement: TestElement
+
+  init(_ rootElement: TestElement) {
+    self.rootElement = rootElement
+  }
 
   static func isPrimitive<V>(_ view: V) -> Bool where V: View {
     view is TestPrimitive
@@ -127,7 +140,7 @@ struct TestRenderer: GraphRenderer {
 
 final class VisitorTests: XCTestCase {
   func testRenderer() {
-    let reconciler = TestRenderer().render(TestView())
+    let reconciler = TestRenderer(.root).render(TestView())
     let decrement = (
       reconciler.tree
         .findView(id: .structural(index: 0))? // TestView
