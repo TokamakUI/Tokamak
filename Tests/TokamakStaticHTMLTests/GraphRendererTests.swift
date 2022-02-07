@@ -11,13 +11,16 @@ import XCTest
 
 struct TestView: View {
   var body: some View {
-    Text("Hello, world!")
+    VStack {
+      Text("A")
+      Text("B")
+    }
   }
 }
 
 final class GraphRendererTests: XCTestCase {
   func testRenderer() {
     let reconciler = StaticHTMLGraphRenderer().render(TestView())
-    print(reconciler.tree)
+    print(reconciler.renderer.rootElement)
   }
 }

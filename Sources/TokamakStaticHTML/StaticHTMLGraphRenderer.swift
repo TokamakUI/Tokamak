@@ -7,7 +7,7 @@
 
 import TokamakCore
 
-public final class HTMLElement: Element {
+public final class HTMLElement: Element, CustomStringConvertible {
   public static func == (lhs: HTMLElement, rhs: HTMLElement) -> Bool {
     lhs.tag == rhs.tag && lhs.attributes == rhs.attributes
   }
@@ -35,6 +35,15 @@ public final class HTMLElement: Element {
     self.innerHTML = innerHTML
     self.children = children
   }
+
+  public var description: String {
+    """
+    <\(tag)\(attributes.map { " \($0.key.value)=\"\($0.value)\"" }
+      .joined(separator: ""))>\(innerHTML != nil ? "\(innerHTML!)" : "")\(!children
+      .isEmpty ? "\n" : "")\(children.map(\.description).joined(separator: "\n"))\(!children
+      .isEmpty ? "\n" : "")</\(tag)>
+    """
+  }
 }
 
 protocol HTMLConvertible {
@@ -49,11 +58,33 @@ extension Text: HTMLConvertible {
   }
 }
 
+extension VStack: HTMLConvertible {
+  var tag: String { "div" }
+  var attributes: [HTMLAttribute: String] {
+    let spacing = _VStackProxy(self).spacing
+    return [
+      "style": """
+      justify-items: \(alignment.cssValue);
+      \(hasSpacer ? "height: 100%;" : "")
+      \(fillCrossAxis ? "width: 100%;" : "")
+      \(spacing != defaultStackSpacing ? "--tokamak-stack-gap: \(spacing)px;" : "")
+      """,
+      "class": "_tokamak-stack _tokamak-vstack",
+    ]
+  }
+
+  var innerHTML: String? { nil }
+}
+
 public struct StaticHTMLGraphRenderer: GraphRenderer {
   public let rootElement: HTMLElement
+  public let defaultEnvironment: EnvironmentValues
 
   init() {
     rootElement = .init(tag: "body", attributes: [:], innerHTML: nil, children: [])
+    var environment = EnvironmentValues()
+    environment[_ColorSchemeKey.self] = .light
+    defaultEnvironment = environment
   }
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {

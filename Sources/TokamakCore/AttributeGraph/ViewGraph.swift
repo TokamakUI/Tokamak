@@ -45,6 +45,11 @@ public protocol GraphRenderer {
   static func isPrimitive<V>(_ view: V) -> Bool where V: View
   func commit(_ mutations: [RenderableMutation<Self>])
   var rootElement: ElementType { get }
+  var defaultEnvironment: EnvironmentValues { get }
+}
+
+public extension GraphRenderer {
+  var defaultEnvironment: EnvironmentValues { .init() }
 }
 
 public enum RenderableMutation<Renderer: GraphRenderer> {
@@ -67,11 +72,13 @@ public enum RenderableMutation<Renderer: GraphRenderer> {
     weak var reconciler: Reconciler<Renderer>?
 
     var view: Any!
+    var outputs: ViewOutputs!
     var visitView: ((ViewVisitor) -> ())!
     var id: Identity?
     var element: Renderer.ElementType?
     var children: [Reconciler<Renderer>.ViewNode]
     unowned var parent: Reconciler<Renderer>.ViewNode?
+    var parentElement: Renderer.ElementType?
     let typeInfo: TypeInfo?
     var state: [PropertyInfo: MutableStorage]!
 
@@ -97,31 +104,43 @@ public enum RenderableMutation<Renderer: GraphRenderer> {
 
     init<V: View>(
       _ view: inout V,
-      element: Renderer.ElementType?,
+      element: ((V) -> Renderer.ElementType?)?,
       parent: Reconciler<Renderer>.ViewNode?,
+      parentElement: Renderer.ElementType?,
+      childIndex: Int,
       reconciler: Reconciler<Renderer>?
     ) {
       self.reconciler = reconciler
-      self.element = element
       children = []
       self.parent = parent
+      self.parentElement = parentElement
       typeInfo = TokamakCore.typeInfo(of: V.self)
 
-      state = bindProperties(to: &view, typeInfo)
+      let viewInputs = ViewInputs<V>(
+        view: view,
+        proposedSize: parent?.outputs.layoutComputer?.proposeSize(for: view, at: childIndex),
+        environment: parent?.outputs.environment ?? .init()
+      )
+      state = bindProperties(to: &view, typeInfo, viewInputs)
       self.view = view
+      outputs = V._makeView(viewInputs)
       visitView = { [weak self] in
         guard let self = self else { return }
         // swiftlint:disable:next force_cast
         $0.visit(self.view as! V)
       }
+
+      self.element = element?(view)
     }
 
     init(
       bound view: Any,
+      outputs: ViewOutputs,
       typeInfo: TypeInfo?,
       visitView: @escaping (ViewVisitor) -> (),
       element: Renderer.ElementType?,
       parent: Reconciler<Renderer>.ViewNode?,
+      parentElement: Renderer.ElementType?,
       reconciler: Reconciler<Renderer>?
     ) {
       self.view = view
@@ -129,13 +148,16 @@ public enum RenderableMutation<Renderer: GraphRenderer> {
       self.element = element
       children = []
       self.parent = parent
+      self.parentElement = parentElement
       self.typeInfo = typeInfo
       self.visitView = visitView
+      self.outputs = outputs
     }
 
     private func bindProperties<V: View>(
       to view: inout V,
-      _ typeInfo: TypeInfo?
+      _ typeInfo: TypeInfo?,
+      _ viewInputs: ViewInputs<V>
     ) -> [PropertyInfo: MutableStorage] {
       guard let typeInfo = typeInfo else { return [:] }
 
@@ -151,6 +173,9 @@ public enum RenderableMutation<Renderer: GraphRenderer> {
           storage.getter = { box.value }
           storage.setter = { box.setValue($0, with: $1) }
           value = storage
+        } else if var environmentReader = value as? EnvironmentReader {
+          environmentReader.setContent(from: viewInputs.environment)
+          value = environmentReader
         }
         property.set(value: value, on: &view)
       }
@@ -160,10 +185,12 @@ public enum RenderableMutation<Renderer: GraphRenderer> {
     func clone() -> Reconciler<Renderer>.ViewNode {
       .init(
         bound: view!,
+        outputs: outputs,
         typeInfo: typeInfo,
         visitView: visitView,
         element: nil,
         parent: nil,
+        parentElement: nil,
         reconciler: reconciler
       )
     }
@@ -228,7 +255,7 @@ public final class Reconciler<Renderer: GraphRenderer> {
   public init<V: View>(_ renderer: Renderer, _ view: V) {
     self.renderer = renderer
     let visitor = InitialTreeBuilderVisitor(reconciler: self)
-    visitor.visit(view)
+    visitor.visit(view.environmentValues(renderer.defaultEnvironment))
     tree = visitor.root
     var mutations = [RenderableMutation<Renderer>]()
     for mutation in visitor.mutations {
@@ -237,12 +264,13 @@ public final class Reconciler<Renderer: GraphRenderer> {
         guard let element = viewNode.element else { continue }
         mutations.append(.insert(
           element: element,
-          parent: parent?.element ?? renderer.rootElement,
+          parent: viewNode.parentElement ?? renderer.rootElement,
           sibling: sibling?.element
         ))
       default: continue
       }
     }
+    renderer.commit(mutations)
   }
 
   enum Mutation {
@@ -264,46 +292,86 @@ public final class Reconciler<Renderer: GraphRenderer> {
     init(reconciler: Reconciler<Renderer>) {
       self.reconciler = reconciler
       var view = EmptyView()
-      root = .init(&view, element: nil, parent: nil, reconciler: reconciler)
+      root = .init(
+        &view,
+        element: nil,
+        parent: nil,
+        parentElement: reconciler.renderer.rootElement,
+        childIndex: 0,
+        reconciler: reconciler
+      )
       mutations = [.insert(root, parent: nil, sibling: nil)]
     }
 
     func visit<V>(_ view: V) where V: View {
       root.view = view
       // Create a stack of nodes and the accessor for their children.
-      var accessors: [(ViewNode, (TreeReducer.Visitor) -> ())] =
-        [(root, { $0.visit(view) })]
+      var accessors: [TreeReducer.Result.Child] = [.init(
+        viewNode: root,
+        parentElement: root.element ?? root.parentElement,
+        visitChildren: { $0.visit(view) }
+      )]
       while true {
         guard let next = accessors.popLast() else { return } // Pop from the stack
         // Visit each child, collapsing the result into an array of (ViewNode, Accessor)
         let reducer = TreeReducer.Visitor()
-        next.1(reducer)
+        reducer.result.parent = next.viewNode
+        reducer.result.parentElement = next.parentElement
+        next.visitChildren(reducer)
         var lastSibling: ViewNode?
-        for (index, child) in reducer.result.enumerated() {
-          child.0.parent = next.0
-          child.0.reconciler = reconciler
-          child.0.id = .structural(index: index)
-          next.0.children.append(child.0)
-          mutations.append(.insert(child.0, parent: next.0, sibling: lastSibling))
-          lastSibling = child.0
+        for (index, child) in reducer.result.children.enumerated() {
+          child.viewNode.reconciler = reconciler
+          child.viewNode.id = .structural(index: index)
+          next.viewNode.children.append(child.viewNode)
+          mutations.append(.insert(child.viewNode, parent: next.viewNode, sibling: lastSibling))
+          lastSibling = child.viewNode
         }
-        accessors.append(contentsOf: reducer.result)
+        accessors.append(contentsOf: reducer.result.children)
       }
     }
   }
 
   struct TreeReducer: ViewReducer {
-    typealias Result = [(ViewNode, visitChildren: (TreeReducer.Visitor) -> ())]
-    static var initialResult: Result { [] }
+    struct Data {
+      var parent: ViewNode?
+      /// The element to mount this, and its children, on.
+      var parentElement: Renderer.ElementType?
+      /// The collapsed children.
+      var children: [Child]
+
+      struct Child {
+        let viewNode: ViewNode
+        /// The element to use for this children of this child. Either its own element, or its parent if it has no element.
+        let parentElement: Renderer.ElementType?
+        let visitChildren: (TreeReducer.Visitor) -> ()
+      }
+    }
+
+    typealias Result = Data
+    static var initialResult: Result { .init(parent: nil, parentElement: nil, children: []) }
 
     static func reduce<V>(partialResult: Result, nextView: V) -> Result where V: View {
       var nextView = nextView
-      return partialResult + [(ViewNode(
+      let viewNode = ViewNode(
         &nextView,
-        element: Renderer.isPrimitive(nextView) ? Renderer.ElementType(from: nextView) : nil,
-        parent: nil,
+        element: { view in Renderer.isPrimitive(view) ? Renderer.ElementType(from: view) : nil },
+        parent: partialResult.parent,
+        parentElement: partialResult.parentElement,
+        childIndex: partialResult.children.count,
+        // The index is the same as the number of previous children.
         reconciler: nil
-      ), nextView._visitChildren)]
+      )
+      return .init(
+        parent: partialResult.parent,
+        parentElement: partialResult.parentElement,
+        children: partialResult.children + [
+          .init(
+            viewNode: viewNode,
+            parentElement: viewNode.element ?? partialResult.parentElement,
+            visitChildren: nextView._visitChildren
+          ),
+        ]
+      )
     }
   }
 
@@ -317,31 +385,38 @@ public final class Reconciler<Renderer: GraphRenderer> {
 
     func visit<V>(_ view: V) where V: View {
       var nodeStack = [current]
-      var accessorStack: [(ViewNode, (TreeReducer.Visitor) -> ())] =
-        [(current.clone(), { view._visitChildren($0) })]
+      var accessorStack: [TreeReducer.Result.Child] =
+        [.init(
+          viewNode: current.clone(),
+          parentElement: current.element ?? current.parentElement,
+          visitChildren: { view._visitChildren($0) }
+        )]
       while true {
         guard let nextNode = nodeStack.popLast(),
               let nextAccessor = accessorStack.popLast()
         else { return } // Pop from the stacks
         // Visit each child, collapsing the result into an array of (ViewNode, Accessor)
         let reducer = TreeReducer.Visitor()
-        nextAccessor.1(reducer)
+        reducer.result.parent = nextAccessor.viewNode
+        reducer.result.parentElement = nextAccessor.parentElement
+        nextAccessor.visitChildren(reducer)
         var lastSibling: ViewNode?
-        for (index, child) in reducer.result
-          .enumerated()
-        {
-          child.0.parent = nextAccessor.0
-          child.0.reconciler = current.reconciler
-          child.0.id = .structural(index: index)
-          nextAccessor.0.children.append(child.0)
+        for (index, child) in reducer.result.children.enumerated() {
+          child.viewNode.reconciler = current.reconciler
+          child.viewNode.id = .structural(index: index)
+          nextAccessor.viewNode.children.append(child.viewNode)
           if !nextNode.children.indices.contains(index) {
-            mutations.append(.insert(child.0, parent: nextNode, sibling: lastSibling))
+            mutations.append(.insert(child.viewNode, parent: nextNode, sibling: lastSibling))
           } else {
             let previousChild = nextNode.children[index]
-            if child.0.typeInfo?.type != previousChild.typeInfo?.type {
+            if child.viewNode.typeInfo?.type != previousChild.typeInfo?.type {
               mutations
-                .append(.replace(parent: nextNode, previous: previousChild, current: child.0))
-            } else if let newElement = child.0.element,
+                .append(.replace(
+                  parent: nextNode,
+                  previous: previousChild,
+                  current: child.viewNode
+                ))
+            } else if let newElement = child.viewNode.element,
                       newElement != previousChild.element
             {
               mutations.append(.update(previousChild, newElement: newElement))
@@ -349,10 +424,10 @@ public final class Reconciler<Renderer: GraphRenderer> {
             lastSibling = previousChild
           }
         }
-        for removed in nextNode.children.dropFirst(reducer.result.count) {
+        for removed in nextNode.children.dropFirst(reducer.result.children.count) {
           mutations.append(.remove(removed, parent: nextNode))
         }
-        accessorStack.append(contentsOf: reducer.result)
+        accessorStack.append(contentsOf: reducer.result.children)
         nodeStack.append(contentsOf: nextNode.children)
       }
     }
@@ -377,7 +452,7 @@ public final class Reconciler<Renderer: GraphRenderer> {
         renderableMutations
           .append(.insert(
             element: element,
-            parent: parent?.element ?? renderer.rootElement,
+            parent: viewNode.parentElement ?? renderer.rootElement,
             sibling: sibling?.element
           ))
       case let .remove(viewNode, parent):
