@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Tokamak App</title>
+    <script>
+      window.Tokamak = {
+        root: undefined,
+        commit: (mutations) => {
+          for (const mutation of mutations) {
+            console.log(mutation)
+            switch (mutation.operation) {
+            case 0: // .insert
+              const parent = mutation.parent() ?? window.Tokamak.root
+              const element = document.createElement(mutation.element.tag)
+              for (const attribute of mutation.element.attributes) {
+                if (attribute.property)
+                  element[attribute.name] = attribute.value
+                else
+                  element.setAttribute(attribute.name, attribute.value)
+              }
+              if (!!mutation.element.innerHTML)
+                element.innerHTML = mutation.element.innerHTML
+              for (const [event, action] of Object.entries(mutation.element.listeners))
+                element.addEventListener(event, action)
+              mutation.element.bind(element)
+              let sibling = undefined
+              if (!!mutation.sibling)
+                sibling = mutation.sibling()
+              if (parent.children.length > mutation.index)
+                parent.insertBefore(element, parent.children[mutation.index])
+              else
+                parent.prepend(element)
+              break
+            case 1: // .remove
+              if (!mutation.element) {
+                console.error(`Cannot remove null from parent.`)
+                continue
+              }
+              mutation.parent()?.removeChild(mutation.element)
+              break
+            case 3: // .update
+              for (const attribute of mutation.updates.attributes) {
+                if (attribute.property)
+                  mutation.previous[attribute.name] = attribute.value
+                else
+                  mutation.previous.setAttribute(attribute.name, attribute.value)
+              }
+              mutation.previous.innerHTML = mutation.updates.innerHTML
+              for (const [event, action] of Object.entries(mutation.updates.listeners))
+                mutation.previous.addEventListener(event, action)
+              mutation.updates.bind(mutation.previous)
+              break
+            default:
+              console.error(`Unhandled mutation ${mutation.operation}`, mutation)
+              continue
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <!--
+      Your Tokamak app will be injected into the #root element,
+      unless a different mountpoint is specified in the renderer.
+    -->
+    <div id="root"></div>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+  </body>
+</html>

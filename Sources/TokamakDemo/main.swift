@@ -14,27 +14,47 @@
 
 import TokamakShim
 
-@available(OSX 10.16, iOS 14.0, *)
-struct CustomScene: Scene {
-  @Environment(\.scenePhase) private var scenePhase
+struct TestView: View {
+  @State private var count = 0
 
-  var body: some Scene {
-    print("In CustomScene.body scenePhase is \(scenePhase)")
-    return WindowGroup("Tokamak Demo") {
-      TokamakDemoView()
+  var body: some View {
+    VStack {
+      Text("\(count)")
+      HStack {
+        if count > 0 {
+          Button("Decrement") { count -= 1 }
+        }
+        if count < 5 {
+          Button("Increment") { count += 1 }
+        }
+      }
     }
   }
 }
 
-@available(OSX 10.16, iOS 14.0, *)
-struct TokamakDemoApp: App {
-  var body: some Scene {
-    CustomScene()
-  }
-}
+let reconciler = DOMGraphRenderer("#root").render(TestView())
 
-// If @main was supported for executable Swift Packages,
-// this would match SwiftUI 100%
-if #available(OSX 10.16, iOS 14.0, *) {
-  TokamakDemoApp.main()
-}
+// @available(OSX 10.16, iOS 14.0, *)
+// struct CustomScene: Scene {
+//  @Environment(\.scenePhase) private var scenePhase
+//
+//  var body: some Scene {
+//    print("In CustomScene.body scenePhase is \(scenePhase)")
+//    return WindowGroup("Tokamak Demo") {
+//      TokamakDemoView()
+//    }
+//  }
+// }
+//
+// @available(OSX 10.16, iOS 14.0, *)
+// struct TokamakDemoApp: App {
+//  var body: some Scene {
+//    CustomScene()
+//  }
+// }
+//
+//// If @main was supported for executable Swift Packages,
+//// this would match SwiftUI 100%
+// if #available(OSX 10.16, iOS 14.0, *) {
+//  TokamakDemoApp.main()
+// }

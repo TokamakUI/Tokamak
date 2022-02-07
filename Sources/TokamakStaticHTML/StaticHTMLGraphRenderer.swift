@@ -46,21 +46,25 @@ public final class HTMLElement: Element, CustomStringConvertible {
   }
 }
 
-protocol HTMLConvertible {
+@_spi(TokamakStaticHTML) public protocol HTMLConvertible {
   var tag: String { get }
   var attributes: [HTMLAttribute: String] { get }
   var innerHTML: String? { get }
 }
 
-extension Text: HTMLConvertible {
-  var innerHTML: String? {
+public extension HTMLConvertible {
+  @_spi(TokamakStaticHTML) var innerHTML: String? { nil }
+}
+
+@_spi(TokamakStaticHTML) extension Text: HTMLConvertible {
+  @_spi(TokamakStaticHTML) public var innerHTML: String? {
     _TextProxy(self).rawText
   }
 }
 
-extension VStack: HTMLConvertible {
-  var tag: String { "div" }
-  var attributes: [HTMLAttribute: String] {
+@_spi(TokamakStaticHTML) extension VStack: HTMLConvertible {
+  @_spi(TokamakStaticHTML) public var tag: String { "div" }
+  @_spi(TokamakStaticHTML) public var attributes: [HTMLAttribute: String] {
     let spacing = _VStackProxy(self).spacing
     return [
       "style": """
@@ -72,8 +76,6 @@ extension VStack: HTMLConvertible {
       "class": "_tokamak-stack _tokamak-vstack",
     ]
   }
-
-  var innerHTML: String? { nil }
 }
 
 public struct StaticHTMLGraphRenderer: GraphRenderer {
@@ -94,12 +96,8 @@ public struct StaticHTMLGraphRenderer: GraphRenderer {
   public func commit(_ mutations: [RenderableMutation<Self>]) {
     for mutation in mutations {
       switch mutation {
-      case let .insert(element, parent, sibling):
-        if let index = parent.children.firstIndex(where: { $0 === sibling }) {
-          parent.children.insert(element, at: index + 1)
-        } else {
-          parent.children.insert(element, at: 0)
-        }
+      case let .insert(element, parent, index):
+        parent.children.insert(element, at: index)
       case let .remove(element, parent):
         parent?.children.removeAll(where: { $0 === element })
       case let .replace(parent, previous, replacement):

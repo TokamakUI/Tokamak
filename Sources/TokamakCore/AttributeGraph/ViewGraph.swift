@@ -56,7 +56,7 @@ public enum RenderableMutation<Renderer: GraphRenderer> {
   case insert(
     element: Renderer.ElementType,
     parent: Renderer.ElementType,
-    sibling: Renderer.ElementType?
+    index: Int
   )
   case remove(element: Renderer.ElementType, parent: Renderer.ElementType?)
   case replace(
@@ -260,12 +260,12 @@ public final class Reconciler<Renderer: GraphRenderer> {
     var mutations = [RenderableMutation<Renderer>]()
     for mutation in visitor.mutations {
       switch mutation {
-      case let .insert(viewNode, parent, sibling):
+      case let .insert(viewNode, _, index):
         guard let element = viewNode.element else { continue }
         mutations.append(.insert(
           element: element,
           parent: viewNode.parentElement ?? renderer.rootElement,
-          sibling: sibling?.element
+          index: index
         ))
       default: continue
       }
@@ -274,7 +274,7 @@ public final class Reconciler<Renderer: GraphRenderer> {
   }
 
   enum Mutation {
-    case insert(ViewNode, parent: ViewNode?, sibling: ViewNode?)
+    case insert(ViewNode, parent: ViewNode?, index: Int)
     case remove(ViewNode, parent: ViewNode)
     case replace(
       parent: ViewNode,
@@ -300,7 +300,8 @@ public final class Reconciler<Renderer: GraphRenderer> {
         childIndex: 0,
         reconciler: reconciler
       )
-      mutations = [.insert(root, parent: nil, sibling: nil)]
+      mutations = [.insert(root, parent: nil, index: 0)]
+      print(root)
     }
 
     func visit<V>(_ view: V) where V: View {
@@ -318,13 +319,11 @@ public final class Reconciler<Renderer: GraphRenderer> {
         reducer.result.parent = next.viewNode
         reducer.result.parentElement = next.parentElement
         next.visitChildren(reducer)
-        var lastSibling: ViewNode?
         for (index, child) in reducer.result.children.enumerated() {
           child.viewNode.reconciler = reconciler
           child.viewNode.id = .structural(index: index)
           next.viewNode.children.append(child.viewNode)
-          mutations.append(.insert(child.viewNode, parent: next.viewNode, sibling: lastSibling))
-          lastSibling = child.viewNode
+          mutations.append(.insert(child.viewNode, parent: next.viewNode, index: index))
         }
         accessors.append(contentsOf: reducer.result.children)
       }
@@ -400,13 +399,12 @@ public final class Reconciler<Renderer: GraphRenderer> {
         reducer.result.parent = nextAccessor.viewNode
         reducer.result.parentElement = nextAccessor.parentElement
         nextAccessor.visitChildren(reducer)
-        var lastSibling: ViewNode?
         for (index, child) in reducer.result.children.enumerated() {
           child.viewNode.reconciler = current.reconciler
           child.viewNode.id = .structural(index: index)
           nextAccessor.viewNode.children.append(child.viewNode)
           if !nextNode.children.indices.contains(index) {
-            mutations.append(.insert(child.viewNode, parent: nextNode, sibling: lastSibling))
+            mutations.append(.insert(child.viewNode, parent: nextNode, index: index))
           } else {
             let previousChild = nextNode.children[index]
             if child.viewNode.typeInfo?.type != previousChild.typeInfo?.type {
@@ -421,7 +419,6 @@ public final class Reconciler<Renderer: GraphRenderer> {
             {
               mutations.append(.update(previousChild, newElement: newElement))
             }
-            lastSibling = previousChild
           }
         }
         for removed in nextNode.children.dropFirst(reducer.result.children.count) {
@@ -440,20 +437,14 @@ public final class Reconciler<Renderer: GraphRenderer> {
     var renderableMutations = [RenderableMutation<Renderer>]()
     for mutation in visitor.mutations {
       switch mutation {
-      case let .insert(viewNode, parent, sibling):
-        if let sibling = sibling,
-           let index = parent?.children.firstIndex(where: { $0 === sibling })
-        {
-          parent?.children.insert(viewNode, at: index + 1)
-        } else {
-          parent?.children.insert(viewNode, at: 0)
-        }
+      case let .insert(viewNode, parent, index):
+        parent?.children.insert(viewNode, at: index)
         guard let element = viewNode.element else { continue }
         renderableMutations
           .append(.insert(
             element: element,
             parent: viewNode.parentElement ?? renderer.rootElement,
-            sibling: sibling?.element
+            index: index
           ))
       case let .remove(viewNode, parent):
         guard let index = parent.children.firstIndex(where: { $0 === viewNode }) else { continue }
