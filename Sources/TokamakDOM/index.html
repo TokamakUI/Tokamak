@@ -7,38 +7,49 @@
     <script>
       window.Tokamak = {
         root: undefined,
+        create: (element) => {
+          const result = document.createElement(element.tag)
+          for (const attribute of element.attributes) {
+            if (attribute.property)
+              result[attribute.name] = attribute.value
+            else
+              result.setAttribute(attribute.name, attribute.value)
+          }
+          if (!!element.innerHTML)
+            result.innerHTML = element.innerHTML
+          for (const [event, action] of Object.entries(element.listeners))
+            result.addEventListener(event, action)
+          element.bind(result)
+          return result
+        },
         commit: (mutations) => {
           for (const mutation of mutations) {
             console.log(mutation)
             switch (mutation.operation) {
             case 0: // .insert
               const parent = mutation.parent() ?? window.Tokamak.root
-              const element = document.createElement(mutation.element.tag)
-              for (const attribute of mutation.element.attributes) {
-                if (attribute.property)
-                  element[attribute.name] = attribute.value
-                else
-                  element.setAttribute(attribute.name, attribute.value)
-              }
-              if (!!mutation.element.innerHTML)
-                element.innerHTML = mutation.element.innerHTML
-              for (const [event, action] of Object.entries(mutation.element.listeners))
-                element.addEventListener(event, action)
-              mutation.element.bind(element)
-              let sibling = undefined
-              if (!!mutation.sibling)
-                sibling = mutation.sibling()
-              if (parent.children.length > mutation.index)
+              const element = window.Tokamak.create(mutation.element)
+              if (parent.children.length > mutation.index) {
+                console.log('Inserting', element, 'at', mutation.index, 'before', parent.children[mutation.index], 'on', parent)
                 parent.insertBefore(element, parent.children[mutation.index])
-              else
-                parent.prepend(element)
+              } else {
+                console.log('Appending', element, 'because parent', parent, 'only has', parent.children.length, 'and we want index', mutation.index)
+                parent.appendChild(element)
+              }
               break
             case 1: // .remove
               if (!mutation.element) {
                 console.error(`Cannot remove null from parent.`)
                 continue
               }
-              mutation.parent()?.removeChild(mutation.element)
+              mutation.element.remove()
+              break
+            case 2: // .replace
+              const replaceParent = mutation.parent() ?? window.Tokamak.root
+              const original = mutation.element()
+              const replacement = window.Tokamak.create(mutation.replacement)
+              console.log("Replace", original, "with", replacement, "on", replaceParent)
+              replaceParent.replaceChild(replacement, original)
               break
             case 3: // .update
               for (const attribute of mutation.updates.attributes) {

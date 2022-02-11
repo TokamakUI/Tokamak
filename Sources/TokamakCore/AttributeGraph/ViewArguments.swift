@@ -10,14 +10,24 @@ import Foundation
 public struct ViewInputs<V: View> {
   let view: V
   let proposedSize: CGSize?
-  let environment: EnvironmentValues
+  let environment: EnvironmentBox
 }
 
 public struct ViewOutputs {
-  let environment: EnvironmentValues
+  /// A container for a reference to the current `EnvironmentValues`.
+  /// This is stored as a reference to avoid copying the environment when unnecessary.
+  let environment: EnvironmentBox
   let preferences: _PreferenceStore
   let size: CGSize
   let layoutComputer: LayoutComputer?
+}
+
+final class EnvironmentBox {
+  let environment: EnvironmentValues
+
+  init(_ environment: EnvironmentValues) {
+    self.environment = environment
+  }
 }
 
 extension ViewOutputs {
@@ -28,7 +38,8 @@ extension ViewOutputs {
     size: CGSize? = nil,
     layoutComputer: LayoutComputer? = nil
   ) {
-    self.environment = environment ?? inputs.environment
+    // Only replace the EnvironmentBox when we change the environment. Otherwise the same box can be reused.
+    self.environment = environment.map(EnvironmentBox.init) ?? inputs.environment
     self.preferences = preferences ?? .init()
     self.size = size ?? inputs.proposedSize ?? .zero
     self.layoutComputer = layoutComputer
@@ -47,7 +58,7 @@ public extension View {
 
 public extension ModifiedContent where Content: View, Modifier: ViewModifier {
   static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
-    var environment = inputs.environment
+    var environment = inputs.environment.environment
     if let environmentWriter = inputs.view.modifier as? EnvironmentModifier {
       environmentWriter.modifyEnvironment(&environment)
     }

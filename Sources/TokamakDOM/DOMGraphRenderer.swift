@@ -87,12 +87,12 @@ public struct DOMGraphRenderer: GraphRenderer {
     view is HTMLConvertible || view is DOMNodeConvertible
   }
 
-  public func commit(_ mutations: [RenderableMutation<Self>]) {
+  public func commit(_ mutations: [Mutation<Self>]) {
     jsCommit(mutations.map { $0.object() })
   }
 }
 
-extension RenderableMutation where Renderer == DOMGraphRenderer {
+extension Mutation where Renderer == DOMGraphRenderer {
   func object() -> [String: ConvertibleToJSValue] {
     switch self {
     case let .insert(element, parent, index):

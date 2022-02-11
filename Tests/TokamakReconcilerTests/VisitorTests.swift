@@ -27,11 +27,17 @@ private struct TestView: View {
       VStack {
         Text("\(count)")
         HStack {
-          Button("Decrement") {
-            count -= 1
+          if count > 0 {
+            Button("Decrement") {
+              print("Decrement")
+              count -= 1
+            }
           }
-          Button("Increment") {
-            count += 1
+          if count < 5 {
+            Button("Increment") {
+              print("Increment")
+              count += 1
+            }
           }
         }
       }
@@ -122,7 +128,7 @@ struct TestRenderer: GraphRenderer {
     view is TestPrimitive
   }
 
-  func commit(_ mutations: [RenderableMutation<TestRenderer>]) {
+  func commit(_ mutations: [Mutation<TestRenderer>]) {
     for mutation in mutations {
       switch mutation {
       case let .insert(element, parent, sibling):
@@ -141,48 +147,87 @@ struct TestRenderer: GraphRenderer {
 final class VisitorTests: XCTestCase {
   func testRenderer() {
     let reconciler = TestRenderer(.root).render(TestView())
-    let decrement = (
-      reconciler.tree
-        .findView(id: .structural(index: 0))? // TestView
-        .findView(id: .structural(index: 0))? // Counter
-        .findView(id: .structural(index: 0))? // VStack
-        .findView(id: .structural(index: 0))? // TupleView
-        .findView(id: .structural(index: 1))? // HStack
-        .findView(id: .structural(index: 0))? // TupleView
-        .findView(id: .structural(index: 0))? // Increment Button
-        .view as? Button<Text>
-    )
-    let increment = (
-      reconciler.tree
-        .findView(id: .structural(index: 0))? // TestView
-        .findView(id: .structural(index: 0))? // Counter
-        .findView(id: .structural(index: 0))? // VStack
-        .findView(id: .structural(index: 0))? // TupleView
-        .findView(id: .structural(index: 1))? // HStack
-        .findView(id: .structural(index: 0))? // TupleView
-        .findView(id: .structural(index: 1))? // Increment Button
-        .view as? Button<Text>
-    )
-    increment?.action()
-    let text = reconciler.tree
-      .findView(id: .structural(index: 0))? // TestView
-      .findView(id: .structural(index: 0))? // Counter
-      .findView(id: .structural(index: 0))? // VStack
-      .findView(id: .structural(index: 0))? // TupleView
-      .findView(id: .structural(index: 0)) // Text
-    XCTAssertEqual(
-      text?.element?.description,
-      "<TokamakCore.Text content=\"1\" modifiers=\"[]\"></TokamakCore.Text>"
-    )
-    increment?.action()
-    XCTAssertEqual(
-      text?.element?.description,
-      "<TokamakCore.Text content=\"2\" modifiers=\"[]\"></TokamakCore.Text>"
-    )
-    decrement?.action()
-    XCTAssertEqual(
-      text?.element?.description,
-      "<TokamakCore.Text content=\"1\" modifiers=\"[]\"></TokamakCore.Text>"
-    )
+    print(reconciler.tree)
+    func decrement() {
+      (
+        reconciler.tree // ModifiedContent
+          .child(at: 0)? // _ViewModifier_Content
+          .child(at: 0)? // TestView
+          .child(at: 0)? // Counter
+          .child(at: 0)? // VStack
+          .child(at: 0)? // TupleView
+          .child(at: 1)? // HStack
+          .child(at: 0)? // TupleView
+          .child(at: 0)? // Optional
+          .child(at: 0)? // Button
+          .view as? Button<Text>
+      )?
+        .action()
+    }
+    func increment() {
+      (
+        reconciler.tree // ModifiedContent
+          .child(at: 0)? // _ViewModifier_Content
+          .child(at: 0)? // TestView
+          .child(at: 0)? // Counter
+          .child(at: 0)? // VStack
+          .child(at: 0)? // TupleView
+          .child(at: 1)? // HStack
+          .child(at: 0)? // TupleView
+          .child(at: 1)? // Optional
+          .child(at: 0)? // Button
+          .view as? Button<Text>
+      )?
+        .action()
+    }
+    for i in 0..<5 {
+      increment()
+    }
+    print(reconciler.tree)
+    decrement()
+    print(reconciler.tree)
+//    let decrement = (
+//      reconciler.tree
+//        .findView(id: .structural(index: 0))? // TestView
+//        .findView(id: .structural(index: 0))? // Counter
+//        .findView(id: .structural(index: 0))? // VStack
+//        .findView(id: .structural(index: 0))? // TupleView
+//        .findView(id: .structural(index: 1))? // HStack
+//        .findView(id: .structural(index: 0))? // TupleView
+//        .findView(id: .structural(index: 0))? // Increment Button
+//        .view as? Button<Text>
+//    )
+//    let increment = (
+//      reconciler.tree
+//        .findView(id: .structural(index: 0))? // TestView
+//        .findView(id: .structural(index: 0))? // Counter
+//        .findView(id: .structural(index: 0))? // VStack
+//        .findView(id: .structural(index: 0))? // TupleView
+//        .findView(id: .structural(index: 1))? // HStack
+//        .findView(id: .structural(index: 0))? // TupleView
+//        .findView(id: .structural(index: 1))? // Increment Button
+//        .view as? Button<Text>
+//    )
+//    increment?.action()
+//    let text = reconciler.tree
+//      .findView(id: .structural(index: 0))? // TestView
+//      .findView(id: .structural(index: 0))? // Counter
+//      .findView(id: .structural(index: 0))? // VStack
+//      .findView(id: .structural(index: 0))? // TupleView
+//      .findView(id: .structural(index: 0)) // Text
+//    XCTAssertEqual(
+//      text?.element?.description,
+//      "<TokamakCore.Text content=\"1\" modifiers=\"[]\"></TokamakCore.Text>"
+//    )
+//    increment?.action()
+//    XCTAssertEqual(
+//      text?.element?.description,
+//      "<TokamakCore.Text content=\"2\" modifiers=\"[]\"></TokamakCore.Text>"
+//    )
+//    decrement?.action()
+//    XCTAssertEqual(
+//      text?.element?.description,
+//      "<TokamakCore.Text content=\"1\" modifiers=\"[]\"></TokamakCore.Text>"
+//    )
   }
 }

@@ -78,6 +78,22 @@ public extension HTMLConvertible {
   }
 }
 
+@_spi(TokamakStaticHTML) extension HStack: HTMLConvertible {
+  @_spi(TokamakStaticHTML) public var tag: String { "div" }
+  @_spi(TokamakStaticHTML) public var attributes: [HTMLAttribute: String] {
+    let spacing = _HStackProxy(self).spacing
+    return [
+      "style": """
+      align-items: \(alignment.cssValue);
+      \(hasSpacer ? "width: 100%;" : "")
+      \(fillCrossAxis ? "height: 100%;" : "")
+      \(spacing != defaultStackSpacing ? "--tokamak-stack-gap: \(spacing)px;" : "")
+      """,
+      "class": "_tokamak-stack _tokamak-hstack",
+    ]
+  }
+}
+
 public struct StaticHTMLGraphRenderer: GraphRenderer {
   public let rootElement: HTMLElement
   public let defaultEnvironment: EnvironmentValues
@@ -93,7 +109,7 @@ public struct StaticHTMLGraphRenderer: GraphRenderer {
     view is HTMLConvertible
   }
 
-  public func commit(_ mutations: [RenderableMutation<Self>]) {
+  public func commit(_ mutations: [Mutation<Self>]) {
     for mutation in mutations {
       switch mutation {
       case let .insert(element, parent, index):
