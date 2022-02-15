@@ -58,7 +58,7 @@ protocol DOMNodeConvertible: HTMLConvertible {
   var listeners: [String: Listener] { get }
 }
 
-public struct DOMGraphRenderer: GraphRenderer {
+public struct DOMFiberRenderer: FiberRenderer {
   public let rootElement: DOMElement
   private let jsCommit: JSFunction
 
@@ -103,7 +103,7 @@ public struct DOMGraphRenderer: GraphRenderer {
   }
 }
 
-extension Mutation where Renderer == DOMGraphRenderer {
+extension Mutation where Renderer == DOMFiberRenderer {
   func object() -> [String: ConvertibleToJSValue] {
     switch self {
     case let .insert(element, parent, index):

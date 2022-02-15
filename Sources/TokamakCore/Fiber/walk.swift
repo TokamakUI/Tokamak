@@ -11,26 +11,26 @@ enum WalkWorkResult<Success> {
   case pause
 }
 
-enum WalkResult<Renderer: GraphRenderer, Success> {
+enum WalkResult<Renderer: FiberRenderer, Success> {
   case success(Success)
   case finished
-  case paused(at: Reconciler<Renderer>.ViewNode)
+  case paused(at: FiberReconciler<Renderer>.Fiber)
 }
 
 @discardableResult
-func walk<Renderer: GraphRenderer>(
-  _ root: Reconciler<Renderer>.ViewNode,
-  _ work: @escaping (Reconciler<Renderer>.ViewNode) throws -> Bool
+func walk<Renderer: FiberRenderer>(
+  _ root: FiberReconciler<Renderer>.Fiber,
+  _ work: @escaping (FiberReconciler<Renderer>.Fiber) throws -> Bool
 ) rethrows -> WalkResult<Renderer, ()> {
   try walk(root) {
     try work($0) ? .continue : .pause
   }
 }
 
-/// Parent-first depth-first traversal of a `ViewNode` tree.
-func walk<Renderer: GraphRenderer, Success>(
-  _ root: Reconciler<Renderer>.ViewNode,
-  _ work: @escaping (Reconciler<Renderer>.ViewNode) throws -> WalkWorkResult<Success>
+/// Parent-first depth-first traversal of a `Fiber` tree.
+func walk<Renderer: FiberRenderer, Success>(
+  _ root: FiberReconciler<Renderer>.Fiber,
+  _ work: @escaping (FiberReconciler<Renderer>.Fiber) throws -> WalkWorkResult<Success>
 ) rethrows -> WalkResult<Renderer, Success> {
   var current = root
   while true {

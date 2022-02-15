@@ -124,7 +124,7 @@ public extension HTMLConvertible {
   }
 }
 
-public struct StaticHTMLGraphRenderer: GraphRenderer {
+public struct StaticHTMLFiberRenderer: FiberRenderer {
   public let rootElement: HTMLElement
   public let defaultEnvironment: EnvironmentValues
 
