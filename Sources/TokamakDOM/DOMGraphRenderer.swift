@@ -10,17 +10,33 @@ import JavaScriptKit
 @_spi(TokamakStaticHTML) import TokamakStaticHTML
 
 public final class DOMElement: Element {
-  public static func == (lhs: DOMElement, rhs: DOMElement) -> Bool {
-    lhs.tag == rhs.tag && lhs.attributes == rhs.attributes && lhs.innerHTML == rhs.innerHTML
+  var reference: JSObject?
+
+  public struct Data: ElementData {
+    let tag: String
+    let attributes: [HTMLAttribute: String]
+    let innerHTML: String?
+    let listeners: [String: Listener]
+    let debugData: [String: ConvertibleToJSValue]
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+      lhs.tag == rhs.tag && lhs.attributes == rhs.attributes && lhs.innerHTML == rhs.innerHTML
+    }
   }
 
-  var reference: JSObject?
-  var tag: String
-  var attributes: [HTMLAttribute: String]
-  var innerHTML: String?
-  var listeners: [String: Listener] = [:]
+  public var data: Data
 
-  public init<V>(from primitiveView: V) where V: View {
+  public init(from data: Data) {
+    self.data = data
+  }
+
+  public func update(with data: Data) {
+    self.data = data
+  }
+}
+
+public extension DOMElement.Data {
+  init<V>(from primitiveView: V) where V: View {
     guard let primitiveView = primitiveView as? HTMLConvertible else { fatalError() }
     tag = primitiveView.tag
     attributes = primitiveView.attributes
@@ -28,21 +44,13 @@ public final class DOMElement: Element {
 
     if let primitiveView = primitiveView as? DOMNodeConvertible {
       listeners = primitiveView.listeners
+    } else {
+      listeners = [:]
     }
-  }
 
-  public init(
-    reference: JSObject?,
-    tag: String,
-    attributes: [HTMLAttribute: String],
-    innerHTML: String?,
-    listeners: [String: Listener]
-  ) {
-    self.reference = reference
-    self.tag = tag
-    self.attributes = attributes
-    self.innerHTML = innerHTML
-    self.listeners = listeners
+    debugData = [
+      "view": String(reflecting: V.self),
+    ]
   }
 }
 
@@ -74,12 +82,15 @@ public struct DOMGraphRenderer: GraphRenderer {
       """)
     }
     rootElement = .init(
-      reference: reference,
-      tag: "",
-      attributes: [:],
-      innerHTML: nil,
-      listeners: [:]
+      from: .init(
+        tag: "",
+        attributes: [:],
+        innerHTML: nil,
+        listeners: [:],
+        debugData: ["view": "root"]
+      )
     )
+    rootElement.reference = reference
     Tokamak.root = .object(reference)
   }
 
@@ -98,7 +109,8 @@ extension Mutation where Renderer == DOMGraphRenderer {
     case let .insert(element, parent, index):
       return [
         "operation": 0,
-        "element": element.data,
+        "element": element.data.encoded
+          .merging(["bind": element.bindClosure], uniquingKeysWith: { $1 }),
         "parent": parent.lazyReference,
         "index": index,
       ]
@@ -113,22 +125,40 @@ extension Mutation where Renderer == DOMGraphRenderer {
         "operation": 2,
         "parent": parent.lazyReference,
         "element": previous.lazyReference,
-        "replacement": replacement.data,
+        "replacement": replacement.data.encoded,
       ]
     case let .update(previous, newElement):
+      previous.update(with: newElement)
       return [
         "operation": 3,
         "previous": previous.reference,
-        "updates": newElement.data,
+        "updates": newElement.encoded
+          .merging(["bind": previous.bindClosure], uniquingKeysWith: { $1 }),
       ]
     }
   }
 }
 
 extension DOMElement {
-  var data: [String: ConvertibleToJSValue] {
+  var bindClosure: ConvertibleToJSValue {
+    JSOneshotClosure { [weak self] in
+      self?.reference = $0[0].object!
+      return .undefined
+    }
+  }
+
+  var lazyReference: JSClosure {
+    JSClosure { _ in
+      guard let reference = self.reference else { return .undefined }
+      return .object(reference)
+    }
+  }
+}
+
+extension DOMElement.Data {
+  var encoded: [String: ConvertibleToJSValue] {
     [
-      "tag": reference ?? tag,
+      "tag": tag,
       "attributes": attributes.map {
         [
           "name": $0.key.value,
@@ -143,18 +173,8 @@ extension DOMElement {
           return .undefined
         }
       },
-      "bind": JSOneshotClosure { [weak self] in
-        self?.reference = $0[0].object!
-        return .undefined
-      },
+      "debugData": debugData,
     ]
-  }
-
-  var lazyReference: JSClosure {
-    JSClosure { _ in
-      guard let reference = self.reference else { return .undefined }
-      return .object(reference)
-    }
   }
 }
 

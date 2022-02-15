@@ -36,6 +36,9 @@ private struct TestView: View {
           if count < 5 {
             Button("Increment") {
               print("Increment")
+              if count + 1 >= 5 {
+                print("Hit 5")
+              }
               count += 1
             }
           }
@@ -89,27 +92,42 @@ extension _PrimitiveButtonStyleBody: TestPrimitive {
 }
 
 final class TestElement: Element, CustomStringConvertible {
-  static func == (lhs: TestElement, rhs: TestElement) -> Bool {
-    lhs.renderedValue == rhs.renderedValue && lhs.closingTag == rhs.closingTag
+  struct Data: ElementData, Equatable {
+    let renderedValue: String
+    let closingTag: String
+
+    init(
+      renderedValue: String,
+      closingTag: String
+    ) {
+      self.renderedValue = renderedValue
+      self.closingTag = closingTag
+    }
+
+    init<V>(from primitiveView: V) where V: View {
+      guard let primitiveView = primitiveView as? TestPrimitive else { fatalError() }
+      renderedValue =
+        "<\(primitiveView.tag) \(primitiveView.attributes.sorted(by: { $0.key < $1.key }).map { "\($0.key)=\"\(String(describing: $0.value))\"" }.joined(separator: " "))>"
+      closingTag = "</\(primitiveView.tag)>"
+    }
   }
 
-  var renderedValue: String
-  var closingTag: String
+  var data: Data
 
-  init<V>(from primitiveView: V) where V: View {
-    guard let primitiveView = primitiveView as? TestPrimitive else { fatalError() }
-    renderedValue =
-      "<\(primitiveView.tag) \(primitiveView.attributes.sorted(by: { $0.key < $1.key }).map { "\($0.key)=\"\(String(describing: $0.value))\"" }.joined(separator: " "))>"
-    closingTag = "</\(primitiveView.tag)>"
+  init(from data: Data) {
+    self.data = data
   }
 
   var description: String {
-    "\(renderedValue)\(closingTag)"
+    "\(data.renderedValue)\(data.closingTag)"
   }
 
   init(renderedValue: String, closingTag: String) {
-    self.renderedValue = renderedValue
-    self.closingTag = closingTag
+    data = .init(renderedValue: renderedValue, closingTag: closingTag)
+  }
+
+  func update(with data: Data) {
+    self.data = data
   }
 
   static var root: Self { .init(renderedValue: "<root>", closingTag: "</root>") }
@@ -131,14 +149,16 @@ struct TestRenderer: GraphRenderer {
   func commit(_ mutations: [Mutation<TestRenderer>]) {
     for mutation in mutations {
       switch mutation {
-      case let .insert(element, parent, sibling):
-        print("Insert \(element) after \(sibling as Any) in \(parent)")
+      case let .insert(element, parent, index):
+        print("Insert \(element) at \(index) in \(parent)")
       case let .remove(element, parent):
         print("Remove \(element) from \(parent as Any)")
       case let .replace(parent, previous, replacement):
         print("Replace \(previous) with \(replacement) in \(parent)")
-      case let .update(previous, newElement):
-        print("Update \(previous) with \(newElement)")
+      case let .update(previous, newData):
+        print("Update \(previous) with \(newData)")
+        previous.update(with: newData)
+        print(previous)
       }
     }
   }
@@ -147,35 +167,36 @@ struct TestRenderer: GraphRenderer {
 final class VisitorTests: XCTestCase {
   func testRenderer() {
     let reconciler = TestRenderer(.root).render(TestView())
-    print(reconciler.tree)
     func decrement() {
       (
-        reconciler.tree // ModifiedContent
-          .child(at: 0)? // _ViewModifier_Content
-          .child(at: 0)? // TestView
-          .child(at: 0)? // Counter
-          .child(at: 0)? // VStack
-          .child(at: 0)? // TupleView
-          .child(at: 1)? // HStack
-          .child(at: 0)? // TupleView
-          .child(at: 0)? // Optional
-          .child(at: 0)? // Button
+        reconciler.current // ModifiedContent
+          .child? // _ViewModifier_Content
+          .child? // TestView
+          .child? // Counter
+          .child? // VStack
+          .child? // TupleView
+          .child?.sibling? // HStack
+          .child? // TupleView
+          .child? // Optional
+          .child? // Button
           .view as? Button<Text>
       )?
         .action()
     }
     func increment() {
       (
-        reconciler.tree // ModifiedContent
-          .child(at: 0)? // _ViewModifier_Content
-          .child(at: 0)? // TestView
-          .child(at: 0)? // Counter
-          .child(at: 0)? // VStack
-          .child(at: 0)? // TupleView
-          .child(at: 1)? // HStack
-          .child(at: 0)? // TupleView
-          .child(at: 1)? // Optional
-          .child(at: 0)? // Button
+        reconciler.current // ModifiedContent
+          .child? // _ViewModifier_Content
+          .child? // TestView
+          .child? // Counter
+          .child? // VStack
+          .child? // TupleView
+          .child? // Text
+          .sibling? // HStack
+          .child? // TupleView
+          .child? // Optional
+          .sibling? // Optional
+          .child? // Button
           .view as? Button<Text>
       )?
         .action()
@@ -183,9 +204,15 @@ final class VisitorTests: XCTestCase {
     for i in 0..<5 {
       increment()
     }
-    print(reconciler.tree)
+    print(reconciler.current)
     decrement()
-    print(reconciler.tree)
+//    for i in 0..<5 {
+//      increment()
+//    }
+//    print(reconciler.tree)
+//    decrement()
+//    print(reconciler.tree)
+
 //    let decrement = (
 //      reconciler.tree
 //        .findView(id: .structural(index: 0))? // TestView

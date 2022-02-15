@@ -177,7 +177,8 @@ let package = Package(
     ),
     .target(
       name: "TokamakDOM",
-      dependencies: tokamakDOMDependencies
+      dependencies: tokamakDOMDependencies,
+      exclude: ["index.html"]
     ),
     .executableTarget(
       name: "TokamakDemo",

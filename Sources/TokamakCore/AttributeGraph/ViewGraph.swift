@@ -19,7 +19,20 @@ typealias ViewVisitorF<V: ViewVisitor> = (V) -> ()
 
 protocol ViewReducer {
   associatedtype Result
+  static func reduce<V: View>(into partialResult: inout Result, nextView: V)
   static func reduce<V: View>(partialResult: Result, nextView: V) -> Result
+}
+
+extension ViewReducer {
+  static func reduce<V: View>(into partialResult: inout Result, nextView: V) {
+    partialResult = Self.reduce(partialResult: partialResult, nextView: nextView)
+  }
+
+  static func reduce<V: View>(partialResult: Result, nextView: V) -> Result {
+    var result = partialResult
+    Self.reduce(into: &result, nextView: nextView)
+    return result
+  }
 }
 
 final class ReducerVisitor<R: ViewReducer>: ViewVisitor {
@@ -30,7 +43,7 @@ final class ReducerVisitor<R: ViewReducer>: ViewVisitor {
   }
 
   func visit<V>(_ view: V) where V: View {
-    result = R.reduce(partialResult: result, nextView: view)
+    R.reduce(into: &result, nextView: view)
   }
 }
 
@@ -39,7 +52,15 @@ extension ViewReducer {
 }
 
 /// An output from a `Renderer`.
-public protocol Element: AnyObject, Equatable {
+public protocol Element: AnyObject {
+  associatedtype Data: ElementData
+  var data: Data { get }
+  init(from data: Data)
+  func update(with data: Data)
+}
+
+/// The data used to create an `Element`. We re-use `Element` instances, but can re-create and copy `ElementData` as often as needed.
+public protocol ElementData: Equatable {
   init<V: View>(from primitiveView: V)
 }
 
@@ -67,24 +88,43 @@ public enum Mutation<Renderer: GraphRenderer> {
     previous: Renderer.ElementType,
     replacement: Renderer.ElementType
   )
-  case update(previous: Renderer.ElementType, newElement: Renderer.ElementType)
+  case update(previous: Renderer.ElementType, newData: Renderer.ElementType.Data)
 }
 
 @_spi(TokamakCore) public extension Reconciler {
   final class ViewNode: CustomDebugStringConvertible {
     weak var reconciler: Reconciler<Renderer>?
 
+    /// The underlying `View` instance.
     var view: Any!
+    /// Outputs from evaluating `View._makeView`
     var outputs: ViewOutputs!
+    /// A function to visit `view` generically.
     var visitView: ((ViewVisitor) -> ())!
+    /// The identity of this `View`
     var id: Identity?
+    /// The mounted element, if this is a Renderer primitive.
     var element: Renderer.ElementType?
-    var children: [ViewNode]
+    /// The first child node.
+    var child: ViewNode?
+    /// This node's right sibling.
+    var sibling: ViewNode?
+    /// An unowned reference to the parent node.
     unowned var parent: ViewNode?
-    var elementParent: ViewNode?
+    /// The nearest parent that can be mounted on.
+    unowned var elementParent: ViewNode?
+    /// The cached type information for the underlying `View`.
     var typeInfo: TypeInfo?
+    /// Boxes that store `State` data.
     var state: [PropertyInfo: MutableStorage]!
 
+    /// The WIP node if this is current, or the current node if this is WIP.
+    weak var alternate: ViewNode?
+
+    var createAndBindAlternate: (() -> ViewNode)?
+
+    /// A box holding a value for an `@State` property wrapper.
+    /// Will call `onSet` (usually a `Reconciler.reconcile` call) when updated.
     final class MutableStorage {
       private(set) var value: Any
       let onSet: () -> ()
@@ -107,14 +147,15 @@ public enum Mutation<Renderer: GraphRenderer> {
 
     init<V: View>(
       _ view: inout V,
-      element: ((V) -> Renderer.ElementType?)?,
+      element: Renderer.ElementType?,
       parent: ViewNode?,
       elementParent: ViewNode?,
       childIndex: Int,
       reconciler: Reconciler<Renderer>?
     ) {
       self.reconciler = reconciler
-      children = []
+      child = nil
+      sibling = nil
       self.parent = parent
       self.elementParent = elementParent
       typeInfo = TokamakCore.typeInfo(of: V.self)
@@ -133,28 +174,68 @@ public enum Mutation<Renderer: GraphRenderer> {
         $0.visit(self.view as! V)
       }
 
-      self.element = element?(view)
+      if let element = element {
+        self.element = element
+      } else if Renderer.isPrimitive(view) {
+        self.element = .init(from: .init(from: view))
+      }
+
+      let alternateView = view
+      createAndBindAlternate = {
+        // Create the alternate lazily
+        let alternate = ViewNode(
+          bound: alternateView,
+          alternate: self,
+          outputs: self.outputs,
+          typeInfo: self.typeInfo,
+          element: self.element,
+          parent: self.parent?.alternate,
+          elementParent: self.elementParent?.alternate,
+          reconciler: reconciler
+        )
+        self.alternate = alternate
+        if self.parent?.child === self {
+          self.parent?.alternate?.child = alternate // Link it with our parent's alternate.
+        } else {
+          // Find our left sibling.
+          var node = self.parent?.child
+          while node?.sibling !== self {
+            guard node?.sibling != nil else { return alternate }
+            node = node?.sibling
+          }
+          if node?.sibling === self {
+            node?.alternate?.sibling = alternate // Link it with our left sibling's alternate.
+          }
+        }
+        return alternate
+      }
     }
 
-    init(
-      bound view: Any,
+    init<V: View>(
+      bound view: V,
+      alternate: ViewNode,
       outputs: ViewOutputs,
       typeInfo: TypeInfo?,
-      visitView: @escaping (ViewVisitor) -> (),
       element: Renderer.ElementType?,
       parent: Reconciler<Renderer>.ViewNode?,
       elementParent: ViewNode?,
       reconciler: Reconciler<Renderer>?
     ) {
       self.view = view
+      self.alternate = alternate
       self.reconciler = reconciler
       self.element = element
-      children = []
+      child = nil
+      sibling = nil
       self.parent = parent
       self.elementParent = elementParent
       self.typeInfo = typeInfo
-      self.visitView = visitView
       self.outputs = outputs
+      visitView = { [weak self] in
+        guard let self = self else { return }
+        // swiftlint:disable:next force_cast
+        $0.visit(self.view as! V)
+      }
     }
 
     private func bindProperties<V: View>(
@@ -169,9 +250,9 @@ public enum Mutation<Renderer: GraphRenderer> {
         var value = property.get(from: view)
         if var storage = value as? WritableValueStorage {
           let box = MutableStorage(initialValue: storage.anyInitialValue, onSet: { [weak self] in
-            guard let self = self,
-                  let wip = self.reconciler?.reconcile(from: self) else { return }
-            self.apply(wip)
+            guard let self = self else { return }
+            self.reconciler?.reconcile(from: self)
+//            self.flip()
           })
           state[property] = box
           storage.getter = { box.value }
@@ -186,30 +267,61 @@ public enum Mutation<Renderer: GraphRenderer> {
       return state
     }
 
-    func clone() -> ViewNode {
-      .init(
-        bound: view!,
-        outputs: outputs,
-        typeInfo: typeInfo,
-        visitView: visitView,
-        element: element,
-        parent: parent,
-        elementParent: elementParent,
-        reconciler: reconciler
-      )
+    /// Flip this node with its `alternate` to reflect changes from the reconciler.
+    func flip() {
+      let child = child
+      self.child = alternate?.child
+      alternate?.child = child
+//      if self.parent?.child === self {
+//        self.parent?.child = alternate
+//        self.parent?.alternate?.child = self
+//      } else {
+//        var node = self.parent?.child
+//        while node != nil && node?.sibling !== self {
+//          node = node?.sibling
+//        }
+//        node?.alternate?.sibling = self
+//        node?.sibling = alternate
+//      }
+//      let alternateElement = alternate?.element
+//      let alternateElementParent = alternate?.elementParent
+//      let alternateParent = alternate?.parent
+//      let alternateSibling = alternate?.sibling
+//      alternate?.element = self.element
+//      alternate?.elementParent = self.elementParent
+//      alternate?.parent = self.parent
+//      alternate?.sibling = self.sibling
+//      self.element = alternateElement
+//      self.elementParent = alternateElementParent
+//      self.parent = alternateParent
+//      self.sibling = alternateSibling
     }
 
-    private func apply(_ wip: ViewNode) {
-      view = wip.view
-      outputs = wip.outputs
-      visitView = wip.visitView
-      id = wip.id
-      element = wip.element
-      children = wip.children
-      parent = wip.parent
-      elementParent = wip.elementParent
-      typeInfo = wip.typeInfo
-      state = wip.state
+    func update<V: View>(
+      with view: inout V,
+      childIndex: Int
+    ) -> Renderer.ElementType.Data? {
+      typeInfo = TokamakCore.typeInfo(of: V.self)
+
+      let viewInputs = ViewInputs<V>(
+        view: view,
+        proposedSize: parent?.outputs.layoutComputer?.proposeSize(for: view, at: childIndex),
+        environment: parent?.outputs.environment ?? .init(.init())
+      )
+      state = bindProperties(to: &view, typeInfo, viewInputs)
+      self.view = view
+      outputs = V._makeView(viewInputs)
+      visitView = { [weak self] in
+        guard let self = self else { return }
+        // swiftlint:disable:next force_cast
+        $0.visit(self.view as! V)
+      }
+
+      if Renderer.isPrimitive(view) {
+        return .init(from: view)
+      } else {
+        return nil
+      }
     }
 
     public var debugDescription: String {
@@ -217,279 +329,295 @@ public enum Mutation<Renderer: GraphRenderer> {
     }
 
     private func flush(level: Int = 0) -> String {
-      let spaces = String(repeating: "  ", count: level)
-      let elementDescription: String
-      if let element = element {
-        elementDescription = """
-        (
-        \(spaces)  \(String(describing: element))
-        \(spaces))
-        """
-      } else {
-        elementDescription = ""
-      }
-      let childrenDescription: String
-      if children.isEmpty {
-        childrenDescription = ""
-      } else {
-        childrenDescription = """
-        {
-        \(children.map { $0.flush(level: level + 1) }.joined(separator: "\n"))
-        \(spaces)}
-        """
-      }
+//      var result = ""
+//      walk(self) { node in
+//        result += "\n\(node.typeInfo?.type ?? Any.self)\(node.element != nil ? "(\(node.element!))" : "")"
+//        return true
+//      }
+//      return result
+//      return "\(typeInfo?.type ?? Any.self)\(element != nil ? "(\(element!))" : "")"
+      let spaces = String(repeating: " ", count: level)
       return """
-      \(spaces)\(String(describing: type(of: view!))
-        .split(separator: "<")[0])\(elementDescription) \(childrenDescription)
+      \(spaces)\(String(describing: typeInfo?.type ?? Any.self)
+        .split(separator: "<")[0])\(element != nil ? "(\(element!))" : "") {
+      \(child?.flush(level: level + 2) ?? "")
+      \(spaces)}
+      \(sibling?.flush(level: level) ?? "")
       """
     }
   }
 }
 
-@_spi(TokamakCore) public extension Reconciler.ViewNode {
-  func traverse<Result>(_ work: (Reconciler<Renderer>.ViewNode) -> Result?) -> Result? {
-    var stack = children
-    while true {
-      guard let next = stack.popLast() else { return nil }
-      if let result = work(next) {
-        return result
-      }
-      stack.insert(contentsOf: next.children, at: 0)
-    }
-  }
-
-  func findView(id: Reconciler<Renderer>.ViewNode.Identity) -> Reconciler<Renderer>.ViewNode? {
-    traverse { node in
-      node.id == id ? node : nil
-    }
-  }
-
-  func child(at index: Int) -> Reconciler<Renderer>.ViewNode? {
-    guard children.indices.contains(index) else { return nil }
-    return children[index]
-  }
-}
-
 public final class Reconciler<Renderer: GraphRenderer> {
-  @_spi(TokamakCore) public var tree: ViewNode!
+  @_spi(TokamakCore) public var current: ViewNode!
+  private var alternate: ViewNode!
   public let renderer: Renderer
 
   public init<V: View>(_ renderer: Renderer, _ view: V) {
     self.renderer = renderer
     var view = view.environmentValues(renderer.defaultEnvironment)
-    tree = .init(
+    current = .init(
       &view,
-      element: { _ in renderer.rootElement },
+      element: renderer.rootElement,
       parent: nil,
       elementParent: nil,
       childIndex: 0,
       reconciler: self
     )
-    tree = reconcile(from: tree)
+    // Start by building the initial tree.
+    alternate = current.createAndBindAlternate?()
+    reconcile(from: current)
+    // Copy this tree into the alternate so we have two identical trees as a starting point.
+//    self.reconcile(from: current)
   }
 
+  /// Convert the first level of children of a `View` into a linked list of `ViewNode`s.
   struct TreeReducer: ViewReducer {
-    struct Data {
-      let reconciler: Reconciler?
-      var parent: ViewNode?
-      /// The element to mount this, and its children, on.
-      var elementParent: ViewNode?
-      /// The collapsed children.
-      var children: [Child]
+    final class Result {
+      // For references
+      let viewNode: ViewNode?
+      let visitChildren: (TreeReducer.Visitor) -> ()
+      unowned var parent: Result?
+      var child: Result?
+      var sibling: Result?
+      var newData: Renderer.ElementType.Data?
 
-      struct Child {
-        let viewNode: ViewNode
-        /// The element to use for this children of this child (aka, the grandchildren). Either its own element, or its parent if it has no element.
-        let elementParent: ViewNode?
-        let visitChildren: (TreeReducer.Visitor) -> ()
+      // For reducing
+      var childrenCount: Int = 0
+      var lastSibling: Result?
+      var nextExisting: ViewNode?
+      var nextExistingAlternate: ViewNode?
+
+      init(
+        viewNode: ViewNode?,
+        visitChildren: @escaping (TreeReducer.Visitor) -> (),
+        parent: Result?,
+        child: ViewNode?,
+        alternateChild: ViewNode?,
+        newData: Renderer.ElementType.Data? = nil
+      ) {
+        self.viewNode = viewNode
+        self.visitChildren = visitChildren
+        self.parent = parent
+        nextExisting = child
+        nextExistingAlternate = alternateChild
+        self.newData = newData
       }
     }
 
-    typealias Result = Data
-
-    static func reduce<V>(partialResult: Result, nextView: V) -> Result where V: View {
+    static func reduce<V>(into partialResult: inout Result, nextView: V) where V: View {
+      // Create the node and its element.
       var nextView = nextView
-      let viewNode = ViewNode(
-        &nextView,
-        element: { view in Renderer.isPrimitive(view) ? Renderer.ElementType(from: view) : nil },
-        parent: partialResult.parent,
-        elementParent: partialResult.elementParent,
-        childIndex: partialResult.children.count,
-        // The index is the same as the number of previous children.
-        reconciler: partialResult.reconciler
-      )
-      return .init(
-        reconciler: partialResult.reconciler,
-        parent: partialResult.parent,
-        elementParent: partialResult.elementParent,
-        children: partialResult.children + [
-          .init(
-            viewNode: viewNode,
-            elementParent: viewNode.element != nil ? viewNode : partialResult.elementParent,
-            visitChildren: nextView._visitChildren
-          ),
-        ]
-      )
+      let resultChild: Result
+      if let existing = partialResult.nextExisting {
+        let newData = existing.update(
+          with: &nextView,
+          childIndex: partialResult.childrenCount
+        )
+        resultChild = Result(
+          viewNode: existing,
+          visitChildren: nextView._visitChildren,
+          parent: partialResult,
+          child: existing.child,
+          alternateChild: existing.alternate?.child,
+          newData: newData
+        )
+        partialResult.nextExisting = existing.sibling
+      } else {
+        let viewNode = ViewNode(
+          &nextView,
+          element: partialResult.nextExistingAlternate?.element,
+          parent: partialResult.viewNode,
+          elementParent: partialResult.viewNode?.element != nil
+            ? partialResult.viewNode
+            : partialResult.viewNode?.elementParent,
+          childIndex: partialResult.childrenCount,
+          reconciler: partialResult.viewNode?.reconciler
+        )
+        if let alternate = partialResult.nextExistingAlternate {
+          viewNode.alternate = alternate
+          partialResult.nextExistingAlternate = alternate.sibling
+        }
+        resultChild = Result(
+          viewNode: viewNode,
+          visitChildren: nextView._visitChildren,
+          parent: partialResult,
+          child: nil,
+          alternateChild: viewNode.alternate?.child
+        )
+      }
+      partialResult.childrenCount += 1
+      // Get the last child element we've processed, and add the new child as its sibling.
+      if let lastSibling = partialResult.lastSibling {
+        lastSibling.viewNode?.sibling = resultChild.viewNode
+        lastSibling.sibling = resultChild
+      } else {
+        // Otherwise setup the first child
+        partialResult.viewNode?.child = resultChild.viewNode
+        partialResult.child = resultChild
+      }
+      partialResult.lastSibling = resultChild
     }
   }
 
   final class ReconcilerVisitor: ViewVisitor {
     unowned let reconciler: Reconciler<Renderer>
+    /// The current, mounted `ViewNode`.
     var currentRoot: ViewNode
-    let wipRoot: ViewNode
     var mutations = [Mutation<Renderer>]()
 
     init(root: ViewNode, reconciler: Reconciler<Renderer>) {
       self.reconciler = reconciler
       currentRoot = root
-      wipRoot = root.clone()
     }
 
+    /// Walk the current tree, recomputing at each step to check for discrepancies.
+    ///
+    /// Parent-first depth-first traversal.
+    /// Take this `View` tree for example.
+    /// ```swift
+    /// VStack {
+    ///   HStack {
+    ///     Text("A")
+    ///     Text("B")
+    ///   }
+    ///   Text("C")
+    /// }
+    /// ```
+    /// Basically, we read it like this:
+    /// 1. `VStack` has children, so we go to it's first child, `HStack`.
+    /// 2. `HStack` has children, so we go further to it's first child, `Text`.
+    /// 3. `Text` has no child, but has a sibling, so we go to that.
+    /// 4. `Text` has no child and no sibling, so we return to the `HStack`.
+    /// 5. We've already read the children, so we look for a sibling, `Text`.
+    /// 6. `Text` has no children and no sibling, so we return to the `VStack.`
+    /// We finish once we've returned to the root element.
+    /// ```
+    ///    ┌──────┐
+    ///    │VStack│
+    ///    └──┬───┘
+    ///   ▲ 1 │
+    ///   │   └──►┌──────┐
+    ///   │       │HStack│
+    ///   │     ┌─┴───┬──┘
+    ///   │     │   ▲ │ 2
+    ///   │     │   │ │  ┌────┐
+    ///   │     │   │ └─►│Text├─┐
+    /// 6 │     │ 4 │    └────┘ │
+    ///   │     │   │           │ 3
+    ///   │   5 │   │    ┌────┐ │
+    ///   │     │   └────┤Text│◄┘
+    ///   │     │        └────┘
+    ///   │     │
+    ///   │     └►┌────┐
+    ///   │       │Text│
+    ///   └───────┴────┘
+    /// ```
     func visit<V>(_ view: V) where V: View {
-      /// A stack for walking the current tree of view nodes.
-      var currentStack = [currentRoot]
-      /// A stack for walking a new tree of view nodes.
-      var wipStack = [TreeReducer.Result.Child(
-        viewNode: wipRoot,
-        elementParent: wipRoot.element != nil ? wipRoot : wipRoot.elementParent,
-        visitChildren: { view._visitChildren($0) }
-      )]
-      /// The number of actual elements added to any given `elementParent`.
+      let alternateRoot: ViewNode?
+      if let alternate = currentRoot.alternate {
+        alternateRoot = alternate
+      } else {
+        alternateRoot = currentRoot.createAndBindAlternate?()
+      }
+      let rootResult = TreeReducer.Result(
+        viewNode: alternateRoot, // The alternate is the WIP node.
+        visitChildren: view._visitChildren,
+        parent: nil,
+        child: alternateRoot?.child,
+        alternateChild: currentRoot.child
+      )
+      var node = rootResult
       var elementIndices = [ObjectIdentifier: Int]()
+
+      func reconcile(_ node: TreeReducer.Result) {
+        // Compare `node` and its alternate.
+        if let element = node.viewNode?.element,
+           let parent = node.viewNode?.elementParent?.element
+        {
+          let key = ObjectIdentifier(parent)
+          let index = elementIndices[key, default: 0]
+          if node.viewNode?.alternate == nil { // This didn't exist before (no alternate)
+            mutations.append(.insert(element: element, parent: parent, index: index))
+          } else if let newData = node.newData,
+                    newData != element.data
+          { // This changed.
+            mutations.append(.update(previous: element, newData: newData))
+          }
+          elementIndices[key] = index + 1
+        }
+      }
+
       while true {
-        if let current = currentStack.popLast() {
-          if let wip = wipStack.popLast() {
-            if wip.viewNode !== wipRoot {
-              wip.viewNode.parent?.children.append(wip.viewNode)
-            }
-            if wip.viewNode.element != nil,
-               let parent = wip.viewNode.elementParent
-            {
-              let id = ObjectIdentifier(parent)
-              elementIndices[id] = elementIndices[id, default: 0] + 1
-            }
+        // Perform work on the node
+        reconcile(node)
+        let reducer = TreeReducer.Visitor(initialResult: node)
+        node.visitChildren(reducer)
 
-            // Compute the next WIP children
-            let reducer = TreeReducer.Visitor(initialResult: .init(
-              reconciler: reconciler,
-              parent: wip.viewNode,
-              elementParent: wip.elementParent,
-              children: []
-            ))
-            wip.visitChildren(reducer)
+        // Setup the alternate if it doesn't exist yet.
+        if node.viewNode?.alternate == nil {
+          node.viewNode?.createAndBindAlternate?()
+        }
 
-            if current.typeInfo?.type != wip.viewNode.typeInfo?.type {
-              // The new view is a completely different type than the previous element.
-              if let previous = current.element,
-                 let replacement = wip.viewNode.element,
-                 let parent = wip.viewNode.elementParent?.element
-              {
-                mutations
-                  .append(.replace(parent: parent, previous: previous, replacement: replacement))
-              } else {
-                // We couldn't replace the root, so remove the top-level children with elements of the original
-                var removeStack = [current]
-                while true {
-                  guard let remove = removeStack.popLast()
-                  else { break }
-                  if let element = remove.element {
-                    // This is a child with an element. Remove it and stop.
-                    mutations
-                      .append(.remove(element: element, parent: remove.elementParent?.element))
-                  } else {
-                    // This is a child without an element. Keep walking down until we hit an element.
-                    removeStack.append(contentsOf: remove.children.reversed())
-                  }
-                }
-              }
-              // Push the children of the replacement too.
-              var childStack = reducer.result.children
-              while true {
-                guard let child = childStack.popLast() else { break }
-                child.viewNode.parent?.children.append(child.viewNode)
-                if let element = child.viewNode.element,
-                   let parent = child.viewNode.elementParent?.element
-                {
-                  let id = ObjectIdentifier(parent)
-                  mutations
-                    .append(.insert(
-                      element: element,
-                      parent: parent,
-                      index: elementIndices[id, default: 0]
-                    ))
-                  elementIndices[id] = elementIndices[id, default: 0] + 1
-                }
-                let reducer = TreeReducer.Visitor(initialResult: .init(
-                  reconciler: reconciler,
-                  parent: child.viewNode,
-                  elementParent: child.elementParent,
-                  children: []
-                ))
-                child.visitChildren(reducer)
-                childStack.append(contentsOf: reducer.result.children.reversed())
-              }
-              // Push the current element back on the stack, because it may match something upcoming...
-//              currentStack.append(current)
-              continue // Don't push the current children yet, because we haven't actually matched it yet.
-            } else if let previous = current.element,
-                      let newElement = wip.viewNode.element,
-                      previous != newElement
+        // Walk into the child
+        if let child = reducer.result.child {
+          node = child
+          continue
+        } else if let alternateChild = node.viewNode?.alternate?.child {
+          walk(alternateChild) { node in
+            if let element = node.element,
+               let parent = node.elementParent?.element
             {
-              mutations.append(.update(previous: previous, newElement: newElement))
-            } else {
-              // It matches, so keep the previous element in our WIP tree.
-              wip.viewNode.element = current.element
+              // The alternate has a child that no longer exists
+              self.mutations.append(.remove(element: element, parent: parent))
             }
-            // Reverse it so we always walk down the first child,
-            // then back out and into its sibling, and so on.
-            wipStack.append(contentsOf: reducer.result.children.reversed())
-            currentStack.append(contentsOf: current.children.reversed())
-          } else {
-            // If a node in the current tree is not in the WIP tree, then we removed it.
-            if let element = current.element {
-              mutations.append(.remove(element: element, parent: current.elementParent?.element))
-            }
-            return // And break from the loop.
+            return true
           }
-        } else if let wip = wipStack.popLast() {
-          // If a node in the WIP tree is not in the current tree, then we inserted it.
-          wip.viewNode.parent?.children.append(wip.viewNode)
-          if let element = wip.viewNode.element,
-             let parent = wip.viewNode.elementParent?.element
-          {
-            let id = ObjectIdentifier(parent)
-            mutations.append(.insert(
-              element: element,
-              parent: parent,
-              index: elementIndices[id, default: 0]
-            ))
-            elementIndices[id] = elementIndices[id, default: 0] + 1
-          }
-          let reducer = TreeReducer.Visitor(initialResult: .init(
-            reconciler: reconciler,
-            parent: wip.viewNode,
-            elementParent: wip.elementParent,
-            children: []
-          ))
-          wip.visitChildren(reducer)
-          // Reverse it so we always walk down the first child,
-          // then back out and into its sibling, and so on.
-          wipStack.append(contentsOf: reducer.result.children.reversed())
-        } else {
-          // When we run out of nodes in the current tree and the WIP tree, break.
+        }
+        if reducer.result.child == nil {
+          node.viewNode?.child = nil // Make sure we clear the child if there was none
+        }
+
+        // When we walk back to the root, exit
+        if node === rootResult {
           return
         }
+        // Walk back up until we find a sibling
+        while node.sibling == nil {
+          var alternateSibling = node.viewNode?.alternate?.sibling
+          while alternateSibling != nil { // The alternate had siblings that no longer exist.
+            if let element = alternateSibling?.element,
+               let parent = alternateSibling?.elementParent?.element
+            {
+              mutations.append(.remove(element: element, parent: parent))
+            }
+            alternateSibling = alternateSibling?.sibling
+          }
+          // When we walk back to the root, exit
+          guard let parent = node.parent,
+                parent !== currentRoot.alternate
+          else {
+            return
+          }
+          node = parent
+        }
+        // Walk the sibling
+        // swiftlint:disable:next force_unwrap
+        node = node.sibling!
       }
     }
   }
 
-  func reconcile(from root: ViewNode) -> ViewNode {
+  func reconcile(from root: ViewNode) {
     let visitor = ReconcilerVisitor(root: root, reconciler: self)
     root.visitView(visitor)
     // Apply mutations to the rendered output.
     renderer.commit(visitor.mutations)
-    // Return the new tree
-    return visitor.wipRoot
+
+    // Swap the root out for its alternate.
+    let child = root.child
+    root.child = root.alternate?.child
+    root.alternate?.child = child
   }
 }
 

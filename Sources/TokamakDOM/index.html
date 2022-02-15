@@ -24,16 +24,14 @@
         },
         commit: (mutations) => {
           for (const mutation of mutations) {
-            console.log(mutation)
             switch (mutation.operation) {
             case 0: // .insert
               const parent = mutation.parent() ?? window.Tokamak.root
               const element = window.Tokamak.create(mutation.element)
+              element.dataset.view = mutation.element.debugData.view
               if (parent.children.length > mutation.index) {
-                console.log('Inserting', element, 'at', mutation.index, 'before', parent.children[mutation.index], 'on', parent)
                 parent.insertBefore(element, parent.children[mutation.index])
               } else {
-                console.log('Appending', element, 'because parent', parent, 'only has', parent.children.length, 'and we want index', mutation.index)
                 parent.appendChild(element)
               }
               break
@@ -48,7 +46,6 @@
               const replaceParent = mutation.parent() ?? window.Tokamak.root
               const original = mutation.element()
               const replacement = window.Tokamak.create(mutation.replacement)
-              console.log("Replace", original, "with", replacement, "on", replaceParent)
               replaceParent.replaceChild(replacement, original)
               break
             case 3: // .update
