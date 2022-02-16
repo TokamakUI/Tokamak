@@ -7,7 +7,6 @@ This release fixes an issue with `EnvironmentValues`, updates CI workflow for Sw
 - Fix typo ([#462](https://github.com/TokamakUI/Tokamak/pull/462)) via [@regexident](https://github.com/regexident)
 - Fix `rootEnvironment` not merged with `.defaultEnvironment` ([#461](https://github.com/TokamakUI/Tokamak/pull/461)) via [@regexident](https://github.com/regexident)
 - Build and test with SwiftWasm 5.5 on CI ([#460](https://github.com/TokamakUI/Tokamak/pull/460)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
--
 
 # 0.9.0 (26 November 2021)
 
