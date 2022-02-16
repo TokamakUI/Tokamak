@@ -7,18 +7,23 @@
 
 import Foundation
 
+/// Data passed to `_makeView` to create the `ViewOutputs` used in reconciling/rendering.
 public struct ViewInputs<V: View> {
   let view: V
+  /// The size proposed by this view's parent.
   let proposedSize: CGSize?
   let environment: EnvironmentBox
 }
 
+/// Data used to reconcile and render a `View` and its children.
 public struct ViewOutputs {
-  /// A container for a reference to the current `EnvironmentValues`.
+  /// A container for the current `EnvironmentValues`.
   /// This is stored as a reference to avoid copying the environment when unnecessary.
   let environment: EnvironmentBox
   let preferences: _PreferenceStore
+  /// The size requested by this view.
   let size: CGSize
+  /// The `LayoutComputer` used to propose sizes for the children of this view.
   let layoutComputer: LayoutComputer?
 }
 
@@ -46,11 +51,9 @@ extension ViewOutputs {
   }
 }
 
-protocol LayoutComputer {
-  func proposeSize<V: View>(for child: V, at index: Int) -> CGSize
-}
-
 public extension View {
+  // By default, we simply pass the inputs through without modifications
+  // or layout considerations.
   static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
     .init(inputs: inputs)
   }
@@ -58,6 +61,7 @@ public extension View {
 
 public extension ModifiedContent where Content: View, Modifier: ViewModifier {
   static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
+    // Update the environment if needed.
     var environment = inputs.environment.environment
     if let environmentWriter = inputs.view.modifier as? EnvironmentModifier {
       environmentWriter.modifyEnvironment(&environment)
@@ -66,6 +70,7 @@ public extension ModifiedContent where Content: View, Modifier: ViewModifier {
   }
 
   func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
+    // Visit the computed body of the modifier.
     visitor.visit(modifier.body(content: .init(modifier: modifier, view: content)))
   }
 }

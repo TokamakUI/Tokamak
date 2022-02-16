@@ -133,7 +133,7 @@ final class TestElement: Element, CustomStringConvertible {
   static var root: Self { .init(renderedValue: "<root>", closingTag: "</root>") }
 }
 
-struct TestRenderer: GraphRenderer {
+struct TestRenderer: FiberRenderer {
   typealias ElementType = TestElement
 
   let rootElement: TestElement
@@ -206,55 +206,5 @@ final class VisitorTests: XCTestCase {
     }
     print(reconciler.current)
     decrement()
-//    for i in 0..<5 {
-//      increment()
-//    }
-//    print(reconciler.tree)
-//    decrement()
-//    print(reconciler.tree)
-
-//    let decrement = (
-//      reconciler.tree
-//        .findView(id: .structural(index: 0))? // TestView
-//        .findView(id: .structural(index: 0))? // Counter
-//        .findView(id: .structural(index: 0))? // VStack
-//        .findView(id: .structural(index: 0))? // TupleView
-//        .findView(id: .structural(index: 1))? // HStack
-//        .findView(id: .structural(index: 0))? // TupleView
-//        .findView(id: .structural(index: 0))? // Increment Button
-//        .view as? Button<Text>
-//    )
-//    let increment = (
-//      reconciler.tree
-//        .findView(id: .structural(index: 0))? // TestView
-//        .findView(id: .structural(index: 0))? // Counter
-//        .findView(id: .structural(index: 0))? // VStack
-//        .findView(id: .structural(index: 0))? // TupleView
-//        .findView(id: .structural(index: 1))? // HStack
-//        .findView(id: .structural(index: 0))? // TupleView
-//        .findView(id: .structural(index: 1))? // Increment Button
-//        .view as? Button<Text>
-//    )
-//    increment?.action()
-//    let text = reconciler.tree
-//      .findView(id: .structural(index: 0))? // TestView
-//      .findView(id: .structural(index: 0))? // Counter
-//      .findView(id: .structural(index: 0))? // VStack
-//      .findView(id: .structural(index: 0))? // TupleView
-//      .findView(id: .structural(index: 0)) // Text
-//    XCTAssertEqual(
-//      text?.element?.description,
-//      "<TokamakCore.Text content=\"1\" modifiers=\"[]\"></TokamakCore.Text>"
-//    )
-//    increment?.action()
-//    XCTAssertEqual(
-//      text?.element?.description,
-//      "<TokamakCore.Text content=\"2\" modifiers=\"[]\"></TokamakCore.Text>"
-//    )
-//    decrement?.action()
-//    XCTAssertEqual(
-//      text?.element?.description,
-//      "<TokamakCore.Text content=\"1\" modifiers=\"[]\"></TokamakCore.Text>"
-//    )
   }
 }

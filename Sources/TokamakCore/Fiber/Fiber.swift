@@ -6,6 +6,21 @@
 //
 
 @_spi(TokamakCore) public extension FiberReconciler {
+  /// A manager for a single `View`.
+  ///
+  /// There are always 2 `Fiber`s for every `View` in the tree,
+  /// a current `Fiber`, and a work in progress `Fiber`.
+  /// They point to each other using the `alternate` property.
+  ///
+  /// The current `Fiber` represents the `View` as it is currently rendered on the screen.
+  /// The work in progress `Fiber` (the `alternate` of current), is used in the reconciler to compute the new tree.
+  ///
+  /// When reconciling, the tree is recomputed from the root of the state change on the work in progress `Fiber`.
+  /// Each node in the fiber tree is updated to apply any changes, and a list of mutations needed to get the
+  /// rendered output to match is created.
+  ///
+  /// After the entire tree has been traversed, the current and work in progress trees are swapped,
+  /// making the updated tree the current one, and leaving the previous current tree available to apply future changes on.
   final class Fiber: CustomDebugStringConvertible {
     weak var reconciler: FiberReconciler<Renderer>?
 
@@ -166,7 +181,6 @@
           let box = MutableStorage(initialValue: storage.anyInitialValue, onSet: { [weak self] in
             guard let self = self else { return }
             self.reconciler?.reconcile(from: self)
-//            self.flip()
           })
           state[property] = box
           storage.getter = { box.value }
@@ -179,36 +193,6 @@
         property.set(value: value, on: &view)
       }
       return state
-    }
-
-    /// Flip this node with its `alternate` to reflect changes from the reconciler.
-    func flip() {
-      let child = child
-      self.child = alternate?.child
-      alternate?.child = child
-//      if self.parent?.child === self {
-//        self.parent?.child = alternate
-//        self.parent?.alternate?.child = self
-//      } else {
-//        var node = self.parent?.child
-//        while node != nil && node?.sibling !== self {
-//          node = node?.sibling
-//        }
-//        node?.alternate?.sibling = self
-//        node?.sibling = alternate
-//      }
-//      let alternateElement = alternate?.element
-//      let alternateElementParent = alternate?.elementParent
-//      let alternateParent = alternate?.parent
-//      let alternateSibling = alternate?.sibling
-//      alternate?.element = self.element
-//      alternate?.elementParent = self.elementParent
-//      alternate?.parent = self.parent
-//      alternate?.sibling = self.sibling
-//      self.element = alternateElement
-//      self.elementParent = alternateElementParent
-//      self.parent = alternateParent
-//      self.sibling = alternateSibling
     }
 
     func update<V: View>(
@@ -243,13 +227,6 @@
     }
 
     private func flush(level: Int = 0) -> String {
-//      var result = ""
-//      walk(self) { node in
-//        result += "\n\(node.typeInfo?.type ?? Any.self)\(node.element != nil ? "(\(node.element!))" : "")"
-//        return true
-//      }
-//      return result
-//      return "\(typeInfo?.type ?? Any.self)\(element != nil ? "(\(element!))" : "")"
       let spaces = String(repeating: " ", count: level)
       return """
       \(spaces)\(String(describing: typeInfo?.type ?? Any.self)
