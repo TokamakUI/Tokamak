@@ -1,6 +1,6 @@
 # 0.9.1 (16 February 2022)
 
-This release fixes an EnvironmentValues issue, updates CI workflow for SwiftWasm 5.5, and bumps JavaScriptKit dependency to 0.12.0.
+This release fixes an issue with `EnvironmentValues`, updates CI workflow for SwiftWasm 5.5, and bumps JavaScriptKit dependency to 0.12.0.
 
 **Merged pull requests:**
 
