@@ -5,6 +5,7 @@
 //  Created by Carson Katri on 2/6/22.
 //
 
+import Foundation
 import TokamakCore
 
 public final class HTMLElement: Element, CustomStringConvertible {
@@ -127,6 +128,7 @@ public extension HTMLConvertible {
 public struct StaticHTMLFiberRenderer: FiberRenderer {
   public let rootElement: HTMLElement
   public let defaultEnvironment: EnvironmentValues
+  public var sceneSize: CGSize { .zero }
 
   init() {
     rootElement = .init(tag: "body", attributes: [:], innerHTML: nil, children: [])
@@ -152,6 +154,8 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
         parent.data.children[index] = replacement
       case let .update(previous, newData):
         previous.update(with: newData)
+      case let .layout(element, data):
+        print("Received layout message \(data) for \(element)")
       }
     }
   }

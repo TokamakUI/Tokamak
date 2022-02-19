@@ -5,6 +5,8 @@
 //  Created by Carson Katri on 2/15/22.
 //
 
+import Foundation
+
 @_spi(TokamakCore) public extension FiberReconciler {
   /// A manager for a single `View`.
   ///
@@ -34,6 +36,8 @@
     var id: Identity?
     /// The mounted element, if this is a Renderer primitive.
     var element: Renderer.ElementType?
+    /// The index of this element in its elementParent
+    var elementIndex: Int?
     /// The first child node.
     var child: Fiber?
     /// This node's right sibling.
@@ -46,6 +50,9 @@
     var typeInfo: TypeInfo?
     /// Boxes that store `State` data.
     var state: [PropertyInfo: MutableStorage]!
+
+    /// The dimensions computed by
+    var dimensions: ViewDimensions = .init(origin: .zero, size: .zero, alignmentGuides: [:])
 
     /// The WIP node if this is current, or the current node if this is WIP.
     weak var alternate: Fiber?
@@ -79,7 +86,7 @@
       element: Renderer.ElementType?,
       parent: Fiber?,
       elementParent: Fiber?,
-      childIndex: Int,
+      elementIndex: Int?,
       reconciler: FiberReconciler<Renderer>?
     ) {
       self.reconciler = reconciler
@@ -89,9 +96,18 @@
       self.elementParent = elementParent
       typeInfo = TokamakCore.typeInfo(of: V.self)
 
+      let proposedSize: CGSize
+      if let elementIndex = elementIndex {
+        proposedSize = elementParent?.outputs.layoutComputer.proposeSize(
+          for: view,
+          at: elementIndex
+        ) ?? .zero
+      } else {
+        proposedSize = .zero
+      }
       let viewInputs = ViewInputs<V>(
         view: view,
-        proposedSize: parent?.outputs.layoutComputer?.proposeSize(for: view, at: childIndex),
+        proposedSize: proposedSize,
         environment: parent?.outputs.environment ?? .init(.init())
       )
       state = bindProperties(to: &view, typeInfo, viewInputs)
@@ -107,6 +123,11 @@
         self.element = element
       } else if Renderer.isPrimitive(view) {
         self.element = .init(from: .init(from: view))
+      }
+
+      // Only specify an elementIndex if we have an element.
+      if self.element != nil {
+        self.elementIndex = elementIndex
       }
 
       let alternateView = view
@@ -197,13 +218,24 @@
 
     func update<V: View>(
       with view: inout V,
-      childIndex: Int
+      elementIndex: Int?
     ) -> Renderer.ElementType.Data? {
       typeInfo = TokamakCore.typeInfo(of: V.self)
 
+      self.elementIndex = elementIndex
+
+      let proposedSize: CGSize
+      if let elementIndex = elementIndex {
+        proposedSize = elementParent?.outputs.layoutComputer.proposeSize(
+          for: view,
+          at: elementIndex
+        ) ?? .zero
+      } else {
+        proposedSize = .zero
+      }
       let viewInputs = ViewInputs<V>(
         view: view,
-        proposedSize: parent?.outputs.layoutComputer?.proposeSize(for: view, at: childIndex),
+        proposedSize: proposedSize,
         environment: parent?.outputs.environment ?? .init(.init())
       )
       state = bindProperties(to: &view, typeInfo, viewInputs)
@@ -222,6 +254,27 @@
       }
     }
 
+    struct LayoutRequest {
+      let child: LayoutContext.Child
+      let onLayout: (CGPoint) -> ()
+    }
+
+    var layoutRequests = [LayoutRequest]()
+    /// A child requests a position from its parent, but this won't be computed until we have walked far enough up the tree to get to said parent.
+    func enqueueLayoutRequest(
+      _ dimensions: ViewDimensions,
+      at index: Int,
+      onLayout: @escaping (CGPoint) -> ()
+    ) {
+      layoutRequests.insert(
+        .init(
+          child: .init(index: index, dimensions: dimensions),
+          onLayout: onLayout
+        ),
+        at: index
+      )
+    }
+
     public var debugDescription: String {
       flush()
     }
@@ -230,7 +283,8 @@
       let spaces = String(repeating: " ", count: level)
       return """
       \(spaces)\(String(describing: typeInfo?.type ?? Any.self)
-        .split(separator: "<")[0])\(element != nil ? "(\(element!))" : "") {
+        .split(separator: "<")[0])\(element != nil ? "(\(element!))" : "") {\(element != nil ?
+        "\n\(spaces)dimensions: \(dimensions)" : "")
       \(child?.flush(level: level + 2) ?? "")
       \(spaces)}
       \(sibling?.flush(level: level) ?? "")

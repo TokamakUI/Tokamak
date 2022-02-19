@@ -39,6 +39,7 @@ private extension VerticalAlignment {
     case .top: return "flex-start"
     case .center: return "center"
     case .bottom: return "flex-end"
+    default: return "center"
     }
   }
 }
@@ -49,6 +50,7 @@ private extension HorizontalAlignment {
     case .leading: return "flex-start"
     case .center: return "center"
     case .trailing: return "flex-end"
+    default: return "center"
     }
   }
 }

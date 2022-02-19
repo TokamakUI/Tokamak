@@ -137,9 +137,11 @@ struct TestRenderer: FiberRenderer {
   typealias ElementType = TestElement
 
   let rootElement: TestElement
+  let sceneSize: CGSize
 
-  init(_ rootElement: TestElement) {
+  init(_ rootElement: TestElement, size: CGSize) {
     self.rootElement = rootElement
+    sceneSize = size
   }
 
   static func isPrimitive<V>(_ view: V) -> Bool where V: View {
@@ -159,6 +161,8 @@ struct TestRenderer: FiberRenderer {
         print("Update \(previous) with \(newData)")
         previous.update(with: newData)
         print(previous)
+      case let .layout(element, data):
+        print("Layout \(element) with \(data)")
       }
     }
   }
@@ -166,10 +170,11 @@ struct TestRenderer: FiberRenderer {
 
 final class VisitorTests: XCTestCase {
   func testRenderer() {
-    let reconciler = TestRenderer(.root).render(TestView())
+    let reconciler = TestRenderer(.root, size: .init(width: 500, height: 500)).render(TestView())
     func decrement() {
       (
-        reconciler.current // ModifiedContent
+        reconciler.current // RootView
+          .child? // ModifiedContent
           .child? // _ViewModifier_Content
           .child? // TestView
           .child? // Counter
@@ -185,7 +190,8 @@ final class VisitorTests: XCTestCase {
     }
     func increment() {
       (
-        reconciler.current // ModifiedContent
+        reconciler.current // RootView
+          .child? // ModifiedContent
           .child? // _ViewModifier_Content
           .child? // TestView
           .child? // Counter
@@ -201,10 +207,11 @@ final class VisitorTests: XCTestCase {
       )?
         .action()
     }
-    for i in 0..<5 {
-      increment()
-    }
-    print(reconciler.current)
-    decrement()
+//    for _ in 0..<5 {
+//      increment()
+//    }
+//    decrement()
+    increment()
+    print(reconciler.current as Any)
   }
 }

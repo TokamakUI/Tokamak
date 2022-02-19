@@ -5,6 +5,8 @@
 //  Created by Carson Katri on 2/15/22.
 //
 
+import Foundation
+
 /// A renderer capable of performing mutations specified by a `FiberReconciler`.
 public protocol FiberRenderer {
   /// The element class this renderer uses.
@@ -17,6 +19,8 @@ public protocol FiberRenderer {
   var rootElement: ElementType { get }
   /// The smallest set of initial `EnvironmentValues` needed for this renderer to function.
   var defaultEnvironment: EnvironmentValues { get }
+  /// The size of the window we are rendering in.
+  var sceneSize: CGSize { get }
 }
 
 public extension FiberRenderer {
