@@ -19,7 +19,10 @@ final class RootLayoutComputer: LayoutComputer {
   }
 
   func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint {
-    .zero
+    .init(
+      x: sceneSize.width / 2 - child.dimensions[HorizontalAlignment.center],
+      y: sceneSize.height / 2 - child.dimensions[VerticalAlignment.center]
+    )
   }
 
   func requestSize(in context: LayoutContext) -> CGSize {
@@ -291,27 +294,27 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       }
 
       /// Request a size for the view on the way back up the tree.
-      func layout(_ node: TreeReducer.Result) {
+      func layout(_ node: Fiber) {
         // FIXME: Add alignmentGuide modifier to override defaults and pass the correct guide data.
-        if let elementIndex = node.fiber?.elementIndex,
-           let element = node.fiber?.element
-        {
+        if let element = node.element {
+          let elementIndex = node.elementIndex ?? 0
           // Fulfill the layout requests.
-          let context = LayoutContext(children: node.fiber?.layoutRequests.map(\.child) ?? [])
-          for request in node.fiber?.layoutRequests ?? [] {
-            request.onLayout(node.fiber?.outputs.layoutComputer.position(
+          let context = LayoutContext(children: node.layoutRequests.map(\.child))
+          for request in node.layoutRequests {
+            request.onLayout(node.outputs.layoutComputer.position(
               request.child, in: context
-            ) ?? .zero)
+            ))
           }
+          node.layoutRequests = []
+          node.alternate?.layoutRequests = []
           // Compute our size in the context.
-          let size = node.fiber?.outputs.layoutComputer.requestSize(in: context) ?? .zero
+          let size = node.outputs.layoutComputer.requestSize(in: context)
           let dimensions = ViewDimensions(
             origin: .zero, size: size, alignmentGuides: [:]
           )
-          node.fiber?.dimensions = dimensions
           // We enqueue our positioning request, but do not perform it until
           // all children of the elementParent are processed.
-          node.fiber?.elementParent?.enqueueLayoutRequest(
+          node.elementParent?.enqueueLayoutRequest(
             dimensions,
             at: elementIndex
           ) { [weak self, weak node, weak element] origin in
@@ -320,85 +323,101 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
               size: size,
               alignmentGuides: [:]
             )
-            if dimensions != node?.fiber?.dimensions,
+            if dimensions != node?.alternate?.dimensions,
                let element = element
             {
               self?.mutations.append(.layout(element: element, dimensions: dimensions))
             }
-            node?.fiber?.dimensions = dimensions
+            node?.dimensions = dimensions
+            node?.alternate?.dimensions = dimensions
           }
         }
       }
 
-      // The main reconciler loop.
-      while true {
-        // Perform work on the node.
-        reconcile(node)
+      /// The main reconciler loop.
+      func mainLoop() {
+        while true {
+          // Perform work on the node.
+          reconcile(node)
 
-        node.elementIndices = elementIndices
+          node.elementIndices = elementIndices
 
-        // Compute the children of the node.
-        let reducer = TreeReducer.Visitor(initialResult: node)
-        node.visitChildren(reducer)
-        elementIndices = node.elementIndices
+          // Compute the children of the node.
+          let reducer = TreeReducer.Visitor(initialResult: node)
+          node.visitChildren(reducer)
+          elementIndices = node.elementIndices
 
-        // Setup the alternate if it doesn't exist yet.
-        if node.fiber?.alternate == nil {
-          _ = node.fiber?.createAndBindAlternate?()
-        }
-
-        // Walk all down all the way into the deepest child.
-        if let child = reducer.result.child {
-          node = child
-          continue
-        } else if let alternateChild = node.fiber?.alternate?.child {
-          walk(alternateChild) { node in
-            if let element = node.element,
-               let parent = node.elementParent?.element
-            {
-              // The alternate has a child that no longer exists.
-              // Removals must happen in reverse order, so a child element
-              // is removed before its parent.
-              self.mutations.insert(.remove(element: element, parent: parent), at: 0)
-            }
-            return true
+          // Setup the alternate if it doesn't exist yet.
+          if node.fiber?.alternate == nil {
+            _ = node.fiber?.createAndBindAlternate?()
           }
-        }
-        if reducer.result.child == nil {
-          node.fiber?.child = nil // Make sure we clear the child if there was none
-        }
 
-        // We call layout when we reach the bottommost view.
-        layout(node)
-
-        // If we've made it back to the root, then exit.
-        if node === rootResult {
-          return
-        }
-
-        // Now walk back up the tree until we find a sibling.
-        while node.sibling == nil {
-          var alternateSibling = node.fiber?.alternate?.sibling
-          while alternateSibling != nil { // The alternate had siblings that no longer exist.
-            if let element = alternateSibling?.element,
-               let parent = alternateSibling?.elementParent?.element
-            {
-              // Removals happen in reverse order, so a child element is removed before
-              // its parent.
-              mutations.insert(.remove(element: element, parent: parent), at: 0)
+          // Walk all down all the way into the deepest child.
+          if let child = reducer.result.child {
+            node = child
+            continue
+          } else if let alternateChild = node.fiber?.alternate?.child {
+            // The alternate has a child that no longer exists.
+            walk(alternateChild) { node in
+              if let element = node.element,
+                 let parent = node.elementParent?.element
+              {
+                // Removals must happen in reverse order, so a child element
+                // is removed before its parent.
+                self.mutations.insert(.remove(element: element, parent: parent), at: 0)
+              }
+              return true
             }
-            alternateSibling = alternateSibling?.sibling
           }
-          guard let parent = node.parent else { return }
-          // We also call layout when we are walking back up the tree.
-          layout(parent)
-          // When we walk back to the root, exit
-          guard parent !== currentRoot.alternate else { return }
-          node = parent
+          if reducer.result.child == nil {
+            node.fiber?.child = nil // Make sure we clear the child if there was none
+          }
+
+          // We call layout when we reach the bottommost view.
+          if let fiber = node.fiber {
+            layout(fiber)
+          }
+
+          // If we've made it back to the root, then exit.
+          if node === rootResult {
+            return
+          }
+
+          // Now walk back up the tree until we find a sibling.
+          while node.sibling == nil {
+            var alternateSibling = node.fiber?.alternate?.sibling
+            while alternateSibling != nil { // The alternate had siblings that no longer exist.
+              if let element = alternateSibling?.element,
+                 let parent = alternateSibling?.elementParent?.element
+              {
+                // Removals happen in reverse order, so a child element is removed before
+                // its parent.
+                mutations.insert(.remove(element: element, parent: parent), at: 0)
+              }
+              alternateSibling = alternateSibling?.sibling
+            }
+            guard let parent = node.parent else { return }
+            // We also call layout when we are walking back up the tree.
+            if let fiber = parent.fiber {
+              layout(fiber)
+            }
+            // When we walk back to the root, exit
+            guard parent !== currentRoot.alternate else { return }
+            node = parent
+          }
+          // Walk across to the sibling, and repeat.
+          // swiftlint:disable:next force_unwrap
+          node = node.sibling!
         }
-        // Walk across to the sibling, and repeat.
-        // swiftlint:disable:next force_unwrap
-        node = node.sibling!
+      }
+      mainLoop()
+
+      // We continue afterwards to lay out any parents that may have pending layout requests
+      // up the entire tree.
+      var layoutNode = node.fiber
+      while let current = layoutNode {
+        layout(current)
+        layoutNode = current.elementParent
       }
     }
   }

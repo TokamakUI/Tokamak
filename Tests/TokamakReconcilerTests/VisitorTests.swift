@@ -212,6 +212,7 @@ final class VisitorTests: XCTestCase {
 //    }
 //    decrement()
     increment()
+//    decrement()
     print(reconciler.current as Any)
   }
 }

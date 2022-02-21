@@ -7,6 +7,13 @@
     <script>
       window.Tokamak = {
         root: undefined,
+        initRoot: (root) => {
+          document.body.style.margin = '0'
+          root.style.width = '100vw'
+          root.style.height = '100vh'
+          root.style.position = 'relative'
+          window.Tokamak.root = root
+        },
         create: (element) => {
           const result = document.createElement(element.tag)
           for (const attribute of element.attributes) {
@@ -19,6 +26,7 @@
             result.innerHTML = element.innerHTML
           for (const [event, action] of Object.entries(element.listeners))
             result.addEventListener(event, action)
+          result.style.position = 'absolute'
           element.bind(result)
           return result
         },
@@ -60,6 +68,14 @@
                 mutation.previous.addEventListener(event, action)
               mutation.updates.bind(mutation.previous)
               break
+            case 4: // .layout
+              const target = mutation.element()
+              target.style.position = 'absolute'
+              target.style.width = `${mutation.dimensions.width}px`
+              target.style.height = `${mutation.dimensions.height}px`
+              target.style.left = `${mutation.dimensions.x}px`
+              target.style.top = `${mutation.dimensions.y}px`
+              continue
             default:
               console.error(`Unhandled mutation ${mutation.operation}`, mutation)
               continue

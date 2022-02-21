@@ -52,7 +52,7 @@ import Foundation
     var state: [PropertyInfo: MutableStorage]!
 
     /// The dimensions computed by
-    var dimensions: ViewDimensions = .init(origin: .zero, size: .zero, alignmentGuides: [:])
+    var dimensions: ViewDimensions?
 
     /// The WIP node if this is current, or the current node if this is WIP.
     weak var alternate: Fiber?
@@ -284,7 +284,8 @@ import Foundation
       return """
       \(spaces)\(String(describing: typeInfo?.type ?? Any.self)
         .split(separator: "<")[0])\(element != nil ? "(\(element!))" : "") {\(element != nil ?
-        "\n\(spaces)dimensions: \(dimensions)" : "")
+        "\n\(spaces)dimensions: \(dimensions ?? .init(origin: .zero, size: .zero, alignmentGuides: [:]))" :
+        "")
       \(child?.flush(level: level + 2) ?? "")
       \(spaces)}
       \(sibling?.flush(level: level) ?? "")

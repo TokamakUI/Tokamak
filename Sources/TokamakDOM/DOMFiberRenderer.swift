@@ -5,6 +5,7 @@
 //  Created by Carson Katri on 2/7/22.
 //
 
+import Foundation
 import JavaScriptKit
 @_spi(TokamakCore) import TokamakCore
 @_spi(TokamakStaticHTML) import TokamakStaticHTML
@@ -62,6 +63,10 @@ public struct DOMFiberRenderer: FiberRenderer {
   public let rootElement: DOMElement
   private let jsCommit: JSFunction
 
+  public var sceneSize: CGSize {
+    .init(width: body.clientWidth.number!, height: body.clientHeight.number!)
+  }
+
   public var defaultEnvironment: EnvironmentValues {
     var environment = EnvironmentValues()
     environment[_ColorSchemeKey.self] = .light
@@ -91,7 +96,7 @@ public struct DOMFiberRenderer: FiberRenderer {
       )
     )
     rootElement.reference = reference
-    Tokamak.root = .object(reference)
+    Tokamak.initRoot.function!(reference)
   }
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {
@@ -135,6 +140,12 @@ extension Mutation where Renderer == DOMFiberRenderer {
         "updates": newElement.encoded
           .merging(["bind": previous.bindClosure], uniquingKeysWith: { $1 }),
       ]
+    case let .layout(element, dimensions):
+      return [
+        "operation": 4,
+        "element": element.lazyReference,
+        "dimensions": dimensions.encoded,
+      ]
     }
   }
 }
@@ -174,6 +185,17 @@ extension DOMElement.Data {
         }
       },
       "debugData": debugData,
+    ]
+  }
+}
+
+extension ViewDimensions {
+  var encoded: [String: ConvertibleToJSValue] {
+    [
+      "x": Double(origin.x),
+      "y": Double(origin.y),
+      "width": Double(width),
+      "height": Double(height),
     ]
   }
 }
