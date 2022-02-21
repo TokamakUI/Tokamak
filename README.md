@@ -268,9 +268,10 @@ doesn't provide an official build of the extension on the VSCode Marketplace unf
 ## Contributing
 
 All contributions, no matter how small, are very welcome. You don't have to be a web developer or a
-SwiftUI expert to meaningfully contribute. In fact, checking out how some of the simplest views are
-implemented in Tokamak could help you understand how SwiftUI works. Updating our 
-[documentation](https://github.com/TokamakUI/Tokamak/tree/main/docs) and taking on [the starter
+SwiftUI expert to meaningfully contribute. In fact, by checking out how some of the simplest views are
+implemented in Tokamak you may learn more how SwiftUI may work under the hood. 
+
+Updating our [documentation](https://github.com/TokamakUI/Tokamak/tree/main/docs) and taking on [the starter
 bugs](https://github.com/TokamakUI/Tokamak/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)
 is also appreciated. Don't forget to join our [Discord server](https://discord.gg/ashJW8T8yp) to get in
 touch with the maintainers and other users. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for more details.
