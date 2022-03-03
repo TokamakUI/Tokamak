@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 
 public final class HTMLElement: Element, CustomStringConvertible {
   public struct Data: ElementData, Equatable {
@@ -125,7 +125,7 @@ public extension HTMLConvertible {
   }
 }
 
-public struct StaticHTMLFiberRenderer: FiberRenderer {
+@_spi(TokamakCore) public struct StaticHTMLFiberRenderer: FiberRenderer {
   public let rootElement: HTMLElement
   public let defaultEnvironment: EnvironmentValues
   public var sceneSize: CGSize { .zero }

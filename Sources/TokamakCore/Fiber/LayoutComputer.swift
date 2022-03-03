@@ -7,8 +7,9 @@
 
 import Foundation
 
+/// The currently computed children.
 struct LayoutContext {
-  let children: [Child]
+  var children: [Child]
 
   struct Child {
     let index: Int
@@ -17,10 +18,22 @@ struct LayoutContext {
 }
 
 /// A type that is able to propose sizes for its children.
+///
+/// The order of calls is guaranteed to be:
+/// 1. `proposeSize(for: child1, at: 0, in: context)`
+/// 2. `proposeSize(for: child2, at: 1, in: context)`
+/// 3. `position(child1)`
+/// 4. `position(child2)`
+///
+/// The `context` will contain all of the previously computed children from `proposeSize` calls.
+///
+/// The same `LayoutComputer` instance will be used for any given view during a single layout pass.
+///
+/// Sizes from `proposeSize` will be clamped, so it is safe to return negative numbers.
 protocol LayoutComputer: AnyObject {
   /// Will be called every time a child is evaluated.
   /// The calls will always be in order, and no more than one call will be made per child.
-  func proposeSize<V: View>(for child: V, at index: Int) -> CGSize
+  func proposeSize<V: View>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
   /// The child responds with their size and we place them relative to our origin.
   func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint
   /// Request a size for ourself from our parent.
@@ -30,23 +43,29 @@ protocol LayoutComputer: AnyObject {
 /// A `LayoutComputer` that takes the size of its children.
 final class ShrinkWrapLayout: LayoutComputer {
   let proposedSize: CGSize
-  var childSize: CGSize?
 
   init(proposedSize: CGSize) {
     self.proposedSize = proposedSize
   }
 
-  func proposeSize<V>(for child: V, at index: Int) -> CGSize where V: View {
+  func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
+    where V: View
+  {
     proposedSize
   }
 
   func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint {
-    childSize = child.dimensions.size
-    return .zero
+    .zero
   }
 
   func requestSize(in context: LayoutContext) -> CGSize {
-    childSize ?? .zero
+    print("Shrinkwrap requesting size in \(context)")
+    return context.children.reduce(CGSize.zero) {
+      .init(
+        width: max($0.width, $1.dimensions.width),
+        height: max($0.height, $1.dimensions.height)
+      )
+    }
   }
 }
 
@@ -58,7 +77,9 @@ final class FlexLayout: LayoutComputer {
     self.proposedSize = proposedSize
   }
 
-  func proposeSize<V>(for child: V, at index: Int) -> CGSize where V: View {
+  func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
+    where V: View
+  {
     proposedSize
   }
 
@@ -71,35 +92,86 @@ final class FlexLayout: LayoutComputer {
   }
 }
 
-final class VStackLayout: LayoutComputer {
+final class StackLayout: LayoutComputer {
   let proposedSize: CGSize
-  let alignment: HorizontalAlignment
+  let axis: Axis
+  let alignment: Alignment
+  /// A multiplier of `1` for the axis that takes the size of the largest child.
+  let maxAxis: CGSize
+  /// A multiplier of `1` for the axis that the children are aligned on.
+  let fitAxis: CGSize
 
-  init(proposedSize: CGSize, alignment: HorizontalAlignment) {
+  init(proposedSize: CGSize, axis: Axis, alignment: Alignment) {
     self.proposedSize = proposedSize
+    self.axis = axis
     self.alignment = alignment
+    switch axis {
+    case .horizontal:
+      maxAxis = .init(width: 0, height: 1)
+      fitAxis = .init(width: 1, height: 0)
+    case .vertical:
+      maxAxis = .init(width: 1, height: 0)
+      fitAxis = .init(width: 0, height: 1)
+    }
   }
 
-  func proposeSize<V>(for child: V, at index: Int) -> CGSize where V: View {
-    // FIXME: Only propose the remaining space after each child is processed.
-    proposedSize
+  func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
+    where V: View
+  {
+    let used = context.children.reduce(CGSize.zero) {
+      .init(
+        width: $0.width + $1.dimensions.width,
+        height: $0.height + $1.dimensions.height
+      )
+    }
+    let size = CGSize(
+      width: proposedSize.width - (used.width * maxAxis.width),
+      height: proposedSize.height - (used.height * maxAxis.height)
+    )
+    return size
   }
 
   func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint {
-    let maxWidth = context.children.max(by: { $0.dimensions.width < $1.dimensions.width })
-    return .init(
-      x: (maxWidth?.dimensions[alignment] ?? .zero) - child.dimensions[alignment],
-      y: context.children[0..<child.index].reduce(0) { $0 + $1.dimensions.height }
+    let maxDimensions = CGSize(
+      width: (
+        context.children
+          .max(by: { $0.dimensions.width > $1.dimensions.width })?
+          .dimensions[alignment.horizontal] ?? .zero
+      )
+        - child.dimensions[alignment.horizontal],
+      height: (
+        context.children
+          .max(by: { $0.dimensions.height > $1.dimensions.height })?
+          .dimensions[alignment.vertical] ?? .zero
+      )
+        - child.dimensions[alignment.vertical]
     )
+    let fitDimensions = context.children[0..<child.index]
+      .reduce(CGSize.zero) {
+        .init(width: $0.width + $1.dimensions.width, height: $0.height + $1.dimensions.height)
+      }
+    let position = CGPoint(
+      x: (maxDimensions.width * maxAxis.width) + (fitDimensions.width * fitAxis.width),
+      y: (maxDimensions.height * maxAxis.height) + (fitDimensions.height * fitAxis.height)
+    )
+    return position
   }
 
   func requestSize(in context: LayoutContext) -> CGSize {
-    print("VStack is laying out in \(context)")
+    let maxDimensions = CGSize(
+      width: context.children
+        .max(by: { $0.dimensions.width < $1.dimensions.width })?.dimensions.width ?? .zero,
+      height: context.children
+        .max(by: { $0.dimensions.height < $1.dimensions.height })?.dimensions.height ?? .zero
+    )
+    let fitDimensions = context.children
+      .reduce(CGSize.zero) {
+        .init(width: $0.width + $1.dimensions.width, height: $0.height + $1.dimensions.height)
+      }
+
     return .init(
-      width: context.children.max(by: { $0.dimensions.width < $1.dimensions.width })?.dimensions
-        .width
-        ?? .zero,
-      height: context.children.reduce(0) { $0 + $1.dimensions.height }
+      width: (maxDimensions.width * maxAxis.width) + (fitDimensions.width * fitAxis.width),
+      height: (maxDimensions.height * maxAxis.height) + (fitDimensions.height * fitAxis.height)
     )
   }
 }
@@ -108,54 +180,28 @@ public extension VStack {
   static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
     .init(
       inputs: inputs,
-      layoutComputer: VStackLayout(
-        proposedSize: inputs.proposedSize,
-        alignment: inputs.view.alignment
-      )
+      layoutComputer: { proposedSize in
+        StackLayout(
+          proposedSize: proposedSize,
+          axis: .vertical,
+          alignment: .init(horizontal: inputs.view.alignment, vertical: .center)
+        )
+      }
     )
   }
 }
 
-extension HStack {
-  private final class HStackLayout: LayoutComputer {
-    let proposedSize: CGSize
-    let alignment: VerticalAlignment
-
-    init(proposedSize: CGSize, alignment: VerticalAlignment) {
-      self.proposedSize = proposedSize
-      self.alignment = alignment
-    }
-
-    func proposeSize<V>(for child: V, at index: Int) -> CGSize where V: View {
-      // FIXME: Only propose the remaining space after each child is processed.
-      proposedSize
-    }
-
-    func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint {
-      let maxHeight = context.children.max(by: { $0.dimensions.height < $1.dimensions.height })
-      return .init(
-        x: context.children[0..<child.index].reduce(0) { $0 + $1.dimensions.width },
-        y: (maxHeight?.dimensions[alignment] ?? .zero) - child.dimensions[alignment]
-      )
-    }
-
-    func requestSize(in context: LayoutContext) -> CGSize {
-      .init(
-        width: context.children.reduce(0) { $0 + $1.dimensions.width },
-        height: context.children.max(by: { $0.dimensions.height < $1.dimensions.height })?
-          .dimensions.height
-          ?? .zero
-      )
-    }
-  }
-
-  public static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
+public extension HStack {
+  static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
     .init(
       inputs: inputs,
-      layoutComputer: HStackLayout(
-        proposedSize: inputs.proposedSize,
-        alignment: inputs.view.alignment
-      )
+      layoutComputer: { proposedSize in
+        StackLayout(
+          proposedSize: proposedSize,
+          axis: .horizontal,
+          alignment: .init(horizontal: .center, vertical: inputs.view.alignment)
+        )
+      }
     )
   }
 }
@@ -170,7 +216,9 @@ final class TextLayoutComputer: LayoutComputer {
     self.proposedSize = proposedSize
   }
 
-  func proposeSize<V>(for child: V, at index: Int) -> CGSize where V: View {
+  func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
+    where V: View
+  {
     fatalError("Text views cannot have children.")
   }
 
@@ -188,7 +236,9 @@ public extension Text {
   static func _makeView(_ inputs: ViewInputs<Text>) -> ViewOutputs {
     .init(
       inputs: inputs,
-      layoutComputer: TextLayoutComputer(text: inputs.view, proposedSize: inputs.proposedSize)
+      layoutComputer: { proposedSize in
+        TextLayoutComputer(text: inputs.view, proposedSize: proposedSize)
+      }
     )
   }
 }

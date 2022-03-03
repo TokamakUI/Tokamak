@@ -14,7 +14,9 @@ final class RootLayoutComputer: LayoutComputer {
     self.sceneSize = sceneSize
   }
 
-  func proposeSize<V>(for child: V, at index: Int) -> CGSize where V: View {
+  func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
+    where V: View
+  {
     sceneSize
   }
 
@@ -54,7 +56,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
       .init(
         inputs: inputs,
-        layoutComputer: RootLayoutComputer(sceneSize: inputs.view.renderer.sceneSize)
+        layoutComputer: { _ in RootLayoutComputer(sceneSize: inputs.view.renderer.sceneSize) }
       )
     }
   }
@@ -86,6 +88,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       var sibling: Result?
       var newData: Renderer.ElementType.Data?
       var elementIndices: [ObjectIdentifier: Int]
+      var layoutContexts: [ObjectIdentifier: LayoutContext]
 
       // For reducing
       var lastSibling: Result?
@@ -99,7 +102,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         child: Fiber?,
         alternateChild: Fiber?,
         newData: Renderer.ElementType.Data? = nil,
-        elementIndices: [ObjectIdentifier: Int]
+        elementIndices: [ObjectIdentifier: Int],
+        layoutContexts: [ObjectIdentifier: LayoutContext]
       ) {
         self.fiber = fiber
         self.visitChildren = visitChildren
@@ -108,6 +112,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         nextExistingAlternate = alternateChild
         self.newData = newData
         self.elementIndices = elementIndices
+        self.layoutContexts = layoutContexts
       }
     }
 
@@ -134,7 +139,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           child: existing.child,
           alternateChild: existing.alternate?.child,
           newData: newData,
-          elementIndices: partialResult.elementIndices
+          elementIndices: partialResult.elementIndices,
+          layoutContexts: partialResult.layoutContexts
         )
         partialResult.nextExisting = existing.sibling
 
@@ -180,7 +186,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           parent: partialResult,
           child: nil,
           alternateChild: fiber.alternate?.child,
-          elementIndices: partialResult.elementIndices
+          elementIndices: partialResult.elementIndices,
+          layoutContexts: partialResult.layoutContexts
         )
       }
       // Get the last child element we've processed, and add the new child as its sibling.
@@ -262,7 +269,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         parent: nil,
         child: alternateRoot?.child,
         alternateChild: currentRoot.child,
-        elementIndices: [:]
+        elementIndices: [:],
+        layoutContexts: [:]
       )
       var node = rootResult
 
@@ -270,6 +278,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       /// we are currently at. This ensures we place children in the correct order, even if they are
       /// at different levels in the `View` tree.
       var elementIndices = [ObjectIdentifier: Int]()
+      /// The `LayoutContext` for each parent view.
+      var layoutContexts = [ObjectIdentifier: LayoutContext]()
 
       /// Compare `node` with its alternate, and add any mutations to the list.
       func reconcile(_ node: TreeReducer.Result) {
@@ -293,45 +303,81 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         }
       }
 
-      /// Request a size for the view on the way back up the tree.
-      func layout(_ node: Fiber) {
+      func proposeSize(for node: Fiber) {
+        guard node.element != nil else { return }
+
+        // Ask the parent for a size.
+        let proposedSize = node.elementParent?.outputs.layoutComputer.proposeSize(
+          for: view,
+          at: node.elementIndex ?? 0,
+          in: node.elementParent.flatMap { layoutContexts[ObjectIdentifier($0)] }
+            ?? .init(children: [])
+        ) ?? .zero
+        // Make our layout computer using that size.
+        node.outputs.layoutComputer = node.outputs.makeLayoutComputer(proposedSize)
+        node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
+        print("\(node): parent proposed \(proposedSize)")
+      }
+
+      func size(_ node: Fiber) {
+        guard node.element != nil,
+              let elementParent = node.elementParent
+        else { return }
+
+        let key = ObjectIdentifier(elementParent)
+        let elementIndex = node.elementIndex ?? 0
+        var parentContext = layoutContexts[key, default: .init(children: [])]
+
+        // Compute our size and position in our context.
+        let size = node.outputs.layoutComputer.requestSize(
+          in: layoutContexts[ObjectIdentifier(node), default: .init(children: [])]
+        )
+        let dimensions = ViewDimensions(size: size, alignmentGuides: [:])
+        let child = LayoutContext.Child(index: elementIndex, dimensions: dimensions)
+
+        print("\(node): requested \(size)")
+
+        // Add ourself to the parent context.
+        parentContext.children.append(child)
+        layoutContexts[key] = parentContext
+
+        // Update our geometry
+        node.geometry = .init(
+          origin: node.geometry?.origin ?? .init(origin: .zero),
+          dimensions: dimensions
+        )
+      }
+
+      /// Request a size and position from the parent on the way back up.
+      func position(_ node: Fiber) {
         // FIXME: Add alignmentGuide modifier to override defaults and pass the correct guide data.
-        if let element = node.element {
-          let elementIndex = node.elementIndex ?? 0
-          // Fulfill the layout requests.
-          let context = LayoutContext(children: node.layoutRequests.map(\.child))
-          for request in node.layoutRequests {
-            request.onLayout(node.outputs.layoutComputer.position(
-              request.child, in: context
-            ))
-          }
-          node.layoutRequests = []
-          node.alternate?.layoutRequests = []
-          // Compute our size in the context.
-          let size = node.outputs.layoutComputer.requestSize(in: context)
-          let dimensions = ViewDimensions(
-            origin: .zero, size: size, alignmentGuides: [:]
-          )
-          // We enqueue our positioning request, but do not perform it until
-          // all children of the elementParent are processed.
-          node.elementParent?.enqueueLayoutRequest(
-            dimensions,
-            at: elementIndex
-          ) { [weak self, weak node, weak element] origin in
-            let dimensions = ViewDimensions(
-              origin: origin,
-              size: size,
-              alignmentGuides: [:]
-            )
-            if dimensions != node?.alternate?.dimensions,
-               let element = element
-            {
-              self?.mutations.append(.layout(element: element, dimensions: dimensions))
-            }
-            node?.dimensions = dimensions
-            node?.alternate?.dimensions = dimensions
-          }
+        guard let element = node.element,
+              let elementParent = node.elementParent
+        else { return }
+
+        let key = ObjectIdentifier(elementParent)
+        let elementIndex = node.elementIndex ?? 0
+        let context = layoutContexts[key, default: .init(children: [])]
+
+        guard let child = context.children.first(where: { $0.index == elementIndex })
+        else { return }
+
+        // Compute our position in the context.
+        let position = elementParent.outputs.layoutComputer.position(child, in: context)
+        let geometry = ViewGeometry(
+          origin: .init(origin: position),
+          dimensions: child.dimensions
+        )
+
+        print("\(node): positioned \(position)")
+
+        // Push a layout mutation if needed.
+        if geometry != node.alternate?.geometry {
+          mutations.append(.layout(element: element, geometry: geometry))
         }
+        // Update ours and our alternate's geometry
+        node.geometry = geometry
+        node.alternate?.geometry = geometry
       }
 
       /// The main reconciler loop.
@@ -346,6 +392,11 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           let reducer = TreeReducer.Visitor(initialResult: node)
           node.visitChildren(reducer)
           elementIndices = node.elementIndices
+
+          // Propose sizes on the way down.
+          if let fiber = node.fiber {
+            proposeSize(for: fiber)
+          }
 
           // Setup the alternate if it doesn't exist yet.
           if node.fiber?.alternate == nil {
@@ -373,11 +424,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
             node.fiber?.child = nil // Make sure we clear the child if there was none
           }
 
-          // We call layout when we reach the bottommost view.
-          if let fiber = node.fiber {
-            layout(fiber)
-          }
-
           // If we've made it back to the root, then exit.
           if node === rootResult {
             return
@@ -396,15 +442,28 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
               }
               alternateSibling = alternateSibling?.sibling
             }
-            guard let parent = node.parent else { return }
-            // We also call layout when we are walking back up the tree.
-            if let fiber = parent.fiber {
-              layout(fiber)
+            // We `size` and `position` when we are walking back up the tree.
+            if let fiber = node.fiber {
+              size(fiber)
+              // Position the siblings in order.
+              var sibling = fiber.parent?.child
+              while let fiber = sibling {
+                position(fiber)
+                sibling = fiber.sibling
+              }
             }
+            guard let parent = node.parent else { return }
             // When we walk back to the root, exit
             guard parent !== currentRoot.alternate else { return }
             node = parent
           }
+
+          // We `size` when we reach the bottommost view that has a sibling.
+          // Otherwise, sizing takes place in the above loop.
+          if let fiber = node.fiber {
+            size(fiber)
+          }
+
           // Walk across to the sibling, and repeat.
           // swiftlint:disable:next force_unwrap
           node = node.sibling!
@@ -416,7 +475,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       // up the entire tree.
       var layoutNode = node.fiber
       while let current = layoutNode {
-        layout(current)
+        size(current)
+        position(current)
         layoutNode = current.elementParent
       }
     }

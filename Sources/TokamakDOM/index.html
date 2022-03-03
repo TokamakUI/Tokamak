@@ -71,10 +71,10 @@
             case 4: // .layout
               const target = mutation.element()
               target.style.position = 'absolute'
-              target.style.width = `${mutation.dimensions.width}px`
-              target.style.height = `${mutation.dimensions.height}px`
-              target.style.left = `${mutation.dimensions.x}px`
-              target.style.top = `${mutation.dimensions.y}px`
+              target.style.width = `${mutation.geometry.width}px`
+              target.style.height = `${mutation.geometry.height}px`
+              target.style.left = `${mutation.geometry.x}px`
+              target.style.top = `${mutation.geometry.y}px`
               continue
             default:
               console.error(`Unhandled mutation ${mutation.operation}`, mutation)

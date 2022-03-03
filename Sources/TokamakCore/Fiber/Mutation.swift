@@ -20,5 +20,5 @@ public enum Mutation<Renderer: FiberRenderer> {
     replacement: Renderer.ElementType
   )
   case update(previous: Renderer.ElementType, newData: Renderer.ElementType.Data)
-  case layout(element: Renderer.ElementType, dimensions: ViewDimensions)
+  case layout(element: Renderer.ElementType, geometry: ViewGeometry)
 }

@@ -140,11 +140,11 @@ extension Mutation where Renderer == DOMFiberRenderer {
         "updates": newElement.encoded
           .merging(["bind": previous.bindClosure], uniquingKeysWith: { $1 }),
       ]
-    case let .layout(element, dimensions):
+    case let .layout(element, geometry):
       return [
         "operation": 4,
         "element": element.lazyReference,
-        "dimensions": dimensions.encoded,
+        "geometry": geometry.encoded,
       ]
     }
   }
@@ -189,13 +189,13 @@ extension DOMElement.Data {
   }
 }
 
-extension ViewDimensions {
+extension ViewGeometry {
   var encoded: [String: ConvertibleToJSValue] {
     [
       "x": Double(origin.x),
       "y": Double(origin.y),
-      "width": Double(width),
-      "height": Double(height),
+      "width": Double(dimensions.width),
+      "height": Double(dimensions.height),
     ]
   }
 }

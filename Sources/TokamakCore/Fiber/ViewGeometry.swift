@@ -7,8 +7,20 @@
 
 import Foundation
 
-public struct ViewDimensions: Equatable {
+public struct ViewGeometry: Equatable {
+  @_spi(TokamakCore) public let origin: ViewOrigin
+  @_spi(TokamakCore) public let dimensions: ViewDimensions
+}
+
+/// The position of the `View` relative to its parent.
+public struct ViewOrigin: Equatable {
   @_spi(TokamakCore) public let origin: CGPoint
+
+  @_spi(TokamakCore) public var x: CGFloat { origin.x }
+  @_spi(TokamakCore) public var y: CGFloat { origin.y }
+}
+
+public struct ViewDimensions: Equatable {
   @_spi(TokamakCore) public let size: CGSize
   @_spi(TokamakCore) public let alignmentGuides: [ObjectIdentifier: CGFloat]
 
@@ -29,11 +41,5 @@ public struct ViewDimensions: Equatable {
 
   public subscript(explicit guide: VerticalAlignment) -> CGFloat? {
     alignmentGuides[.init(guide.id)]
-  }
-}
-
-extension ViewDimensions: CustomDebugStringConvertible {
-  public var debugDescription: String {
-    "(\(origin.x), \(origin.y)), (\(width), \(height))"
   }
 }

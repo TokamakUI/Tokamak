@@ -10,8 +10,6 @@ import Foundation
 /// Data passed to `_makeView` to create the `ViewOutputs` used in reconciling/rendering.
 public struct ViewInputs<V: View> {
   let view: V
-  /// The size proposed by this view's parent.
-  let proposedSize: CGSize
   let environment: EnvironmentBox
 }
 
@@ -21,10 +19,9 @@ public struct ViewOutputs {
   /// This is stored as a reference to avoid copying the environment when unnecessary.
   let environment: EnvironmentBox
   let preferences: _PreferenceStore
-  /// The size requested by this view. Can use the data from our `LayoutComputer` after all its children are processed.
-  var size: (LayoutComputer) -> CGSize
+  let makeLayoutComputer: (CGSize) -> LayoutComputer
   /// The `LayoutComputer` used to propose sizes for the children of this view.
-  let layoutComputer: LayoutComputer
+  var layoutComputer: LayoutComputer!
 }
 
 final class EnvironmentBox {
@@ -40,14 +37,14 @@ extension ViewOutputs {
     inputs: ViewInputs<V>,
     environment: EnvironmentValues? = nil,
     preferences: _PreferenceStore? = nil,
-    size: ((LayoutComputer) -> CGSize)? = nil,
-    layoutComputer: LayoutComputer? = nil
+    layoutComputer: ((CGSize) -> LayoutComputer)? = nil
   ) {
     // Only replace the EnvironmentBox when we change the environment. Otherwise the same box can be reused.
     self.environment = environment.map(EnvironmentBox.init) ?? inputs.environment
     self.preferences = preferences ?? .init()
-    self.size = size ?? { _ in inputs.proposedSize }
-    self.layoutComputer = layoutComputer ?? ShrinkWrapLayout(proposedSize: inputs.proposedSize)
+    makeLayoutComputer = layoutComputer ?? { proposedSize in
+      ShrinkWrapLayout(proposedSize: proposedSize)
+    }
   }
 }
 

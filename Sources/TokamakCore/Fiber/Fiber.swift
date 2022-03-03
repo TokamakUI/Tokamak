@@ -51,8 +51,8 @@ import Foundation
     /// Boxes that store `State` data.
     var state: [PropertyInfo: MutableStorage]!
 
-    /// The dimensions computed by
-    var dimensions: ViewDimensions?
+    /// The computed dimensions and origin.
+    var geometry: ViewGeometry?
 
     /// The WIP node if this is current, or the current node if this is WIP.
     weak var alternate: Fiber?
@@ -96,23 +96,14 @@ import Foundation
       self.elementParent = elementParent
       typeInfo = TokamakCore.typeInfo(of: V.self)
 
-      let proposedSize: CGSize
-      if let elementIndex = elementIndex {
-        proposedSize = elementParent?.outputs.layoutComputer.proposeSize(
-          for: view,
-          at: elementIndex
-        ) ?? .zero
-      } else {
-        proposedSize = .zero
-      }
       let viewInputs = ViewInputs<V>(
         view: view,
-        proposedSize: proposedSize,
         environment: parent?.outputs.environment ?? .init(.init())
       )
       state = bindProperties(to: &view, typeInfo, viewInputs)
       self.view = view
       outputs = V._makeView(viewInputs)
+
       visitView = { [weak self] in
         guard let self = self else { return }
         // swiftlint:disable:next force_cast
@@ -224,23 +215,14 @@ import Foundation
 
       self.elementIndex = elementIndex
 
-      let proposedSize: CGSize
-      if let elementIndex = elementIndex {
-        proposedSize = elementParent?.outputs.layoutComputer.proposeSize(
-          for: view,
-          at: elementIndex
-        ) ?? .zero
-      } else {
-        proposedSize = .zero
-      }
       let viewInputs = ViewInputs<V>(
         view: view,
-        proposedSize: proposedSize,
         environment: parent?.outputs.environment ?? .init(.init())
       )
       state = bindProperties(to: &view, typeInfo, viewInputs)
       self.view = view
       outputs = V._makeView(viewInputs)
+
       visitView = { [weak self] in
         guard let self = self else { return }
         // swiftlint:disable:next force_cast
@@ -254,29 +236,12 @@ import Foundation
       }
     }
 
-    struct LayoutRequest {
-      let child: LayoutContext.Child
-      let onLayout: (CGPoint) -> ()
-    }
-
-    var layoutRequests = [LayoutRequest]()
-    /// A child requests a position from its parent, but this won't be computed until we have walked far enough up the tree to get to said parent.
-    func enqueueLayoutRequest(
-      _ dimensions: ViewDimensions,
-      at index: Int,
-      onLayout: @escaping (CGPoint) -> ()
-    ) {
-      layoutRequests.insert(
-        .init(
-          child: .init(index: index, dimensions: dimensions),
-          onLayout: onLayout
-        ),
-        at: index
-      )
-    }
-
     public var debugDescription: String {
-      flush()
+//      flush()
+      if let text = view as? Text {
+        return "Text(\"\(text.storage.rawText)\")"
+      }
+      return typeInfo?.name ?? "Unknown"
     }
 
     private func flush(level: Int = 0) -> String {
@@ -284,7 +249,7 @@ import Foundation
       return """
       \(spaces)\(String(describing: typeInfo?.type ?? Any.self)
         .split(separator: "<")[0])\(element != nil ? "(\(element!))" : "") {\(element != nil ?
-        "\n\(spaces)dimensions: \(dimensions ?? .init(origin: .zero, size: .zero, alignmentGuides: [:]))" :
+        "\n\(spaces)geometry: \(geometry ?? .init(origin: .init(origin: .zero), dimensions: .init(size: .zero, alignmentGuides: [:])))" :
         "")
       \(child?.flush(level: level + 2) ?? "")
       \(spaces)}
