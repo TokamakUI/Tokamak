@@ -59,8 +59,7 @@ final class ShrinkWrapLayout: LayoutComputer {
   }
 
   func requestSize(in context: LayoutContext) -> CGSize {
-    print("Shrinkwrap requesting size in \(context)")
-    return context.children.reduce(CGSize.zero) {
+    context.children.reduce(CGSize.zero) {
       .init(
         width: max($0.width, $1.dimensions.width),
         height: max($0.height, $1.dimensions.height)
@@ -125,34 +124,39 @@ final class StackLayout: LayoutComputer {
       )
     }
     let size = CGSize(
-      width: proposedSize.width - (used.width * maxAxis.width),
-      height: proposedSize.height - (used.height * maxAxis.height)
+      width: proposedSize.width - (used.width * fitAxis.width),
+      height: proposedSize.height - (used.height * fitAxis.height)
     )
     return size
   }
 
   func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint {
-    let maxDimensions = CGSize(
-      width: (
-        context.children
-          .max(by: { $0.dimensions.width > $1.dimensions.width })?
-          .dimensions[alignment.horizontal] ?? .zero
-      )
-        - child.dimensions[alignment.horizontal],
-      height: (
-        context.children
-          .max(by: { $0.dimensions.height > $1.dimensions.height })?
-          .dimensions[alignment.vertical] ?? .zero
-      )
-        - child.dimensions[alignment.vertical]
-    )
-    let fitDimensions = context.children[0..<child.index]
-      .reduce(CGSize.zero) {
-        .init(width: $0.width + $1.dimensions.width, height: $0.height + $1.dimensions.height)
+    let (maxSize, fitSize) = context.children
+      .enumerated()
+      .reduce((CGSize.zero, CGSize.zero)) { res, next in
+        (
+          .init(
+            width: max(res.0.width, next.element.dimensions.width),
+            height: max(res.0.height, next.element.dimensions.height)
+          ),
+          next.offset < child.index ? .init(
+            width: res.1.width + next.element.dimensions.width,
+            height: res.1.height + next.element.dimensions.height
+          ) : res.1
+        )
       }
+    let maxDimensions = ViewDimensions(size: maxSize, alignmentGuides: [:])
     let position = CGPoint(
-      x: (maxDimensions.width * maxAxis.width) + (fitDimensions.width * fitAxis.width),
-      y: (maxDimensions.height * maxAxis.height) + (fitDimensions.height * fitAxis.height)
+      x: (
+        (maxDimensions[alignment.horizontal] - child.dimensions[alignment.horizontal]) * maxAxis
+          .width
+      )
+        + (fitSize.width * fitAxis.width),
+      y: (
+        (maxDimensions[alignment.vertical] - child.dimensions[alignment.vertical]) * maxAxis
+          .height
+      )
+        + (fitSize.height * fitAxis.height)
     )
     return position
   }

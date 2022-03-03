@@ -57,6 +57,13 @@
               replaceParent.replaceChild(replacement, original)
               break
             case 3: // .update
+              // If we set the .style property, we need to copy the layout styles back in after.
+              const geometry = {
+                width: mutation.previous.style.width,
+                height: mutation.previous.style.height,
+                left: mutation.previous.style.left,
+                top: mutation.previous.style.top
+              }
               for (const attribute of mutation.updates.attributes) {
                 if (attribute.property)
                   mutation.previous[attribute.name] = attribute.value
@@ -67,6 +74,10 @@
               for (const [event, action] of Object.entries(mutation.updates.listeners))
                 mutation.previous.addEventListener(event, action)
               mutation.updates.bind(mutation.previous)
+              // Copy back the layout.
+              mutation.previous.style.position = 'absolute'
+              for (const [style, value] of Object.entries(geometry))
+                mutation.previous.style[style] = value
               break
             case 4: // .layout
               const target = mutation.element()

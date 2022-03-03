@@ -316,7 +316,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         // Make our layout computer using that size.
         node.outputs.layoutComputer = node.outputs.makeLayoutComputer(proposedSize)
         node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
-        print("\(node): parent proposed \(proposedSize)")
       }
 
       func size(_ node: Fiber) {
@@ -334,8 +333,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         )
         let dimensions = ViewDimensions(size: size, alignmentGuides: [:])
         let child = LayoutContext.Child(index: elementIndex, dimensions: dimensions)
-
-        print("\(node): requested \(size)")
 
         // Add ourself to the parent context.
         parentContext.children.append(child)
@@ -368,8 +365,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           origin: .init(origin: position),
           dimensions: child.dimensions
         )
-
-        print("\(node): positioned \(position)")
 
         // Push a layout mutation if needed.
         if geometry != node.alternate?.geometry {
@@ -471,13 +466,18 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       }
       mainLoop()
 
-      // We continue afterwards to lay out any parents that may have pending layout requests
-      // up the entire tree.
-      var layoutNode = node.fiber
+      // We continue to the very top to update all necessary positions.
+      var layoutNode = node.fiber?.child
       while let current = layoutNode {
-        size(current)
+        // We only need to re-position, because the size can't change if no state changed.
         position(current)
-        layoutNode = current.elementParent
+        if current.sibling != nil {
+          // We also don't need to go deep into sibling children,
+          // because child positioning is relative to the parent.
+          layoutNode = current.sibling
+        } else {
+          layoutNode = current.parent
+        }
       }
     }
   }
