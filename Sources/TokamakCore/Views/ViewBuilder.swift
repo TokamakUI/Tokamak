@@ -53,7 +53,15 @@ extension _ConditionalContent: GroupView {
   }
 }
 
-extension Optional: View, _PrimitiveView where Wrapped: View {
+extension Optional: View where Wrapped: View {
+  public var body: some View {
+    if let view = self {
+      view
+    } else {
+      EmptyView()
+    }
+  }
+
   public func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
     switch self {
     case .none:
