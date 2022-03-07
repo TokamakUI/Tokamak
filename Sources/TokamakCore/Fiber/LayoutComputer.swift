@@ -95,15 +95,17 @@ final class StackLayout: LayoutComputer {
   let proposedSize: CGSize
   let axis: Axis
   let alignment: Alignment
+  let spacing: CGFloat
   /// A multiplier of `1` for the axis that takes the size of the largest child.
   let maxAxis: CGSize
   /// A multiplier of `1` for the axis that the children are aligned on.
   let fitAxis: CGSize
 
-  init(proposedSize: CGSize, axis: Axis, alignment: Alignment) {
+  init(proposedSize: CGSize, axis: Axis, alignment: Alignment, spacing: CGFloat) {
     self.proposedSize = proposedSize
     self.axis = axis
     self.alignment = alignment
+    self.spacing = spacing
     switch axis {
     case .horizontal:
       maxAxis = .init(width: 0, height: 1)
@@ -146,17 +148,19 @@ final class StackLayout: LayoutComputer {
         )
       }
     let maxDimensions = ViewDimensions(size: maxSize, alignmentGuides: [:])
+    /// The gaps up to this point.
+    let fitSpacing = CGFloat(child.index) * spacing
     let position = CGPoint(
       x: (
         (maxDimensions[alignment.horizontal] - child.dimensions[alignment.horizontal]) * maxAxis
           .width
       )
-        + (fitSize.width * fitAxis.width),
+        + ((fitSize.width + fitSpacing) * fitAxis.width),
       y: (
         (maxDimensions[alignment.vertical] - child.dimensions[alignment.vertical]) * maxAxis
           .height
       )
-        + (fitSize.height * fitAxis.height)
+        + ((fitSize.height + fitSpacing) * fitAxis.height)
     )
     return position
   }
@@ -173,9 +177,14 @@ final class StackLayout: LayoutComputer {
         .init(width: $0.width + $1.dimensions.width, height: $0.height + $1.dimensions.height)
       }
 
+    /// The combined gap size.
+    let fitSpacing = CGFloat(context.children.count - 1) * spacing
+
     return .init(
-      width: (maxDimensions.width * maxAxis.width) + (fitDimensions.width * fitAxis.width),
-      height: (maxDimensions.height * maxAxis.height) + (fitDimensions.height * fitAxis.height)
+      width: (maxDimensions.width * maxAxis.width) +
+        ((fitDimensions.width + fitSpacing) * fitAxis.width),
+      height: (maxDimensions.height * maxAxis.height) +
+        ((fitDimensions.height + fitSpacing) * fitAxis.height)
     )
   }
 }
@@ -188,7 +197,8 @@ public extension VStack {
         StackLayout(
           proposedSize: proposedSize,
           axis: .vertical,
-          alignment: .init(horizontal: inputs.view.alignment, vertical: .center)
+          alignment: .init(horizontal: inputs.view.alignment, vertical: .center),
+          spacing: inputs.view.spacing
         )
       }
     )
@@ -203,7 +213,8 @@ public extension HStack {
         StackLayout(
           proposedSize: proposedSize,
           axis: .horizontal,
-          alignment: .init(horizontal: .center, vertical: inputs.view.alignment)
+          alignment: .init(horizontal: .center, vertical: inputs.view.alignment),
+          spacing: inputs.view.spacing
         )
       }
     )
