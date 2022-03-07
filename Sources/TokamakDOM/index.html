@@ -7,6 +7,20 @@
     <script>
       window.Tokamak = {
         root: undefined,
+        measureText: (text, proposedSize) => {
+          const element = document.createElement("span")
+          element.textContent = text
+          element.style.maxWidth = `${proposedSize.width}px`
+          element.style.maxHeight = `${proposedSize.height}px`
+          document.body.appendChild(element)
+          const rect = element.getBoundingClientRect()
+          const size = {
+            width: rect.width,
+            height: rect.height
+          }
+          document.body.removeChild(element)
+          return size
+        },
         initRoot: (root) => {
           document.body.style.margin = '0'
           root.style.width = '100vw'

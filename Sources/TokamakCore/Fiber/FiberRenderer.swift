@@ -21,6 +21,8 @@ public protocol FiberRenderer {
   var defaultEnvironment: EnvironmentValues { get }
   /// The size of the window we are rendering in.
   var sceneSize: CGSize { get }
+  /// Calculate the size of `Text` in `environment` for layout.
+  func measureText(_ text: Text, proposedSize: CGSize, in environment: EnvironmentValues) -> CGSize
 }
 
 public extension FiberRenderer {
@@ -29,5 +31,18 @@ public extension FiberRenderer {
   @discardableResult
   func render<V: View>(_ view: V) -> FiberReconciler<Self> {
     .init(self, view)
+  }
+}
+
+extension EnvironmentValues {
+  private enum MeasureTextKey: EnvironmentKey {
+    static var defaultValue: (Text, CGSize, EnvironmentValues) -> CGSize {
+      { _, _, _ in .zero }
+    }
+  }
+
+  var measureText: (Text, CGSize, EnvironmentValues) -> CGSize {
+    get { self[MeasureTextKey.self] }
+    set { self[MeasureTextKey.self] = newValue }
   }
 }

@@ -62,6 +62,7 @@ protocol DOMNodeConvertible: HTMLConvertible {
 public struct DOMFiberRenderer: FiberRenderer {
   public let rootElement: DOMElement
   private let jsCommit: JSFunction
+  private let jsMeasureText: JSFunction
 
   public var sceneSize: CGSize {
     .init(width: body.clientWidth.number!, height: body.clientHeight.number!)
@@ -80,6 +81,7 @@ public struct DOMFiberRenderer: FiberRenderer {
       """)
     }
     jsCommit = Tokamak.commit.function!
+    jsMeasureText = Tokamak.measureText.function!
     guard let reference = document.querySelector!(rootSelector).object else {
       fatalError("""
       The root element with selector '\(rootSelector)' could not be found. \
@@ -105,6 +107,23 @@ public struct DOMFiberRenderer: FiberRenderer {
 
   public func commit(_ mutations: [Mutation<Self>]) {
     jsCommit(mutations.map { $0.object() })
+  }
+
+  public func measureText(_ text: Text, proposedSize: CGSize,
+                          in environment: EnvironmentValues) -> CGSize
+  {
+    // FIXME: Use text styles.
+    let dimensions = jsMeasureText(
+      text.innerHTML ?? "",
+      [
+        "width": Double(proposedSize.width),
+        "height": Double(proposedSize.height),
+      ]
+    )
+    return .init(
+      width: dimensions.width.number ?? 0,
+      height: dimensions.height.number ?? 0
+    )
   }
 }
 

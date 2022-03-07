@@ -166,6 +166,12 @@ struct TestRenderer: FiberRenderer {
       }
     }
   }
+
+  func measureText(_ text: Text, proposedSize: CGSize,
+                   in environment: EnvironmentValues) -> CGSize
+  {
+    .init(width: 100, height: 50)
+  }
 }
 
 final class VisitorTests: XCTestCase {

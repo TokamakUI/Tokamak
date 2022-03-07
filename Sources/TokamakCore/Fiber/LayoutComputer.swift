@@ -214,10 +214,12 @@ public extension HStack {
 final class TextLayoutComputer: LayoutComputer {
   let text: Text
   let proposedSize: CGSize
+  let environment: EnvironmentValues
 
-  init(text: Text, proposedSize: CGSize) {
+  init(text: Text, proposedSize: CGSize, environment: EnvironmentValues) {
     self.text = text
     self.proposedSize = proposedSize
+    self.environment = environment
   }
 
   func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
@@ -231,8 +233,7 @@ final class TextLayoutComputer: LayoutComputer {
   }
 
   func requestSize(in context: LayoutContext) -> CGSize {
-    // FIXME: Renderer-provided text measurement.
-    .init(width: 100, height: 50)
+    environment.measureText(text, proposedSize, environment)
   }
 }
 
@@ -241,7 +242,11 @@ public extension Text {
     .init(
       inputs: inputs,
       layoutComputer: { proposedSize in
-        TextLayoutComputer(text: inputs.view, proposedSize: proposedSize)
+        TextLayoutComputer(
+          text: inputs.view,
+          proposedSize: proposedSize,
+          environment: inputs.environment.environment
+        )
       }
     )
   }

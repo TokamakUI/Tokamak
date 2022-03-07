@@ -67,7 +67,12 @@ public extension ModifiedContent where Content: View, Modifier: ViewModifier {
   }
 
   func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
-    // Visit the computed body of the modifier.
-    visitor.visit(modifier.body(content: .init(modifier: modifier, view: content)))
+    if Modifier.Body.self == Never.self {
+      // Don't compute the body of a primitive modifier. Just return the content.
+      visitor.visit(content)
+    } else {
+      // Visit the computed body of the modifier.
+      visitor.visit(modifier.body(content: .init(modifier: modifier, view: content)))
+    }
   }
 }

@@ -159,4 +159,10 @@ public extension HTMLConvertible {
       }
     }
   }
+
+  public func measureText(_ text: Text, proposedSize: CGSize,
+                          in environment: EnvironmentValues) -> CGSize
+  {
+    .zero
+  }
 }

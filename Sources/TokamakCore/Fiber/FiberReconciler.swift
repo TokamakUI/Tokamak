@@ -48,9 +48,15 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     let content: Content
     let renderer: Renderer
 
+    var environment: EnvironmentValues {
+      var environment = renderer.defaultEnvironment
+      environment.measureText = renderer.measureText
+      return environment
+    }
+
     var body: some View {
       content
-        .environmentValues(renderer.defaultEnvironment)
+        .environmentValues(environment)
     }
 
     static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
