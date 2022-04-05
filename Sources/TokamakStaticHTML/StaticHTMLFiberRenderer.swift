@@ -128,7 +128,7 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
   public let rootElement: HTMLElement
   public let defaultEnvironment: EnvironmentValues
 
-  init() {
+  public init() {
     rootElement = .init(tag: "body", attributes: [:], innerHTML: nil, children: [])
     var environment = EnvironmentValues()
     environment[_ColorSchemeKey.self] = .light
