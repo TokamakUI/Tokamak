@@ -92,7 +92,9 @@ final class DOMRenderer: Renderer {
     appendRootStyle(ref)
 
     #if compiler(>=5.5) && (canImport(Concurrency) || canImport(_Concurrency))
-    JavaScriptEventLoop.installGlobalExecutor()
+    if #available(macOS 12.0, *) {
+      JavaScriptEventLoop.installGlobalExecutor()
+    }
     #endif
 
     let scheduler = JSScheduler()

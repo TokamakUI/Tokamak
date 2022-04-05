@@ -32,7 +32,7 @@ struct TestView: View {
   }
 }
 
-let reconciler = DOMFiberRenderer("#root").render(TestView())
+// let reconciler = DOMFiberRenderer("#root").render(TestView())
 
 // @available(OSX 10.16, iOS 14.0, *)
 // struct CustomScene: Scene {

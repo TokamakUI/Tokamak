@@ -18,6 +18,7 @@
 import XCTest
 
 @_spi(TokamakCore) @testable import TokamakCore
+import TokamakTestRenderer
 
 private struct TestView: View {
   struct Counter: View {
@@ -52,121 +53,9 @@ private struct TestView: View {
   }
 }
 
-protocol TestPrimitive {
-  var tag: String { get }
-  var attributes: [String: Any] { get }
-}
-
-extension TestPrimitive {
-  var tag: String { String(String(reflecting: Self.self).split(separator: "<")[0]) }
-}
-
-extension VStack: TestPrimitive {
-  var attributes: [String: Any] {
-    ["spacing": spacing, "alignment": alignment]
-  }
-}
-
-extension HStack: TestPrimitive {
-  var attributes: [String: Any] {
-    ["spacing": spacing, "alignment": alignment]
-  }
-}
-
-extension Text: TestPrimitive {
-  var attributes: [String: Any] {
-    ["content": storage.rawText, "modifiers": modifiers]
-  }
-}
-
-extension _Button: TestPrimitive {
-  var attributes: [String: Any] {
-    ["action": action, "role": role as Any]
-  }
-}
-
-extension _PrimitiveButtonStyleBody: TestPrimitive {
-  var attributes: [String: Any] {
-    ["size": controlSize, "role": role as Any]
-  }
-}
-
-final class TestElement: Element, CustomStringConvertible {
-  struct Data: ElementData, Equatable {
-    let renderedValue: String
-    let closingTag: String
-
-    init(
-      renderedValue: String,
-      closingTag: String
-    ) {
-      self.renderedValue = renderedValue
-      self.closingTag = closingTag
-    }
-
-    init<V>(from primitiveView: V) where V: View {
-      guard let primitiveView = primitiveView as? TestPrimitive else { fatalError() }
-      renderedValue =
-        "<\(primitiveView.tag) \(primitiveView.attributes.sorted(by: { $0.key < $1.key }).map { "\($0.key)=\"\(String(describing: $0.value))\"" }.joined(separator: " "))>"
-      closingTag = "</\(primitiveView.tag)>"
-    }
-  }
-
-  var data: Data
-
-  init(from data: Data) {
-    self.data = data
-  }
-
-  var description: String {
-    "\(data.renderedValue)\(data.closingTag)"
-  }
-
-  init(renderedValue: String, closingTag: String) {
-    data = .init(renderedValue: renderedValue, closingTag: closingTag)
-  }
-
-  func update(with data: Data) {
-    self.data = data
-  }
-
-  static var root: Self { .init(renderedValue: "<root>", closingTag: "</root>") }
-}
-
-struct TestRenderer: FiberRenderer {
-  typealias ElementType = TestElement
-
-  let rootElement: TestElement
-
-  init(_ rootElement: TestElement) {
-    self.rootElement = rootElement
-  }
-
-  static func isPrimitive<V>(_ view: V) -> Bool where V: View {
-    view is TestPrimitive
-  }
-
-  func commit(_ mutations: [Mutation<TestRenderer>]) {
-    for mutation in mutations {
-      switch mutation {
-      case let .insert(element, parent, index):
-        print("Insert \(element) at \(index) in \(parent)")
-      case let .remove(element, parent):
-        print("Remove \(element) from \(parent as Any)")
-      case let .replace(parent, previous, replacement):
-        print("Replace \(previous) with \(replacement) in \(parent)")
-      case let .update(previous, newData):
-        print("Update \(previous) with \(newData)")
-        previous.update(with: newData)
-        print(previous)
-      }
-    }
-  }
-}
-
 final class VisitorTests: XCTestCase {
   func testRenderer() {
-    let reconciler = TestRenderer(.root).render(TestView())
+    let reconciler = TestFiberRenderer(.root).render(TestView())
     func decrement() {
       (
         reconciler.current // ModifiedContent

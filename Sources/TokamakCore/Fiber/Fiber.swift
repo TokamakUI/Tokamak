@@ -25,7 +25,7 @@
     weak var reconciler: FiberReconciler<Renderer>?
 
     /// The underlying `View` instance.
-    var view: Any!
+    @_spi(TokamakCore) public var view: Any!
     /// Outputs from evaluating `View._makeView`
     var outputs: ViewOutputs!
     /// A function to visit `view` generically.
@@ -35,9 +35,9 @@
     /// The mounted element, if this is a Renderer primitive.
     var element: Renderer.ElementType?
     /// The first child node.
-    var child: Fiber?
+    @_spi(TokamakCore) public var child: Fiber?
     /// This node's right sibling.
-    var sibling: Fiber?
+    @_spi(TokamakCore) public var sibling: Fiber?
     /// An unowned reference to the parent node.
     unowned var parent: Fiber?
     /// The nearest parent that can be mounted on.

@@ -166,6 +166,7 @@ let package = Package(
       dependencies: [
         "Benchmark",
         "TokamakCore",
+        "TokamakTestRenderer",
       ]
     ),
     .executableTarget(
@@ -208,7 +209,13 @@ let package = Package(
       name: "TokamakTestRenderer",
       dependencies: ["TokamakCore"]
     ),
-    .testTarget(name: "TokamakReconcilerTests", dependencies: ["TokamakCore"]),
+    .testTarget(
+      name: "TokamakReconcilerTests",
+      dependencies: [
+        "TokamakCore",
+        "TokamakTestRenderer",
+      ]
+    ),
     .testTarget(
       name: "TokamakTests",
       dependencies: ["TokamakTestRenderer"]
