@@ -132,9 +132,10 @@ public struct EveryMinuteTimelineSchedule: TimelineSchedule {
 
   public init() {}
 
-  public func entries(from startDate: Date,
-                      mode: TimelineScheduleMode) -> EveryMinuteTimelineSchedule.Entries
-  {
+  public func entries(
+    from startDate: Date,
+    mode: TimelineScheduleMode
+  ) -> EveryMinuteTimelineSchedule.Entries {
     Entries(date: startDate)
   }
 }

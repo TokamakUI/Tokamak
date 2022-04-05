@@ -52,9 +52,11 @@ public enum _FontNames: Hashable {
 }
 
 public extension Font {
-  static func system(size: CGFloat, weight: Weight = .regular,
-                     design: Design = .default) -> Self
-  {
+  static func system(
+    size: CGFloat,
+    weight: Weight = .regular,
+    design: Design = .default
+  ) -> Self {
     .init(
       _ConcreteFontBox(
         .init(
