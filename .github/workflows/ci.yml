@@ -42,6 +42,24 @@ jobs:
         with:
           shell-action: carton test
 
+  swiftwasm_bundle_5_6:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: swiftwasm/swiftwasm-action@v5.6
+        with:
+          shell-action: carton bundle --product TokamakDemo
+
+  swiftwasm_test_5_6:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: swiftwasm/swiftwasm-action@v5.6
+        with:
+          shell-action: carton test
+
   core_macos_build:
     runs-on: macos-11
 
