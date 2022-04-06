@@ -224,7 +224,7 @@ struct UpdateShallow: View {
   }
 }
 
-benchmark("update shallow (StackReconciler)") { state in
+benchmark("update shallow (StackReconciler)") { _ in
   let view = UpdateShallow()
   let renderer = TestRenderer(view)
   var button: _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>?
@@ -234,12 +234,11 @@ benchmark("update shallow (StackReconciler)") { state in
   ) { (v: _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>) in
     button = v
   }
-  try state.measure {
-    button?.action()
-  }
+  // Using state.measure here hangs the benchmark app?
+  button?.action()
 }
 
-benchmark("update shallow (FiberReconciler)") { state in
+benchmark("update shallow (FiberReconciler)") { _ in
   let view = UpdateShallow()
   let reconciler = TestFiberRenderer(.root).render(view)
   let button = reconciler.current // ModifiedContent
@@ -252,9 +251,8 @@ benchmark("update shallow (FiberReconciler)") { state in
     .child? // AnyView
     .child? // _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
     .view
-  try state.measure {
-    (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
-  }
+  // Using state.measure here hangs the benchmark app?g
+  (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
 }
 
 Benchmark.main()
