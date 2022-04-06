@@ -45,18 +45,22 @@ struct UpdateWide: View {
   }
 }
 
-benchmark("update wide (StackReconciler)") {
+benchmark("update wide (StackReconciler)") { state in
   let view = UpdateWide()
   let renderer = TestRenderer(view)
+  var button: _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>?
   mapAnyView(
     renderer.rootTarget.subviews[0].subviews[1].subviews[0]
       .view
-  ) { (button: _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>) in
-    button.action()
+  ) { (v: _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>) in
+    button = v
+  }
+  try state.measure {
+    button?.action()
   }
 }
 
-benchmark("update wide (FiberReconciler)") {
+benchmark("update wide (FiberReconciler)") { state in
   let view = UpdateWide()
   let reconciler = TestFiberRenderer(.root).render(view)
   let button = reconciler.current // ModifiedContent
@@ -69,7 +73,9 @@ benchmark("update wide (FiberReconciler)") {
     .child? // AnyView
     .child? // _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
     .view
-  (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+  try state.measure {
+    (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+  }
 }
 
 struct UpdateNarrow: View {
@@ -91,18 +97,22 @@ struct UpdateNarrow: View {
   }
 }
 
-benchmark("update narrow (StackReconciler)") {
+benchmark("update narrow (StackReconciler)") { state in
   let view = UpdateNarrow()
   let renderer = TestRenderer(view)
+  var button: _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>?
   mapAnyView(
     renderer.rootTarget.subviews[0].subviews[1].subviews[0]
       .view
-  ) { (button: _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>) in
-    button.action()
+  ) { (v: _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>) in
+    button = v
+  }
+  try state.measure {
+    button?.action()
   }
 }
 
-benchmark("update narrow (FiberReconciler)") {
+benchmark("update narrow (FiberReconciler)") { state in
   let view = UpdateNarrow()
   let reconciler = TestFiberRenderer(.root).render(view)
   let button = reconciler.current // ModifiedContent
@@ -115,7 +125,9 @@ benchmark("update narrow (FiberReconciler)") {
     .child? // AnyView
     .child? // _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
     .view
-  (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+  try state.measure {
+    (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+  }
 }
 
 struct UpdateDeep: View {
@@ -149,18 +161,22 @@ struct UpdateDeep: View {
   }
 }
 
-benchmark("update deep (StackReconciler)") {
+benchmark("update deep (StackReconciler)") { state in
   let view = UpdateDeep()
   let renderer = TestRenderer(view)
+  var button: _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>?
   mapAnyView(
     renderer.rootTarget.subviews[0].subviews[1].subviews[0]
       .view
-  ) { (button: _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>) in
-    button.action()
+  ) { (v: _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>) in
+    button = v
+  }
+  try state.measure {
+    button?.action()
   }
 }
 
-benchmark("update deep (FiberReconciler)") {
+benchmark("update deep (FiberReconciler)") { state in
   let view = UpdateDeep()
   let reconciler = TestFiberRenderer(.root).render(view)
   let button = reconciler.current // ModifiedContent
@@ -173,7 +189,9 @@ benchmark("update deep (FiberReconciler)") {
     .child? // AnyView
     .child? // _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
     .view
-  (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+  try state.measure {
+    (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+  }
 }
 
 struct UpdateShallow: View {
@@ -198,7 +216,7 @@ struct UpdateShallow: View {
   var body: some View {
     VStack {
       Text(update)
-      RecursiveView(1000)
+      RecursiveView(500)
       Button("Update") {
         update = "B"
       }
@@ -206,18 +224,22 @@ struct UpdateShallow: View {
   }
 }
 
-benchmark("update shallow (StackReconciler)") {
+benchmark("update shallow (StackReconciler)") { state in
   let view = UpdateShallow()
   let renderer = TestRenderer(view)
+  var button: _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>?
   mapAnyView(
     renderer.rootTarget.subviews[0].subviews[1].subviews[0]
       .view
-  ) { (button: _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>) in
-    button.action()
+  ) { (v: _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>) in
+    button = v
+  }
+  try state.measure {
+    button?.action()
   }
 }
 
-benchmark("update shallow (FiberReconciler)") {
+benchmark("update shallow (FiberReconciler)") { state in
   let view = UpdateShallow()
   let reconciler = TestFiberRenderer(.root).render(view)
   let button = reconciler.current // ModifiedContent
@@ -230,7 +252,9 @@ benchmark("update shallow (FiberReconciler)") {
     .child? // AnyView
     .child? // _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
     .view
-  (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+  try state.measure {
+    (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+  }
 }
 
 Benchmark.main()
