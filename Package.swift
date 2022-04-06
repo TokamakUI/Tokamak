@@ -72,7 +72,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
-      .upToNextMinor(from: "0.12.0")
+      .upToNextMinor(from: "0.13.0")
     ),
     .package(
       url: "https://github.com/OpenCombine/OpenCombine.git",
