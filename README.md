@@ -142,7 +142,9 @@ app.
 
 ### For app developers
 
-- macOS 12 and Xcode 13.3 or later.
+- macOS 11 and Xcode 13.2 or later when using VS Code. macOS 12 and Xcode 13.3 or later are recommended if
+you'd like to use Xcode for auto-completion, or when developing multi-platform apps that target WebAssembly
+and macOS at the same time.
 - [Swift 5.6 or later](https://swift.org/download/) and Ubuntu 18.04/20.04 if you'd like to use Linux.
   Other Linux distributions are currently not supported.
 
