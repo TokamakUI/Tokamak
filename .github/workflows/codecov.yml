@@ -20,7 +20,7 @@ jobs:
     - name: Run Tests
       run: swift test --enable-code-coverage --skip-build
     - name: Generate Branch Coverage Report
-      uses: mattpolzin/swift-codecov-action@0.6.1
+      uses: mattpolzin/swift-codecov-action@0.7.1
       id: cov
       with:
         MINIMUM_COVERAGE: 20
