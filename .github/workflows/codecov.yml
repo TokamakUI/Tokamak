@@ -12,7 +12,7 @@ jobs:
       image: swiftlang/swift:nightly-5.6-focal
     runs-on: ubuntu-latest
     steps:
-    - run: apt-get update && apt-get install -y gtk+-3.0 libgtk+-3.0
+    - run: apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y gtk+-3.0 libgtk+-3.0
     - name: Checkout Branch
       uses: actions/checkout@v2
     - name: Build Test Target
