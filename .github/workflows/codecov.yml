@@ -9,7 +9,7 @@ on:
 jobs:
   codecov:
     container:
-      image: swiftlang/swift:nightly-5.6-focal
+      image: swiftlang/swift:nightly-focal
     runs-on: ubuntu-latest
     steps:
     - run: apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y gtk+-3.0 libgtk+-3.0
