@@ -24,6 +24,7 @@ jobs:
         with:
           shell-action: carton test
 
+  # Disabled until macos-12 is available on GitHub Actions, which is required for Xcode 13.3
   # core_macos_build:
   #   runs-on: macos-11
 
@@ -79,30 +80,31 @@ jobs:
 
   #         make build
 
-  gtk_ubuntu_18_04_build:
-    runs-on: ubuntu-18.04
+  # Disabled due to Swift 5.6 on Linux crashing on protocol constraints
+  # gtk_ubuntu_18_04_build:
+  #   runs-on: ubuntu-18.04
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build the GTK renderer on Ubuntu 18.04
-        shell: bash
-        run: |
-          set -ex
-          sudo apt-get update
-          sudo apt-get install libgtk+-3.0 gtk+-3.0
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Build the GTK renderer on Ubuntu 18.04
+  #       shell: bash
+  #       run: |
+  #         set -ex
+  #         sudo apt-get update
+  #         sudo apt-get install libgtk+-3.0 gtk+-3.0
 
-          make build
+  #         make build
 
-  gtk_ubuntu_20_04_build:
-    runs-on: ubuntu-20.04
+  # gtk_ubuntu_20_04_build:
+  #   runs-on: ubuntu-20.04
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build the GTK renderer on Ubuntu 20.04
-        shell: bash
-        run: |
-          set -ex
-          sudo apt-get update
-          sudo apt-get install libgtk+-3.0 gtk+-3.0
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Build the GTK renderer on Ubuntu 20.04
+  #       shell: bash
+  #       run: |
+  #         set -ex
+  #         sudo apt-get update
+  #         sudo apt-get install libgtk+-3.0 gtk+-3.0
 
-          make build
+  #         make build
