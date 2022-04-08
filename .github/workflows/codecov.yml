@@ -9,16 +9,16 @@ on:
 jobs:
   codecov:
     container:
-      image: swift:5.4-bionic
+      image: swift:5.6
     runs-on: ubuntu-latest
     steps:
     - run: apt-get update && apt-get install -y gtk+-3.0 libgtk+-3.0
     - name: Checkout Branch
       uses: actions/checkout@v2
     - name: Build Test Target
-      run: swift build --enable-test-discovery -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
+      run: swift build -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
     - name: Run Tests
-      run: swift test --enable-test-discovery --enable-code-coverage --skip-build
+      run: swift test --enable-code-coverage --skip-build
     - name: Generate Branch Coverage Report
       uses: mattpolzin/swift-codecov-action@0.6.1
       id: cov
@@ -32,4 +32,3 @@ jobs:
       if: ${{ failure() }}
       run: |
         echo "::error file=Package.swift,line=1,col=1::The current code coverage percentage is failing with ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%)."
-
