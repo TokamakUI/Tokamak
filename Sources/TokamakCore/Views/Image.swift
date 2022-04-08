@@ -133,9 +133,10 @@ public extension Image {
     case stretch
   }
 
-  func resizable(capInsets: EdgeInsets = EdgeInsets(),
-                 resizingMode: ResizingMode = .stretch) -> Image
-  {
+  func resizable(
+    capInsets: EdgeInsets = EdgeInsets(),
+    resizingMode: ResizingMode = .stretch
+  ) -> Image {
     .init(ResizableProvider(parent: provider, capInsets: capInsets, resizingMode: resizingMode))
   }
 }

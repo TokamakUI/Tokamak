@@ -41,3 +41,6 @@ Pods/
 # SwiftPM
 .build
 /Packages
+
+# VS Code
+.vscode/launch.json

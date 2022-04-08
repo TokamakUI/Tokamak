@@ -6,99 +6,84 @@ on:
     branches: [main]
 
 jobs:
-  swiftwasm_bundle_5_4:
+  swiftwasm_bundle_5_6:
     runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
-      - uses: swiftwasm/swiftwasm-action@v5.4
+      - uses: swiftwasm/swiftwasm-action@main
         with:
           shell-action: carton bundle --product TokamakDemo
 
-  swiftwasm_test_5_4:
+  swiftwasm_test_5_6:
     runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
-      - uses: swiftwasm/swiftwasm-action@v5.4
+      - uses: swiftwasm/swiftwasm-action@main
         with:
           shell-action: carton test
 
-  swiftwasm_bundle_5_5:
-    runs-on: ubuntu-20.04
+  # Disabled until macos-12 is available on GitHub Actions, which is required for Xcode 13.3
+  # core_macos_build:
+  #   runs-on: macos-11
 
-    steps:
-      - uses: actions/checkout@v2
-      - uses: swiftwasm/swiftwasm-action@v5.5
-        with:
-          shell-action: carton bundle --product TokamakDemo
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Run the test suite on macOS, build the demo project for iOS
+  #       shell: bash
+  #       run: |
+  #         set -ex
+  #         sudo xcode-select --switch /Applications/Xcode_13.0.app/Contents/Developer/
+  #         # avoid building unrelated products for testing by specifying the test product explicitly
+  #         swift build --product TokamakPackageTests
+  #         `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest ||
+  #           (cp -r /var/folders/*/*/*/*Tests . ; exit 1)
 
-  swiftwasm_test_5_5:
-    runs-on: ubuntu-20.04
+  #         rm -rf Sources/TokamakGTKCHelpers/*.c
 
-    steps:
-      - uses: actions/checkout@v2
-      - uses: swiftwasm/swiftwasm-action@v5.5
-        with:
-          shell-action: carton test
+  #         xcodebuild -version
 
-  core_macos_build:
-    runs-on: macos-11
+  #         # Make sure Tokamak can be built on macOS so that Xcode autocomplete works.
+  #         # Disable macOS builds until Monterey is available on GHA.
+  #         # xcodebuild -scheme TokamakDemo -destination 'generic/platform=macOS' \
+  #         #   CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
+  #         #   xcpretty --color
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run the test suite on macOS, build the demo project for iOS
-        shell: bash
-        run: |
-          set -ex
-          sudo xcode-select --switch /Applications/Xcode_13.0.app/Contents/Developer/
-          # avoid building unrelated products for testing by specifying the test product explicitly
-          swift build --product TokamakPackageTests
-          `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest ||
-            (cp -r /var/folders/*/*/*/*Tests . ; exit 1)
+  #         cd "NativeDemo"
+  #         xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
+  #           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
+  #           xcpretty --color
+  #         cd ..
 
-          rm -rf Sources/TokamakGTKCHelpers/*.c
+  #         ./benchmark.sh
 
-          xcodebuild -version
+  #     - name: Upload failed snapshots
+  #       uses: actions/upload-artifact@v2
+  #       if: ${{ failure() }}
+  #       with:
+  #         name: Failed snapshots
+  #         path: '*Tests'
 
-          # Make sure Tokamak can be built on macOS so that Xcode autocomplete works.
-          # Disable macOS builds until Monterey is available on GHA.
-          # xcodebuild -scheme TokamakDemo -destination 'generic/platform=macOS' \
-          #   CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
-          #   xcpretty --color
+  # gtk_macos_build:
+  #   runs-on: macos-11
 
-          cd "NativeDemo"
-          xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
-            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
-            xcpretty --color
-          cd ..
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Build the GTK renderer on macOS
+  #       shell: bash
+  #       run: |
+  #         set -ex
+  #         sudo xcode-select --switch /Applications/Xcode_13.0.app/Contents/Developer/
 
-          ./benchmark.sh
+  #         brew install gtk+3
 
-      - name: Upload failed snapshots
-        uses: actions/upload-artifact@v2
-        if: ${{ failure() }}
-        with:
-          name: Failed snapshots
-          path: '*Tests'
-
-  gtk_macos_build:
-    runs-on: macos-11
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build the GTK renderer on macOS
-        shell: bash
-        run: |
-          set -ex
-          sudo xcode-select --switch /Applications/Xcode_13.0.app/Contents/Developer/
-
-          brew install gtk+3
-
-          make build
+  #         make build
 
   gtk_ubuntu_18_04_build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+    container:
+     image: swiftlang/swift:nightly-bionic
 
     steps:
       - uses: actions/checkout@v2
@@ -106,13 +91,14 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo apt-get update
-          sudo apt-get install libgtk+-3.0 gtk+-3.0
+          apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libgtk+-3.0 gtk+-3.0
 
           make build
 
   gtk_ubuntu_20_04_build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    container:
+     image: swiftlang/swift:nightly-focal
 
     steps:
       - uses: actions/checkout@v2
@@ -120,7 +106,6 @@ jobs:
         shell: bash
         run: |
           set -ex
-          sudo apt-get update
-          sudo apt-get install libgtk+-3.0 gtk+-3.0
+          apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libgtk+-3.0 gtk+-3.0
 
           make build

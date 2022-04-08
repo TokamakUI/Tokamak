@@ -15,14 +15,11 @@
 //  Created by Max Desiatov on 11/04/2020.
 //
 
+import JavaScriptEventLoop
 import JavaScriptKit
 import OpenCombineJS
 @_spi(TokamakCore) import TokamakCore
 import TokamakStaticHTML
-
-#if compiler(>=5.5) && (canImport(Concurrency) || canImport(_Concurrency))
-import JavaScriptEventLoop
-#endif
 
 public typealias Sanitizers = TokamakStaticHTML.Sanitizers
 
@@ -91,9 +88,7 @@ final class DOMRenderer: Renderer {
     rootRef = ref
     appendRootStyle(ref)
 
-    #if compiler(>=5.5) && (canImport(Concurrency) || canImport(_Concurrency))
     JavaScriptEventLoop.installGlobalExecutor()
-    #endif
 
     let scheduler = JSScheduler()
     self.scheduler = scheduler

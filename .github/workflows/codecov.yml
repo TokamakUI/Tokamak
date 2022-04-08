@@ -1,4 +1,3 @@
-
 name: Codecov
 
 on:
@@ -9,21 +8,21 @@ on:
 jobs:
   codecov:
     container:
-      image: swift:5.4-bionic
+      image: swiftlang/swift:nightly-focal
     runs-on: ubuntu-latest
     steps:
-    - run: apt-get update && apt-get install -y gtk+-3.0 libgtk+-3.0
+    - run: apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y gtk+-3.0 libgtk+-3.0
     - name: Checkout Branch
       uses: actions/checkout@v2
     - name: Build Test Target
-      run: swift build --enable-test-discovery -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
+      run: swift build -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
     - name: Run Tests
-      run: swift test --enable-test-discovery --enable-code-coverage --skip-build
+      run: swift test --enable-code-coverage --skip-build
     - name: Generate Branch Coverage Report
-      uses: mattpolzin/swift-codecov-action@0.6.1
+      uses: mattpolzin/swift-codecov-action@0.7.1
       id: cov
       with:
-        MINIMUM_COVERAGE: 20
+        MINIMUM_COVERAGE: 15
     - name: Post Positive Results
       if: ${{ success() }}
       run: |
@@ -32,4 +31,3 @@ jobs:
       if: ${{ failure() }}
       run: |
         echo "::error file=Package.swift,line=1,col=1::The current code coverage percentage is failing with ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%)."
-

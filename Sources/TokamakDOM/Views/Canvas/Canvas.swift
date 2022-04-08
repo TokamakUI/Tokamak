@@ -187,9 +187,11 @@ struct _Canvas<Symbols: View>: View {
 }
 
 extension GraphicsContext.Shading {
-  func cssValue(in environment: EnvironmentValues, with canvas: JSObject,
-                bounds: CGRect) -> JSValue
-  {
+  func cssValue(
+    in environment: EnvironmentValues,
+    with canvas: JSObject,
+    bounds: CGRect
+  ) -> JSValue {
     if case let .resolved(resolved) = _resolve(in: environment)._storage {
       return resolved.cssValue(in: environment, with: canvas, bounds: bounds)
     }
@@ -198,9 +200,11 @@ extension GraphicsContext.Shading {
 }
 
 extension GraphicsContext._ResolvedShading {
-  func cssValue(in environment: EnvironmentValues, with canvas: JSObject,
-                bounds: CGRect) -> JSValue
-  {
+  func cssValue(
+    in environment: EnvironmentValues,
+    with canvas: JSObject,
+    bounds: CGRect
+  ) -> JSValue {
     switch self {
     case let .levels(palette):
       guard let primary = palette.first else { break }

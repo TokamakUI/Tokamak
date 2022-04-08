@@ -31,11 +31,12 @@ struct WidgetView<Content: View>: View, AnyWidget, ParentView {
   let content: Content
   let expand: Bool
 
-  init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>,
-       update: @escaping (Widget) -> () = { _ in },
-       expand: Bool = false,
-       @ViewBuilder content: () -> Content)
-  {
+  init(
+    build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>,
+    update: @escaping (Widget) -> () = { _ in },
+    expand: Bool = false,
+    @ViewBuilder content: () -> Content
+  ) {
     self.build = build
     self.expand = expand
     self.content = content()
@@ -62,9 +63,10 @@ struct WidgetView<Content: View>: View, AnyWidget, ParentView {
 }
 
 extension WidgetView where Content == EmptyView {
-  init(build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>,
-       expand: Bool = false)
-  {
+  init(
+    build: @escaping (UnsafeMutablePointer<GtkApplication>) -> UnsafeMutablePointer<GtkWidget>,
+    expand: Bool = false
+  ) {
     self.init(build: build, expand: expand) { EmptyView() }
   }
 }
