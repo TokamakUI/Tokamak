@@ -91,7 +91,7 @@ jobs:
         shell: bash
         run: |
           set -ex
-          apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y libgtk+-3.0 gtk+-3.0
+          apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libgtk+-3.0 gtk+-3.0
 
           make build
 
@@ -106,6 +106,6 @@ jobs:
         shell: bash
         run: |
           set -ex
-          apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y libgtk+-3.0 gtk+-3.0
+          apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libgtk+-3.0 gtk+-3.0
 
           make build
