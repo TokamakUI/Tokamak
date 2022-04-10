@@ -1,3 +1,23 @@
+# 0.10.0 (9 April 2022)
+
+This release adds support for SwiftWasm 5.6. It also updates JavaScriptKit and OpenCombineJS dependencies.
+Due to issues with support for older SwiftWasm releases in the `carton`/SwiftPM integration, Tokamak now requires
+SwiftWasm 5.6 or later, while SwiftWasm 5.4 and 5.5 are no longer supported.
+
+**Merged pull requests:**
+
+- Build and test with SwiftWasm 5.6 on CI ([#475](https://github.com/TokamakUI/Tokamak/pull/475)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
+# 0.9.1 (16 February 2022)
+
+This release fixes an issue with `EnvironmentValues`, updates CI workflow for SwiftWasm 5.5, and bumps JavaScriptKit dependency to 0.12.0.
+
+**Merged pull requests:**
+
+- Fix typo ([#462](https://github.com/TokamakUI/Tokamak/pull/462)) via [@regexident](https://github.com/regexident)
+- Fix `rootEnvironment` not merged with `.defaultEnvironment` ([#461](https://github.com/TokamakUI/Tokamak/pull/461)) via [@regexident](https://github.com/regexident)
+- Build and test with SwiftWasm 5.5 on CI ([#460](https://github.com/TokamakUI/Tokamak/pull/460)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
 # 0.9.0 (26 November 2021)
 
 This release adds support for SwiftWasm 5.5 and bumps the minimum required version to Swift 5.4.

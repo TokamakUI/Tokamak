@@ -46,7 +46,7 @@ extension _AnimationBoxBase._Resolved._RepeatStyle {
   var jsValue: JSValue {
     switch self {
     case let .fixed(count, _):
-      return count.jsValue()
+      return count.jsValue
     case .forever:
       return JSObject.global.Infinity
     }
@@ -179,16 +179,16 @@ final class DOMNode: Target {
   ) -> JSValue? {
     let resolved = _AnimationProxy(animation).resolve()
     return ref.animate?(
-      keyframes.jsValue(),
+      keyframes,
       [
-        "duration": (resolved.duration / resolved.speed) * 1000,
-        "delay": resolved.delay * 1000,
-        "easing": resolved.style.cssValue,
+        "duration": ((resolved.duration / resolved.speed) * 1000).jsValue,
+        "delay": (resolved.delay * 1000).jsValue,
+        "easing": resolved.style.cssValue.jsValue,
         "iterations": resolved.repeatStyle.jsValue,
-        "direction": resolved.repeatStyle.autoreverses ? "alternate" : "normal",
+        "direction": (resolved.repeatStyle.autoreverses ? "alternate" : "normal").jsValue,
         // Keep the last keyframe applied when done, and the first applied during a delay.
-        "fill": "both",
-        "iterationStart": iterationStart,
+        "fill": "both".jsValue,
+        "iterationStart": iterationStart.jsValue,
       ]
     )
   }
@@ -202,7 +202,7 @@ final class DOMNode: Target {
 
     let startStyle = Dictionary(uniqueKeysWithValues: extractStyles(compute: computeStart).map {
       ($0.animatableProperty, $1)
-    }).jsValue()
+    }).jsValue
     ref.style.object?.cssText = .string(style)
     let endStyle = Dictionary(uniqueKeysWithValues: extractStyles().map {
       ($0.animatableProperty, $1)
@@ -215,7 +215,7 @@ final class DOMNode: Target {
       for iterationStart in stride(from: 0, to: 1, by: 0.01) {
         // Create and immediately cancel an animation after reading the computed values.
         if let animation = animate(
-          keyframes: [startStyle, endStyle.jsValue()],
+          keyframes: [startStyle, endStyle.jsValue],
           with: Animation.linear(duration: resolved.duration).delay(resolved.delay),
           offsetBy: iterationStart
         )?.object,
@@ -235,10 +235,10 @@ final class DOMNode: Target {
           * Double(values.count - 1)
         var res = values[Int(solved)]
         res["offset"] = "\(offset)"
-        return res.jsValue()
-      } + [endStyle.jsValue()] // Add the end for good measure.
+        return res.jsValue
+      } + [endStyle.jsValue] // Add the end for good measure.
     } else {
-      keyframes = [startStyle, endStyle.jsValue()]
+      keyframes = [startStyle, endStyle.jsValue]
     }
     // Animate the styles.
     animate(keyframes: keyframes, with: animation)

@@ -29,8 +29,10 @@ public enum ToolbarContentBuilder<ID> {
 // swiftlint:disable function_parameter_count
 
 public extension ToolbarContentBuilder {
-  static func buildBlock<C0, C1>(_ c0: ToolbarItem<ID, C0>,
-                                 _ c1: ToolbarItem<ID, C1>) -> ToolbarItemGroup<
+  static func buildBlock<C0, C1>(
+    _ c0: ToolbarItem<ID, C0>,
+    _ c1: ToolbarItem<ID, C1>
+  ) -> ToolbarItemGroup<
     ID,
     (ToolbarItem<ID, C0>, ToolbarItem<ID, C1>)
   >
@@ -41,8 +43,11 @@ public extension ToolbarContentBuilder {
 }
 
 public extension ToolbarContentBuilder {
-  static func buildBlock<C0, C1, C2>(_ c0: ToolbarItem<ID, C0>, _ c1: ToolbarItem<ID, C1>,
-                                     _ c2: ToolbarItem<ID, C2>)
+  static func buildBlock<C0, C1, C2>(
+    _ c0: ToolbarItem<ID, C0>,
+    _ c1: ToolbarItem<ID, C1>,
+    _ c2: ToolbarItem<ID, C2>
+  )
     -> ToolbarItemGroup<ID, (ToolbarItem<ID, C0>, ToolbarItem<ID, C1>, ToolbarItem<ID, C2>)>
     where C0: View, C1: View, C2: View
   {

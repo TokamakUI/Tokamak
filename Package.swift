@@ -1,33 +1,6 @@
-// swift-tools-version:5.4
-// The swift-tools-version declares the minimum version of Swift required to
-// build this package.
+// swift-tools-version:5.6
 
 import PackageDescription
-
-var tokamakDOMDependencies: [Target.Dependency] = [
-  "TokamakCore",
-  "TokamakStaticHTML",
-  .product(
-    name: "OpenCombineShim",
-    package: "OpenCombine"
-  ),
-  .product(
-    name: "JavaScriptKit",
-    package: "JavaScriptKit",
-    condition: .when(platforms: [.wasi])
-  ),
-  "OpenCombineJS",
-]
-
-#if compiler(>=5.5) && (canImport(Concurrency) || canImport(_Concurrency))
-tokamakDOMDependencies.append(
-  .product(
-    name: "JavaScriptEventLoop",
-    package: "JavaScriptKit",
-    condition: .when(platforms: [.wasi])
-  )
-)
-#endif
 
 let package = Package(
   name: "Tokamak",
@@ -72,11 +45,9 @@ let package = Package(
     ),
   ],
   dependencies: [
-    // Dependencies declare other packages that this package depends on.
-    // .package(url: /* package url */, from: "1.0.0"),
     .package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
-      .upToNextMinor(from: "0.11.1")
+      .upToNextMinor(from: "0.14.0")
     ),
     .package(
       url: "https://github.com/OpenCombine/OpenCombine.git",
@@ -87,12 +58,10 @@ let package = Package(
       .upToNextMinor(from: "0.1.2")
     ),
     .package(
-      name: "Benchmark",
       url: "https://github.com/google/swift-benchmark",
       from: "0.1.0"
     ),
     .package(
-      name: "SnapshotTesting",
       url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
       from: "1.9.0"
     ),
@@ -164,7 +133,7 @@ let package = Package(
     .executableTarget(
       name: "TokamakCoreBenchmark",
       dependencies: [
-        "Benchmark",
+        .product(name: "Benchmark", package: "swift-benchmark"),
         "TokamakCore",
         "TokamakTestRenderer",
       ]
@@ -172,13 +141,31 @@ let package = Package(
     .executableTarget(
       name: "TokamakStaticHTMLBenchmark",
       dependencies: [
-        "Benchmark",
+        .product(name: "Benchmark", package: "swift-benchmark"),
         "TokamakStaticHTML",
       ]
     ),
     .target(
       name: "TokamakDOM",
-      dependencies: tokamakDOMDependencies,
+      dependencies: [
+        "TokamakCore",
+        "TokamakStaticHTML",
+        .product(
+          name: "OpenCombineShim",
+          package: "OpenCombine"
+        ),
+        .product(
+          name: "JavaScriptKit",
+          package: "JavaScriptKit",
+          condition: .when(platforms: [.wasi])
+        ),
+        .product(
+          name: "JavaScriptEventLoop",
+          package: "JavaScriptKit",
+          condition: .when(platforms: [.wasi])
+        ),
+        "OpenCombineJS",
+      ],
       exclude: ["index.html"]
     ),
     .executableTarget(
@@ -226,7 +213,7 @@ let package = Package(
         "TokamakStaticHTML",
         .product(
           name: "SnapshotTesting",
-          package: "SnapshotTesting",
+          package: "swift-snapshot-testing",
           condition: .when(platforms: [.macOS])
         ),
       ],
