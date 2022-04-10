@@ -99,7 +99,7 @@ public struct DOMFiberRenderer: FiberRenderer {
   }
 
   public func commit(_ mutations: [Mutation<Self>]) {
-    jsCommit(mutations.map { $0.object() })
+    jsCommit(mutations.map { $0.object().jsValue })
   }
 }
 
@@ -110,7 +110,7 @@ extension Mutation where Renderer == DOMFiberRenderer {
       return [
         "operation": 0,
         "element": element.data.encoded
-          .merging(["bind": element.bindClosure], uniquingKeysWith: { $1 }),
+          .merging(["bind": element.bindClosure], uniquingKeysWith: { $1 }).jsValue,
         "parent": parent.lazyReference,
         "index": index,
       ]
@@ -125,7 +125,7 @@ extension Mutation where Renderer == DOMFiberRenderer {
         "operation": 2,
         "parent": parent.lazyReference,
         "element": previous.lazyReference,
-        "replacement": replacement.data.encoded,
+        "replacement": replacement.data.encoded.jsValue,
       ]
     case let .update(previous, newElement):
       previous.update(with: newElement)
@@ -133,7 +133,7 @@ extension Mutation where Renderer == DOMFiberRenderer {
         "operation": 3,
         "previous": previous.reference,
         "updates": newElement.encoded
-          .merging(["bind": previous.bindClosure], uniquingKeysWith: { $1 }),
+          .merging(["bind": previous.bindClosure], uniquingKeysWith: { $1 }).jsValue,
       ]
     }
   }
@@ -161,19 +161,19 @@ extension DOMElement.Data {
       "tag": tag,
       "attributes": attributes.map {
         [
-          "name": $0.key.value,
-          "property": $0.key.isUpdatedAsProperty,
-          "value": $0.value,
+          "name": $0.key.value.jsValue,
+          "property": $0.key.isUpdatedAsProperty.jsValue,
+          "value": $0.value.jsValue,
         ]
-      },
+      }.jsValue,
       "innerHTML": innerHTML,
       "listeners": listeners.mapValues { listener in
         JSClosure {
           listener($0[0].object!)
           return .undefined
         }
-      },
-      "debugData": debugData,
+      }.jsValue,
+      "debugData": debugData.jsValue,
     ]
   }
 }
