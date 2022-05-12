@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftwasm/JavaScriptKit.git",
       "state" : {
-        "branch" : "maxd/runtime-resources",
-        "revision" : "7e8a3ac8dbfba0c0e2f36ff3e1789b83c8df61fa"
+        "branch" : "main",
+        "revision" : "e022311ed98324ac176e9ffba45d7aab97f29a57"
       }
     },
     {
@@ -24,7 +24,7 @@
       "location" : "https://github.com/swiftwasm/OpenCombineJS.git",
       "state" : {
         "branch" : "maxd/update-jskit",
-        "revision" : "27267b867f1e4d5ddc6b6ff4a6381e1f81298210"
+        "revision" : "41aed796a116d49016dfba5e782412d7394e79dc"
       }
     },
     {
@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser",
       "state" : {
-        "revision" : "986d191f94cec88f6350056da59c2e59e83d1229",
-        "version" : "0.4.3"
+        "revision" : "f3c9084a71ef4376f2fabbdf1d3d90a49f1fabdb",
+        "version" : "1.1.2"
       }
     },
     {
@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/swift-benchmark",
       "state" : {
-        "revision" : "8e0ef8bb7482ab97dcd2cd1d6855bd38921c345d",
-        "version" : "0.1.0"
+        "revision" : "8163295f6fe82356b0bcf8e1ab991645de17d096",
+        "version" : "0.1.2"
       }
     },
     {

@@ -47,7 +47,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
-      branch: "maxd/runtime-resources"
+      branch: "main"
     ),
     .package(
       url: "https://github.com/OpenCombine/OpenCombine.git",
