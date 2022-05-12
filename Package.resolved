@@ -1,61 +1,59 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "JavaScriptKit",
-        "repositoryURL": "https://github.com/swiftwasm/JavaScriptKit.git",
-        "state": {
-          "branch": null,
-          "revision": "9a3b7d5f316e6d1709bd25e3e0392efca357f525",
-          "version": "0.14.0"
-        }
-      },
-      {
-        "package": "OpenCombine",
-        "repositoryURL": "https://github.com/OpenCombine/OpenCombine.git",
-        "state": {
-          "branch": null,
-          "revision": "28993ae57de5a4ea7e164787636cafad442d568c",
-          "version": "0.12.0"
-        }
-      },
-      {
-        "package": "OpenCombineJS",
-        "repositoryURL": "https://github.com/swiftwasm/OpenCombineJS.git",
-        "state": {
-          "branch": null,
-          "revision": "f1f1799ddbb9876a0ef8c5700a3b78d352d0b969",
-          "version": "0.1.2"
-        }
-      },
-      {
-        "package": "swift-argument-parser",
-        "repositoryURL": "https://github.com/apple/swift-argument-parser",
-        "state": {
-          "branch": null,
-          "revision": "986d191f94cec88f6350056da59c2e59e83d1229",
-          "version": "0.4.3"
-        }
-      },
-      {
-        "package": "Benchmark",
-        "repositoryURL": "https://github.com/google/swift-benchmark",
-        "state": {
-          "branch": null,
-          "revision": "8e0ef8bb7482ab97dcd2cd1d6855bd38921c345d",
-          "version": "0.1.0"
-        }
-      },
-      {
-        "package": "SnapshotTesting",
-        "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
-        "state": {
-          "branch": null,
-          "revision": "f8a9c997c3c1dab4e216a8ec9014e23144cbab37",
-          "version": "1.9.0"
-        }
+  "pins" : [
+    {
+      "identity" : "javascriptkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftwasm/JavaScriptKit.git",
+      "state" : {
+        "branch" : "maxd/runtime-resources",
+        "revision" : "7e8a3ac8dbfba0c0e2f36ff3e1789b83c8df61fa"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "opencombine",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/OpenCombine/OpenCombine.git",
+      "state" : {
+        "revision" : "9cf67e363738dbab61b47fb5eaed78d3db31e5ee",
+        "version" : "0.13.0"
+      }
+    },
+    {
+      "identity" : "opencombinejs",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftwasm/OpenCombineJS.git",
+      "state" : {
+        "branch" : "maxd/update-jskit",
+        "revision" : "27267b867f1e4d5ddc6b6ff4a6381e1f81298210"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser",
+      "state" : {
+        "revision" : "986d191f94cec88f6350056da59c2e59e83d1229",
+        "version" : "0.4.3"
+      }
+    },
+    {
+      "identity" : "swift-benchmark",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/swift-benchmark",
+      "state" : {
+        "revision" : "8e0ef8bb7482ab97dcd2cd1d6855bd38921c345d",
+        "version" : "0.1.0"
+      }
+    },
+    {
+      "identity" : "swift-snapshot-testing",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-snapshot-testing.git",
+      "state" : {
+        "revision" : "f8a9c997c3c1dab4e216a8ec9014e23144cbab37",
+        "version" : "1.9.0"
+      }
+    }
+  ],
+  "version" : 2
 }

@@ -47,7 +47,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
-      .upToNextMinor(from: "0.14.0")
+      .branch("maxd/runtime-resources")
     ),
     .package(
       url: "https://github.com/OpenCombine/OpenCombine.git",
@@ -55,7 +55,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/swiftwasm/OpenCombineJS.git",
-      .upToNextMinor(from: "0.1.2")
+      .branch("maxd/update-jskit")
     ),
     .package(
       url: "https://github.com/google/swift-benchmark",
