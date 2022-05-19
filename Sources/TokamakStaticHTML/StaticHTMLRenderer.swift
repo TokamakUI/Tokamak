@@ -58,18 +58,38 @@ struct HTMLBody: AnyHTML {
   ]
 }
 
+public enum HTMLMetaTag {
+  case charset(_ charset: String)
+  case name(_ name: String, content: String)
+  case httpEquiv(_ httpEquiv: String, content: String)
+
+  public func outerHTML() -> String {
+    switch self {
+    case .charset(let charset):
+      return #"<meta charset="\#(charset)">"#
+    case .name(let name, let content):
+      return #"<meta name="\#(name)" content="\#(content)">"#
+    case .httpEquiv(let httpEquiv, let content):
+      return #"<meta http-equiv="\#(httpEquiv)" content="\#(content)">"#
+    }
+  }
+}
+
 public final class StaticHTMLRenderer: Renderer {
   private var reconciler: StackReconciler<StaticHTMLRenderer>?
 
   var rootTarget: HTMLTarget
 
-  static var title: String = ""
+  public var title: String = ""
+
+  public var meta: [HTMLMetaTag] = []
 
   public func render(shouldSortAttributes: Bool = false) -> String {
     """
     <html>
     <head>
-      <title>\(Self.title)</title>
+      <title>\(title)</title>
+      \(meta.map({ $0.outerHTML() }).joined(separator: "\n      "))
       <style>
         \(tokamakStyles)
       </style>
@@ -152,6 +172,23 @@ public final class StaticHTMLRenderer: Renderer {
 
   public func primitiveBody(for view: Any) -> AnyView? {
     (view as? _HTMLPrimitive)?.renderedBody
+  }
+}
+
+extension StaticHTMLRenderer {
+  public func title(_ newValue: String) -> Self {
+    title = newValue
+    return self
+  }
+
+  public func meta(_ newValues: HTMLMetaTag...) -> Self {
+    meta.append(contentsOf: newValues)
+    return self
+  }
+
+  public func meta(_ newValues: [HTMLMetaTag]) -> Self {
+    meta.append(contentsOf: newValues)
+    return self
   }
 }
 
