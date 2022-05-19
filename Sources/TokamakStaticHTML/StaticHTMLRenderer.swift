@@ -80,7 +80,9 @@ public final class StaticHTMLRenderer: Renderer {
 
   var rootTarget: HTMLTarget
 
-  public var title: String = ""
+  public static var title: String = ""
+
+  public var title: String = StaticHTMLRenderer.title
 
   public var meta: [HTMLMetaTag] = []
 
