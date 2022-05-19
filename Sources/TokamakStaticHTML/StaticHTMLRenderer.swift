@@ -61,6 +61,7 @@ struct HTMLBody: AnyHTML {
 public enum HTMLMetaTag {
   case charset(_ charset: String)
   case name(_ name: String, content: String)
+  case property(_ property: String, content: String)
   case httpEquiv(_ httpEquiv: String, content: String)
 
   public func outerHTML() -> String {
@@ -69,6 +70,8 @@ public enum HTMLMetaTag {
       return #"<meta charset="\#(charset)">"#
     case .name(let name, let content):
       return #"<meta name="\#(name)" content="\#(content)">"#
+    case .property(let property, let content):
+      return #"<meta property="\#(property)" content="\#(content)">"#
     case .httpEquiv(let httpEquiv, let content):
       return #"<meta http-equiv="\#(httpEquiv)" content="\#(content)">"#
     }
@@ -107,6 +110,7 @@ public final class StaticHTMLRenderer: Renderer {
   }
 
   public init<V: View>(_ view: V, _ rootEnvironment: EnvironmentValues? = nil) {
+
     rootTarget = HTMLTarget(view, HTMLBody())
 
     reconciler = StackReconciler(
