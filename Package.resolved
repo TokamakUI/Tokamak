@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftwasm/JavaScriptKit.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "e022311ed98324ac176e9ffba45d7aab97f29a57"
+        "revision" : "2d7bc960eed438dce7355710ece43fa004bbb3ac",
+        "version" : "0.15.0"
       }
     },
     {
@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftwasm/OpenCombineJS.git",
       "state" : {
-        "branch" : "maxd/update-jskit",
-        "revision" : "41aed796a116d49016dfba5e782412d7394e79dc"
+        "revision" : "e574e418ba468ff5c2d4c499eb56f108aeb4d2ba",
+        "version" : "0.2.0"
       }
     },
     {

@@ -47,7 +47,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
-      branch: "main"
+      from: "0.15.0"
     ),
     .package(
       url: "https://github.com/OpenCombine/OpenCombine.git",
@@ -55,7 +55,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/swiftwasm/OpenCombineJS.git",
-      branch: "maxd/update-jskit"
+      from: "0.2.0"
     ),
     .package(
       url: "https://github.com/google/swift-benchmark",
