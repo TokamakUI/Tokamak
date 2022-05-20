@@ -18,7 +18,7 @@
 /// A renderer capable of performing mutations specified by a `FiberReconciler`.
 public protocol FiberRenderer {
   /// The element class this renderer uses.
-  associatedtype ElementType: Element
+  associatedtype ElementType: FiberElement
   /// Check whether a `View` is a primitive for this renderer.
   static func isPrimitive<V>(_ view: V) -> Bool where V: View
   /// Apply the mutations to the elements.

@@ -52,7 +52,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       unowned var parent: Result?
       var child: Result?
       var sibling: Result?
-      var newData: Renderer.ElementType.Data?
+      var newData: Renderer.ElementType.Content?
 
       // For reducing
       var childrenCount: Int = 0
@@ -66,7 +66,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         parent: Result?,
         child: Fiber?,
         alternateChild: Fiber?,
-        newData: Renderer.ElementType.Data? = nil
+        newData: Renderer.ElementType.Content? = nil
       ) {
         self.fiber = fiber
         self.visitChildren = visitChildren
@@ -225,7 +225,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
             // This is a completely different type of view.
             mutations.append(.replace(parent: parent, previous: previous, replacement: element))
           } else if let newData = node.newData,
-                    newData != element.data
+                    newData != element.content
           {
             // This is the same type of view, but its backing data has changed.
             mutations.append(.update(previous: element, newData: newData))
@@ -245,7 +245,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
 
         // Setup the alternate if it doesn't exist yet.
         if node.fiber?.alternate == nil {
-          node.fiber?.createAndBindAlternate?()
+          _ = node.fiber?.createAndBindAlternate?()
         }
 
         // Walk all down all the way into the deepest child.

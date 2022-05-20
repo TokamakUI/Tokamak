@@ -17,15 +17,15 @@
 
 /// A reference type that points to a `Renderer`-specific element that has been mounted.
 /// For instance, a DOM node in the `DOMFiberRenderer`.
-public protocol Element: AnyObject {
-  associatedtype Data: ElementData
-  var data: Data { get }
-  init(from data: Data)
-  func update(with data: Data)
+public protocol FiberElement: AnyObject {
+  associatedtype Content: FiberElementContent
+  var content: Content { get }
+  init(from content: Content)
+  func update(with content: Content)
 }
 
-/// The data used to create an `Element`. We re-use `Element` instances in the `Fiber` tree,
-/// but can re-create and copy `ElementData` as often as needed.
-public protocol ElementData: Equatable {
+/// The data used to create an `FiberElement`. We re-use `FiberElement` instances in the `Fiber` tree,
+/// but can re-create and copy `FiberElementContent` as often as needed.
+public protocol FiberElementContent: Equatable {
   init<V: View>(from primitiveView: V)
 }

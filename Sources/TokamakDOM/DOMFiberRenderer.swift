@@ -19,10 +19,10 @@ import JavaScriptKit
 @_spi(TokamakCore) import TokamakCore
 @_spi(TokamakStaticHTML) import TokamakStaticHTML
 
-public final class DOMElement: Element {
+public final class DOMElement: FiberElement {
   var reference: JSObject?
 
-  public struct Data: ElementData {
+  public struct Content: FiberElementContent {
     let tag: String
     let attributes: [HTMLAttribute: String]
     let innerHTML: String?
@@ -34,18 +34,18 @@ public final class DOMElement: Element {
     }
   }
 
-  public var data: Data
+  public var content: Content
 
-  public init(from data: Data) {
-    self.data = data
+  public init(from content: Content) {
+    self.content = content
   }
 
-  public func update(with data: Data) {
-    self.data = data
+  public func update(with content: Content) {
+    self.content = content
   }
 }
 
-public extension DOMElement.Data {
+public extension DOMElement.Content {
   init<V>(from primitiveView: V) where V: View {
     guard let primitiveView = primitiveView as? HTMLConvertible else { fatalError() }
     tag = primitiveView.tag
@@ -119,7 +119,7 @@ extension Mutation where Renderer == DOMFiberRenderer {
     case let .insert(element, parent, index):
       return [
         "operation": 0,
-        "element": element.data.encoded
+        "element": element.content.encoded
           .merging(["bind": element.bindClosure], uniquingKeysWith: { $1 }).jsValue,
         "parent": parent.lazyReference,
         "index": index,
@@ -135,7 +135,7 @@ extension Mutation where Renderer == DOMFiberRenderer {
         "operation": 2,
         "parent": parent.lazyReference,
         "element": previous.lazyReference,
-        "replacement": replacement.data.encoded.jsValue,
+        "replacement": replacement.content.encoded.jsValue,
       ]
     case let .update(previous, newElement):
       previous.update(with: newElement)
@@ -165,7 +165,7 @@ extension DOMElement {
   }
 }
 
-extension DOMElement.Data {
+extension DOMElement.Content {
   var encoded: [String: ConvertibleToJSValue] {
     [
       "tag": tag,

@@ -208,7 +208,7 @@
     func update<V: View>(
       with view: inout V,
       childIndex: Int
-    ) -> Renderer.ElementType.Data? {
+    ) -> Renderer.ElementType.Content? {
       typeInfo = TokamakCore.typeInfo(of: V.self)
 
       let viewInputs = ViewInputs<V>(

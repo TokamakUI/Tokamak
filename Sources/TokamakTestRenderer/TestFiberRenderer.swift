@@ -57,8 +57,8 @@ extension _PrimitiveButtonStyleBody: TestFiberPrimitive {
   }
 }
 
-public final class TestFiberElement: Element, CustomStringConvertible {
-  public struct Data: ElementData, Equatable {
+public final class TestFiberElement: FiberElement, CustomStringConvertible {
+  public struct Content: FiberElementContent, Equatable {
     let renderedValue: String
     let closingTag: String
 
@@ -78,22 +78,22 @@ public final class TestFiberElement: Element, CustomStringConvertible {
     }
   }
 
-  public var data: Data
+  public var content: Content
 
-  public init(from data: Data) {
-    self.data = data
+  public init(from content: Content) {
+    self.content = content
   }
 
   public var description: String {
-    "\(data.renderedValue)\(data.closingTag)"
+    "\(content.renderedValue)\(content.closingTag)"
   }
 
   public init(renderedValue: String, closingTag: String) {
-    data = .init(renderedValue: renderedValue, closingTag: closingTag)
+    content = .init(renderedValue: renderedValue, closingTag: closingTag)
   }
 
-  public func update(with data: Data) {
-    self.data = data
+  public func update(with content: Content) {
+    self.content = content
   }
 
   public static var root: Self { .init(renderedValue: "<root>", closingTag: "</root>") }

@@ -27,5 +27,5 @@ public enum Mutation<Renderer: FiberRenderer> {
     previous: Renderer.ElementType,
     replacement: Renderer.ElementType
   )
-  case update(previous: Renderer.ElementType, newData: Renderer.ElementType.Data)
+  case update(previous: Renderer.ElementType, newData: Renderer.ElementType.Content)
 }
