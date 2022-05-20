@@ -17,7 +17,7 @@
 
 import TokamakCore
 
-public struct Meta: View {
+public struct HTMLMeta: View {
 
     internal var meta: HTMLMetaPreferenceKey.HTMLMeta
 
@@ -40,5 +40,31 @@ public struct Meta: View {
     public var body: some View {
         EmptyView()
             .preference(key: HTMLMetaPreferenceKey.self, value: [meta])
+    }
+}
+
+extension View {
+
+    public func htmlMeta(charset: String) -> some View {
+        htmlMeta(.init(charset: charset))
+    }
+
+    public func htmlMeta(name: String, content: String) -> some View {
+        htmlMeta(.init(name: name, content: content))
+    }
+
+    public func htmlMeta(property: String, content: String) -> some View {
+        htmlMeta(.init(property: property, content: content))
+    }
+
+    public func htmlMeta(httpEquiv: String, content: String) -> some View {
+        htmlMeta(.init(httpEquiv: httpEquiv, content: content))
+    }
+
+    public func htmlMeta(_ meta: HTMLMeta) -> some View {
+        Group {
+            self
+            meta
+        }
     }
 }

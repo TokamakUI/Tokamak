@@ -17,7 +17,7 @@
 
 import TokamakCore
 
-public struct Title: View {
+public struct HTMLTitle: View {
 
     internal var title: String
 
@@ -28,5 +28,19 @@ public struct Title: View {
     public var body: some View {
         EmptyView()
             .preference(key: HTMLTitlePreferenceKey.self, value: title)
+    }
+}
+
+extension View {
+
+    public func htmlTitle(_ title: String) -> some View {
+        htmlTitle(.init(title))
+    }
+
+    public func htmlTitle(_ title: HTMLTitle) -> some View {
+        Group {
+            self
+            title
+        }
     }
 }
