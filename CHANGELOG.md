@@ -1,3 +1,13 @@
+# 0.10.1 (20 May 2022)
+
+This is a small bugfix release, which updates JavaScriptKit dependency to 0.15 and required version of `carton` to 0.15.
+
+**Merged pull requests:**
+
+- Update JSKit dependency ([#482](https://github.com/TokamakUI/Tokamak/pull/482)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Explicitly mention `carton` version in "Requirements" ([#481](https://github.com/TokamakUI/Tokamak/pull/481)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+- Use stable `v5.6` version of `swiftwasm-action` ([#477](https://github.com/TokamakUI/Tokamak/pull/477)) via [@MaxDesiatov](https://github.com/MaxDesiatov)
+
 # 0.10.0 (9 April 2022)
 
 This release adds support for SwiftWasm 5.6. It also updates JavaScriptKit and OpenCombineJS dependencies.

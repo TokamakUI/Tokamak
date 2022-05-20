@@ -59,7 +59,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/google/swift-benchmark",
-      from: "0.1.0"
+      from: "0.1.2"
     ),
     .package(
       url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
