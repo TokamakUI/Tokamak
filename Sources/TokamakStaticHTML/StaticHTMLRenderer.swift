@@ -58,13 +58,8 @@ struct HTMLBody: AnyHTML {
   ]
 }
 
-public enum HTMLMetaTag {
-  case charset(_ charset: String)
-  case name(_ name: String, content: String)
-  case property(_ property: String, content: String)
-  case httpEquiv(_ httpEquiv: String, content: String)
-
-  public func outerHTML() -> String {
+extension HTMLMetaPreferenceKey.HTMLMeta {
+  func outerHTML() -> String {
     switch self {
     case .charset(let charset):
       return #"<meta charset="\#(charset)">"#
@@ -83,11 +78,13 @@ public final class StaticHTMLRenderer: Renderer {
 
   var rootTarget: HTMLTarget
 
-  public static var title: String = ""
+  internal var title: String {
+    reconciler?.preferenceStore.value(forKey: HTMLTitlePreferenceKey.self).value ?? ""
+  }
 
-  public var title: String = StaticHTMLRenderer.title
-
-  public var meta: [HTMLMetaTag] = []
+  internal var meta: [HTMLMetaPreferenceKey.HTMLMeta] {
+    reconciler?.preferenceStore.value(forKey: HTMLMetaPreferenceKey.self).value ?? []
+  }
 
   public func render(shouldSortAttributes: Bool = false) -> String {
     """
@@ -178,23 +175,6 @@ public final class StaticHTMLRenderer: Renderer {
 
   public func primitiveBody(for view: Any) -> AnyView? {
     (view as? _HTMLPrimitive)?.renderedBody
-  }
-}
-
-extension StaticHTMLRenderer {
-  public func title(_ newValue: String) -> Self {
-    title = newValue
-    return self
-  }
-
-  public func meta(_ newValues: HTMLMetaTag...) -> Self {
-    meta.append(contentsOf: newValues)
-    return self
-  }
-
-  public func meta(_ newValues: [HTMLMetaTag]) -> Self {
-    meta.append(contentsOf: newValues)
-    return self
   }
 }
 

@@ -24,7 +24,7 @@ public extension App {
   }
 
   static func _setTitle(_ title: String) {
-    StaticHTMLRenderer.title = title
+    // no-op: use Title view
   }
 
   var _phasePublisher: AnyPublisher<ScenePhase, Never> {
