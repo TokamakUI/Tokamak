@@ -147,7 +147,7 @@ app.
   and macOS at the same time.
 - [Swift 5.6 or later](https://swift.org/download/) and Ubuntu 18.04/20.04 if you'd like to use Linux.
   Other Linux distributions are currently not supported.
-- [`carton` 0.14.x](https://carton.dev) (carton is our build tool, see the ["Getting started" section](#getting-started) for installation steps)
+- [`carton` 0.15.x](https://carton.dev) (carton is our build tool, see the ["Getting started" section](#getting-started) for installation steps)
 
 ### For users of apps depending on Tokamak
 
