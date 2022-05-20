@@ -49,6 +49,9 @@
     /// This node's right sibling.
     @_spi(TokamakCore) public var sibling: Fiber?
     /// An unowned reference to the parent node.
+    ///
+    /// Parent references are `unowned` (as opposed to `weak`) because the parent will always exist if a child does.
+    /// If the parent is released, the child is released with it.
     unowned var parent: Fiber?
     /// The nearest parent that can be mounted on.
     unowned var elementParent: Fiber?
