@@ -35,10 +35,18 @@
     weak var reconciler: FiberReconciler<Renderer>?
 
     /// The underlying `View` instance.
+    ///
+    /// Stored as an IUO because we must use the `bindProperties` method to create the `View` with its dependencies setup,
+    /// which requires all stored properties be set before using.
     @_spi(TokamakCore) public var view: Any!
     /// Outputs from evaluating `View._makeView`
+    ///
+    /// Stored as an IUO because creating `ViewOutputs` depends on the `bindProperties` method, which requires
+    /// all stored properties be set before using. `outputs` is guaranteed to be set in the initializer.
     var outputs: ViewOutputs!
     /// A function to visit `view` generically.
+    ///
+    /// Stored as an IUO because it captures a weak reference to `self`, which requires all stored properties be set before capturing.
     var visitView: ((ViewVisitor) -> ())!
     /// The identity of this `View`
     var id: Identity?
@@ -58,7 +66,7 @@
     /// The cached type information for the underlying `View`.
     var typeInfo: TypeInfo?
     /// Boxes that store `State` data.
-    var state: [PropertyInfo: MutableStorage]!
+    var state: [PropertyInfo: MutableStorage] = [:]
 
     /// The WIP node if this is current, or the current node if this is WIP.
     weak var alternate: Fiber?
