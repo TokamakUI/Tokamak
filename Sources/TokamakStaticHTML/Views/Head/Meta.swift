@@ -17,9 +17,16 @@
 
 import TokamakCore
 
+enum _HTMLMeta: Equatable, Hashable {
+    case charset(_ charset: String)
+    case name(_ name: String, content: String)
+    case property(_ property: String, content: String)
+    case httpEquiv(_ httpEquiv: String, content: String)
+}
+
 public struct HTMLMeta: View {
 
-    internal var meta: HTMLMetaPreferenceKey.HTMLMeta
+    internal var meta: _HTMLMeta
 
     public init(charset: String) {
         meta = .charset(charset)

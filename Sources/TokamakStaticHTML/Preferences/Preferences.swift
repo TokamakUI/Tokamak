@@ -26,16 +26,9 @@ struct HTMLTitlePreferenceKey: PreferenceKey {
 }
 
 struct HTMLMetaPreferenceKey: PreferenceKey {
-    internal enum HTMLMeta: Equatable, Hashable {
-        case charset(_ charset: String)
-        case name(_ name: String, content: String)
-        case property(_ property: String, content: String)
-        case httpEquiv(_ httpEquiv: String, content: String)
-    }
+    static var defaultValue: [_HTMLMeta] = []
 
-    static var defaultValue: [HTMLMeta] = []
-
-    static func reduce(value: inout [HTMLMeta], nextValue: () -> [HTMLMeta]) {
+    static func reduce(value: inout [_HTMLMeta], nextValue: () -> [_HTMLMeta]) {
         value = value + nextValue()
     }
 }
