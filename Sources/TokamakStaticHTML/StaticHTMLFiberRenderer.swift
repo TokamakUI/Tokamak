@@ -161,8 +161,8 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
         guard let index = parent.content.children.firstIndex(where: { $0 === previous })
         else { continue }
         parent.content.children[index] = replacement
-      case let .update(previous, newData):
-        previous.update(with: newData)
+      case let .update(previous, newContent):
+        previous.update(with: newContent)
       }
     }
   }

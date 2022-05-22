@@ -90,10 +90,9 @@ final class VisitorTests: XCTestCase {
       )?
         .action()
     }
-    for i in 0..<5 {
+    for _ in 0..<5 {
       increment()
     }
-    print(reconciler.current)
     decrement()
   }
 }

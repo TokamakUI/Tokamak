@@ -52,7 +52,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       unowned var parent: Result?
       var child: Result?
       var sibling: Result?
-      var newData: Renderer.ElementType.Content?
+      var newContent: Renderer.ElementType.Content?
 
       // For reducing
       var childrenCount: Int = 0
@@ -66,14 +66,14 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         parent: Result?,
         child: Fiber?,
         alternateChild: Fiber?,
-        newData: Renderer.ElementType.Content? = nil
+        newContent: Renderer.ElementType.Content? = nil
       ) {
         self.fiber = fiber
         self.visitChildren = visitChildren
         self.parent = parent
         nextExisting = child
         nextExistingAlternate = alternateChild
-        self.newData = newData
+        self.newContent = newContent
       }
     }
 
@@ -83,7 +83,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       let resultChild: Result
       if let existing = partialResult.nextExisting {
         // If a fiber already exists, simply update it with the new view.
-        let newData = existing.update(
+        let newContent = existing.update(
           with: &nextView,
           childIndex: partialResult.childrenCount
         )
@@ -93,7 +93,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           parent: partialResult,
           child: existing.child,
           alternateChild: existing.alternate?.child,
-          newData: newData
+          newContent: newContent
         )
         partialResult.nextExisting = existing.sibling
       } else {
@@ -224,11 +224,11 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           {
             // This is a completely different type of view.
             mutations.append(.replace(parent: parent, previous: previous, replacement: element))
-          } else if let newData = node.newData,
-                    newData != element.content
+          } else if let newContent = node.newContent,
+                    newContent != element.content
           {
             // This is the same type of view, but its backing data has changed.
-            mutations.append(.update(previous: element, newData: newData))
+            mutations.append(.update(previous: element, newContent: newContent))
           }
           elementIndices[key] = index + 1
         }

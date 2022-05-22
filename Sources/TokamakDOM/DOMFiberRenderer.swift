@@ -70,7 +70,6 @@ protocol DOMNodeConvertible: HTMLConvertible {
 
 public struct DOMFiberRenderer: FiberRenderer {
   public let rootElement: DOMElement
-  private let jsCommit: JSFunction
 
   public var defaultEnvironment: EnvironmentValues {
     var environment = EnvironmentValues()
@@ -79,12 +78,6 @@ public struct DOMFiberRenderer: FiberRenderer {
   }
 
   public init(_ rootSelector: String) {
-    guard let Tokamak = JSObject.global.Tokamak.object else {
-      fatalError("""
-      Tokamak is not detected in the page's scripts. Ensure you included the Tokamak script in your site.
-      """)
-    }
-    jsCommit = Tokamak.commit.function!
     guard let reference = document.querySelector!(rootSelector).object else {
       fatalError("""
       The root element with selector '\(rootSelector)' could not be found. \
@@ -101,90 +94,70 @@ public struct DOMFiberRenderer: FiberRenderer {
       )
     )
     rootElement.reference = reference
-    Tokamak.root = .object(reference)
   }
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {
     view is HTMLConvertible || view is DOMNodeConvertible
   }
+  
+  private func createElement(_ element: DOMElement) -> JSObject {
+    let result = document.createElement!(element.content.tag).object!
+    apply(element.content, to: result)
+    element.reference = result
+    return result
+  }
+  
+  private func apply(_ content: DOMElement.Content, to element: JSObject) {
+    for (attribute, value) in content.attributes {
+      if attribute.isUpdatedAsProperty {
+        element[dynamicMember: attribute.value] = .string(value)
+      } else {
+        _ = element.setAttribute?(attribute.value, value)
+      }
+    }
+    if let innerHTML = content.innerHTML {
+      element.innerHTML = .string(innerHTML)
+    }
+    for (event, action) in content.listeners {
+      _ = element.addEventListener?(event, JSClosure {
+        action($0[0].object!)
+        return .undefined
+      })
+    }
+    for (key, value) in content.debugData {
+      element.dataset.object?[dynamicMember: key] = value.jsValue
+    }
+  }
 
   public func commit(_ mutations: [Mutation<Self>]) {
-    jsCommit(mutations.map { $0.object().jsValue })
-  }
-}
-
-extension Mutation where Renderer == DOMFiberRenderer {
-  func object() -> [String: ConvertibleToJSValue] {
-    switch self {
-    case let .insert(element, parent, index):
-      return [
-        "operation": 0,
-        "element": element.content.encoded
-          .merging(["bind": element.bindClosure], uniquingKeysWith: { $1 }).jsValue,
-        "parent": parent.lazyReference,
-        "index": index,
-      ]
-    case let .remove(element, parent):
-      return [
-        "operation": 1,
-        "element": element.reference,
-        "parent": parent?.lazyReference,
-      ]
-    case let .replace(parent, previous, replacement):
-      return [
-        "operation": 2,
-        "parent": parent.lazyReference,
-        "element": previous.lazyReference,
-        "replacement": replacement.content.encoded.jsValue,
-      ]
-    case let .update(previous, newElement):
-      previous.update(with: newElement)
-      return [
-        "operation": 3,
-        "previous": previous.reference,
-        "updates": newElement.encoded
-          .merging(["bind": previous.bindClosure], uniquingKeysWith: { $1 }).jsValue,
-      ]
-    }
-  }
-}
-
-extension DOMElement {
-  var bindClosure: ConvertibleToJSValue {
-    JSOneshotClosure { [weak self] in
-      self?.reference = $0[0].object!
-      return .undefined
-    }
-  }
-
-  var lazyReference: JSClosure {
-    JSClosure { _ in
-      guard let reference = self.reference else { return .undefined }
-      return .object(reference)
-    }
-  }
-}
-
-extension DOMElement.Content {
-  var encoded: [String: ConvertibleToJSValue] {
-    [
-      "tag": tag,
-      "attributes": attributes.map {
-        [
-          "name": $0.key.value.jsValue,
-          "property": $0.key.isUpdatedAsProperty.jsValue,
-          "value": $0.value.jsValue,
-        ]
-      }.jsValue,
-      "innerHTML": innerHTML,
-      "listeners": listeners.mapValues { listener in
-        JSClosure {
-          listener($0[0].object!)
-          return .undefined
+    for mutation in mutations {
+      switch mutation {
+      case let .insert(newElement, parent, index):
+        let element = createElement(newElement)
+        guard let parentElement = parent.reference ?? rootElement.reference
+        else { fatalError("The root element was not bound (trying to insert element).") }
+        if Int((parentElement.children.object?.length.number ?? 0)) > index {
+          _ = parentElement.insertBefore?(element, parentElement.children[index])
+        } else {
+          _ = parentElement.appendChild?(element)
         }
-      }.jsValue,
-      "debugData": debugData.jsValue,
-    ]
+      case let .remove(element, _):
+        _ = element.reference?.remove?()
+      case let .replace(parent, previous, replacement):
+        guard let parentElement = parent.reference ?? rootElement.reference
+        else { fatalError("The root element was not bound (trying to replace element).") }
+        guard let previousElement = previous.reference else {
+          fatalError("The previous element does not exist (trying to replace element).")
+        }
+        let replacementElement = createElement(replacement)
+        _ = parentElement.replaceChild?(previousElement, replacementElement)
+      case let .update(previous, newContent):
+        guard let previousElement = previous.reference
+        else { fatalError("The element does not exist (trying to update element).") }
+        apply(newContent, to: previousElement)
+        previous.reference = previousElement
+      }
+    }
   }
 }
 

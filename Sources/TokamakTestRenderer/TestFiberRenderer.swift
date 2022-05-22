@@ -117,8 +117,8 @@ public struct TestFiberRenderer: FiberRenderer {
       switch mutation {
       case .insert, .remove, .replace:
         break
-      case let .update(previous, newData):
-        previous.update(with: newData)
+      case let .update(previous, newContent):
+        previous.update(with: newContent)
       }
     }
   }
