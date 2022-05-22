@@ -99,14 +99,14 @@ public struct DOMFiberRenderer: FiberRenderer {
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {
     view is HTMLConvertible || view is DOMNodeConvertible
   }
-  
+
   private func createElement(_ element: DOMElement) -> JSObject {
     let result = document.createElement!(element.content.tag).object!
     apply(element.content, to: result)
     element.reference = result
     return result
   }
-  
+
   private func apply(_ content: DOMElement.Content, to element: JSObject) {
     for (attribute, value) in content.attributes {
       if attribute.isUpdatedAsProperty {
@@ -136,7 +136,7 @@ public struct DOMFiberRenderer: FiberRenderer {
         let element = createElement(newElement)
         guard let parentElement = parent.reference ?? rootElement.reference
         else { fatalError("The root element was not bound (trying to insert element).") }
-        if Int((parentElement.children.object?.length.number ?? 0)) > index {
+        if Int(parentElement.children.object?.length.number ?? 0) > index {
           _ = parentElement.insertBefore?(element, parentElement.children[index])
         } else {
           _ = parentElement.appendChild?(element)
@@ -152,6 +152,7 @@ public struct DOMFiberRenderer: FiberRenderer {
         let replacementElement = createElement(replacement)
         _ = parentElement.replaceChild?(previousElement, replacementElement)
       case let .update(previous, newContent):
+        previous.update(with: newContent)
         guard let previousElement = previous.reference
         else { fatalError("The element does not exist (trying to update element).") }
         apply(newContent, to: previousElement)

@@ -165,8 +165,7 @@ let package = Package(
           condition: .when(platforms: [.wasi])
         ),
         "OpenCombineJS",
-      ],
-      exclude: ["index.html"]
+      ]
     ),
     .executableTarget(
       name: "TokamakDemo",
