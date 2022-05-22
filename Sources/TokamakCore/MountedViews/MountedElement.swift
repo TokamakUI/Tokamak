@@ -94,19 +94,16 @@ public class MountedElement<R: Renderer> {
 
   public internal(set) var environmentValues: EnvironmentValues
 
-  weak var parent: MountedElement<R>?
-  /// `didSet` on this field propagates the preference changes up the view tree.
-  var preferenceStore: _PreferenceStore = .init() {
-    didSet {
-      parent?.preferenceStore.merge(with: preferenceStore)
-    }
-  }
+  weak private(set) var parent: MountedElement<R>?
+
+  var preferenceStore: _PreferenceStore
 
   public internal(set) var viewTraits: _ViewTraitStore
 
   init(_ app: _AnyApp, _ environmentValues: EnvironmentValues, _ parent: MountedElement<R>?) {
     element = .app(app)
     self.parent = parent
+    self.preferenceStore = parent?.preferenceStore ?? .init()
     self.environmentValues = environmentValues
     viewTraits = .init()
     updateEnvironment()
@@ -115,6 +112,7 @@ public class MountedElement<R: Renderer> {
   init(_ scene: _AnyScene, _ environmentValues: EnvironmentValues, _ parent: MountedElement<R>?) {
     element = .scene(scene)
     self.parent = parent
+    self.preferenceStore = parent?.preferenceStore ?? .init()
     self.environmentValues = environmentValues
     viewTraits = .init()
     updateEnvironment()
@@ -128,6 +126,7 @@ public class MountedElement<R: Renderer> {
   ) {
     element = .view(view)
     self.parent = parent
+    self.preferenceStore = parent?.preferenceStore ?? .init()
     self.environmentValues = environmentValues
     self.viewTraits = viewTraits
     updateEnvironment()
