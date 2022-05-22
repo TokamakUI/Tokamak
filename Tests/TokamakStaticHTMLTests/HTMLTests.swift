@@ -162,6 +162,21 @@ final class HTMLTests: XCTestCase {
 
     assertSnapshot(matching: resultingHTML, as: .html)
   }
+
+  func testMetaAll() {
+    let resultingHTML = StaticHTMLRenderer(
+      VStack {
+        HTMLMeta(charset: "utf-8")
+        HTMLMeta(name: "description", content: "SwiftUI on the web")
+        HTMLMeta(property: "og:image", content: "https://image.png")
+        HTMLMeta(httpEquiv: "refresh", content: "60")
+        Text("Hello, world!")
+      }
+    ).render(shouldSortAttributes: true)
+
+    assert(resultingHTML.components(separatedBy: "<meta ").count == 5)
+    assertSnapshot(matching: resultingHTML, as: .html)
+  }
 }
 
 #endif

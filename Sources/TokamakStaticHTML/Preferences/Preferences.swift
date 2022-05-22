@@ -36,6 +36,6 @@ struct HTMLMetaPreferenceKey: PreferenceKey {
     static var defaultValue: [HTMLMeta] = []
 
     static func reduce(value: inout [HTMLMeta], nextValue: () -> [HTMLMeta]) {
-        value.append(contentsOf: nextValue())
+        value = value + nextValue()
     }
 }
