@@ -23,26 +23,32 @@
   /// They point to each other using the `alternate` property.
   ///
   /// The current `Fiber` represents the `View` as it is currently rendered on the screen.
-  /// The work in progress `Fiber` (the `alternate` of current), is used in the reconciler to compute the new tree.
+  /// The work in progress `Fiber` (the `alternate` of current),
+  /// is used in the reconciler to compute the new tree.
   ///
-  /// When reconciling, the tree is recomputed from the root of the state change on the work in progress `Fiber`.
-  /// Each node in the fiber tree is updated to apply any changes, and a list of mutations needed to get the
-  /// rendered output to match is created.
+  /// When reconciling, the tree is recomputed from
+  /// the root of the state change on the work in progress `Fiber`.
+  /// Each node in the fiber tree is updated to apply any changes,
+  /// and a list of mutations needed to get the rendered output to match is created.
   ///
   /// After the entire tree has been traversed, the current and work in progress trees are swapped,
-  /// making the updated tree the current one, and leaving the previous current tree available to apply future changes on.
+  /// making the updated tree the current one,
+  /// and leaving the previous current tree available to apply future changes on.
   final class Fiber: CustomDebugStringConvertible {
     weak var reconciler: FiberReconciler<Renderer>?
 
     /// The underlying `View` instance.
     ///
-    /// Stored as an IUO because we must use the `bindProperties` method to create the `View` with its dependencies setup,
+    /// Stored as an IUO because we must use the `bindProperties` method
+    /// to create the `View` with its dependencies setup,
     /// which requires all stored properties be set before using.
     @_spi(TokamakCore) public var view: Any!
     /// Outputs from evaluating `View._makeView`
     ///
-    /// Stored as an IUO because creating `ViewOutputs` depends on the `bindProperties` method, which requires
-    /// all stored properties be set before using. `outputs` is guaranteed to be set in the initializer.
+    /// Stored as an IUO because creating `ViewOutputs` depends on
+    /// the `bindProperties` method, which requires
+    /// all stored properties be set before using.
+    /// `outputs` is guaranteed to be set in the initializer.
     var outputs: ViewOutputs!
     /// A function to visit `view` generically.
     ///
@@ -58,7 +64,8 @@
     @_spi(TokamakCore) public var sibling: Fiber?
     /// An unowned reference to the parent node.
     ///
-    /// Parent references are `unowned` (as opposed to `weak`) because the parent will always exist if a child does.
+    /// Parent references are `unowned` (as opposed to `weak`)
+    /// because the parent will always exist if a child does.
     /// If the parent is released, the child is released with it.
     unowned var parent: Fiber?
     /// The nearest parent that can be mounted on.

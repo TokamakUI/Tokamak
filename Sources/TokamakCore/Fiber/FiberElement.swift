@@ -24,7 +24,9 @@ public protocol FiberElement: AnyObject {
   func update(with content: Content)
 }
 
-/// The data used to create an `FiberElement`. We re-use `FiberElement` instances in the `Fiber` tree,
+/// The data used to create an `FiberElement`.
+///
+/// We re-use `FiberElement` instances in the `Fiber` tree,
 /// but can re-create and copy `FiberElementContent` as often as needed.
 public protocol FiberElementContent: Equatable {
   init<V: View>(from primitiveView: V)
