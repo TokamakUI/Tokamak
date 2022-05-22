@@ -26,7 +26,7 @@ enum _HTMLMeta: Equatable, Hashable {
 
 public struct HTMLMeta: View {
 
-    internal var meta: _HTMLMeta
+    var meta: _HTMLMeta
 
     public init(charset: String) {
         meta = .charset(charset)

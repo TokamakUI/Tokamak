@@ -19,7 +19,7 @@ import TokamakCore
 
 public struct HTMLTitle: View {
 
-    internal var title: String
+    var title: String
 
     public init(_ title: String) {
         self.title = title
