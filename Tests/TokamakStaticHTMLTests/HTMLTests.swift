@@ -40,6 +40,18 @@ final class HTMLTests: XCTestCase {
     }
   }
 
+  private struct DoubleTitleBody: View {
+    var body: some View {
+      VStack {
+        HTMLTitle("Title 1")
+        Text("Hello, World")
+        VStack {
+          HTMLTitle("Title 2")
+        }
+      }
+    }
+  }
+
   func testOptional() {
     let resultingHTML = StaticHTMLRenderer(OptionalBody(model: Model(color: Color.red)))
       .render(shouldSortAttributes: true)
@@ -91,6 +103,15 @@ final class HTMLTests: XCTestCase {
       StaticHTMLRenderer(Text(text)._domTextSanitizer(Sanitizers.HTML.insecure))
         .render(shouldSortAttributes: true)
     assertSnapshot(matching: insecureHTML, as: .html)
+  }
+
+  func testDoubleTitle() {
+    let resultingHTML = StaticHTMLRenderer(DoubleTitleBody())
+      .render(shouldSortAttributes: true)
+
+    assert(resultingHTML.contains("<title>Title 2</title>") == true)
+    assert(resultingHTML.contains("<title>Title 1</title>") == false)
+    assertSnapshot(matching: resultingHTML, as: .html)
   }
 }
 
