@@ -78,11 +78,11 @@ public final class StaticHTMLRenderer: Renderer {
 
   var rootTarget: HTMLTarget
 
-  internal var title: String {
+  var title: String {
     reconciler?.preferenceStore.value(forKey: HTMLTitlePreferenceKey.self).value ?? ""
   }
 
-  internal var meta: [HTMLMetaPreferenceKey.HTMLMeta] {
+  var meta: [HTMLMetaPreferenceKey.HTMLMeta] {
     reconciler?.preferenceStore.value(forKey: HTMLMetaPreferenceKey.self).value ?? []
   }
 

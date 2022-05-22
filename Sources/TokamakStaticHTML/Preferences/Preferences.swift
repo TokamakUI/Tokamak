@@ -17,7 +17,7 @@
 
 import TokamakCore
 
-internal struct HTMLTitlePreferenceKey: PreferenceKey {
+struct HTMLTitlePreferenceKey: PreferenceKey {
     static var defaultValue: String = ""
 
     static func reduce(value: inout String, nextValue: () -> String) {
@@ -25,7 +25,7 @@ internal struct HTMLTitlePreferenceKey: PreferenceKey {
     }
 }
 
-internal struct HTMLMetaPreferenceKey: PreferenceKey {
+struct HTMLMetaPreferenceKey: PreferenceKey {
     internal enum HTMLMeta: Equatable, Hashable {
         case charset(_ charset: String)
         case name(_ name: String, content: String)
