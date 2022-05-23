@@ -52,6 +52,8 @@ public final class _PreferenceStore {
   /// The backing values of the `_PreferenceStore`.
   private var values: [String: Any]
 
+  weak var parent: _PreferenceStore?
+
   public init(values: [String: Any] = [:]) {
     self.values = values
   }
@@ -68,6 +70,7 @@ public final class _PreferenceStore {
   {
     let previousValues = self.value(forKey: key).valueList
     values[String(reflecting: key)] = _PreferenceValue<Key>(valueList: previousValues + [value])
+    parent?.insert(value, forKey: key)
   }
 }
 
