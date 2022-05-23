@@ -110,7 +110,7 @@ public struct DOMFiberRenderer: FiberRenderer {
   private func apply(_ content: DOMElement.Content, to element: JSObject) {
     for (attribute, value) in content.attributes {
       if attribute.isUpdatedAsProperty {
-        element[dynamicMember: attribute.value] = .string(value)
+        element[attribute.value] = .string(value)
       } else {
         _ = element.setAttribute?(attribute.value, value)
       }
