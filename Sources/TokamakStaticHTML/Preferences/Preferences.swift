@@ -18,20 +18,20 @@
 import TokamakCore
 
 public struct HTMLTitlePreferenceKey: PreferenceKey {
-    public static var defaultValue: String = ""
+  public static var defaultValue: String = ""
 
-    public static func reduce(value: inout String, nextValue: () -> String) {
-        value = nextValue()
-    }
+  public static func reduce(value: inout String, nextValue: () -> String) {
+    value = nextValue()
+  }
 }
 
 public struct HTMLMetaPreferenceKey: PreferenceKey {
-    public static var defaultValue: [HTMLMeta.MetaTag] = []
+  public static var defaultValue: [HTMLMeta.MetaTag] = []
 
-    public static func reduce(
-        value: inout [HTMLMeta.MetaTag],
-        nextValue: () -> [HTMLMeta.MetaTag]
-    ) {
-        value += nextValue()
-    }
+  public static func reduce(
+    value: inout [HTMLMeta.MetaTag],
+    nextValue: () -> [HTMLMeta.MetaTag]
+  ) {
+    value += nextValue()
+  }
 }

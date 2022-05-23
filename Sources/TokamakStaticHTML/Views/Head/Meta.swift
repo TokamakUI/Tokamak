@@ -18,67 +18,66 @@
 import TokamakCore
 
 public struct HTMLMeta: View {
-    public enum MetaTag: Equatable, Hashable {
-        case charset(_ charset: String)
-        case name(_ name: String, content: String)
-        case property(_ property: String, content: String)
-        case httpEquiv(_ httpEquiv: String, content: String)
-    }
+  public enum MetaTag: Equatable, Hashable {
+    case charset(_ charset: String)
+    case name(_ name: String, content: String)
+    case property(_ property: String, content: String)
+    case httpEquiv(_ httpEquiv: String, content: String)
+  }
 
-    var meta: MetaTag
+  var meta: MetaTag
 
-    public init(_ value: MetaTag) {
-        meta = value
-    }
+  public init(_ value: MetaTag) {
+    meta = value
+  }
 
-    public init(charset: String) {
-        meta = .charset(charset)
-    }
+  public init(charset: String) {
+    meta = .charset(charset)
+  }
 
-    public init(name: String, content: String) {
-        meta = .name(name, content: content)
-    }
+  public init(name: String, content: String) {
+    meta = .name(name, content: content)
+  }
 
-    public init(property: String, content: String) {
-        meta = .property(property, content: content)
-    }
+  public init(property: String, content: String) {
+    meta = .property(property, content: content)
+  }
 
-    public init(httpEquiv: String, content: String) {
-        meta = .httpEquiv(httpEquiv, content: content)
-    }
+  public init(httpEquiv: String, content: String) {
+    meta = .httpEquiv(httpEquiv, content: content)
+  }
 
-    public var body: some View {
-        EmptyView()
-            .preference(key: HTMLMetaPreferenceKey.self, value: [meta])
-    }
+  public var body: some View {
+    EmptyView()
+      .preference(key: HTMLMetaPreferenceKey.self, value: [meta])
+  }
 }
 
-extension View {
+public extension View {
+  func htmlMeta(_ value: HTMLMeta.MetaTag) -> some View {
+    htmlMeta(.init(value))
+  }
 
-    public func htmlMeta(_ value: HTMLMeta.MetaTag) -> some View {
-        htmlMeta(.init(value))
-    }
+  func htmlMeta(charset: String) -> some View {
+    htmlMeta(.init(charset: charset))
+  }
 
-    public func htmlMeta(charset: String) -> some View {
-        htmlMeta(.init(charset: charset))
-    }
+  func htmlMeta(name: String, content: String) -> some View {
+    htmlMeta(.init(name: name, content: content))
+  }
 
-    public func htmlMeta(name: String, content: String) -> some View {
-        htmlMeta(.init(name: name, content: content))
-    }
+  func htmlMeta(property: String, content: String) -> some View {
+    htmlMeta(.init(property: property, content: content))
+  }
 
-    public func htmlMeta(property: String, content: String) -> some View {
-        htmlMeta(.init(property: property, content: content))
-    }
+  func htmlMeta(httpEquiv: String, content: String) -> some View {
+    htmlMeta(.init(httpEquiv: httpEquiv, content: content))
+  }
 
-    public func htmlMeta(httpEquiv: String, content: String) -> some View {
-        htmlMeta(.init(httpEquiv: httpEquiv, content: content))
+  func htmlMeta(_ meta: HTMLMeta) -> some View {
+    Group {
+      self
+      meta
     }
-
-    public func htmlMeta(_ meta: HTMLMeta) -> some View {
-        Group {
-            self
-            meta
-        }
-    }
+  }
 }

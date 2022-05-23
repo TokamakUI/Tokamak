@@ -94,7 +94,7 @@ public class MountedElement<R: Renderer> {
 
   public internal(set) var environmentValues: EnvironmentValues
 
-  weak private(set) var parent: MountedElement<R>?
+  private(set) weak var parent: MountedElement<R>?
 
   var preferenceStore: _PreferenceStore = .init()
 

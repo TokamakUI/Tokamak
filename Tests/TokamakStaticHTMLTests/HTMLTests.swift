@@ -179,10 +179,10 @@ final class HTMLTests: XCTestCase {
   }
 
   func testPreferencePropagation() {
-    var title0: String = ""
-    var title1: String = ""
-    var title2: String = ""
-    var title3: String = ""
+    var title0 = ""
+    var title1 = ""
+    var title2 = ""
+    var title3 = ""
 
     let resultingHTML = StaticHTMLRenderer(
       VStack {

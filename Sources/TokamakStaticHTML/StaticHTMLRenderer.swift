@@ -61,13 +61,13 @@ struct HTMLBody: AnyHTML {
 extension HTMLMeta.MetaTag {
   func outerHTML() -> String {
     switch self {
-    case .charset(let charset):
+    case let .charset(charset):
       return #"<meta charset="\#(charset)">"#
-    case .name(let name, let content):
+    case let .name(name, content):
       return #"<meta name="\#(name)" content="\#(content)">"#
-    case .property(let property, let content):
+    case let .property(property, content):
       return #"<meta property="\#(property)" content="\#(content)">"#
-    case .httpEquiv(let httpEquiv, let content):
+    case let .httpEquiv(httpEquiv, content):
       return #"<meta http-equiv="\#(httpEquiv)" content="\#(content)">"#
     }
   }
@@ -91,7 +91,7 @@ public final class StaticHTMLRenderer: Renderer {
     <html>
     <head>
       <title>\(title)</title>
-      \(meta.map({ $0.outerHTML() }).joined(separator: "\n  "))
+      \(meta.map { $0.outerHTML() }.joined(separator: "\n  "))
       <style>
         \(tokamakStyles)
       </style>
@@ -107,7 +107,6 @@ public final class StaticHTMLRenderer: Renderer {
   }
 
   public init<V: View>(_ view: V, _ rootEnvironment: EnvironmentValues? = nil) {
-
     rootTarget = HTMLTarget(view, HTMLBody())
 
     reconciler = StackReconciler(

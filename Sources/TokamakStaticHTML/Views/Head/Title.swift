@@ -18,29 +18,27 @@
 import TokamakCore
 
 public struct HTMLTitle: View {
+  var title: String
 
-    var title: String
+  public init(_ title: String) {
+    self.title = title
+  }
 
-    public init(_ title: String) {
-        self.title = title
-    }
-
-    public var body: some View {
-        EmptyView()
-            .preference(key: HTMLTitlePreferenceKey.self, value: title)
-    }
+  public var body: some View {
+    EmptyView()
+      .preference(key: HTMLTitlePreferenceKey.self, value: title)
+  }
 }
 
-extension View {
+public extension View {
+  func htmlTitle(_ title: String) -> some View {
+    htmlTitle(.init(title))
+  }
 
-    public func htmlTitle(_ title: String) -> some View {
-        htmlTitle(.init(title))
+  func htmlTitle(_ title: HTMLTitle) -> some View {
+    Group {
+      self
+      title
     }
-
-    public func htmlTitle(_ title: HTMLTitle) -> some View {
-        Group {
-            self
-            title
-        }
-    }
+  }
 }
