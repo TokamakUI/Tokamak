@@ -15,15 +15,14 @@ jobs:
         with:
           shell-action: carton bundle --product TokamakDemo
 
-  # FIXME: re-enable after https://github.com/swiftwasm/WasmTransformer/issues/18 is fixed.
-  # swiftwasm_test_5_6:
-  #   runs-on: ubuntu-20.04
+  swiftwasm_test_5_6:
+    runs-on: ubuntu-20.04
 
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: swiftwasm/swiftwasm-action@v5.6
-  #       with:
-  #         shell-action: carton test
+    steps:
+      - uses: actions/checkout@v2
+      - uses: swiftwasm/swiftwasm-action@v5.6
+        with:
+          shell-action: carton test --environment node
 
   # Disabled until macos-12 is available on GitHub Actions, which is required for Xcode 13.3
   # core_macos_build:
