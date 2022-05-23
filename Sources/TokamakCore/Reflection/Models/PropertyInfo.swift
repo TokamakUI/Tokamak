@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 public struct PropertyInfo: Hashable {
+  // Hashable/Equatable conformance is not synthesize for metatypes.
   public static func == (lhs: PropertyInfo, rhs: PropertyInfo) -> Bool {
     lhs.name == rhs.name && lhs.type == rhs.type && lhs.isVar == rhs.isVar && lhs.offset == rhs
       .offset && lhs.ownerType == rhs.ownerType

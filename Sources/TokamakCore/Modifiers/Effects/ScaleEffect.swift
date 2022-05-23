@@ -48,9 +48,11 @@ public extension View {
   }
 
   @inlinable
-  func scaleEffect(x: CGFloat = 1.0, y: CGFloat = 1.0,
-                   anchor: UnitPoint = .center) -> some View
-  {
+  func scaleEffect(
+    x: CGFloat = 1.0,
+    y: CGFloat = 1.0,
+    anchor: UnitPoint = .center
+  ) -> some View {
     scaleEffect(CGSize(width: x, height: y), anchor: anchor)
   }
 }

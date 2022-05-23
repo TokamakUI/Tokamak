@@ -97,8 +97,8 @@ struct MouseEventsView: View {
       listeners: [
         "mousemove": { event in
           guard
-            let x = event.offsetX.jsValue().number,
-            let y = event.offsetY.jsValue().number
+            let x = event.offsetX.jsValue.number,
+            let y = event.offsetY.jsValue.number
           else { return }
 
           position = CGPoint(x: x, y: y)
@@ -142,11 +142,12 @@ app.
 
 ### For app developers
 
-- macOS 11 and Xcode 13.0 or later. Xcode 13.2 or later is recommended if you're developing
-multi-platform apps that target WebAssembly and macOS at the same time, as these versions support
-Swift concurrency back-deployment.
-- [Swift 5.4 or later](https://swift.org/download/) and Ubuntu 18.04 if you'd like to use Linux.
+- macOS 11 and Xcode 13.2 or later when using VS Code. macOS 12 and Xcode 13.3 or later are recommended if
+you'd like to use Xcode for auto-completion, or when developing multi-platform apps that target WebAssembly
+and macOS at the same time.
+- [Swift 5.6 or later](https://swift.org/download/) and Ubuntu 18.04/20.04 if you'd like to use Linux.
   Other Linux distributions are currently not supported.
+- [`carton` 0.14.x](https://carton.dev) (carton is our build tool, see the ["Getting started" section](#getting-started) for installation steps)
 
 ### For users of apps depending on Tokamak
 
@@ -183,7 +184,7 @@ app by following these steps:
 brew install swiftwasm/tap/carton
 ```
 
-If you had `carton` installed before this, make sure you have version 0.12.0 or greater:
+If you had `carton` installed before this, make sure you have version 0.14.0 or greater:
 
 ```
 carton --version
@@ -267,7 +268,14 @@ doesn't provide an official build of the extension on the VSCode Marketplace unf
 
 ## Contributing
 
-See [`CONTRIBUTING.md`](CONTRIBUTING.md) for more details.
+All contributions, no matter how small, are very welcome. You don't have to be a web developer or a
+SwiftUI expert to meaningfully contribute. In fact, by checking out how some of the simplest views are
+implemented in Tokamak you may learn more how SwiftUI may work under the hood.
+
+Updating our [documentation](https://github.com/TokamakUI/Tokamak/tree/main/docs) and taking on [the starter
+bugs](https://github.com/TokamakUI/Tokamak/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)
+is also appreciated. Don't forget to join our [Discord server](https://discord.gg/ashJW8T8yp) to get in
+touch with the maintainers and other users. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for more details.
 
 ### Code of Conduct
 

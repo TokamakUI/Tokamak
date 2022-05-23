@@ -15,24 +15,19 @@
 //  Created by Carson Katri on 2/15/22.
 //
 
-import Foundation
+/// A reference type that points to a `Renderer`-specific element that has been mounted.
+/// For instance, a DOM node in the `DOMFiberRenderer`.
+public protocol FiberElement: AnyObject {
+  associatedtype Content: FiberElementContent
+  var content: Content { get }
+  init(from content: Content)
+  func update(with content: Content)
+}
 
-public enum Mutation<Renderer: FiberRenderer> {
-  case insert(
-    element: Renderer.ElementType,
-    parent: Renderer.ElementType,
-    index: Int
-  )
-  case remove(element: Renderer.ElementType, parent: Renderer.ElementType?)
-  case replace(
-    parent: Renderer.ElementType,
-    previous: Renderer.ElementType,
-    replacement: Renderer.ElementType
-  )
-  case update(
-    previous: Renderer.ElementType,
-    newContent: Renderer.ElementType.Content,
-    geometry: ViewGeometry
-  )
-  case layout(element: Renderer.ElementType, geometry: ViewGeometry)
+/// The data used to create an `FiberElement`.
+///
+/// We re-use `FiberElement` instances in the `Fiber` tree,
+/// but can re-create and copy `FiberElementContent` as often as needed.
+public protocol FiberElementContent: Equatable {
+  init<V: View>(from primitiveView: V)
 }

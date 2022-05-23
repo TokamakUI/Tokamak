@@ -59,7 +59,7 @@ public extension View {
 
 /// A `ViewModifier` used to apply a primitive transition to a `View`.
 public protocol _AnyTransitionModifier: AnimatableModifier
-  where Body == Self.Content
+  where Body == Content
 {
   var isActive: Bool { get }
 }

@@ -1,6 +1,16 @@
+// Copyright 2021 Tokamak contributors
 //
-//  File.swift
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Carson Katri on 2/15/22.
 //
@@ -92,7 +102,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       unowned var parent: Result?
       var child: Result?
       var sibling: Result?
-      var newData: Renderer.ElementType.Data?
+      var newContent: Renderer.ElementType.Content?
       var elementIndices: [ObjectIdentifier: Int]
       var layoutContexts: [ObjectIdentifier: LayoutContext]
 
@@ -107,7 +117,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         parent: Result?,
         child: Fiber?,
         alternateChild: Fiber?,
-        newData: Renderer.ElementType.Data? = nil,
+        newContent: Renderer.ElementType.Content? = nil,
         elementIndices: [ObjectIdentifier: Int],
         layoutContexts: [ObjectIdentifier: LayoutContext]
       ) {
@@ -116,7 +126,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         self.parent = parent
         nextExisting = child
         nextExistingAlternate = alternateChild
-        self.newData = newData
+        self.newContent = newContent
         self.elementIndices = elementIndices
         self.layoutContexts = layoutContexts
       }
@@ -134,7 +144,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         } else {
           key = nil
         }
-        let newData = existing.update(
+        let newContent = existing.update(
           with: &nextView,
           elementIndex: key.map { partialResult.elementIndices[$0, default: 0] }
         )
@@ -144,7 +154,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           parent: partialResult,
           child: existing.child,
           alternateChild: existing.alternate?.child,
-          newData: newData,
+          newContent: newContent,
           elementIndices: partialResult.elementIndices,
           layoutContexts: partialResult.layoutContexts
         )
@@ -300,11 +310,18 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           {
             // This is a completely different type of view.
             mutations.append(.replace(parent: parent, previous: previous, replacement: element))
-          } else if let newData = node.newData,
-                    newData != element.data
+          } else if let newContent = node.newContent,
+                    newContent != element.content
           {
             // This is the same type of view, but its backing data has changed.
-            mutations.append(.update(previous: element, newData: newData))
+            mutations.append(.update(
+              previous: element,
+              newContent: newContent,
+              geometry: node.fiber?.geometry ?? .init(
+                origin: .init(origin: .zero),
+                dimensions: .init(size: .zero, alignmentGuides: [:])
+              )
+            ))
           }
         }
       }

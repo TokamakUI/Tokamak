@@ -31,7 +31,7 @@ public extension Never {
   }
 }
 
-extension Never: _PrimitiveView {}
+extension Never: View {}
 
 /// A `View` that offers primitive functionality, which renders its `body` inaccessible.
 public protocol _PrimitiveView: View where Body == Never {}

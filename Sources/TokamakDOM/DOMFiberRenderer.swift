@@ -1,6 +1,16 @@
+// Copyright 2021 Tokamak contributors
 //
-//  File.swift
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Carson Katri on 2/7/22.
 //
@@ -10,10 +20,10 @@ import JavaScriptKit
 @_spi(TokamakCore) import TokamakCore
 @_spi(TokamakStaticHTML) import TokamakStaticHTML
 
-public final class DOMElement: Element {
+public final class DOMElement: FiberElement {
   var reference: JSObject?
 
-  public struct Data: ElementData {
+  public struct Content: FiberElementContent {
     let tag: String
     let attributes: [HTMLAttribute: String]
     let innerHTML: String?
@@ -25,18 +35,18 @@ public final class DOMElement: Element {
     }
   }
 
-  public var data: Data
+  public var content: Content
 
-  public init(from data: Data) {
-    self.data = data
+  public init(from content: Content) {
+    self.content = content
   }
 
-  public func update(with data: Data) {
-    self.data = data
+  public func update(with content: Content) {
+    self.content = content
   }
 }
 
-public extension DOMElement.Data {
+public extension DOMElement.Content {
   init<V>(from primitiveView: V) where V: View {
     guard let primitiveView = primitiveView as? HTMLConvertible else { fatalError() }
     tag = primitiveView.tag
@@ -61,8 +71,6 @@ protocol DOMNodeConvertible: HTMLConvertible {
 
 public struct DOMFiberRenderer: FiberRenderer {
   public let rootElement: DOMElement
-  private let jsCommit: JSFunction
-  private let jsMeasureText: JSFunction
 
   public var sceneSize: CGSize {
     .init(width: body.clientWidth.number!, height: body.clientHeight.number!)
@@ -75,13 +83,6 @@ public struct DOMFiberRenderer: FiberRenderer {
   }
 
   public init(_ rootSelector: String) {
-    guard let Tokamak = JSObject.global.Tokamak.object else {
-      fatalError("""
-      Tokamak is not detected in the page's scripts. Ensure you included the Tokamak script in your site.
-      """)
-    }
-    jsCommit = Tokamak.commit.function!
-    jsMeasureText = Tokamak.measureText.function!
     guard let reference = document.querySelector!(rootSelector).object else {
       fatalError("""
       The root element with selector '\(rootSelector)' could not be found. \
@@ -98,124 +99,115 @@ public struct DOMFiberRenderer: FiberRenderer {
       )
     )
     rootElement.reference = reference
-    Tokamak.initRoot.function!(reference)
+
+    // Setup the root styles
+    body.style.margin = .string("0")
+    reference.style.width = .string("100vw")
+    reference.style.width = .string("100vh")
+    reference.style.position = .string("relative")
   }
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {
     view is HTMLConvertible || view is DOMNodeConvertible
   }
 
-  public func commit(_ mutations: [Mutation<Self>]) {
-    jsCommit(mutations.map { $0.object() })
+  private func createElement(_ element: DOMElement) -> JSObject {
+    let result = document.createElement!(element.content.tag).object!
+    apply(element.content, to: result)
+    element.reference = result
+    return result
   }
 
-  public func measureText(_ text: Text, proposedSize: CGSize,
-                          in environment: EnvironmentValues) -> CGSize
-  {
+  public func measureText(
+    _ text: Text,
+    proposedSize: CGSize,
+    in environment: EnvironmentValues
+  ) -> CGSize {
     // FIXME: Use text styles.
-    let dimensions = jsMeasureText(
-      text.innerHTML ?? "",
-      [
-        "width": Double(proposedSize.width),
-        "height": Double(proposedSize.height),
-      ]
+    let element = document.createElement!("span").object!
+    element.textContent = .string(text.innerHTML ?? "")
+    element.style.maxWidth = .string("\(proposedSize.width)px")
+    element.style.maxHeight = .string("\(proposedSize.height)px")
+    _ = document.body.appendChild(element)
+    let rect = element.getBoundingClientRect!()
+    let size = CGSize(
+      width: rect.width.number ?? 0,
+      height: rect.height.number ?? 0
     )
-    return .init(
-      width: dimensions.width.number ?? 0,
-      height: dimensions.height.number ?? 0
-    )
+    print("Measured text at \(size)")
+    _ = document.body.removeChild(element)
+    return size
   }
-}
 
-extension Mutation where Renderer == DOMFiberRenderer {
-  func object() -> [String: ConvertibleToJSValue] {
-    switch self {
-    case let .insert(element, parent, index):
-      return [
-        "operation": 0,
-        "element": element.data.encoded
-          .merging(["bind": element.bindClosure], uniquingKeysWith: { $1 }),
-        "parent": parent.lazyReference,
-        "index": index,
-      ]
-    case let .remove(element, parent):
-      return [
-        "operation": 1,
-        "element": element.reference,
-        "parent": parent?.lazyReference,
-      ]
-    case let .replace(parent, previous, replacement):
-      return [
-        "operation": 2,
-        "parent": parent.lazyReference,
-        "element": previous.lazyReference,
-        "replacement": replacement.data.encoded,
-      ]
-    case let .update(previous, newElement):
-      previous.update(with: newElement)
-      return [
-        "operation": 3,
-        "previous": previous.reference,
-        "updates": newElement.encoded
-          .merging(["bind": previous.bindClosure], uniquingKeysWith: { $1 }),
-      ]
-    case let .layout(element, geometry):
-      return [
-        "operation": 4,
-        "element": element.lazyReference,
-        "geometry": geometry.encoded,
-      ]
+  private func apply(_ content: DOMElement.Content, to element: JSObject) {
+    for (attribute, value) in content.attributes {
+      if attribute.isUpdatedAsProperty {
+        element[attribute.value] = .string(value)
+      } else {
+        _ = element.setAttribute?(attribute.value, value)
+      }
     }
-  }
-}
-
-extension DOMElement {
-  var bindClosure: ConvertibleToJSValue {
-    JSOneshotClosure { [weak self] in
-      self?.reference = $0[0].object!
-      return .undefined
+    if let innerHTML = content.innerHTML {
+      element.innerHTML = .string(innerHTML)
+    }
+    for (event, action) in content.listeners {
+      _ = element.addEventListener?(event, JSClosure {
+        action($0[0].object!)
+        return .undefined
+      })
+    }
+    for (key, value) in content.debugData {
+      element.dataset.object?[dynamicMember: key] = value.jsValue
     }
   }
 
-  var lazyReference: JSClosure {
-    JSClosure { _ in
-      guard let reference = self.reference else { return .undefined }
-      return .object(reference)
-    }
+  private func apply(_ geometry: ViewGeometry, to element: JSObject) {
+    print("Apply \(geometry) to \(element)")
+    print(element)
+    _ = element.style.setProperty("position", "absolute")
+    _ = element.style.setProperty("width", "\(geometry.dimensions.width)px")
+    _ = element.style.setProperty("height", "\(geometry.dimensions.height)px")
+    _ = element.style.setProperty("left", "\(geometry.origin.x)px")
+    _ = element.style.setProperty("top", "\(geometry.origin.y)px")
   }
-}
 
-extension DOMElement.Data {
-  var encoded: [String: ConvertibleToJSValue] {
-    [
-      "tag": tag,
-      "attributes": attributes.map {
-        [
-          "name": $0.key.value,
-          "property": $0.key.isUpdatedAsProperty,
-          "value": $0.value,
-        ]
-      },
-      "innerHTML": innerHTML,
-      "listeners": listeners.mapValues { listener in
-        JSClosure {
-          listener($0[0].object!)
-          return .undefined
+  public func commit(_ mutations: [Mutation<Self>]) {
+    for mutation in mutations {
+      switch mutation {
+      case let .insert(newElement, parent, index):
+        let element = createElement(newElement)
+        guard let parentElement = parent.reference ?? rootElement.reference
+        else { fatalError("The root element was not bound (trying to insert element).") }
+        if Int(parentElement.children.object?.length.number ?? 0) > index {
+          _ = parentElement.insertBefore?(element, parentElement.children[index])
+        } else {
+          _ = parentElement.appendChild?(element)
         }
-      },
-      "debugData": debugData,
-    ]
-  }
-}
-
-extension ViewGeometry {
-  var encoded: [String: ConvertibleToJSValue] {
-    [
-      "x": Double(origin.x),
-      "y": Double(origin.y),
-      "width": Double(dimensions.width),
-      "height": Double(dimensions.height),
-    ]
+      case let .remove(element, _):
+        _ = element.reference?.remove?()
+      case let .replace(parent, previous, replacement):
+        guard let parentElement = parent.reference ?? rootElement.reference
+        else { fatalError("The root element was not bound (trying to replace element).") }
+        guard let previousElement = previous.reference else {
+          fatalError("The previous element does not exist (trying to replace element).")
+        }
+        let replacementElement = createElement(replacement)
+        _ = parentElement.replaceChild?(previousElement, replacementElement)
+      case let .update(previous, newContent, geometry):
+        previous.update(with: newContent)
+        guard let previousElement = previous.reference
+        else { fatalError("The element does not exist (trying to update element).") }
+        apply(newContent, to: previousElement)
+        // Re-apply geometry as style changes could've overwritten it.
+        apply(geometry, to: previousElement)
+        previous.reference = previousElement
+      case let .layout(element, geometry):
+        guard let element = element.reference else {
+          fatalError("The element does not exist (trying to layout).")
+        }
+        apply(geometry, to: element)
+      }
+    }
   }
 }
 

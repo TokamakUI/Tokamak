@@ -28,9 +28,10 @@ public extension View {
     deprecated,
     message: "Use navigationTitle(_:) with navigationBarTitleDisplayMode(_:)"
   )
-  func navigationBarTitle(_ title: Text,
-                          displayMode: NavigationBarItem.TitleDisplayMode) -> some View
-  {
+  func navigationBarTitle(
+    _ title: Text,
+    displayMode: NavigationBarItem.TitleDisplayMode
+  ) -> some View {
     navigationTitle(title)
       .navigationBarTitleDisplayMode(displayMode)
   }
@@ -62,9 +63,10 @@ public extension View {
     preference(key: NavigationTitleKey.self, value: AnyView(title()))
   }
 
-  func navigationBarTitleDisplayMode(_ displayMode: NavigationBarItem
-    .TitleDisplayMode) -> some View
-  {
+  func navigationBarTitleDisplayMode(
+    _ displayMode: NavigationBarItem
+      .TitleDisplayMode
+  ) -> some View {
     preference(key: NavigationBarItemKey.self, value: .init(displayMode: displayMode))
   }
 }

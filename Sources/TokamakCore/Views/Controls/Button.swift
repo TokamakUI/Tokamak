@@ -86,8 +86,12 @@ public struct _PrimitiveButtonStyleBody<Label>: View where Label: View {
 
   @Environment(\.controlSize) public var controlSize
 
-  public var body: some View {
-    label
+  public var body: Never {
+    neverBody("_PrimitiveButtonStyleBody")
+  }
+
+  public func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
+    visitor.visit(label)
   }
 }
 

@@ -1,6 +1,16 @@
+// Copyright 2021 Tokamak contributors
 //
-//  File.swift
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Carson Katri on 2/15/22.
 //
@@ -15,22 +25,36 @@ import Foundation
   /// They point to each other using the `alternate` property.
   ///
   /// The current `Fiber` represents the `View` as it is currently rendered on the screen.
-  /// The work in progress `Fiber` (the `alternate` of current), is used in the reconciler to compute the new tree.
+  /// The work in progress `Fiber` (the `alternate` of current),
+  /// is used in the reconciler to compute the new tree.
   ///
-  /// When reconciling, the tree is recomputed from the root of the state change on the work in progress `Fiber`.
-  /// Each node in the fiber tree is updated to apply any changes, and a list of mutations needed to get the
-  /// rendered output to match is created.
+  /// When reconciling, the tree is recomputed from
+  /// the root of the state change on the work in progress `Fiber`.
+  /// Each node in the fiber tree is updated to apply any changes,
+  /// and a list of mutations needed to get the rendered output to match is created.
   ///
   /// After the entire tree has been traversed, the current and work in progress trees are swapped,
-  /// making the updated tree the current one, and leaving the previous current tree available to apply future changes on.
+  /// making the updated tree the current one,
+  /// and leaving the previous current tree available to apply future changes on.
   final class Fiber: CustomDebugStringConvertible {
     weak var reconciler: FiberReconciler<Renderer>?
 
     /// The underlying `View` instance.
-    var view: Any!
+    ///
+    /// Stored as an IUO because we must use the `bindProperties` method
+    /// to create the `View` with its dependencies setup,
+    /// which requires all stored properties be set before using.
+    @_spi(TokamakCore) public var view: Any!
     /// Outputs from evaluating `View._makeView`
+    ///
+    /// Stored as an IUO because creating `ViewOutputs` depends on
+    /// the `bindProperties` method, which requires
+    /// all stored properties be set before using.
+    /// `outputs` is guaranteed to be set in the initializer.
     var outputs: ViewOutputs!
     /// A function to visit `view` generically.
+    ///
+    /// Stored as an IUO because it captures a weak reference to `self`, which requires all stored properties be set before capturing.
     var visitView: ((ViewVisitor) -> ())!
     /// The identity of this `View`
     var id: Identity?
@@ -39,17 +63,21 @@ import Foundation
     /// The index of this element in its elementParent
     var elementIndex: Int?
     /// The first child node.
-    var child: Fiber?
+    @_spi(TokamakCore) public var child: Fiber?
     /// This node's right sibling.
-    var sibling: Fiber?
+    @_spi(TokamakCore) public var sibling: Fiber?
     /// An unowned reference to the parent node.
+    ///
+    /// Parent references are `unowned` (as opposed to `weak`)
+    /// because the parent will always exist if a child does.
+    /// If the parent is released, the child is released with it.
     unowned var parent: Fiber?
     /// The nearest parent that can be mounted on.
     unowned var elementParent: Fiber?
     /// The cached type information for the underlying `View`.
     var typeInfo: TypeInfo?
     /// Boxes that store `State` data.
-    var state: [PropertyInfo: MutableStorage]!
+    var state: [PropertyInfo: MutableStorage] = [:]
 
     /// The computed dimensions and origin.
     var geometry: ViewGeometry?
@@ -210,7 +238,7 @@ import Foundation
     func update<V: View>(
       with view: inout V,
       elementIndex: Int?
-    ) -> Renderer.ElementType.Data? {
+    ) -> Renderer.ElementType.Content? {
       typeInfo = TokamakCore.typeInfo(of: V.self)
 
       self.elementIndex = elementIndex
@@ -237,7 +265,6 @@ import Foundation
     }
 
     public var debugDescription: String {
-//      flush()
       if let text = view as? Text {
         return "Text(\"\(text.storage.rawText)\")"
       }
