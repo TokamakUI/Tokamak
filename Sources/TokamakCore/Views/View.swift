@@ -19,6 +19,9 @@ public protocol View {
   associatedtype Body: View
 
   @ViewBuilder var body: Self.Body { get }
+
+  func _visitChildren<V: ViewVisitor>(_ visitor: V)
+  static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs
 }
 
 public extension Never {
@@ -38,6 +41,8 @@ public extension _PrimitiveView {
   var body: Never {
     neverBody(String(reflecting: Self.self))
   }
+
+  func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {}
 }
 
 /// A `View` type that renders with subviews, usually specified in the `Content` type argument

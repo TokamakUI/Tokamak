@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: swiftwasm/swiftwasm-action@v5.6
         with:
-          shell-action: carton test
+          shell-action: carton test --environment node
 
   # Disabled until macos-12 is available on GitHub Actions, which is required for Xcode 13.3
   # core_macos_build:

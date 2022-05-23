@@ -135,6 +135,7 @@ let package = Package(
       dependencies: [
         .product(name: "Benchmark", package: "swift-benchmark"),
         "TokamakCore",
+        "TokamakTestRenderer",
       ]
     ),
     .executableTarget(
@@ -193,6 +194,13 @@ let package = Package(
     .target(
       name: "TokamakTestRenderer",
       dependencies: ["TokamakCore"]
+    ),
+    .testTarget(
+      name: "TokamakReconcilerTests",
+      dependencies: [
+        "TokamakCore",
+        "TokamakTestRenderer",
+      ]
     ),
     .testTarget(
       name: "TokamakTests",

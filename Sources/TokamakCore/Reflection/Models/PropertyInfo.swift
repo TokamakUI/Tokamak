@@ -20,7 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public struct PropertyInfo {
+public struct PropertyInfo: Hashable {
+  // Hashable/Equatable conformance is not synthesize for metatypes.
+  public static func == (lhs: PropertyInfo, rhs: PropertyInfo) -> Bool {
+    lhs.name == rhs.name && lhs.type == rhs.type && lhs.isVar == rhs.isVar && lhs.offset == rhs
+      .offset && lhs.ownerType == rhs.ownerType
+  }
+
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(name)
+    hasher.combine(ObjectIdentifier(type))
+    hasher.combine(isVar)
+    hasher.combine(offset)
+    hasher.combine(ObjectIdentifier(ownerType))
+  }
+
   public let name: String
   public let type: Any.Type
   public let isVar: Bool

@@ -22,26 +22,46 @@ public struct TupleView<T>: _PrimitiveView {
   public let value: T
 
   let _children: [AnyView]
+  private let visit: (ViewVisitor) -> ()
 
   public init(_ value: T) {
     self.value = value
     _children = []
+    visit = { _ in }
   }
 
   public init(_ value: T, children: [AnyView]) {
     self.value = value
     _children = children
+    visit = {
+      for child in children {
+        $0.visit(child)
+      }
+    }
+  }
+
+  public func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
+    visit(visitor)
   }
 
   init<T1: View, T2: View>(_ v1: T1, _ v2: T2) where T == (T1, T2) {
     value = (v1, v2)
     _children = [AnyView(v1), AnyView(v2)]
+    visit = {
+      $0.visit(v1)
+      $0.visit(v2)
+    }
   }
 
   // swiftlint:disable large_tuple
   init<T1: View, T2: View, T3: View>(_ v1: T1, _ v2: T2, _ v3: T3) where T == (T1, T2, T3) {
     value = (v1, v2, v3)
     _children = [AnyView(v1), AnyView(v2), AnyView(v3)]
+    visit = {
+      $0.visit(v1)
+      $0.visit(v2)
+      $0.visit(v3)
+    }
   }
 
   init<T1: View, T2: View, T3: View, T4: View>(_ v1: T1, _ v2: T2, _ v3: T3, _ v4: T4)
@@ -49,6 +69,12 @@ public struct TupleView<T>: _PrimitiveView {
   {
     value = (v1, v2, v3, v4)
     _children = [AnyView(v1), AnyView(v2), AnyView(v3), AnyView(v4)]
+    visit = {
+      $0.visit(v1)
+      $0.visit(v2)
+      $0.visit(v3)
+      $0.visit(v4)
+    }
   }
 
   init<T1: View, T2: View, T3: View, T4: View, T5: View>(
@@ -60,6 +86,13 @@ public struct TupleView<T>: _PrimitiveView {
   ) where T == (T1, T2, T3, T4, T5) {
     value = (v1, v2, v3, v4, v5)
     _children = [AnyView(v1), AnyView(v2), AnyView(v3), AnyView(v4), AnyView(v5)]
+    visit = {
+      $0.visit(v1)
+      $0.visit(v2)
+      $0.visit(v3)
+      $0.visit(v4)
+      $0.visit(v5)
+    }
   }
 
   init<T1: View, T2: View, T3: View, T4: View, T5: View, T6: View>(
@@ -72,6 +105,14 @@ public struct TupleView<T>: _PrimitiveView {
   ) where T == (T1, T2, T3, T4, T5, T6) {
     value = (v1, v2, v3, v4, v5, v6)
     _children = [AnyView(v1), AnyView(v2), AnyView(v3), AnyView(v4), AnyView(v5), AnyView(v6)]
+    visit = {
+      $0.visit(v1)
+      $0.visit(v2)
+      $0.visit(v3)
+      $0.visit(v4)
+      $0.visit(v5)
+      $0.visit(v6)
+    }
   }
 
   init<T1: View, T2: View, T3: View, T4: View, T5: View, T6: View, T7: View>(
@@ -93,6 +134,15 @@ public struct TupleView<T>: _PrimitiveView {
       AnyView(v6),
       AnyView(v7),
     ]
+    visit = {
+      $0.visit(v1)
+      $0.visit(v2)
+      $0.visit(v3)
+      $0.visit(v4)
+      $0.visit(v5)
+      $0.visit(v6)
+      $0.visit(v7)
+    }
   }
 
   init<T1: View, T2: View, T3: View, T4: View, T5: View, T6: View, T7: View, T8: View>(
@@ -116,6 +166,16 @@ public struct TupleView<T>: _PrimitiveView {
       AnyView(v7),
       AnyView(v8),
     ]
+    visit = {
+      $0.visit(v1)
+      $0.visit(v2)
+      $0.visit(v3)
+      $0.visit(v4)
+      $0.visit(v5)
+      $0.visit(v6)
+      $0.visit(v7)
+      $0.visit(v8)
+    }
   }
 
   init<T1: View, T2: View, T3: View, T4: View, T5: View, T6: View, T7: View, T8: View, T9: View>(
@@ -141,6 +201,17 @@ public struct TupleView<T>: _PrimitiveView {
       AnyView(v8),
       AnyView(v9),
     ]
+    visit = {
+      $0.visit(v1)
+      $0.visit(v2)
+      $0.visit(v3)
+      $0.visit(v4)
+      $0.visit(v5)
+      $0.visit(v6)
+      $0.visit(v7)
+      $0.visit(v8)
+      $0.visit(v9)
+    }
   }
 
   init<
@@ -179,6 +250,18 @@ public struct TupleView<T>: _PrimitiveView {
       AnyView(v9),
       AnyView(v10),
     ]
+    visit = {
+      $0.visit(v1)
+      $0.visit(v2)
+      $0.visit(v3)
+      $0.visit(v4)
+      $0.visit(v5)
+      $0.visit(v6)
+      $0.visit(v7)
+      $0.visit(v8)
+      $0.visit(v9)
+      $0.visit(v10)
+    }
   }
 }
 

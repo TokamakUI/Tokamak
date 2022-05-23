@@ -23,14 +23,26 @@ public struct _ViewModifier_Content<Modifier>: View
 {
   public let modifier: Modifier
   public let view: AnyView
+  let visitChildren: (ViewVisitor) -> ()
 
   public init(modifier: Modifier, view: AnyView) {
     self.modifier = modifier
     self.view = view
+    visitChildren = { $0.visit(view) }
+  }
+
+  public init<V: View>(modifier: Modifier, view: V) {
+    self.modifier = modifier
+    self.view = AnyView(view)
+    visitChildren = { $0.visit(view) }
   }
 
   public var body: some View {
     view
+  }
+
+  public func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
+    visitChildren(visitor)
   }
 }
 

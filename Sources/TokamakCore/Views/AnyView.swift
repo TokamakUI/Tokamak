@@ -40,6 +40,8 @@ public struct AnyView: _PrimitiveView {
    */
   let bodyType: Any.Type
 
+  let visitChildren: (ViewVisitor, Any) -> ()
+
   public init<V>(_ view: V) where V: View {
     if let anyView = view as? AnyView {
       self = anyView
@@ -52,7 +54,13 @@ public struct AnyView: _PrimitiveView {
       self.view = view
       // swiftlint:disable:next force_cast
       bodyClosure = { AnyView(($0 as! V).body) }
+      // swiftlint:disable:next force_cast
+      visitChildren = { $0.visit($1 as! V) }
     }
+  }
+
+  public func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
+    visitChildren(visitor, view)
   }
 }
 

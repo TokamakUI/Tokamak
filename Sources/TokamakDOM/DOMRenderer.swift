@@ -88,7 +88,9 @@ final class DOMRenderer: Renderer {
     rootRef = ref
     appendRootStyle(ref)
 
-    JavaScriptEventLoop.installGlobalExecutor()
+    if #available(macOS 10.15, *) {
+      JavaScriptEventLoop.installGlobalExecutor()
+    }
 
     let scheduler = JSScheduler()
     self.scheduler = scheduler
