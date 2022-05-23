@@ -18,7 +18,7 @@
 #if canImport(SnapshotTesting)
 
 import SnapshotTesting
-import TokamakStaticHTML
+@testable import TokamakStaticHTML
 import XCTest
 
 final class HTMLTests: XCTestCase {
@@ -175,6 +175,35 @@ final class HTMLTests: XCTestCase {
     ).render(shouldSortAttributes: true)
 
     assert(resultingHTML.components(separatedBy: "<meta ").count == 5)
+    assertSnapshot(matching: resultingHTML, as: .html)
+  }
+
+  func testPreferencePropagation() {
+    var title0: String = ""
+    var title1: String = ""
+    var title2: String = ""
+    var title3: String = ""
+
+    let resultingHTML = StaticHTMLRenderer(
+      VStack {
+        HTMLTitle("Tokamak 1")
+          .onPreferenceChange(HTMLTitlePreferenceKey.self) { title1 = $0 }
+        VStack {
+          HTMLTitle("Tokamak 2")
+        }
+        .onPreferenceChange(HTMLTitlePreferenceKey.self) { title2 = $0 }
+        VStack {
+          HTMLTitle("Tokamak 3")
+        }
+        .onPreferenceChange(HTMLTitlePreferenceKey.self) { title3 = $0 }
+      }
+      .onPreferenceChange(HTMLTitlePreferenceKey.self) { title0 = $0 }
+    ).render(shouldSortAttributes: true)
+
+    assert(title0 == "Tokamak 3")
+    assert(title1 == "Tokamak 1")
+    assert(title2 == "Tokamak 2")
+    assert(title3 == "Tokamak 3")
     assertSnapshot(matching: resultingHTML, as: .html)
   }
 }
