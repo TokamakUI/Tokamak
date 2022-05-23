@@ -48,9 +48,11 @@ public extension _PreferenceValue {
   }
 }
 
-public struct _PreferenceStore {
+public final class _PreferenceStore {
   /// The backing values of the `_PreferenceStore`.
   private var values: [String: Any]
+
+  weak var parent: _PreferenceStore?
 
   public init(values: [String: Any] = [:]) {
     self.values = values
@@ -63,23 +65,12 @@ public struct _PreferenceStore {
       ?? _PreferenceValue(valueList: [Key.defaultValue])
   }
 
-  public mutating func insert<Key>(_ value: Key.Value, forKey key: Key.Type = Key.self)
+  public func insert<Key>(_ value: Key.Value, forKey key: Key.Type = Key.self)
     where Key: PreferenceKey
   {
     let previousValues = self.value(forKey: key).valueList
     values[String(reflecting: key)] = _PreferenceValue<Key>(valueList: previousValues + [value])
-  }
-
-  public mutating func merge(with other: Self) {
-    self = merging(with: other)
-  }
-
-  public func merging(with other: Self) -> Self {
-    var result = values
-    for (key, value) in other.values {
-      result[key] = value
-    }
-    return .init(values: result)
+    parent?.insert(value, forKey: key)
   }
 }
 
