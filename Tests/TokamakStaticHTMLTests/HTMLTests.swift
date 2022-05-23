@@ -18,7 +18,7 @@
 #if canImport(SnapshotTesting)
 
 import SnapshotTesting
-@testable import TokamakStaticHTML
+import TokamakStaticHTML
 import XCTest
 
 final class HTMLTests: XCTestCase {

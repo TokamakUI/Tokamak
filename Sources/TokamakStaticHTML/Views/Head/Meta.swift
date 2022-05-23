@@ -17,16 +17,19 @@
 
 import TokamakCore
 
-enum _HTMLMeta: Equatable, Hashable {
-    case charset(_ charset: String)
-    case name(_ name: String, content: String)
-    case property(_ property: String, content: String)
-    case httpEquiv(_ httpEquiv: String, content: String)
-}
-
 public struct HTMLMeta: View {
+    public enum MetaTag: Equatable, Hashable {
+        case charset(_ charset: String)
+        case name(_ name: String, content: String)
+        case property(_ property: String, content: String)
+        case httpEquiv(_ httpEquiv: String, content: String)
+    }
 
-    var meta: _HTMLMeta
+    var meta: MetaTag
+
+    public init(_ value: MetaTag) {
+        meta = value
+    }
 
     public init(charset: String) {
         meta = .charset(charset)
@@ -51,6 +54,10 @@ public struct HTMLMeta: View {
 }
 
 extension View {
+
+    public func htmlMeta(_ value: HTMLMeta.MetaTag) -> some View {
+        htmlMeta(.init(value))
+    }
 
     public func htmlMeta(charset: String) -> some View {
         htmlMeta(.init(charset: charset))

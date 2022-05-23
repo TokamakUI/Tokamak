@@ -58,7 +58,7 @@ struct HTMLBody: AnyHTML {
   ]
 }
 
-extension _HTMLMeta {
+extension HTMLMeta.MetaTag {
   func outerHTML() -> String {
     switch self {
     case .charset(let charset):
@@ -82,7 +82,7 @@ public final class StaticHTMLRenderer: Renderer {
     reconciler?.preferenceStore.value(forKey: HTMLTitlePreferenceKey.self).value ?? ""
   }
 
-  var meta: [_HTMLMeta] {
+  var meta: [HTMLMeta.MetaTag] {
     reconciler?.preferenceStore.value(forKey: HTMLMetaPreferenceKey.self).value ?? []
   }
 
