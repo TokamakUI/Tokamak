@@ -124,13 +124,15 @@ import Foundation
       self.elementParent = elementParent
       typeInfo = TokamakCore.typeInfo(of: V.self)
 
-      let viewInputs = ViewInputs<V>(
-        view: view,
-        environment: parent?.outputs.environment ?? .init(.init())
-      )
-      state = bindProperties(to: &view, typeInfo, viewInputs)
+      let environment = parent?.outputs.environment ?? .init(.init())
+      state = bindProperties(to: &view, typeInfo, environment.environment)
       self.view = view
-      outputs = V._makeView(viewInputs)
+      outputs = V._makeView(
+        .init(
+          view: view,
+          environment: environment
+        )
+      )
 
       visitView = { [weak self] in
         guard let self = self else { return }
@@ -210,7 +212,7 @@ import Foundation
     private func bindProperties<V: View>(
       to view: inout V,
       _ typeInfo: TypeInfo?,
-      _ viewInputs: ViewInputs<V>
+      _ environment: EnvironmentValues
     ) -> [PropertyInfo: MutableStorage] {
       guard let typeInfo = typeInfo else { return [:] }
 
@@ -227,7 +229,7 @@ import Foundation
           storage.setter = { box.setValue($0, with: $1) }
           value = storage
         } else if var environmentReader = value as? EnvironmentReader {
-          environmentReader.setContent(from: viewInputs.environment.environment)
+          environmentReader.setContent(from: environment)
           value = environmentReader
         }
         property.set(value: value, on: &view)
@@ -243,13 +245,13 @@ import Foundation
 
       self.elementIndex = elementIndex
 
-      let viewInputs = ViewInputs<V>(
-        view: view,
-        environment: parent?.outputs.environment ?? .init(.init())
-      )
-      state = bindProperties(to: &view, typeInfo, viewInputs)
+      let environment = parent?.outputs.environment ?? .init(.init())
+      state = bindProperties(to: &view, typeInfo, environment.environment)
       self.view = view
-      outputs = V._makeView(viewInputs)
+      outputs = V._makeView(.init(
+        view: view,
+        environment: environment
+      ))
 
       visitView = { [weak self] in
         guard let self = self else { return }

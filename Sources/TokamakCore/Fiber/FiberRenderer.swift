@@ -31,6 +31,8 @@ public protocol FiberRenderer {
   var defaultEnvironment: EnvironmentValues { get }
   /// The size of the window we are rendering in.
   var sceneSize: CGSize { get }
+  /// Whether layout is enabled for this renderer.
+  var shouldLayout: Bool { get }
   /// Calculate the size of `Text` in `environment` for layout.
   func measureText(_ text: Text, proposedSize: CGSize, in environment: EnvironmentValues) -> CGSize
 }

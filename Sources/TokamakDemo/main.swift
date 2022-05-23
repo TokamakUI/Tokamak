@@ -33,7 +33,7 @@ struct TestView: View {
 }
 
 #if os(WASI)
-let reconciler = DOMFiberRenderer("body").render(TestView())
+let reconciler = DOMFiberRenderer("body", shouldLayout: true).render(TestView())
 #endif
 
 // @available(OSX 10.16, iOS 14.0, *)

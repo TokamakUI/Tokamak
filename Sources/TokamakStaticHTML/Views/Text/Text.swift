@@ -84,7 +84,7 @@ public extension Font {
       "font-family": families(in: environment).joined(separator: ", "),
       "font-weight": "\(proxy._bold ? Font.Weight.bold.value : proxy._weight.value)",
       "font-style": proxy._italic ? "italic" : "normal",
-      "font-size": "\(proxy._size)",
+      "font-size": "\(proxy._size)px",
       "line-height": proxy._leading.description,
       "font-variant": proxy._smallCaps ? "small-caps" : "normal",
     ]
@@ -155,6 +155,31 @@ extension Text: AnyHTML {
       from: proxy.modifiers,
       environment: proxy.environment
     )
+  }
+}
+
+@_spi(TokamakStaticHTML) extension Text: HTMLConvertible {
+  @_spi(TokamakStaticHTML) public var innerHTML: String? {
+    let proxy = _TextProxy(self)
+    let innerHTML: String
+    switch proxy.storage {
+    case let .verbatim(text):
+      innerHTML = proxy.environment.domTextSanitizer(text)
+    case let .segmentedText(segments):
+      innerHTML = segments
+        .map {
+          TextSpan(
+            content: proxy.environment.domTextSanitizer($0.0.rawText),
+            attributes: Self.attributes(
+              from: $0.1,
+              environment: proxy.environment
+            )
+          )
+          .outerHTML(shouldSortAttributes: false, children: [])
+        }
+        .reduce("", +)
+    }
+    return innerHTML.replacingOccurrences(of: "\n", with: "<br />")
   }
 }
 

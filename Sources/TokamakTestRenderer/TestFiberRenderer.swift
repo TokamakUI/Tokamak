@@ -101,7 +101,8 @@ public final class TestFiberElement: FiberElement, CustomStringConvertible {
 }
 
 public struct TestFiberRenderer: FiberRenderer {
-  public var sceneSize: CGSize
+  public let sceneSize: CGSize
+  public let shouldLayout: Bool
 
   public func measureText(
     _ text: Text,
@@ -115,9 +116,10 @@ public struct TestFiberRenderer: FiberRenderer {
 
   public let rootElement: ElementType
 
-  public init(_ rootElement: ElementType, size: CGSize) {
+  public init(_ rootElement: ElementType, size: CGSize, shouldLayout: Bool = true) {
     self.rootElement = rootElement
     sceneSize = size
+    self.shouldLayout = shouldLayout
   }
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {

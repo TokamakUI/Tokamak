@@ -412,7 +412,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           elementIndices = node.elementIndices
 
           // Propose sizes on the way down.
-          if let fiber = node.fiber {
+          if reconciler.renderer.shouldLayout,
+             let fiber = node.fiber
+          {
             proposeSize(for: fiber)
           }
 
@@ -461,7 +463,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
               alternateSibling = alternateSibling?.sibling
             }
             // We `size` and `position` when we are walking back up the tree.
-            if let fiber = node.fiber {
+            if reconciler.renderer.shouldLayout,
+               let fiber = node.fiber
+            {
               size(fiber)
               // Position the siblings in order.
               var sibling = fiber.parent?.child
@@ -478,7 +482,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
 
           // We `size` when we reach the bottommost view that has a sibling.
           // Otherwise, sizing takes place in the above loop.
-          if let fiber = node.fiber {
+          if reconciler.renderer.shouldLayout,
+             let fiber = node.fiber
+          {
             size(fiber)
           }
 
@@ -489,17 +495,19 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       }
       mainLoop()
 
-      // We continue to the very top to update all necessary positions.
-      var layoutNode = node.fiber?.child
-      while let current = layoutNode {
-        // We only need to re-position, because the size can't change if no state changed.
-        position(current)
-        if current.sibling != nil {
-          // We also don't need to go deep into sibling children,
-          // because child positioning is relative to the parent.
-          layoutNode = current.sibling
-        } else {
-          layoutNode = current.parent
+      if reconciler.renderer.shouldLayout {
+        // We continue to the very top to update all necessary positions.
+        var layoutNode = node.fiber?.child
+        while let current = layoutNode {
+          // We only need to re-position, because the size can't change if no state changed.
+          position(current)
+          if current.sibling != nil {
+            // We also don't need to go deep into sibling children,
+            // because child positioning is relative to the parent.
+            layoutNode = current.sibling
+          } else {
+            layoutNode = current.parent
+          }
         }
       }
     }

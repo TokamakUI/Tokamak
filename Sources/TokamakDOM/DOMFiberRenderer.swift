@@ -76,13 +76,15 @@ public struct DOMFiberRenderer: FiberRenderer {
     .init(width: body.clientWidth.number!, height: body.clientHeight.number!)
   }
 
+  public let shouldLayout: Bool
+
   public var defaultEnvironment: EnvironmentValues {
     var environment = EnvironmentValues()
     environment[_ColorSchemeKey.self] = .light
     return environment
   }
 
-  public init(_ rootSelector: String) {
+  public init(_ rootSelector: String, shouldLayout: Bool = true) {
     guard let reference = document.querySelector!(rootSelector).object else {
       fatalError("""
       The root element with selector '\(rootSelector)' could not be found. \
@@ -99,12 +101,15 @@ public struct DOMFiberRenderer: FiberRenderer {
       )
     )
     rootElement.reference = reference
+    self.shouldLayout = shouldLayout
 
-    // Setup the root styles
-    body.style.margin = .string("0")
-    reference.style.width = .string("100vw")
-    reference.style.width = .string("100vh")
-    reference.style.position = .string("relative")
+    if shouldLayout {
+      // Setup the root styles
+      body.style.margin = .string("0")
+      reference.style.width = .string("100vw")
+      reference.style.width = .string("100vh")
+      reference.style.position = .string("relative")
+    }
   }
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {
@@ -123,18 +128,15 @@ public struct DOMFiberRenderer: FiberRenderer {
     proposedSize: CGSize,
     in environment: EnvironmentValues
   ) -> CGSize {
-    // FIXME: Use text styles.
-    let element = document.createElement!("span").object!
-    element.textContent = .string(text.innerHTML ?? "")
-    element.style.maxWidth = .string("\(proposedSize.width)px")
-    element.style.maxHeight = .string("\(proposedSize.height)px")
+    let element = createElement(.init(from: .init(from: text)))
+    _ = element.style.setProperty("maxWidth", "\(proposedSize.width)px")
+    _ = element.style.setProperty("maxHeight", "\(proposedSize.height)px")
     _ = document.body.appendChild(element)
     let rect = element.getBoundingClientRect!()
     let size = CGSize(
       width: rect.width.number ?? 0,
       height: rect.height.number ?? 0
     )
-    print("Measured text at \(size)")
     _ = document.body.removeChild(element)
     return size
   }
@@ -162,8 +164,7 @@ public struct DOMFiberRenderer: FiberRenderer {
   }
 
   private func apply(_ geometry: ViewGeometry, to element: JSObject) {
-    print("Apply \(geometry) to \(element)")
-    print(element)
+    guard shouldLayout else { return }
     _ = element.style.setProperty("position", "absolute")
     _ = element.style.setProperty("width", "\(geometry.dimensions.width)px")
     _ = element.style.setProperty("height", "\(geometry.dimensions.height)px")

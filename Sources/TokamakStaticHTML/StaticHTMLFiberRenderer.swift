@@ -98,12 +98,6 @@ public extension HTMLConvertible {
   @_spi(TokamakStaticHTML) var innerHTML: String? { nil }
 }
 
-@_spi(TokamakStaticHTML) extension Text: HTMLConvertible {
-  @_spi(TokamakStaticHTML) public var innerHTML: String? {
-    _TextProxy(self).rawText
-  }
-}
-
 @_spi(TokamakStaticHTML) extension VStack: HTMLConvertible {
   @_spi(TokamakStaticHTML) public var tag: String { "div" }
   @_spi(TokamakStaticHTML) public var attributes: [HTMLAttribute: String] {
@@ -139,7 +133,8 @@ public extension HTMLConvertible {
 public struct StaticHTMLFiberRenderer: FiberRenderer {
   public let rootElement: HTMLElement
   public let defaultEnvironment: EnvironmentValues
-  public var sceneSize: CGSize { .zero }
+  public let sceneSize: CGSize = .zero
+  public let shouldLayout: Bool = false
 
   public init() {
     rootElement = .init(tag: "body", attributes: [:], innerHTML: nil, children: [])
