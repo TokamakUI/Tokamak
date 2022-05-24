@@ -53,7 +53,7 @@ extension ViewOutputs {
     self.environment = environment.map(EnvironmentBox.init) ?? inputs.environment
     self.preferences = preferences ?? .init()
     makeLayoutComputer = layoutComputer ?? { proposedSize in
-      ShrinkWrapLayout(proposedSize: proposedSize)
+      ShrinkWrapLayoutComputer(proposedSize: proposedSize)
     }
   }
 }
