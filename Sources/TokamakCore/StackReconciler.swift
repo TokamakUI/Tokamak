@@ -58,6 +58,12 @@ public final class StackReconciler<R: Renderer> {
    */
   public let rootTarget: R.TargetType
 
+  /** A root renderer's main preference store.
+   */
+  public var preferenceStore: _PreferenceStore {
+    rootElement.preferenceStore
+  }
+
   /** A root of the mounted elements tree to which all other mounted elements are attached to.
    */
   private let rootElement: MountedElement<R>

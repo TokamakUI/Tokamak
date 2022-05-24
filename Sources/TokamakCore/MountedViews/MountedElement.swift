@@ -94,13 +94,9 @@ public class MountedElement<R: Renderer> {
 
   public internal(set) var environmentValues: EnvironmentValues
 
-  weak var parent: MountedElement<R>?
-  /// `didSet` on this field propagates the preference changes up the view tree.
-  var preferenceStore: _PreferenceStore = .init() {
-    didSet {
-      parent?.preferenceStore.merge(with: preferenceStore)
-    }
-  }
+  private(set) weak var parent: MountedElement<R>?
+
+  var preferenceStore: _PreferenceStore = .init()
 
   public internal(set) var viewTraits: _ViewTraitStore
 
@@ -110,6 +106,7 @@ public class MountedElement<R: Renderer> {
     self.environmentValues = environmentValues
     viewTraits = .init()
     updateEnvironment()
+    connectParentPreferenceStore()
   }
 
   init(_ scene: _AnyScene, _ environmentValues: EnvironmentValues, _ parent: MountedElement<R>?) {
@@ -118,6 +115,7 @@ public class MountedElement<R: Renderer> {
     self.environmentValues = environmentValues
     viewTraits = .init()
     updateEnvironment()
+    connectParentPreferenceStore()
   }
 
   init(
@@ -131,6 +129,7 @@ public class MountedElement<R: Renderer> {
     self.environmentValues = environmentValues
     self.viewTraits = viewTraits
     updateEnvironment()
+    connectParentPreferenceStore()
   }
 
   func updateEnvironment() {
@@ -143,6 +142,10 @@ public class MountedElement<R: Renderer> {
     case .view:
       environmentValues.inject(into: &view.view, type)
     }
+  }
+
+  func connectParentPreferenceStore() {
+    preferenceStore.parent = parent?.preferenceStore
   }
 
   /// You must call `super.prepareForMount` before all other mounting work.

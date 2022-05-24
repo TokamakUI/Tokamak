@@ -92,6 +92,120 @@ final class HTMLTests: XCTestCase {
         .render(shouldSortAttributes: true)
     assertSnapshot(matching: insecureHTML, as: .html)
   }
+
+  func testTitle() {
+    let resultingHTML = StaticHTMLRenderer(
+      VStack {
+        HTMLTitle("Tokamak")
+        Text("Hello, world!")
+      }
+    ).render(shouldSortAttributes: true)
+
+    assert(resultingHTML.contains("<title>Tokamak</title>"))
+    assertSnapshot(matching: resultingHTML, as: .html)
+  }
+
+  func testDoubleTitle() {
+    let resultingHTML = StaticHTMLRenderer(
+      VStack {
+        HTMLTitle("Tokamak 1")
+        Text("Hello, world!")
+        VStack {
+          HTMLTitle("Tokamak 2")
+        }
+      }
+    ).render(shouldSortAttributes: true)
+
+    assert(resultingHTML.contains("<title>Tokamak 2</title>") == true)
+    assert(resultingHTML.contains("<title>Tokamak 1</title>") == false)
+    assertSnapshot(matching: resultingHTML, as: .html)
+  }
+
+  func testTitleModifier() {
+    let resultingHTML = StaticHTMLRenderer(
+      Text("Hello, world!")
+        .htmlTitle("Tokamak")
+    ).render(shouldSortAttributes: true)
+
+    assert(resultingHTML.contains("<title>Tokamak</title>"))
+    assertSnapshot(matching: resultingHTML, as: .html)
+  }
+
+  func testDoubleTitleModifier() {
+    let resultingHTML = StaticHTMLRenderer(
+      Text("Hello, world!")
+        .htmlTitle("Tokamak 1")
+        .htmlTitle("Tokamak 2")
+    ).render(shouldSortAttributes: true)
+
+    assert(resultingHTML.contains("<title>Tokamak 2</title>") == true)
+    assert(resultingHTML.contains("<title>Tokamak 1</title>") == false)
+    assertSnapshot(matching: resultingHTML, as: .html)
+  }
+
+  func testMetaCharset() {
+    let resultingHTML = StaticHTMLRenderer(
+      VStack {
+        HTMLMeta(charset: "utf-8")
+        Text("Hello, world!")
+      }
+    ).render(shouldSortAttributes: true)
+
+    assertSnapshot(matching: resultingHTML, as: .html)
+  }
+
+  func testMetaCharsetModifier() {
+    let resultingHTML = StaticHTMLRenderer(
+      Text("Hello, world!")
+        .htmlMeta(charset: "utf-8")
+    ).render(shouldSortAttributes: true)
+
+    assertSnapshot(matching: resultingHTML, as: .html)
+  }
+
+  func testMetaAll() {
+    let resultingHTML = StaticHTMLRenderer(
+      VStack {
+        HTMLMeta(charset: "utf-8")
+        HTMLMeta(name: "description", content: "SwiftUI on the web")
+        HTMLMeta(property: "og:image", content: "https://image.png")
+        HTMLMeta(httpEquiv: "refresh", content: "60")
+        Text("Hello, world!")
+      }
+    ).render(shouldSortAttributes: true)
+
+    assert(resultingHTML.components(separatedBy: "<meta ").count == 5)
+    assertSnapshot(matching: resultingHTML, as: .html)
+  }
+
+  func testPreferencePropagation() {
+    var title0 = ""
+    var title1 = ""
+    var title2 = ""
+    var title3 = ""
+
+    let resultingHTML = StaticHTMLRenderer(
+      VStack {
+        HTMLTitle("Tokamak 1")
+          .onPreferenceChange(HTMLTitlePreferenceKey.self) { title1 = $0 }
+        VStack {
+          HTMLTitle("Tokamak 2")
+        }
+        .onPreferenceChange(HTMLTitlePreferenceKey.self) { title2 = $0 }
+        VStack {
+          HTMLTitle("Tokamak 3")
+        }
+        .onPreferenceChange(HTMLTitlePreferenceKey.self) { title3 = $0 }
+      }
+      .onPreferenceChange(HTMLTitlePreferenceKey.self) { title0 = $0 }
+    ).render(shouldSortAttributes: true)
+
+    assert(title0 == "Tokamak 3")
+    assert(title1 == "Tokamak 1")
+    assert(title2 == "Tokamak 2")
+    assert(title3 == "Tokamak 3")
+    assertSnapshot(matching: resultingHTML, as: .html)
+  }
 }
 
 #endif

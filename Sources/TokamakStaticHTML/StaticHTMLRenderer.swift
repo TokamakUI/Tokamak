@@ -58,18 +58,41 @@ struct HTMLBody: AnyHTML {
   ]
 }
 
+extension HTMLMeta.MetaTag {
+  func outerHTML() -> String {
+    switch self {
+    case let .charset(charset):
+      return #"<meta charset="\#(charset)">"#
+    case let .name(name, content):
+      return #"<meta name="\#(name)" content="\#(content)">"#
+    case let .property(property, content):
+      return #"<meta property="\#(property)" content="\#(content)">"#
+    case let .httpEquiv(httpEquiv, content):
+      return #"<meta http-equiv="\#(httpEquiv)" content="\#(content)">"#
+    }
+  }
+}
+
 public final class StaticHTMLRenderer: Renderer {
   private var reconciler: StackReconciler<StaticHTMLRenderer>?
 
   var rootTarget: HTMLTarget
 
-  static var title: String = ""
+  var title: String {
+    reconciler?.preferenceStore.value(forKey: HTMLTitlePreferenceKey.self).value ?? ""
+  }
+
+  var meta: [HTMLMeta.MetaTag] {
+    reconciler?.preferenceStore.value(forKey: HTMLMetaPreferenceKey.self).value ?? []
+  }
 
   public func render(shouldSortAttributes: Bool = false) -> String {
     """
     <html>
     <head>
-      <title>\(Self.title)</title>
+      <title>\(title)</title>\(
+        !meta.isEmpty ? "\n  " + meta.map { $0.outerHTML() }.joined(separator: "\n  ") : ""
+      )
       <style>
         \(tokamakStyles)
       </style>

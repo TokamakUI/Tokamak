@@ -78,9 +78,6 @@ final class MountedCompositeView<R: Renderer>: MountedCompositeElement<R> {
 
       if let preferenceModifier = self.view.view as? _PreferenceWritingViewProtocol {
         self.view = preferenceModifier.modifyPreferenceStore(&self.preferenceStore)
-        if let parent = parent {
-          parent.preferenceStore.merge(with: self.preferenceStore)
-        }
       }
 
       if let preferenceReader = self.view.view as? _PreferenceReadingViewProtocol {
