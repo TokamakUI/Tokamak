@@ -88,6 +88,7 @@ public final class StaticHTMLRenderer: Renderer {
 
   public func render(shouldSortAttributes: Bool = false) -> String {
     """
+    <!DOCTYPE html>
     <html>
     <head>
       <title>\(title)</title>
