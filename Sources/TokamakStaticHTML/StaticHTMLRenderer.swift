@@ -90,8 +90,9 @@ public final class StaticHTMLRenderer: Renderer {
     """
     <html>
     <head>
-      <title>\(title)</title>
-      \(meta.map { $0.outerHTML() }.joined(separator: "\n  "))
+      <title>\(title)</title>\(
+        !meta.isEmpty ? "\n  " + meta.map { $0.outerHTML() }.joined(separator: "\n  ") : ""
+      )
       <style>
         \(tokamakStyles)
       </style>
