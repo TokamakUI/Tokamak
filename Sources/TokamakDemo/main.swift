@@ -16,16 +16,17 @@ import TokamakShim
 
 struct TestView: View {
   @State private var count = 0
-
   var body: some View {
     VStack {
       Text("\(count)")
       HStack {
         if count > 0 {
-          Button("Decrement") { count -= 1 }
+          Button("Decrement") {
+            self.count -= 1
+          }
         }
-        if count < 5 {
-          Button("Increment") { count += 1 }
+        Button("Increment") {
+          self.count += 1
         }
       }
     }
@@ -38,25 +39,25 @@ let reconciler = DOMFiberRenderer("body", shouldLayout: true).render(TestView())
 
 // @available(OSX 10.16, iOS 14.0, *)
 // struct CustomScene: Scene {
-//  @Environment(\.scenePhase) private var scenePhase
-//
-//  var body: some Scene {
-//    print("In CustomScene.body scenePhase is \(scenePhase)")
-//    return WindowGroup("Tokamak Demo") {
-//      TokamakDemoView()
-//    }
-//  }
+//   @Environment(\.scenePhase) private var scenePhase
+
+//   var body: some Scene {
+//     print("In CustomScene.body scenePhase is \(scenePhase)")
+//     return WindowGroup("Tokamak Demo") {
+//       TokamakDemoView()
+//     }
+//   }
 // }
-//
+
 // @available(OSX 10.16, iOS 14.0, *)
 // struct TokamakDemoApp: App {
-//  var body: some Scene {
-//    CustomScene()
-//  }
+//   var body: some Scene {
+//     CustomScene()
+//   }
 // }
-//
-//// If @main was supported for executable Swift Packages,
-//// this would match SwiftUI 100%
+
+// // If @main was supported for executable Swift Packages,
+// // this would match SwiftUI 100%
 // if #available(OSX 10.16, iOS 14.0, *) {
-//  TokamakDemoApp.main()
+//   TokamakDemoApp.main()
 // }
