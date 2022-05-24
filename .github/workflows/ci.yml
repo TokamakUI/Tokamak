@@ -24,61 +24,60 @@ jobs:
         with:
           shell-action: carton test --environment node
 
-  # Disabled until macos-12 is available on GitHub Actions, which is required for Xcode 13.3
-  # core_macos_build:
-  #   runs-on: macos-11
+  core_macos_build:
+    runs-on: macos-12
 
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Run the test suite on macOS, build the demo project for iOS
-  #       shell: bash
-  #       run: |
-  #         set -ex
-  #         sudo xcode-select --switch /Applications/Xcode_13.0.app/Contents/Developer/
-  #         # avoid building unrelated products for testing by specifying the test product explicitly
-  #         swift build --product TokamakPackageTests
-  #         `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest ||
-  #           (cp -r /var/folders/*/*/*/*Tests . ; exit 1)
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run the test suite on macOS, build the demo project for iOS
+        shell: bash
+        run: |
+          set -ex
+          sudo xcode-select --switch /Applications/Xcode_13.4.app/Contents/Developer/
+          # avoid building unrelated products for testing by specifying the test product explicitly
+          swift build --product TokamakPackageTests
+          `xcrun --find xctest` .build/debug/TokamakPackageTests.xctest ||
+            (cp -r /var/folders/*/*/*/*Tests . ; exit 1)
 
-  #         rm -rf Sources/TokamakGTKCHelpers/*.c
+          rm -rf Sources/TokamakGTKCHelpers/*.c
 
-  #         xcodebuild -version
+          xcodebuild -version
 
-  #         # Make sure Tokamak can be built on macOS so that Xcode autocomplete works.
-  #         # Disable macOS builds until Monterey is available on GHA.
-  #         # xcodebuild -scheme TokamakDemo -destination 'generic/platform=macOS' \
-  #         #   CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
-  #         #   xcpretty --color
+          # Make sure Tokamak can be built on macOS so that Xcode autocomplete works.
+          # Disable macOS builds until Monterey is available on GHA.
+          # xcodebuild -scheme TokamakDemo -destination 'generic/platform=macOS' \
+          #   CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
+          #   xcpretty --color
 
-  #         cd "NativeDemo"
-  #         xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
-  #           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
-  #           xcpretty --color
-  #         cd ..
+          cd "NativeDemo"
+          xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
+            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
+            xcpretty --color
+          cd ..
 
-  #         ./benchmark.sh
+          ./benchmark.sh
 
-  #     - name: Upload failed snapshots
-  #       uses: actions/upload-artifact@v2
-  #       if: ${{ failure() }}
-  #       with:
-  #         name: Failed snapshots
-  #         path: '*Tests'
+      - name: Upload failed snapshots
+        uses: actions/upload-artifact@v2
+        if: ${{ failure() }}
+        with:
+          name: Failed snapshots
+          path: '*Tests'
 
-  # gtk_macos_build:
-  #   runs-on: macos-11
+  gtk_macos_build:
+    runs-on: macos-12
 
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Build the GTK renderer on macOS
-  #       shell: bash
-  #       run: |
-  #         set -ex
-  #         sudo xcode-select --switch /Applications/Xcode_13.0.app/Contents/Developer/
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the GTK renderer on macOS
+        shell: bash
+        run: |
+          set -ex
+          sudo xcode-select --switch /Applications/Xcode_13.4.app/Contents/Developer/
 
-  #         brew install gtk+3
+          brew install gtk+3
 
-  #         make build
+          make build
 
   gtk_ubuntu_18_04_build:
     runs-on: ubuntu-latest
