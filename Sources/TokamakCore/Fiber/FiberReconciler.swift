@@ -230,6 +230,25 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       currentRoot = root
     }
 
+    /// A `ViewVisitor` that proposes a size for the `View` represented by the fiber `node`.
+    struct ProposeSizeVisitor: ViewVisitor {
+      let node: Fiber
+      let layoutContexts: [ObjectIdentifier: LayoutContext]
+
+      func visit<V>(_ view: V) where V: View {
+        // Ask the parent for a size.
+        let proposedSize = node.elementParent?.outputs.layoutComputer.proposeSize(
+          for: view,
+          at: node.elementIndex ?? 0,
+          in: node.elementParent.flatMap { layoutContexts[ObjectIdentifier($0)] }
+            ?? .init(children: [])
+        ) ?? .zero
+        // Make our layout computer using that size.
+        node.outputs.layoutComputer = node.outputs.makeLayoutComputer(proposedSize)
+        node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
+      }
+    }
+
     /// Walk the current tree, recomputing at each step to check for discrepancies.
     ///
     /// Parent-first depth-first traversal.
@@ -331,16 +350,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       func proposeSize(for node: Fiber) {
         guard node.element != nil else { return }
 
-        // Ask the parent for a size.
-        let proposedSize = node.elementParent?.outputs.layoutComputer.proposeSize(
-          for: view,
-          at: node.elementIndex ?? 0,
-          in: node.elementParent.flatMap { layoutContexts[ObjectIdentifier($0)] }
-            ?? .init(children: [])
-        ) ?? .zero
-        // Make our layout computer using that size.
-        node.outputs.layoutComputer = node.outputs.makeLayoutComputer(proposedSize)
-        node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
+        node.visitView(ProposeSizeVisitor(node: node, layoutContexts: layoutContexts))
       }
 
       func size(_ node: Fiber) {
