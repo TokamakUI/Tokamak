@@ -296,6 +296,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       var elementIndices = [ObjectIdentifier: Int]()
       /// The `LayoutContext` for each parent view.
       var layoutContexts = [ObjectIdentifier: LayoutContext]()
+      /// The children of an `elementParent` with `element`s in order.
+      var elementChildren = [ObjectIdentifier: [Fiber]]()
 
       /// Compare `node` with its alternate, and add any mutations to the list.
       func reconcile(_ node: TreeReducer.Result) {
@@ -416,6 +418,11 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
              let fiber = node.fiber
           {
             proposeSize(for: fiber)
+            if fiber.element != nil,
+               let key = fiber.elementParent.map(ObjectIdentifier.init)
+            {
+              elementChildren[key] = elementChildren[key, default: []] + [fiber]
+            }
           }
 
           // Setup the alternate if it doesn't exist yet.
@@ -467,11 +474,11 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
                let fiber = node.fiber
             {
               size(fiber)
-              // Position the siblings in order.
-              var sibling = fiber.parent?.child
-              while let fiber = sibling {
-                position(fiber)
-                sibling = fiber.sibling
+              // Position the children in order.
+              if let elementChildren = elementChildren[ObjectIdentifier(fiber)] {
+                for elementChild in elementChildren {
+                  position(elementChild)
+                }
               }
             }
             guard let parent = node.parent else { return }

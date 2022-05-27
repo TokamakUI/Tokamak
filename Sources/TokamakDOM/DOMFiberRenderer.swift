@@ -105,10 +105,10 @@ public struct DOMFiberRenderer: FiberRenderer {
 
     if shouldLayout {
       // Setup the root styles
-      body.style.margin = .string("0")
-      reference.style.width = .string("100vw")
-      reference.style.width = .string("100vh")
-      reference.style.position = .string("relative")
+      _ = reference.style.setProperty("margin", "0")
+      _ = reference.style.setProperty("width", "100vw")
+      _ = reference.style.setProperty("height", "100vh")
+      _ = reference.style.setProperty("position", "relative")
     }
   }
 
