@@ -82,16 +82,9 @@ public struct _TextFieldProxy<Label: View> {
   public var onEditingChanged: (Bool) -> () { subject.onEditingChanged }
   public var textFieldStyle: _AnyTextFieldStyle { subject.environment.textFieldStyle }
   public var foregroundColor: AnyColorBox.ResolvedValue? {
-    guard let style = subject.environment._foregroundStyle else { return nil }
-    var shape = _ShapeStyle_Shape(
-      for: .resolveStyle(levels: 0..<1),
-      in: subject.environment,
-      role: .fill
-    )
-    style._apply(to: &shape)
-    guard let resolved = shape.result.resolvedStyle(on: shape, in: subject.environment)?
-      .color(at: 0)
-    else { return nil }
-    return _ColorProxy(resolved).resolve(in: subject.environment)
+    guard let foregroundColor = subject.environment.foregroundColor else {
+      return nil
+    }
+    return _ColorProxy(foregroundColor).resolve(in: subject.environment)
   }
 }
