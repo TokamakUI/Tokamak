@@ -277,10 +277,13 @@ import Foundation
 
     private func flush(level: Int = 0) -> String {
       let spaces = String(repeating: " ", count: level)
+      let geometry = geometry ?? .init(
+        origin: .init(origin: .zero), dimensions: .init(size: .zero, alignmentGuides: [:])
+      )
       return """
       \(spaces)\(String(describing: typeInfo?.type ?? Any.self)
         .split(separator: "<")[0])\(element != nil ? "(\(element!))" : "") {\(element != nil ?
-        "\n\(spaces)geometry: \(geometry ?? .init(origin: .init(origin: .zero), dimensions: .init(size: .zero, alignmentGuides: [:])))" :
+        "\n\(spaces)geometry: \(geometry)" :
         "")
       \(child?.flush(level: level + 2) ?? "")
       \(spaces)}
