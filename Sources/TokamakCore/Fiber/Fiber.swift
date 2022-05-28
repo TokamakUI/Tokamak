@@ -129,7 +129,7 @@ import Foundation
       self.view = view
       outputs = V._makeView(
         .init(
-          view: view,
+          content: view,
           environment: environment
         )
       )
@@ -249,7 +249,7 @@ import Foundation
       state = bindProperties(to: &view, typeInfo, environment.environment)
       self.view = view
       outputs = V._makeView(.init(
-        view: view,
+        content: view,
         environment: environment
       ))
 

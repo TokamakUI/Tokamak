@@ -72,7 +72,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
       .init(
         inputs: inputs,
-        layoutComputer: { _ in RootLayoutComputer(sceneSize: inputs.view.renderer.sceneSize) }
+        layoutComputer: { _ in RootLayoutComputer(sceneSize: inputs.content.renderer.sceneSize) }
       )
     }
   }

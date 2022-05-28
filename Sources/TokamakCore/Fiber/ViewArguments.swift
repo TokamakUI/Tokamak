@@ -18,8 +18,8 @@
 import Foundation
 
 /// Data passed to `_makeView` to create the `ViewOutputs` used in reconciling/rendering.
-public struct ViewInputs<V: View> {
-  let view: V
+public struct ViewInputs<V> {
+  let content: V
   let environment: EnvironmentBox
 }
 
@@ -43,7 +43,7 @@ final class EnvironmentBox {
 }
 
 extension ViewOutputs {
-  init<V: View>(
+  init<V>(
     inputs: ViewInputs<V>,
     environment: EnvironmentValues? = nil,
     preferences: _PreferenceStore? = nil,
@@ -68,21 +68,23 @@ public extension View {
 
 public extension ModifiedContent where Content: View, Modifier: ViewModifier {
   static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
-    // Update the environment if needed.
-    var environment = inputs.environment.environment
-    if let environmentWriter = inputs.view.modifier as? EnvironmentModifier {
-      environmentWriter.modifyEnvironment(&environment)
-    }
-    return .init(inputs: inputs, environment: environment)
+    Modifier._makeView(.init(content: inputs.content.modifier, environment: inputs.environment))
+//    // Update the environment if needed.
+//    var environment = inputs.environment.environment
+//    if let environmentWriter = inputs.content.modifier as? _EnvironmentModifier {
+//      environmentWriter.modifyEnvironment(&environment)
+//    }
+//    return .init(inputs: inputs, environment: environment)
   }
 
   func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
-    if Modifier.Body.self == Never.self {
-      // Don't compute the body of a primitive modifier. Just return the content.
-      visitor.visit(content)
-    } else {
-      // Visit the computed body of the modifier.
-      visitor.visit(modifier.body(content: .init(modifier: modifier, view: content)))
-    }
+    modifier._visitChildren(visitor, content: .init(modifier: modifier, view: content))
+//    if Modifier.Body.self == Never.self {
+//      // Don't compute the body of a primitive modifier. Just return the content.
+//      visitor.visit(content)
+//    } else {
+//      // Visit the computed body of the modifier.
+//      visitor.visit(modifier.body(content: .init(modifier: modifier, view: content)))
+//    }
   }
 }

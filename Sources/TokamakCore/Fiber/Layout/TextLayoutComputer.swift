@@ -50,7 +50,7 @@ public extension Text {
       inputs: inputs,
       layoutComputer: { proposedSize in
         TextLayoutComputer(
-          text: inputs.view,
+          text: inputs.content,
           proposedSize: proposedSize,
           environment: inputs.environment.environment
         )

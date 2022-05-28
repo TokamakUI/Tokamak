@@ -14,6 +14,12 @@
 
 import TokamakShim
 
+struct TestModifier: ViewModifier {
+  func body(content: Content) -> some View {
+    content.foregroundStyle(.red)
+  }
+}
+
 struct TestView: View {
   @State private var count = 0
   var body: some View {
@@ -40,10 +46,12 @@ struct TestView: View {
           Button("Decrement") {
             self.count -= 1
           }
+          .modifier(TestModifier())
         }
         Button("Increment") {
           self.count += 1
         }
+        .modifier(TestModifier())
       }
     }
   }

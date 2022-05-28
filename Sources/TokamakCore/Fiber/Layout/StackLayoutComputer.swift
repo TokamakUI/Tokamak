@@ -123,8 +123,8 @@ public extension VStack {
         StackLayoutComputer(
           proposedSize: proposedSize,
           axis: .vertical,
-          alignment: .init(horizontal: inputs.view.alignment, vertical: .center),
-          spacing: inputs.view.spacing
+          alignment: .init(horizontal: inputs.content.alignment, vertical: .center),
+          spacing: inputs.content.spacing
         )
       }
     )
@@ -139,8 +139,8 @@ public extension HStack {
         StackLayoutComputer(
           proposedSize: proposedSize,
           axis: .horizontal,
-          alignment: .init(horizontal: .center, vertical: inputs.view.alignment),
-          spacing: inputs.view.spacing
+          alignment: .init(horizontal: .center, vertical: inputs.content.alignment),
+          spacing: inputs.content.spacing
         )
       }
     )
