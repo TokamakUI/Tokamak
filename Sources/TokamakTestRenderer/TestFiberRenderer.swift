@@ -58,6 +58,18 @@ extension _PrimitiveButtonStyleBody: TestFiberPrimitive {
   }
 }
 
+extension _FrameLayout: TestFiberPrimitive {
+  public var attributes: [String: Any] {
+    ["width": width as Any, "height": height as Any]
+  }
+}
+
+extension ModifiedContent: TestFiberPrimitive where Modifier: TestFiberPrimitive {
+  public var attributes: [String: Any] {
+    modifier.attributes
+  }
+}
+
 public final class TestFiberElement: FiberElement, CustomStringConvertible {
   public struct Content: FiberElementContent, Equatable {
     let renderedValue: String
@@ -73,8 +85,12 @@ public final class TestFiberElement: FiberElement, CustomStringConvertible {
 
     public init<V>(from primitiveView: V, shouldLayout: Bool) where V: View {
       guard let primitiveView = primitiveView as? TestFiberPrimitive else { fatalError() }
+      let attributes = primitiveView.attributes
+        .sorted(by: { $0.key < $1.key })
+        .map { "\($0.key)=\"\(String(describing: $0.value))\"" }
+        .joined(separator: " ")
       renderedValue =
-        "<\(primitiveView.tag) \(primitiveView.attributes.sorted(by: { $0.key < $1.key }).map { "\($0.key)=\"\(String(describing: $0.value))\"" }.joined(separator: " "))>"
+        "<\(primitiveView.tag) \(attributes)>"
       closingTag = "</\(primitiveView.tag)>"
     }
   }

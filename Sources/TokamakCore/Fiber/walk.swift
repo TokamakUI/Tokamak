@@ -67,7 +67,6 @@ func walk<Renderer: FiberRenderer, Success>(
       current = parent
     }
     // Walk the sibling
-    // swiftlint:disable:next force_unwrap
     current = current.sibling!
   }
 }

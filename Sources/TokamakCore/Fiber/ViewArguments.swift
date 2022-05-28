@@ -49,7 +49,8 @@ extension ViewOutputs {
     preferences: _PreferenceStore? = nil,
     layoutComputer: ((CGSize) -> LayoutComputer)? = nil
   ) {
-    // Only replace the EnvironmentBox when we change the environment. Otherwise the same box can be reused.
+    // Only replace the EnvironmentBox when we change the environment.
+    // Otherwise the same box can be reused.
     self.environment = environment.map(EnvironmentBox.init) ?? inputs.environment
     self.preferences = preferences ?? .init()
     makeLayoutComputer = layoutComputer ?? { proposedSize in
@@ -69,22 +70,9 @@ public extension View {
 public extension ModifiedContent where Content: View, Modifier: ViewModifier {
   static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
     Modifier._makeView(.init(content: inputs.content.modifier, environment: inputs.environment))
-//    // Update the environment if needed.
-//    var environment = inputs.environment.environment
-//    if let environmentWriter = inputs.content.modifier as? _EnvironmentModifier {
-//      environmentWriter.modifyEnvironment(&environment)
-//    }
-//    return .init(inputs: inputs, environment: environment)
   }
 
   func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
     modifier._visitChildren(visitor, content: .init(modifier: modifier, view: content))
-//    if Modifier.Body.self == Never.self {
-//      // Don't compute the body of a primitive modifier. Just return the content.
-//      visitor.visit(content)
-//    } else {
-//      // Visit the computed body of the modifier.
-//      visitor.visit(modifier.body(content: .init(modifier: modifier, view: content)))
-//    }
   }
 }
