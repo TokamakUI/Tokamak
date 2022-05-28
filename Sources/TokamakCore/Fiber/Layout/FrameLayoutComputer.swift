@@ -17,7 +17,7 @@
 
 import Foundation
 
-/// A `LayoutComputer` that fills its parent.
+/// A `LayoutComputer` that uses a specified size in one or more axes.
 final class FrameLayoutComputer: LayoutComputer {
   let proposedSize: CGSize
   let width: CGFloat?
