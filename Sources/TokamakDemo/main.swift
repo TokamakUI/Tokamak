@@ -18,6 +18,7 @@ struct TestModifier: ViewModifier {
   func body(content: Content) -> some View {
     content
       .foregroundStyle(.secondary)
+      .padding()
   }
 }
 
