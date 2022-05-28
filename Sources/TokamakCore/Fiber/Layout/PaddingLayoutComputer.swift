@@ -28,7 +28,7 @@ private extension EdgeInsets {
   }
 }
 
-/// A `LayoutComputer` that fills its parent.
+/// A `LayoutComputer` that fits to its children then adds padding.
 final class PaddingLayoutComputer: LayoutComputer {
   let proposedSize: CGSize
   let insets: EdgeInsets
