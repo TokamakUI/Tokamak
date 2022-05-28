@@ -39,7 +39,7 @@ public struct TextField<Label>: _PrimitiveView where Label: View {
   let textBinding: Binding<String>
   let onEditingChanged: (Bool) -> ()
   let onCommit: () -> ()
-  @Environment(\.textFieldStyle) var style
+  @Environment(\.self) var environment
 }
 
 public extension TextField where Label == Text {
@@ -80,5 +80,11 @@ public struct _TextFieldProxy<Label: View> {
   public var textBinding: Binding<String> { subject.textBinding }
   public var onCommit: () -> () { subject.onCommit }
   public var onEditingChanged: (Bool) -> () { subject.onEditingChanged }
-  public var textFieldStyle: _AnyTextFieldStyle { subject.style }
+  public var textFieldStyle: _AnyTextFieldStyle { subject.environment.textFieldStyle }
+  public var foregroundColor: AnyColorBox.ResolvedValue? {
+    guard let foregroundColor = subject.environment.foregroundColor else {
+      return nil
+    }
+    return _ColorProxy(foregroundColor).resolve(in: subject.environment)
+  }
 }
