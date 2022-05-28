@@ -44,3 +44,14 @@ extension _ZIndexModifier: DOMViewModifier {
     ["style": "z-index: \(index);"]
   }
 }
+
+@_spi(TokamakStaticHTML) extension ModifiedContent: HTMLConvertible where Content: View,
+  Modifier: HTMLConvertible
+{
+  public var tag: String { modifier.tag }
+  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
+    modifier.attributes(shouldLayout: shouldLayout)
+  }
+
+  public var innerHTML: String? { modifier.innerHTML }
+}

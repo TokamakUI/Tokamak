@@ -143,7 +143,9 @@ import Foundation
       if let element = element {
         self.element = element
       } else if Renderer.isPrimitive(view) {
-        self.element = .init(from: .init(from: view))
+        self
+          .element =
+          .init(from: .init(from: view, shouldLayout: reconciler?.renderer.shouldLayout ?? false))
       }
 
       // Only specify an elementIndex if we have an element.
@@ -260,7 +262,7 @@ import Foundation
       }
 
       if Renderer.isPrimitive(view) {
-        return .init(from: view)
+        return .init(from: view, shouldLayout: reconciler?.renderer.shouldLayout ?? false)
       } else {
         return nil
       }

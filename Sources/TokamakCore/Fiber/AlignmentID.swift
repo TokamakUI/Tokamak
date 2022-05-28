@@ -51,7 +51,7 @@ extension HorizontalAlignment {
     }
   }
 
-  public static let trailing = Self(Leading.self)
+  public static let trailing = Self(Trailing.self)
 
   private enum Trailing: AlignmentID {
     static func defaultValue(in context: ViewDimensions) -> CGFloat {

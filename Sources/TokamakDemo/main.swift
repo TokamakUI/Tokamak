@@ -16,7 +16,8 @@ import TokamakShim
 
 struct TestModifier: ViewModifier {
   func body(content: Content) -> some View {
-    content.foregroundStyle(.red)
+    content
+      .foregroundStyle(.secondary)
   }
 }
 

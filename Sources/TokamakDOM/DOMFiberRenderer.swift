@@ -47,10 +47,10 @@ public final class DOMElement: FiberElement {
 }
 
 public extension DOMElement.Content {
-  init<V>(from primitiveView: V) where V: View {
+  init<V>(from primitiveView: V, shouldLayout: Bool) where V: View {
     guard let primitiveView = primitiveView as? HTMLConvertible else { fatalError() }
     tag = primitiveView.tag
-    attributes = primitiveView.attributes
+    attributes = primitiveView.attributes(shouldLayout: shouldLayout)
     innerHTML = primitiveView.innerHTML
 
     if let primitiveView = primitiveView as? DOMNodeConvertible {
@@ -128,7 +128,7 @@ public struct DOMFiberRenderer: FiberRenderer {
     proposedSize: CGSize,
     in environment: EnvironmentValues
   ) -> CGSize {
-    let element = createElement(.init(from: .init(from: text)))
+    let element = createElement(.init(from: .init(from: text, shouldLayout: true)))
     _ = element.style.setProperty("maxWidth", "\(proposedSize.width)px")
     _ = element.style.setProperty("maxHeight", "\(proposedSize.height)px")
     _ = document.body.appendChild(element)
@@ -214,7 +214,10 @@ public struct DOMFiberRenderer: FiberRenderer {
 
 extension _PrimitiveButtonStyleBody: DOMNodeConvertible {
   public var tag: String { "button" }
-  public var attributes: [HTMLAttribute: String] { [:] }
+  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
+    [:]
+  }
+
   var listeners: [String: Listener] {
     ["pointerup": { _ in self.action() }]
   }

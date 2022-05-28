@@ -181,6 +181,10 @@ extension Text: AnyHTML {
     }
     return innerHTML.replacingOccurrences(of: "\n", with: "<br />")
   }
+
+  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
+    attributes
+  }
 }
 
 extension Text {
