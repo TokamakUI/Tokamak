@@ -58,6 +58,18 @@ extension _PrimitiveButtonStyleBody: TestFiberPrimitive {
   }
 }
 
+extension _FrameLayout: TestFiberPrimitive {
+  public var attributes: [String: Any] {
+    ["width": width as Any, "height": height as Any]
+  }
+}
+
+extension ModifiedContent: TestFiberPrimitive where Modifier: TestFiberPrimitive {
+  public var attributes: [String: Any] {
+    modifier.attributes
+  }
+}
+
 public final class TestFiberElement: FiberElement, CustomStringConvertible {
   public struct Content: FiberElementContent, Equatable {
     let renderedValue: String

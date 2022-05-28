@@ -347,12 +347,18 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
             node = parent
           }
 
-          // We `size` when we reach the bottommost view that has a sibling.
+          // We `size` and `position` when we reach the bottommost view that has a sibling.
           // Otherwise, sizing takes place in the above loop.
           if reconciler.renderer.shouldLayout,
              let fiber = node.fiber
           {
             size(fiber)
+            // Position the children in order.
+            if let elementChildren = elementChildren[ObjectIdentifier(fiber)] {
+              for elementChild in elementChildren {
+                position(elementChild)
+              }
+            }
           }
 
           // Walk across to the sibling, and repeat.
@@ -366,7 +372,11 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         var layoutNode = node.fiber?.child
         while let current = layoutNode {
           // We only need to re-position, because the size can't change if no state changed.
-          position(current)
+          if let elementChildren = elementChildren[ObjectIdentifier(current)] {
+            for elementChild in elementChildren {
+              position(elementChild)
+            }
+          }
           if current.sibling != nil {
             // We also don't need to go deep into sibling children,
             // because child positioning is relative to the parent.
