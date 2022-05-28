@@ -71,7 +71,7 @@ public final class TestFiberElement: FiberElement, CustomStringConvertible {
       self.closingTag = closingTag
     }
 
-    public init<V>(from primitiveView: V) where V: View {
+    public init<V>(from primitiveView: V, shouldLayout: Bool) where V: View {
       guard let primitiveView = primitiveView as? TestFiberPrimitive else { fatalError() }
       renderedValue =
         "<\(primitiveView.tag) \(primitiveView.attributes.sorted(by: { $0.key < $1.key }).map { "\($0.key)=\"\(String(describing: $0.value))\"" }.joined(separator: " "))>"
