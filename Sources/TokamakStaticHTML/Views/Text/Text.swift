@@ -133,17 +133,18 @@ extension Text: AnyHTML {
       innerHTML = proxy.environment.domTextSanitizer(text)
     case let .segmentedText(segments):
       innerHTML = segments
-        .map {
-          TextSpan(
-            content: proxy.environment.domTextSanitizer($0.0.rawText),
-            attributes: Self.attributes(
-              from: $0.1,
-              environment: proxy.environment
+        .reduce(into: "") {
+          $0.append(
+            TextSpan(
+              content: proxy.environment.domTextSanitizer($1.storage.rawText),
+              attributes: Self.attributes(
+                from: $1.modifiers,
+                environment: proxy.environment
+              )
             )
+            .outerHTML(shouldSortAttributes: shouldSortAttributes, children: [])
           )
-          .outerHTML(shouldSortAttributes: shouldSortAttributes, children: [])
         }
-        .reduce("", +)
     }
     return innerHTML.replacingOccurrences(of: "\n", with: "<br />")
   }

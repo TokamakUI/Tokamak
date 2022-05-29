@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,9 +22,17 @@ final class StackLayoutComputer: LayoutComputer {
   let axis: Axis
   let alignment: Alignment
   let spacing: CGFloat
-  /// A multiplier of `1` for the axis that takes the size of the largest child.
+  /// Will contain a value of `1` for the axis that takes the size of the largest child.
+  /// For instance, a `VStack` will provide `1` for the width because
+  /// it takes the width of its largest child.
+  ///
+  /// Typically flipped from the width/height of `fitAxis`
   let maxAxis: CGSize
-  /// A multiplier of `1` for the axis that the children are aligned on.
+  /// Will contain a value of `1` for the axis that the children are aligned on.
+  /// For instance, a `VStack` will provide `1` for the height because
+  /// it fits to the combined height of its children.
+  ///
+  /// Typically flipped from the width/height of `maxAxis`
   let fitAxis: CGSize
 
   init(proposedSize: CGSize, axis: Axis, alignment: Alignment, spacing: CGFloat) {
