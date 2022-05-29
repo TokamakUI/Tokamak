@@ -25,7 +25,7 @@ public extension View {
   }
 }
 
-typealias ViewVisitorF<V: ViewVisitor> = (V) -> ()
+public typealias ViewVisitorF<V: ViewVisitor> = (V) -> ()
 
 protocol ViewReducer {
   associatedtype Result

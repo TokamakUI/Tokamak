@@ -90,12 +90,18 @@ public final class HTMLElement: FiberElement, CustomStringConvertible {
 
 @_spi(TokamakStaticHTML) public protocol HTMLConvertible {
   var tag: String { get }
+  var namespace: String? { get }
   func attributes(shouldLayout: Bool) -> [HTMLAttribute: String]
   var innerHTML: String? { get }
+  func primitiveVisitor<V: ViewVisitor>() -> ((V) -> ())?
 }
 
 public extension HTMLConvertible {
+  @_spi(TokamakStaticHTML) var namespace: String? { nil }
   @_spi(TokamakStaticHTML) var innerHTML: String? { nil }
+  func primitiveVisitor<V: ViewVisitor>() -> ((V) -> ())? {
+    nil
+  }
 }
 
 @_spi(TokamakStaticHTML) extension VStack: HTMLConvertible {
@@ -147,6 +153,13 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {
     view is HTMLConvertible
+  }
+
+  public static func visitPrimitiveChildren<Primitive, Visitor>(
+    _ view: Primitive
+  ) -> ViewVisitorF<Visitor>? where Primitive: View, Visitor: ViewVisitor {
+    guard let primitive = view as? HTMLConvertible else { return nil }
+    return primitive.primitiveVisitor()
   }
 
   public func commit(_ mutations: [Mutation<Self>]) {

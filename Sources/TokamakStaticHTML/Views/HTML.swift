@@ -15,7 +15,7 @@
 //  Created by Max Desiatov on 11/04/2020.
 //
 
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 
 /** Represents an attribute of an HTML tag. To consume updates from updated attributes, the DOM
  renderer needs to know whether the attribute should be assigned via a DOM element property or the
@@ -87,8 +87,10 @@ public extension AnyHTML {
 
 public struct HTML<Content>: View, AnyHTML {
   public let tag: String
+  public let namespace: String?
   public let attributes: [HTMLAttribute: String]
   let content: Content
+  let visitContent: (ViewVisitor) -> ()
 
   fileprivate let cachedInnerHTML: String?
 
@@ -98,33 +100,48 @@ public struct HTML<Content>: View, AnyHTML {
 
   @_spi(TokamakCore)
   public var body: Never {
-    neverBody("HTML")
+    neverBody("HTML<\(Content.self)>")
+  }
+
+  public func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
+    print(content)
+    visitContent(visitor)
+  }
+
+  public static func _makeView(_ inputs: ViewInputs<HTML<Content>>) -> ViewOutputs {
+    .init(inputs: inputs, layoutComputer: FlexLayoutComputer.init)
   }
 }
 
 public extension HTML where Content: StringProtocol {
   init(
     _ tag: String,
+    namespace: String? = nil,
     _ attributes: [HTMLAttribute: String] = [:],
     content: Content
   ) {
     self.tag = tag
+    self.namespace = namespace
     self.attributes = attributes
     self.content = content
     cachedInnerHTML = String(content)
+    visitContent = { _ in }
   }
 }
 
 extension HTML: ParentView where Content: View {
   public init(
     _ tag: String,
+    namespace: String? = nil,
     _ attributes: [HTMLAttribute: String] = [:],
-    @ViewBuilder content: () -> Content
+    @ViewBuilder content: @escaping () -> Content
   ) {
     self.tag = tag
+    self.namespace = namespace
     self.attributes = attributes
     self.content = content()
     cachedInnerHTML = nil
+    visitContent = { $0.visit(content()) }
   }
 
   @_spi(TokamakCore)
@@ -136,10 +153,19 @@ extension HTML: ParentView where Content: View {
 public extension HTML where Content == EmptyView {
   init(
     _ tag: String,
+    namespace: String? = nil,
     _ attributes: [HTMLAttribute: String] = [:]
   ) {
-    self = HTML(tag, attributes) { EmptyView() }
+    self = HTML(tag, namespace: namespace, attributes) { EmptyView() }
   }
+}
+
+@_spi(TokamakStaticHTML) extension HTML: HTMLConvertible {
+  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
+    attributes
+  }
+
+  public var innerHTML: String? { cachedInnerHTML }
 }
 
 public protocol StylesConvertible {

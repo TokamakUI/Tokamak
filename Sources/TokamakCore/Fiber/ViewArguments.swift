@@ -42,7 +42,7 @@ final class EnvironmentBox {
   }
 }
 
-extension ViewOutputs {
+@_spi(TokamakCore) public extension ViewOutputs {
   init<V>(
     inputs: ViewInputs<V>,
     environment: EnvironmentValues? = nil,

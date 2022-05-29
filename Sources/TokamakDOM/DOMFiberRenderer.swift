@@ -25,13 +25,17 @@ public final class DOMElement: FiberElement {
 
   public struct Content: FiberElementContent {
     let tag: String
+    let namespace: String?
     let attributes: [HTMLAttribute: String]
     let innerHTML: String?
     let listeners: [String: Listener]
     let debugData: [String: ConvertibleToJSValue]
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
-      lhs.tag == rhs.tag && lhs.attributes == rhs.attributes && lhs.innerHTML == rhs.innerHTML
+      lhs.tag == rhs.tag
+        && lhs.namespace == rhs.namespace
+        && lhs.attributes == rhs.attributes
+        && lhs.innerHTML == rhs.innerHTML
     }
   }
 
@@ -50,6 +54,7 @@ public extension DOMElement.Content {
   init<V>(from primitiveView: V, shouldLayout: Bool) where V: View {
     guard let primitiveView = primitiveView as? HTMLConvertible else { fatalError() }
     tag = primitiveView.tag
+    namespace = primitiveView.namespace
     attributes = primitiveView.attributes(shouldLayout: shouldLayout)
     innerHTML = primitiveView.innerHTML
 
@@ -94,6 +99,7 @@ public struct DOMFiberRenderer: FiberRenderer {
     rootElement = .init(
       from: .init(
         tag: "",
+        namespace: nil,
         attributes: [:],
         innerHTML: nil,
         listeners: [:],
@@ -116,8 +122,20 @@ public struct DOMFiberRenderer: FiberRenderer {
     view is HTMLConvertible || view is DOMNodeConvertible
   }
 
+  public static func visitPrimitiveChildren<Primitive, Visitor>(
+    _ view: Primitive
+  ) -> ViewVisitorF<Visitor>? where Primitive: View, Visitor: ViewVisitor {
+    guard let primitive = view as? HTMLConvertible else { return nil }
+    return primitive.primitiveVisitor()
+  }
+
   private func createElement(_ element: DOMElement) -> JSObject {
-    let result = document.createElement!(element.content.tag).object!
+    let result: JSObject
+    if let namespace = element.content.namespace {
+      result = document.createElementNS!(namespace, element.content.tag).object!
+    } else {
+      result = document.createElement!(element.content.tag).object!
+    }
     apply(element.content, to: result)
     element.reference = result
     return result

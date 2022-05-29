@@ -75,7 +75,7 @@ extension FiberReconciler {
         )
         resultChild = Result(
           fiber: existing,
-          visitChildren: nextView._visitChildren,
+          visitChildren: Renderer.viewVisitor(for: nextView),
           parent: partialResult,
           child: existing.child,
           alternateChild: existing.alternate?.child,
@@ -123,7 +123,7 @@ extension FiberReconciler {
         }
         resultChild = Result(
           fiber: fiber,
-          visitChildren: nextView._visitChildren,
+          visitChildren: Renderer.viewVisitor(for: nextView),
           parent: partialResult,
           child: nil,
           alternateChild: fiber.alternate?.child,
