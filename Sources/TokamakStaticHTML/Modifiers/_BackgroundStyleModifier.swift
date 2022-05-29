@@ -12,40 +12,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 
 extension _BackgroundStyleModifier: DOMViewModifier {
   public var isOrderDependent: Bool { true }
+  private func attributes(
+    for material: _MaterialStyle,
+    color: AnyColorBox.ResolvedValue
+  ) -> [HTMLAttribute: String] {
+    let blur: (opacity: Double, radius: Double)
+    switch material {
+    case .ultraThin:
+      blur = (0.2, 20)
+    case .thin:
+      blur = (0.4, 25)
+    case .regular:
+      blur = (0.5, 30)
+    case .thick:
+      blur = (0.6, 40)
+    case .ultraThick:
+      blur = (0.6, 50)
+    }
+    return [
+      "style":
+        """
+        background-color: rgba(\(color.red * 255), \(color.green * 255), \(color
+          .blue * 255), \(blur
+          .opacity));
+        -webkit-backdrop-filter: blur(\(blur.radius)px);
+        backdrop-filter: blur(\(blur.radius)px);
+        """,
+    ]
+  }
+
   public var attributes: [HTMLAttribute: String] {
     if let resolved = style.resolve(
       for: .resolveStyle(levels: 0..<1),
       in: environment,
       role: .fill
     ) {
-      if case let .foregroundMaterial(rgba, material) = resolved {
-        let blur: (opacity: Double, radius: Double)
-        switch material {
-        case .ultraThin:
-          blur = (0.2, 20)
-        case .thin:
-          blur = (0.4, 25)
-        case .regular:
-          blur = (0.5, 30)
-        case .thick:
-          blur = (0.6, 40)
-        case .ultraThick:
-          blur = (0.6, 50)
-        }
-        return [
-          "style":
-            """
-            background-color: rgba(\(rgba.red * 255), \(rgba.green * 255), \(rgba
-              .blue * 255), \(blur
-              .opacity));
-            -webkit-backdrop-filter: blur(\(blur.radius)px);
-            backdrop-filter: blur(\(blur.radius)px);
-            """,
-        ]
+      if case let .foregroundMaterial(color, material) = resolved {
+        return attributes(for: material, color: color)
       } else if let color = resolved.color(at: 0) {
         return [
           "style": "background-color: \(color.cssValue(environment));",
@@ -53,5 +60,46 @@ extension _BackgroundStyleModifier: DOMViewModifier {
       }
     }
     return [:]
+  }
+}
+
+@_spi(TokamakStaticHTML) extension _BackgroundStyleModifier: HTMLConvertible,
+  HTMLModifierConvertible
+{
+  public var tag: String { "div" }
+  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
+    let resolved = style.resolve(
+      for: .resolveStyle(levels: 0..<1),
+      in: environment,
+      role: .fill
+    )
+    if case let .foregroundMaterial(color, material) = resolved {
+      return attributes(for: material, color: color)
+    } else {
+      return [:]
+    }
+  }
+
+  public func primitiveVisitor<V, Content>(
+    content: Content,
+    shouldLayout: Bool
+  ) -> ((V) -> ())? where V: ViewVisitor, Content: View {
+    let resolved = style.resolve(
+      for: .resolveStyle(levels: 0..<1),
+      in: environment,
+      role: .fill
+    )
+    if case .foregroundMaterial = resolved {
+      return nil
+    } else {
+      return {
+        $0
+          .visit(_BackgroundLayout(
+            content: content,
+            background: Rectangle().fill(style),
+            alignment: .center
+          ))
+      }
+    }
   }
 }

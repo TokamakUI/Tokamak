@@ -149,8 +149,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         alternateRoot = currentRoot.createAndBindAlternate?()
       }
       let rootResult = TreeReducer.Result(
+        reconciler: reconciler,
         fiber: alternateRoot, // The alternate is the WIP node.
-        visitChildren: Renderer.viewVisitor(for: view),
+        visitChildren: reconciler.renderer.viewVisitor(for: view),
         parent: nil,
         child: alternateRoot?.child,
         alternateChild: currentRoot.child,

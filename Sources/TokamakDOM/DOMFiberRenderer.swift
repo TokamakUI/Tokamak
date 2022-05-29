@@ -122,11 +122,11 @@ public struct DOMFiberRenderer: FiberRenderer {
     view is HTMLConvertible || view is DOMNodeConvertible
   }
 
-  public static func visitPrimitiveChildren<Primitive, Visitor>(
+  public func visitPrimitiveChildren<Primitive, Visitor>(
     _ view: Primitive
   ) -> ViewVisitorF<Visitor>? where Primitive: View, Visitor: ViewVisitor {
     guard let primitive = view as? HTMLConvertible else { return nil }
-    return primitive.primitiveVisitor()
+    return primitive.primitiveVisitor(shouldLayout: shouldLayout)
   }
 
   private func createElement(_ element: DOMElement) -> JSObject {

@@ -22,6 +22,7 @@ extension FiberReconciler {
   struct TreeReducer: ViewReducer {
     final class Result {
       // For references
+      unowned var reconciler: FiberReconciler
       let fiber: Fiber?
       let visitChildren: (TreeReducer.Visitor) -> ()
       unowned var parent: Result?
@@ -37,6 +38,7 @@ extension FiberReconciler {
       var nextExistingAlternate: Fiber?
 
       init(
+        reconciler: FiberReconciler,
         fiber: Fiber?,
         visitChildren: @escaping (TreeReducer.Visitor) -> (),
         parent: Result?,
@@ -46,6 +48,7 @@ extension FiberReconciler {
         elementIndices: [ObjectIdentifier: Int],
         layoutContexts: [ObjectIdentifier: LayoutContext]
       ) {
+        self.reconciler = reconciler
         self.fiber = fiber
         self.visitChildren = visitChildren
         self.parent = parent
@@ -74,8 +77,9 @@ extension FiberReconciler {
           elementIndex: key.map { partialResult.elementIndices[$0, default: 0] }
         )
         resultChild = Result(
+          reconciler: partialResult.reconciler,
           fiber: existing,
-          visitChildren: Renderer.viewVisitor(for: nextView),
+          visitChildren: partialResult.reconciler.renderer.viewVisitor(for: nextView),
           parent: partialResult,
           child: existing.child,
           alternateChild: existing.alternate?.child,
@@ -122,8 +126,9 @@ extension FiberReconciler {
           partialResult.elementIndices[key] = partialResult.elementIndices[key, default: 0] + 1
         }
         resultChild = Result(
+          reconciler: partialResult.reconciler,
           fiber: fiber,
-          visitChildren: Renderer.viewVisitor(for: nextView),
+          visitChildren: partialResult.reconciler.renderer.viewVisitor(for: nextView),
           parent: partialResult,
           child: nil,
           alternateChild: fiber.alternate?.child,

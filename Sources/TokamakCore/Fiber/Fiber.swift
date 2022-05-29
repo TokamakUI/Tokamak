@@ -236,6 +236,11 @@ import Foundation
         }
         property.set(value: value, on: &view)
       }
+      if var environmentReader = view as? EnvironmentReader {
+        environmentReader.setContent(from: environment)
+        // swiftlint:disable:next force_cast
+        view = environmentReader as! V
+      }
       return state
     }
 

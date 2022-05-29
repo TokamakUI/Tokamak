@@ -23,7 +23,7 @@ public protocol FiberRenderer {
   associatedtype ElementType: FiberElement
   /// Check whether a `View` is a primitive for this renderer.
   static func isPrimitive<V>(_ view: V) -> Bool where V: View
-  static func visitPrimitiveChildren<Primitive, Visitor>(
+  func visitPrimitiveChildren<Primitive, Visitor>(
     _ view: Primitive
   ) -> ViewVisitorF<Visitor>? where Primitive: View, Visitor: ViewVisitor
   /// Apply the mutations to the elements.
@@ -43,14 +43,14 @@ public protocol FiberRenderer {
 public extension FiberRenderer {
   var defaultEnvironment: EnvironmentValues { .init() }
 
-  static func visitPrimitiveChildren<Primitive, Visitor>(
+  func visitPrimitiveChildren<Primitive, Visitor>(
     _ view: Primitive
   ) -> ViewVisitorF<Visitor>? where Primitive: View, Visitor: ViewVisitor {
     nil
   }
 
-  static func viewVisitor<V: View, Visitor: ViewVisitor>(for view: V) -> ViewVisitorF<Visitor> {
-    if isPrimitive(view) {
+  func viewVisitor<V: View, Visitor: ViewVisitor>(for view: V) -> ViewVisitorF<Visitor> {
+    if Self.isPrimitive(view) {
       return visitPrimitiveChildren(view) ?? view._visitChildren
     } else {
       return view._visitChildren

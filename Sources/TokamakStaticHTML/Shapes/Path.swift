@@ -16,7 +16,7 @@
 //
 
 import Foundation
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 
 extension StrokeStyle {
   static var zero: Self {
@@ -42,12 +42,28 @@ extension Path: _HTMLPrimitive {
     case .empty:
       return HTML("g")
     case let .rect(rect):
-      return HTML("rect", namespace: namespace, [
-        "width": flexibleWidth ?? "\(max(0, rect.size.width))",
-        "height": flexibleHeight ?? "\(max(0, rect.size.height))",
-        "x": "\(rect.origin.x - (rect.size.width / 2))",
-        "y": "\(rect.origin.y - (rect.size.height / 2))",
-      ].merging(stroke, uniquingKeysWith: uniqueKeys))
+      return HTML(
+        "rect",
+        namespace: namespace,
+        [
+          "width": flexibleWidth ?? "\(max(0, rect.size.width))",
+          "height": flexibleHeight ?? "\(max(0, rect.size.height))",
+          "x": "\(rect.origin.x - (rect.size.width / 2))",
+          "y": "\(rect.origin.y - (rect.size.height / 2))",
+        ].merging(stroke, uniquingKeysWith: uniqueKeys),
+        layoutComputer: {
+          if sizing == .flexible {
+            return FlexLayoutComputer(proposedSize: $0)
+          } else {
+            return FrameLayoutComputer(
+              proposedSize: $0,
+              width: max(0, rect.size.width),
+              height: max(0, rect.size.height),
+              alignment: .center
+            )
+          }
+        }
+      )
     case let .ellipse(rect):
       return HTML(
         "ellipse",

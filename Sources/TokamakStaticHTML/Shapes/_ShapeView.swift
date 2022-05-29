@@ -236,7 +236,7 @@ extension _ShapeView: _HTMLPrimitive {
     return attributes(resolvedStyle: resolvedStyle)
   }
 
-  public func primitiveVisitor<V>() -> ((V) -> ())? where V: ViewVisitor {
+  public func primitiveVisitor<V>(shouldLayout: Bool) -> ((V) -> ())? where V: ViewVisitor {
     let resolvedStyle = style.resolve(
       for: .resolveStyle(levels: 0..<1),
       in: environment,

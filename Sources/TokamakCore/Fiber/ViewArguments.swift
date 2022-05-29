@@ -19,8 +19,8 @@ import Foundation
 
 /// Data passed to `_makeView` to create the `ViewOutputs` used in reconciling/rendering.
 public struct ViewInputs<V> {
-  let content: V
-  let environment: EnvironmentBox
+  public let content: V
+  @_spi(TokamakCore) public let environment: EnvironmentBox
 }
 
 /// Data used to reconcile and render a `View` and its children.
@@ -34,10 +34,10 @@ public struct ViewOutputs {
   var layoutComputer: LayoutComputer!
 }
 
-final class EnvironmentBox {
-  let environment: EnvironmentValues
+@_spi(TokamakCore) public final class EnvironmentBox {
+  public let environment: EnvironmentValues
 
-  init(_ environment: EnvironmentValues) {
+  public init(_ environment: EnvironmentValues) {
     self.environment = environment
   }
 }
