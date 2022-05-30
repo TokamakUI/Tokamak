@@ -49,6 +49,7 @@ public struct _PickerContainer<
 public struct _PickerElement: _PrimitiveView {
   public let valueIndex: Int?
   public let content: AnyView
+
   @Environment(\.pickerStyle)
   public var style
 }
