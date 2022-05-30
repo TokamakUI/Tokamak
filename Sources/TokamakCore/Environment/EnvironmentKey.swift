@@ -17,11 +17,24 @@ public protocol EnvironmentKey {
   static var defaultValue: Value { get }
 }
 
-protocol EnvironmentModifier {
+/// This protocol defines a type which mutates the environment in some way.
+/// Unlike `EnvironmentalModifier`, which reads the environment to
+/// create a `ViewModifier`.
+///
+/// It can be applied to a `View` or `ViewModifier`.
+public protocol _EnvironmentModifier {
   func modifyEnvironment(_ values: inout EnvironmentValues)
 }
 
-public struct _EnvironmentKeyWritingModifier<Value>: ViewModifier, EnvironmentModifier {
+public extension ViewModifier where Self: _EnvironmentModifier {
+  static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
+    var environment = inputs.environment.environment
+    inputs.content.modifyEnvironment(&environment)
+    return .init(inputs: inputs, environment: environment)
+  }
+}
+
+public struct _EnvironmentKeyWritingModifier<Value>: ViewModifier, _EnvironmentModifier {
   public let keyPath: WritableKeyPath<EnvironmentValues, Value>
   public let value: Value
 
@@ -32,7 +45,7 @@ public struct _EnvironmentKeyWritingModifier<Value>: ViewModifier, EnvironmentMo
 
   public typealias Body = Never
 
-  func modifyEnvironment(_ values: inout EnvironmentValues) {
+  public func modifyEnvironment(_ values: inout EnvironmentValues) {
     values[keyPath: keyPath] = value
   }
 }

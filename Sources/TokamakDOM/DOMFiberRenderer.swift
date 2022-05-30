@@ -15,9 +15,12 @@
 //  Created by Carson Katri on 2/7/22.
 //
 
+import Foundation
 import JavaScriptKit
-@_spi(TokamakCore) import TokamakCore
-@_spi(TokamakStaticHTML) import TokamakStaticHTML
+@_spi(TokamakCore)
+import TokamakCore
+@_spi(TokamakStaticHTML)
+import TokamakStaticHTML
 
 public final class DOMElement: FiberElement {
   var reference: JSObject?
@@ -46,10 +49,10 @@ public final class DOMElement: FiberElement {
 }
 
 public extension DOMElement.Content {
-  init<V>(from primitiveView: V) where V: View {
+  init<V>(from primitiveView: V, shouldLayout: Bool) where V: View {
     guard let primitiveView = primitiveView as? HTMLConvertible else { fatalError() }
     tag = primitiveView.tag
-    attributes = primitiveView.attributes
+    attributes = primitiveView.attributes(shouldLayout: shouldLayout)
     innerHTML = primitiveView.innerHTML
 
     if let primitiveView = primitiveView as? DOMNodeConvertible {
@@ -71,13 +74,19 @@ protocol DOMNodeConvertible: HTMLConvertible {
 public struct DOMFiberRenderer: FiberRenderer {
   public let rootElement: DOMElement
 
+  public var sceneSize: CGSize {
+    .init(width: body.clientWidth.number!, height: body.clientHeight.number!)
+  }
+
+  public let shouldLayout: Bool
+
   public var defaultEnvironment: EnvironmentValues {
     var environment = EnvironmentValues()
     environment[_ColorSchemeKey.self] = .light
     return environment
   }
 
-  public init(_ rootSelector: String) {
+  public init(_ rootSelector: String, shouldLayout: Bool = true) {
     guard let reference = document.querySelector!(rootSelector).object else {
       fatalError("""
       The root element with selector '\(rootSelector)' could not be found. \
@@ -94,6 +103,15 @@ public struct DOMFiberRenderer: FiberRenderer {
       )
     )
     rootElement.reference = reference
+    self.shouldLayout = shouldLayout
+
+    if shouldLayout {
+      // Setup the root styles
+      _ = reference.style.setProperty("margin", "0")
+      _ = reference.style.setProperty("width", "100vw")
+      _ = reference.style.setProperty("height", "100vh")
+      _ = reference.style.setProperty("position", "relative")
+    }
   }
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {
@@ -105,6 +123,24 @@ public struct DOMFiberRenderer: FiberRenderer {
     apply(element.content, to: result)
     element.reference = result
     return result
+  }
+
+  public func measureText(
+    _ text: Text,
+    proposedSize: CGSize,
+    in environment: EnvironmentValues
+  ) -> CGSize {
+    let element = createElement(.init(from: .init(from: text, shouldLayout: true)))
+    _ = element.style.setProperty("maxWidth", "\(proposedSize.width)px")
+    _ = element.style.setProperty("maxHeight", "\(proposedSize.height)px")
+    _ = document.body.appendChild(element)
+    let rect = element.getBoundingClientRect!()
+    let size = CGSize(
+      width: rect.width.number ?? 0,
+      height: rect.height.number ?? 0
+    )
+    _ = document.body.removeChild(element)
+    return size
   }
 
   private func apply(_ content: DOMElement.Content, to element: JSObject) {
@@ -129,6 +165,15 @@ public struct DOMFiberRenderer: FiberRenderer {
     }
   }
 
+  private func apply(_ geometry: ViewGeometry, to element: JSObject) {
+    guard shouldLayout else { return }
+    _ = element.style.setProperty("position", "absolute")
+    _ = element.style.setProperty("width", "\(geometry.dimensions.width)px")
+    _ = element.style.setProperty("height", "\(geometry.dimensions.height)px")
+    _ = element.style.setProperty("left", "\(geometry.origin.x)px")
+    _ = element.style.setProperty("top", "\(geometry.origin.y)px")
+  }
+
   public func commit(_ mutations: [Mutation<Self>]) {
     for mutation in mutations {
       switch mutation {
@@ -151,12 +196,19 @@ public struct DOMFiberRenderer: FiberRenderer {
         }
         let replacementElement = createElement(replacement)
         _ = parentElement.replaceChild?(previousElement, replacementElement)
-      case let .update(previous, newContent):
+      case let .update(previous, newContent, geometry):
         previous.update(with: newContent)
         guard let previousElement = previous.reference
         else { fatalError("The element does not exist (trying to update element).") }
         apply(newContent, to: previousElement)
+        // Re-apply geometry as style changes could've overwritten it.
+        apply(geometry, to: previousElement)
         previous.reference = previousElement
+      case let .layout(element, geometry):
+        guard let element = element.reference else {
+          fatalError("The element does not exist (trying to layout).")
+        }
+        apply(geometry, to: element)
       }
     }
   }
@@ -164,7 +216,10 @@ public struct DOMFiberRenderer: FiberRenderer {
 
 extension _PrimitiveButtonStyleBody: DOMNodeConvertible {
   public var tag: String { "button" }
-  public var attributes: [HTMLAttribute: String] { [:] }
+  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
+    [:]
+  }
+
   var listeners: [String: Listener] {
     ["pointerup": { _ in self.action() }]
   }

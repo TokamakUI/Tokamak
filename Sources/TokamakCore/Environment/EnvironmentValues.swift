@@ -76,7 +76,7 @@ public extension EnvironmentValues {
   }
 }
 
-struct _EnvironmentValuesWritingModifier: ViewModifier, EnvironmentModifier {
+struct _EnvironmentValuesWritingModifier: ViewModifier, _EnvironmentModifier {
   let environmentValues: EnvironmentValues
 
   func body(content: Content) -> some View {

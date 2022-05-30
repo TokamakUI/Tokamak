@@ -63,8 +63,13 @@ benchmark("update wide (StackReconciler)") { state in
 
 benchmark("update wide (FiberReconciler)") { state in
   let view = UpdateWide()
-  let reconciler = TestFiberRenderer(.root).render(view)
-  let button = reconciler.current // ModifiedContent
+  let reconciler = TestFiberRenderer(
+    .root,
+    size: .init(width: 500, height: 500),
+    shouldLayout: false
+  ).render(view)
+  let button = reconciler.current // RootView
+    .child? // ModifiedContent
     .child? // _ViewModifier_Content
     .child? // UpdateLast
     .child? // VStack
@@ -116,8 +121,13 @@ benchmark("update narrow (StackReconciler)") { state in
 
 benchmark("update narrow (FiberReconciler)") { state in
   let view = UpdateNarrow()
-  let reconciler = TestFiberRenderer(.root).render(view)
-  let button = reconciler.current // ModifiedContent
+  let reconciler = TestFiberRenderer(
+    .root,
+    size: .init(width: 500, height: 500),
+    shouldLayout: false
+  ).render(view)
+  let button = reconciler.current // RootView
+    .child? // ModifiedContent
     .child? // _ViewModifier_Content
     .child? // UpdateLast
     .child? // VStack
@@ -181,8 +191,13 @@ benchmark("update deep (StackReconciler)") { state in
 
 benchmark("update deep (FiberReconciler)") { state in
   let view = UpdateDeep()
-  let reconciler = TestFiberRenderer(.root).render(view)
-  let button = reconciler.current // ModifiedContent
+  let reconciler = TestFiberRenderer(
+    .root,
+    size: .init(width: 500, height: 500),
+    shouldLayout: false
+  ).render(view)
+  let button = reconciler.current // RootView
+    .child? // ModifiedContent
     .child? // _ViewModifier_Content
     .child? // UpdateLast
     .child? // VStack
@@ -244,8 +259,13 @@ benchmark("update shallow (StackReconciler)") { _ in
 
 benchmark("update shallow (FiberReconciler)") { _ in
   let view = UpdateShallow()
-  let reconciler = TestFiberRenderer(.root).render(view)
-  let button = reconciler.current // ModifiedContent
+  let reconciler = TestFiberRenderer(
+    .root,
+    size: .init(width: 500, height: 500),
+    shouldLayout: false
+  ).render(view)
+  let button = reconciler.current // RootView
+    .child? // ModifiedContent
     .child? // _ViewModifier_Content
     .child? // UpdateLast
     .child? // VStack

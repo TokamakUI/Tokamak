@@ -15,6 +15,8 @@
 //  Created by Carson Katri on 2/15/22.
 //
 
+import Foundation
+
 public enum Mutation<Renderer: FiberRenderer> {
   case insert(
     element: Renderer.ElementType,
@@ -27,5 +29,10 @@ public enum Mutation<Renderer: FiberRenderer> {
     previous: Renderer.ElementType,
     replacement: Renderer.ElementType
   )
-  case update(previous: Renderer.ElementType, newContent: Renderer.ElementType.Content)
+  case update(
+    previous: Renderer.ElementType,
+    newContent: Renderer.ElementType.Content,
+    geometry: ViewGeometry
+  )
+  case layout(element: Renderer.ElementType, geometry: ViewGeometry)
 }

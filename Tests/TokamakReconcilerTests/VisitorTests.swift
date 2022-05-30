@@ -56,10 +56,12 @@ private struct TestView: View {
 
 final class VisitorTests: XCTestCase {
   func testRenderer() {
-    let reconciler = TestFiberRenderer(.root).render(TestView())
+    let reconciler = TestFiberRenderer(.root, size: .init(width: 500, height: 500))
+      .render(TestView())
     func decrement() {
       (
-        reconciler.current // ModifiedContent
+        reconciler.current // RootView
+          .child? // ModifiedContent
           .child? // _ViewModifier_Content
           .child? // TestView
           .child? // Counter
@@ -75,7 +77,8 @@ final class VisitorTests: XCTestCase {
     }
     func increment() {
       (
-        reconciler.current // ModifiedContent
+        reconciler.current // RootView
+          .child? // ModifiedContent
           .child? // _ViewModifier_Content
           .child? // TestView
           .child? // Counter

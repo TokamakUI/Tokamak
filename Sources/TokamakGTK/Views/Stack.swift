@@ -86,6 +86,7 @@ extension HorizontalAlignment {
     case .center: return GTK_ALIGN_CENTER
     case .leading: return GTK_ALIGN_START
     case .trailing: return GTK_ALIGN_END
+    default: return GTK_ALIGN_CENTER
     }
   }
 }
@@ -96,6 +97,7 @@ extension VerticalAlignment {
     case .center: return GTK_ALIGN_CENTER
     case .top: return GTK_ALIGN_START
     case .bottom: return GTK_ALIGN_END
+    default: return GTK_ALIGN_CENTER
     }
   }
 }

@@ -23,6 +23,8 @@ extension HorizontalAlignment {
       return "center"
     case .trailing:
       return "flex-end"
+    default:
+      return "center"
     }
   }
 }

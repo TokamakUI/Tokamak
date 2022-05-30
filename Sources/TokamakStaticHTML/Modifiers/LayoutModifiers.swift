@@ -39,6 +39,7 @@ private extension VerticalAlignment {
     case .top: return "flex-start"
     case .center: return "center"
     case .bottom: return "flex-end"
+    default: return "center"
     }
   }
 }
@@ -49,6 +50,7 @@ private extension HorizontalAlignment {
     case .leading: return "flex-start"
     case .center: return "center"
     case .trailing: return "flex-end"
+    default: return "center"
     }
   }
 }
@@ -68,6 +70,17 @@ extension _FrameLayout: DOMViewModifier {
     align-items: \(alignment.vertical.flexAlignment);
     justify-content: \(alignment.horizontal.flexAlignment);
     """]
+  }
+}
+
+@_spi(TokamakStaticHTML)
+extension _FrameLayout: HTMLConvertible {
+  public var tag: String { "div" }
+  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
+    guard !shouldLayout else { return [
+      "style": "overflow: hidden;",
+    ] }
+    return attributes
   }
 }
 
