@@ -18,7 +18,7 @@
 import Foundation
 
 /// A `LayoutComputer` for the root element of a `FiberRenderer`.
-final class RootLayoutComputer: LayoutComputer {
+struct RootLayoutComputer: LayoutComputer {
   let sceneSize: CGSize
 
   init(sceneSize: CGSize) {

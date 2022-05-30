@@ -18,7 +18,7 @@
 import Foundation
 
 /// A `LayoutComputer` that uses a specified size in one or more axes.
-final class FrameLayoutComputer: LayoutComputer {
+struct FrameLayoutComputer: LayoutComputer {
   let proposedSize: CGSize
   let width: CGFloat?
   let height: CGFloat?

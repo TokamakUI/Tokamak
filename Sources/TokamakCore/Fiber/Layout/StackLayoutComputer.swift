@@ -23,7 +23,7 @@ import Foundation
 /// The specified main `Axis` will fit to the combined width/height (depending on the axis)
 /// of the children.
 /// The cross axis will fit to the child with the largest height/width.
-final class StackLayoutComputer: LayoutComputer {
+struct StackLayoutComputer: LayoutComputer {
   let proposedSize: CGSize
   let axis: Axis
   let alignment: Alignment

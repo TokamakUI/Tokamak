@@ -18,7 +18,7 @@
 import Foundation
 
 /// A `LayoutComputer` that fills its parent.
-final class FlexLayoutComputer: LayoutComputer {
+struct FlexLayoutComputer: LayoutComputer {
   let proposedSize: CGSize
 
   init(proposedSize: CGSize) {
