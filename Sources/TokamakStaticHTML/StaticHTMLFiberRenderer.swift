@@ -16,7 +16,7 @@
 //
 
 import Foundation
-@_spi(TokamakCore) 
+@_spi(TokamakCore)
 import TokamakCore
 
 public final class HTMLElement: FiberElement, CustomStringConvertible {

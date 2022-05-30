@@ -17,7 +17,7 @@
 
 import Foundation
 
-/// A `LayoutComputer` that takes the size of its children.
+/// A `LayoutComputer` that shrinks to the size of its children.
 final class ShrinkWrapLayoutComputer: LayoutComputer {
   let proposedSize: CGSize
 

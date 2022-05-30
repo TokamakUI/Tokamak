@@ -17,7 +17,7 @@
 
 import Foundation
 
-@_spi(TokamakCore) 
+@_spi(TokamakCore)
 public extension FiberReconciler {
   /// A manager for a single `View`.
   ///

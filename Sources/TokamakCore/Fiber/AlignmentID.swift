@@ -17,7 +17,27 @@
 
 import Foundation
 
+/// Used identify an alignment guide.
+///
+/// Typically, you would define an alignment guide inside
+/// an extension on `HorizontalAlignment` or `VerticalAlignment`:
+///
+///     extension HorizontalAlignment {
+///       private enum MyAlignmentGuide: AlignmentID {
+///         static func defaultValue(in context: ViewDimensions) -> CGFloat {
+///           return 10.0
+///         }
+///       }
+///       public static let myAlignmentGuide = Self(MyAlignmentGuide.self)
+///     }
+///
+/// Which you can then use with the `alignmentGuide` modifier:
+///
+///     Text("Hello, world!")
+///       .alignmentGuide(.myAlignmentGuide) { $0[.trailing] - 3 }
 public protocol AlignmentID {
+  /// The default value for this alignment guide
+  /// when not set via the `alignmentGuide` modifier.
   static func defaultValue(in context: ViewDimensions) -> CGFloat
 }
 

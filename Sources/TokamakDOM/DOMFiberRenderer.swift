@@ -17,9 +17,9 @@
 
 import Foundation
 import JavaScriptKit
-@_spi(TokamakCore) 
+@_spi(TokamakCore)
 import TokamakCore
-@_spi(TokamakStaticHTML) 
+@_spi(TokamakStaticHTML)
 import TokamakStaticHTML
 
 public final class DOMElement: FiberElement {

@@ -17,6 +17,12 @@
 
 import Foundation
 
+/// A `LayoutComputer` that aligns `Views` along a specified `Axis`
+/// with a given spacing and alignment.
+///
+/// The specified main `Axis` will fit to the combined width/height (depending on the axis)
+/// of the children.
+/// The cross axis will fit to the child with the largest height/width.
 final class StackLayoutComputer: LayoutComputer {
   let proposedSize: CGSize
   let axis: Axis
