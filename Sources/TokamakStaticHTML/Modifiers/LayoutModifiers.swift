@@ -73,7 +73,8 @@ extension _FrameLayout: DOMViewModifier {
   }
 }
 
-@_spi(TokamakStaticHTML) extension _FrameLayout: HTMLConvertible {
+@_spi(TokamakStaticHTML) 
+extension _FrameLayout: HTMLConvertible {
   public var tag: String { "div" }
   public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
     guard !shouldLayout else { return [
