@@ -102,14 +102,6 @@ public extension HTMLConvertible {
 }
 
 @_spi(TokamakStaticHTML)
-extension Text: HTMLConvertible {
-  @_spi(TokamakStaticHTML)
-  public var innerHTML: String? {
-    _TextProxy(self).rawText
-  }
-}
-
-@_spi(TokamakStaticHTML)
 extension VStack: HTMLConvertible {
   @_spi(TokamakStaticHTML)
   public var tag: String { "div" }

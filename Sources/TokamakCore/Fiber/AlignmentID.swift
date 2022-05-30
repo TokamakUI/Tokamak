@@ -49,7 +49,8 @@ public protocol AlignmentID {
 }
 
 /// An alignment position along the horizontal axis.
-@frozen public struct HorizontalAlignment: Equatable {
+@frozen
+public struct HorizontalAlignment: Equatable {
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.id == rhs.id
   }
@@ -87,7 +88,8 @@ extension HorizontalAlignment {
   }
 }
 
-@frozen public struct VerticalAlignment: Equatable {
+@frozen
+public struct VerticalAlignment: Equatable {
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.id == rhs.id
   }
