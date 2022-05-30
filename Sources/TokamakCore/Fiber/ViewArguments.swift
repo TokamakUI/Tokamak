@@ -49,7 +49,7 @@ extension ViewOutputs {
     preferences: _PreferenceStore? = nil,
     layoutComputer: ((CGSize) -> LayoutComputer)? = nil
   ) {
-    // Only replace the EnvironmentBox when we change the environment.
+    // Only replace the `EnvironmentBox` when we change the environment.
     // Otherwise the same box can be reused.
     self.environment = environment.map(EnvironmentBox.init) ?? inputs.environment
     self.preferences = preferences ?? .init()

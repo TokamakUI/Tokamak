@@ -341,7 +341,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
             if reconciler.renderer.shouldLayout,
                let fiber = node.fiber
             {
-              // The elementParent proposed a size for this fiber on the way down.
+              // The `elementParent` proposed a size for this fiber on the way down.
               // At this point all of this fiber's children have requested sizes.
               // On the way back up, we tell our elementParent what size we want,
               // based on our own requirements and the sizes required by our children.
@@ -361,7 +361,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
             node = parent
           }
 
-          // We also `size` and `position` when we reach the bottommost view that has a sibling.
+          // We also request `size` and `position` when we reach the bottom-most view that has a sibling.
           // Sizing and positioning also happen when we have no sibling,
           // as seen in the above loop.
           if reconciler.renderer.shouldLayout,

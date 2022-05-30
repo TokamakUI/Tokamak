@@ -17,7 +17,7 @@
 
 import Foundation
 
-/// Measures the bounds of the `Text` with modifiers and wrapping inside the `proposedSize`.
+/// Measures the bounds of the `Text` with modifiers and wraps it inside the `proposedSize`.
 final class TextLayoutComputer: LayoutComputer {
   let text: Text
   let proposedSize: CGSize
