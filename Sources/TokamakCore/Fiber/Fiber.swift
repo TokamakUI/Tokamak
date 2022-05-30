@@ -17,7 +17,8 @@
 
 import Foundation
 
-@_spi(TokamakCore) public extension FiberReconciler {
+@_spi(TokamakCore)
+public extension FiberReconciler {
   /// A manager for a single `View`.
   ///
   /// There are always 2 `Fiber`s for every `View` in the tree,
@@ -143,12 +144,12 @@ import Foundation
       if let element = element {
         self.element = element
       } else if Renderer.isPrimitive(view) {
-        self
-          .element =
-          .init(from: .init(from: view, shouldLayout: reconciler?.renderer.shouldLayout ?? false))
+        self.element = .init(
+          from: .init(from: view, shouldLayout: reconciler?.renderer.shouldLayout ?? false)
+        )
       }
 
-      // Only specify an elementIndex if we have an element.
+      // Only specify an `elementIndex` if we have an element.
       if self.element != nil {
         self.elementIndex = elementIndex
       }

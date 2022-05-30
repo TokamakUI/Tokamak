@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 
 import Foundation
 
-/// Measures the bounds of the `Text` with modifiers and wrapping inside the `proposedSize`.
-final class TextLayoutComputer: LayoutComputer {
+/// Measures the bounds of the `Text` with modifiers and wraps it inside the `proposedSize`.
+struct TextLayoutComputer: LayoutComputer {
   let text: Text
   let proposedSize: CGSize
   let environment: EnvironmentValues

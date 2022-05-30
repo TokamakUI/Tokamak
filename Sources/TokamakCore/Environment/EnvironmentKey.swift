@@ -17,6 +17,11 @@ public protocol EnvironmentKey {
   static var defaultValue: Value { get }
 }
 
+/// This protocol defines a type which mutates the environment in some way.
+/// Unlike `EnvironmentalModifier`, which reads the environment to
+/// create a `ViewModifier`.
+///
+/// It can be applied to a `View` or `ViewModifier`.
 public protocol _EnvironmentModifier {
   func modifyEnvironment(_ values: inout EnvironmentValues)
 }

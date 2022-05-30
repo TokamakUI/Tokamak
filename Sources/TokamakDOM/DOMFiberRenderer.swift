@@ -17,8 +17,10 @@
 
 import Foundation
 import JavaScriptKit
-@_spi(TokamakCore) import TokamakCore
-@_spi(TokamakStaticHTML) import TokamakStaticHTML
+@_spi(TokamakCore)
+import TokamakCore
+@_spi(TokamakStaticHTML)
+import TokamakStaticHTML
 
 public final class DOMElement: FiberElement {
   var reference: JSObject?

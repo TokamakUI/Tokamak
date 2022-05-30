@@ -86,7 +86,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       let layoutContexts: [ObjectIdentifier: LayoutContext]
 
       func visit<V>(_ view: V) where V: View {
-        // Ask the parent for a size.
+        // Ask the parent what space is available.
         let proposedSize = node.elementParent?.outputs.layoutComputer.proposeSize(
           for: view,
           at: node.elementIndex ?? 0,
@@ -165,7 +165,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       var elementIndices = [ObjectIdentifier: Int]()
       /// The `LayoutContext` for each parent view.
       var layoutContexts = [ObjectIdentifier: LayoutContext]()
-      /// The children of an `elementParent` with `element`s in order.
+      /// The (potentially nested) children of an `elementParent` with `element` values in order.
+      /// Used to position children in the correct order.
       var elementChildren = [ObjectIdentifier: [Fiber]]()
 
       /// Compare `node` with its alternate, and add any mutations to the list.
@@ -197,12 +198,15 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         }
       }
 
+      /// Ask the `LayoutComputer` for the fiber's `elementParent` to propose a size.
       func proposeSize(for node: Fiber) {
         guard node.element != nil else { return }
 
+        // Use the visitor so we can pass the correct View type to the function.
         node.visitView(ProposeSizeVisitor(node: node, layoutContexts: layoutContexts))
       }
 
+      /// Request a size from the fiber's `elementParent`.
       func size(_ node: Fiber) {
         guard node.element != nil,
               let elementParent = node.elementParent
@@ -212,14 +216,15 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         let elementIndex = node.elementIndex ?? 0
         var parentContext = layoutContexts[key, default: .init(children: [])]
 
-        // Compute our size and position in our context.
+        // Using our LayoutComputer, compute our required size.
+        // This does not have to respect the elementParent's proposed size.
         let size = node.outputs.layoutComputer.requestSize(
           in: layoutContexts[ObjectIdentifier(node), default: .init(children: [])]
         )
         let dimensions = ViewDimensions(size: size, alignmentGuides: [:])
         let child = LayoutContext.Child(index: elementIndex, dimensions: dimensions)
 
-        // Add ourself to the parent context.
+        // Add ourself to the parent's LayoutContext.
         parentContext.children.append(child)
         layoutContexts[key] = parentContext
 
@@ -230,7 +235,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         )
       }
 
-      /// Request a size and position from the parent on the way back up.
+      /// Request a position from the parent on the way back up.
       func position(_ node: Fiber) {
         // FIXME: Add alignmentGuide modifier to override defaults and pass the correct guide data.
         guard let element = node.element,
@@ -241,10 +246,11 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         let elementIndex = node.elementIndex ?? 0
         let context = layoutContexts[key, default: .init(children: [])]
 
+        // Find our child element in our parent's LayoutContext (as added by `size(_:)`).
         guard let child = context.children.first(where: { $0.index == elementIndex })
         else { return }
 
-        // Compute our position in the context.
+        // Ask our parent to position us in it's coordinate space (given our requested size).
         let position = elementParent.outputs.layoutComputer.position(child, in: context)
         let geometry = ViewGeometry(
           origin: .init(origin: position),
@@ -273,7 +279,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           node.visitChildren(reducer)
           elementIndices = node.elementIndices
 
-          // Propose sizes on the way down.
+          // As we walk down the tree, propose a size for each View.
           if reconciler.renderer.shouldLayout,
              let fiber = node.fiber
           {
@@ -308,7 +314,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
             }
           }
           if reducer.result.child == nil {
-            node.fiber?.child = nil // Make sure we clear the child if there was none
+            // Make sure we clear the child if there was none
+            node.fiber?.child = nil
+            node.fiber?.alternate?.child = nil
           }
 
           // If we've made it back to the root, then exit.
@@ -333,8 +341,14 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
             if reconciler.renderer.shouldLayout,
                let fiber = node.fiber
             {
+              // The `elementParent` proposed a size for this fiber on the way down.
+              // At this point all of this fiber's children have requested sizes.
+              // On the way back up, we tell our elementParent what size we want,
+              // based on our own requirements and the sizes required by our children.
               size(fiber)
-              // Position the children in order.
+              // Loop through each (potentially nested) child fiber with an `element`,
+              // and position them in our coordinate space. This ensures children are
+              // positioned in order.
               if let elementChildren = elementChildren[ObjectIdentifier(fiber)] {
                 for elementChild in elementChildren {
                   position(elementChild)
@@ -347,13 +361,15 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
             node = parent
           }
 
-          // We `size` and `position` when we reach the bottommost view that has a sibling.
-          // Otherwise, sizing takes place in the above loop.
+          // We also request `size` and `position` when we reach the bottom-most view that has a sibling.
+          // Sizing and positioning also happen when we have no sibling,
+          // as seen in the above loop.
           if reconciler.renderer.shouldLayout,
              let fiber = node.fiber
           {
+            // Request a size from our `elementParent`.
             size(fiber)
-            // Position the children in order.
+            // Position our children in order.
             if let elementChildren = elementChildren[ObjectIdentifier(fiber)] {
               for elementChild in elementChildren {
                 position(elementChild)

@@ -45,7 +45,8 @@ extension _ZIndexModifier: DOMViewModifier {
   }
 }
 
-@_spi(TokamakStaticHTML) extension ModifiedContent: HTMLConvertible where Content: View,
+@_spi(TokamakStaticHTML)
+extension ModifiedContent: HTMLConvertible where Content: View,
   Modifier: HTMLConvertible
 {
   public var tag: String { modifier.tag }

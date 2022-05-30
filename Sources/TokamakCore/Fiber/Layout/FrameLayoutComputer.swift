@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 import Foundation
 
 /// A `LayoutComputer` that uses a specified size in one or more axes.
-final class FrameLayoutComputer: LayoutComputer {
+struct FrameLayoutComputer: LayoutComputer {
   let proposedSize: CGSize
   let width: CGFloat?
   let height: CGFloat?
