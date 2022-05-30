@@ -25,7 +25,7 @@ import Foundation
 ///     extension HorizontalAlignment {
 ///       private enum MyAlignmentGuide: AlignmentID {
 ///         static func defaultValue(in context: ViewDimensions) -> CGFloat {
-///           return 10.0
+///           return 0.0
 ///         }
 ///       }
 ///       public static let myAlignmentGuide = Self(MyAlignmentGuide.self)
@@ -33,8 +33,15 @@ import Foundation
 ///
 /// Which you can then use with the `alignmentGuide` modifier:
 ///
-///     Text("Hello, world!")
-///       .alignmentGuide(.myAlignmentGuide) { $0[.trailing] - 3 }
+///     VStack(alignment: .myAlignmentGuide) {
+///       Text("Align Leading")
+///         .border(.red)
+///         .alignmentGuide(.myAlignmentGuide) { $0[.leading] }
+///       Text("Align Trailing")
+///         .border(.blue)
+///         .alignmentGuide(.myAlignmentGuide) { $0[.trailing] }
+///     }
+///     .border(.green)
 public protocol AlignmentID {
   /// The default value for this alignment guide
   /// when not set via the `alignmentGuide` modifier.
