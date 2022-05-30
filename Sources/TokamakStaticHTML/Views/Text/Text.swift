@@ -161,26 +161,7 @@ extension Text: AnyHTML {
 
 @_spi(TokamakStaticHTML) extension Text: HTMLConvertible {
   @_spi(TokamakStaticHTML) public var innerHTML: String? {
-    let proxy = _TextProxy(self)
-    let innerHTML: String
-    switch proxy.storage {
-    case let .verbatim(text):
-      innerHTML = proxy.environment.domTextSanitizer(text)
-    case let .segmentedText(segments):
-      innerHTML = segments
-        .map {
-          TextSpan(
-            content: proxy.environment.domTextSanitizer($0.0.rawText),
-            attributes: Self.attributes(
-              from: $0.1,
-              environment: proxy.environment
-            )
-          )
-          .outerHTML(shouldSortAttributes: false, children: [])
-        }
-        .reduce("", +)
-    }
-    return innerHTML.replacingOccurrences(of: "\n", with: "<br />")
+    innerHTML(shouldSortAttributes: false)
   }
 
   public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
