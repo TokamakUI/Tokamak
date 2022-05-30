@@ -17,7 +17,7 @@
 
 import Foundation
 
-/// Used identify an alignment guide.
+/// Used to identify an alignment guide.
 ///
 /// Typically, you would define an alignment guide inside
 /// an extension on `HorizontalAlignment` or `VerticalAlignment`:
