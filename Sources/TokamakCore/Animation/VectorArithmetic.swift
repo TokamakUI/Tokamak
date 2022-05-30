@@ -25,6 +25,7 @@ public protocol VectorArithmetic: AdditiveArithmetic {
 extension Float: VectorArithmetic {
   @_transparent
   public mutating func scale(by rhs: Double) { self *= Float(rhs) }
+
   @_transparent
   public var magnitudeSquared: Double {
     @_transparent get { Double(self * self) }
@@ -34,6 +35,7 @@ extension Float: VectorArithmetic {
 extension Double: VectorArithmetic {
   @_transparent
   public mutating func scale(by rhs: Double) { self *= rhs }
+
   @_transparent
   public var magnitudeSquared: Double {
     @_transparent get { self * self }
@@ -43,6 +45,7 @@ extension Double: VectorArithmetic {
 extension CGFloat: VectorArithmetic {
   @_transparent
   public mutating func scale(by rhs: Double) { self *= CGFloat(rhs) }
+
   @_transparent
   public var magnitudeSquared: Double {
     @_transparent get { Double(self * self) }

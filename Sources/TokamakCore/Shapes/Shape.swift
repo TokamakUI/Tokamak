@@ -57,8 +57,10 @@ public struct FillStyle: Equatable {
 public struct _ShapeView<Content, Style>: _PrimitiveView where Content: Shape, Style: ShapeStyle {
   @Environment(\.self)
   public var environment
+
   @Environment(\.foregroundColor)
   public var foregroundColor
+
   public var shape: Content
   public var style: Style
   public var fillStyle: FillStyle

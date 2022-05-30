@@ -44,12 +44,16 @@ public extension Animatable where Self.AnimatableData == EmptyAnimatableData {
 public struct EmptyAnimatableData: VectorArithmetic {
   @inlinable
   public init() {}
+
   @inlinable
   public static var zero: Self { .init() }
+
   @inlinable
   public static func += (lhs: inout Self, rhs: Self) {}
+
   @inlinable
   public static func -= (lhs: inout Self, rhs: Self) {}
+
   @inlinable
   public static func + (lhs: Self, rhs: Self) -> Self {
     .zero
@@ -62,8 +66,10 @@ public struct EmptyAnimatableData: VectorArithmetic {
 
   @inlinable
   public mutating func scale(by rhs: Double) {}
+
   @inlinable
   public var magnitudeSquared: Double { .zero }
+
   public static func == (a: Self, b: Self) -> Bool { true }
 }
 

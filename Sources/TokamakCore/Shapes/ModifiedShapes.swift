@@ -20,6 +20,7 @@ import Foundation
 public struct _StrokedShape<S>: Shape, DynamicProperty where S: Shape {
   @Environment(\.self)
   public var environment
+
   public var shape: S
   public var style: StrokeStyle
 

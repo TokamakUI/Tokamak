@@ -26,6 +26,7 @@ public struct Canvas<Symbols> where Symbols: View {
 
   @Environment(\.self)
   public var _environment: EnvironmentValues
+
   public func _makeContext(
     onOperation: @escaping (GraphicsContext._Storage, GraphicsContext._Storage._Operation) -> (),
     imageResolver: @escaping (Image, EnvironmentValues) -> GraphicsContext.ResolvedImage,

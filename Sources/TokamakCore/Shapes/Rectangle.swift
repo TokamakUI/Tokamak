@@ -91,6 +91,7 @@ extension RoundedRectangle: InsettableShape {
   struct _Inset: InsettableShape {
     @usableFromInline
     var base: RoundedRectangle
+
     @usableFromInline
     var amount: CGFloat
 

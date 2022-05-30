@@ -156,6 +156,7 @@ public struct _AnimationModifier<Value>: ViewModifier, Equatable
     let content: Content
     let animation: Animation?
     let value: Value
+
     @State
     private var lastValue: Value?
 
