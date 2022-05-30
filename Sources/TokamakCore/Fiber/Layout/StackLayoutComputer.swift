@@ -22,32 +22,12 @@ final class StackLayoutComputer: LayoutComputer {
   let axis: Axis
   let alignment: Alignment
   let spacing: CGFloat
-  /// Will contain a value of `1` for the axis that takes the size of the largest child.
-  /// For instance, a `VStack` will provide `1` for the width because
-  /// it takes the width of its largest child.
-  ///
-  /// Typically flipped from the width/height of `fitAxis`
-  let maxAxis: CGSize
-  /// Will contain a value of `1` for the axis that the children are aligned on.
-  /// For instance, a `VStack` will provide `1` for the height because
-  /// it fits to the combined height of its children.
-  ///
-  /// Typically flipped from the width/height of `maxAxis`
-  let fitAxis: CGSize
 
   init(proposedSize: CGSize, axis: Axis, alignment: Alignment, spacing: CGFloat) {
     self.proposedSize = proposedSize
     self.axis = axis
     self.alignment = alignment
     self.spacing = spacing
-    switch axis {
-    case .horizontal:
-      maxAxis = .init(width: 0, height: 1)
-      fitAxis = .init(width: 1, height: 0)
-    case .vertical:
-      maxAxis = .init(width: 1, height: 0)
-      fitAxis = .init(width: 0, height: 1)
-    }
   }
 
   func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
@@ -60,8 +40,8 @@ final class StackLayoutComputer: LayoutComputer {
       )
     }
     let size = CGSize(
-      width: proposedSize.width - (used.width * fitAxis.width),
-      height: proposedSize.height - (used.height * fitAxis.height)
+      width: proposedSize.width - (axis == .horizontal ? used.width : 0),
+      height: proposedSize.height - (axis == .vertical ? used.height : 0)
     )
     return size
   }
@@ -86,15 +66,25 @@ final class StackLayoutComputer: LayoutComputer {
     let fitSpacing = CGFloat(child.index) * spacing
     let position = CGPoint(
       x: (
-        (maxDimensions[alignment.horizontal] - child.dimensions[alignment.horizontal]) * maxAxis
-          .width
+        axis == .vertical
+          ? (maxDimensions[alignment.horizontal] - child.dimensions[alignment.horizontal])
+          : 0
       )
-        + ((fitSize.width + fitSpacing) * fitAxis.width),
+        + (
+          axis == .horizontal
+            ? (fitSize.width + fitSpacing)
+            : 0
+        ),
       y: (
-        (maxDimensions[alignment.vertical] - child.dimensions[alignment.vertical]) * maxAxis
-          .height
+        axis == .horizontal
+          ? (maxDimensions[alignment.vertical] - child.dimensions[alignment.vertical])
+          : 0
       )
-        + ((fitSize.height + fitSpacing) * fitAxis.height)
+        + (
+          axis == .vertical
+            ? (fitSize.height + fitSpacing)
+            : 0
+        )
     )
     return position
   }
@@ -115,10 +105,10 @@ final class StackLayoutComputer: LayoutComputer {
     let fitSpacing = CGFloat(context.children.count - 1) * spacing
 
     return .init(
-      width: (maxDimensions.width * maxAxis.width) +
-        ((fitDimensions.width + fitSpacing) * fitAxis.width),
-      height: (maxDimensions.height * maxAxis.height) +
-        ((fitDimensions.height + fitSpacing) * fitAxis.height)
+      width: (axis == .vertical ? maxDimensions.width : 0) +
+        (axis == .horizontal ? (fitDimensions.width + fitSpacing) : 0),
+      height: (axis == .horizontal ? maxDimensions.height : 0) +
+        (axis == .vertical ? (fitDimensions.height + fitSpacing) : 0)
     )
   }
 }
