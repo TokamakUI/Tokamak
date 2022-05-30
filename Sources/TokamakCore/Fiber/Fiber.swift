@@ -144,12 +144,12 @@ public extension FiberReconciler {
       if let element = element {
         self.element = element
       } else if Renderer.isPrimitive(view) {
-        self
-          .element =
-          .init(from: .init(from: view, shouldLayout: reconciler?.renderer.shouldLayout ?? false))
+        self.element = .init(
+          from: .init(from: view, shouldLayout: reconciler?.renderer.shouldLayout ?? false)
+        )
       }
 
-      // Only specify an elementIndex if we have an element.
+      // Only specify an `elementIndex` if we have an element.
       if self.element != nil {
         self.elementIndex = elementIndex
       }
