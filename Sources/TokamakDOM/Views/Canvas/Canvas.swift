@@ -17,7 +17,8 @@
 
 import Foundation
 import JavaScriptKit
-@_spi(TokamakCore) import TokamakCore
+@_spi(TokamakCore)
+import TokamakCore
 import TokamakStaticHTML
 
 extension Canvas: DOMPrimitive {
@@ -36,12 +37,20 @@ private let devicePixelRatio = JSObject.global.devicePixelRatio.number ?? 1
 
 struct _Canvas<Symbols: View>: View {
   let parent: Canvas<Symbols>
-  @StateObject private var coordinator = Coordinator()
-  @Environment(\.inAnimatingTimelineView) private var inAnimatingTimelineView
-  @Environment(\.isAnimatingTimelineViewPaused) private var isAnimatingTimelineViewPaused
+
+  @StateObject
+  private var coordinator = Coordinator()
+
+  @Environment(\.inAnimatingTimelineView)
+  private var inAnimatingTimelineView
+
+  @Environment(\.isAnimatingTimelineViewPaused)
+  private var isAnimatingTimelineViewPaused
 
   final class Coordinator: ObservableObject {
-    @Published var canvas: JSObject?
+    @Published
+    var canvas: JSObject?
+
     var currentDrawLoop: JSValue?
 
     /// A cache of resolved symbols by their tag.

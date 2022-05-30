@@ -18,7 +18,8 @@
 public protocol View {
   associatedtype Body: View
 
-  @ViewBuilder var body: Self.Body { get }
+  @ViewBuilder
+  var body: Self.Body { get }
 
   func _visitChildren<V: ViewVisitor>(_ visitor: V)
   static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs

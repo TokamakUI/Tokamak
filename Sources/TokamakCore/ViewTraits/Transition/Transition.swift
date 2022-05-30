@@ -17,7 +17,8 @@
 
 import Foundation
 
-@frozen public struct AnyTransition {
+@frozen
+public struct AnyTransition {
   fileprivate let box: _AnyTransitionBox
 
   private init(_ box: _AnyTransitionBox) {
@@ -27,14 +28,16 @@ import Foundation
 
 @usableFromInline
 struct TransitionTraitKey: _ViewTraitKey {
-  @inlinable static var defaultValue: AnyTransition { .opacity }
+  @inlinable
+  static var defaultValue: AnyTransition { .opacity }
 
   @usableFromInline typealias Value = AnyTransition
 }
 
 @usableFromInline
 struct CanTransitionTraitKey: _ViewTraitKey {
-  @inlinable static var defaultValue: Bool { false }
+  @inlinable
+  static var defaultValue: Bool { false }
 
   @usableFromInline typealias Value = Bool
 }

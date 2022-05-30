@@ -17,7 +17,8 @@ import JavaScriptKit
 import TokamakShim
 
 struct DOMRefDemo: View {
-  @State var button: JSObject?
+  @State
+  var button: JSObject?
 
   var body: some View {
     Button("Click me") {

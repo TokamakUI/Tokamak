@@ -17,9 +17,11 @@
 
 import OpenCombineShim
 
-@propertyWrapper public struct AppStorage<Value>: DynamicProperty {
+@propertyWrapper
+public struct AppStorage<Value>: DynamicProperty {
   let provider: _StorageProvider?
-  @Environment(\._defaultAppStorage) var defaultProvider: _StorageProvider?
+  @Environment(\._defaultAppStorage)
+  var defaultProvider: _StorageProvider?
   var unwrappedProvider: _StorageProvider {
     provider ?? defaultProvider!
   }

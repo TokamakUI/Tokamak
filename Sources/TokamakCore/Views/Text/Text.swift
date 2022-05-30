@@ -35,7 +35,8 @@ public struct Text: _PrimitiveView, Equatable {
   let storage: _Storage
   let modifiers: [_Modifier]
 
-  @Environment(\.self) var environment
+  @Environment(\.self)
+  var environment
 
   public static func == (lhs: Text, rhs: Text) -> Bool {
     lhs.storage == rhs.storage

@@ -17,7 +17,8 @@
 
 import Foundation
 
-@frozen public struct _OffsetEffect: GeometryEffect, Equatable {
+@frozen
+public struct _OffsetEffect: GeometryEffect, Equatable {
   public var offset: CGSize
 
   @inlinable

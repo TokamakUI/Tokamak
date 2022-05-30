@@ -50,7 +50,8 @@ protocol _TransactionModifierProtocol {
   func modifyTransaction(_ transaction: inout Transaction)
 }
 
-@frozen public struct _TransactionModifier: ViewModifier {
+@frozen
+public struct _TransactionModifier: ViewModifier {
   public var transform: (inout Transaction) -> ()
 
   @inlinable
@@ -77,7 +78,8 @@ extension ModifiedContent: _TransactionModifierProtocol
   }
 }
 
-@frozen public struct _PushPopTransactionModifier<V>: ViewModifier where V: ViewModifier {
+@frozen
+public struct _PushPopTransactionModifier<V>: ViewModifier where V: ViewModifier {
   public var content: V
   public var base: _TransactionModifier
 

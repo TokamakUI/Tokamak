@@ -15,7 +15,8 @@
 //  Created by Carson Katri on 2/15/22.
 //
 
-@_spi(TokamakCore) public extension FiberReconciler {
+@_spi(TokamakCore)
+public extension FiberReconciler {
   /// A manager for a single `View`.
   ///
   /// There are always 2 `Fiber`s for every `View` in the tree,
@@ -42,7 +43,8 @@
     /// Stored as an IUO because we must use the `bindProperties` method
     /// to create the `View` with its dependencies setup,
     /// which requires all stored properties be set before using.
-    @_spi(TokamakCore) public var view: Any!
+    @_spi(TokamakCore)
+    public var view: Any!
     /// Outputs from evaluating `View._makeView`
     ///
     /// Stored as an IUO because creating `ViewOutputs` depends on
@@ -59,9 +61,11 @@
     /// The mounted element, if this is a Renderer primitive.
     var element: Renderer.ElementType?
     /// The first child node.
-    @_spi(TokamakCore) public var child: Fiber?
+    @_spi(TokamakCore)
+    public var child: Fiber?
     /// This node's right sibling.
-    @_spi(TokamakCore) public var sibling: Fiber?
+    @_spi(TokamakCore)
+    public var sibling: Fiber?
     /// An unowned reference to the parent node.
     ///
     /// Parent references are `unowned` (as opposed to `weak`)

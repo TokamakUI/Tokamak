@@ -16,8 +16,11 @@ import Foundation
 import TokamakShim
 
 struct StackDemo: View {
-  @State private var horizontalSpacing: CGFloat = 8
-  @State private var verticalSpacing: CGFloat = 8
+  @State
+  private var horizontalSpacing: CGFloat = 8
+
+  @State
+  private var verticalSpacing: CGFloat = 8
 
   var body: some View {
     VStack(spacing: verticalSpacing) {

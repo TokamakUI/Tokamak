@@ -87,25 +87,33 @@ public final class HTMLElement: FiberElement, CustomStringConvertible {
   }
 }
 
-@_spi(TokamakStaticHTML) public protocol HTMLConvertible {
+@_spi(TokamakStaticHTML)
+public protocol HTMLConvertible {
   var tag: String { get }
   var attributes: [HTMLAttribute: String] { get }
   var innerHTML: String? { get }
 }
 
 public extension HTMLConvertible {
-  @_spi(TokamakStaticHTML) var innerHTML: String? { nil }
+  @_spi(TokamakStaticHTML)
+  var innerHTML: String? { nil }
 }
 
-@_spi(TokamakStaticHTML) extension Text: HTMLConvertible {
-  @_spi(TokamakStaticHTML) public var innerHTML: String? {
+@_spi(TokamakStaticHTML)
+extension Text: HTMLConvertible {
+  @_spi(TokamakStaticHTML)
+  public var innerHTML: String? {
     _TextProxy(self).rawText
   }
 }
 
-@_spi(TokamakStaticHTML) extension VStack: HTMLConvertible {
-  @_spi(TokamakStaticHTML) public var tag: String { "div" }
-  @_spi(TokamakStaticHTML) public var attributes: [HTMLAttribute: String] {
+@_spi(TokamakStaticHTML)
+extension VStack: HTMLConvertible {
+  @_spi(TokamakStaticHTML)
+  public var tag: String { "div" }
+
+  @_spi(TokamakStaticHTML)
+  public var attributes: [HTMLAttribute: String] {
     let spacing = _VStackProxy(self).spacing
     return [
       "style": """
@@ -119,9 +127,13 @@ public extension HTMLConvertible {
   }
 }
 
-@_spi(TokamakStaticHTML) extension HStack: HTMLConvertible {
-  @_spi(TokamakStaticHTML) public var tag: String { "div" }
-  @_spi(TokamakStaticHTML) public var attributes: [HTMLAttribute: String] {
+@_spi(TokamakStaticHTML)
+extension HStack: HTMLConvertible {
+  @_spi(TokamakStaticHTML)
+  public var tag: String { "div" }
+
+  @_spi(TokamakStaticHTML)
+  public var attributes: [HTMLAttribute: String] {
     let spacing = _HStackProxy(self).spacing
     return [
       "style": """

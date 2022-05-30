@@ -15,7 +15,8 @@
 import TokamakShim
 
 public struct ToggleDemo: View {
-  @State var checked = false
+  @State
+  var checked = false
 
   public var body: some View {
     VStack {

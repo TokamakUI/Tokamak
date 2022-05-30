@@ -129,29 +129,49 @@ public extension GraphicsContext {
     }
   }
 
-  @frozen struct ShadowOptions: OptionSet {
+  @frozen
+  struct ShadowOptions: OptionSet {
     public let rawValue: UInt32
+
     @inlinable
     public init(rawValue: UInt32) { self.rawValue = rawValue }
-    @inlinable public static var shadowAbove: Self { Self(rawValue: 1 << 0) }
-    @inlinable public static var shadowOnly: Self { Self(rawValue: 1 << 1) }
-    @inlinable public static var invertsAlpha: Self { Self(rawValue: 1 << 2) }
-    @inlinable public static var disablesGroup: Self { Self(rawValue: 1 << 3) }
+
+    @inlinable
+    public static var shadowAbove: Self { Self(rawValue: 1 << 0) }
+
+    @inlinable
+    public static var shadowOnly: Self { Self(rawValue: 1 << 1) }
+
+    @inlinable
+    public static var invertsAlpha: Self { Self(rawValue: 1 << 2) }
+
+    @inlinable
+    public static var disablesGroup: Self { Self(rawValue: 1 << 3) }
   }
 
-  @frozen struct BlurOptions: OptionSet {
+  @frozen
+  struct BlurOptions: OptionSet {
     public let rawValue: UInt32
+
     @inlinable
     public init(rawValue: UInt32) { self.rawValue = rawValue }
-    @inlinable public static var opaque: Self { Self(rawValue: 1 << 0) }
-    @inlinable public static var dithersResult: Self { Self(rawValue: 1 << 1) }
+
+    @inlinable
+    public static var opaque: Self { Self(rawValue: 1 << 0) }
+
+    @inlinable
+    public static var dithersResult: Self { Self(rawValue: 1 << 1) }
   }
 
-  @frozen struct FilterOptions: OptionSet {
+  @frozen
+  struct FilterOptions: OptionSet {
     public let rawValue: UInt32
+
     @inlinable
     public init(rawValue: UInt32) { self.rawValue = rawValue }
-    @inlinable public static var linearColor: Self { Self(rawValue: 1 << 0) }
+
+    @inlinable
+    public static var linearColor: Self { Self(rawValue: 1 << 0) }
   }
 
   mutating func addFilter(

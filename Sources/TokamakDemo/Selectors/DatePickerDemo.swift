@@ -19,7 +19,8 @@ import struct Foundation.Date
 import TokamakShim
 
 struct DatePickerDemo: View {
-  @State private var date = Date()
+  @State
+  private var date = Date()
 
   var body: some View {
     VStack {

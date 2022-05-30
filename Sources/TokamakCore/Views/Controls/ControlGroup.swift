@@ -17,7 +17,9 @@
 
 public struct ControlGroup<Content>: View where Content: View {
   let content: Content
-  @Environment(\.controlGroupStyle) var style
+
+  @Environment(\.controlGroupStyle)
+  var style
 
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()

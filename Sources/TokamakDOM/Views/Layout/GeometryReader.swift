@@ -39,12 +39,14 @@ struct _GeometryReader<Content: View>: View {
     var observerRef: JSObject?
 
     /// The last known size of the `observedNodeRef` DOM node.
-    @Published var size: CGSize?
+    @Published
+    var size: CGSize?
   }
 
   let content: (GeometryProxy) -> Content
 
-  @StateObject private var state = State()
+  @StateObject
+  private var state = State()
 
   var body: some View {
     HTML("div", ["class": "_tokamak-geometryreader"]) {

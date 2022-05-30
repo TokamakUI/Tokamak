@@ -37,11 +37,13 @@ struct TagValueTraitKey<V>: _ViewTraitKey where V: Hashable {
     case tagged(V)
   }
 
-  @inlinable static var defaultValue: Value { .untagged }
+  @inlinable
+  static var defaultValue: Value { .untagged }
 }
 
 @usableFromInline
 struct IsAuxiliaryContentTraitKey: _ViewTraitKey {
-  @inlinable static var defaultValue: Bool { false }
+  @inlinable
+  static var defaultValue: Bool { false }
   @usableFromInline typealias Value = Bool
 }

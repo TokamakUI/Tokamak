@@ -16,7 +16,8 @@
 //
 
 /// A `ShapeStyle` that provides the `primary`, `secondary`, `tertiary`, and `quaternary` styles.
-@frozen public struct HierarchicalShapeStyle: ShapeStyle {
+@frozen
+public struct HierarchicalShapeStyle: ShapeStyle {
   @usableFromInline
   internal var id: UInt32
 

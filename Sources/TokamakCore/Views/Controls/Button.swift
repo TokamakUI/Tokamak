@@ -40,7 +40,8 @@ public struct Button<Label>: View where Label: View {
   let action: () -> ()
   let role: ButtonRole?
 
-  @Environment(\.buttonStyle) var buttonStyle
+  @Environment(\.buttonStyle)
+  var buttonStyle
 
   public init(action: @escaping () -> (), @ViewBuilder label: () -> Label) {
     self.init(role: nil, action: action, label: label)
@@ -84,7 +85,8 @@ public struct _PrimitiveButtonStyleBody<Label>: View where Label: View {
     anyStyle = .init(style)
   }
 
-  @Environment(\.controlSize) public var controlSize
+  @Environment(\.controlSize)
+  public var controlSize
 
   public var body: Never {
     neverBody("_PrimitiveButtonStyleBody")
@@ -99,7 +101,9 @@ public struct _Button<Label>: View where Label: View {
   public let label: Label
   public let role: ButtonRole?
   public let action: () -> ()
-  @State public var isPressed = false
+
+  @State
+  public var isPressed = false
 
   let anyStyle: AnyButtonStyle
   public var style: Any.Type { anyStyle.type }

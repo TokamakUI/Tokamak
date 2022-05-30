@@ -24,7 +24,8 @@ extension UnsafeMutablePointer where Pointee == GtkContainer {
     _ closure: @escaping (UnsafeMutablePointer<GtkWidget>?) -> ()
   ) {
     let closureBox = Unmanaged.passRetained(SingleParamClosureBox(closure)).toOpaque()
-    let handler: @convention(c) (UnsafeMutablePointer<GtkWidget>?, UnsafeRawPointer)
+    let handler: @convention(c)
+      (UnsafeMutablePointer<GtkWidget>?, UnsafeRawPointer)
       -> Bool = { (ref: UnsafeMutablePointer<GtkWidget>?, data: UnsafeRawPointer) -> Bool in
         let unpackedAction = Unmanaged<SingleParamClosureBox<UnsafeMutablePointer<GtkWidget>?, ()>>
           .fromOpaque(data)

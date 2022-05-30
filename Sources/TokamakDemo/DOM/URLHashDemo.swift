@@ -22,7 +22,8 @@ private let window = JSObject.global.window.object!
 private final class HashState: ObservableObject {
   var onHashChange: JSClosure!
 
-  @Published var currentHash = location["hash"].string!
+  @Published
+  var currentHash = location["hash"].string!
 
   init() {
     let onHashChange = JSClosure { [weak self] _ in
@@ -43,7 +44,8 @@ private final class HashState: ObservableObject {
 }
 
 struct URLHashDemo: View {
-  @StateObject private var hashState = HashState()
+  @StateObject
+  private var hashState = HashState()
 
   var body: some View {
     VStack {

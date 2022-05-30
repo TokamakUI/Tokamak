@@ -16,13 +16,15 @@
 //
 
 public final class NavigationContext: ObservableObject {
-  @Published var destination = NavigationLinkDestination(EmptyView())
+  @Published
+  var destination = NavigationLinkDestination(EmptyView())
 }
 
 public struct NavigationView<Content>: _PrimitiveView where Content: View {
   let content: Content
 
-  @StateObject var context = NavigationContext()
+  @StateObject
+  var context = NavigationContext()
 
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()

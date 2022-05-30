@@ -23,11 +23,15 @@ public struct _PickerContainer<
 >: _PrimitiveView,
   _PickerContainerProtocol
 {
-  @Binding public var selection: SelectionValue
+  @Binding
+  public var selection: SelectionValue
+
   public let label: Label
   public let content: Content
   public let elements: [_AnyIDView]
-  @Environment(\.pickerStyle) public var style
+
+  @Environment(\.pickerStyle)
+  public var style
 
   public init(
     selection: Binding<SelectionValue>,
@@ -45,7 +49,8 @@ public struct _PickerContainer<
 public struct _PickerElement: _PrimitiveView {
   public let valueIndex: Int?
   public let content: AnyView
-  @Environment(\.pickerStyle) public var style
+  @Environment(\.pickerStyle)
+  public var style
 }
 
 public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View {
