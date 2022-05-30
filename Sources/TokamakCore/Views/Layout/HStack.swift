@@ -17,13 +17,6 @@
 
 import Foundation
 
-/// An alignment position along the vertical axis.
-public enum VerticalAlignment: Equatable {
-  case top
-  case center
-  case bottom
-}
-
 public let defaultStackSpacing: CGFloat = 8
 
 /// A view that arranges its children in a horizontal line.

@@ -15,7 +15,10 @@
 //  Created by Carson Katri on 2/15/22.
 //
 
-/// A reconciler modeled after React's [Fiber reconciler](https://reactjs.org/docs/faq-internals.html#what-is-react-fiber)
+import Foundation
+
+/// A reconciler modeled after React's
+/// [Fiber reconciler](https://reactjs.org/docs/faq-internals.html#what-is-react-fiber)
 public final class FiberReconciler<Renderer: FiberRenderer> {
   /// The root node in the `Fiber` tree that represents the `View`s currently rendered on screen.
   @_spi(TokamakCore) public var current: Fiber!
@@ -27,113 +30,43 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
   /// The `FiberRenderer` used to create and update the `Element`s on screen.
   public let renderer: Renderer
 
+  struct RootView<Content: View>: View {
+    let content: Content
+    let renderer: Renderer
+
+    var environment: EnvironmentValues {
+      var environment = renderer.defaultEnvironment
+      environment.measureText = renderer.measureText
+      return environment
+    }
+
+    var body: some View {
+      content
+        .environmentValues(environment)
+    }
+
+    static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
+      .init(
+        inputs: inputs,
+        layoutComputer: { _ in RootLayoutComputer(sceneSize: inputs.content.renderer.sceneSize) }
+      )
+    }
+  }
+
   public init<V: View>(_ renderer: Renderer, _ view: V) {
     self.renderer = renderer
-    var view = view.environmentValues(renderer.defaultEnvironment)
+    var view = RootView(content: view, renderer: renderer)
     current = .init(
       &view,
       element: renderer.rootElement,
       parent: nil,
       elementParent: nil,
-      childIndex: 0,
+      elementIndex: 0,
       reconciler: self
     )
     // Start by building the initial tree.
     alternate = current.createAndBindAlternate?()
     reconcile(from: current)
-  }
-
-  /// Convert the first level of children of a `View` into a linked list of `Fiber`s.
-  struct TreeReducer: ViewReducer {
-    final class Result {
-      // For references
-      let fiber: Fiber?
-      let visitChildren: (TreeReducer.Visitor) -> ()
-      unowned var parent: Result?
-      var child: Result?
-      var sibling: Result?
-      var newContent: Renderer.ElementType.Content?
-
-      // For reducing
-      var childrenCount: Int = 0
-      var lastSibling: Result?
-      var nextExisting: Fiber?
-      var nextExistingAlternate: Fiber?
-
-      init(
-        fiber: Fiber?,
-        visitChildren: @escaping (TreeReducer.Visitor) -> (),
-        parent: Result?,
-        child: Fiber?,
-        alternateChild: Fiber?,
-        newContent: Renderer.ElementType.Content? = nil
-      ) {
-        self.fiber = fiber
-        self.visitChildren = visitChildren
-        self.parent = parent
-        nextExisting = child
-        nextExistingAlternate = alternateChild
-        self.newContent = newContent
-      }
-    }
-
-    static func reduce<V>(into partialResult: inout Result, nextView: V) where V: View {
-      // Create the node and its element.
-      var nextView = nextView
-      let resultChild: Result
-      if let existing = partialResult.nextExisting {
-        // If a fiber already exists, simply update it with the new view.
-        let newContent = existing.update(
-          with: &nextView,
-          childIndex: partialResult.childrenCount
-        )
-        resultChild = Result(
-          fiber: existing,
-          visitChildren: nextView._visitChildren,
-          parent: partialResult,
-          child: existing.child,
-          alternateChild: existing.alternate?.child,
-          newContent: newContent
-        )
-        partialResult.nextExisting = existing.sibling
-      } else {
-        // Otherwise, create a new fiber for this child.
-        let fiber = Fiber(
-          &nextView,
-          element: partialResult.nextExistingAlternate?.element,
-          parent: partialResult.fiber,
-          elementParent: partialResult.fiber?.element != nil
-            ? partialResult.fiber
-            : partialResult.fiber?.elementParent,
-          childIndex: partialResult.childrenCount,
-          reconciler: partialResult.fiber?.reconciler
-        )
-        // If a fiber already exists for an alternate, link them.
-        if let alternate = partialResult.nextExistingAlternate {
-          fiber.alternate = alternate
-          partialResult.nextExistingAlternate = alternate.sibling
-        }
-        resultChild = Result(
-          fiber: fiber,
-          visitChildren: nextView._visitChildren,
-          parent: partialResult,
-          child: nil,
-          alternateChild: fiber.alternate?.child
-        )
-      }
-      // Keep track of the index of the child so the LayoutComputer can propose sizes.
-      partialResult.childrenCount += 1
-      // Get the last child element we've processed, and add the new child as its sibling.
-      if let lastSibling = partialResult.lastSibling {
-        lastSibling.fiber?.sibling = resultChild.fiber
-        lastSibling.sibling = resultChild
-      } else {
-        // Otherwise setup the first child
-        partialResult.fiber?.child = resultChild.fiber
-        partialResult.child = resultChild
-      }
-      partialResult.lastSibling = resultChild
-    }
   }
 
   final class ReconcilerVisitor: ViewVisitor {
@@ -145,6 +78,25 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     init(root: Fiber, reconciler: FiberReconciler<Renderer>) {
       self.reconciler = reconciler
       currentRoot = root
+    }
+
+    /// A `ViewVisitor` that proposes a size for the `View` represented by the fiber `node`.
+    struct ProposeSizeVisitor: ViewVisitor {
+      let node: Fiber
+      let layoutContexts: [ObjectIdentifier: LayoutContext]
+
+      func visit<V>(_ view: V) where V: View {
+        // Ask the parent what space is available.
+        let proposedSize = node.elementParent?.outputs.layoutComputer.proposeSize(
+          for: view,
+          at: node.elementIndex ?? 0,
+          in: node.elementParent.flatMap { layoutContexts[ObjectIdentifier($0)] }
+            ?? .init(children: [])
+        ) ?? .zero
+        // Make our layout computer using that size.
+        node.outputs.layoutComputer = node.outputs.makeLayoutComputer(proposedSize)
+        node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
+      }
     }
 
     /// Walk the current tree, recomputing at each step to check for discrepancies.
@@ -201,7 +153,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         visitChildren: view._visitChildren,
         parent: nil,
         child: alternateRoot?.child,
-        alternateChild: currentRoot.child
+        alternateChild: currentRoot.child,
+        elementIndices: [:],
+        layoutContexts: [:]
       )
       var node = rootResult
 
@@ -209,14 +163,18 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       /// we are currently at. This ensures we place children in the correct order, even if they are
       /// at different levels in the `View` tree.
       var elementIndices = [ObjectIdentifier: Int]()
+      /// The `LayoutContext` for each parent view.
+      var layoutContexts = [ObjectIdentifier: LayoutContext]()
+      /// The (potentially nested) children of an `elementParent` with `element` values in order.
+      /// Used to position children in the correct order.
+      var elementChildren = [ObjectIdentifier: [Fiber]]()
 
       /// Compare `node` with its alternate, and add any mutations to the list.
       func reconcile(_ node: TreeReducer.Result) {
         if let element = node.fiber?.element,
+           let index = node.fiber?.elementIndex,
            let parent = node.fiber?.elementParent?.element
         {
-          let key = ObjectIdentifier(parent)
-          let index = elementIndices[key, default: 0]
           if node.fiber?.alternate == nil { // This didn't exist before (no alternate)
             mutations.append(.insert(element: element, parent: parent, index: index))
           } else if node.fiber?.typeInfo?.type != node.fiber?.alternate?.typeInfo?.type,
@@ -228,75 +186,221 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
                     newContent != element.content
           {
             // This is the same type of view, but its backing data has changed.
-            mutations.append(.update(previous: element, newContent: newContent))
+            mutations.append(.update(
+              previous: element,
+              newContent: newContent,
+              geometry: node.fiber?.geometry ?? .init(
+                origin: .init(origin: .zero),
+                dimensions: .init(size: .zero, alignmentGuides: [:])
+              )
+            ))
           }
-          elementIndices[key] = index + 1
         }
       }
 
-      // The main reconciler loop.
-      while true {
-        // Perform work on the node.
-        reconcile(node)
+      /// Ask the `LayoutComputer` for the fiber's `elementParent` to propose a size.
+      func proposeSize(for node: Fiber) {
+        guard node.element != nil else { return }
 
-        // Compute the children of the node.
-        let reducer = TreeReducer.Visitor(initialResult: node)
-        node.visitChildren(reducer)
+        // Use the visitor so we can pass the correct View type to the function.
+        node.visitView(ProposeSizeVisitor(node: node, layoutContexts: layoutContexts))
+      }
 
-        // Setup the alternate if it doesn't exist yet.
-        if node.fiber?.alternate == nil {
-          _ = node.fiber?.createAndBindAlternate?()
+      /// Request a size from the fiber's `elementParent`.
+      func size(_ node: Fiber) {
+        guard node.element != nil,
+              let elementParent = node.elementParent
+        else { return }
+
+        let key = ObjectIdentifier(elementParent)
+        let elementIndex = node.elementIndex ?? 0
+        var parentContext = layoutContexts[key, default: .init(children: [])]
+
+        // Using our LayoutComputer, compute our required size.
+        // This does not have to respect the elementParent's proposed size.
+        let size = node.outputs.layoutComputer.requestSize(
+          in: layoutContexts[ObjectIdentifier(node), default: .init(children: [])]
+        )
+        let dimensions = ViewDimensions(size: size, alignmentGuides: [:])
+        let child = LayoutContext.Child(index: elementIndex, dimensions: dimensions)
+
+        // Add ourself to the parent's LayoutContext.
+        parentContext.children.append(child)
+        layoutContexts[key] = parentContext
+
+        // Update our geometry
+        node.geometry = .init(
+          origin: node.geometry?.origin ?? .init(origin: .zero),
+          dimensions: dimensions
+        )
+      }
+
+      /// Request a position from the parent on the way back up.
+      func position(_ node: Fiber) {
+        // FIXME: Add alignmentGuide modifier to override defaults and pass the correct guide data.
+        guard let element = node.element,
+              let elementParent = node.elementParent
+        else { return }
+
+        let key = ObjectIdentifier(elementParent)
+        let elementIndex = node.elementIndex ?? 0
+        let context = layoutContexts[key, default: .init(children: [])]
+
+        // Find our child element in our parent's LayoutContext (as added by `size(_:)`).
+        guard let child = context.children.first(where: { $0.index == elementIndex })
+        else { return }
+
+        // Ask our parent to position us in it's coordinate space (given our requested size).
+        let position = elementParent.outputs.layoutComputer.position(child, in: context)
+        let geometry = ViewGeometry(
+          origin: .init(origin: position),
+          dimensions: child.dimensions
+        )
+
+        // Push a layout mutation if needed.
+        if geometry != node.alternate?.geometry {
+          mutations.append(.layout(element: element, geometry: geometry))
         }
+        // Update ours and our alternate's geometry
+        node.geometry = geometry
+        node.alternate?.geometry = geometry
+      }
 
-        // Walk all down all the way into the deepest child.
-        if let child = reducer.result.child {
-          node = child
-          continue
-        } else if let alternateChild = node.fiber?.alternate?.child {
-          walk(alternateChild) { node in
-            if let element = node.element,
-               let parent = node.elementParent?.element
+      /// The main reconciler loop.
+      func mainLoop() {
+        while true {
+          // Perform work on the node.
+          reconcile(node)
+
+          node.elementIndices = elementIndices
+
+          // Compute the children of the node.
+          let reducer = TreeReducer.Visitor(initialResult: node)
+          node.visitChildren(reducer)
+          elementIndices = node.elementIndices
+
+          // As we walk down the tree, propose a size for each View.
+          if reconciler.renderer.shouldLayout,
+             let fiber = node.fiber
+          {
+            proposeSize(for: fiber)
+            if fiber.element != nil,
+               let key = fiber.elementParent.map(ObjectIdentifier.init)
             {
-              // The alternate has a child that no longer exists.
-              // Removals must happen in reverse order, so a child element
-              // is removed before its parent.
-              self.mutations.insert(.remove(element: element, parent: parent), at: 0)
+              elementChildren[key] = elementChildren[key, default: []] + [fiber]
             }
-            return true
           }
-        }
-        if reducer.result.child == nil {
-          node.fiber?.child = nil // Make sure we clear the child if there was none
-        }
 
-        // If we've made it back to the root, then exit.
-        if node === rootResult {
-          return
-        }
-        // Now walk back up the tree until we find a sibling.
-        while node.sibling == nil {
-          var alternateSibling = node.fiber?.alternate?.sibling
-          while alternateSibling != nil { // The alternate had siblings that no longer exist.
-            if let element = alternateSibling?.element,
-               let parent = alternateSibling?.elementParent?.element
-            {
-              // Removals happen in reverse order, so a child element is removed before
-              // its parent.
-              mutations.insert(.remove(element: element, parent: parent), at: 0)
-            }
-            alternateSibling = alternateSibling?.sibling
+          // Setup the alternate if it doesn't exist yet.
+          if node.fiber?.alternate == nil {
+            _ = node.fiber?.createAndBindAlternate?()
           }
-          // When we walk back to the root, exit
-          guard let parent = node.parent,
-                parent !== currentRoot.alternate
-          else {
+
+          // Walk all down all the way into the deepest child.
+          if let child = reducer.result.child {
+            node = child
+            continue
+          } else if let alternateChild = node.fiber?.alternate?.child {
+            // The alternate has a child that no longer exists.
+            walk(alternateChild) { node in
+              if let element = node.element,
+                 let parent = node.elementParent?.element
+              {
+                // Removals must happen in reverse order, so a child element
+                // is removed before its parent.
+                self.mutations.insert(.remove(element: element, parent: parent), at: 0)
+              }
+              return true
+            }
+          }
+          if reducer.result.child == nil {
+            // Make sure we clear the child if there was none
+            node.fiber?.child = nil
+            node.fiber?.alternate?.child = nil
+          }
+
+          // If we've made it back to the root, then exit.
+          if node === rootResult {
             return
           }
-          node = parent
+
+          // Now walk back up the tree until we find a sibling.
+          while node.sibling == nil {
+            var alternateSibling = node.fiber?.alternate?.sibling
+            while alternateSibling != nil { // The alternate had siblings that no longer exist.
+              if let element = alternateSibling?.element,
+                 let parent = alternateSibling?.elementParent?.element
+              {
+                // Removals happen in reverse order, so a child element is removed before
+                // its parent.
+                mutations.insert(.remove(element: element, parent: parent), at: 0)
+              }
+              alternateSibling = alternateSibling?.sibling
+            }
+            // We `size` and `position` when we are walking back up the tree.
+            if reconciler.renderer.shouldLayout,
+               let fiber = node.fiber
+            {
+              // The `elementParent` proposed a size for this fiber on the way down.
+              // At this point all of this fiber's children have requested sizes.
+              // On the way back up, we tell our elementParent what size we want,
+              // based on our own requirements and the sizes required by our children.
+              size(fiber)
+              // Loop through each (potentially nested) child fiber with an `element`,
+              // and position them in our coordinate space. This ensures children are
+              // positioned in order.
+              if let elementChildren = elementChildren[ObjectIdentifier(fiber)] {
+                for elementChild in elementChildren {
+                  position(elementChild)
+                }
+              }
+            }
+            guard let parent = node.parent else { return }
+            // When we walk back to the root, exit
+            guard parent !== currentRoot.alternate else { return }
+            node = parent
+          }
+
+          // We also request `size` and `position` when we reach the bottom-most view that has a sibling.
+          // Sizing and positioning also happen when we have no sibling,
+          // as seen in the above loop.
+          if reconciler.renderer.shouldLayout,
+             let fiber = node.fiber
+          {
+            // Request a size from our `elementParent`.
+            size(fiber)
+            // Position our children in order.
+            if let elementChildren = elementChildren[ObjectIdentifier(fiber)] {
+              for elementChild in elementChildren {
+                position(elementChild)
+              }
+            }
+          }
+
+          // Walk across to the sibling, and repeat.
+          node = node.sibling!
         }
-        // Walk across to the sibling, and repeat.
-        // swiftlint:disable:next force_unwrap
-        node = node.sibling!
+      }
+      mainLoop()
+
+      if reconciler.renderer.shouldLayout {
+        // We continue to the very top to update all necessary positions.
+        var layoutNode = node.fiber?.child
+        while let current = layoutNode {
+          // We only need to re-position, because the size can't change if no state changed.
+          if let elementChildren = elementChildren[ObjectIdentifier(current)] {
+            for elementChild in elementChildren {
+              position(elementChild)
+            }
+          }
+          if current.sibling != nil {
+            // We also don't need to go deep into sibling children,
+            // because child positioning is relative to the parent.
+            layoutNode = current.sibling
+          } else {
+            layoutNode = current.parent
+          }
+        }
       }
     }
   }

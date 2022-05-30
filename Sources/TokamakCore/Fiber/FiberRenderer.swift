@@ -15,6 +15,8 @@
 //  Created by Carson Katri on 2/15/22.
 //
 
+import Foundation
+
 /// A renderer capable of performing mutations specified by a `FiberReconciler`.
 public protocol FiberRenderer {
   /// The element class this renderer uses.
@@ -27,6 +29,12 @@ public protocol FiberRenderer {
   var rootElement: ElementType { get }
   /// The smallest set of initial `EnvironmentValues` needed for this renderer to function.
   var defaultEnvironment: EnvironmentValues { get }
+  /// The size of the window we are rendering in.
+  var sceneSize: CGSize { get }
+  /// Whether layout is enabled for this renderer.
+  var shouldLayout: Bool { get }
+  /// Calculate the size of `Text` in `environment` for layout.
+  func measureText(_ text: Text, proposedSize: CGSize, in environment: EnvironmentValues) -> CGSize
 }
 
 public extension FiberRenderer {
@@ -35,5 +43,18 @@ public extension FiberRenderer {
   @discardableResult
   func render<V: View>(_ view: V) -> FiberReconciler<Self> {
     .init(self, view)
+  }
+}
+
+extension EnvironmentValues {
+  private enum MeasureTextKey: EnvironmentKey {
+    static var defaultValue: (Text, CGSize, EnvironmentValues) -> CGSize {
+      { _, _, _ in .zero }
+    }
+  }
+
+  var measureText: (Text, CGSize, EnvironmentValues) -> CGSize {
+    get { self[MeasureTextKey.self] }
+    set { self[MeasureTextKey.self] = newValue }
   }
 }

@@ -15,6 +15,8 @@
 //  Created by Carson Katri on 2/6/22.
 //
 
+import Foundation
+@_spi(TokamakCore)
 import TokamakCore
 
 public final class HTMLElement: FiberElement, CustomStringConvertible {
@@ -31,10 +33,10 @@ public final class HTMLElement: FiberElement, CustomStringConvertible {
     var innerHTML: String?
     var children: [HTMLElement] = []
 
-    public init<V>(from primitiveView: V) where V: View {
+    public init<V>(from primitiveView: V, shouldLayout: Bool) where V: View {
       guard let primitiveView = primitiveView as? HTMLConvertible else { fatalError() }
       tag = primitiveView.tag
-      attributes = primitiveView.attributes
+      attributes = primitiveView.attributes(shouldLayout: shouldLayout)
       innerHTML = primitiveView.innerHTML
     }
 
@@ -89,7 +91,7 @@ public final class HTMLElement: FiberElement, CustomStringConvertible {
 
 @_spi(TokamakStaticHTML) public protocol HTMLConvertible {
   var tag: String { get }
-  var attributes: [HTMLAttribute: String] { get }
+  func attributes(shouldLayout: Bool) -> [HTMLAttribute: String]
   var innerHTML: String? { get }
 }
 
@@ -97,15 +99,10 @@ public extension HTMLConvertible {
   @_spi(TokamakStaticHTML) var innerHTML: String? { nil }
 }
 
-@_spi(TokamakStaticHTML) extension Text: HTMLConvertible {
-  @_spi(TokamakStaticHTML) public var innerHTML: String? {
-    _TextProxy(self).rawText
-  }
-}
-
 @_spi(TokamakStaticHTML) extension VStack: HTMLConvertible {
   @_spi(TokamakStaticHTML) public var tag: String { "div" }
-  @_spi(TokamakStaticHTML) public var attributes: [HTMLAttribute: String] {
+  @_spi(TokamakStaticHTML)
+  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
     let spacing = _VStackProxy(self).spacing
     return [
       "style": """
@@ -121,7 +118,8 @@ public extension HTMLConvertible {
 
 @_spi(TokamakStaticHTML) extension HStack: HTMLConvertible {
   @_spi(TokamakStaticHTML) public var tag: String { "div" }
-  @_spi(TokamakStaticHTML) public var attributes: [HTMLAttribute: String] {
+  @_spi(TokamakStaticHTML)
+  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
     let spacing = _HStackProxy(self).spacing
     return [
       "style": """
@@ -138,6 +136,8 @@ public extension HTMLConvertible {
 public struct StaticHTMLFiberRenderer: FiberRenderer {
   public let rootElement: HTMLElement
   public let defaultEnvironment: EnvironmentValues
+  public let sceneSize: CGSize = .zero
+  public let shouldLayout: Bool = false
 
   public init() {
     rootElement = .init(tag: "body", attributes: [:], innerHTML: nil, children: [])
@@ -161,9 +161,19 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
         guard let index = parent.content.children.firstIndex(where: { $0 === previous })
         else { continue }
         parent.content.children[index] = replacement
-      case let .update(previous, newContent):
+      case let .update(previous, newContent, _):
         previous.update(with: newContent)
+      case let .layout(element, data):
+        print("Received layout message \(data) for \(element)")
       }
     }
+  }
+
+  public func measureText(
+    _ text: Text,
+    proposedSize: CGSize,
+    in environment: EnvironmentValues
+  ) -> CGSize {
+    .zero
   }
 }

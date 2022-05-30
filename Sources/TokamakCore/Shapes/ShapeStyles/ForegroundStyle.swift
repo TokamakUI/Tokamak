@@ -73,7 +73,7 @@ public extension View {
 
 @frozen public struct _ForegroundStyleModifier<
   Primary, Secondary, Tertiary
->: ViewModifier, EnvironmentModifier
+>: ViewModifier, _EnvironmentModifier
   where Primary: ShapeStyle, Secondary: ShapeStyle, Tertiary: ShapeStyle
 {
   public var primary: Primary

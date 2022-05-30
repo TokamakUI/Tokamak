@@ -23,6 +23,8 @@ extension VerticalAlignment {
       return "center"
     case .bottom:
       return "end"
+    default:
+      return "center"
     }
   }
 }

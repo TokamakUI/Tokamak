@@ -16,6 +16,23 @@ public protocol ViewModifier {
   typealias Content = _ViewModifier_Content<Self>
   associatedtype Body: View
   func body(content: Content) -> Self.Body
+
+  static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs
+  func _visitChildren<V>(_ visitor: V, content: Content) where V: ViewVisitor
+}
+
+public extension ViewModifier {
+  static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
+    .init(inputs: inputs)
+  }
+
+  func _visitChildren<V>(_ visitor: V, content: Content) where V: ViewVisitor {
+    if Body.self == Never.self {
+      content.visitChildren(visitor)
+    } else {
+      visitor.visit(body(content: content))
+    }
+  }
 }
 
 public struct _ViewModifier_Content<Modifier>: View

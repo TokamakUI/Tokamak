@@ -15,7 +15,10 @@
 //  Created by Carson Katri on 2/15/22.
 //
 
-@_spi(TokamakCore) public extension FiberReconciler {
+import Foundation
+
+@_spi(TokamakCore)
+public extension FiberReconciler {
   /// A manager for a single `View`.
   ///
   /// There are always 2 `Fiber`s for every `View` in the tree,
@@ -58,6 +61,8 @@
     var id: Identity?
     /// The mounted element, if this is a Renderer primitive.
     var element: Renderer.ElementType?
+    /// The index of this element in its elementParent
+    var elementIndex: Int?
     /// The first child node.
     @_spi(TokamakCore) public var child: Fiber?
     /// This node's right sibling.
@@ -74,6 +79,9 @@
     var typeInfo: TypeInfo?
     /// Boxes that store `State` data.
     var state: [PropertyInfo: MutableStorage] = [:]
+
+    /// The computed dimensions and origin.
+    var geometry: ViewGeometry?
 
     /// The WIP node if this is current, or the current node if this is WIP.
     weak var alternate: Fiber?
@@ -107,7 +115,7 @@
       element: Renderer.ElementType?,
       parent: Fiber?,
       elementParent: Fiber?,
-      childIndex: Int,
+      elementIndex: Int?,
       reconciler: FiberReconciler<Renderer>?
     ) {
       self.reconciler = reconciler
@@ -117,14 +125,16 @@
       self.elementParent = elementParent
       typeInfo = TokamakCore.typeInfo(of: V.self)
 
-      let viewInputs = ViewInputs<V>(
-        view: view,
-        proposedSize: parent?.outputs.layoutComputer?.proposeSize(for: view, at: childIndex),
-        environment: parent?.outputs.environment ?? .init(.init())
-      )
-      state = bindProperties(to: &view, typeInfo, viewInputs)
+      let environment = parent?.outputs.environment ?? .init(.init())
+      state = bindProperties(to: &view, typeInfo, environment.environment)
       self.view = view
-      outputs = V._makeView(viewInputs)
+      outputs = V._makeView(
+        .init(
+          content: view,
+          environment: environment
+        )
+      )
+
       visitView = { [weak self] in
         guard let self = self else { return }
         // swiftlint:disable:next force_cast
@@ -134,7 +144,14 @@
       if let element = element {
         self.element = element
       } else if Renderer.isPrimitive(view) {
-        self.element = .init(from: .init(from: view))
+        self.element = .init(
+          from: .init(from: view, shouldLayout: reconciler?.renderer.shouldLayout ?? false)
+        )
+      }
+
+      // Only specify an `elementIndex` if we have an element.
+      if self.element != nil {
+        self.elementIndex = elementIndex
       }
 
       let alternateView = view
@@ -198,7 +215,7 @@
     private func bindProperties<V: View>(
       to view: inout V,
       _ typeInfo: TypeInfo?,
-      _ viewInputs: ViewInputs<V>
+      _ environment: EnvironmentValues
     ) -> [PropertyInfo: MutableStorage] {
       guard let typeInfo = typeInfo else { return [:] }
 
@@ -215,7 +232,7 @@
           storage.setter = { box.setValue($0, with: $1) }
           value = storage
         } else if var environmentReader = value as? EnvironmentReader {
-          environmentReader.setContent(from: viewInputs.environment.environment)
+          environmentReader.setContent(from: environment)
           value = environmentReader
         }
         property.set(value: value, on: &view)
@@ -225,18 +242,20 @@
 
     func update<V: View>(
       with view: inout V,
-      childIndex: Int
+      elementIndex: Int?
     ) -> Renderer.ElementType.Content? {
       typeInfo = TokamakCore.typeInfo(of: V.self)
 
-      let viewInputs = ViewInputs<V>(
-        view: view,
-        proposedSize: parent?.outputs.layoutComputer?.proposeSize(for: view, at: childIndex),
-        environment: parent?.outputs.environment ?? .init(.init())
-      )
-      state = bindProperties(to: &view, typeInfo, viewInputs)
+      self.elementIndex = elementIndex
+
+      let environment = parent?.outputs.environment ?? .init(.init())
+      state = bindProperties(to: &view, typeInfo, environment.environment)
       self.view = view
-      outputs = V._makeView(viewInputs)
+      outputs = V._makeView(.init(
+        content: view,
+        environment: environment
+      ))
+
       visitView = { [weak self] in
         guard let self = self else { return }
         // swiftlint:disable:next force_cast
@@ -244,21 +263,29 @@
       }
 
       if Renderer.isPrimitive(view) {
-        return .init(from: view)
+        return .init(from: view, shouldLayout: reconciler?.renderer.shouldLayout ?? false)
       } else {
         return nil
       }
     }
 
     public var debugDescription: String {
-      flush()
+      if let text = view as? Text {
+        return "Text(\"\(text.storage.rawText)\")"
+      }
+      return typeInfo?.name ?? "Unknown"
     }
 
     private func flush(level: Int = 0) -> String {
       let spaces = String(repeating: " ", count: level)
+      let geometry = geometry ?? .init(
+        origin: .init(origin: .zero), dimensions: .init(size: .zero, alignmentGuides: [:])
+      )
       return """
       \(spaces)\(String(describing: typeInfo?.type ?? Any.self)
-        .split(separator: "<")[0])\(element != nil ? "(\(element!))" : "") {
+        .split(separator: "<")[0])\(element != nil ? "(\(element!))" : "") {\(element != nil ?
+        "\n\(spaces)geometry: \(geometry)" :
+        "")
       \(child?.flush(level: level + 2) ?? "")
       \(spaces)}
       \(sibling?.flush(level: level) ?? "")

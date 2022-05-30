@@ -15,6 +15,7 @@
 //  Created by Carson Katri on 4/5/22.
 //
 
+import Foundation
 @_spi(TokamakCore) import TokamakCore
 
 public protocol TestFiberPrimitive {
@@ -57,6 +58,18 @@ extension _PrimitiveButtonStyleBody: TestFiberPrimitive {
   }
 }
 
+extension _FrameLayout: TestFiberPrimitive {
+  public var attributes: [String: Any] {
+    ["width": width as Any, "height": height as Any]
+  }
+}
+
+extension ModifiedContent: TestFiberPrimitive where Modifier: TestFiberPrimitive {
+  public var attributes: [String: Any] {
+    modifier.attributes
+  }
+}
+
 public final class TestFiberElement: FiberElement, CustomStringConvertible {
   public struct Content: FiberElementContent, Equatable {
     let renderedValue: String
@@ -70,10 +83,14 @@ public final class TestFiberElement: FiberElement, CustomStringConvertible {
       self.closingTag = closingTag
     }
 
-    public init<V>(from primitiveView: V) where V: View {
+    public init<V>(from primitiveView: V, shouldLayout: Bool) where V: View {
       guard let primitiveView = primitiveView as? TestFiberPrimitive else { fatalError() }
+      let attributes = primitiveView.attributes
+        .sorted(by: { $0.key < $1.key })
+        .map { "\($0.key)=\"\(String(describing: $0.value))\"" }
+        .joined(separator: " ")
       renderedValue =
-        "<\(primitiveView.tag) \(primitiveView.attributes.sorted(by: { $0.key < $1.key }).map { "\($0.key)=\"\(String(describing: $0.value))\"" }.joined(separator: " "))>"
+        "<\(primitiveView.tag) \(attributes)>"
       closingTag = "</\(primitiveView.tag)>"
     }
   }
@@ -100,12 +117,25 @@ public final class TestFiberElement: FiberElement, CustomStringConvertible {
 }
 
 public struct TestFiberRenderer: FiberRenderer {
+  public let sceneSize: CGSize
+  public let shouldLayout: Bool
+
+  public func measureText(
+    _ text: Text,
+    proposedSize: CGSize,
+    in environment: EnvironmentValues
+  ) -> CGSize {
+    proposedSize
+  }
+
   public typealias ElementType = TestFiberElement
 
   public let rootElement: ElementType
 
-  public init(_ rootElement: ElementType) {
+  public init(_ rootElement: ElementType, size: CGSize, shouldLayout: Bool = true) {
     self.rootElement = rootElement
+    sceneSize = size
+    self.shouldLayout = shouldLayout
   }
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {
@@ -115,9 +145,9 @@ public struct TestFiberRenderer: FiberRenderer {
   public func commit(_ mutations: [Mutation<Self>]) {
     for mutation in mutations {
       switch mutation {
-      case .insert, .remove, .replace:
+      case .insert, .remove, .replace, .layout:
         break
-      case let .update(previous, newContent):
+      case let .update(previous, newContent, _):
         previous.update(with: newContent)
       }
     }

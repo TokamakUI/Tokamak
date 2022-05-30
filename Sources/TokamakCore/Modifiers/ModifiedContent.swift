@@ -13,7 +13,7 @@
 // limitations under the License.
 
 protocol ModifierContainer {
-  var environmentModifier: EnvironmentModifier? { get }
+  var environmentModifier: _EnvironmentModifier? { get }
 }
 
 protocol ModifiedContentProtocol {}
@@ -32,7 +32,7 @@ public struct ModifiedContent<Content, Modifier>: ModifiedContentProtocol {
 }
 
 extension ModifiedContent: ModifierContainer {
-  var environmentModifier: EnvironmentModifier? { modifier as? EnvironmentModifier }
+  var environmentModifier: _EnvironmentModifier? { modifier as? _EnvironmentModifier }
 }
 
 extension ModifiedContent: EnvironmentReader where Modifier: EnvironmentReader {

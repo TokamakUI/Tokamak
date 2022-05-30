@@ -56,7 +56,7 @@ public extension View {
   }
 }
 
-@frozen public struct _BackgroundStyleModifier<Style>: ViewModifier, EnvironmentModifier,
+@frozen public struct _BackgroundStyleModifier<Style>: ViewModifier, _EnvironmentModifier,
   EnvironmentReader
   where Style: ShapeStyle
 {
