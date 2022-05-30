@@ -39,11 +39,18 @@ final class StackLayoutComputer: LayoutComputer {
         height: $0.height + $1.dimensions.height
       )
     }
-    let size = CGSize(
-      width: proposedSize.width - (axis == .horizontal ? used.width : 0),
-      height: proposedSize.height - (axis == .vertical ? used.height : 0)
-    )
-    return size
+    switch axis {
+    case .horizontal:
+      return .init(
+        width: proposedSize.width - used.width,
+        height: proposedSize.height
+      )
+    case .vertical:
+      return .init(
+        width: proposedSize.width,
+        height: proposedSize.height - used.height
+      )
+    }
   }
 
   func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint {
@@ -64,29 +71,18 @@ final class StackLayoutComputer: LayoutComputer {
     let maxDimensions = ViewDimensions(size: maxSize, alignmentGuides: [:])
     /// The gaps up to this point.
     let fitSpacing = CGFloat(child.index) * spacing
-    let position = CGPoint(
-      x: (
-        axis == .vertical
-          ? (maxDimensions[alignment.horizontal] - child.dimensions[alignment.horizontal])
-          : 0
+    switch axis {
+    case .horizontal:
+      return .init(
+        x: fitSize.width + fitSpacing,
+        y: maxDimensions[alignment.vertical] - child.dimensions[alignment.vertical]
       )
-        + (
-          axis == .horizontal
-            ? (fitSize.width + fitSpacing)
-            : 0
-        ),
-      y: (
-        axis == .horizontal
-          ? (maxDimensions[alignment.vertical] - child.dimensions[alignment.vertical])
-          : 0
+    case .vertical:
+      return .init(
+        x: maxDimensions[alignment.horizontal] - child.dimensions[alignment.horizontal],
+        y: fitSize.height + fitSpacing
       )
-        + (
-          axis == .vertical
-            ? (fitSize.height + fitSpacing)
-            : 0
-        )
-    )
-    return position
+    }
   }
 
   func requestSize(in context: LayoutContext) -> CGSize {
@@ -104,12 +100,18 @@ final class StackLayoutComputer: LayoutComputer {
     /// The combined gap size.
     let fitSpacing = CGFloat(context.children.count - 1) * spacing
 
-    return .init(
-      width: (axis == .vertical ? maxDimensions.width : 0) +
-        (axis == .horizontal ? (fitDimensions.width + fitSpacing) : 0),
-      height: (axis == .horizontal ? maxDimensions.height : 0) +
-        (axis == .vertical ? (fitDimensions.height + fitSpacing) : 0)
-    )
+    switch axis {
+    case .horizontal:
+      return .init(
+        width: fitDimensions.width + fitSpacing,
+        height: maxDimensions.height
+      )
+    case .vertical:
+      return .init(
+        width: maxDimensions.width,
+        height: fitDimensions.height + fitSpacing
+      )
+    }
   }
 }
 
