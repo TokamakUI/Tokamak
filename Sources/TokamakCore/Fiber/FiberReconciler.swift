@@ -314,7 +314,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
             }
           }
           if reducer.result.child == nil {
-            node.fiber?.child = nil // Make sure we clear the child if there was none
+            // Make sure we clear the child if there was none
+            node.fiber?.child = nil
+            node.fiber?.alternate?.child = nil
           }
 
           // If we've made it back to the root, then exit.
