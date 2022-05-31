@@ -59,7 +59,9 @@ public struct _AppConfiguration {
   }
 
   public enum Reconciler {
+    /// Use the `StackReconciler`.
     case stack
+    /// Use the `FiberReconciler` with layout steps optionally enabled.
     case fiber(useDynamicLayout: Bool = false)
   }
 }
