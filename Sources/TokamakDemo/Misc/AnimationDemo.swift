@@ -19,9 +19,14 @@ import Foundation
 import TokamakShim
 
 struct AnimationDemo: View {
-  @State private var delay: Double = 0
-  @State private var speed: Double = 1
-  @State private var on = false
+  @State
+  private var delay: Double = 0
+
+  @State
+  private var speed: Double = 1
+
+  @State
+  private var on = false
 
   enum AnimationStyle: String, Identifiable, CaseIterable {
     case easeIn, easeOut, easeInOut, spring
@@ -82,7 +87,8 @@ struct AnimationDemo: View {
     }
   }
 
-  @State private var foreverAnimation = false
+  @State
+  private var foreverAnimation = false
 
   var repeatedAnimationDemo: some View {
     VStack {

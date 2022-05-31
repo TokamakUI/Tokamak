@@ -24,7 +24,9 @@ public struct Canvas<Symbols> where Symbols: View {
   public var colorMode: ColorRenderingMode
   public var rendersAsynchronously: Bool
 
-  @Environment(\.self) public var _environment: EnvironmentValues
+  @Environment(\.self)
+  public var _environment: EnvironmentValues
+
   public func _makeContext(
     onOperation: @escaping (GraphicsContext._Storage, GraphicsContext._Storage._Operation) -> (),
     imageResolver: @escaping (Image, EnvironmentValues) -> GraphicsContext.ResolvedImage,

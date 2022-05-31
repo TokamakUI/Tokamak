@@ -17,7 +17,8 @@
 
 import Foundation
 
-@frozen public struct _ScaleEffect: GeometryEffect, Equatable {
+@frozen
+public struct _ScaleEffect: GeometryEffect, Equatable {
   public var scale: CGSize
   public var anchor: UnitPoint
 

@@ -40,14 +40,20 @@ public extension Animatable where Self.AnimatableData == EmptyAnimatableData {
   }
 }
 
-@frozen public struct EmptyAnimatableData: VectorArithmetic {
+@frozen
+public struct EmptyAnimatableData: VectorArithmetic {
   @inlinable
   public init() {}
-  @inlinable public static var zero: Self { .init() }
+
+  @inlinable
+  public static var zero: Self { .init() }
+
   @inlinable
   public static func += (lhs: inout Self, rhs: Self) {}
+
   @inlinable
   public static func -= (lhs: inout Self, rhs: Self) {}
+
   @inlinable
   public static func + (lhs: Self, rhs: Self) -> Self {
     .zero
@@ -60,11 +66,15 @@ public extension Animatable where Self.AnimatableData == EmptyAnimatableData {
 
   @inlinable
   public mutating func scale(by rhs: Double) {}
-  @inlinable public var magnitudeSquared: Double { .zero }
+
+  @inlinable
+  public var magnitudeSquared: Double { .zero }
+
   public static func == (a: Self, b: Self) -> Bool { true }
 }
 
-@frozen public struct AnimatablePair<First, Second>: VectorArithmetic
+@frozen
+public struct AnimatablePair<First, Second>: VectorArithmetic
   where First: VectorArithmetic, Second: VectorArithmetic
 {
   public var first: First
@@ -81,7 +91,8 @@ public extension Animatable where Self.AnimatableData == EmptyAnimatableData {
     set { (first, second) = newValue }
   }
 
-  @_transparent public static var zero: Self {
+  @_transparent
+  public static var zero: Self {
     @_transparent get {
       .init(First.zero, Second.zero)
     }
@@ -115,7 +126,8 @@ public extension Animatable where Self.AnimatableData == EmptyAnimatableData {
     second.scale(by: rhs)
   }
 
-  @_transparent public var magnitudeSquared: Double {
+  @_transparent
+  public var magnitudeSquared: Double {
     @_transparent get {
       first.magnitudeSquared + second.magnitudeSquared
     }

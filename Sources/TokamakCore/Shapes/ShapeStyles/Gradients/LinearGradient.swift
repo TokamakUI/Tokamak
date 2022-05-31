@@ -17,7 +17,8 @@
 
 import Foundation
 
-@frozen public struct LinearGradient: ShapeStyle, View {
+@frozen
+public struct LinearGradient: ShapeStyle, View {
   internal var gradient: Gradient
   internal var startPoint: UnitPoint
   internal var endPoint: UnitPoint

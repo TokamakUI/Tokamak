@@ -15,7 +15,8 @@
 import TokamakShim
 
 struct TextEditorDemo: View {
-  @State var text = ""
+  @State
+  var text = ""
 
   var body: some View {
     Text("Word count: \(text.split(separator: " ").count)")

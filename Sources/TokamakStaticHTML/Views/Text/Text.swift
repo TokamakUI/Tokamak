@@ -159,8 +159,10 @@ extension Text: AnyHTML {
   }
 }
 
-@_spi(TokamakStaticHTML) extension Text: HTMLConvertible {
-  @_spi(TokamakStaticHTML) public var innerHTML: String? {
+@_spi(TokamakStaticHTML)
+extension Text: HTMLConvertible {
+  @_spi(TokamakStaticHTML)
+  public var innerHTML: String? {
     innerHTML(shouldSortAttributes: false)
   }
 

@@ -36,7 +36,8 @@ struct Confetti: View {
     Color.orange,
     Color.yellow,
   ]
-  @State private var startDate = Date()
+  @State
+  private var startDate = Date()
   private let pieces: [Piece] = (0..<50).map { _ in
     Piece(
       point: CGPoint(x: CGFloat.random(in: 0...1), y: CGFloat.random(in: 0...1)),

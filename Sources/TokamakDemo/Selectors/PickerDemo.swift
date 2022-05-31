@@ -17,7 +17,8 @@ import TokamakShim
 struct PickerDemo: View {
   var textStyles = Font.TextStyle.allCases
 
-  @State private var selection = 0
+  @State
+  private var selection = 0
 
   var body: some View {
     Picker(

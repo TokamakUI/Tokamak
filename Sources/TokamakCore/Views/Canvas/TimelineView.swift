@@ -81,7 +81,8 @@ public extension TimelineSchedule where Self == PeriodicTimelineSchedule {
 }
 
 public extension TimelineSchedule where Self == EveryMinuteTimelineSchedule {
-  @inlinable static var everyMinute: EveryMinuteTimelineSchedule { .init() }
+  @inlinable
+  static var everyMinute: EveryMinuteTimelineSchedule { .init() }
 }
 
 public extension TimelineSchedule {
@@ -155,7 +156,8 @@ public struct ExplicitTimelineSchedule<Entries>: TimelineSchedule where Entries:
 }
 
 public extension TimelineSchedule where Self == AnimationTimelineSchedule {
-  @inlinable static var animation: AnimationTimelineSchedule { .init() }
+  @inlinable
+  static var animation: AnimationTimelineSchedule { .init() }
   @inlinable
   static func animation(
     minimumInterval: Double? = nil,

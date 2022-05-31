@@ -89,8 +89,11 @@ extension RoundedRectangle: InsettableShape {
 
   @usableFromInline
   struct _Inset: InsettableShape {
-    @usableFromInline var base: RoundedRectangle
-    @usableFromInline var amount: CGFloat
+    @usableFromInline
+    var base: RoundedRectangle
+
+    @usableFromInline
+    var amount: CGFloat
 
     @inlinable
     init(base: RoundedRectangle, amount: CGFloat) {

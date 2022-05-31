@@ -45,7 +45,8 @@ public extension FiberReconciler {
     /// Stored as an IUO because it uses `bindProperties` to create the underlying instance,
     /// and captures a weak reference to `self` in the visitor function,
     /// which requires all stored properties be set before capturing.
-    @_spi(TokamakCore) public var content: Content!
+    @_spi(TokamakCore)
+    public var content: Content!
     /// Outputs from evaluating `View._makeView`
     ///
     /// Stored as an IUO because creating `ViewOutputs` depends on
@@ -60,9 +61,11 @@ public extension FiberReconciler {
     /// The index of this element in its elementParent
     var elementIndex: Int?
     /// The first child node.
-    @_spi(TokamakCore) public var child: Fiber?
+    @_spi(TokamakCore)
+    public var child: Fiber?
     /// This node's right sibling.
-    @_spi(TokamakCore) public var sibling: Fiber?
+    @_spi(TokamakCore)
+    public var sibling: Fiber?
     /// An unowned reference to the parent node.
     ///
     /// Parent references are `unowned` (as opposed to `weak`)

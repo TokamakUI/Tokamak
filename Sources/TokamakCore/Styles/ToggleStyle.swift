@@ -25,7 +25,8 @@
 
 public struct ToggleStyleConfiguration {
   public let label: AnyView
-  @Binding public var isOn: Swift.Bool
+  @Binding
+  public var isOn: Swift.Bool
 }
 
 public protocol ToggleStyle {
