@@ -166,7 +166,7 @@ public struct DOMFiberRenderer: FiberRenderer {
   }
 
   private func apply(_ geometry: ViewGeometry, to element: JSObject) {
-    guard shouldLayout else { return }
+    guard useDynamicLayout else { return }
     _ = element.style.setProperty("position", "absolute")
     _ = element.style.setProperty("width", "\(geometry.dimensions.width)px")
     _ = element.style.setProperty("height", "\(geometry.dimensions.height)px")
