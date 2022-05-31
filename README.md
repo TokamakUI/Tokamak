@@ -144,7 +144,7 @@ A new reconciler modeled after React's [Fiber reconciler](https://reactjs.org/do
 is optionally available. It can provide faster updates and allow for larger View hierarchies.
 It also includes layout steps that can match SwiftUI layouts closer than CSS approximations.
 
-You can specify which reconciler to use in your `App`s configuration:
+You can specify which reconciler to use in your `App`'s configuration:
 
 ```swift
 struct CounterApp: App {
