@@ -15,6 +15,7 @@
 //  Created by Carson Katri on 5/30/22.
 //
 
+/// A type that can visit a `Scene`.
 public protocol SceneVisitor: ViewVisitor {
   func visit<S: Scene>(_ scene: S)
 }
@@ -25,6 +26,7 @@ public extension Scene {
   }
 }
 
+/// A type that creates a `Result` by visiting multiple `Scene`s.
 protocol SceneReducer: ViewReducer {
   associatedtype Result
   static func reduce<S: Scene>(into partialResult: inout Result, nextScene: S)
@@ -43,6 +45,8 @@ extension SceneReducer {
   }
 }
 
+/// A `SceneVisitor` that uses a `SceneReducer`
+/// to collapse the `Scene` values into a single `Result`.
 final class SceneReducerVisitor<R: SceneReducer>: SceneVisitor {
   var result: R.Result
 

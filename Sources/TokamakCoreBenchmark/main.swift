@@ -66,7 +66,7 @@ benchmark("update wide (FiberReconciler)") { state in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    shouldLayout: false
+    useDynamicLayout: false
   ).render(view)
   guard case let .view(view, _) = reconciler.current // RootView
     .child? // ModifiedContent
@@ -127,7 +127,7 @@ benchmark("update narrow (FiberReconciler)") { state in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    shouldLayout: false
+    useDynamicLayout: false
   ).render(view)
   guard case let .view(view, _) = reconciler.current // RootView
     .child? // ModifiedContent
@@ -199,7 +199,7 @@ benchmark("update deep (FiberReconciler)") { state in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    shouldLayout: false
+    useDynamicLayout: false
   ).render(view)
   guard case let .view(view, _) = reconciler.current // RootView
     .child? // ModifiedContent
@@ -269,7 +269,7 @@ benchmark("update shallow (FiberReconciler)") { _ in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    shouldLayout: false
+    useDynamicLayout: false
   ).render(view)
   guard case let .view(view, _) = reconciler.current // RootView
     .child? // ModifiedContent

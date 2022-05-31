@@ -60,7 +60,7 @@ public struct _AppConfiguration {
 
   public enum Reconciler {
     case stack
-    case fiber(shouldLayout: Bool = false)
+    case fiber(useDynamicLayout: Bool = false)
   }
 }
 

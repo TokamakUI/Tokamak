@@ -15,6 +15,7 @@
 //  Created by Carson Katri on 2/3/22.
 //
 
+/// A type that can visit a `View`.
 public protocol ViewVisitor {
   func visit<V: View>(_ view: V)
 }
@@ -27,6 +28,7 @@ public extension View {
 
 typealias ViewVisitorF<V: ViewVisitor> = (V) -> ()
 
+/// A type that creates a `Result` by visiting multiple `View`s.
 protocol ViewReducer {
   associatedtype Result
   static func reduce<V: View>(into partialResult: inout Result, nextView: V)
@@ -45,6 +47,8 @@ extension ViewReducer {
   }
 }
 
+/// A `ViewVisitor` that uses a `ViewReducer`
+/// to collapse the `View` values into a single `Result`.
 final class ReducerVisitor<R: ViewReducer>: ViewVisitor {
   var result: R.Result
 

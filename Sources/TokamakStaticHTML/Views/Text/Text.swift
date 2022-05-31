@@ -166,7 +166,7 @@ extension Text: HTMLConvertible {
     innerHTML(shouldSortAttributes: false)
   }
 
-  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
     attributes
   }
 }

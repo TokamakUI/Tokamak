@@ -29,5 +29,5 @@ public protocol FiberElement: AnyObject {
 /// We re-use `FiberElement` instances in the `Fiber` tree,
 /// but can re-create and copy `FiberElementContent` as often as needed.
 public protocol FiberElementContent: Equatable {
-  init<V: View>(from primitiveView: V, shouldLayout: Bool)
+  init<V: View>(from primitiveView: V, useDynamicLayout: Bool)
 }

@@ -329,7 +329,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           elementIndices = node.elementIndices
 
           // As we walk down the tree, propose a size for each View.
-          if reconciler.renderer.shouldLayout,
+          if reconciler.renderer.useDynamicLayout,
              let fiber = node.fiber
           {
             proposeSize(for: fiber)
@@ -389,7 +389,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
               alternateSibling = alternateSibling?.sibling
             }
             // We `size` and `position` when we are walking back up the tree.
-            if reconciler.renderer.shouldLayout,
+            if reconciler.renderer.useDynamicLayout,
                let fiber = node.fiber
             {
               // The `elementParent` proposed a size for this fiber on the way down.
@@ -412,10 +412,11 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
             node = parent
           }
 
-          // We also request `size` and `position` when we reach the bottom-most view that has a sibling.
+          // We also request `size` and `position` when we reach the bottom-most view
+          // that has a sibling.
           // Sizing and positioning also happen when we have no sibling,
           // as seen in the above loop.
-          if reconciler.renderer.shouldLayout,
+          if reconciler.renderer.useDynamicLayout,
              let fiber = node.fiber
           {
             // Request a size from our `elementParent`.
@@ -434,7 +435,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       }
       mainLoop()
 
-      if reconciler.renderer.shouldLayout {
+      if reconciler.renderer.useDynamicLayout {
         // We continue to the very top to update all necessary positions.
         var layoutNode = node.fiber?.child
         while let current = layoutNode {

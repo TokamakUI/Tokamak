@@ -25,9 +25,9 @@ public extension App {
     switch configuration.reconciler {
     case .stack:
       _launch(app, configuration.rootEnvironment, TokamakDOM.body)
-    case let .fiber(shouldLayout):
+    case let .fiber(useDynamicLayout):
       _ = Unmanaged.passRetained(
-        DOMFiberRenderer("body", shouldLayout: shouldLayout).render(app)
+        DOMFiberRenderer("body", useDynamicLayout: useDynamicLayout).render(app)
       )
     }
   }

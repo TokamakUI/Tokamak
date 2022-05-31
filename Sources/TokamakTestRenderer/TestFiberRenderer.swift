@@ -83,7 +83,7 @@ public final class TestFiberElement: FiberElement, CustomStringConvertible {
       self.closingTag = closingTag
     }
 
-    public init<V>(from primitiveView: V, shouldLayout: Bool) where V: View {
+    public init<V>(from primitiveView: V, useDynamicLayout: Bool) where V: View {
       guard let primitiveView = primitiveView as? TestFiberPrimitive else { fatalError() }
       let attributes = primitiveView.attributes
         .sorted(by: { $0.key < $1.key })
@@ -118,7 +118,7 @@ public final class TestFiberElement: FiberElement, CustomStringConvertible {
 
 public struct TestFiberRenderer: FiberRenderer {
   public let sceneSize: CGSize
-  public let shouldLayout: Bool
+  public let useDynamicLayout: Bool
 
   public func measureText(
     _ text: Text,
@@ -132,10 +132,10 @@ public struct TestFiberRenderer: FiberRenderer {
 
   public let rootElement: ElementType
 
-  public init(_ rootElement: ElementType, size: CGSize, shouldLayout: Bool = true) {
+  public init(_ rootElement: ElementType, size: CGSize, useDynamicLayout: Bool = true) {
     self.rootElement = rootElement
     sceneSize = size
-    self.shouldLayout = shouldLayout
+    self.useDynamicLayout = useDynamicLayout
   }
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {

@@ -170,7 +170,7 @@ public extension FiberReconciler {
         self.element = element
       } else if Renderer.isPrimitive(view) {
         self.element = .init(
-          from: .init(from: view, shouldLayout: reconciler?.renderer.shouldLayout ?? false)
+          from: .init(from: view, useDynamicLayout: reconciler?.renderer.useDynamicLayout ?? false)
         )
       }
 
@@ -277,7 +277,7 @@ public extension FiberReconciler {
       ))
 
       if Renderer.isPrimitive(view) {
-        return .init(from: view, shouldLayout: reconciler?.renderer.shouldLayout ?? false)
+        return .init(from: view, useDynamicLayout: reconciler?.renderer.useDynamicLayout ?? false)
       } else {
         return nil
       }
