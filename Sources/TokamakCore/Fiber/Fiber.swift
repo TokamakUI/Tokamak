@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,15 +37,15 @@ public extension FiberReconciler {
   /// After the entire tree has been traversed, the current and work in progress trees are swapped,
   /// making the updated tree the current one,
   /// and leaving the previous current tree available to apply future changes on.
-  final class Fiber: CustomDebugStringConvertible {
+  class Fiber {
     weak var reconciler: FiberReconciler<Renderer>?
 
-    /// The underlying `View` instance.
+    /// The underlying value behind this `Fiber`. Either a `Scene` or `View` instance.
     ///
-    /// Stored as an IUO because we must use the `bindProperties` method
-    /// to create the `View` with its dependencies setup,
-    /// which requires all stored properties be set before using.
-    @_spi(TokamakCore) public var view: Any!
+    /// Stored as an IUO because it uses `bindProperties` to create the underlying instance,
+    /// and captures a weak reference to `self` in the visitor function,
+    /// which requires all stored properties be set before capturing.
+    @_spi(TokamakCore) public var content: Content!
     /// Outputs from evaluating `View._makeView`
     ///
     /// Stored as an IUO because creating `ViewOutputs` depends on
@@ -53,10 +53,6 @@ public extension FiberReconciler {
     /// all stored properties be set before using.
     /// `outputs` is guaranteed to be set in the initializer.
     var outputs: ViewOutputs!
-    /// A function to visit `view` generically.
-    ///
-    /// Stored as an IUO because it captures a weak reference to `self`, which requires all stored properties be set before capturing.
-    var visitView: ((ViewVisitor) -> ())!
     /// The identity of this `View`
     var id: Identity?
     /// The mounted element, if this is a Renderer primitive.
@@ -110,6 +106,37 @@ public extension FiberReconciler {
       case structural(index: Int)
     }
 
+    public enum Content {
+      /// The underlying `View` instance and a function to visit it generically.
+      case view(Any, visit: (ViewVisitor) -> ())
+      /// The underlying `Scene` instance and a function to visit it generically.
+      case scene(Any, visit: (SceneVisitor) -> ())
+    }
+
+    /// Create a `Content` value for a given `View`.
+    private func content<V: View>(for view: V) -> Content {
+      .view(
+        view,
+        visit: { [weak self] in
+          guard case let .view(view, _) = self?.content else { return }
+          // swiftlint:disable:next force_cast
+          $0.visit(view as! V)
+        }
+      )
+    }
+
+    /// Create a `Content` value for a given `Scene`.
+    private func content<S: Scene>(for scene: S) -> Content {
+      .scene(
+        scene,
+        visit: { [weak self] in
+          guard case let .scene(scene, _) = self?.content else { return }
+          // swiftlint:disable:next force_cast
+          $0.visit(scene as! S)
+        }
+      )
+    }
+
     init<V: View>(
       _ view: inout V,
       element: Renderer.ElementType?,
@@ -127,7 +154,6 @@ public extension FiberReconciler {
 
       let environment = parent?.outputs.environment ?? .init(.init())
       state = bindProperties(to: &view, typeInfo, environment.environment)
-      self.view = view
       outputs = V._makeView(
         .init(
           content: view,
@@ -135,11 +161,7 @@ public extension FiberReconciler {
         )
       )
 
-      visitView = { [weak self] in
-        guard let self = self else { return }
-        // swiftlint:disable:next force_cast
-        $0.visit(self.view as! V)
-      }
+      content = content(for: view)
 
       if let element = element {
         self.element = element
@@ -195,7 +217,6 @@ public extension FiberReconciler {
       elementParent: Fiber?,
       reconciler: FiberReconciler<Renderer>?
     ) {
-      self.view = view
       self.alternate = alternate
       self.reconciler = reconciler
       self.element = element
@@ -205,15 +226,11 @@ public extension FiberReconciler {
       self.elementParent = elementParent
       self.typeInfo = typeInfo
       self.outputs = outputs
-      visitView = { [weak self] in
-        guard let self = self else { return }
-        // swiftlint:disable:next force_cast
-        $0.visit(self.view as! V)
-      }
+      content = content(for: view)
     }
 
-    private func bindProperties<V: View>(
-      to view: inout V,
+    private func bindProperties<T>(
+      to content: inout T,
       _ typeInfo: TypeInfo?,
       _ environment: EnvironmentValues
     ) -> [PropertyInfo: MutableStorage] {
@@ -221,7 +238,7 @@ public extension FiberReconciler {
 
       var state: [PropertyInfo: MutableStorage] = [:]
       for property in typeInfo.properties where property.type is DynamicProperty.Type {
-        var value = property.get(from: view)
+        var value = property.get(from: content)
         if var storage = value as? WritableValueStorage {
           let box = MutableStorage(initialValue: storage.anyInitialValue, onSet: { [weak self] in
             guard let self = self else { return }
@@ -235,7 +252,7 @@ public extension FiberReconciler {
           environmentReader.setContent(from: environment)
           value = environmentReader
         }
-        property.set(value: value, on: &view)
+        property.set(value: value, on: &content)
       }
       return state
     }
@@ -250,17 +267,11 @@ public extension FiberReconciler {
 
       let environment = parent?.outputs.environment ?? .init(.init())
       state = bindProperties(to: &view, typeInfo, environment.environment)
-      self.view = view
+      content = content(for: view)
       outputs = V._makeView(.init(
         content: view,
         environment: environment
       ))
-
-      visitView = { [weak self] in
-        guard let self = self else { return }
-        // swiftlint:disable:next force_cast
-        $0.visit(self.view as! V)
-      }
 
       if Renderer.isPrimitive(view) {
         return .init(from: view, shouldLayout: reconciler?.renderer.shouldLayout ?? false)
@@ -269,27 +280,101 @@ public extension FiberReconciler {
       }
     }
 
-    public var debugDescription: String {
-      if let text = view as? Text {
-        return "Text(\"\(text.storage.rawText)\")"
+    init<S: Scene>(
+      _ scene: inout S,
+      parent: Fiber?,
+      element: Renderer.ElementType?,
+      elementParent: Fiber?,
+      environment: EnvironmentBox?,
+      reconciler: FiberReconciler<Renderer>?
+    ) {
+      self.reconciler = reconciler
+      child = nil
+      sibling = nil
+      self.parent = parent
+      self.elementParent = elementParent
+      typeInfo = TokamakCore.typeInfo(of: S.self)
+
+      let environment = environment ?? parent?.outputs.environment ?? .init(.init())
+      state = bindProperties(to: &scene, typeInfo, environment.environment)
+      outputs = S._makeScene(
+        .init(
+          content: scene,
+          environment: environment
+        )
+      )
+
+      self.element = element
+
+      content = content(for: scene)
+
+      let alternateScene = scene
+      createAndBindAlternate = {
+        // Create the alternate lazily
+        let alternate = Fiber(
+          bound: alternateScene,
+          alternate: self,
+          outputs: self.outputs,
+          typeInfo: self.typeInfo,
+          element: self.element,
+          parent: self.parent?.alternate,
+          elementParent: self.elementParent?.alternate,
+          reconciler: reconciler
+        )
+        self.alternate = alternate
+        if self.parent?.child === self {
+          self.parent?.alternate?.child = alternate // Link it with our parent's alternate.
+        } else {
+          // Find our left sibling.
+          var node = self.parent?.child
+          while node?.sibling !== self {
+            guard node?.sibling != nil else { return alternate }
+            node = node?.sibling
+          }
+          if node?.sibling === self {
+            node?.alternate?.sibling = alternate // Link it with our left sibling's alternate.
+          }
+        }
+        return alternate
       }
-      return typeInfo?.name ?? "Unknown"
     }
 
-    private func flush(level: Int = 0) -> String {
-      let spaces = String(repeating: " ", count: level)
-      let geometry = geometry ?? .init(
-        origin: .init(origin: .zero), dimensions: .init(size: .zero, alignmentGuides: [:])
-      )
-      return """
-      \(spaces)\(String(describing: typeInfo?.type ?? Any.self)
-        .split(separator: "<")[0])\(element != nil ? "(\(element!))" : "") {\(element != nil ?
-        "\n\(spaces)geometry: \(geometry)" :
-        "")
-      \(child?.flush(level: level + 2) ?? "")
-      \(spaces)}
-      \(sibling?.flush(level: level) ?? "")
-      """
+    init<S: Scene>(
+      bound scene: S,
+      alternate: Fiber,
+      outputs: SceneOutputs,
+      typeInfo: TypeInfo?,
+      element: Renderer.ElementType?,
+      parent: FiberReconciler<Renderer>.Fiber?,
+      elementParent: Fiber?,
+      reconciler: FiberReconciler<Renderer>?
+    ) {
+      self.alternate = alternate
+      self.reconciler = reconciler
+      self.element = element
+      child = nil
+      sibling = nil
+      self.parent = parent
+      self.elementParent = elementParent
+      self.typeInfo = typeInfo
+      self.outputs = outputs
+      content = content(for: scene)
+    }
+
+    func update<S: Scene>(
+      with scene: inout S
+    ) -> Renderer.ElementType.Content? {
+      typeInfo = TokamakCore.typeInfo(of: S.self)
+
+      let environment = parent?.outputs.environment ?? .init(.init())
+      state = bindProperties(to: &scene, typeInfo, environment.environment)
+      content = content(for: scene)
+      outputs = S._makeScene(.init(
+        content: scene,
+        environment: environment
+      ))
+
+      return nil
     }
   }
 }

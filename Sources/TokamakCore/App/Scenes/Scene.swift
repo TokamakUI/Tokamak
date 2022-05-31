@@ -21,7 +21,13 @@ public protocol Scene {
   // FIXME: If I put `@SceneBuilder` in front of this
   // it fails to build with no useful error message.
   var body: Self.Body { get }
+
+  func _visitChildren<V: SceneVisitor>(_ visitor: V)
+  static func _makeScene(_ inputs: SceneInputs<Self>) -> SceneOutputs
 }
+
+public typealias SceneInputs<S: Scene> = ViewInputs<S>
+public typealias SceneOutputs = ViewOutputs
 
 protocol TitledScene {
   var title: Text? { get }

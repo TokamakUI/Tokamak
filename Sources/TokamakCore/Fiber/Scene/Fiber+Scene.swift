@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,25 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 7/16/20.
+//  Created by Carson Katri on 5/30/22.
 //
 
-struct _TupleScene<T>: Scene, GroupScene {
-  let value: T
-  let children: [_AnyScene]
-  let visit: (SceneVisitor) -> ()
-
-  init(
-    _ value: T,
-    children: [_AnyScene],
-    visit: @escaping (SceneVisitor) -> ()
-  ) {
-    self.value = value
-    self.children = children
-    self.visit = visit
-  }
-
-  var body: Never {
-    neverScene("_TupleScene")
-  }
-}
+@_spi(TokamakCore)
+public extension FiberReconciler.Fiber {}

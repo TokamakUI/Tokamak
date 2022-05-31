@@ -21,8 +21,14 @@ import TokamakCore
 import TokamakStaticHTML
 
 public extension App {
-  static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
-    _launch(app, rootEnvironment, TokamakDOM.body)
+  static func _launch(_ app: Self, with configuration: _AppConfiguration) {
+    if configuration.useFiberReconciler {
+      _ = Unmanaged.passRetained(
+        DOMFiberRenderer("body", shouldLayout: configuration.shouldLayout).render(app)
+      )
+    } else {
+      _launch(app, configuration.rootEnvironment, TokamakDOM.body)
+    }
   }
 
   /// The default implementation of `launch` for a `TokamakDOM` app.
