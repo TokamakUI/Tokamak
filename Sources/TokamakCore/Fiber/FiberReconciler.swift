@@ -21,7 +21,8 @@ import Foundation
 /// [Fiber reconciler](https://reactjs.org/docs/faq-internals.html#what-is-react-fiber)
 public final class FiberReconciler<Renderer: FiberRenderer> {
   /// The root node in the `Fiber` tree that represents the `View`s currently rendered on screen.
-  @_spi(TokamakCore) public var current: Fiber!
+  @_spi(TokamakCore)
+  public var current: Fiber!
   /// The alternate of `current`, or the work in progress tree root.
   ///
   /// We must keep a strong reference to both the current and alternate tree roots,

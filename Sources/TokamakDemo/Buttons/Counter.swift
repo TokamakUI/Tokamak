@@ -18,17 +18,20 @@
 import TokamakShim
 
 final class Count: ObservableObject {
-  @Published var value: Int
+  @Published
+  var value: Int
 
   init(value: Int) { self.value = value }
 }
 
 struct Counter: View {
-  @ObservedObject var count: Count
+  @ObservedObject
+  var count: Count
 
   let limit: Int
 
-  @ViewBuilder public var body: some View {
+  @ViewBuilder
+  public var body: some View {
     if count.value < limit {
       VStack {
         Button("Increment") { count.value += 1 }

@@ -175,13 +175,21 @@ public extension GraphicsContext {
     }
   }
 
-  @frozen struct GradientOptions: OptionSet {
+  @frozen
+  struct GradientOptions: OptionSet {
     public let rawValue: UInt32
+
     @inlinable
     public init(rawValue: UInt32) { self.rawValue = rawValue }
-    @inlinable public static var `repeat`: Self { Self(rawValue: 1 << 0) }
-    @inlinable public static var mirror: Self { Self(rawValue: 1 << 1) }
-    @inlinable public static var linearColor: Self { Self(rawValue: 1 << 2) }
+
+    @inlinable
+    public static var `repeat`: Self { Self(rawValue: 1 << 0) }
+
+    @inlinable
+    public static var mirror: Self { Self(rawValue: 1 << 1) }
+
+    @inlinable
+    public static var linearColor: Self { Self(rawValue: 1 << 2) }
   }
 
   func resolve(_ shading: Shading) -> Shading {

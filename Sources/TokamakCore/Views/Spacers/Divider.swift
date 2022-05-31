@@ -17,7 +17,8 @@
 
 /// A horizontal line for separating content.
 public struct Divider: _PrimitiveView {
-  @Environment(\.self) public var environment
+  @Environment(\.self)
+  public var environment
 
   public init() {}
 }

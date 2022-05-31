@@ -21,7 +21,8 @@ import XCTest
 @testable import TokamakCore
 
 private struct Counter: View {
-  @State var count: Int
+  @State
+  var count: Int
 
   let limit: Int
 

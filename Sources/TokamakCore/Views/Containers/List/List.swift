@@ -26,7 +26,8 @@ public struct List<SelectionValue, Content>: View
   let selection: _Selection
   let content: Content
 
-  @Environment(\.listStyle) var style
+  @Environment(\.listStyle)
+  var style
 
   public init(selection: Binding<Set<SelectionValue>>?, @ViewBuilder content: () -> Content) {
     self.selection = .many(selection)

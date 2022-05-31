@@ -16,10 +16,12 @@
 //
 
 public struct DisclosureGroup<Label, Content>: _PrimitiveView where Label: View, Content: View {
-  @State var isExpanded: Bool = false
+  @State
+  var isExpanded: Bool = false
   let isExpandedBinding: Binding<Bool>?
 
-  @Environment(\._outlineGroupStyle) var style
+  @Environment(\._outlineGroupStyle)
+  var style
 
   let label: Label
   let content: () -> Content

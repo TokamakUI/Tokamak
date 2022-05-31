@@ -15,7 +15,8 @@
 import TokamakShim
 
 public struct ForEachDemo: View {
-  @State public var maxItem = 0
+  @State
+  public var maxItem = 0
 
   public var body: some View {
     VStack {

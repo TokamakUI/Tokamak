@@ -16,7 +16,8 @@ import XCTest
 @testable import TokamakCore
 
 private struct TestView: View {
-  @Environment(\.colorScheme) var colorScheme
+  @Environment(\.colorScheme)
+  var colorScheme
 
   public var body: some View {
     EmptyView()

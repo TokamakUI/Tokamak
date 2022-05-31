@@ -25,11 +25,16 @@ final class NavigationLinkDestination {
 public struct NavigationLink<Label, Destination>: _PrimitiveView where Label: View,
   Destination: View
 {
-  @State var destination: NavigationLinkDestination
+  @State
+  var destination: NavigationLinkDestination
+
   let label: Label
 
-  @EnvironmentObject var navigationContext: NavigationContext
-  @Environment(\._navigationLinkStyle) var style
+  @EnvironmentObject
+  var navigationContext: NavigationContext
+
+  @Environment(\._navigationLinkStyle)
+  var style
 
   public init(destination: Destination, @ViewBuilder label: () -> Label) {
     _destination = State(wrappedValue: NavigationLinkDestination(destination))

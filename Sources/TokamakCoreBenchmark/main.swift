@@ -27,7 +27,8 @@ benchmark("typeConstructorName TokamakCore") {
 }
 
 struct UpdateWide: View {
-  @State var update = -1
+  @State
+  var update = -1
 
   var body: some View {
     VStack {
@@ -84,7 +85,8 @@ benchmark("update wide (FiberReconciler)") { state in
 }
 
 struct UpdateNarrow: View {
-  @State var update = -1
+  @State
+  var update = -1
 
   var body: some View {
     VStack {
@@ -141,7 +143,8 @@ benchmark("update narrow (FiberReconciler)") { state in
 }
 
 struct UpdateDeep: View {
-  @State var update = "A"
+  @State
+  var update = "A"
 
   struct RecursiveView: View {
     let count: Int
@@ -210,7 +213,8 @@ benchmark("update deep (FiberReconciler)") { state in
 }
 
 struct UpdateShallow: View {
-  @State var update = "A"
+  @State
+  var update = "A"
 
   struct RecursiveView: View {
     let count: Int

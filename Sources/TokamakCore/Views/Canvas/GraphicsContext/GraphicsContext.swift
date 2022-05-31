@@ -113,11 +113,15 @@ public struct GraphicsContext {
     addFilter(.projectionTransform(.init(matrix)))
   }
 
-  @frozen public struct ClipOptions: OptionSet {
+  @frozen
+  public struct ClipOptions: OptionSet {
     public let rawValue: UInt32
+
     @inlinable
     public init(rawValue: UInt32) { self.rawValue = rawValue }
-    @inlinable public static var inverse: Self { Self(rawValue: 1 << 0) }
+
+    @inlinable
+    public static var inverse: Self { Self(rawValue: 1 << 0) }
   }
 
   public var clipBoundingRect: CGRect {

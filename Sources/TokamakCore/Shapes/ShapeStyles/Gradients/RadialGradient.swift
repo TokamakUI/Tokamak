@@ -17,7 +17,8 @@
 
 import Foundation
 
-@frozen public struct RadialGradient: ShapeStyle, View {
+@frozen
+public struct RadialGradient: ShapeStyle, View {
   internal var gradient: Gradient
   internal var center: UnitPoint
   internal var startRadius: CGFloat

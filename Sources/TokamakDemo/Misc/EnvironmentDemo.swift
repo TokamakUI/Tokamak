@@ -18,12 +18,15 @@
 import TokamakShim
 
 class TestEnvironment: ObservableObject {
-  @Published var envTest = "Hello, world!"
+  @Published
+  var envTest = "Hello, world!"
+
   init() {}
 }
 
 struct EnvironmentObjectDemo: View {
-  @EnvironmentObject var testEnv: TestEnvironment
+  @EnvironmentObject
+  var testEnv: TestEnvironment
 
   var body: some View {
     Button(testEnv.envTest) {
@@ -43,10 +46,14 @@ extension ColorScheme: CustomStringConvertible {
 }
 
 struct EnvironmentDemo: View {
-  @Environment(\.colorScheme) var colorScheme
+  @Environment(\.colorScheme)
+  var colorScheme
 
-  @Environment(\.font) var font
-  @EnvironmentObject var testEnv: TestEnvironment
+  @Environment(\.font)
+  var font
+
+  @EnvironmentObject
+  var testEnv: TestEnvironment
 
   var body: some View {
     VStack {
