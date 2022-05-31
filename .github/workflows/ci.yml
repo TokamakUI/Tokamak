@@ -14,6 +14,11 @@ jobs:
       - uses: swiftwasm/swiftwasm-action@v5.6
         with:
           shell-action: carton bundle --product TokamakDemo
+      - name: Check binary size
+        shell: bash
+        run: |
+          ls -la Bundle
+          ls -lh Bundle/*.wasm | awk '{printf  "::warning file=Sources/TokamakDemo/main.swift,line=1,col=1::TokamakDemo Wasm is %s.",$5}'
 
   swiftwasm_test_5_6:
     runs-on: ubuntu-20.04
