@@ -22,12 +22,13 @@ import TokamakStaticHTML
 
 public extension App {
   static func _launch(_ app: Self, with configuration: _AppConfiguration) {
-    if configuration.useFiberReconciler {
-      _ = Unmanaged.passRetained(
-        DOMFiberRenderer("body", shouldLayout: configuration.shouldLayout).render(app)
-      )
-    } else {
+    switch configuration.reconciler {
+    case .stack:
       _launch(app, configuration.rootEnvironment, TokamakDOM.body)
+    case let .fiber(shouldLayout):
+      _ = Unmanaged.passRetained(
+        DOMFiberRenderer("body", shouldLayout: shouldLayout).render(app)
+      )
     }
   }
 

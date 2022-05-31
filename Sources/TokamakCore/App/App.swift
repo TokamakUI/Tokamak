@@ -47,18 +47,20 @@ public protocol App: _TitledApp {
 }
 
 public struct _AppConfiguration {
-  public let useFiberReconciler: Bool
-  public let shouldLayout: Bool
+  public let reconciler: Reconciler
   public let rootEnvironment: EnvironmentValues
 
   public init(
-    useFiberReconciler: Bool = false,
-    shouldLayout: Bool = false,
+    reconciler: Reconciler = .stack,
     rootEnvironment: EnvironmentValues = .init()
   ) {
-    self.useFiberReconciler = useFiberReconciler
-    self.shouldLayout = shouldLayout
+    self.reconciler = reconciler
     self.rootEnvironment = rootEnvironment
+  }
+
+  public enum Reconciler {
+    case stack
+    case fiber(shouldLayout: Bool = false)
   }
 }
 
