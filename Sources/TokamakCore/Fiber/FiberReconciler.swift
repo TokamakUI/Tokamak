@@ -72,15 +72,21 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
 
   public init<A: App>(_ renderer: Renderer, _ app: A) {
     self.renderer = renderer
-    var scene = app.body
     var environment = renderer.defaultEnvironment
     environment.measureText = renderer.measureText
+//    current = .init(
+//      &scene,
+//      parent: nil,
+//      element: renderer.rootElement,
+//      elementParent: nil,
+//      environment: .init(environment),
+//      reconciler: self
+//    )
+    var app = app
     current = .init(
-      &scene,
-      parent: nil,
-      element: renderer.rootElement,
-      elementParent: nil,
-      environment: .init(environment),
+      &app,
+      rootElement: renderer.rootElement,
+      rootEnvironment: environment,
       reconciler: self
     )
     // Start by building the initial tree.
@@ -88,7 +94,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     reconcile(from: current)
   }
 
-  final class ReconcilerVisitor: SceneVisitor, ViewVisitor {
+  final class ReconcilerVisitor: AppVisitor, SceneVisitor, ViewVisitor {
     unowned let reconciler: FiberReconciler<Renderer>
     /// The current, mounted `Fiber`.
     var currentRoot: Fiber
@@ -100,7 +106,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     }
 
     /// A `ViewVisitor` that proposes a size for the `View` represented by the fiber `node`.
-    struct ProposeSizeVisitor: SceneVisitor {
+    struct ProposeSizeVisitor: AppVisitor, SceneVisitor, ViewVisitor {
       let node: Fiber
       let renderer: Renderer
       let layoutContexts: [ObjectIdentifier: LayoutContext]
@@ -122,6 +128,11 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         node.outputs.layoutComputer = node.outputs.makeLayoutComputer(renderer.sceneSize)
         node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
       }
+
+      func visit<A>(_ app: A) where A: App {
+        node.outputs.layoutComputer = node.outputs.makeLayoutComputer(renderer.sceneSize)
+        node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
+      }
     }
 
     func visit<V>(_ view: V) where V: View {
@@ -130,6 +141,10 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
 
     func visit<S>(_ scene: S) where S: Scene {
       visitAny(scene, visitChildren: scene._visitChildren)
+    }
+
+    func visit<A>(_ app: A) where A: App {
+      visitAny(app, visitChildren: { $0.visit(app.body) })
     }
 
     /// Walk the current tree, recomputing at each step to check for discrepancies.
@@ -249,6 +264,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         case let .view(_, visit):
           visit(visitor)
         case let .scene(_, visit):
+          visit(visitor)
+        case let .app(_, visit):
           visit(visitor)
         case .none:
           break
@@ -464,6 +481,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     case let .view(_, visit):
       visit(visitor)
     case let .scene(_, visit):
+      visit(visitor)
+    case let .app(_, visit):
       visit(visitor)
     case .none:
       break

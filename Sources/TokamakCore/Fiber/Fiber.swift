@@ -109,37 +109,6 @@ public extension FiberReconciler {
       case structural(index: Int)
     }
 
-    public enum Content {
-      /// The underlying `View` instance and a function to visit it generically.
-      case view(Any, visit: (ViewVisitor) -> ())
-      /// The underlying `Scene` instance and a function to visit it generically.
-      case scene(Any, visit: (SceneVisitor) -> ())
-    }
-
-    /// Create a `Content` value for a given `View`.
-    private func content<V: View>(for view: V) -> Content {
-      .view(
-        view,
-        visit: { [weak self] in
-          guard case let .view(view, _) = self?.content else { return }
-          // swiftlint:disable:next force_cast
-          $0.visit(view as! V)
-        }
-      )
-    }
-
-    /// Create a `Content` value for a given `Scene`.
-    private func content<S: Scene>(for scene: S) -> Content {
-      .scene(
-        scene,
-        visit: { [weak self] in
-          guard case let .scene(scene, _) = self?.content else { return }
-          // swiftlint:disable:next force_cast
-          $0.visit(scene as! S)
-        }
-      )
-    }
-
     init<V: View>(
       _ view: inout V,
       element: Renderer.ElementType?,
@@ -283,6 +252,65 @@ public extension FiberReconciler {
       }
     }
 
+    init<A: App>(
+      _ app: inout A,
+      rootElement: Renderer.ElementType,
+      rootEnvironment: EnvironmentValues,
+      reconciler: FiberReconciler<Renderer>
+    ) {
+      self.reconciler = reconciler
+      child = nil
+      sibling = nil
+      // `App`s are always the root, so they can have no parent.
+      parent = nil
+      elementParent = nil
+      element = rootElement
+      typeInfo = TokamakCore.typeInfo(of: A.self)
+
+      state = bindProperties(to: &app, typeInfo, rootEnvironment)
+      outputs = .init(
+        inputs: .init(content: app, environment: .init(rootEnvironment)),
+        layoutComputer: RootLayoutComputer.init
+      )
+
+      content = content(for: app)
+
+      let alternateApp = app
+      createAndBindAlternate = {
+        // Create the alternate lazily
+        let alternate = Fiber(
+          bound: alternateApp,
+          alternate: self,
+          outputs: self.outputs,
+          typeInfo: self.typeInfo,
+          element: self.element,
+          reconciler: reconciler
+        )
+        self.alternate = alternate
+        return alternate
+      }
+    }
+
+    init<A: App>(
+      bound app: A,
+      alternate: Fiber,
+      outputs: SceneOutputs,
+      typeInfo: TypeInfo?,
+      element: Renderer.ElementType?,
+      reconciler: FiberReconciler<Renderer>?
+    ) {
+      self.alternate = alternate
+      self.reconciler = reconciler
+      self.element = element
+      child = nil
+      sibling = nil
+      parent = nil
+      elementParent = nil
+      self.typeInfo = typeInfo
+      self.outputs = outputs
+      content = content(for: app)
+    }
+
     init<S: Scene>(
       _ scene: inout S,
       parent: Fiber?,
@@ -296,6 +324,7 @@ public extension FiberReconciler {
       sibling = nil
       self.parent = parent
       self.elementParent = elementParent
+      self.element = element
       typeInfo = TokamakCore.typeInfo(of: S.self)
 
       let environment = environment ?? parent?.outputs.environment ?? .init(.init())
@@ -306,8 +335,6 @@ public extension FiberReconciler {
           environment: environment
         )
       )
-
-      self.element = element
 
       content = content(for: scene)
 
