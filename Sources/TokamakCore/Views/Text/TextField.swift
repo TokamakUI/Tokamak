@@ -39,7 +39,9 @@ public struct TextField<Label>: _PrimitiveView where Label: View {
   let textBinding: Binding<String>
   let onEditingChanged: (Bool) -> ()
   let onCommit: () -> ()
-  @Environment(\.self) var environment
+
+  @Environment(\.self)
+  var environment
 }
 
 public extension TextField where Label == Text {

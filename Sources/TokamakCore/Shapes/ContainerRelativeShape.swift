@@ -38,7 +38,8 @@ extension ContainerRelativeShape: InsettableShape {
   }
 
   @usableFromInline
-  @frozen internal struct _Inset: InsettableShape, DynamicProperty {
+  @frozen
+  internal struct _Inset: InsettableShape, DynamicProperty {
     @usableFromInline
     internal var amount: CGFloat
     @inlinable
@@ -76,7 +77,8 @@ private extension EnvironmentValues {
   }
 }
 
-@frozen public struct _ContainerShapeModifier<Shape>: ViewModifier where Shape: InsettableShape {
+@frozen
+public struct _ContainerShapeModifier<Shape>: ViewModifier where Shape: InsettableShape {
   public var shape: Shape
   @inlinable
   public init(shape: Shape) { self.shape = shape }

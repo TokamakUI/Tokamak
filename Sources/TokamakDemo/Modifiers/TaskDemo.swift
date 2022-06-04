@@ -26,7 +26,8 @@ private struct Response: Decodable {
 }
 
 struct TaskDemo: View {
-  @State private var response: Result<Response, Error>?
+  @State
+  private var response: Result<Response, Error>?
 
   var body: some View {
     VStack {

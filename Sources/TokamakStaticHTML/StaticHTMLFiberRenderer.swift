@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -89,18 +89,23 @@ public final class HTMLElement: FiberElement, CustomStringConvertible {
   }
 }
 
-@_spi(TokamakStaticHTML) public protocol HTMLConvertible {
+@_spi(TokamakStaticHTML)
+public protocol HTMLConvertible {
   var tag: String { get }
   func attributes(shouldLayout: Bool) -> [HTMLAttribute: String]
   var innerHTML: String? { get }
 }
 
 public extension HTMLConvertible {
-  @_spi(TokamakStaticHTML) var innerHTML: String? { nil }
+  @_spi(TokamakStaticHTML)
+  var innerHTML: String? { nil }
 }
 
-@_spi(TokamakStaticHTML) extension VStack: HTMLConvertible {
-  @_spi(TokamakStaticHTML) public var tag: String { "div" }
+@_spi(TokamakStaticHTML)
+extension VStack: HTMLConvertible {
+  @_spi(TokamakStaticHTML)
+  public var tag: String { "div" }
+
   @_spi(TokamakStaticHTML)
   public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
     let spacing = _VStackProxy(self).spacing
@@ -116,8 +121,11 @@ public extension HTMLConvertible {
   }
 }
 
-@_spi(TokamakStaticHTML) extension HStack: HTMLConvertible {
-  @_spi(TokamakStaticHTML) public var tag: String { "div" }
+@_spi(TokamakStaticHTML)
+extension HStack: HTMLConvertible {
+  @_spi(TokamakStaticHTML)
+  public var tag: String { "div" }
+
   @_spi(TokamakStaticHTML)
   public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
     let spacing = _HStackProxy(self).spacing

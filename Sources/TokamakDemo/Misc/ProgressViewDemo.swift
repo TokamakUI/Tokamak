@@ -18,7 +18,8 @@
 import TokamakShim
 
 struct ProgressViewDemo: View {
-  @State private var progress = 0.5
+  @State
+  private var progress = 0.5
 
   var body: some View {
     VStack {

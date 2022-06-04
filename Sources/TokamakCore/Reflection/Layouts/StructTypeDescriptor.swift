@@ -20,7 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-typealias FieldTypeAccessor = @convention(c) (UnsafePointer<Int>) -> UnsafePointer<Int>
+typealias FieldTypeAccessor = @convention(c)
+  (UnsafePointer<Int>) -> UnsafePointer<Int>
 
 struct StructTypeDescriptor {
   let flags: Int32

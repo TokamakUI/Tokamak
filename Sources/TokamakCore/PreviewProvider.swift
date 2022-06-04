@@ -18,7 +18,8 @@ import Foundation
 public protocol PreviewProvider {
   associatedtype Previews: View
 
-  @ViewBuilder static var previews: Previews { get }
+  @ViewBuilder
+  static var previews: Previews { get }
 }
 
 public struct PreviewDevice: RawRepresentable, ExpressibleByStringLiteral {

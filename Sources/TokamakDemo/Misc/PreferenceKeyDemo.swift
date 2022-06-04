@@ -25,8 +25,11 @@ struct TestPreferenceKey: PreferenceKey {
 }
 
 struct PreferenceKeyDemo: View {
-  @State private var testKeyValue: Color = .yellow
-  @Environment(\.colorScheme) var colorScheme
+  @State
+  private var testKeyValue: Color = .yellow
+
+  @Environment(\.colorScheme)
+  var colorScheme
 
   var body: some View {
     VStack {
@@ -119,7 +122,9 @@ struct PreferenceKeyDemo: View {
     let level: Int
     let color: Color
     let content: Content
-    @State private var testKeyValue: Color = .yellow
+
+    @State
+    private var testKeyValue: Color = .yellow
 
     init(_ level: Int, _ color: Color, @ViewBuilder _ content: () -> Content) {
       self.level = level

@@ -27,8 +27,11 @@ private struct ColorOverlayModifier: ViewModifier {
 }
 
 struct TransitionDemo: View {
-  @State private var isVisible = false
-  @State private var isInnerVisible = false
+  @State
+  private var isVisible = false
+
+  @State
+  private var isInnerVisible = false
 
   var body: some View {
     VStack {

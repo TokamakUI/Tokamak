@@ -24,7 +24,8 @@ public protocol _TraitWritingModifierProtocol {
   func modifyViewTraitStore(_ viewTraitStore: inout _ViewTraitStore)
 }
 
-@frozen public struct _TraitWritingModifier<Trait>: ViewModifier, _TraitWritingModifierProtocol
+@frozen
+public struct _TraitWritingModifier<Trait>: ViewModifier, _TraitWritingModifierProtocol
   where Trait: _ViewTraitKey
 {
   public let value: Trait.Value

@@ -16,9 +16,13 @@
 //
 
 public struct Toggle<Label>: View where Label: View {
-  @Binding var isOn: Bool
+  @Binding
+  var isOn: Bool
+
   var label: Label
-  @Environment(\.toggleStyle) var toggleStyle
+
+  @Environment(\.toggleStyle)
+  var toggleStyle
 
   public init(isOn: Binding<Bool>, label: () -> Label) {
     _isOn = isOn

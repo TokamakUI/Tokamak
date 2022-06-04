@@ -16,7 +16,8 @@ import TokamakShim
 
 @available(OSX 10.16, iOS 14.0, *)
 struct CustomScene: Scene {
-  @Environment(\.scenePhase) private var scenePhase
+  @Environment(\.scenePhase)
+  private var scenePhase
 
   var body: some Scene {
     print("In CustomScene.body scenePhase is \(scenePhase)")

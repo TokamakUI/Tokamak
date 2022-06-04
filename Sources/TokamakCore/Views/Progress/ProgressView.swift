@@ -42,7 +42,8 @@ public struct _CustomProgressView<Label, CurrentValueLabel>: View
   var label: Label?
   var currentValueLabel: CurrentValueLabel?
 
-  @Environment(\.progressViewStyle) var style
+  @Environment(\.progressViewStyle)
+  var style
 
   init(
     fractionCompleted: Double?,
@@ -74,7 +75,9 @@ public struct _FoundationProgressView: View {
 #else
 public struct _FoundationProgressView: View {
   let progress: Progress
-  @State private var state: ProgressState?
+
+  @State
+  private var state: ProgressState?
 
   struct ProgressState {
     var progress: Double
