@@ -58,18 +58,17 @@ extension FiberReconciler {
     }
 
     static func reduce<S>(into partialResult: inout Result, nextScene: S) where S: Scene {
-      var result = partialResult
       Self.reduce(
-        into: &result,
+        into: &partialResult,
         nextValue: nextScene,
-        createFiber: { scene, elementParent, _ in
+        createFiber: { scene, element, parent, elementParent, _, reconciler in
           Fiber(
             &scene,
-            parent: partialResult.fiber,
-            element: partialResult.nextExistingAlternate?.element,
+            element: element,
+            parent: parent,
             elementParent: elementParent,
             environment: nil,
-            reconciler: partialResult.fiber?.reconciler
+            reconciler: reconciler
           )
         },
         update: { fiber, scene, _ in
@@ -77,22 +76,20 @@ extension FiberReconciler {
         },
         visitChildren: { $0._visitChildren }
       )
-      partialResult = result
     }
 
     static func reduce<V>(into partialResult: inout Result, nextView: V) where V: View {
-      var result = partialResult
       Self.reduce(
-        into: &result,
+        into: &partialResult,
         nextValue: nextView,
-        createFiber: { view, elementParent, elementIndex in
+        createFiber: { view, element, parent, elementParent, elementIndex, reconciler in
           Fiber(
             &view,
-            element: partialResult.nextExistingAlternate?.element,
-            parent: partialResult.fiber,
+            element: element,
+            parent: parent,
             elementParent: elementParent,
             elementIndex: elementIndex,
-            reconciler: partialResult.fiber?.reconciler
+            reconciler: reconciler
           )
         },
         update: { fiber, view, elementIndex in
@@ -100,13 +97,13 @@ extension FiberReconciler {
         },
         visitChildren: { $0._visitChildren }
       )
-      partialResult = result
     }
 
     static func reduce<T>(
       into partialResult: inout Result,
       nextValue: T,
-      createFiber: (inout T, Fiber?, Int?) -> Fiber,
+      createFiber: (inout T, Renderer.ElementType?, Fiber?, Fiber?, Int?, FiberReconciler?)
+        -> Fiber,
       update: (Fiber, inout T, Int?) -> Renderer.ElementType.Content?,
       visitChildren: (T) -> (TreeReducer.SceneVisitor) -> ()
     ) {
@@ -157,8 +154,11 @@ extension FiberReconciler {
         // Otherwise, create a new fiber for this child.
         let fiber = createFiber(
           &nextValue,
+          partialResult.nextExistingAlternate?.element,
+          partialResult.fiber,
           elementParent,
-          key.map { partialResult.elementIndices[$0, default: 0] }
+          key.map { partialResult.elementIndices[$0, default: 0] },
+          partialResult.fiber?.reconciler
         )
         // If a fiber already exists for an alternate, link them.
         if let alternate = partialResult.nextExistingAlternate {

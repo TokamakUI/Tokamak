@@ -313,8 +313,8 @@ public extension FiberReconciler {
 
     init<S: Scene>(
       _ scene: inout S,
-      parent: Fiber?,
       element: Renderer.ElementType?,
+      parent: Fiber?,
       elementParent: Fiber?,
       environment: EnvironmentBox?,
       reconciler: FiberReconciler<Renderer>?
