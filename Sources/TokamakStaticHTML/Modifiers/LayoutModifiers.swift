@@ -144,7 +144,8 @@ extension _PaddingLayout: DOMViewModifier {
   }
 }
 
-@_spi(TokamakStaticHTML) extension _PaddingLayout: HTMLConvertible {
+@_spi(TokamakStaticHTML)
+extension _PaddingLayout: HTMLConvertible {
   public var tag: String { "div" }
   public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
     guard !shouldLayout else { return [:] }
