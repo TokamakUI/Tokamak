@@ -85,7 +85,7 @@ public extension FiberReconciler {
     /// The WIP node if this is current, or the current node if this is WIP.
     weak var alternate: Fiber?
 
-    var createAndBindAlternate: (() -> Fiber)?
+    var createAndBindAlternate: (() -> Fiber?)?
 
     /// A box holding a value for an `@State` property wrapper.
     /// Will call `onSet` (usually a `Reconciler.reconcile` call) when updated.
@@ -149,7 +149,8 @@ public extension FiberReconciler {
       }
 
       let alternateView = view
-      createAndBindAlternate = {
+      createAndBindAlternate = { [weak self] in
+        guard let self = self else { return nil }
         // Create the alternate lazily
         let alternate = Fiber(
           bound: alternateView,
@@ -276,7 +277,8 @@ public extension FiberReconciler {
       content = content(for: app)
 
       let alternateApp = app
-      createAndBindAlternate = {
+      createAndBindAlternate = { [weak self] in
+        guard let self = self else { return nil }
         // Create the alternate lazily
         let alternate = Fiber(
           bound: alternateApp,
@@ -339,7 +341,8 @@ public extension FiberReconciler {
       content = content(for: scene)
 
       let alternateScene = scene
-      createAndBindAlternate = {
+      createAndBindAlternate = { [weak self] in
+        guard let self = self else { return nil }
         // Create the alternate lazily
         let alternate = Fiber(
           bound: alternateScene,
