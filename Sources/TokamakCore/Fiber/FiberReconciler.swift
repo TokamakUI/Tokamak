@@ -74,14 +74,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     self.renderer = renderer
     var environment = renderer.defaultEnvironment
     environment.measureText = renderer.measureText
-//    current = .init(
-//      &scene,
-//      parent: nil,
-//      element: renderer.rootElement,
-//      elementParent: nil,
-//      environment: .init(environment),
-//      reconciler: self
-//    )
     var app = app
     current = .init(
       &app,

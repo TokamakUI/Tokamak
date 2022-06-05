@@ -37,7 +37,7 @@ public extension FiberReconciler {
   /// After the entire tree has been traversed, the current and work in progress trees are swapped,
   /// making the updated tree the current one,
   /// and leaving the previous current tree available to apply future changes on.
-  class Fiber {
+  final class Fiber {
     weak var reconciler: FiberReconciler<Renderer>?
 
     /// The underlying value behind this `Fiber`. Either a `Scene` or `View` instance.
