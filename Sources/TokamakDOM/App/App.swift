@@ -26,9 +26,7 @@ public extension App {
     case .stack:
       _launch(app, configuration.rootEnvironment, TokamakDOM.body)
     case let .fiber(useDynamicLayout):
-//      _ = Unmanaged.passRetained(
       DOMFiberRenderer("body", useDynamicLayout: useDynamicLayout).render(app)
-//      )
     }
   }
 
