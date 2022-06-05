@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ public protocol FiberRenderer {
   /// The size of the window we are rendering in.
   var sceneSize: CGSize { get }
   /// Whether layout is enabled for this renderer.
-  var shouldLayout: Bool { get }
+  var useDynamicLayout: Bool { get }
   /// Calculate the size of `Text` in `environment` for layout.
   func measureText(_ text: Text, proposedSize: CGSize, in environment: EnvironmentValues) -> CGSize
 }
@@ -43,6 +43,11 @@ public extension FiberRenderer {
   @discardableResult
   func render<V: View>(_ view: V) -> FiberReconciler<Self> {
     .init(self, view)
+  }
+
+  @discardableResult
+  func render<A: App>(_ app: A) -> FiberReconciler<Self> {
+    .init(self, app)
   }
 }
 

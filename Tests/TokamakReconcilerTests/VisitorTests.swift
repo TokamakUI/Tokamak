@@ -59,40 +59,37 @@ final class VisitorTests: XCTestCase {
     let reconciler = TestFiberRenderer(.root, size: .init(width: 500, height: 500))
       .render(TestView())
     func decrement() {
-      (
-        reconciler.current // RootView
-          .child? // ModifiedContent
-          .child? // _ViewModifier_Content
-          .child? // TestView
-          .child? // Counter
-          .child? // VStack
-          .child? // TupleView
-          .child?.sibling? // HStack
-          .child? // TupleView
-          .child? // Optional
-          .child? // Button
-          .view as? Button<Text>
-      )?
-        .action()
+      guard case let .view(view, _) = reconciler.current // RootView
+        .child? // ModifiedContent
+        .child? // _ViewModifier_Content
+        .child? // TestView
+        .child? // Counter
+        .child? // VStack
+        .child? // TupleView
+        .child?.sibling? // HStack
+        .child? // TupleView
+        .child? // Optional
+        .child? // Button
+        .content
+      else { return }
+      (view as? Button<Text>)?.action()
     }
     func increment() {
-      (
-        reconciler.current // RootView
-          .child? // ModifiedContent
-          .child? // _ViewModifier_Content
-          .child? // TestView
-          .child? // Counter
-          .child? // VStack
-          .child? // TupleView
-          .child? // Text
-          .sibling? // HStack
-          .child? // TupleView
-          .child? // Optional
-          .sibling? // Optional
-          .child? // Button
-          .view as? Button<Text>
-      )?
-        .action()
+      guard case let .view(view, _) = reconciler.current // RootView
+        .child? // ModifiedContent
+        .child? // _ViewModifier_Content
+        .child? // TestView
+        .child? // Counter
+        .child? // VStack
+        .child? // TupleView
+        .child?.sibling? // HStack
+        .child? // TupleView
+        .child? // Optional
+        .sibling? // Optional
+        .child? // Button
+        .content
+      else { return }
+      (view as? Button<Text>)?.action()
     }
     for _ in 0..<5 {
       increment()

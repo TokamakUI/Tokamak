@@ -17,11 +17,17 @@
 
 struct _TupleScene<T>: Scene, GroupScene {
   let value: T
-  var children: [_AnyScene]
+  let children: [_AnyScene]
+  let visit: (SceneVisitor) -> ()
 
-  init(_ value: T, children: [_AnyScene]) {
+  init(
+    _ value: T,
+    children: [_AnyScene],
+    visit: @escaping (SceneVisitor) -> ()
+  ) {
     self.value = value
     self.children = children
+    self.visit = visit
   }
 
   var body: Never {

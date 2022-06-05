@@ -19,7 +19,7 @@ import OpenCombineShim
 import TokamakCore
 
 public extension App {
-  static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
+  static func _launch(_ app: Self, with configuration: _AppConfiguration) {
     fatalError("TokamakStaticHTML does not support default `App._launch`")
   }
 

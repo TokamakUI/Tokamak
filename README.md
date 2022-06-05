@@ -138,6 +138,31 @@ This way both [Semantic UI](https://semantic-ui.com/) styles and [moment.js](htt
 localized date formatting (or any arbitrary style/script/font added that way) are available in your
 app.
 
+### Fiber renderers
+
+A new reconciler modeled after React's [Fiber reconciler](https://reactjs.org/docs/faq-internals.html#what-is-react-fiber)
+is optionally available. It can provide faster updates and allow for larger View hierarchies.
+It also includes layout steps that can match SwiftUI layouts closer than CSS approximations.
+
+You can specify which reconciler to use in your `App`'s configuration:
+
+```swift
+struct CounterApp: App {
+  static let _configuration: _AppConfiguration = .init(
+    // Specify `useDynamicLayout` to enable the layout steps in place of CSS approximations.
+    reconciler: .fiber(useDynamicLayout: true)
+  )
+
+  var body: some Scene {
+    WindowGroup("Counter Demo") {
+      Counter(count: 5, limit: 15)
+    }
+  }
+}
+```
+
+> *Note*: Not all `View`s and `ViewModifier`s are supported by Fiber renderers yet.
+
 ## Requirements
 
 ### For app developers

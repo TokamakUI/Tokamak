@@ -21,8 +21,8 @@ import OpenCombineShim
 import TokamakCore
 
 public extension App {
-  static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
-    _ = Unmanaged.passRetained(GTKRenderer(app, rootEnvironment))
+  static func _launch(_ app: Self, with configuration: _AppConfiguration) {
+    _ = Unmanaged.passRetained(GTKRenderer(app, configuration.rootEnvironment))
   }
 
   static func _setTitle(_ title: String) {

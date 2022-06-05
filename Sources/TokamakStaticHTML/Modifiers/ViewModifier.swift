@@ -50,8 +50,8 @@ extension ModifiedContent: HTMLConvertible where Content: View,
   Modifier: HTMLConvertible
 {
   public var tag: String { modifier.tag }
-  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
-    modifier.attributes(shouldLayout: shouldLayout)
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    modifier.attributes(useDynamicLayout: useDynamicLayout)
   }
 
   public var innerHTML: String? { modifier.innerHTML }
