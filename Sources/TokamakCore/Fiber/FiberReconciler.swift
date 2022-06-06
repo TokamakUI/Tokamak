@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,8 @@ import Foundation
 /// [Fiber reconciler](https://reactjs.org/docs/faq-internals.html#what-is-react-fiber)
 public final class FiberReconciler<Renderer: FiberRenderer> {
   /// The root node in the `Fiber` tree that represents the `View`s currently rendered on screen.
-  @_spi(TokamakCore) public var current: Fiber!
+  @_spi(TokamakCore)
+  public var current: Fiber!
   /// The alternate of `current`, or the work in progress tree root.
   ///
   /// We must keep a strong reference to both the current and alternate tree roots,
@@ -69,7 +70,23 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     reconcile(from: current)
   }
 
-  final class ReconcilerVisitor: ViewVisitor {
+  public init<A: App>(_ renderer: Renderer, _ app: A) {
+    self.renderer = renderer
+    var environment = renderer.defaultEnvironment
+    environment.measureText = renderer.measureText
+    var app = app
+    current = .init(
+      &app,
+      rootElement: renderer.rootElement,
+      rootEnvironment: environment,
+      reconciler: self
+    )
+    // Start by building the initial tree.
+    alternate = current.createAndBindAlternate?()
+    reconcile(from: current)
+  }
+
+  final class ReconcilerVisitor: AppVisitor, SceneVisitor, ViewVisitor {
     unowned let reconciler: FiberReconciler<Renderer>
     /// The current, mounted `Fiber`.
     var currentRoot: Fiber
@@ -81,12 +98,13 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     }
 
     /// A `ViewVisitor` that proposes a size for the `View` represented by the fiber `node`.
-    struct ProposeSizeVisitor: ViewVisitor {
+    struct ProposeSizeVisitor: AppVisitor, SceneVisitor, ViewVisitor {
       let node: Fiber
+      let renderer: Renderer
       let layoutContexts: [ObjectIdentifier: LayoutContext]
 
       func visit<V>(_ view: V) where V: View {
-        // Ask the parent for a size.
+        // Ask the parent what space is available.
         let proposedSize = node.elementParent?.outputs.layoutComputer.proposeSize(
           for: view,
           at: node.elementIndex ?? 0,
@@ -97,6 +115,28 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         node.outputs.layoutComputer = node.outputs.makeLayoutComputer(proposedSize)
         node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
       }
+
+      func visit<S>(_ scene: S) where S: Scene {
+        node.outputs.layoutComputer = node.outputs.makeLayoutComputer(renderer.sceneSize)
+        node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
+      }
+
+      func visit<A>(_ app: A) where A: App {
+        node.outputs.layoutComputer = node.outputs.makeLayoutComputer(renderer.sceneSize)
+        node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
+      }
+    }
+
+    func visit<V>(_ view: V) where V: View {
+      visitAny(view, visitChildren: reconciler.renderer.viewVisitor(for: view))
+    }
+
+    func visit<S>(_ scene: S) where S: Scene {
+      visitAny(scene, visitChildren: scene._visitChildren)
+    }
+
+    func visit<A>(_ app: A) where A: App {
+      visitAny(app, visitChildren: { $0.visit(app.body) })
     }
 
     /// Walk the current tree, recomputing at each step to check for discrepancies.
@@ -141,7 +181,10 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     ///   │       │Text│
     ///   └───────┴────┘
     /// ```
-    func visit<V>(_ view: V) where V: View {
+    private func visitAny(
+      _ value: Any,
+      visitChildren: @escaping (TreeReducer.SceneVisitor) -> ()
+    ) {
       let alternateRoot: Fiber?
       if let alternate = currentRoot.alternate {
         alternateRoot = alternate
@@ -149,9 +192,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         alternateRoot = currentRoot.createAndBindAlternate?()
       }
       let rootResult = TreeReducer.Result(
-        reconciler: reconciler,
         fiber: alternateRoot, // The alternate is the WIP node.
-        visitChildren: reconciler.renderer.viewVisitor(for: view),
+        visitChildren: visitChildren,
         parent: nil,
         child: alternateRoot?.child,
         alternateChild: currentRoot.child,
@@ -166,7 +208,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       var elementIndices = [ObjectIdentifier: Int]()
       /// The `LayoutContext` for each parent view.
       var layoutContexts = [ObjectIdentifier: LayoutContext]()
-      /// The children of an `elementParent` with `element`s in order.
+      /// The (potentially nested) children of an `elementParent` with `element` values in order.
+      /// Used to position children in the correct order.
       var elementChildren = [ObjectIdentifier: [Fiber]]()
 
       /// Compare `node` with its alternate, and add any mutations to the list.
@@ -198,12 +241,29 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         }
       }
 
+      /// Ask the `LayoutComputer` for the fiber's `elementParent` to propose a size.
       func proposeSize(for node: Fiber) {
         guard node.element != nil else { return }
 
-        node.visitView(ProposeSizeVisitor(node: node, layoutContexts: layoutContexts))
+        // Use a visitor so we can pass the correct `View`/`Scene` type to the function.
+        let visitor = ProposeSizeVisitor(
+          node: node,
+          renderer: reconciler.renderer,
+          layoutContexts: layoutContexts
+        )
+        switch node.content {
+        case let .view(_, visit):
+          visit(visitor)
+        case let .scene(_, visit):
+          visit(visitor)
+        case let .app(_, visit):
+          visit(visitor)
+        case .none:
+          break
+        }
       }
 
+      /// Request a size from the fiber's `elementParent`.
       func size(_ node: Fiber) {
         guard node.element != nil,
               let elementParent = node.elementParent
@@ -213,14 +273,15 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         let elementIndex = node.elementIndex ?? 0
         var parentContext = layoutContexts[key, default: .init(children: [])]
 
-        // Compute our size and position in our context.
+        // Using our LayoutComputer, compute our required size.
+        // This does not have to respect the elementParent's proposed size.
         let size = node.outputs.layoutComputer.requestSize(
           in: layoutContexts[ObjectIdentifier(node), default: .init(children: [])]
         )
         let dimensions = ViewDimensions(size: size, alignmentGuides: [:])
         let child = LayoutContext.Child(index: elementIndex, dimensions: dimensions)
 
-        // Add ourself to the parent context.
+        // Add ourself to the parent's LayoutContext.
         parentContext.children.append(child)
         layoutContexts[key] = parentContext
 
@@ -231,7 +292,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         )
       }
 
-      /// Request a size and position from the parent on the way back up.
+      /// Request a position from the parent on the way back up.
       func position(_ node: Fiber) {
         // FIXME: Add alignmentGuide modifier to override defaults and pass the correct guide data.
         guard let element = node.element,
@@ -242,10 +303,11 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         let elementIndex = node.elementIndex ?? 0
         let context = layoutContexts[key, default: .init(children: [])]
 
+        // Find our child element in our parent's LayoutContext (as added by `size(_:)`).
         guard let child = context.children.first(where: { $0.index == elementIndex })
         else { return }
 
-        // Compute our position in the context.
+        // Ask our parent to position us in it's coordinate space (given our requested size).
         let position = elementParent.outputs.layoutComputer.position(child, in: context)
         let geometry = ViewGeometry(
           origin: .init(origin: position),
@@ -270,12 +332,12 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           node.elementIndices = elementIndices
 
           // Compute the children of the node.
-          let reducer = TreeReducer.Visitor(initialResult: node)
+          let reducer = TreeReducer.SceneVisitor(initialResult: node)
           node.visitChildren(reducer)
           elementIndices = node.elementIndices
 
-          // Propose sizes on the way down.
-          if reconciler.renderer.shouldLayout,
+          // As we walk down the tree, propose a size for each View.
+          if reconciler.renderer.useDynamicLayout,
              let fiber = node.fiber
           {
             proposeSize(for: fiber)
@@ -309,7 +371,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
             }
           }
           if reducer.result.child == nil {
-            node.fiber?.child = nil // Make sure we clear the child if there was none
+            // Make sure we clear the child if there was none
+            node.fiber?.child = nil
+            node.fiber?.alternate?.child = nil
           }
 
           // If we've made it back to the root, then exit.
@@ -320,7 +384,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           // Now walk back up the tree until we find a sibling.
           while node.sibling == nil {
             var alternateSibling = node.fiber?.alternate?.sibling
-            while alternateSibling != nil { // The alternate had siblings that no longer exist.
+            while alternateSibling !=
+              nil
+            { // The alternate had siblings that no longer exist.
               if let element = alternateSibling?.element,
                  let parent = alternateSibling?.elementParent?.element
               {
@@ -331,11 +397,17 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
               alternateSibling = alternateSibling?.sibling
             }
             // We `size` and `position` when we are walking back up the tree.
-            if reconciler.renderer.shouldLayout,
+            if reconciler.renderer.useDynamicLayout,
                let fiber = node.fiber
             {
+              // The `elementParent` proposed a size for this fiber on the way down.
+              // At this point all of this fiber's children have requested sizes.
+              // On the way back up, we tell our elementParent what size we want,
+              // based on our own requirements and the sizes required by our children.
               size(fiber)
-              // Position the children in order.
+              // Loop through each (potentially nested) child fiber with an `element`,
+              // and position them in our coordinate space. This ensures children are
+              // positioned in order.
               if let elementChildren = elementChildren[ObjectIdentifier(fiber)] {
                 for elementChild in elementChildren {
                   position(elementChild)
@@ -348,13 +420,16 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
             node = parent
           }
 
-          // We `size` and `position` when we reach the bottommost view that has a sibling.
-          // Otherwise, sizing takes place in the above loop.
-          if reconciler.renderer.shouldLayout,
+          // We also request `size` and `position` when we reach the bottom-most view
+          // that has a sibling.
+          // Sizing and positioning also happen when we have no sibling,
+          // as seen in the above loop.
+          if reconciler.renderer.useDynamicLayout,
              let fiber = node.fiber
           {
+            // Request a size from our `elementParent`.
             size(fiber)
-            // Position the children in order.
+            // Position our children in order.
             if let elementChildren = elementChildren[ObjectIdentifier(fiber)] {
               for elementChild in elementChildren {
                 position(elementChild)
@@ -368,7 +443,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       }
       mainLoop()
 
-      if reconciler.renderer.shouldLayout {
+      if reconciler.renderer.useDynamicLayout {
         // We continue to the very top to update all necessary positions.
         var layoutNode = node.fiber?.child
         while let current = layoutNode {
@@ -393,7 +468,16 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
   func reconcile(from root: Fiber) {
     // Create a list of mutations.
     let visitor = ReconcilerVisitor(root: root, reconciler: self)
-    root.visitView(visitor)
+    switch root.content {
+    case let .view(_, visit):
+      visit(visitor)
+    case let .scene(_, visit):
+      visit(visitor)
+    case let .app(_, visit):
+      visit(visitor)
+    case .none:
+      break
+    }
 
     // Apply mutations to the rendered output.
     renderer.commit(visitor.mutations)

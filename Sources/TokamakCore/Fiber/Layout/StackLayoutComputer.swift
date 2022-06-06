@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,29 +17,23 @@
 
 import Foundation
 
-final class StackLayoutComputer: LayoutComputer {
+/// A `LayoutComputer` that aligns `Views` along a specified `Axis`
+/// with a given spacing and alignment.
+///
+/// The specified main `Axis` will fit to the combined width/height (depending on the axis)
+/// of the children.
+/// The cross axis will fit to the child with the largest height/width.
+struct StackLayoutComputer: LayoutComputer {
   let proposedSize: CGSize
   let axis: Axis
   let alignment: Alignment
   let spacing: CGFloat
-  /// A multiplier of `1` for the axis that takes the size of the largest child.
-  let maxAxis: CGSize
-  /// A multiplier of `1` for the axis that the children are aligned on.
-  let fitAxis: CGSize
 
   init(proposedSize: CGSize, axis: Axis, alignment: Alignment, spacing: CGFloat) {
     self.proposedSize = proposedSize
     self.axis = axis
     self.alignment = alignment
     self.spacing = spacing
-    switch axis {
-    case .horizontal:
-      maxAxis = .init(width: 0, height: 1)
-      fitAxis = .init(width: 1, height: 0)
-    case .vertical:
-      maxAxis = .init(width: 1, height: 0)
-      fitAxis = .init(width: 0, height: 1)
-    }
   }
 
   func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
@@ -51,11 +45,18 @@ final class StackLayoutComputer: LayoutComputer {
         height: $0.height + $1.dimensions.height
       )
     }
-    let size = CGSize(
-      width: proposedSize.width - (used.width * fitAxis.width),
-      height: proposedSize.height - (used.height * fitAxis.height)
-    )
-    return size
+    switch axis {
+    case .horizontal:
+      return .init(
+        width: proposedSize.width - used.width,
+        height: proposedSize.height
+      )
+    case .vertical:
+      return .init(
+        width: proposedSize.width,
+        height: proposedSize.height - used.height
+      )
+    }
   }
 
   func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint {
@@ -76,19 +77,18 @@ final class StackLayoutComputer: LayoutComputer {
     let maxDimensions = ViewDimensions(size: maxSize, alignmentGuides: [:])
     /// The gaps up to this point.
     let fitSpacing = CGFloat(child.index) * spacing
-    let position = CGPoint(
-      x: (
-        (maxDimensions[alignment.horizontal] - child.dimensions[alignment.horizontal]) * maxAxis
-          .width
+    switch axis {
+    case .horizontal:
+      return .init(
+        x: fitSize.width + fitSpacing,
+        y: maxDimensions[alignment.vertical] - child.dimensions[alignment.vertical]
       )
-        + ((fitSize.width + fitSpacing) * fitAxis.width),
-      y: (
-        (maxDimensions[alignment.vertical] - child.dimensions[alignment.vertical]) * maxAxis
-          .height
+    case .vertical:
+      return .init(
+        x: maxDimensions[alignment.horizontal] - child.dimensions[alignment.horizontal],
+        y: fitSize.height + fitSpacing
       )
-        + ((fitSize.height + fitSpacing) * fitAxis.height)
-    )
-    return position
+    }
   }
 
   func requestSize(in context: LayoutContext) -> CGSize {
@@ -106,12 +106,18 @@ final class StackLayoutComputer: LayoutComputer {
     /// The combined gap size.
     let fitSpacing = CGFloat(context.children.count - 1) * spacing
 
-    return .init(
-      width: (maxDimensions.width * maxAxis.width) +
-        ((fitDimensions.width + fitSpacing) * fitAxis.width),
-      height: (maxDimensions.height * maxAxis.height) +
-        ((fitDimensions.height + fitSpacing) * fitAxis.height)
-    )
+    switch axis {
+    case .horizontal:
+      return .init(
+        width: fitDimensions.width + fitSpacing,
+        height: maxDimensions.height
+      )
+    case .vertical:
+      return .init(
+        width: maxDimensions.width,
+        height: fitDimensions.height + fitSpacing
+      )
+    }
   }
 }
 

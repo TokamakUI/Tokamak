@@ -75,4 +75,8 @@ public struct WindowGroup<Content>: Scene, TitledScene where Content: View {
 //  public init(_ titleKey: LocalizedStringKey,
 //              @ViewBuilder content: () -> Content) {
 //  }
+
+  public func _visitChildren<V>(_ visitor: V) where V: SceneVisitor {
+    visitor.visit(content)
+  }
 }

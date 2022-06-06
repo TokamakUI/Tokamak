@@ -139,7 +139,8 @@ public struct _AnimationProxy {
   public func resolve() -> _AnimationBoxBase._Resolved { subject.box.resolve() }
 }
 
-@frozen public struct _AnimationModifier<Value>: ViewModifier, Equatable
+@frozen
+public struct _AnimationModifier<Value>: ViewModifier, Equatable
   where Value: Equatable
 {
   public var animation: Animation?
@@ -155,7 +156,9 @@ public struct _AnimationProxy {
     let content: Content
     let animation: Animation?
     let value: Value
-    @State private var lastValue: Value?
+
+    @State
+    private var lastValue: Value?
 
     var body: some View {
       content.transaction {
@@ -180,7 +183,8 @@ public struct _AnimationProxy {
   }
 }
 
-@frozen public struct _AnimationView<Content>: View
+@frozen
+public struct _AnimationView<Content>: View
   where Content: Equatable, Content: View
 {
   public var content: Content

@@ -18,7 +18,7 @@ import TokamakCore
 public extension App {
   static func _setTitle(_ title: String) {}
 
-  static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {}
+  static func _launch(_ app: Self, with configuration: _AppConfiguration) {}
 
   var _phasePublisher: AnyPublisher<ScenePhase, Never> { Empty().eraseToAnyPublisher() }
 

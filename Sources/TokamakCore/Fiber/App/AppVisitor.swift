@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,27 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Emil Pedersen on 2021-03-27.
+//  Created by Carson Katri on 5/31/22.
 //
 
-import struct Foundation.Date
-import TokamakShim
-
-struct DatePickerDemo: View {
-  @State
-  private var date = Date()
-
-  var body: some View {
-    VStack {
-      DatePicker(selection: $date, displayedComponents: .date) {
-        Text("Appointment date:")
-      }
-      DatePicker(selection: $date, displayedComponents: .hourAndMinute) {
-        Text("Appointment time:")
-      }
-      DatePicker(selection: $date) {
-        Text("Confirm:")
-      }
-    }
-  }
+/// A type that can visit an `App`.
+public protocol AppVisitor: ViewVisitor {
+  func visit<A: App>(_ app: A)
 }

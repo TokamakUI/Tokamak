@@ -45,27 +45,30 @@ extension _ZIndexModifier: DOMViewModifier {
   }
 }
 
-@_spi(TokamakStaticHTML) public protocol HTMLModifierConvertible {
+@_spi(TokamakStaticHTML)
+public protocol HTMLModifierConvertible {
   func primitiveVisitor<V, Content: View>(
     content: Content,
-    shouldLayout: Bool
+    useDynamicLayout: Bool
   ) -> ((V) -> ())? where V: ViewVisitor
 }
 
-@_spi(TokamakStaticHTML) extension ModifiedContent: HTMLConvertible where Content: View,
+@_spi(TokamakStaticHTML)
+extension ModifiedContent: HTMLConvertible where Content: View,
   Modifier: HTMLConvertible
 {
   public var tag: String { modifier.tag }
-  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
-    modifier.attributes(shouldLayout: shouldLayout)
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    modifier.attributes(useDynamicLayout: useDynamicLayout)
   }
 
   public var innerHTML: String? { modifier.innerHTML }
-  public func primitiveVisitor<V>(shouldLayout: Bool) -> ((V) -> ())? where V: ViewVisitor {
+
+  public func primitiveVisitor<V>(useDynamicLayout: Bool) -> ((V) -> ())? where V: ViewVisitor {
     (modifier as? HTMLModifierConvertible)?
       .primitiveVisitor(
         content: content,
-        shouldLayout: shouldLayout
+        useDynamicLayout: useDynamicLayout
       )
   }
 }

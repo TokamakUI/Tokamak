@@ -18,9 +18,15 @@
 public protocol View {
   associatedtype Body: View
 
-  @ViewBuilder var body: Self.Body { get }
+  @ViewBuilder
+  var body: Self.Body { get }
 
+  /// Override the default implementation for `View`s with body types of `Never`
+  /// or in cases where the body would normally need to be type erased.
   func _visitChildren<V: ViewVisitor>(_ visitor: V)
+
+  /// Create `ViewOutputs`, including any modifications to the environment, preferences, or a custom
+  /// `LayoutComputer` from the `ViewInputs`.
   static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs
 }
 

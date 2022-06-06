@@ -90,7 +90,8 @@ public extension View {
   }
 }
 
-@frozen public struct _BackgroundShapeModifier<Style, Bounds>: ViewModifier, EnvironmentReader
+@frozen
+public struct _BackgroundShapeModifier<Style, Bounds>: ViewModifier, EnvironmentReader
   where Style: ShapeStyle, Bounds: Shape
 {
   public var environment: EnvironmentValues!

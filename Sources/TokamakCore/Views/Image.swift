@@ -102,7 +102,9 @@ private class ResizableProvider: _AnyImageProviderBox {
 
 public struct Image: _PrimitiveView, Equatable {
   let provider: _AnyImageProviderBox
-  @Environment(\.self) var environment
+
+  @Environment(\.self)
+  var environment
 
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.provider == rhs.provider

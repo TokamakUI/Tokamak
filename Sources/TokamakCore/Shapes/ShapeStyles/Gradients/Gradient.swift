@@ -17,8 +17,10 @@
 
 import Foundation
 
-@frozen public struct Gradient: Equatable {
-  @frozen public struct Stop: Equatable {
+@frozen
+public struct Gradient: Equatable {
+  @frozen
+  public struct Stop: Equatable {
     public var color: Color
     public var location: CGFloat
 

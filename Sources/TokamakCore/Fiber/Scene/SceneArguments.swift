@@ -1,4 +1,4 @@
-// Copyright 2020 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,27 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Emil Pedersen on 2021-03-27.
+//  Created by Carson Katri on 5/30/22.
 //
 
-import struct Foundation.Date
-import TokamakShim
+import Foundation
 
-struct DatePickerDemo: View {
-  @State
-  private var date = Date()
-
-  var body: some View {
-    VStack {
-      DatePicker(selection: $date, displayedComponents: .date) {
-        Text("Appointment date:")
-      }
-      DatePicker(selection: $date, displayedComponents: .hourAndMinute) {
-        Text("Appointment time:")
-      }
-      DatePicker(selection: $date) {
-        Text("Confirm:")
-      }
-    }
+public extension Scene {
+  // By default, we simply pass the inputs through without modifications.
+  static func _makeScene(_ inputs: SceneInputs<Self>) -> SceneOutputs {
+    .init(
+      inputs: inputs,
+      layoutComputer: RootLayoutComputer.init
+    )
   }
 }

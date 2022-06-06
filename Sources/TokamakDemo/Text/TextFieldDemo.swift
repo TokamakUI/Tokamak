@@ -15,11 +15,20 @@
 import TokamakShim
 
 struct TextFieldDemo: View {
-  @State var text = ""
-  @State var numCommits = 0
-  @State var isFocused = false
-  @State var password = ""
-  @State var committedPassword = ""
+  @State
+  var text = ""
+
+  @State
+  var numCommits = 0
+
+  @State
+  var isFocused = false
+
+  @State
+  var password = ""
+
+  @State
+  var committedPassword = ""
   // Uncomment this line and build to verify the
   // textFieldStyle environment variable is inaccessible
   // @Environment(\.textFieldStyle) var textFieldStyle: TextFieldStyle

@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,8 @@ import Foundation
 /// Data passed to `_makeView` to create the `ViewOutputs` used in reconciling/rendering.
 public struct ViewInputs<V> {
   public let content: V
-  @_spi(TokamakCore) public let environment: EnvironmentBox
+  @_spi(TokamakCore)
+  public let environment: EnvironmentBox
 }
 
 /// Data used to reconcile and render a `View` and its children.
@@ -34,7 +35,8 @@ public struct ViewOutputs {
   var layoutComputer: LayoutComputer!
 }
 
-@_spi(TokamakCore) public final class EnvironmentBox {
+@_spi(TokamakCore)
+public final class EnvironmentBox {
   public let environment: EnvironmentValues
 
   public init(_ environment: EnvironmentValues) {
@@ -42,14 +44,14 @@ public struct ViewOutputs {
   }
 }
 
-@_spi(TokamakCore) public extension ViewOutputs {
+public extension ViewOutputs {
   init<V>(
     inputs: ViewInputs<V>,
     environment: EnvironmentValues? = nil,
     preferences: _PreferenceStore? = nil,
     layoutComputer: ((CGSize) -> LayoutComputer)? = nil
   ) {
-    // Only replace the EnvironmentBox when we change the environment.
+    // Only replace the `EnvironmentBox` when we change the environment.
     // Otherwise the same box can be reused.
     self.environment = environment.map(EnvironmentBox.init) ?? inputs.environment
     self.preferences = preferences ?? .init()

@@ -63,11 +63,12 @@ extension _BackgroundStyleModifier: DOMViewModifier {
   }
 }
 
-@_spi(TokamakStaticHTML) extension _BackgroundStyleModifier: HTMLConvertible,
+@_spi(TokamakStaticHTML)
+extension _BackgroundStyleModifier: HTMLConvertible,
   HTMLModifierConvertible
 {
   public var tag: String { "div" }
-  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
     let resolved = style.resolve(
       for: .resolveStyle(levels: 0..<1),
       in: environment,
@@ -82,7 +83,7 @@ extension _BackgroundStyleModifier: DOMViewModifier {
 
   public func primitiveVisitor<V, Content>(
     content: Content,
-    shouldLayout: Bool
+    useDynamicLayout: Bool
   ) -> ((V) -> ())? where V: ViewVisitor, Content: View {
     let resolved = style.resolve(
       for: .resolveStyle(levels: 0..<1),

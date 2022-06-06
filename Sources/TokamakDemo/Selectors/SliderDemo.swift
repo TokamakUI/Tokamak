@@ -29,11 +29,20 @@ struct Title: View {
 }
 
 struct SliderDemo: View {
-  @State private var value: Double = 0
-  @State private var value2: Double = 0
-  @State private var value3: Double = 0
-  @State private var value4: Double = 0
-  @State private var editing = false
+  @State
+  private var value: Double = 0
+
+  @State
+  private var value2: Double = 0
+
+  @State
+  private var value3: Double = 0
+
+  @State
+  private var value4: Double = 0
+
+  @State
+  private var editing = false
 
   var body: some View {
     ScrollView(.vertical) {

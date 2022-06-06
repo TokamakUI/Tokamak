@@ -192,8 +192,9 @@ public extension HTML where Content == EmptyView {
   }
 }
 
-@_spi(TokamakStaticHTML) extension HTML: HTMLConvertible {
-  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
+@_spi(TokamakStaticHTML)
+extension HTML: HTMLConvertible {
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
     attributes
   }
 

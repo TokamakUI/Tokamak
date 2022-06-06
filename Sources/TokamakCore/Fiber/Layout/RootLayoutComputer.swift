@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 import Foundation
 
 /// A `LayoutComputer` for the root element of a `FiberRenderer`.
-final class RootLayoutComputer: LayoutComputer {
+struct RootLayoutComputer: LayoutComputer {
   let sceneSize: CGSize
 
   init(sceneSize: CGSize) {

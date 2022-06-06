@@ -73,10 +73,11 @@ extension _FrameLayout: DOMViewModifier {
   }
 }
 
-@_spi(TokamakStaticHTML) extension _FrameLayout: HTMLConvertible {
+@_spi(TokamakStaticHTML)
+extension _FrameLayout: HTMLConvertible {
   public var tag: String { "div" }
-  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
-    guard !shouldLayout else { return [
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    guard !useDynamicLayout else { return [
       "style": "overflow: hidden;",
     ] }
     return attributes
@@ -199,18 +200,19 @@ extension _BackgroundLayout: _HTMLPrimitive {
   }
 }
 
-@_spi(TokamakStaticHTML) extension _BackgroundLayout: HTMLConvertible {
+@_spi(TokamakStaticHTML)
+extension _BackgroundLayout: HTMLConvertible {
   public var tag: String {
     "div"
   }
 
-  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
-    guard !shouldLayout else { return [:] }
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    guard !useDynamicLayout else { return [:] }
     return ["style": "display: inline-grid; grid-template-columns: auto auto;"]
   }
 
-  public func primitiveVisitor<V>(shouldLayout: Bool) -> ((V) -> ())? where V: ViewVisitor {
-    if shouldLayout {
+  public func primitiveVisitor<V>(useDynamicLayout: Bool) -> ((V) -> ())? where V: ViewVisitor {
+    if useDynamicLayout {
       return {
         $0.visit(HTML("div", ["style": "z-index: 1;"]) { content })
         $0.visit(background)

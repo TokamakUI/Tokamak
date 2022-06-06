@@ -20,7 +20,8 @@ import Foundation
 public protocol _VectorMath: Animatable {}
 
 public extension _VectorMath {
-  @inlinable var magnitude: Double {
+  @inlinable
+  var magnitude: Double {
     animatableData.magnitudeSquared.squareRoot()
   }
 

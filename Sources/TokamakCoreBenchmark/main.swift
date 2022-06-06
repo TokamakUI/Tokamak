@@ -27,7 +27,8 @@ benchmark("typeConstructorName TokamakCore") {
 }
 
 struct UpdateWide: View {
-  @State var update = -1
+  @State
+  var update = -1
 
   var body: some View {
     VStack {
@@ -65,9 +66,9 @@ benchmark("update wide (FiberReconciler)") { state in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    shouldLayout: false
+    useDynamicLayout: false
   ).render(view)
-  let button = reconciler.current // RootView
+  guard case let .view(view, _) = reconciler.current // RootView
     .child? // ModifiedContent
     .child? // _ViewModifier_Content
     .child? // UpdateLast
@@ -77,14 +78,18 @@ benchmark("update wide (FiberReconciler)") { state in
     .child? // ConditionalContent
     .child? // AnyView
     .child? // _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
-    .view
+    .content,
+    let button = view as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
+  else { return }
+
   try state.measure {
-    (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+    button.action()
   }
 }
 
 struct UpdateNarrow: View {
-  @State var update = -1
+  @State
+  var update = -1
 
   var body: some View {
     VStack {
@@ -122,9 +127,9 @@ benchmark("update narrow (FiberReconciler)") { state in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    shouldLayout: false
+    useDynamicLayout: false
   ).render(view)
-  let button = reconciler.current // RootView
+  guard case let .view(view, _) = reconciler.current // RootView
     .child? // ModifiedContent
     .child? // _ViewModifier_Content
     .child? // UpdateLast
@@ -134,14 +139,17 @@ benchmark("update narrow (FiberReconciler)") { state in
     .child? // ConditionalContent
     .child? // AnyView
     .child? // _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
-    .view
+    .content,
+    let button = view as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
+  else { return }
   try state.measure {
-    (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+    button.action()
   }
 }
 
 struct UpdateDeep: View {
-  @State var update = "A"
+  @State
+  var update = "A"
 
   struct RecursiveView: View {
     let count: Int
@@ -191,9 +199,9 @@ benchmark("update deep (FiberReconciler)") { state in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    shouldLayout: false
+    useDynamicLayout: false
   ).render(view)
-  let button = reconciler.current // RootView
+  guard case let .view(view, _) = reconciler.current // RootView
     .child? // ModifiedContent
     .child? // _ViewModifier_Content
     .child? // UpdateLast
@@ -203,14 +211,17 @@ benchmark("update deep (FiberReconciler)") { state in
     .child? // ConditionalContent
     .child? // AnyView
     .child? // _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
-    .view
+    .content,
+    let button = view as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
+  else { return }
   try state.measure {
-    (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+    button.action()
   }
 }
 
 struct UpdateShallow: View {
-  @State var update = "A"
+  @State
+  var update = "A"
 
   struct RecursiveView: View {
     let count: Int
@@ -258,9 +269,9 @@ benchmark("update shallow (FiberReconciler)") { _ in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    shouldLayout: false
+    useDynamicLayout: false
   ).render(view)
-  let button = reconciler.current // RootView
+  guard case let .view(view, _) = reconciler.current // RootView
     .child? // ModifiedContent
     .child? // _ViewModifier_Content
     .child? // UpdateLast
@@ -270,9 +281,11 @@ benchmark("update shallow (FiberReconciler)") { _ in
     .child? // ConditionalContent
     .child? // AnyView
     .child? // _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
-    .view
+    .content,
+    let button = view as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
+  else { return }
   // Using state.measure here hangs the benchmark app?g
-  (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+  button.action()
 }
 
 Benchmark.main()

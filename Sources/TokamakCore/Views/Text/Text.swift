@@ -35,7 +35,8 @@ public struct Text: _PrimitiveView, Equatable {
   let storage: _Storage
   let modifiers: [_Modifier]
 
-  @Environment(\.self) var environment
+  @Environment(\.self)
+  var environment
 
   public static func == (lhs: Text, rhs: Text) -> Bool {
     lhs.storage == rhs.storage
@@ -44,7 +45,7 @@ public struct Text: _PrimitiveView, Equatable {
 
   public enum _Storage: Equatable {
     case verbatim(String)
-    case segmentedText([(_Storage, [_Modifier])])
+    case segmentedText([(storage: _Storage, modifiers: [_Modifier])])
 
     public static func == (lhs: Text._Storage, rhs: Text._Storage) -> Bool {
       switch lhs {

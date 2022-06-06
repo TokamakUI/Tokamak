@@ -224,10 +224,11 @@ extension _ShapeView: _HTMLPrimitive {
   }
 }
 
-@_spi(TokamakStaticHTML) extension _ShapeView: HTMLConvertible {
+@_spi(TokamakStaticHTML)
+extension _ShapeView: HTMLConvertible {
   public var tag: String { "svg" }
   public var namespace: String? { "http://www.w3.org/2000/svg" }
-  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
     let resolvedStyle = style.resolve(
       for: .resolveStyle(levels: 0..<1),
       in: environment,
@@ -236,7 +237,7 @@ extension _ShapeView: _HTMLPrimitive {
     return attributes(resolvedStyle: resolvedStyle)
   }
 
-  public func primitiveVisitor<V>(shouldLayout: Bool) -> ((V) -> ())? where V: ViewVisitor {
+  public func primitiveVisitor<V>(useDynamicLayout: Bool) -> ((V) -> ())? where V: ViewVisitor {
     let resolvedStyle = style.resolve(
       for: .resolveStyle(levels: 0..<1),
       in: environment,

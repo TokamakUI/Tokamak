@@ -18,8 +18,11 @@
 import TokamakShim
 
 struct AppStorageButtons: View {
-  @AppStorage("count") var count: Int = 0
-  @SceneStorage("count") var sceneCount: Int = 0
+  @AppStorage("count")
+  var count: Int = 0
+
+  @SceneStorage("count")
+  var sceneCount: Int = 0
 
   var body: some View {
     HStack {
@@ -30,8 +33,10 @@ struct AppStorageButtons: View {
 }
 
 struct AppStorageDemo: View {
-  @AppStorage("count") var count: Int = 0
-  @SceneStorage("count") var sceneCount: Int = 0
+  @AppStorage("count")
+  var count: Int = 0
+  @SceneStorage("count")
+  var sceneCount: Int = 0
 
   public var body: some View {
     VStack {

@@ -23,7 +23,8 @@ protocol WritableValueStorage: ValueStorage {
   var setter: ((Any, Transaction) -> ())? { get set }
 }
 
-@propertyWrapper public struct State<Value>: DynamicProperty {
+@propertyWrapper
+public struct State<Value>: DynamicProperty {
   private let initialValue: Value
 
   var anyInitialValue: Any { initialValue }

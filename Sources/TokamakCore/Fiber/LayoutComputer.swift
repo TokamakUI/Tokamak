@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 import Foundation
 
 /// The currently computed children.
-@_spi(TokamakCore) public struct LayoutContext {
+public struct LayoutContext {
   public var children: [Child]
 
   public struct Child {
@@ -40,12 +40,14 @@ import Foundation
 /// The same `LayoutComputer` instance will be used for any given view during a single layout pass.
 ///
 /// Sizes from `proposeSize` will be clamped, so it is safe to return negative numbers.
-@_spi(TokamakCore) public protocol LayoutComputer: AnyObject {
+public protocol LayoutComputer {
   /// Will be called every time a child is evaluated.
   /// The calls will always be in order, and no more than one call will be made per child.
   func proposeSize<V: View>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
+
   /// The child responds with their size and we place them relative to our origin.
   func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint
+
   /// Request a size for ourself from our parent.
   func requestSize(in context: LayoutContext) -> CGSize
 }

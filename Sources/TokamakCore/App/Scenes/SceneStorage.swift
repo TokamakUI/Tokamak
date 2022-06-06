@@ -23,7 +23,8 @@ public enum _DefaultSceneStorageProvider {
   public static var `default`: _StorageProvider!
 }
 
-@propertyWrapper public struct SceneStorage<Value>: DynamicProperty {
+@propertyWrapper
+public struct SceneStorage<Value>: DynamicProperty {
   let key: String
   let defaultValue: Value
   let store: (_StorageProvider, String, Value) -> ()

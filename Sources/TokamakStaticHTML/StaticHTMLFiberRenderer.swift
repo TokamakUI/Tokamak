@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,8 @@
 //
 
 import Foundation
-@_spi(TokamakCore) import TokamakCore
+@_spi(TokamakCore)
+import TokamakCore
 
 public final class HTMLElement: FiberElement, CustomStringConvertible {
   public struct Content: FiberElementContent, Equatable {
@@ -32,10 +33,10 @@ public final class HTMLElement: FiberElement, CustomStringConvertible {
     var innerHTML: String?
     var children: [HTMLElement] = []
 
-    public init<V>(from primitiveView: V, shouldLayout: Bool) where V: View {
+    public init<V>(from primitiveView: V, useDynamicLayout: Bool) where V: View {
       guard let primitiveView = primitiveView as? HTMLConvertible else { fatalError() }
       tag = primitiveView.tag
-      attributes = primitiveView.attributes(shouldLayout: shouldLayout)
+      attributes = primitiveView.attributes(useDynamicLayout: useDynamicLayout)
       innerHTML = primitiveView.innerHTML
     }
 
@@ -88,26 +89,33 @@ public final class HTMLElement: FiberElement, CustomStringConvertible {
   }
 }
 
-@_spi(TokamakStaticHTML) public protocol HTMLConvertible {
+@_spi(TokamakStaticHTML)
+public protocol HTMLConvertible {
   var tag: String { get }
   var namespace: String? { get }
-  func attributes(shouldLayout: Bool) -> [HTMLAttribute: String]
+  func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String]
   var innerHTML: String? { get }
-  func primitiveVisitor<V: ViewVisitor>(shouldLayout: Bool) -> ((V) -> ())?
+  func primitiveVisitor<V: ViewVisitor>(useDynamicLayout: Bool) -> ((V) -> ())?
 }
 
 public extension HTMLConvertible {
-  @_spi(TokamakStaticHTML) var namespace: String? { nil }
-  @_spi(TokamakStaticHTML) var innerHTML: String? { nil }
-  func primitiveVisitor<V: ViewVisitor>(shouldLayout: Bool) -> ((V) -> ())? {
+  @_spi(TokamakStaticHTML)
+  var namespace: String? { nil }
+  @_spi(TokamakStaticHTML)
+  var innerHTML: String? { nil }
+  func primitiveVisitor<V: ViewVisitor>(useDynamicLayout: Bool) -> ((V) -> ())? {
     nil
   }
 }
 
-@_spi(TokamakStaticHTML) extension VStack: HTMLConvertible {
-  @_spi(TokamakStaticHTML) public var tag: String { "div" }
+@_spi(TokamakStaticHTML)
+extension VStack: HTMLConvertible {
   @_spi(TokamakStaticHTML)
-  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
+  public var tag: String { "div" }
+
+  @_spi(TokamakStaticHTML)
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    guard !useDynamicLayout else { return [:] }
     let spacing = _VStackProxy(self).spacing
     return [
       "style": """
@@ -121,10 +129,14 @@ public extension HTMLConvertible {
   }
 }
 
-@_spi(TokamakStaticHTML) extension HStack: HTMLConvertible {
-  @_spi(TokamakStaticHTML) public var tag: String { "div" }
+@_spi(TokamakStaticHTML)
+extension HStack: HTMLConvertible {
   @_spi(TokamakStaticHTML)
-  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
+  public var tag: String { "div" }
+
+  @_spi(TokamakStaticHTML)
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    guard !useDynamicLayout else { return [:] }
     let spacing = _HStackProxy(self).spacing
     return [
       "style": """
@@ -142,7 +154,7 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
   public let rootElement: HTMLElement
   public let defaultEnvironment: EnvironmentValues
   public let sceneSize: CGSize = .zero
-  public let shouldLayout: Bool = false
+  public let useDynamicLayout: Bool = false
 
   public init() {
     rootElement = .init(tag: "body", attributes: [:], innerHTML: nil, children: [])
@@ -159,7 +171,7 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
     _ view: Primitive
   ) -> ViewVisitorF<Visitor>? where Primitive: View, Visitor: ViewVisitor {
     guard let primitive = view as? HTMLConvertible else { return nil }
-    return primitive.primitiveVisitor(shouldLayout: shouldLayout)
+    return primitive.primitiveVisitor(useDynamicLayout: useDynamicLayout)
   }
 
   public func commit(_ mutations: [Mutation<Self>]) {

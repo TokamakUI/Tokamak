@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,12 +17,40 @@
 
 import Foundation
 
+/// Used to identify an alignment guide.
+///
+/// Typically, you would define an alignment guide inside
+/// an extension on `HorizontalAlignment` or `VerticalAlignment`:
+///
+///     extension HorizontalAlignment {
+///       private enum MyAlignmentGuide: AlignmentID {
+///         static func defaultValue(in context: ViewDimensions) -> CGFloat {
+///           return 0.0
+///         }
+///       }
+///       public static let myAlignmentGuide = Self(MyAlignmentGuide.self)
+///     }
+///
+/// Which you can then use with the `alignmentGuide` modifier:
+///
+///     VStack(alignment: .myAlignmentGuide) {
+///       Text("Align Leading")
+///         .border(.red)
+///         .alignmentGuide(.myAlignmentGuide) { $0[.leading] }
+///       Text("Align Trailing")
+///         .border(.blue)
+///         .alignmentGuide(.myAlignmentGuide) { $0[.trailing] }
+///     }
+///     .border(.green)
 public protocol AlignmentID {
+  /// The default value for this alignment guide
+  /// when not set via the `alignmentGuide` modifier.
   static func defaultValue(in context: ViewDimensions) -> CGFloat
 }
 
 /// An alignment position along the horizontal axis.
-@frozen public struct HorizontalAlignment: Equatable {
+@frozen
+public struct HorizontalAlignment: Equatable {
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.id == rhs.id
   }
@@ -60,7 +88,8 @@ extension HorizontalAlignment {
   }
 }
 
-@frozen public struct VerticalAlignment: Equatable {
+@frozen
+public struct VerticalAlignment: Equatable {
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.id == rhs.id
   }

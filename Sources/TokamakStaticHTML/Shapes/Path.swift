@@ -170,11 +170,12 @@ extension Path: _HTMLPrimitive {
   }
 }
 
-@_spi(TokamakStaticHTML) extension Path: HTMLConvertible {
+@_spi(TokamakStaticHTML)
+extension Path: HTMLConvertible {
   public var tag: String { "svg" }
   public var namespace: String? { "http://www.w3.org/2000/svg" }
-  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
-    guard !shouldLayout else { return [:] }
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    guard !useDynamicLayout else { return [:] }
     return [
       "style": """
       \(sizeStyle)

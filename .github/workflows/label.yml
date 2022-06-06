@@ -24,6 +24,7 @@ jobs:
           dependencies,
           documentation,
           enhancement,
+          Fiber,
           refactor,
           SwiftUI compatibility,
           test suite,

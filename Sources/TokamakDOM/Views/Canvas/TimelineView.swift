@@ -41,9 +41,15 @@ extension EnvironmentValues {
 
 private struct _TimelineView<Content: View, Schedule: TimelineSchedule>: View {
   let parent: _TimelineViewProxy<Schedule, Content>
-  @StateObject private var coordinator: Coordinator
-  @Environment(\.inAnimatingTimelineView) private var inAnimatingTimelineView
-  @Environment(\.isAnimatingTimelineViewPaused) private var isAnimatingTimelineViewPaused
+
+  @StateObject
+  private var coordinator: Coordinator
+
+  @Environment(\.inAnimatingTimelineView)
+  private var inAnimatingTimelineView
+
+  @Environment(\.isAnimatingTimelineViewPaused)
+  private var isAnimatingTimelineViewPaused
 
   init(parent: TimelineView<Schedule, Content>) {
     self.parent = _TimelineViewProxy(parent)
@@ -56,7 +62,8 @@ private struct _TimelineView<Content: View, Schedule: TimelineSchedule>: View {
   }
 
   final class Coordinator: ObservableObject {
-    @Published var date = Date()
+    @Published
+    var date = Date()
     var iterator: Schedule.Entries.Iterator
     var timeoutID: JSValue?
 

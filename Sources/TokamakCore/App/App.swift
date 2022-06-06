@@ -28,7 +28,10 @@ public protocol App: _TitledApp {
   var body: Body { get }
 
   /// Implemented by the renderer to mount the `App`
-  static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues)
+  static func _launch(
+    _ app: Self,
+    with configuration: _AppConfiguration
+  )
 
   /// Implemented by the renderer to update the `App` on `ScenePhase` changes
   var _phasePublisher: AnyPublisher<ScenePhase, Never> { get }
@@ -36,14 +39,38 @@ public protocol App: _TitledApp {
   /// Implemented by the renderer to update the `App` on `ColorScheme` changes
   var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> { get }
 
+  static var _configuration: _AppConfiguration { get }
+
   static func main()
 
   init()
 }
 
+public struct _AppConfiguration {
+  public let reconciler: Reconciler
+  public let rootEnvironment: EnvironmentValues
+
+  public init(
+    reconciler: Reconciler = .stack,
+    rootEnvironment: EnvironmentValues = .init()
+  ) {
+    self.reconciler = reconciler
+    self.rootEnvironment = rootEnvironment
+  }
+
+  public enum Reconciler {
+    /// Use the `StackReconciler`.
+    case stack
+    /// Use the `FiberReconciler` with layout steps optionally enabled.
+    case fiber(useDynamicLayout: Bool = false)
+  }
+}
+
 public extension App {
+  static var _configuration: _AppConfiguration { .init() }
+
   static func main() {
     let app = Self()
-    _launch(app, EnvironmentValues())
+    _launch(app, with: Self._configuration)
   }
 }
