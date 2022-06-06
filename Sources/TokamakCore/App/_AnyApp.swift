@@ -42,13 +42,17 @@ public struct _AnyApp: App {
   }
 
   @_spi(TokamakCore)
-  public static func _launch(_ app: Self, _ rootEnvironment: EnvironmentValues) {
+  public static func _launch(_ app: Self, with configuration: _AppConfiguration) {
     fatalError("`_AnyApp` cannot be launched. Access underlying `app` value.")
   }
 
   @_spi(TokamakCore)
   public static func _setTitle(_ title: String) {
     fatalError("`title` cannot be set for `AnyApp`. Access underlying `app` value.")
+  }
+
+  public static var _configuration: _AppConfiguration {
+    fatalError("`configuration` cannot be set for `AnyApp`. Access underlying `app` value.")
   }
 
   @_spi(TokamakCore)

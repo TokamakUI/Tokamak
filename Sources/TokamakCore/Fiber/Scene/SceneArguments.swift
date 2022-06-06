@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,16 +11,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 5/30/22.
+//
 
-import OpenCombineShim
-import TokamakCore
+import Foundation
 
-public extension App {
-  static func _setTitle(_ title: String) {}
-
-  static func _launch(_ app: Self, with configuration: _AppConfiguration) {}
-
-  var _phasePublisher: AnyPublisher<ScenePhase, Never> { Empty().eraseToAnyPublisher() }
-
-  var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> { Empty().eraseToAnyPublisher() }
+public extension Scene {
+  // By default, we simply pass the inputs through without modifications.
+  static func _makeScene(_ inputs: SceneInputs<Self>) -> SceneOutputs {
+    .init(
+      inputs: inputs,
+      layoutComputer: RootLayoutComputer.init
+    )
+  }
 }

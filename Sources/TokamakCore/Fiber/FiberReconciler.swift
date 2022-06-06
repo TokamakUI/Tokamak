@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2022 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -70,7 +70,23 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     reconcile(from: current)
   }
 
-  final class ReconcilerVisitor: ViewVisitor {
+  public init<A: App>(_ renderer: Renderer, _ app: A) {
+    self.renderer = renderer
+    var environment = renderer.defaultEnvironment
+    environment.measureText = renderer.measureText
+    var app = app
+    current = .init(
+      &app,
+      rootElement: renderer.rootElement,
+      rootEnvironment: environment,
+      reconciler: self
+    )
+    // Start by building the initial tree.
+    alternate = current.createAndBindAlternate?()
+    reconcile(from: current)
+  }
+
+  final class ReconcilerVisitor: AppVisitor, SceneVisitor, ViewVisitor {
     unowned let reconciler: FiberReconciler<Renderer>
     /// The current, mounted `Fiber`.
     var currentRoot: Fiber
@@ -82,8 +98,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     }
 
     /// A `ViewVisitor` that proposes a size for the `View` represented by the fiber `node`.
-    struct ProposeSizeVisitor: ViewVisitor {
+    struct ProposeSizeVisitor: AppVisitor, SceneVisitor, ViewVisitor {
       let node: Fiber
+      let renderer: Renderer
       let layoutContexts: [ObjectIdentifier: LayoutContext]
 
       func visit<V>(_ view: V) where V: View {
@@ -98,6 +115,28 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         node.outputs.layoutComputer = node.outputs.makeLayoutComputer(proposedSize)
         node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
       }
+
+      func visit<S>(_ scene: S) where S: Scene {
+        node.outputs.layoutComputer = node.outputs.makeLayoutComputer(renderer.sceneSize)
+        node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
+      }
+
+      func visit<A>(_ app: A) where A: App {
+        node.outputs.layoutComputer = node.outputs.makeLayoutComputer(renderer.sceneSize)
+        node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
+      }
+    }
+
+    func visit<V>(_ view: V) where V: View {
+      visitAny(view, visitChildren: view._visitChildren)
+    }
+
+    func visit<S>(_ scene: S) where S: Scene {
+      visitAny(scene, visitChildren: scene._visitChildren)
+    }
+
+    func visit<A>(_ app: A) where A: App {
+      visitAny(app, visitChildren: { $0.visit(app.body) })
     }
 
     /// Walk the current tree, recomputing at each step to check for discrepancies.
@@ -142,7 +181,10 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     ///   │       │Text│
     ///   └───────┴────┘
     /// ```
-    func visit<V>(_ view: V) where V: View {
+    private func visitAny(
+      _ value: Any,
+      visitChildren: @escaping (TreeReducer.SceneVisitor) -> ()
+    ) {
       let alternateRoot: Fiber?
       if let alternate = currentRoot.alternate {
         alternateRoot = alternate
@@ -151,7 +193,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       }
       let rootResult = TreeReducer.Result(
         fiber: alternateRoot, // The alternate is the WIP node.
-        visitChildren: view._visitChildren,
+        visitChildren: visitChildren,
         parent: nil,
         child: alternateRoot?.child,
         alternateChild: currentRoot.child,
@@ -182,7 +224,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
                     let previous = node.fiber?.alternate?.element
           {
             // This is a completely different type of view.
-            mutations.append(.replace(parent: parent, previous: previous, replacement: element))
+            mutations
+              .append(.replace(parent: parent, previous: previous, replacement: element))
           } else if let newContent = node.newContent,
                     newContent != element.content
           {
@@ -203,8 +246,22 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       func proposeSize(for node: Fiber) {
         guard node.element != nil else { return }
 
-        // Use the visitor so we can pass the correct View type to the function.
-        node.visitView(ProposeSizeVisitor(node: node, layoutContexts: layoutContexts))
+        // Use a visitor so we can pass the correct `View`/`Scene` type to the function.
+        let visitor = ProposeSizeVisitor(
+          node: node,
+          renderer: reconciler.renderer,
+          layoutContexts: layoutContexts
+        )
+        switch node.content {
+        case let .view(_, visit):
+          visit(visitor)
+        case let .scene(_, visit):
+          visit(visitor)
+        case let .app(_, visit):
+          visit(visitor)
+        case .none:
+          break
+        }
       }
 
       /// Request a size from the fiber's `elementParent`.
@@ -276,12 +333,12 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           node.elementIndices = elementIndices
 
           // Compute the children of the node.
-          let reducer = TreeReducer.Visitor(initialResult: node)
+          let reducer = TreeReducer.SceneVisitor(initialResult: node)
           node.visitChildren(reducer)
           elementIndices = node.elementIndices
 
           // As we walk down the tree, propose a size for each View.
-          if reconciler.renderer.shouldLayout,
+          if reconciler.renderer.useDynamicLayout,
              let fiber = node.fiber
           {
             proposeSize(for: fiber)
@@ -328,7 +385,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           // Now walk back up the tree until we find a sibling.
           while node.sibling == nil {
             var alternateSibling = node.fiber?.alternate?.sibling
-            while alternateSibling != nil { // The alternate had siblings that no longer exist.
+            while alternateSibling !=
+              nil
+            { // The alternate had siblings that no longer exist.
               if let element = alternateSibling?.element,
                  let parent = alternateSibling?.elementParent?.element
               {
@@ -339,7 +398,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
               alternateSibling = alternateSibling?.sibling
             }
             // We `size` and `position` when we are walking back up the tree.
-            if reconciler.renderer.shouldLayout,
+            if reconciler.renderer.useDynamicLayout,
                let fiber = node.fiber
             {
               // The `elementParent` proposed a size for this fiber on the way down.
@@ -362,10 +421,11 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
             node = parent
           }
 
-          // We also request `size` and `position` when we reach the bottom-most view that has a sibling.
+          // We also request `size` and `position` when we reach the bottom-most view
+          // that has a sibling.
           // Sizing and positioning also happen when we have no sibling,
           // as seen in the above loop.
-          if reconciler.renderer.shouldLayout,
+          if reconciler.renderer.useDynamicLayout,
              let fiber = node.fiber
           {
             // Request a size from our `elementParent`.
@@ -384,7 +444,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       }
       mainLoop()
 
-      if reconciler.renderer.shouldLayout {
+      if reconciler.renderer.useDynamicLayout {
         // We continue to the very top to update all necessary positions.
         var layoutNode = node.fiber?.child
         while let current = layoutNode {
@@ -409,7 +469,16 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
   func reconcile(from root: Fiber) {
     // Create a list of mutations.
     let visitor = ReconcilerVisitor(root: root, reconciler: self)
-    root.visitView(visitor)
+    switch root.content {
+    case let .view(_, visit):
+      visit(visitor)
+    case let .scene(_, visit):
+      visit(visitor)
+    case let .app(_, visit):
+      visit(visitor)
+    case .none:
+      break
+    }
 
     // Apply mutations to the rendered output.
     renderer.commit(visitor.mutations)

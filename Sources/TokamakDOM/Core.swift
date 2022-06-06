@@ -193,6 +193,7 @@ public typealias TextAlignment = TokamakCore.TextAlignment
 // MARK: App & Scene
 
 public typealias App = TokamakCore.App
+public typealias _AppConfiguration = TokamakCore._AppConfiguration
 public typealias Scene = TokamakCore.Scene
 public typealias WindowGroup = TokamakCore.WindowGroup
 public typealias ScenePhase = TokamakCore.ScenePhase

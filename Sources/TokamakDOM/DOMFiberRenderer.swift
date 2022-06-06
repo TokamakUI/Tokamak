@@ -49,10 +49,10 @@ public final class DOMElement: FiberElement {
 }
 
 public extension DOMElement.Content {
-  init<V>(from primitiveView: V, shouldLayout: Bool) where V: View {
+  init<V>(from primitiveView: V, useDynamicLayout: Bool) where V: View {
     guard let primitiveView = primitiveView as? HTMLConvertible else { fatalError() }
     tag = primitiveView.tag
-    attributes = primitiveView.attributes(shouldLayout: shouldLayout)
+    attributes = primitiveView.attributes(useDynamicLayout: useDynamicLayout)
     innerHTML = primitiveView.innerHTML
 
     if let primitiveView = primitiveView as? DOMNodeConvertible {
@@ -78,7 +78,7 @@ public struct DOMFiberRenderer: FiberRenderer {
     .init(width: body.clientWidth.number!, height: body.clientHeight.number!)
   }
 
-  public let shouldLayout: Bool
+  public let useDynamicLayout: Bool
 
   public var defaultEnvironment: EnvironmentValues {
     var environment = EnvironmentValues()
@@ -86,7 +86,7 @@ public struct DOMFiberRenderer: FiberRenderer {
     return environment
   }
 
-  public init(_ rootSelector: String, shouldLayout: Bool = true) {
+  public init(_ rootSelector: String, useDynamicLayout: Bool = true) {
     guard let reference = document.querySelector!(rootSelector).object else {
       fatalError("""
       The root element with selector '\(rootSelector)' could not be found. \
@@ -103,9 +103,9 @@ public struct DOMFiberRenderer: FiberRenderer {
       )
     )
     rootElement.reference = reference
-    self.shouldLayout = shouldLayout
+    self.useDynamicLayout = useDynamicLayout
 
-    if shouldLayout {
+    if useDynamicLayout {
       // Setup the root styles
       _ = reference.style.setProperty("margin", "0")
       _ = reference.style.setProperty("width", "100vw")
@@ -130,7 +130,7 @@ public struct DOMFiberRenderer: FiberRenderer {
     proposedSize: CGSize,
     in environment: EnvironmentValues
   ) -> CGSize {
-    let element = createElement(.init(from: .init(from: text, shouldLayout: true)))
+    let element = createElement(.init(from: .init(from: text, useDynamicLayout: true)))
     _ = element.style.setProperty("maxWidth", "\(proposedSize.width)px")
     _ = element.style.setProperty("maxHeight", "\(proposedSize.height)px")
     _ = document.body.appendChild(element)
@@ -166,7 +166,7 @@ public struct DOMFiberRenderer: FiberRenderer {
   }
 
   private func apply(_ geometry: ViewGeometry, to element: JSObject) {
-    guard shouldLayout else { return }
+    guard useDynamicLayout else { return }
     _ = element.style.setProperty("position", "absolute")
     _ = element.style.setProperty("width", "\(geometry.dimensions.width)px")
     _ = element.style.setProperty("height", "\(geometry.dimensions.height)px")
@@ -216,7 +216,7 @@ public struct DOMFiberRenderer: FiberRenderer {
 
 extension _PrimitiveButtonStyleBody: DOMNodeConvertible {
   public var tag: String { "button" }
-  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
     [:]
   }
 

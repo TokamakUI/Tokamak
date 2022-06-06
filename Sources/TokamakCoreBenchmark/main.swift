@@ -66,9 +66,9 @@ benchmark("update wide (FiberReconciler)") { state in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    shouldLayout: false
+    useDynamicLayout: false
   ).render(view)
-  let button = reconciler.current // RootView
+  guard case let .view(view, _) = reconciler.current // RootView
     .child? // ModifiedContent
     .child? // _ViewModifier_Content
     .child? // UpdateLast
@@ -78,9 +78,12 @@ benchmark("update wide (FiberReconciler)") { state in
     .child? // ConditionalContent
     .child? // AnyView
     .child? // _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
-    .view
+    .content,
+    let button = view as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
+  else { return }
+
   try state.measure {
-    (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+    button.action()
   }
 }
 
@@ -124,9 +127,9 @@ benchmark("update narrow (FiberReconciler)") { state in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    shouldLayout: false
+    useDynamicLayout: false
   ).render(view)
-  let button = reconciler.current // RootView
+  guard case let .view(view, _) = reconciler.current // RootView
     .child? // ModifiedContent
     .child? // _ViewModifier_Content
     .child? // UpdateLast
@@ -136,9 +139,11 @@ benchmark("update narrow (FiberReconciler)") { state in
     .child? // ConditionalContent
     .child? // AnyView
     .child? // _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
-    .view
+    .content,
+    let button = view as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
+  else { return }
   try state.measure {
-    (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+    button.action()
   }
 }
 
@@ -194,9 +199,9 @@ benchmark("update deep (FiberReconciler)") { state in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    shouldLayout: false
+    useDynamicLayout: false
   ).render(view)
-  let button = reconciler.current // RootView
+  guard case let .view(view, _) = reconciler.current // RootView
     .child? // ModifiedContent
     .child? // _ViewModifier_Content
     .child? // UpdateLast
@@ -206,9 +211,11 @@ benchmark("update deep (FiberReconciler)") { state in
     .child? // ConditionalContent
     .child? // AnyView
     .child? // _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
-    .view
+    .content,
+    let button = view as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
+  else { return }
   try state.measure {
-    (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+    button.action()
   }
 }
 
@@ -262,9 +269,9 @@ benchmark("update shallow (FiberReconciler)") { _ in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    shouldLayout: false
+    useDynamicLayout: false
   ).render(view)
-  let button = reconciler.current // RootView
+  guard case let .view(view, _) = reconciler.current // RootView
     .child? // ModifiedContent
     .child? // _ViewModifier_Content
     .child? // UpdateLast
@@ -274,9 +281,11 @@ benchmark("update shallow (FiberReconciler)") { _ in
     .child? // ConditionalContent
     .child? // AnyView
     .child? // _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
-    .view
+    .content,
+    let button = view as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>
+  else { return }
   // Using state.measure here hangs the benchmark app?g
-  (button as? _PrimitiveButtonStyleBody<PrimitiveButtonStyleConfiguration.Label>)?.action()
+  button.action()
 }
 
 Benchmark.main()

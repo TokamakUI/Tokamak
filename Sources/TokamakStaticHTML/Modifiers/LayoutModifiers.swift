@@ -76,8 +76,8 @@ extension _FrameLayout: DOMViewModifier {
 @_spi(TokamakStaticHTML)
 extension _FrameLayout: HTMLConvertible {
   public var tag: String { "div" }
-  public func attributes(shouldLayout: Bool) -> [HTMLAttribute: String] {
-    guard !shouldLayout else { return [
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    guard !useDynamicLayout else { return [
       "style": "overflow: hidden;",
     ] }
     return attributes
