@@ -29,7 +29,7 @@ private extension EdgeInsets {
 }
 
 /// A `LayoutComputer` that fits to its children then adds padding.
-final class PaddingLayoutComputer: LayoutComputer {
+struct PaddingLayoutComputer: LayoutComputer {
   let proposedSize: CGSize
   let insets: EdgeInsets
 
@@ -70,10 +70,15 @@ final class PaddingLayoutComputer: LayoutComputer {
 
 public extension _PaddingLayout {
   static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
-    .init(inputs: inputs, layoutComputer: { PaddingLayoutComputer(
-      proposedSize: $0,
-      edges: inputs.content.edges,
-      insets: inputs.content.insets
-    ) })
+    .init(
+      inputs: inputs,
+      layoutComputer: {
+        PaddingLayoutComputer(
+          proposedSize: $0,
+          edges: inputs.content.edges,
+          insets: inputs.content.insets
+        )
+      }
+    )
   }
 }
