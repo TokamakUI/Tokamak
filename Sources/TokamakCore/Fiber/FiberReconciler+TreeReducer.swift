@@ -136,13 +136,6 @@ extension FiberReconciler {
           layoutContexts: partialResult.layoutContexts
         )
         partialResult.nextExisting = existing.sibling
-
-        // If this fiber has an element, increment the elementIndex for its parent.
-        if let key = key,
-           existing.element != nil
-        {
-          partialResult.elementIndices[key] = partialResult.elementIndices[key, default: 0] + 1
-        }
       } else {
         let elementParent = partialResult.fiber?.element != nil
           ? partialResult.fiber
@@ -166,12 +159,6 @@ extension FiberReconciler {
         if let alternate = partialResult.nextExistingAlternate {
           fiber.alternate = alternate
           partialResult.nextExistingAlternate = alternate.sibling
-        }
-        // If this fiber has an element, increment the elementIndex for its parent.
-        if let key = key,
-           fiber.element != nil
-        {
-          partialResult.elementIndices[key] = partialResult.elementIndices[key, default: 0] + 1
         }
         resultChild = Result(
           fiber: fiber,

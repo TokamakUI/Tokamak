@@ -121,7 +121,8 @@ public struct DOMFiberRenderer: FiberRenderer {
   }
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {
-    view is HTMLConvertible || view is DOMNodeConvertible
+    !(view is AnyOptional) &&
+      (view is HTMLConvertible || view is DOMNodeConvertible)
   }
 
   public func visitPrimitiveChildren<Primitive, Visitor>(

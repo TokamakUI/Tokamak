@@ -326,15 +326,25 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       /// The main reconciler loop.
       func mainLoop() {
         while true {
+          // If this fiber has an element, set its `elementIndex`
+          // and increment the `elementIndices` value for its `elementParent`.
+          if node.fiber?.element != nil,
+             let elementParent = node.fiber?.elementParent
+          {
+            let key = ObjectIdentifier(elementParent)
+            node.fiber?.elementIndex = elementIndices[key, default: 0]
+            elementIndices[key] = elementIndices[key, default: 0] + 1
+          }
+
           // Perform work on the node.
           reconcile(node)
 
+          // Ensure the TreeReducer can access the `elementIndices`.
           node.elementIndices = elementIndices
 
           // Compute the children of the node.
           let reducer = TreeReducer.SceneVisitor(initialResult: node)
           node.visitChildren(reducer)
-          elementIndices = node.elementIndices
 
           // As we walk down the tree, propose a size for each View.
           if reconciler.renderer.useDynamicLayout,

@@ -72,12 +72,14 @@ extension Optional: View where Wrapped: View {
   }
 }
 
-protocol AnyOptional {
+@_spi(TokamakCore)
+public protocol AnyOptional {
   var value: Any? { get }
 }
 
+@_spi(TokamakCore)
 extension Optional: AnyOptional {
-  var value: Any? {
+  public var value: Any? {
     switch self {
     case let .some(value): return value
     case .none: return nil
