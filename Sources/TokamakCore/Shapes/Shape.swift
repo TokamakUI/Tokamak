@@ -21,6 +21,21 @@ public protocol Shape: Animatable, View {
   func path(in rect: CGRect) -> Path
 
   static var role: ShapeRole { get }
+
+  func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize
+}
+
+public extension Shape {
+  func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
+    // TODO: Check if SwiftUI changes this behavior.
+
+    // SwiftUI seems to not compute the path at all and just return
+    // the following.
+    CGSize(
+      width: proposal.width ?? 10,
+      height: proposal.height ?? 10
+    )
+  }
 }
 
 public enum ShapeRole: Hashable {
