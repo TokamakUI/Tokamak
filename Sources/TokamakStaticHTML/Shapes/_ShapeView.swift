@@ -86,7 +86,7 @@ extension _ShapeView: _HTMLPrimitive {
         if case .angular = style {
           return [:]
         } else {
-          return ["style": "fill: url(\"#\(gradientID(for: gradient, in: style))\");"]
+          return ["style": "fill: url(#\(gradientID(for: gradient, in: style)));"]
         }
       default:
         if let color = resolvedStyle?.color(at: 0) {
