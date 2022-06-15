@@ -24,6 +24,19 @@ public struct _BackgroundLayout<Content, Background>: _PrimitiveView
   public let content: Content
   public let background: Background
   public let alignment: Alignment
+
+  @_spi(TokamakCore)
+  public init(content: Content, background: Background, alignment: Alignment) {
+    self.content = content
+    self.background = background
+    self.alignment = alignment
+  }
+
+  public func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
+    // Visit the content first so it can request its size before laying out the background
+    visitor.visit(content)
+    visitor.visit(background)
+  }
 }
 
 public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader

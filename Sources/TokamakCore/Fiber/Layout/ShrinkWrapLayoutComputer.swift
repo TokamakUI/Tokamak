@@ -18,24 +18,25 @@
 import Foundation
 
 /// A `LayoutComputer` that shrinks to the size of its children.
-struct ShrinkWrapLayoutComputer: LayoutComputer {
+@_spi(TokamakCore)
+public struct ShrinkWrapLayoutComputer: LayoutComputer {
   let proposedSize: CGSize
 
-  init(proposedSize: CGSize) {
+  public init(proposedSize: CGSize) {
     self.proposedSize = proposedSize
   }
 
-  func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
+  public func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
     where V: View
   {
     proposedSize
   }
 
-  func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint {
+  public func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint {
     .zero
   }
 
-  func requestSize(in context: LayoutContext) -> CGSize {
+  public func requestSize(in context: LayoutContext) -> CGSize {
     context.children.reduce(CGSize.zero) {
       .init(
         width: max($0.width, $1.dimensions.width),

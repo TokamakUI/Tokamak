@@ -15,6 +15,8 @@
 //  Created by Max Desiatov on 11/04/2020.
 //
 
+import Foundation
+@_spi(TokamakCore)
 import TokamakCore
 
 /** Represents an attribute of an HTML tag. To consume updates from updated attributes, the DOM
@@ -87,8 +89,11 @@ public extension AnyHTML {
 
 public struct HTML<Content>: View, AnyHTML {
   public let tag: String
+  public let namespace: String?
   public let attributes: [HTMLAttribute: String]
   let content: Content
+  let layoutComputer: (CGSize) -> LayoutComputer
+  let visitContent: (ViewVisitor) -> ()
 
   fileprivate let cachedInnerHTML: String?
 
@@ -98,33 +103,66 @@ public struct HTML<Content>: View, AnyHTML {
 
   @_spi(TokamakCore)
   public var body: Never {
-    neverBody("HTML")
+    neverBody("HTML<\(Content.self)>")
+  }
+
+  public func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
+    visitContent(visitor)
+  }
+
+  public static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
+    .init(inputs: inputs, layoutComputer: inputs.content.layoutComputer)
   }
 }
 
 public extension HTML where Content: StringProtocol {
   init(
     _ tag: String,
+    namespace: String? = nil,
     _ attributes: [HTMLAttribute: String] = [:],
     content: Content
   ) {
     self.tag = tag
+    self.namespace = namespace
     self.attributes = attributes
     self.content = content
+    layoutComputer = ShrinkWrapLayoutComputer.init
     cachedInnerHTML = String(content)
+    visitContent = { _ in }
   }
 }
 
 extension HTML: ParentView where Content: View {
   public init(
     _ tag: String,
+    namespace: String? = nil,
     _ attributes: [HTMLAttribute: String] = [:],
-    @ViewBuilder content: () -> Content
+    @ViewBuilder content: @escaping () -> Content
   ) {
     self.tag = tag
+    self.namespace = namespace
     self.attributes = attributes
     self.content = content()
+    layoutComputer = ShrinkWrapLayoutComputer.init
     cachedInnerHTML = nil
+    visitContent = { $0.visit(content()) }
+  }
+
+  @_spi(TokamakCore)
+  public init(
+    _ tag: String,
+    namespace: String? = nil,
+    _ attributes: [HTMLAttribute: String] = [:],
+    layoutComputer: @escaping (CGSize) -> LayoutComputer,
+    @ViewBuilder content: @escaping () -> Content
+  ) {
+    self.tag = tag
+    self.namespace = namespace
+    self.attributes = attributes
+    self.content = content()
+    self.layoutComputer = layoutComputer
+    cachedInnerHTML = nil
+    visitContent = { $0.visit(content()) }
   }
 
   @_spi(TokamakCore)
@@ -136,10 +174,32 @@ extension HTML: ParentView where Content: View {
 public extension HTML where Content == EmptyView {
   init(
     _ tag: String,
+    namespace: String? = nil,
     _ attributes: [HTMLAttribute: String] = [:]
   ) {
-    self = HTML(tag, attributes) { EmptyView() }
+    self = HTML(tag, namespace: namespace, attributes) { EmptyView() }
   }
+
+  @_spi(TokamakCore)
+  init(
+    _ tag: String,
+    namespace: String? = nil,
+    _ attributes: [HTMLAttribute: String] = [:],
+    layoutComputer: @escaping (CGSize) -> LayoutComputer
+  ) {
+    self = HTML(tag, namespace: namespace, attributes, layoutComputer: layoutComputer) {
+      EmptyView()
+    }
+  }
+}
+
+@_spi(TokamakStaticHTML)
+extension HTML: HTMLConvertible {
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    attributes
+  }
+
+  public var innerHTML: String? { cachedInnerHTML }
 }
 
 public protocol StylesConvertible {

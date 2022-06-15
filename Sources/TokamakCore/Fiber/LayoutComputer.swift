@@ -18,12 +18,12 @@
 import Foundation
 
 /// The currently computed children.
-struct LayoutContext {
-  var children: [Child]
+public struct LayoutContext {
+  public var children: [Child]
 
-  struct Child {
-    let index: Int
-    let dimensions: ViewDimensions
+  public struct Child {
+    public let index: Int
+    public let dimensions: ViewDimensions
   }
 }
 
@@ -40,7 +40,7 @@ struct LayoutContext {
 /// The same `LayoutComputer` instance will be used for any given view during a single layout pass.
 ///
 /// Sizes from `proposeSize` will be clamped, so it is safe to return negative numbers.
-protocol LayoutComputer {
+public protocol LayoutComputer {
   /// Will be called every time a child is evaluated.
   /// The calls will always be in order, and no more than one call will be made per child.
   func proposeSize<V: View>(for child: V, at index: Int, in context: LayoutContext) -> CGSize

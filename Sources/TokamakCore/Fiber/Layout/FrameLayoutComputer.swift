@@ -18,26 +18,27 @@
 import Foundation
 
 /// A `LayoutComputer` that uses a specified size in one or more axes.
-struct FrameLayoutComputer: LayoutComputer {
+@_spi(TokamakCore)
+public struct FrameLayoutComputer: LayoutComputer {
   let proposedSize: CGSize
   let width: CGFloat?
   let height: CGFloat?
   let alignment: Alignment
 
-  init(proposedSize: CGSize, width: CGFloat?, height: CGFloat?, alignment: Alignment) {
+  public init(proposedSize: CGSize, width: CGFloat?, height: CGFloat?, alignment: Alignment) {
     self.proposedSize = proposedSize
     self.width = width
     self.height = height
     self.alignment = alignment
   }
 
-  func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
+  public func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
     where V: View
   {
     .init(width: width ?? proposedSize.width, height: height ?? proposedSize.height)
   }
 
-  func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint {
+  public func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint {
     let size = ViewDimensions(
       size: .init(
         width: width ?? child.dimensions.width,
@@ -51,7 +52,7 @@ struct FrameLayoutComputer: LayoutComputer {
     )
   }
 
-  func requestSize(in context: LayoutContext) -> CGSize {
+  public func requestSize(in context: LayoutContext) -> CGSize {
     let childSize = context.children.reduce(CGSize.zero) {
       .init(
         width: max($0.width, $1.dimensions.width),

@@ -16,6 +16,7 @@
 //
 
 import Foundation
+@_spi(TokamakCore)
 import TokamakCore
 
 extension StrokeStyle {
@@ -29,7 +30,7 @@ extension Path: _HTMLPrimitive {
   func svgFrom(
     storage: Storage,
     strokeStyle: StrokeStyle = .zero
-  ) -> AnyView {
+  ) -> HTML<EmptyView>? {
     let stroke: [HTMLAttribute: String] = [
       "stroke-width": "\(strokeStyle.lineWidth)",
     ]
@@ -40,40 +41,57 @@ extension Path: _HTMLPrimitive {
     let flexibleCenterY: String? = sizing == .flexible ? "50%" : nil
     switch storage {
     case .empty:
-      return AnyView(EmptyView())
+      return nil
     case let .rect(rect):
-      return AnyView(AnyView(HTML("rect", [
-        "width": flexibleWidth ?? "\(max(0, rect.size.width))",
-        "height": flexibleHeight ?? "\(max(0, rect.size.height))",
-        "x": "\(rect.origin.x - (rect.size.width / 2))",
-        "y": "\(rect.origin.y - (rect.size.height / 2))",
-      ].merging(stroke, uniquingKeysWith: uniqueKeys))))
+      return HTML(
+        "rect",
+        namespace: namespace,
+        [
+          "width": flexibleWidth ?? "\(max(0, rect.size.width))",
+          "height": flexibleHeight ?? "\(max(0, rect.size.height))",
+          "x": "\(rect.origin.x - (rect.size.width / 2))",
+          "y": "\(rect.origin.y - (rect.size.height / 2))",
+        ].merging(stroke, uniquingKeysWith: uniqueKeys),
+        layoutComputer: {
+          if sizing == .flexible {
+            return FlexLayoutComputer(proposedSize: $0)
+          } else {
+            return FrameLayoutComputer(
+              proposedSize: $0,
+              width: max(0, rect.size.width),
+              height: max(0, rect.size.height),
+              alignment: .center
+            )
+          }
+        }
+      )
     case let .ellipse(rect):
-      return AnyView(HTML(
+      return HTML(
         "ellipse",
+        namespace: namespace,
         ["cx": flexibleCenterX ?? "\(rect.origin.x)",
          "cy": flexibleCenterY ?? "\(rect.origin.y)",
          "rx": flexibleCenterX ?? "\(rect.size.width)",
          "ry": flexibleCenterY ?? "\(rect.size.height)"]
           .merging(stroke, uniquingKeysWith: uniqueKeys)
-      ))
+      )
     case let .roundedRect(roundedRect):
       // When cornerRadius is nil we use 50% rx.
       let size = roundedRect.rect.size
-      let cornerRadius = { () -> [HTMLAttribute: String] in
-        if let cornerSize = roundedRect.cornerSize {
-          return [
-            "rx": "\(cornerSize.width)",
-            "ry": "\(roundedRect.style == .continuous ? cornerSize.width : cornerSize.height)",
-          ]
-        } else {
-          // For this to support vertical capsules, we need
-          // GeometryReader, to know which axis is larger.
-          return ["ry": "50%"]
-        }
-      }()
-      return AnyView(HTML(
+      let cornerRadius: [HTMLAttribute: String]
+      if let cornerSize = roundedRect.cornerSize {
+        cornerRadius = [
+          "rx": "\(cornerSize.width)",
+          "ry": "\(roundedRect.style == .continuous ? cornerSize.width : cornerSize.height)",
+        ]
+      } else {
+        // For this to support vertical capsules, we need
+        // GeometryReader, to know which axis is larger.
+        cornerRadius = ["ry": "50%"]
+      }
+      return HTML(
         "rect",
+        namespace: namespace,
         [
           "width": flexibleWidth ?? "\(size.width)",
           "height": flexibleHeight ?? "\(size.height)",
@@ -82,9 +100,9 @@ extension Path: _HTMLPrimitive {
         ]
         .merging(cornerRadius, uniquingKeysWith: uniqueKeys)
         .merging(stroke, uniquingKeysWith: uniqueKeys)
-      ))
+      )
     case let .stroked(stroked):
-      return AnyView(stroked.path.svgBody(strokeStyle: stroked.style))
+      return stroked.path.svgBody(strokeStyle: stroked.style)
     case let .trimmed(trimmed):
       return trimmed.path.svgFrom(
         storage: trimmed.path.storage,
@@ -98,8 +116,8 @@ extension Path: _HTMLPrimitive {
   func svgFrom(
     elements: [Element],
     strokeStyle: StrokeStyle = .zero
-  ) -> AnyView {
-    if elements.isEmpty { return AnyView(EmptyView()) }
+  ) -> HTML<EmptyView>? {
+    if elements.isEmpty { return nil }
     var d = [String]()
     for element in elements {
       switch element {
@@ -115,10 +133,10 @@ extension Path: _HTMLPrimitive {
         d.append("Z")
       }
     }
-    return AnyView(HTML("path", [
+    return HTML("path", namespace: namespace, [
       "style": "stroke-width: \(strokeStyle.lineWidth);",
       "d": d.joined(separator: "\n"),
-    ]))
+    ])
   }
 
   var size: CGSize { boundingRect.size }
@@ -126,13 +144,12 @@ extension Path: _HTMLPrimitive {
   @ViewBuilder
   func svgBody(
     strokeStyle: StrokeStyle = .zero
-  ) -> some View {
+  ) -> HTML<EmptyView>? {
     svgFrom(storage: storage, strokeStyle: strokeStyle)
   }
 
-  @_spi(TokamakStaticHTML)
-  public var renderedBody: AnyView {
-    let sizeStyle = sizing == .flexible ?
+  var sizeStyle: String {
+    sizing == .flexible ?
       """
       width: 100%;
       height: 100%;
@@ -141,11 +158,33 @@ extension Path: _HTMLPrimitive {
       width: \(max(0, size.width));
       height: \(max(0, size.height));
       """
-    return AnyView(HTML("svg", ["style": """
+  }
+
+  @_spi(TokamakStaticHTML)
+  public var renderedBody: AnyView {
+    AnyView(HTML("svg", ["style": """
     \(sizeStyle)
     overflow: visible;
     """]) {
       svgBody()
     })
+  }
+}
+
+@_spi(TokamakStaticHTML)
+extension Path: HTMLConvertible {
+  public var tag: String { "svg" }
+  public var namespace: String? { "http://www.w3.org/2000/svg" }
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    guard !useDynamicLayout else { return [:] }
+    return [
+      "style": """
+      \(sizeStyle)
+      """,
+    ]
+  }
+
+  public var innerHTML: String? {
+    svgBody()?.outerHTML(shouldSortAttributes: false, children: [])
   }
 }

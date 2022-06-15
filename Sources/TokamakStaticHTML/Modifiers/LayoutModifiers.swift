@@ -200,6 +200,48 @@ extension _BackgroundLayout: _HTMLPrimitive {
   }
 }
 
+@_spi(TokamakStaticHTML)
+extension _BackgroundLayout: HTMLConvertible {
+  public var tag: String {
+    "div"
+  }
+
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    guard !useDynamicLayout else { return [:] }
+    return ["style": "display: inline-grid; grid-template-columns: auto auto;"]
+  }
+
+  public func primitiveVisitor<V>(useDynamicLayout: Bool) -> ((V) -> ())? where V: ViewVisitor {
+    if useDynamicLayout {
+      return {
+        $0.visit(HTML("div", ["style": "z-index: 1;"]) { content })
+        $0.visit(background)
+      }
+    } else {
+      return {
+        $0.visit(HTML(
+          "div",
+          ["style": """
+          display: flex;
+          justify-content: \(alignment.horizontal.flexAlignment);
+          align-items: \(alignment.vertical.flexAlignment);
+          grid-area: a;
+
+          width: 0; min-width: 100%;
+          height: 0; min-height: 100%;
+          overflow: hidden;
+          """]
+        ) {
+          background
+        })
+        $0.visit(HTML("div", ["style": "grid-area: a;"]) {
+          content
+        })
+      }
+    }
+  }
+}
+
 extension _OverlayLayout: _HTMLPrimitive {
   public var renderedBody: AnyView {
     AnyView(

@@ -70,6 +70,10 @@ public struct _ShapeView<Content, Style>: _PrimitiveView where Content: Shape, S
     self.style = style
     self.fillStyle = fillStyle
   }
+
+  public static func _makeView(_ inputs: ViewInputs<_ShapeView<Content, Style>>) -> ViewOutputs {
+    .init(inputs: inputs, layoutComputer: FlexLayoutComputer.init)
+  }
 }
 
 public extension Shape {

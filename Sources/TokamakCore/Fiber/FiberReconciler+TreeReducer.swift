@@ -74,7 +74,7 @@ extension FiberReconciler {
         update: { fiber, scene, _ in
           fiber.update(with: &scene)
         },
-        visitChildren: { $0._visitChildren }
+        visitChildren: { $1._visitChildren }
       )
     }
 
@@ -95,7 +95,9 @@ extension FiberReconciler {
         update: { fiber, view, elementIndex in
           fiber.update(with: &view, elementIndex: elementIndex)
         },
-        visitChildren: { $0._visitChildren }
+        visitChildren: { reconciler, view in
+          reconciler?.renderer.viewVisitor(for: view) ?? view._visitChildren
+        }
       )
     }
 
@@ -105,7 +107,7 @@ extension FiberReconciler {
       createFiber: (inout T, Renderer.ElementType?, Fiber?, Fiber?, Int?, FiberReconciler?)
         -> Fiber,
       update: (Fiber, inout T, Int?) -> Renderer.ElementType.Content?,
-      visitChildren: (T) -> (TreeReducer.SceneVisitor) -> ()
+      visitChildren: (FiberReconciler?, T) -> (TreeReducer.SceneVisitor) -> ()
     ) {
       // Create the node and its element.
       var nextValue = nextValue
@@ -125,7 +127,7 @@ extension FiberReconciler {
         )
         resultChild = Result(
           fiber: existing,
-          visitChildren: visitChildren(nextValue),
+          visitChildren: visitChildren(partialResult.fiber?.reconciler, nextValue),
           parent: partialResult,
           child: existing.child,
           alternateChild: existing.alternate?.child,
@@ -134,13 +136,6 @@ extension FiberReconciler {
           layoutContexts: partialResult.layoutContexts
         )
         partialResult.nextExisting = existing.sibling
-
-        // If this fiber has an element, increment the elementIndex for its parent.
-        if let key = key,
-           existing.element != nil
-        {
-          partialResult.elementIndices[key] = partialResult.elementIndices[key, default: 0] + 1
-        }
       } else {
         let elementParent = partialResult.fiber?.element != nil
           ? partialResult.fiber
@@ -165,15 +160,9 @@ extension FiberReconciler {
           fiber.alternate = alternate
           partialResult.nextExistingAlternate = alternate.sibling
         }
-        // If this fiber has an element, increment the elementIndex for its parent.
-        if let key = key,
-           fiber.element != nil
-        {
-          partialResult.elementIndices[key] = partialResult.elementIndices[key, default: 0] + 1
-        }
         resultChild = Result(
           fiber: fiber,
-          visitChildren: visitChildren(nextValue),
+          visitChildren: visitChildren(partialResult.fiber?.reconciler, nextValue),
           parent: partialResult,
           child: nil,
           alternateChild: fiber.alternate?.child,

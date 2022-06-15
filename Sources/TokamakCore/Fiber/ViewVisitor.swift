@@ -26,7 +26,7 @@ public extension View {
   }
 }
 
-typealias ViewVisitorF<V: ViewVisitor> = (V) -> ()
+public typealias ViewVisitorF<V: ViewVisitor> = (V) -> ()
 
 /// A type that creates a `Result` by visiting multiple `View`s.
 protocol ViewReducer {

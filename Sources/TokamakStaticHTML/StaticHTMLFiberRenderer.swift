@@ -92,13 +92,20 @@ public final class HTMLElement: FiberElement, CustomStringConvertible {
 @_spi(TokamakStaticHTML)
 public protocol HTMLConvertible {
   var tag: String { get }
+  var namespace: String? { get }
   func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String]
   var innerHTML: String? { get }
+  func primitiveVisitor<V: ViewVisitor>(useDynamicLayout: Bool) -> ((V) -> ())?
 }
 
 public extension HTMLConvertible {
   @_spi(TokamakStaticHTML)
+  var namespace: String? { nil }
+  @_spi(TokamakStaticHTML)
   var innerHTML: String? { nil }
+  func primitiveVisitor<V: ViewVisitor>(useDynamicLayout: Bool) -> ((V) -> ())? {
+    nil
+  }
 }
 
 @_spi(TokamakStaticHTML)
@@ -108,6 +115,7 @@ extension VStack: HTMLConvertible {
 
   @_spi(TokamakStaticHTML)
   public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    guard !useDynamicLayout else { return [:] }
     let spacing = _VStackProxy(self).spacing
     return [
       "style": """
@@ -128,6 +136,7 @@ extension HStack: HTMLConvertible {
 
   @_spi(TokamakStaticHTML)
   public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    guard !useDynamicLayout else { return [:] }
     let spacing = _HStackProxy(self).spacing
     return [
       "style": """
@@ -155,7 +164,14 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
   }
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {
-    view is HTMLConvertible
+    !(view is AnyOptional) && view is HTMLConvertible
+  }
+
+  public func visitPrimitiveChildren<Primitive, Visitor>(
+    _ view: Primitive
+  ) -> ViewVisitorF<Visitor>? where Primitive: View, Visitor: ViewVisitor {
+    guard let primitive = view as? HTMLConvertible else { return nil }
+    return primitive.primitiveVisitor(useDynamicLayout: useDynamicLayout)
   }
 
   public func commit(_ mutations: [Mutation<Self>]) {

@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@_spi(TokamakCore)
 import TokamakCore
 
 public protocol DOMViewModifier {
@@ -46,6 +47,14 @@ extension _ZIndexModifier: DOMViewModifier {
 }
 
 @_spi(TokamakStaticHTML)
+public protocol HTMLModifierConvertible {
+  func primitiveVisitor<V, Content: View>(
+    content: Content,
+    useDynamicLayout: Bool
+  ) -> ((V) -> ())? where V: ViewVisitor
+}
+
+@_spi(TokamakStaticHTML)
 extension ModifiedContent: HTMLConvertible where Content: View,
   Modifier: HTMLConvertible
 {
@@ -55,4 +64,12 @@ extension ModifiedContent: HTMLConvertible where Content: View,
   }
 
   public var innerHTML: String? { modifier.innerHTML }
+
+  public func primitiveVisitor<V>(useDynamicLayout: Bool) -> ((V) -> ())? where V: ViewVisitor {
+    (modifier as? HTMLModifierConvertible)?
+      .primitiveVisitor(
+        content: content,
+        useDynamicLayout: useDynamicLayout
+      )
+  }
 }

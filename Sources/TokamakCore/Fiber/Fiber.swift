@@ -227,6 +227,11 @@ public extension FiberReconciler {
         }
         property.set(value: value, on: &content)
       }
+      if var environmentReader = content as? EnvironmentReader {
+        environmentReader.setContent(from: environment)
+        // swiftlint:disable:next force_cast
+        content = environmentReader as! T
+      }
       return state
     }
 
