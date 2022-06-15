@@ -16,7 +16,8 @@
 //
 
 import Foundation
-@_spi(TokamakCore) import TokamakCore
+@_spi(TokamakCore)
+import TokamakCore
 
 extension StrokeStyle {
   static var zero: Self {

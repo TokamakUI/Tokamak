@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@_spi(TokamakCore) import TokamakCore
+@_spi(TokamakCore)
+import TokamakCore
 
 public protocol DOMViewModifier {
   var attributes: [HTMLAttribute: String] { get }

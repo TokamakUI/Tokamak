@@ -16,7 +16,8 @@
 //
 
 import Foundation
-@_spi(TokamakCore) import TokamakCore
+@_spi(TokamakCore)
+import TokamakCore
 
 /** Represents an attribute of an HTML tag. To consume updates from updated attributes, the DOM
  renderer needs to know whether the attribute should be assigned via a DOM element property or the
