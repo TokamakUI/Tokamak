@@ -144,6 +144,15 @@ extension _PaddingLayout: DOMViewModifier {
   }
 }
 
+@_spi(TokamakStaticHTML)
+extension _PaddingLayout: HTMLConvertible {
+  public var tag: String { "div" }
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    guard !useDynamicLayout else { return [:] }
+    return attributes
+  }
+}
+
 extension _ShadowEffect._Resolved: DOMViewModifier {
   public var attributes: [HTMLAttribute: String] {
     [
