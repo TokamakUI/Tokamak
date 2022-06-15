@@ -187,7 +187,7 @@ extension _ShapeView: _HTMLPrimitive {
       role: Content.role
     )
 
-    if let view = mapAnyView(path, transform: { (html: HTML<AnyView>) -> AnyView in
+    if let view = mapAnyView(path, transform: { (html: HTML<HTML<EmptyView>?>) -> AnyView in
       let uniqueKeys = { (first: String, second: String) in "\(first) \(second)" }
       let mergedAttributes = html.attributes.merging(
         attributes(resolvedStyle: resolvedStyle),

@@ -29,7 +29,7 @@ extension Path: _HTMLPrimitive {
   func svgFrom(
     storage: Storage,
     strokeStyle: StrokeStyle = .zero
-  ) -> HTML<EmptyView> {
+  ) -> HTML<EmptyView>? {
     let stroke: [HTMLAttribute: String] = [
       "stroke-width": "\(strokeStyle.lineWidth)",
     ]
@@ -40,7 +40,7 @@ extension Path: _HTMLPrimitive {
     let flexibleCenterY: String? = sizing == .flexible ? "50%" : nil
     switch storage {
     case .empty:
-      return HTML("g")
+      return nil
     case let .rect(rect):
       return HTML(
         "rect",
@@ -115,8 +115,8 @@ extension Path: _HTMLPrimitive {
   func svgFrom(
     elements: [Element],
     strokeStyle: StrokeStyle = .zero
-  ) -> HTML<EmptyView> {
-    if elements.isEmpty { return HTML("g") }
+  ) -> HTML<EmptyView>? {
+    if elements.isEmpty { return nil }
     var d = [String]()
     for element in elements {
       switch element {
@@ -143,7 +143,7 @@ extension Path: _HTMLPrimitive {
   @ViewBuilder
   func svgBody(
     strokeStyle: StrokeStyle = .zero
-  ) -> HTML<EmptyView> {
+  ) -> HTML<EmptyView>? {
     svgFrom(storage: storage, strokeStyle: strokeStyle)
   }
 
@@ -184,6 +184,6 @@ extension Path: HTMLConvertible {
   }
 
   public var innerHTML: String? {
-    svgBody().outerHTML(shouldSortAttributes: false, children: [])
+    svgBody()?.outerHTML(shouldSortAttributes: false, children: [])
   }
 }
