@@ -73,9 +73,4 @@ public extension AnyShape {
     get { box.animatableDataBox }
     set { box.animatableDataBox = newValue }
   }
-
-  @_spi(TokamakCore)
-  var body: _ShapeView<AnyShape, ForegroundStyle> {
-    _ShapeView(shape: self, style: ForegroundStyle())
-  }
 }
