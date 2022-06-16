@@ -150,10 +150,10 @@ public struct ViewSpacing {
   public static let zero: ViewSpacing = .init()
 
   public init() {
-    top = 0
-    leading = 0
-    bottom = 0
-    trailing = 0
+    top = 10
+    leading = 10
+    bottom = 10
+    trailing = 10
   }
 
   public mutating func formUnion(_ other: ViewSpacing, edges: Edge.Set = .all) {
