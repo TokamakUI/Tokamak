@@ -30,9 +30,6 @@ public struct ViewOutputs {
   /// This is stored as a reference to avoid copying the environment when unnecessary.
   let environment: EnvironmentBox
   let preferences: _PreferenceStore
-  let makeLayoutComputer: (CGSize) -> LayoutComputer
-  /// The `LayoutComputer` used to propose sizes for the children of this view.
-  var layoutComputer: LayoutComputer!
 }
 
 @_spi(TokamakCore)
@@ -48,16 +45,12 @@ public extension ViewOutputs {
   init<V>(
     inputs: ViewInputs<V>,
     environment: EnvironmentValues? = nil,
-    preferences: _PreferenceStore? = nil,
-    layoutComputer: ((CGSize) -> LayoutComputer)? = nil
+    preferences: _PreferenceStore? = nil
   ) {
     // Only replace the `EnvironmentBox` when we change the environment.
     // Otherwise the same box can be reused.
     self.environment = environment.map(EnvironmentBox.init) ?? inputs.environment
     self.preferences = preferences ?? .init()
-    makeLayoutComputer = layoutComputer ?? { proposedSize in
-      ShrinkWrapLayoutComputer(proposedSize: proposedSize)
-    }
   }
 }
 

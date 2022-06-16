@@ -87,12 +87,12 @@ public extension AnyHTML {
   }
 }
 
-public struct HTML<Content>: View, AnyHTML {
+public struct HTML<Content>: View, AnyHTML, Layout {
   public let tag: String
   public let namespace: String?
   public let attributes: [HTMLAttribute: String]
+  let sizeThatFits: ((ProposedViewSize, LayoutSubviews) -> CGSize)?
   let content: Content
-  let layoutComputer: (CGSize) -> LayoutComputer
   let visitContent: (ViewVisitor) -> ()
 
   fileprivate let cachedInnerHTML: String?
@@ -111,7 +111,26 @@ public struct HTML<Content>: View, AnyHTML {
   }
 
   public static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
-    .init(inputs: inputs, layoutComputer: inputs.content.layoutComputer)
+    .init(inputs: inputs)
+  }
+
+  public func sizeThatFits(
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) -> CGSize {
+    sizeThatFits?(proposal, subviews) ?? subviews.first?.sizeThatFits(proposal) ?? .zero
+  }
+
+  public func placeSubviews(
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) {
+    for subview in subviews {
+      subview.place(at: bounds.origin, proposal: proposal)
+    }
   }
 }
 
@@ -120,13 +139,14 @@ public extension HTML where Content: StringProtocol {
     _ tag: String,
     namespace: String? = nil,
     _ attributes: [HTMLAttribute: String] = [:],
+    sizeThatFits: ((ProposedViewSize, LayoutSubviews) -> CGSize)? = nil,
     content: Content
   ) {
     self.tag = tag
     self.namespace = namespace
     self.attributes = attributes
+    self.sizeThatFits = sizeThatFits
     self.content = content
-    layoutComputer = ShrinkWrapLayoutComputer.init
     cachedInnerHTML = String(content)
     visitContent = { _ in }
   }
@@ -137,30 +157,14 @@ extension HTML: ParentView where Content: View {
     _ tag: String,
     namespace: String? = nil,
     _ attributes: [HTMLAttribute: String] = [:],
+    sizeThatFits: ((ProposedViewSize, LayoutSubviews) -> CGSize)? = nil,
     @ViewBuilder content: @escaping () -> Content
   ) {
     self.tag = tag
     self.namespace = namespace
     self.attributes = attributes
+    self.sizeThatFits = sizeThatFits
     self.content = content()
-    layoutComputer = ShrinkWrapLayoutComputer.init
-    cachedInnerHTML = nil
-    visitContent = { $0.visit(content()) }
-  }
-
-  @_spi(TokamakCore)
-  public init(
-    _ tag: String,
-    namespace: String? = nil,
-    _ attributes: [HTMLAttribute: String] = [:],
-    layoutComputer: @escaping (CGSize) -> LayoutComputer,
-    @ViewBuilder content: @escaping () -> Content
-  ) {
-    self.tag = tag
-    self.namespace = namespace
-    self.attributes = attributes
-    self.content = content()
-    self.layoutComputer = layoutComputer
     cachedInnerHTML = nil
     visitContent = { $0.visit(content()) }
   }
@@ -175,21 +179,10 @@ public extension HTML where Content == EmptyView {
   init(
     _ tag: String,
     namespace: String? = nil,
-    _ attributes: [HTMLAttribute: String] = [:]
-  ) {
-    self = HTML(tag, namespace: namespace, attributes) { EmptyView() }
-  }
-
-  @_spi(TokamakCore)
-  init(
-    _ tag: String,
-    namespace: String? = nil,
     _ attributes: [HTMLAttribute: String] = [:],
-    layoutComputer: @escaping (CGSize) -> LayoutComputer
+    sizeThatFits: ((ProposedViewSize, LayoutSubviews) -> CGSize)? = nil
   ) {
-    self = HTML(tag, namespace: namespace, attributes, layoutComputer: layoutComputer) {
-      EmptyView()
-    }
+    self = HTML(tag, namespace: namespace, attributes, sizeThatFits: sizeThatFits) { EmptyView() }
   }
 }
 

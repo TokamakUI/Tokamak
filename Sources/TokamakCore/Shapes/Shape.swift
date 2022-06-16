@@ -54,7 +54,9 @@ public struct FillStyle: Equatable {
   }
 }
 
-public struct _ShapeView<Content, Style>: _PrimitiveView where Content: Shape, Style: ShapeStyle {
+public struct _ShapeView<Content, Style>: _PrimitiveView, Layout where Content: Shape,
+  Style: ShapeStyle
+{
   @Environment(\.self)
   public var environment
 
@@ -71,8 +73,26 @@ public struct _ShapeView<Content, Style>: _PrimitiveView where Content: Shape, S
     self.fillStyle = fillStyle
   }
 
-  public static func _makeView(_ inputs: ViewInputs<_ShapeView<Content, Style>>) -> ViewOutputs {
-    .init(inputs: inputs, layoutComputer: FlexLayoutComputer.init)
+  public func sizeThatFits(
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) -> CGSize {
+    proposal.replacingUnspecifiedDimensions()
+  }
+
+  public func placeSubviews(
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) {
+    for subview in subviews {
+      subview.place(
+        at: bounds.origin,
+        proposal: .init(width: bounds.width, height: bounds.height)
+      )
+    }
   }
 }
 

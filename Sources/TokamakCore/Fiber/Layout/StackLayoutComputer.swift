@@ -17,138 +17,165 @@
 
 import Foundation
 
-/// A `LayoutComputer` that aligns `Views` along a specified `Axis`
-/// with a given spacing and alignment.
-///
-/// The specified main `Axis` will fit to the combined width/height (depending on the axis)
-/// of the children.
-/// The cross axis will fit to the child with the largest height/width.
-struct StackLayoutComputer: LayoutComputer {
-  let proposedSize: CGSize
-  let axis: Axis
-  let alignment: Alignment
-  let spacing: CGFloat
+struct StackLayoutCache {
+  var largestSubview: LayoutSubview?
+  var minSize: CGFloat
+  var flexibleSubviews: Int
+}
 
-  init(proposedSize: CGSize, axis: Axis, alignment: Alignment, spacing: CGFloat) {
-    self.proposedSize = proposedSize
-    self.axis = axis
-    self.alignment = alignment
-    self.spacing = spacing
-  }
+protocol StackLayout: Layout where Cache == StackLayoutCache {
+  static var orientation: Axis { get }
+  var stackAlignment: Alignment { get }
+  var spacing: CGFloat? { get }
+}
 
-  func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
-    where V: View
-  {
-    let used = context.children.reduce(CGSize.zero) {
-      .init(
-        width: $0.width + $1.dimensions.width,
-        height: $0.height + $1.dimensions.height
-      )
-    }
+private extension ViewDimensions {
+  subscript(alignment alignment: Alignment, in axis: Axis) -> CGFloat {
     switch axis {
-    case .horizontal:
-      return .init(
-        width: proposedSize.width - used.width,
-        height: proposedSize.height
-      )
-    case .vertical:
-      return .init(
-        width: proposedSize.width,
-        height: proposedSize.height - used.height
-      )
-    }
-  }
-
-  func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint {
-    let (maxSize, fitSize) = context.children
-      .enumerated()
-      .reduce((CGSize.zero, CGSize.zero)) { res, next in
-        (
-          .init(
-            width: max(res.0.width, next.element.dimensions.width),
-            height: max(res.0.height, next.element.dimensions.height)
-          ),
-          next.offset < child.index ? .init(
-            width: res.1.width + next.element.dimensions.width,
-            height: res.1.height + next.element.dimensions.height
-          ) : res.1
-        )
-      }
-    let maxDimensions = ViewDimensions(size: maxSize, alignmentGuides: [:])
-    /// The gaps up to this point.
-    let fitSpacing = CGFloat(child.index) * spacing
-    switch axis {
-    case .horizontal:
-      return .init(
-        x: fitSize.width + fitSpacing,
-        y: maxDimensions[alignment.vertical] - child.dimensions[alignment.vertical]
-      )
-    case .vertical:
-      return .init(
-        x: maxDimensions[alignment.horizontal] - child.dimensions[alignment.horizontal],
-        y: fitSize.height + fitSpacing
-      )
-    }
-  }
-
-  func requestSize(in context: LayoutContext) -> CGSize {
-    let maxDimensions = CGSize(
-      width: context.children
-        .max(by: { $0.dimensions.width < $1.dimensions.width })?.dimensions.width ?? .zero,
-      height: context.children
-        .max(by: { $0.dimensions.height < $1.dimensions.height })?.dimensions.height ?? .zero
-    )
-    let fitDimensions = context.children
-      .reduce(CGSize.zero) {
-        .init(width: $0.width + $1.dimensions.width, height: $0.height + $1.dimensions.height)
-      }
-
-    /// The combined gap size.
-    let fitSpacing = CGFloat(context.children.count - 1) * spacing
-
-    switch axis {
-    case .horizontal:
-      return .init(
-        width: fitDimensions.width + fitSpacing,
-        height: maxDimensions.height
-      )
-    case .vertical:
-      return .init(
-        width: maxDimensions.width,
-        height: fitDimensions.height + fitSpacing
-      )
+    case .horizontal: return self[alignment.vertical]
+    case .vertical: return self[alignment.horizontal]
     }
   }
 }
 
-public extension VStack {
-  static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
+extension StackLayout {
+  public static var layoutProperties: LayoutProperties {
+    var properties = LayoutProperties()
+    properties.stackOrientation = orientation
+    return properties
+  }
+
+  public func makeCache(subviews: Subviews) -> Cache {
     .init(
-      inputs: inputs,
-      layoutComputer: { proposedSize in
-        StackLayoutComputer(
-          proposedSize: proposedSize,
-          axis: .vertical,
-          alignment: .init(horizontal: inputs.content.alignment, vertical: .center),
-          spacing: inputs.content.spacing
-        )
-      }
+      largestSubview: nil,
+      minSize: .zero,
+      flexibleSubviews: 0
     )
+  }
+
+  static var mainAxis: WritableKeyPath<CGSize, CGFloat> {
+    switch orientation {
+    case .vertical: return \.height
+    case .horizontal: return \.width
+    }
+  }
+
+  static var crossAxis: WritableKeyPath<CGSize, CGFloat> {
+    switch orientation {
+    case .vertical: return \.width
+    case .horizontal: return \.height
+    }
+  }
+
+  public func sizeThatFits(
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout Cache
+  ) -> CGSize {
+    cache.largestSubview = subviews
+      .map { ($0, $0.sizeThatFits(proposal)) }
+      .max { a, b in
+        a.1[keyPath: Self.crossAxis] < b.1[keyPath: Self.crossAxis]
+      }?.0
+    let largestSize = cache.largestSubview?.sizeThatFits(proposal) ?? .zero
+
+    var last: Subviews.Element?
+    cache.minSize = .zero
+    cache.flexibleSubviews = 0
+    for subview in subviews {
+      let sizeThatFits = subview.sizeThatFits(.infinity)
+      if sizeThatFits[keyPath: Self.mainAxis] == .infinity {
+        cache.flexibleSubviews += 1
+      } else {
+        cache.minSize += sizeThatFits[keyPath: Self.mainAxis]
+      }
+      if let last = last {
+        if let spacing = spacing {
+          cache.minSize += spacing
+        } else {
+          cache.minSize += last.spacing.distance(
+            to: subview.spacing,
+            along: Self.orientation
+          )
+        }
+      }
+      last = subview
+    }
+    var size = CGSize.zero
+    if cache.flexibleSubviews > 0 {
+      size[keyPath: Self.mainAxis] = max(
+        cache.minSize,
+        proposal.replacingUnspecifiedDimensions()[keyPath: Self.mainAxis]
+      )
+      size[keyPath: Self.crossAxis] = largestSize[keyPath: Self.crossAxis]
+    } else {
+      size[keyPath: Self.mainAxis] = cache.minSize
+      size[keyPath: Self.crossAxis] = largestSize[keyPath: Self.crossAxis] == .infinity
+        ? proposal.replacingUnspecifiedDimensions()[keyPath: Self.crossAxis]
+        : largestSize[keyPath: Self.crossAxis]
+    }
+    return size
+  }
+
+  public func placeSubviews(
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout Cache
+  ) {
+    var last: Subviews.Element?
+    var offset = CGFloat.zero
+    let alignmentOffset = cache.largestSubview?
+      .dimensions(in: proposal)[alignment: stackAlignment, in: Self.orientation] ?? .zero
+    let flexibleSize = (bounds.size[keyPath: Self.mainAxis] - cache.minSize) /
+      CGFloat(cache.flexibleSubviews)
+    for subview in subviews {
+      if let last = last {
+        if let spacing = spacing {
+          offset += spacing
+        } else {
+          offset += last.spacing.distance(to: subview.spacing, along: Self.orientation)
+        }
+      }
+
+      let dimensions = subview.dimensions(
+        in: .init(
+          width: Self.orientation == .horizontal ? .infinity : bounds.width,
+          height: Self.orientation == .vertical ? .infinity : bounds.height
+        )
+      )
+      var position = CGSize(width: bounds.minX, height: bounds.minY)
+      position[keyPath: Self.mainAxis] += offset
+      position[keyPath: Self.crossAxis] += alignmentOffset - dimensions[
+        alignment: stackAlignment,
+        in: Self.orientation
+      ]
+      var size = CGSize.zero
+      size[keyPath: Self.mainAxis] = dimensions.size[keyPath: Self.mainAxis] == .infinity
+        ? flexibleSize
+        : bounds.size[keyPath: Self.mainAxis]
+      size[keyPath: Self.crossAxis] = bounds.size[keyPath: Self.crossAxis]
+      subview.place(
+        at: .init(x: position.width, y: position.height),
+        proposal: .init(width: size.width, height: size.height)
+      )
+
+      if dimensions.size[keyPath: Self.mainAxis] == .infinity {
+        offset += flexibleSize
+      } else {
+        offset += dimensions.size[keyPath: Self.mainAxis]
+      }
+      last = subview
+    }
   }
 }
 
-public extension HStack {
-  static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
-    .init(
-      inputs: inputs,
-      layoutComputer: { proposedSize in
-        StackLayoutComputer(
-          proposedSize: proposedSize,
-          axis: .horizontal,
-          alignment: .init(horizontal: .center, vertical: inputs.content.alignment),
-          spacing: inputs.content.spacing
-        )
-      }
-    )
-  }
+extension VStack: StackLayout {
+  public static var orientation: Axis { .vertical }
+  public var stackAlignment: Alignment { .init(horizontal: alignment, vertical: .center) }
+}
+
+extension HStack: StackLayout {
+  public static var orientation: Axis { .horizontal }
+  public var stackAlignment: Alignment { .init(horizontal: .center, vertical: alignment) }
 }

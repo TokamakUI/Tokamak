@@ -150,6 +150,14 @@ extension HStack: HTMLConvertible {
   }
 }
 
+@_spi(TokamakCore)
+extension LayoutView: HTMLConvertible {
+  public var tag: String { "div" }
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    [:]
+  }
+}
+
 public struct StaticHTMLFiberRenderer: FiberRenderer {
   public let rootElement: HTMLElement
   public let defaultEnvironment: EnvironmentValues
@@ -195,7 +203,7 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
 
   public func measureText(
     _ text: Text,
-    proposedSize: CGSize,
+    proposal: ProposedViewSize,
     in environment: EnvironmentValues
   ) -> CGSize {
     .zero

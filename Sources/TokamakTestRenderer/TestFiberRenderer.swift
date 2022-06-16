@@ -122,10 +122,10 @@ public struct TestFiberRenderer: FiberRenderer {
 
   public func measureText(
     _ text: Text,
-    proposedSize: CGSize,
+    proposal: ProposedViewSize,
     in environment: EnvironmentValues
   ) -> CGSize {
-    proposedSize
+    proposal.replacingUnspecifiedDimensions()
   }
 
   public typealias ElementType = TestFiberElement

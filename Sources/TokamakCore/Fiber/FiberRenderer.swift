@@ -37,7 +37,11 @@ public protocol FiberRenderer {
   /// Whether layout is enabled for this renderer.
   var useDynamicLayout: Bool { get }
   /// Calculate the size of `Text` in `environment` for layout.
-  func measureText(_ text: Text, proposedSize: CGSize, in environment: EnvironmentValues) -> CGSize
+  func measureText(
+    _ text: Text,
+    proposal: ProposedViewSize,
+    in environment: EnvironmentValues
+  ) -> CGSize
 }
 
 public extension FiberRenderer {
@@ -70,12 +74,12 @@ public extension FiberRenderer {
 
 extension EnvironmentValues {
   private enum MeasureTextKey: EnvironmentKey {
-    static var defaultValue: (Text, CGSize, EnvironmentValues) -> CGSize {
+    static var defaultValue: (Text, ProposedViewSize, EnvironmentValues) -> CGSize {
       { _, _, _ in .zero }
     }
   }
 
-  var measureText: (Text, CGSize, EnvironmentValues) -> CGSize {
+  var measureText: (Text, ProposedViewSize, EnvironmentValues) -> CGSize {
     get { self[MeasureTextKey.self] }
     set { self[MeasureTextKey.self] = newValue }
   }

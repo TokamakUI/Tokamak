@@ -20,9 +20,6 @@ import Foundation
 public extension Scene {
   // By default, we simply pass the inputs through without modifications.
   static func _makeScene(_ inputs: SceneInputs<Self>) -> SceneOutputs {
-    .init(
-      inputs: inputs,
-      layoutComputer: RootLayoutComputer.init
-    )
+    .init(inputs: inputs)
   }
 }

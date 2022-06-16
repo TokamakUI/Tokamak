@@ -27,7 +27,7 @@ public let defaultStackSpacing: CGFloat = 8
 ///     }
 public struct HStack<Content>: View where Content: View {
   public let alignment: VerticalAlignment
-  let spacing: CGFloat
+  let spacing: CGFloat?
   public let content: Content
 
   public init(
@@ -36,7 +36,7 @@ public struct HStack<Content>: View where Content: View {
     @ViewBuilder content: () -> Content
   ) {
     self.alignment = alignment
-    self.spacing = spacing ?? defaultStackSpacing
+    self.spacing = spacing
     self.content = content()
   }
 
@@ -61,5 +61,5 @@ public struct _HStackProxy<Content> where Content: View {
 
   public init(_ subject: HStack<Content>) { self.subject = subject }
 
-  public var spacing: CGFloat { subject.spacing }
+  public var spacing: CGFloat { subject.spacing ?? defaultStackSpacing }
 }

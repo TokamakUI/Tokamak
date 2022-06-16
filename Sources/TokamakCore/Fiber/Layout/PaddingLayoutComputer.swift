@@ -28,57 +28,47 @@ private extension EdgeInsets {
   }
 }
 
-/// A `LayoutComputer` that fits to its children then adds padding.
-struct PaddingLayoutComputer: LayoutComputer {
-  let proposedSize: CGSize
-  let insets: EdgeInsets
+private struct PaddingLayout: Layout {
+  let edges: Edge.Set
+  let insets: EdgeInsets?
 
-  init(proposedSize: CGSize, edges: Edge.Set, insets: EdgeInsets?) {
-    self.proposedSize = proposedSize
-    self.insets = .init(applying: edges, to: insets ?? EdgeInsets(_all: 10))
-  }
-
-  func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
-    where V: View
-  {
-    .init(
-      width: proposedSize.width - insets.leading - insets.trailing,
-      height: proposedSize.height - insets.top - insets.bottom
+  public func sizeThatFits(
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) -> CGSize {
+    let subviewSize = (subviews.first?.sizeThatFits(proposal) ?? .zero)
+    let insets = EdgeInsets(applying: edges, to: insets ?? .init(_all: 10))
+    return .init(
+      width: subviewSize.width + insets.leading + insets.trailing,
+      height: subviewSize.height + insets.top + insets.bottom
     )
   }
 
-  func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint {
-    .init(
-      x: insets.leading,
-      y: insets.top
-    )
-  }
-
-  func requestSize(in context: LayoutContext) -> CGSize {
-    let childSize = context.children.reduce(CGSize.zero) {
-      .init(
-        width: max($0.width, $1.dimensions.width),
-        height: max($0.height, $1.dimensions.height)
+  public func placeSubviews(
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) {
+    let insets = EdgeInsets(applying: edges, to: insets ?? .init(_all: 10))
+    let proposal = proposal.replacingUnspecifiedDimensions()
+    for subview in subviews {
+      subview.place(
+        at: .init(x: bounds.minX + insets.leading, y: bounds.minY + insets.top),
+        proposal: .init(
+          width: proposal.width - insets.leading - insets.trailing,
+          height: proposal.height - insets.top - insets.bottom
+        )
       )
     }
-    return .init(
-      width: childSize.width + insets.leading + insets.trailing,
-      height: childSize.height + insets.top + insets.bottom
-    )
   }
 }
 
 public extension _PaddingLayout {
-  static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
-    .init(
-      inputs: inputs,
-      layoutComputer: {
-        PaddingLayoutComputer(
-          proposedSize: $0,
-          edges: inputs.content.edges,
-          insets: inputs.content.insets
-        )
-      }
-    )
+  func _visitChildren<V>(_ visitor: V, content: Content) where V: ViewVisitor {
+    visitor.visit(PaddingLayout(edges: edges, insets: insets).callAsFunction {
+      content
+    })
   }
 }

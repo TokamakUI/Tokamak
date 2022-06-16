@@ -22,7 +22,7 @@ import Foundation
 ///     }
 public struct VStack<Content>: View where Content: View {
   public let alignment: HorizontalAlignment
-  let spacing: CGFloat
+  let spacing: CGFloat?
   public let content: Content
 
   public init(
@@ -31,7 +31,7 @@ public struct VStack<Content>: View where Content: View {
     @ViewBuilder content: () -> Content
   ) {
     self.alignment = alignment
-    self.spacing = spacing ?? defaultStackSpacing
+    self.spacing = spacing
     self.content = content()
   }
 
@@ -56,5 +56,5 @@ public struct _VStackProxy<Content> where Content: View {
 
   public init(_ subject: VStack<Content>) { self.subject = subject }
 
-  public var spacing: CGFloat { subject.spacing }
+  public var spacing: CGFloat { subject.spacing ?? defaultStackSpacing }
 }

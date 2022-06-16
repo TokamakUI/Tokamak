@@ -29,7 +29,6 @@ extension FiberReconciler {
       var sibling: Result?
       var newContent: Renderer.ElementType.Content?
       var elementIndices: [ObjectIdentifier: Int]
-      var layoutContexts: [ObjectIdentifier: LayoutContext]
 
       // For reducing
       var lastSibling: Result?
@@ -43,8 +42,7 @@ extension FiberReconciler {
         child: Fiber?,
         alternateChild: Fiber?,
         newContent: Renderer.ElementType.Content? = nil,
-        elementIndices: [ObjectIdentifier: Int],
-        layoutContexts: [ObjectIdentifier: LayoutContext]
+        elementIndices: [ObjectIdentifier: Int]
       ) {
         self.fiber = fiber
         self.visitChildren = visitChildren
@@ -53,7 +51,6 @@ extension FiberReconciler {
         nextExistingAlternate = alternateChild
         self.newContent = newContent
         self.elementIndices = elementIndices
-        self.layoutContexts = layoutContexts
       }
     }
 
@@ -132,8 +129,7 @@ extension FiberReconciler {
           child: existing.child,
           alternateChild: existing.alternate?.child,
           newContent: newContent,
-          elementIndices: partialResult.elementIndices,
-          layoutContexts: partialResult.layoutContexts
+          elementIndices: partialResult.elementIndices
         )
         partialResult.nextExisting = existing.sibling
       } else {
@@ -166,8 +162,7 @@ extension FiberReconciler {
           parent: partialResult,
           child: nil,
           alternateChild: fiber.alternate?.child,
-          elementIndices: partialResult.elementIndices,
-          layoutContexts: partialResult.layoutContexts
+          elementIndices: partialResult.elementIndices
         )
       }
       // Get the last child element we've processed, and add the new child as its sibling.

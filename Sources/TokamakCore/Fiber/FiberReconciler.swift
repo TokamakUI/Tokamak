@@ -45,12 +45,32 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       content
         .environmentValues(environment)
     }
+  }
 
-    static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
-      .init(
-        inputs: inputs,
-        layoutComputer: { _ in RootLayoutComputer(sceneSize: inputs.content.renderer.sceneSize) }
-      )
+  struct RootLayout: Layout {
+    let renderer: Renderer
+
+    func sizeThatFits(
+      proposal: ProposedViewSize,
+      subviews: Subviews,
+      cache: inout ()
+    ) -> CGSize {
+      renderer.sceneSize
+    }
+
+    func placeSubviews(
+      in bounds: CGRect,
+      proposal: ProposedViewSize,
+      subviews: Subviews,
+      cache: inout ()
+    ) {
+      for subview in subviews {
+        subview.place(
+          at: .init(x: bounds.midX, y: bounds.midY),
+          anchor: .center,
+          proposal: .init(width: bounds.width, height: bounds.height)
+        )
+      }
     }
   }
 
@@ -95,36 +115,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     init(root: Fiber, reconciler: FiberReconciler<Renderer>) {
       self.reconciler = reconciler
       currentRoot = root
-    }
-
-    /// A `ViewVisitor` that proposes a size for the `View` represented by the fiber `node`.
-    struct ProposeSizeVisitor: AppVisitor, SceneVisitor, ViewVisitor {
-      let node: Fiber
-      let renderer: Renderer
-      let layoutContexts: [ObjectIdentifier: LayoutContext]
-
-      func visit<V>(_ view: V) where V: View {
-        // Ask the parent what space is available.
-        let proposedSize = node.elementParent?.outputs.layoutComputer.proposeSize(
-          for: view,
-          at: node.elementIndex ?? 0,
-          in: node.elementParent.flatMap { layoutContexts[ObjectIdentifier($0)] }
-            ?? .init(children: [])
-        ) ?? .zero
-        // Make our layout computer using that size.
-        node.outputs.layoutComputer = node.outputs.makeLayoutComputer(proposedSize)
-        node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
-      }
-
-      func visit<S>(_ scene: S) where S: Scene {
-        node.outputs.layoutComputer = node.outputs.makeLayoutComputer(renderer.sceneSize)
-        node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
-      }
-
-      func visit<A>(_ app: A) where A: App {
-        node.outputs.layoutComputer = node.outputs.makeLayoutComputer(renderer.sceneSize)
-        node.alternate?.outputs.layoutComputer = node.outputs.layoutComputer
-      }
     }
 
     func visit<V>(_ view: V) where V: View {
@@ -197,8 +187,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         parent: nil,
         child: alternateRoot?.child,
         alternateChild: currentRoot.child,
-        elementIndices: [:],
-        layoutContexts: [:]
+        elementIndices: [:]
       )
       var node = rootResult
 
@@ -206,8 +195,10 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       /// we are currently at. This ensures we place children in the correct order, even if they are
       /// at different levels in the `View` tree.
       var elementIndices = [ObjectIdentifier: Int]()
-      /// The `LayoutContext` for each parent view.
-      var layoutContexts = [ObjectIdentifier: LayoutContext]()
+      /// The `Cache` for a fiber's layout.
+      var caches = [ObjectIdentifier: Any]()
+      /// The `LayoutSubviews` for each fiber.
+      var layoutSubviews = [ObjectIdentifier: LayoutSubviews]()
       /// The (potentially nested) children of an `elementParent` with `element` values in order.
       /// Used to position children in the correct order.
       var elementChildren = [ObjectIdentifier: [Fiber]]()
@@ -241,86 +232,30 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         }
       }
 
-      /// Ask the `LayoutComputer` for the fiber's `elementParent` to propose a size.
-      func proposeSize(for node: Fiber) {
-        guard node.element != nil else { return }
-
-        // Use a visitor so we can pass the correct `View`/`Scene` type to the function.
-        let visitor = ProposeSizeVisitor(
-          node: node,
-          renderer: reconciler.renderer,
-          layoutContexts: layoutContexts
-        )
-        switch node.content {
-        case let .view(_, visit):
-          visit(visitor)
-        case let .scene(_, visit):
-          visit(visitor)
-        case let .app(_, visit):
-          visit(visitor)
-        case .none:
-          break
-        }
-      }
-
       /// Request a size from the fiber's `elementParent`.
-      func size(_ node: Fiber) {
-        guard node.element != nil,
-              let elementParent = node.elementParent
+      func sizeThatFits(_ node: Fiber, proposal: ProposedViewSize) {
+        guard node.element != nil
         else { return }
 
-        let key = ObjectIdentifier(elementParent)
-        let elementIndex = node.elementIndex ?? 0
-        var parentContext = layoutContexts[key, default: .init(children: [])]
+        let key = ObjectIdentifier(node)
 
-        // Using our LayoutComputer, compute our required size.
+        // Compute our required size.
         // This does not have to respect the elementParent's proposed size.
-        let size = node.outputs.layoutComputer.requestSize(
-          in: layoutContexts[ObjectIdentifier(node), default: .init(children: [])]
+        let subviews = layoutSubviews[key, default: .init(node)]
+        var cache = caches[key, default: node.makeCache(subviews: subviews)]
+        let size = node.sizeThatFits(
+          proposal: proposal,
+          subviews: subviews,
+          cache: &cache
         )
+        caches[key] = cache
         let dimensions = ViewDimensions(size: size, alignmentGuides: [:])
-        let child = LayoutContext.Child(index: elementIndex, dimensions: dimensions)
-
-        // Add ourself to the parent's LayoutContext.
-        parentContext.children.append(child)
-        layoutContexts[key] = parentContext
 
         // Update our geometry
         node.geometry = .init(
           origin: node.geometry?.origin ?? .init(origin: .zero),
           dimensions: dimensions
         )
-      }
-
-      /// Request a position from the parent on the way back up.
-      func position(_ node: Fiber) {
-        // FIXME: Add alignmentGuide modifier to override defaults and pass the correct guide data.
-        guard let element = node.element,
-              let elementParent = node.elementParent
-        else { return }
-
-        let key = ObjectIdentifier(elementParent)
-        let elementIndex = node.elementIndex ?? 0
-        let context = layoutContexts[key, default: .init(children: [])]
-
-        // Find our child element in our parent's LayoutContext (as added by `size(_:)`).
-        guard let child = context.children.first(where: { $0.index == elementIndex })
-        else { return }
-
-        // Ask our parent to position us in it's coordinate space (given our requested size).
-        let position = elementParent.outputs.layoutComputer.position(child, in: context)
-        let geometry = ViewGeometry(
-          origin: .init(origin: position),
-          dimensions: child.dimensions
-        )
-
-        // Push a layout mutation if needed.
-        if geometry != node.alternate?.geometry {
-          mutations.append(.layout(element: element, geometry: geometry))
-        }
-        // Update ours and our alternate's geometry
-        node.geometry = geometry
-        node.alternate?.geometry = geometry
       }
 
       /// The main reconciler loop.
@@ -346,15 +281,76 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           let reducer = TreeReducer.SceneVisitor(initialResult: node)
           node.visitChildren(reducer)
 
-          // As we walk down the tree, propose a size for each View.
           if reconciler.renderer.useDynamicLayout,
              let fiber = node.fiber
           {
-            proposeSize(for: fiber)
-            if fiber.element != nil,
-               let key = fiber.elementParent.map(ObjectIdentifier.init)
+            if let element = fiber.element,
+               let elementParent = fiber.elementParent
             {
-              elementChildren[key] = elementChildren[key, default: []] + [fiber]
+              let parentKey = ObjectIdentifier(elementParent)
+              elementChildren[parentKey] = elementChildren[parentKey, default: []] + [fiber]
+              var subviews = layoutSubviews[parentKey, default: .init(elementParent)]
+              let key = ObjectIdentifier(fiber)
+              subviews.storage.append(LayoutSubview(
+                id: ObjectIdentifier(node),
+                sizeThatFits: { [weak fiber] in
+                  guard let fiber = fiber else { return .zero }
+                  let subviews = layoutSubviews[key, default: .init(fiber)]
+                  var cache = caches[key, default: fiber.makeCache(subviews: subviews)]
+                  print("Size \(fiber)")
+                  let size = fiber.sizeThatFits(
+                    proposal: $0,
+                    subviews: subviews,
+                    cache: &cache
+                  )
+                  caches[key] = cache
+                  return size
+                },
+                dimensions: { [weak fiber] in
+                  guard let fiber = fiber else { return .init(size: .zero, alignmentGuides: [:]) }
+                  let subviews = layoutSubviews[key, default: .init(fiber)]
+                  var cache = caches[key, default: fiber.makeCache(subviews: subviews)]
+                  let size = fiber.sizeThatFits(
+                    proposal: $0,
+                    subviews: subviews,
+                    cache: &cache
+                  )
+                  caches[key] = cache
+                  // TODO: Add `alignmentGuide` modifier and pass into `ViewDimensions`
+                  return ViewDimensions(size: size, alignmentGuides: [:])
+                },
+                place: { [weak self, weak fiber, weak element] position, anchor, proposal in
+                  guard let self = self, let fiber = fiber, let element = element else { return }
+                  let parentOrigin = fiber.elementParent?.geometry?.origin.origin ?? .zero
+                  var cache = caches[key, default: fiber.makeCache(subviews: subviews)]
+                  print("Place \(fiber)")
+                  let dimensions = ViewDimensions(
+                    size: fiber.sizeThatFits(
+                      proposal: proposal,
+                      subviews: layoutSubviews[key, default: .init(fiber)],
+                      cache: &cache
+                    ),
+                    alignmentGuides: [:]
+                  )
+                  caches[key] = cache
+                  let geometry = ViewGeometry(
+                    // Shift to the anchor point in the parent's coordinate space.
+                    origin: .init(origin: .init(
+                      x: position.x - (dimensions.width * anchor.x) - parentOrigin.x,
+                      y: position.y - (dimensions.height * anchor.y) - parentOrigin.y
+                    )),
+                    dimensions: dimensions
+                  )
+                  // Push a layout mutation if needed.
+                  if geometry != fiber.alternate?.geometry {
+                    self.mutations.append(.layout(element: element, geometry: geometry))
+                  }
+                  // Update ours and our alternate's geometry
+                  fiber.geometry = geometry
+                  fiber.alternate?.geometry = geometry
+                }
+              ))
+              layoutSubviews[parentKey] = subviews
             }
           }
 
@@ -410,18 +406,23 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
             if reconciler.renderer.useDynamicLayout,
                let fiber = node.fiber
             {
-              // The `elementParent` proposed a size for this fiber on the way down.
-              // At this point all of this fiber's children have requested sizes.
-              // On the way back up, we tell our elementParent what size we want,
-              // based on our own requirements and the sizes required by our children.
-              size(fiber)
+              // Compute our size, proposing the entire scene.
+              // This is done to get an initial value for the size of this fiber before
+              // being recomputed by our elementParent when it calls `placeSubviews`.
+//              sizeThatFits(fiber, proposal: .init(reconciler.renderer.sceneSize))
               // Loop through each (potentially nested) child fiber with an `element`,
               // and position them in our coordinate space. This ensures children are
               // positioned in order.
-              if let elementChildren = elementChildren[ObjectIdentifier(fiber)] {
-                for elementChild in elementChildren {
-                  position(elementChild)
-                }
+              let key = ObjectIdentifier(fiber)
+              if let subviews = layoutSubviews[key] {
+                var cache = caches[key, default: fiber.makeCache(subviews: subviews)]
+                fiber.placeSubviews(
+                  in: .init(origin: .zero, size: reconciler.renderer.sceneSize),
+                  proposal: .unspecified,
+                  subviews: subviews,
+                  cache: &cache
+                )
+                caches[key] = cache
               }
             }
             guard let parent = node.parent else { return }
@@ -437,13 +438,19 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
           if reconciler.renderer.useDynamicLayout,
              let fiber = node.fiber
           {
-            // Request a size from our `elementParent`.
-            size(fiber)
+            // Size this fiber proposing the scene size.
+//            sizeThatFits(fiber, proposal: .init(reconciler.renderer.sceneSize))
             // Position our children in order.
-            if let elementChildren = elementChildren[ObjectIdentifier(fiber)] {
-              for elementChild in elementChildren {
-                position(elementChild)
-              }
+            if let subviews = layoutSubviews[ObjectIdentifier(fiber)] {
+              let key = ObjectIdentifier(fiber)
+              var cache = caches[key, default: fiber.makeCache(subviews: subviews)]
+              fiber.placeSubviews(
+                in: .init(origin: .zero, size: reconciler.renderer.sceneSize),
+                proposal: .unspecified,
+                subviews: subviews,
+                cache: &cache
+              )
+              caches[key] = cache
             }
           }
 
@@ -458,9 +465,17 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         var layoutNode = node.fiber?.child
         while let current = layoutNode {
           // We only need to re-position, because the size can't change if no state changed.
-          if let elementChildren = elementChildren[ObjectIdentifier(current)] {
-            for elementChild in elementChildren {
-              position(elementChild)
+          if let subviews = layoutSubviews[ObjectIdentifier(current)] {
+            if let geometry = current.geometry {
+              let key = ObjectIdentifier(current)
+              var cache = caches[key, default: current.makeCache(subviews: subviews)]
+              current.placeSubviews(
+                in: .init(origin: geometry.origin.origin, size: geometry.dimensions.size),
+                proposal: .unspecified,
+                subviews: subviews,
+                cache: &cache
+              )
+              caches[key] = cache
             }
           }
           if current.sibling != nil {
