@@ -31,7 +31,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
   /// The `FiberRenderer` used to create and update the `Element`s on screen.
   public let renderer: Renderer
 
-  let passes: [FiberReconcilerPass]
+  private let passes: [FiberReconcilerPass]
+
+  private let caches: Caches
 
   struct RootView<Content: View>: View {
     let content: Content
@@ -83,6 +85,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     } else {
       passes = [.reconcile]
     }
+    caches = Caches()
     var view = RootView(content: view, renderer: renderer)
     current = .init(
       &view,
@@ -104,6 +107,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     } else {
       passes = [.reconcile]
     }
+    caches = Caches()
     var environment = renderer.defaultEnvironment
     environment.measureText = renderer.measureText
     var app = app
@@ -159,11 +163,11 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         alternateChild: root.child,
         elementIndices: [:]
       )
-      let caches = Caches()
+      reconciler.caches.clear()
       for pass in reconciler.passes {
-        pass.run(in: reconciler, root: rootResult, caches: caches)
+        pass.run(in: reconciler, root: rootResult, caches: reconciler.caches)
       }
-      mutations = caches.mutations
+      mutations = reconciler.caches.mutations
     }
   }
 

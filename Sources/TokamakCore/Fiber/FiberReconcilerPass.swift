@@ -15,6 +15,13 @@ extension FiberReconciler {
     var elementChildren = [ObjectIdentifier: [Fiber]]()
     var mutations = [Mutation<Renderer>]()
 
+    func clear() {
+      elementIndices = [:]
+      layoutSubviews = [:]
+      elementChildren = [:]
+      mutations = []
+    }
+
     @inlinable
     func updateLayoutCache<R>(for fiber: Fiber, _ action: (inout Any) -> R) -> R {
       let key = ObjectIdentifier(fiber)

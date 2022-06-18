@@ -80,6 +80,8 @@ public extension FiberReconciler {
     /// Boxes that store `State` data.
     var state: [PropertyInfo: MutableStorage] = [:]
 
+    var childrenCount: Int?
+
     /// The computed dimensions and origin.
     var geometry: ViewGeometry?
 
@@ -129,12 +131,12 @@ public extension FiberReconciler {
 
       let environment = parent?.outputs.environment ?? .init(.init())
       state = bindProperties(to: &view, typeInfo, environment.environment)
-      outputs = V._makeView(
-        .init(
-          content: view,
-          environment: environment
-        )
+      let viewInputs = ViewInputs(
+        content: view,
+        environment: environment
       )
+      outputs = V._makeView(viewInputs)
+      childrenCount = V._viewChildrenCount(viewInputs)
 
       content = content(for: view)
 
@@ -160,6 +162,7 @@ public extension FiberReconciler {
           layoutActions: self.layout,
           alternate: self,
           outputs: self.outputs,
+          childrenCount: self.childrenCount,
           typeInfo: self.typeInfo,
           element: self.element,
           parent: self.parent?.alternate,
@@ -189,6 +192,7 @@ public extension FiberReconciler {
       layoutActions: LayoutActions,
       alternate: Fiber,
       outputs: ViewOutputs,
+      childrenCount: Int?,
       typeInfo: TypeInfo?,
       element: Renderer.ElementType?,
       parent: FiberReconciler<Renderer>.Fiber?,
@@ -204,6 +208,7 @@ public extension FiberReconciler {
       self.elementParent = elementParent
       self.typeInfo = typeInfo
       self.outputs = outputs
+      self.childrenCount = childrenCount
       layout = layoutActions
       content = content(for: view)
     }
@@ -252,10 +257,12 @@ public extension FiberReconciler {
       let environment = parent?.outputs.environment ?? .init(.init())
       state = bindProperties(to: &view, typeInfo, environment.environment)
       content = content(for: view)
-      outputs = V._makeView(.init(
+      let inputs = ViewInputs(
         content: view,
         environment: environment
-      ))
+      )
+      outputs = V._makeView(inputs)
+      childrenCount = V._viewChildrenCount(inputs)
 
       if Renderer.isPrimitive(view) {
         return .init(from: view, useDynamicLayout: reconciler?.renderer.useDynamicLayout ?? false)

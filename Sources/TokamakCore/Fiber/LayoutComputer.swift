@@ -199,9 +199,15 @@ public struct LayoutSubviews: Equatable, RandomAccessCollection {
   }
 
   init<R: FiberRenderer>(_ node: FiberReconciler<R>.Fiber) {
+    var storage = [LayoutSubview]()
+    if let childrenCount = node.childrenCount {
+      storage.reserveCapacity(childrenCount)
+    } else {
+      storage.reserveCapacity(1)
+    }
     self.init(
       layoutDirection: node.outputs.environment.environment.layoutDirection,
-      storage: []
+      storage: storage
     )
   }
 

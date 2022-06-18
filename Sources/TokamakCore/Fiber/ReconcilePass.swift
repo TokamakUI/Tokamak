@@ -60,10 +60,14 @@ struct ReconcilePass: FiberReconcilerPass {
     while true {
       // If this fiber has an element, set its `elementIndex`
       // and increment the `elementIndices` value for its `elementParent`.
-      if node.fiber?.element != nil,
-         let elementParent = node.fiber?.elementParent
-      {
-        node.fiber?.elementIndex = caches.elementIndex(for: elementParent, increment: true)
+      if let elementParent = node.fiber?.elementParent {
+        if node.fiber?.element != nil {
+          node.fiber?.elementIndex = caches.elementIndex(for: elementParent, increment: true)
+        } else if let childrenCount = node.fiber?.childrenCount {
+          // This fiber does not have an element, so we should transfer our `_viewChildrenCount`
+          // up to the `elementParent`.
+          elementParent.childrenCount = (elementParent.childrenCount ?? 0) + childrenCount
+        }
       }
 
       // Perform work on the node.
