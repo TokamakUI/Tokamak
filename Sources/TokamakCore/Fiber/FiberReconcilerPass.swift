@@ -43,8 +43,7 @@ extension FiberReconciler {
 
     @inlinable
     func appendChild(parent: Fiber, child: Fiber) {
-      let key = ObjectIdentifier(parent)
-      elementChildren[key] = elementChildren[key, default: []] + [child]
+      elementChildren[ObjectIdentifier(parent), default: []].append(child)
     }
   }
 }
