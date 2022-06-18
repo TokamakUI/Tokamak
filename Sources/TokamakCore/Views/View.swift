@@ -28,10 +28,6 @@ public protocol View {
   /// Create `ViewOutputs`, including any modifications to the environment, preferences, or a custom
   /// `LayoutComputer` from the `ViewInputs`.
   static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs
-
-  /// The number of child `View`s contained in this type. Used to pre-allocate storage for
-  /// subview collections.
-  static func _viewChildrenCount(_ inputs: ViewInputs<Self>) -> Int?
 }
 
 public extension Never {

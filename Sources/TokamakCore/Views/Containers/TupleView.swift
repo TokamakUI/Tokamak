@@ -22,20 +22,17 @@ public struct TupleView<T>: _PrimitiveView {
   public let value: T
 
   let _children: [AnyView]
-  private let childCount: Int
   private let visit: (ViewVisitor) -> ()
 
   public init(_ value: T) {
     self.value = value
     _children = []
-    childCount = 0
     visit = { _ in }
   }
 
   public init(_ value: T, children: [AnyView]) {
     self.value = value
     _children = children
-    childCount = children.count
     visit = {
       for child in children {
         $0.visit(child)
@@ -47,14 +44,9 @@ public struct TupleView<T>: _PrimitiveView {
     visit(visitor)
   }
 
-  public static func _viewChildrenCount(_ inputs: ViewInputs<Self>) -> Int? {
-    inputs.content.childCount
-  }
-
   init<T1: View, T2: View>(_ v1: T1, _ v2: T2) where T == (T1, T2) {
     value = (v1, v2)
     _children = [AnyView(v1), AnyView(v2)]
-    childCount = 2
     visit = {
       $0.visit(v1)
       $0.visit(v2)
@@ -65,7 +57,6 @@ public struct TupleView<T>: _PrimitiveView {
   init<T1: View, T2: View, T3: View>(_ v1: T1, _ v2: T2, _ v3: T3) where T == (T1, T2, T3) {
     value = (v1, v2, v3)
     _children = [AnyView(v1), AnyView(v2), AnyView(v3)]
-    childCount = 3
     visit = {
       $0.visit(v1)
       $0.visit(v2)
@@ -78,7 +69,6 @@ public struct TupleView<T>: _PrimitiveView {
   {
     value = (v1, v2, v3, v4)
     _children = [AnyView(v1), AnyView(v2), AnyView(v3), AnyView(v4)]
-    childCount = 4
     visit = {
       $0.visit(v1)
       $0.visit(v2)
@@ -96,7 +86,6 @@ public struct TupleView<T>: _PrimitiveView {
   ) where T == (T1, T2, T3, T4, T5) {
     value = (v1, v2, v3, v4, v5)
     _children = [AnyView(v1), AnyView(v2), AnyView(v3), AnyView(v4), AnyView(v5)]
-    childCount = 5
     visit = {
       $0.visit(v1)
       $0.visit(v2)
@@ -116,7 +105,6 @@ public struct TupleView<T>: _PrimitiveView {
   ) where T == (T1, T2, T3, T4, T5, T6) {
     value = (v1, v2, v3, v4, v5, v6)
     _children = [AnyView(v1), AnyView(v2), AnyView(v3), AnyView(v4), AnyView(v5), AnyView(v6)]
-    childCount = 6
     visit = {
       $0.visit(v1)
       $0.visit(v2)
@@ -146,7 +134,6 @@ public struct TupleView<T>: _PrimitiveView {
       AnyView(v6),
       AnyView(v7),
     ]
-    childCount = 7
     visit = {
       $0.visit(v1)
       $0.visit(v2)
@@ -179,7 +166,6 @@ public struct TupleView<T>: _PrimitiveView {
       AnyView(v7),
       AnyView(v8),
     ]
-    childCount = 8
     visit = {
       $0.visit(v1)
       $0.visit(v2)
@@ -215,7 +201,6 @@ public struct TupleView<T>: _PrimitiveView {
       AnyView(v8),
       AnyView(v9),
     ]
-    childCount = 9
     visit = {
       $0.visit(v1)
       $0.visit(v2)
@@ -265,7 +250,6 @@ public struct TupleView<T>: _PrimitiveView {
       AnyView(v9),
       AnyView(v10),
     ]
-    childCount = 10
     visit = {
       $0.visit(v1)
       $0.visit(v2)

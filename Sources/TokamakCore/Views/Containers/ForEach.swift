@@ -54,10 +54,6 @@ public struct ForEach<Data, ID, Content>: _PrimitiveView where Data: RandomAcces
       visitor.visit(content(element))
     }
   }
-
-  public static func _viewChildrenCount(_ inputs: ViewInputs<Self>) -> Int? {
-    inputs.content.data.count
-  }
 }
 
 extension ForEach: ForEachProtocol where Data.Index == Int {

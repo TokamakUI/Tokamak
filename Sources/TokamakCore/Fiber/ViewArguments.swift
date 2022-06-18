@@ -60,12 +60,6 @@ public extension View {
   static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
     .init(inputs: inputs)
   }
-
-  // By default, specify that we don't know how many children will exist.
-  // This will prevent any `reserveCapacity` calls.
-  static func _viewChildrenCount(_ inputs: ViewInputs<Self>) -> Int? {
-    nil
-  }
 }
 
 public extension ModifiedContent where Content: View, Modifier: ViewModifier {
