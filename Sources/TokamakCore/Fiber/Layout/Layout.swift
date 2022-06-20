@@ -28,18 +28,31 @@ public protocol Layout: Animatable, _AnyLayout {
 
   typealias Subviews = LayoutSubviews
 
+  /// Create a fresh `Cache`. Use it to store complex operations,
+  /// or to pass data between `sizeThatFits` and `placeSubviews`.
+  ///
+  /// - Note: There are no guarantees about when the cache will be recreated,
+  /// and the behavior could change at any time.
   func makeCache(subviews: Self.Subviews) -> Self.Cache
 
+  /// Update the existing `Cache` before each layout pass.
   func updateCache(_ cache: inout Self.Cache, subviews: Self.Subviews)
 
+  /// The preferred spacing for this `View` and its subviews.
   func spacing(subviews: Self.Subviews, cache: inout Self.Cache) -> ViewSpacing
 
+  /// Request a size to contain the subviews and fit within `proposal`.
+  /// If you provide a size that does not fit within `proposal`, the parent will still respect it.
   func sizeThatFits(
     proposal: ProposedViewSize,
     subviews: Self.Subviews,
     cache: inout Self.Cache
   ) -> CGSize
 
+  /// Place each subview with `LayoutSubview.place(at:anchor:proposal:)`.
+  ///
+  /// - Note: The bounds are not necessarily at `(0, 0)`, so use `bounds.minX` and `bounds.minY`
+  /// to correctly position relative to the container.
   func placeSubviews(
     in bounds: CGRect,
     proposal: ProposedViewSize,
@@ -47,6 +60,7 @@ public protocol Layout: Animatable, _AnyLayout {
     cache: inout Self.Cache
   )
 
+  /// Override the value of a `HorizontalAlignment` value.
   func explicitAlignment(
     of guide: HorizontalAlignment,
     in bounds: CGRect,
@@ -55,6 +69,7 @@ public protocol Layout: Animatable, _AnyLayout {
     cache: inout Self.Cache
   ) -> CGFloat?
 
+  /// Override the value of a `VerticalAlignment` value.
   func explicitAlignment(
     of guide: VerticalAlignment,
     in bounds: CGRect,
@@ -82,6 +97,11 @@ public extension Layout {
   }
 
   func updateCache(_ cache: inout Self.Cache, subviews: Self.Subviews) {}
+
+  func spacing(subviews: Self.Subviews, cache: inout Self.Cache) -> ViewSpacing {
+    .init()
+  }
+
   func explicitAlignment(
     of guide: HorizontalAlignment,
     in bounds: CGRect,
@@ -101,238 +121,16 @@ public extension Layout {
   ) -> CGFloat? {
     nil
   }
-
-  func spacing(subviews: Self.Subviews, cache: inout Self.Cache) -> ViewSpacing {
-    .init()
-  }
-}
-
-public struct LayoutProperties {
-  public var stackOrientation: Axis?
-
-  public init() {
-    stackOrientation = nil
-  }
-}
-
-@frozen
-public struct ProposedViewSize: Equatable {
-  public var width: CGFloat?
-  public var height: CGFloat?
-  public static let zero: ProposedViewSize = .init(width: 0, height: 0)
-  public static let unspecified: ProposedViewSize = .init(width: nil, height: nil)
-  public static let infinity: ProposedViewSize = .init(width: .infinity, height: .infinity)
-  @inlinable
-  public init(width: CGFloat?, height: CGFloat?) {
-    (self.width, self.height) = (width, height)
-  }
-
-  @inlinable
-  public init(_ size: CGSize) {
-    self.init(width: size.width, height: size.height)
-  }
-
-  @inlinable
-  public func replacingUnspecifiedDimensions(by size: CGSize = CGSize(
-    width: 10,
-    height: 10
-  )) -> CGSize {
-    CGSize(width: width ?? size.width, height: height ?? size.height)
-  }
-}
-
-public struct ViewSpacing {
-  private var top: CGFloat
-  private var leading: CGFloat
-  private var bottom: CGFloat
-  private var trailing: CGFloat
-
-  public static let zero: ViewSpacing = .init()
-
-  public init() {
-    top = 10
-    leading = 10
-    bottom = 10
-    trailing = 10
-  }
-
-  public mutating func formUnion(_ other: ViewSpacing, edges: Edge.Set = .all) {
-    if edges.contains(.top) {
-      top = max(top, other.top)
-    }
-    if edges.contains(.leading) {
-      leading = max(leading, other.leading)
-    }
-    if edges.contains(.bottom) {
-      bottom = max(bottom, other.bottom)
-    }
-    if edges.contains(.trailing) {
-      trailing = max(trailing, other.trailing)
-    }
-  }
-
-  public func union(_ other: ViewSpacing, edges: Edge.Set = .all) -> ViewSpacing {
-    var spacing = self
-    spacing.formUnion(other, edges: edges)
-    return spacing
-  }
-
-  /// The smallest spacing that accommodates the preferences of `self` and `next`.
-  public func distance(to next: ViewSpacing, along axis: Axis) -> CGFloat {
-    // Assume `next` comes after `self` either horizontally or vertically.
-    switch axis {
-    case .horizontal:
-      return max(trailing, next.leading)
-    case .vertical:
-      return max(bottom, next.top)
-    }
-  }
-}
-
-public struct LayoutSubviews: Equatable, RandomAccessCollection {
-  public var layoutDirection: LayoutDirection
-  var storage: [LayoutSubview]
-
-  init(layoutDirection: LayoutDirection, storage: [LayoutSubview]) {
-    self.layoutDirection = layoutDirection
-    self.storage = storage
-  }
-
-  init<R: FiberRenderer>(_ node: FiberReconciler<R>.Fiber) {
-    self.init(
-      layoutDirection: node.outputs.environment.environment.layoutDirection,
-      storage: []
-    )
-  }
-
-  public typealias SubSequence = LayoutSubviews
-  public typealias Element = LayoutSubview
-  public typealias Index = Int
-  public typealias Indices = Range<LayoutSubviews.Index>
-  public typealias Iterator = IndexingIterator<LayoutSubviews>
-
-  public var startIndex: Int {
-    storage.startIndex
-  }
-
-  public var endIndex: Int {
-    storage.endIndex
-  }
-
-  public subscript(index: Int) -> LayoutSubviews.Element {
-    storage[index]
-  }
-
-  public subscript(bounds: Range<Int>) -> LayoutSubviews {
-    .init(layoutDirection: layoutDirection, storage: .init(storage[bounds]))
-  }
-
-  public subscript<S>(indices: S) -> LayoutSubviews where S: Sequence, S.Element == Int {
-    .init(
-      layoutDirection: layoutDirection,
-      storage: storage.enumerated()
-        .filter { indices.contains($0.offset) }
-        .map(\.element)
-    )
-  }
-}
-
-public struct LayoutSubview: Equatable {
-  private let id: ObjectIdentifier
-  public static func == (lhs: LayoutSubview, rhs: LayoutSubview) -> Bool {
-    lhs.id == rhs.id
-  }
-
-  private let sizeThatFits: (ProposedViewSize) -> CGSize
-  private let dimensions: (CGSize) -> ViewDimensions
-  private let place: (ViewDimensions, CGPoint, UnitPoint) -> ()
-
-  init(
-    id: ObjectIdentifier,
-    sizeThatFits: @escaping (ProposedViewSize) -> CGSize,
-    dimensions: @escaping (CGSize) -> ViewDimensions,
-    place: @escaping (ViewDimensions, CGPoint, UnitPoint) -> ()
-  ) {
-    self.id = id
-    self.sizeThatFits = sizeThatFits
-    self.dimensions = dimensions
-    self.place = place
-  }
-
-  public func _trait<K>(key: K.Type) -> K.Value where K: _ViewTraitKey {
-    fatalError("Implement \(#function)")
-  }
-
-  public subscript<K>(key: K.Type) -> K.Value where K: LayoutValueKey {
-    fatalError("Implement \(#function)")
-  }
-
-  public var priority: Double {
-//    fatalError("Implement \(#function)")
-    0
-  }
-
-  public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
-    sizeThatFits(proposal)
-  }
-
-  public func dimensions(in proposal: ProposedViewSize) -> ViewDimensions {
-    dimensions(sizeThatFits(proposal))
-  }
-
-  public var spacing: ViewSpacing {
-    ViewSpacing()
-  }
-
-  public func place(
-    at position: CGPoint,
-    anchor: UnitPoint = .topLeading,
-    proposal: ProposedViewSize
-  ) {
-    place(dimensions(in: proposal), position, anchor)
-  }
-}
-
-public enum LayoutDirection: Hashable, CaseIterable {
-  case leftToRight
-  case rightToLeft
-}
-
-extension EnvironmentValues {
-  private enum LayoutDirectionKey: EnvironmentKey {
-    static var defaultValue: LayoutDirection = .leftToRight
-  }
-
-  public var layoutDirection: LayoutDirection {
-    get { self[LayoutDirectionKey.self] }
-    set { self[LayoutDirectionKey.self] = newValue }
-  }
-}
-
-public protocol LayoutValueKey {
-  associatedtype Value
-  static var defaultValue: Self.Value { get }
-}
-
-public extension View {
-  @inlinable
-  func layoutValue<K>(key: K.Type, value: K.Value) -> some View where K: LayoutValueKey {
-    _trait(_LayoutTrait<K>.self, value)
-  }
-}
-
-public struct _LayoutTrait<K>: _ViewTraitKey where K: LayoutValueKey {
-  public static var defaultValue: K.Value {
-    K.defaultValue
-  }
 }
 
 public extension Layout {
+  /// Render `content` using `self` as the layout container.
   func callAsFunction<V>(@ViewBuilder _ content: () -> V) -> some View where V: View {
     LayoutView(layout: self, content: content())
   }
 }
 
+/// A `View` that renders its children with a `Layout`.
 @_spi(TokamakCore)
 public struct LayoutView<L: Layout, Content: View>: View, Layout {
   let layout: L
@@ -398,6 +196,7 @@ public struct LayoutView<L: Layout, Content: View>: View, Layout {
   }
 }
 
+/// A default `Layout` that fits to the first subview and places its children at its origin.
 struct DefaultLayout: Layout {
   func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
     let size = subviews.first?.sizeThatFits(proposal) ?? .zero
