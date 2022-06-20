@@ -17,19 +17,8 @@
 
 import Foundation
 
-struct StackLayoutCache {
-  var largestSubview: LayoutSubview?
-  var minSize: CGFloat
-  var flexibleSubviews: Int
-}
-
-protocol StackLayout: Layout where Cache == StackLayoutCache {
-  static var orientation: Axis { get }
-  var stackAlignment: Alignment { get }
-  var spacing: CGFloat? { get }
-}
-
 private extension ViewDimensions {
+  /// Access the guide value of an `Alignment` for a particular `Axis`.
   subscript(alignment alignment: Alignment, in axis: Axis) -> CGFloat {
     switch axis {
     case .horizontal: return self[alignment.vertical]
@@ -38,144 +27,240 @@ private extension ViewDimensions {
   }
 }
 
-extension StackLayout {
-  public static var layoutProperties: LayoutProperties {
+/// The `Layout.Cache` for `StackLayout` conforming types.
+@_spi(TokamakCore)
+public struct StackLayoutCache {
+  /// The widest/tallest (depending on the `axis`) subview.
+  /// Used to place subviews along the `alignment`.
+  var maxSubview: ViewDimensions?
+  /// The ideal size for each subview as computed in `sizeThatFits`.
+  var idealSizes = [CGSize]()
+}
+
+/// An internal structure used to store layout information about
+/// `LayoutSubview`s of a `StackLayout` that will later be sorted
+private struct MeasuredSubview {
+  let view: LayoutSubview
+  let index: Int
+  let min: CGSize
+  let max: CGSize
+  let infiniteMainAxis: Bool
+  let spacing: CGFloat
+}
+
+/// The protocol all built-in stacks conform to.
+/// Provides a shared implementation for stack layout logic.
+@_spi(TokamakCore)
+public protocol StackLayout: Layout where Cache == StackLayoutCache {
+  /// The direction of this stack. `vertical` for `VStack`, `horizontal` for `HStack`.
+  static var orientation: Axis { get }
+  /// The full `Alignment` with an ignored value for the main axis.
+  var _alignment: Alignment { get }
+  var spacing: CGFloat? { get }
+}
+
+@_spi(TokamakCore)
+public extension StackLayout {
+  static var layoutProperties: LayoutProperties {
     var properties = LayoutProperties()
-    properties.stackOrientation = orientation
+    properties.stackOrientation = Self.orientation
     return properties
   }
 
-  public func makeCache(subviews: Subviews) -> Cache {
-    .init(
-      largestSubview: nil,
-      minSize: .zero,
-      flexibleSubviews: 0
-    )
-  }
-
+  /// The `CGSize` component for the current `axis`.
+  ///
+  /// A `vertical` axis will return `height`.
+  /// A `horizontal` axis will return `width`.
   static var mainAxis: WritableKeyPath<CGSize, CGFloat> {
-    switch orientation {
+    switch Self.orientation {
     case .vertical: return \.height
     case .horizontal: return \.width
     }
   }
 
+  /// The `CGSize` component for the axis opposite `axis`.
+  ///
+  /// A `vertical` axis will return `width`.
+  /// A `horizontal` axis will return `height`.
   static var crossAxis: WritableKeyPath<CGSize, CGFloat> {
-    switch orientation {
+    switch Self.orientation {
     case .vertical: return \.width
     case .horizontal: return \.height
     }
   }
 
-  public func sizeThatFits(
-    proposal: ProposedViewSize,
-    subviews: Subviews,
-    cache: inout Cache
-  ) -> CGSize {
-    cache.largestSubview = subviews
-      .map { ($0, $0.sizeThatFits(proposal)) }
-      .max { a, b in
-        a.1[keyPath: Self.crossAxis] < b.1[keyPath: Self.crossAxis]
-      }?.0
-    let largestSize = cache.largestSubview?.sizeThatFits(proposal) ?? .zero
+  func makeCache(subviews: Subviews) -> Cache {
+    // Ensure we have enough space in `idealSizes` for each subview.
+    .init(maxSubview: nil, idealSizes: Array(repeating: .zero, count: subviews.count))
+  }
 
-    var last: Subviews.Element?
-    cache.minSize = .zero
-    cache.flexibleSubviews = 0
-    for subview in subviews {
-      let sizeThatFits = subview.sizeThatFits(.infinity)
-      if sizeThatFits[keyPath: Self.mainAxis] == .infinity {
-        cache.flexibleSubviews += 1
-      } else {
-        cache.minSize += sizeThatFits[keyPath: Self.mainAxis]
-      }
-      if let last = last {
-        if let spacing = spacing {
-          cache.minSize += spacing
+  func updateCache(_ cache: inout Cache, subviews: Subviews) {
+    cache.maxSubview = nil
+    // Ensure we have enough space in `idealSizes` for each subview.
+    cache.idealSizes = Array(repeating: .zero, count: subviews.count)
+  }
+
+  func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout Cache) -> CGSize {
+    let proposal = proposal.replacingUnspecifiedDimensions()
+
+    /// The minimum size of each `View` on the main axis.
+    var minSize = CGFloat.zero
+
+    /// The aggregate `ViewSpacing` distances.
+    var totalSpacing = CGFloat.zero
+
+    /// The number of `View`s with a given priority.
+    var priorityCount = [Double: Int]()
+
+    /// The aggregate minimum size of each `View` with a given priority.
+    var prioritySize = [Double: CGFloat]()
+
+    let measuredSubviews = subviews.enumerated().map { index, view -> MeasuredSubview in
+      priorityCount[view.priority, default: 0] += 1
+
+      var minProposal = CGSize(width: CGFloat.infinity, height: CGFloat.infinity)
+      minProposal[keyPath: Self.crossAxis] = proposal[keyPath: Self.crossAxis]
+      minProposal[keyPath: Self.mainAxis] = 0
+      /// The minimum size for this subview along the `mainAxis`.
+      /// Uses `dimensions(in:)` to collect the alignment guides for use in `placeSubviews`.
+      let min = view.dimensions(in: .init(minProposal))
+
+      // Aggregate the minimum size of the stack for the combined subviews.
+      minSize += min.size[keyPath: Self.mainAxis]
+
+      // Aggregate the minimum size of this priority to divvy up space later.
+      prioritySize[view.priority, default: 0] += min.size[keyPath: Self.mainAxis]
+
+      var maxProposal = CGSize(width: CGFloat.infinity, height: CGFloat.infinity)
+      maxProposal[keyPath: Self.crossAxis] = minProposal[keyPath: Self.crossAxis]
+      /// The maximum size for this subview along the `mainAxis`.
+      let max = view.sizeThatFits(.init(maxProposal))
+
+      /// The spacing around this `View` and its previous (if it is not first).
+      let spacing: CGFloat
+      if subviews.indices.contains(index - 1) {
+        if let overrideSpacing = self.spacing {
+          spacing = overrideSpacing
         } else {
-          cache.minSize += last.spacing.distance(
-            to: subview.spacing,
-            along: Self.orientation
-          )
+          spacing = subviews[index - 1].spacing.distance(to: view.spacing, along: Self.orientation)
         }
+      } else {
+        spacing = .zero
       }
-      last = subview
-    }
-    var size = CGSize.zero
-    if cache.flexibleSubviews > 0 {
-      size[keyPath: Self.mainAxis] = max(
-        cache.minSize,
-        proposal.replacingUnspecifiedDimensions()[keyPath: Self.mainAxis]
+      // Aggregate all spacing values.
+      totalSpacing += spacing
+
+      // If this `View` is the widest, save it to the cache for access in `placeSubviews`.
+      if min.size[keyPath: Self.crossAxis] > cache.maxSubview?.size[keyPath: Self.crossAxis]
+        ?? .zero
+      {
+        cache.maxSubview = min
+      }
+
+      return MeasuredSubview(
+        view: view,
+        index: index,
+        min: min.size,
+        max: max,
+        infiniteMainAxis: max[keyPath: Self.mainAxis] == .infinity,
+        spacing: spacing
       )
-      size[keyPath: Self.crossAxis] = largestSize[keyPath: Self.crossAxis]
-    } else {
-      size[keyPath: Self.mainAxis] = cache.minSize
-      size[keyPath: Self.crossAxis] = largestSize[keyPath: Self.crossAxis] == .infinity
-        ? proposal.replacingUnspecifiedDimensions()[keyPath: Self.crossAxis]
-        : largestSize[keyPath: Self.crossAxis]
+    }
+
+    // Calculate ideal sizes for each View based on their min/max sizes and the space available.
+    var available = proposal[keyPath: Self.mainAxis] - minSize - totalSpacing
+    /// The final resulting size.
+    var size = CGSize.zero
+    size[keyPath: Self.crossAxis] = cache.maxSubview?.size[keyPath: Self.crossAxis] ?? .zero
+    for subview in measuredSubviews.sorted(by: {
+      // Sort by priority descending.
+      if $0.view.priority == $1.view.priority {
+        // If the priorities match, allow non-flexible `View`s to size first.
+        return $1.infiniteMainAxis && !$0.infiniteMainAxis
+      } else {
+        return $0.view.priority > $1.view.priority
+      }
+    }) {
+      /// The amount of space available to `View`s with this priority value.
+      let priorityAvailable = available + prioritySize[subview.view.priority, default: 0]
+      /// The number of `View`s with this priority value remaining as a `CGFloat`.
+      let priorityRemaining = CGFloat(priorityCount[subview.view.priority, default: 1])
+      // Propose the full `crossAxis`, but only the remaining `mainAxis`.
+      // Divvy up the available space between each remaining `View` with this priority value.
+      var divviedSize = proposal
+      divviedSize[keyPath: Self.mainAxis] = priorityAvailable / priorityRemaining
+      let idealSize = subview.view.sizeThatFits(.init(divviedSize))
+      cache.idealSizes[subview.index] = idealSize
+      size[keyPath: Self.mainAxis] += idealSize[keyPath: Self.mainAxis] + subview.spacing
+      // Remove our `idealSize` from the `available` space.
+      available -= idealSize[keyPath: Self.mainAxis]
+      // Decrement the number of `View`s left with this priority so space can be evenly divided
+      // between the remaining `View`s.
+      priorityCount[subview.view.priority, default: 1] -= 1
     }
     return size
   }
 
-  public func placeSubviews(
+  func spacing(subviews: Subviews, cache: inout Cache) -> ViewSpacing {
+    subviews.reduce(into: .zero) { $0.formUnion($1.spacing) }
+  }
+
+  func placeSubviews(
     in bounds: CGRect,
     proposal: ProposedViewSize,
     subviews: Subviews,
     cache: inout Cache
   ) {
-    var last: Subviews.Element?
-    var offset = CGFloat.zero
-    let alignmentOffset = cache.largestSubview?
-      .dimensions(in: proposal)[alignment: stackAlignment, in: Self.orientation] ?? .zero
-    let flexibleSize = (bounds.size[keyPath: Self.mainAxis] - cache.minSize) /
-      CGFloat(cache.flexibleSubviews)
-    for subview in subviews {
-      if let last = last {
-        if let spacing = spacing {
-          offset += spacing
+    /// The current progress along the `mainAxis`.
+    var position = CGFloat.zero
+    /// The offset of the `_alignment` in the `maxSubview`,
+    /// used as the reference point for alignments along this axis.
+    let alignmentOffset = cache.maxSubview?[alignment: _alignment, in: Self.orientation] ?? .zero
+    for (index, view) in subviews.enumerated() {
+      // Add a gap for the spacing distance from the previous subview to this one.
+      let spacing: CGFloat
+      if subviews.indices.contains(index - 1) {
+        if let overrideSpacing = self.spacing {
+          spacing = overrideSpacing
         } else {
-          offset += last.spacing.distance(to: subview.spacing, along: Self.orientation)
+          spacing = subviews[index - 1].spacing.distance(to: view.spacing, along: Self.orientation)
         }
-      }
-
-      let dimensions = subview.dimensions(
-        in: .init(
-          width: Self.orientation == .horizontal ? .infinity : bounds.width,
-          height: Self.orientation == .vertical ? .infinity : bounds.height
-        )
-      )
-      var position = CGSize(width: bounds.minX, height: bounds.minY)
-      position[keyPath: Self.mainAxis] += offset
-      position[keyPath: Self.crossAxis] += alignmentOffset - dimensions[
-        alignment: stackAlignment,
-        in: Self.orientation
-      ]
-      var size = CGSize.zero
-      size[keyPath: Self.mainAxis] = dimensions.size[keyPath: Self.mainAxis] == .infinity
-        ? flexibleSize
-        : bounds.size[keyPath: Self.mainAxis]
-      size[keyPath: Self.crossAxis] = bounds.size[keyPath: Self.crossAxis]
-      subview.place(
-        at: .init(x: position.width, y: position.height),
-        proposal: .init(width: size.width, height: size.height)
-      )
-
-      if dimensions.size[keyPath: Self.mainAxis] == .infinity {
-        offset += flexibleSize
       } else {
-        offset += dimensions.size[keyPath: Self.mainAxis]
+        spacing = .zero
       }
-      last = subview
+      position += spacing
+
+      let proposal = ProposedViewSize(cache.idealSizes[index])
+      let size = view.dimensions(in: proposal)
+
+      // Offset the placement along the `crossAxis` to align with the
+      // `alignment` of the `maxSubview`.
+      var placement = CGSize(width: bounds.minX, height: bounds.minY)
+      placement[keyPath: Self.mainAxis] += position
+      placement[keyPath: Self.crossAxis] += alignmentOffset
+        - size[alignment: _alignment, in: Self.orientation]
+
+      view.place(
+        at: .init(
+          x: placement.width,
+          y: placement.height
+        ),
+        proposal: proposal
+      )
+      // Move further along the stack's `mainAxis`.
+      position += size.size[keyPath: Self.mainAxis]
     }
   }
 }
 
+@_spi(TokamakCore)
 extension VStack: StackLayout {
   public static var orientation: Axis { .vertical }
-  public var stackAlignment: Alignment { .init(horizontal: alignment, vertical: .center) }
+  public var _alignment: Alignment { .init(horizontal: alignment, vertical: .center) }
 }
 
+@_spi(TokamakCore)
 extension HStack: StackLayout {
   public static var orientation: Axis { .horizontal }
-  public var stackAlignment: Alignment { .init(horizontal: .center, vertical: alignment) }
+  public var _alignment: Alignment { .init(horizontal: .center, vertical: alignment) }
 }

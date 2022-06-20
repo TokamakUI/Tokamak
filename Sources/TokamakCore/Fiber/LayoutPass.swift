@@ -119,12 +119,9 @@ struct LayoutPass: FiberReconcilerPass {
     // Compute our required size.
     // This does not have to respect the elementParent's proposed size.
     let size = caches.updateLayoutCache(for: node) { cache -> CGSize in
-      let subviews = caches.layoutSubviews(for: node)
-      // Update the cache so it's ready for the new values.
-      node.updateCache(&cache, subviews: subviews)
-      return node.sizeThatFits(
+      node.sizeThatFits(
         proposal: proposal,
-        subviews: subviews,
+        subviews: caches.layoutSubviews(for: node),
         cache: &cache
       )
     }

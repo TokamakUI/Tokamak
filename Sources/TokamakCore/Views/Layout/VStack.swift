@@ -22,7 +22,8 @@ import Foundation
 ///     }
 public struct VStack<Content>: View where Content: View {
   public let alignment: HorizontalAlignment
-  let spacing: CGFloat?
+  @_spi(TokamakCore)
+  public let spacing: CGFloat?
   public let content: Content
 
   public init(

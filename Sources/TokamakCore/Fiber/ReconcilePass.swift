@@ -179,10 +179,12 @@ struct ReconcilePass: FiberReconcilerPass {
 
       // Now walk back up the tree until we find a sibling.
       while node.sibling == nil {
+        // Update the layout cache so it's ready for this render.
+        updateCache(for: node, in: reconciler, caches: caches)
+
         var alternateSibling = node.fiber?.alternate?.sibling
-        while alternateSibling !=
-          nil
-        { // The alternate had siblings that no longer exist.
+        // The alternate had siblings that no longer exist.
+        while alternateSibling != nil {
           if let element = alternateSibling?.element,
              let parent = alternateSibling?.elementParent?.element
           {
@@ -197,6 +199,8 @@ struct ReconcilePass: FiberReconcilerPass {
         guard parent !== root.fiber?.alternate else { return }
         node = parent
       }
+
+      updateCache(for: node, in: reconciler, caches: caches)
 
       // Walk across to the sibling, and repeat.
       node = node.sibling!
@@ -233,6 +237,20 @@ struct ReconcilePass: FiberReconcilerPass {
       }
     }
     return nil
+  }
+
+  /// Update the layout cache for a `Fiber`.
+  func updateCache<R: FiberRenderer>(
+    for node: FiberReconciler<R>.TreeReducer.Result,
+    in reconciler: FiberReconciler<R>,
+    caches: FiberReconciler<R>.Caches
+  ) {
+    guard reconciler.renderer.useDynamicLayout,
+          let fiber = node.fiber
+    else { return }
+    caches.updateLayoutCache(for: fiber) { cache in
+      fiber.updateCache(&cache, subviews: caches.layoutSubviews(for: fiber))
+    }
   }
 }
 
