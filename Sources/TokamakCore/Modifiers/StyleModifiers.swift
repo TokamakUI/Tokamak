@@ -33,9 +33,8 @@ public struct _BackgroundLayout<Content, Background>: _PrimitiveView
   }
 
   public func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
-    // Visit the content first so it can request its size before laying out the background
-    visitor.visit(content)
     visitor.visit(background)
+    visitor.visit(content)
   }
 }
 
@@ -143,6 +142,11 @@ public struct _OverlayLayout<Content, Overlay>: _PrimitiveView
   public let content: Content
   public let overlay: Overlay
   public let alignment: Alignment
+
+  public func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
+    visitor.visit(content)
+    visitor.visit(overlay)
+  }
 }
 
 public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
