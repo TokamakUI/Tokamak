@@ -21,11 +21,16 @@ public protocol _AnyLayout {
   func _makeActions() -> LayoutActions
 }
 
+/// A type that participates in the layout pass.
+///
+/// Any `View` or `Scene` that implements this protocol will be used to computed layout in
+/// a `FiberRenderer` with `useDynamicLayout` enabled.
 public protocol Layout: Animatable, _AnyLayout {
   static var layoutProperties: LayoutProperties { get }
 
   associatedtype Cache = ()
 
+  /// Proxies for the children of this container.
   typealias Subviews = LayoutSubviews
 
   /// Create a fresh `Cache`. Use it to store complex operations,

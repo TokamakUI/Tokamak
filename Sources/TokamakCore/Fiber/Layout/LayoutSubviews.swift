@@ -17,6 +17,7 @@
 
 import Foundation
 
+/// A collection of `LayoutSubview` proxies.
 public struct LayoutSubviews: Equatable, RandomAccessCollection {
   public var layoutDirection: LayoutDirection
   var storage: [LayoutSubview]
@@ -65,6 +66,13 @@ public struct LayoutSubviews: Equatable, RandomAccessCollection {
   }
 }
 
+/// A proxy representing a child of a `Layout`.
+///
+/// Access size requests, alignment guide values, spacing preferences, and any layout values using
+/// this proxy.
+///
+/// `Layout` types are expected to call `place(at:anchor:proposal:)` on all subviews.
+/// If `place(at:anchor:proposal:)` is not called, the center will be used as its position.
 public struct LayoutSubview: Equatable {
   private let id: ObjectIdentifier
   public static func == (lhs: LayoutSubview, rhs: LayoutSubview) -> Bool {
