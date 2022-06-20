@@ -101,6 +101,11 @@ struct ReconcilePass: FiberReconcilerPass {
                     cache: &cache.cache
                   )
                   cache.sizeThatFits[.init(proposal)] = size
+                  if let alternate = fiber.alternate {
+                    caches.updateLayoutCache(for: alternate) { cache in
+                      cache.sizeThatFits[.init(proposal)] = size
+                    }
+                  }
                   return size
                 }
               }
@@ -143,13 +148,13 @@ struct ReconcilePass: FiberReconcilerPass {
         continue
       } else if let alternateChild = node.fiber?.alternate?.child {
         // The alternate has a child that no longer exists.
+        if let parent = node.fiber {
+          invalidateCache(for: parent, in: reconciler, caches: caches)
+        }
         walk(alternateChild) { node in
           if let element = node.element,
              let parent = node.elementParent?.element
           {
-            if let node = node.elementParent {
-              invalidateCache(for: node, in: reconciler, caches: caches)
-            }
             // Removals must happen in reverse order, so a child element
             // is removed before its parent.
             caches.mutations.insert(.remove(element: element, parent: parent), at: 0)
@@ -176,12 +181,12 @@ struct ReconcilePass: FiberReconcilerPass {
         var alternateSibling = node.fiber?.alternate?.sibling
         // The alternate had siblings that no longer exist.
         while alternateSibling != nil {
+          if let fiber = alternateSibling?.parent {
+            invalidateCache(for: fiber, in: reconciler, caches: caches)
+          }
           if let element = alternateSibling?.element,
              let parent = alternateSibling?.elementParent?.element
           {
-            if let fiber = alternateSibling?.elementParent {
-              invalidateCache(for: fiber, in: reconciler, caches: caches)
-            }
             // Removals happen in reverse order, so a child element is removed before
             // its parent.
             caches.mutations.insert(.remove(element: element, parent: parent), at: 0)
@@ -255,17 +260,21 @@ struct ReconcilePass: FiberReconcilerPass {
     else { return }
     caches.updateLayoutCache(for: fiber) { cache in
       fiber.updateCache(&cache.cache, subviews: caches.layoutSubviews(for: fiber))
-      if let child = fiber.child,
-         let childCache = caches.layoutCaches[.init(child)],
-         childCache.isDirty
-      {
-        cache.sizeThatFits.removeAll()
-        cache.isDirty = childCache.isDirty
-        if let alternate = fiber.alternate {
-          caches.updateLayoutCache(for: alternate) { cache in
-            cache.sizeThatFits.removeAll()
-            cache.isDirty = childCache.isDirty
+      var sibling = fiber.child
+      while let fiber = sibling {
+        sibling = fiber.sibling
+        if let childCache = caches.layoutCaches[.init(fiber)],
+           childCache.isDirty
+        {
+          cache.sizeThatFits.removeAll()
+          cache.isDirty = true
+          if let alternate = fiber.alternate {
+            caches.updateLayoutCache(for: alternate) { cache in
+              cache.sizeThatFits.removeAll()
+              cache.isDirty = true
+            }
           }
+          return
         }
       }
     }

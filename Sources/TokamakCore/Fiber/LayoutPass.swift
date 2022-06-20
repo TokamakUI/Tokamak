@@ -36,6 +36,7 @@ struct LayoutPass: FiberReconcilerPass {
               fiber.elementParent?.geometry?.dimensions.size ?? reconciler.renderer.sceneSize
             )
           )
+          clean(fiber, caches: caches)
 
           if let child = fiber.child {
             fiber = child
@@ -58,7 +59,7 @@ struct LayoutPass: FiberReconcilerPass {
                 cache: &cache.cache
               )
             }
-            // Exit at the top of the View tree
+            // Exit at the top of the `View` tree
             guard let parent = fiber.parent else { return }
             guard parent !== root.alternate else { return }
             // Walk up to the next parent.
@@ -72,8 +73,7 @@ struct LayoutPass: FiberReconcilerPass {
                 size: fiber.geometry?.dimensions.size ?? reconciler.renderer.sceneSize
               ),
               proposal: .init(
-                fiber.elementParent?.geometry?.dimensions.size ?? reconciler.renderer
-                  .sceneSize
+                fiber.elementParent?.geometry?.dimensions.size ?? reconciler.renderer.sceneSize
               ),
               subviews: caches.layoutSubviews(for: fiber),
               cache: &cache.cache
@@ -94,8 +94,7 @@ struct LayoutPass: FiberReconcilerPass {
               size: fiber.geometry?.dimensions.size ?? reconciler.renderer.sceneSize
             ),
             proposal: .init(
-              fiber.elementParent?.geometry?.dimensions.size ?? reconciler.renderer
-                .sceneSize
+              fiber.elementParent?.geometry?.dimensions.size ?? reconciler.renderer.sceneSize
             ),
             subviews: caches.layoutSubviews(for: fiber),
             cache: &cache.cache
@@ -107,30 +106,43 @@ struct LayoutPass: FiberReconcilerPass {
     }
   }
 
+  func clean<R: FiberRenderer>(
+    _ fiber: FiberReconciler<R>.Fiber,
+    caches: FiberReconciler<R>.Caches
+  ) {
+    caches.updateLayoutCache(for: fiber) { cache in
+      cache.isDirty = false
+    }
+    if let alternate = fiber.alternate {
+      caches.updateLayoutCache(for: alternate) { cache in
+        cache.isDirty = false
+      }
+    }
+  }
+
   /// Request a size from the fiber's `elementParent`.
   func sizeThatFits<R: FiberRenderer>(
-    _ node: FiberReconciler<R>.Fiber,
+    _ fiber: FiberReconciler<R>.Fiber,
     caches: FiberReconciler<R>.Caches,
     proposal: ProposedViewSize
   ) {
-    guard node.element != nil
+    guard fiber.element != nil
     else { return }
 
     // Compute our required size.
     // This does not have to respect the elementParent's proposed size.
-    let size = caches.updateLayoutCache(for: node) { cache -> CGSize in
-      cache.isDirty = false
-      return node.sizeThatFits(
+    let size = caches.updateLayoutCache(for: fiber) { cache -> CGSize in
+      fiber.sizeThatFits(
         proposal: proposal,
-        subviews: caches.layoutSubviews(for: node),
+        subviews: caches.layoutSubviews(for: fiber),
         cache: &cache.cache
       )
     }
     let dimensions = ViewDimensions(size: size, alignmentGuides: [:])
 
     // Update our geometry
-    node.geometry = .init(
-      origin: node.geometry?.origin ?? .init(origin: .zero),
+    fiber.geometry = .init(
+      origin: fiber.geometry?.origin ?? .init(origin: .zero),
       dimensions: dimensions
     )
   }
