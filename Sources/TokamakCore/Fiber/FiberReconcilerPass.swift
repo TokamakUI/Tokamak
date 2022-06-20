@@ -10,11 +10,33 @@ import Foundation
 extension FiberReconciler {
   final class Caches {
     var elementIndices = [ObjectIdentifier: Int]()
-    var layoutCaches = [ObjectIdentifier: Any]()
+    var layoutCaches = [ObjectIdentifier: LayoutCache]()
     var layoutSubviews = [ObjectIdentifier: LayoutSubviews]()
     var elementChildren = [ObjectIdentifier: [Fiber]]()
     var mutations = [Mutation<Renderer>]()
 
+    struct LayoutCache {
+      var cache: Any
+      var sizeThatFits: [SizeThatFitsRequest: CGSize]
+      var dimensions: [SizeThatFitsRequest: ViewDimensions]
+      var isDirty: Bool
+
+      struct SizeThatFitsRequest: Hashable {
+        let proposal: ProposedViewSize
+
+        @inlinable
+        init(_ proposal: ProposedViewSize) {
+          self.proposal = proposal
+        }
+
+        func hash(into hasher: inout Hasher) {
+          hasher.combine(proposal.width)
+          hasher.combine(proposal.height)
+        }
+      }
+    }
+
+    @inlinable
     func clear() {
       elementIndices = [:]
       layoutSubviews = [:]
@@ -23,11 +45,16 @@ extension FiberReconciler {
     }
 
     @inlinable
-    func updateLayoutCache<R>(for fiber: Fiber, _ action: (inout Any) -> R) -> R {
+    func updateLayoutCache<R>(for fiber: Fiber, _ action: (inout LayoutCache) -> R) -> R {
       let key = ObjectIdentifier(fiber)
       var cache = layoutCaches[
         key,
-        default: fiber.makeCache(subviews: layoutSubviews(for: fiber))
+        default: .init(
+          cache: fiber.makeCache(subviews: layoutSubviews(for: fiber)),
+          sizeThatFits: [:],
+          dimensions: [:],
+          isDirty: false
+        )
       ]
       defer { layoutCaches[key] = cache }
       return action(&cache)

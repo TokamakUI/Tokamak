@@ -55,7 +55,7 @@ struct LayoutPass: FiberReconcilerPass {
                     .sceneSize
                 ),
                 subviews: caches.layoutSubviews(for: fiber),
-                cache: &cache
+                cache: &cache.cache
               )
             }
             // Exit at the top of the View tree
@@ -76,7 +76,7 @@ struct LayoutPass: FiberReconcilerPass {
                   .sceneSize
               ),
               subviews: caches.layoutSubviews(for: fiber),
-              cache: &cache
+              cache: &cache.cache
             )
           }
 
@@ -98,7 +98,7 @@ struct LayoutPass: FiberReconcilerPass {
                 .sceneSize
             ),
             subviews: caches.layoutSubviews(for: fiber),
-            cache: &cache
+            cache: &cache.cache
           )
         }
 
@@ -119,10 +119,11 @@ struct LayoutPass: FiberReconcilerPass {
     // Compute our required size.
     // This does not have to respect the elementParent's proposed size.
     let size = caches.updateLayoutCache(for: node) { cache -> CGSize in
-      node.sizeThatFits(
+      cache.isDirty = false
+      return node.sizeThatFits(
         proposal: proposal,
         subviews: caches.layoutSubviews(for: node),
-        cache: &cache
+        cache: &cache.cache
       )
     }
     let dimensions = ViewDimensions(size: size, alignmentGuides: [:])
