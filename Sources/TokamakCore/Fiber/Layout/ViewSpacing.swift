@@ -31,10 +31,10 @@ public struct ViewSpacing {
   public static let zero: ViewSpacing = .init()
 
   public init() {
-    top = 10
-    leading = 10
-    bottom = 10
-    trailing = 10
+    top = 8
+    leading = 8
+    bottom = 8
+    trailing = 8
   }
 
   public mutating func formUnion(_ other: ViewSpacing, edges: Edge.Set = .all) {

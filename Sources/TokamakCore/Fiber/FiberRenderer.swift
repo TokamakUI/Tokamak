@@ -62,11 +62,13 @@ public extension FiberRenderer {
   }
 
   @discardableResult
+  @_disfavoredOverload
   func render<V: View>(_ view: V) -> FiberReconciler<Self> {
     .init(self, view)
   }
 
   @discardableResult
+  @_disfavoredOverload
   func render<A: App>(_ app: A) -> FiberReconciler<Self> {
     .init(self, app)
   }

@@ -64,6 +64,11 @@ public typealias AngularGradient = TokamakCore.AngularGradient
 public typealias Color = TokamakCore.Color
 public typealias Font = TokamakCore.Font
 
+public typealias Alignment = TokamakCore.Alignment
+public typealias AlignmentID = TokamakCore.AlignmentID
+public typealias HorizontalAlignment = TokamakCore.HorizontalAlignment
+public typealias VerticalAlignment = TokamakCore.VerticalAlignment
+
 #if !canImport(CoreGraphics)
 public typealias CGAffineTransform = TokamakCore.CGAffineTransform
 #endif

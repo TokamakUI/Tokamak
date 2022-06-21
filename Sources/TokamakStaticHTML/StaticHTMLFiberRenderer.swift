@@ -161,11 +161,22 @@ extension LayoutView: HTMLConvertible {
 public struct StaticHTMLFiberRenderer: FiberRenderer {
   public let rootElement: HTMLElement
   public let defaultEnvironment: EnvironmentValues
-  public let sceneSize: CGSize = .zero
-  public let useDynamicLayout: Bool = false
+  public let sceneSize: CGSize
+  public let useDynamicLayout: Bool
 
   public init() {
-    rootElement = .init(tag: "body", attributes: [:], innerHTML: nil, children: [])
+    self.init(useDynamicLayout: false, sceneSize: .zero)
+  }
+
+  /// An internal initializer used for testing dynamic layout with the `StaticHTMLFiberRenderer`.
+  /// Normal use cases for dynamic layout require `TokamakDOM`.
+  @_spi(TokamakStaticHTML)
+  public init(useDynamicLayout: Bool, sceneSize: CGSize) {
+    self.useDynamicLayout = useDynamicLayout
+    self.sceneSize = sceneSize
+    rootElement = .init(
+      tag: "body", attributes: ["style": "margin: 0;"], innerHTML: nil, children: []
+    )
     var environment = EnvironmentValues()
     environment[_ColorSchemeKey.self] = .light
     defaultEnvironment = environment
@@ -196,7 +207,13 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
       case let .update(previous, newContent, _):
         previous.update(with: newContent)
       case let .layout(element, data):
-        print("Received layout message \(data) for \(element)")
+        element.content.attributes["style", default: ""] += """
+        position: absolute;
+        left: \(data.origin.x)px;
+        top: \(data.origin.y)px;
+        width: \(data.dimensions.width)px;
+        height: \(data.dimensions.height)px;
+        """
       }
     }
   }
@@ -207,5 +224,25 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
     in environment: EnvironmentValues
   ) -> CGSize {
     .zero
+  }
+
+  public func render<A: App>(_ app: A) -> String {
+    _ = FiberReconciler(self, app)
+    return """
+    <!doctype html>
+    <html>
+    \(rootElement.description)
+    </html>
+    """
+  }
+
+  public func render<V: View>(_ view: V) -> String {
+    _ = FiberReconciler(self, view)
+    return """
+    <!doctype html>
+    <html>
+    \(rootElement.description)
+    </html>
+    """
   }
 }

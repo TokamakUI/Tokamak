@@ -46,8 +46,10 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     }
 
     var body: some View {
-      content
-        .environmentValues(environment)
+      RootLayout(renderer: renderer).callAsFunction {
+        content
+          .environmentValues(environment)
+      }
     }
   }
 
