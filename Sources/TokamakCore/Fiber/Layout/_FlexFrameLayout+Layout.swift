@@ -12,14 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 5/28/22.
+//  Created by Carson Katri on 6/20/22.
 //
 
 import Foundation
 
-private struct FrameLayout: Layout {
-  let width: CGFloat?
-  let height: CGFloat?
+private struct FlexFrameLayout: Layout {
+  let minWidth: CGFloat?
+  let idealWidth: CGFloat?
+  let maxWidth: CGFloat?
+  let minHeight: CGFloat?
+  let idealHeight: CGFloat?
+  let maxHeight: CGFloat?
   let alignment: Alignment
 
   struct Cache {
@@ -39,25 +43,54 @@ private struct FrameLayout: Layout {
     subviews: Subviews,
     cache: inout Cache
   ) -> CGSize {
-    var size = CGSize.zero
-    let proposal = ProposedViewSize(
-      width: width ?? proposal.width,
-      height: height ?? proposal.height
+    let bounds = CGSize(
+      width: min(
+        max(minWidth ?? .zero, proposal.width ?? idealWidth ?? .zero),
+        maxWidth ?? CGFloat.infinity
+      ),
+      height: min(
+        max(minHeight ?? .zero, proposal.height ?? idealHeight ?? .zero),
+        maxHeight ?? CGFloat.infinity
+      )
     )
+    let proposal = ProposedViewSize(bounds)
+
+    var subviewSizes = CGSize.zero
     cache.dimensions = subviews.map { subview -> ViewDimensions in
       let dimensions = subview.dimensions(in: proposal)
-      if dimensions.width > size.width {
-        size.width = dimensions.width
+      if dimensions.width > subviewSizes.width {
+        subviewSizes.width = dimensions.width
       }
-      if dimensions.height > size.height {
-        size.height = dimensions.height
+      if dimensions.height > subviewSizes.height {
+        subviewSizes.height = dimensions.height
       }
       return dimensions
     }
-    return .init(
-      width: width ?? size.width,
-      height: height ?? size.height
-    )
+
+    var size = CGSize.zero
+    if let minWidth = minWidth,
+       bounds.width < subviewSizes.width
+    {
+      size.width = max(bounds.width, minWidth)
+    } else if let maxWidth = maxWidth,
+              bounds.width > subviewSizes.width
+    {
+      size.width = min(bounds.width, maxWidth)
+    } else {
+      size.width = subviewSizes.width
+    }
+    if let minHeight = minHeight,
+       bounds.height < subviewSizes.height
+    {
+      size.height = max(bounds.height, minHeight)
+    } else if let maxHeight = maxHeight,
+              bounds.height > subviewSizes.height
+    {
+      size.height = min(bounds.height, maxHeight)
+    } else {
+      size.height = subviewSizes.height
+    }
+    return size
   }
 
   func placeSubviews(
@@ -86,9 +119,13 @@ private struct FrameLayout: Layout {
   }
 }
 
-public extension _FrameLayout {
+public extension _FlexFrameLayout {
   func _visitChildren<V>(_ visitor: V, content: Content) where V: ViewVisitor {
-    visitor.visit(FrameLayout(width: width, height: height, alignment: alignment).callAsFunction {
+    visitor.visit(FlexFrameLayout(
+      minWidth: minWidth, idealWidth: idealWidth, maxWidth: maxWidth,
+      minHeight: minHeight, idealHeight: idealHeight, maxHeight: maxHeight,
+      alignment: alignment
+    ).callAsFunction {
       content
     })
   }
