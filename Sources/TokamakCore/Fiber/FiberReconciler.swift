@@ -127,11 +127,13 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
   /// A visitor that performs each pass used by the `FiberReconciler`.
   final class ReconcilerVisitor: AppVisitor, SceneVisitor, ViewVisitor {
     let root: Fiber
+    let reconcileRoot: Fiber
     unowned let reconciler: FiberReconciler
     var mutations = [Mutation<Renderer>]()
 
-    init(root: Fiber, reconciler: FiberReconciler) {
+    init(root: Fiber, reconcileRoot: Fiber, reconciler: FiberReconciler) {
       self.root = root
+      self.reconcileRoot = reconcileRoot
       self.reconciler = reconciler
     }
 
@@ -157,6 +159,13 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       } else {
         alternateRoot = root.createAndBindAlternate?()
       }
+      let alternateReconcileRoot: Fiber?
+      if let alternate = reconcileRoot.alternate {
+        alternateReconcileRoot = alternate
+      } else {
+        alternateReconcileRoot = reconcileRoot.createAndBindAlternate?()
+      }
+      guard let alternateReconcileRoot = alternateReconcileRoot else { return }
       let rootResult = TreeReducer.Result(
         fiber: alternateRoot, // The alternate is the WIP node.
         visitChildren: visitChildren,
@@ -167,15 +176,27 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       )
       reconciler.caches.clear()
       for pass in reconciler.passes {
-        pass.run(in: reconciler, root: rootResult, caches: reconciler.caches)
+        pass.run(
+          in: reconciler,
+          root: rootResult,
+          reconcileRoot: alternateReconcileRoot,
+          caches: reconciler.caches
+        )
       }
       mutations = reconciler.caches.mutations
     }
   }
 
-  func reconcile(from root: Fiber) {
+  func reconcile(from updateRoot: Fiber) {
+    let root: Fiber
+    if renderer.useDynamicLayout {
+      // We need to re-layout from the top down when using dynamic layout.
+      root = current
+    } else {
+      root = updateRoot
+    }
     // Create a list of mutations.
-    let visitor = ReconcilerVisitor(root: root, reconciler: self)
+    let visitor = ReconcilerVisitor(root: root, reconcileRoot: updateRoot, reconciler: self)
     switch root.content {
     case let .view(_, visit):
       visit(visitor)

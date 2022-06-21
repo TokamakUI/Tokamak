@@ -156,6 +156,7 @@ public extension FiberReconciler {
         // Create the alternate lazily
         let alternate = Fiber(
           bound: alternateView,
+          state: self.state,
           layoutActions: self.layout,
           alternate: self,
           outputs: self.outputs,
@@ -185,6 +186,7 @@ public extension FiberReconciler {
 
     init<V: View>(
       bound view: V,
+      state: [PropertyInfo: MutableStorage],
       layoutActions: LayoutActions,
       alternate: Fiber,
       outputs: ViewOutputs,
@@ -203,6 +205,7 @@ public extension FiberReconciler {
       self.elementParent = elementParent
       self.typeInfo = typeInfo
       self.outputs = outputs
+      self.state = state
       layout = layoutActions
       content = content(for: view)
     }
@@ -218,10 +221,13 @@ public extension FiberReconciler {
       for property in typeInfo.properties where property.type is DynamicProperty.Type {
         var value = property.get(from: content)
         if var storage = value as? WritableValueStorage {
-          let box = MutableStorage(initialValue: storage.anyInitialValue, onSet: { [weak self] in
-            guard let self = self else { return }
-            self.reconciler?.reconcile(from: self)
-          })
+          let box = self.state[property] ?? MutableStorage(
+            initialValue: storage.anyInitialValue,
+            onSet: { [weak self] in
+              guard let self = self else { return }
+              self.reconciler?.reconcile(from: self)
+            }
+          )
           state[property] = box
           storage.getter = { box.value }
           storage.setter = { box.setValue($0, with: $1) }
@@ -292,7 +298,8 @@ public extension FiberReconciler {
         // Create the alternate lazily
         let alternate = Fiber(
           bound: alternateApp,
-          layout: self.layout,
+          state: self.state,
+          layoutActions: self.layout,
           alternate: self,
           outputs: self.outputs,
           typeInfo: self.typeInfo,
@@ -306,7 +313,8 @@ public extension FiberReconciler {
 
     init<A: App>(
       bound app: A,
-      layout: LayoutActions,
+      state: [PropertyInfo: MutableStorage],
+      layoutActions: LayoutActions,
       alternate: Fiber,
       outputs: SceneOutputs,
       typeInfo: TypeInfo?,
@@ -322,7 +330,8 @@ public extension FiberReconciler {
       elementParent = nil
       self.typeInfo = typeInfo
       self.outputs = outputs
-      self.layout = layout
+      self.state = state
+      layout = layoutActions
       content = content(for: app)
     }
 
@@ -360,6 +369,7 @@ public extension FiberReconciler {
         // Create the alternate lazily
         let alternate = Fiber(
           bound: alternateScene,
+          state: self.state,
           layout: self.layout,
           alternate: self,
           outputs: self.outputs,
@@ -389,6 +399,7 @@ public extension FiberReconciler {
 
     init<S: Scene>(
       bound scene: S,
+      state: [PropertyInfo: MutableStorage],
       layout: LayoutActions,
       alternate: Fiber,
       outputs: SceneOutputs,
@@ -407,6 +418,7 @@ public extension FiberReconciler {
       self.elementParent = elementParent
       self.typeInfo = typeInfo
       self.outputs = outputs
+      self.state = state
       self.layout = layout
       content = content(for: scene)
     }

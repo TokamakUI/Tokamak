@@ -53,11 +53,19 @@ struct ReconcilePass: FiberReconcilerPass {
   func run<R>(
     in reconciler: FiberReconciler<R>,
     root: FiberReconciler<R>.TreeReducer.Result,
+    reconcileRoot: FiberReconciler<R>.Fiber,
     caches: FiberReconciler<R>.Caches
   ) where R: FiberRenderer {
     var node = root
 
+    /// Enabled when we reach the `reconcileRoot`.
+    var shouldReconcile = false
+
     while true {
+      if node.fiber === reconcileRoot || node.fiber?.alternate === reconcileRoot {
+        shouldReconcile = true
+      }
+
       // If this fiber has an element, set its `elementIndex`
       // and increment the `elementIndices` value for its `elementParent`.
       if node.fiber?.element != nil,
@@ -67,7 +75,9 @@ struct ReconcilePass: FiberReconcilerPass {
       }
 
       // Perform work on the node.
-      if let mutation = reconcile(node, in: reconciler, caches: caches) {
+      if shouldReconcile,
+         let mutation = reconcile(node, in: reconciler, caches: caches)
+      {
         caches.mutations.append(mutation)
       }
 

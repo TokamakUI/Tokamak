@@ -83,9 +83,20 @@ extension FiberReconciler {
 }
 
 protocol FiberReconcilerPass {
+  /// Run this pass with the given inputs.
+  ///
+  /// - Parameter reconciler: The `FiberReconciler` running this pass.
+  /// - Parameter root: The node to start the pass from.
+  ///                   The top of the `View` hierarchy when `useDynamicLayout` is enabled.
+  ///                   Otherwise, the same as `reconcileRoot`.
+  /// - Parameter reconcileRoot: The topmost node that needs reconciliation.
+  ///                            When `useDynamicLayout` is enabled, this can be used to limit
+  ///                            the number of operations performed during reconciliation.
+  /// - Parameter caches: The shared cache data for this and other passes.
   func run<R: FiberRenderer>(
     in reconciler: FiberReconciler<R>,
     root: FiberReconciler<R>.TreeReducer.Result,
+    reconcileRoot: FiberReconciler<R>.Fiber,
     caches: FiberReconciler<R>.Caches
   )
 }
