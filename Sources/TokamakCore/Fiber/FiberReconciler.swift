@@ -95,6 +95,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       parent: nil,
       elementParent: nil,
       elementIndex: 0,
+      traits: nil,
       reconciler: self
     )
     // Start by building the initial tree.
@@ -172,7 +173,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         parent: nil,
         child: alternateRoot?.child,
         alternateChild: root.child,
-        elementIndices: [:]
+        elementIndices: [:],
+        pendingTraits: .init()
       )
       reconciler.caches.clear()
       for pass in reconciler.passes {

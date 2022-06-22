@@ -117,6 +117,7 @@ public extension FiberReconciler {
       parent: Fiber?,
       elementParent: Fiber?,
       elementIndex: Int?,
+      traits: _ViewTraitStore?,
       reconciler: FiberReconciler<Renderer>?
     ) {
       self.reconciler = reconciler
@@ -131,7 +132,8 @@ public extension FiberReconciler {
       state = bindProperties(to: &view, typeInfo, environment.environment)
       let viewInputs = ViewInputs(
         content: view,
-        environment: environment
+        environment: environment,
+        traits: traits
       )
       outputs = V._makeView(viewInputs)
 
@@ -248,7 +250,8 @@ public extension FiberReconciler {
 
     func update<V: View>(
       with view: inout V,
-      elementIndex: Int?
+      elementIndex: Int?,
+      traits: _ViewTraitStore?
     ) -> Renderer.ElementType.Content? {
       typeInfo = TokamakCore.typeInfo(of: V.self)
 
@@ -259,7 +262,8 @@ public extension FiberReconciler {
       content = content(for: view)
       let inputs = ViewInputs(
         content: view,
-        environment: environment
+        environment: environment,
+        traits: traits
       )
       outputs = V._makeView(inputs)
 
@@ -287,7 +291,7 @@ public extension FiberReconciler {
       layout = .init(RootLayout(renderer: reconciler.renderer))
       state = bindProperties(to: &app, typeInfo, rootEnvironment)
       outputs = .init(
-        inputs: .init(content: app, environment: .init(rootEnvironment))
+        inputs: .init(content: app, environment: .init(rootEnvironment), traits: .init())
       )
 
       content = content(for: app)
@@ -357,7 +361,8 @@ public extension FiberReconciler {
       outputs = S._makeScene(
         .init(
           content: scene,
-          environment: environment
+          environment: environment,
+          traits: .init()
         )
       )
 
@@ -433,7 +438,8 @@ public extension FiberReconciler {
       content = content(for: scene)
       outputs = S._makeScene(.init(
         content: scene,
-        environment: environment
+        environment: environment,
+        traits: .init()
       ))
 
       return nil

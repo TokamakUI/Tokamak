@@ -22,6 +22,7 @@ public struct ViewInputs<V> {
   public let content: V
   @_spi(TokamakCore)
   public let environment: EnvironmentBox
+  public let traits: _ViewTraitStore?
 }
 
 /// Data used to reconcile and render a `View` and its children.
@@ -30,6 +31,7 @@ public struct ViewOutputs {
   /// This is stored as a reference to avoid copying the environment when unnecessary.
   let environment: EnvironmentBox
   let preferences: _PreferenceStore
+  let traits: _ViewTraitStore?
 }
 
 @_spi(TokamakCore)
@@ -45,12 +47,14 @@ public extension ViewOutputs {
   init<V>(
     inputs: ViewInputs<V>,
     environment: EnvironmentValues? = nil,
-    preferences: _PreferenceStore? = nil
+    preferences: _PreferenceStore? = nil,
+    traits: _ViewTraitStore? = nil
   ) {
     // Only replace the `EnvironmentBox` when we change the environment.
     // Otherwise the same box can be reused.
     self.environment = environment.map(EnvironmentBox.init) ?? inputs.environment
     self.preferences = preferences ?? .init()
+    self.traits = traits ?? inputs.traits
   }
 }
 
@@ -64,7 +68,11 @@ public extension View {
 
 public extension ModifiedContent where Content: View, Modifier: ViewModifier {
   static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
-    Modifier._makeView(.init(content: inputs.content.modifier, environment: inputs.environment))
+    Modifier._makeView(.init(
+      content: inputs.content.modifier,
+      environment: inputs.environment,
+      traits: inputs.traits
+    ))
   }
 
   func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {

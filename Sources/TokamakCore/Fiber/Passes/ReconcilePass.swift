@@ -71,6 +71,9 @@ struct ReconcilePass: FiberReconcilerPass {
     /// Enabled when we reach the `reconcileRoot`.
     var shouldReconcile = false
 
+    /// Traits that should be attached to the nearest rendered child.
+    var pendingTraits = _ViewTraitStore()
+
     while true {
       if node.fiber === reconcileRoot || node.fiber?.alternate === reconcileRoot {
         shouldReconcile = true
@@ -91,8 +94,22 @@ struct ReconcilePass: FiberReconcilerPass {
         caches.mutations.append(mutation)
       }
 
-      // Ensure the TreeReducer can access the `elementIndices`.
+      // Pass view traits down to the nearest element fiber.
+      if let traits = node.fiber?.outputs.traits,
+         !traits.values.isEmpty
+      {
+        if node.fiber?.element == nil {
+          pendingTraits = traits
+        }
+      }
+      // Clear the pending traits once they have been applied to the target.
+      if node.fiber?.element != nil && !pendingTraits.values.isEmpty {
+        pendingTraits = .init()
+      }
+
+      // Ensure the TreeReducer can access any necessary state.
       node.elementIndices = caches.elementIndices
+      node.pendingTraits = pendingTraits
 
       // Compute the children of the node.
       let reducer = FiberReconciler<R>.TreeReducer.SceneVisitor(initialResult: node)
@@ -109,6 +126,7 @@ struct ReconcilePass: FiberReconcilerPass {
           var subviews = caches.layoutSubviews[parentKey, default: .init(elementParent)]
           subviews.storage.append(LayoutSubview(
             id: ObjectIdentifier(node),
+            traits: node.fiber?.outputs.traits ?? .init(),
             sizeThatFits: { [weak fiber, unowned caches] proposal in
               guard let fiber = fiber else { return .zero }
               return caches.updateLayoutCache(for: fiber) { cache in
