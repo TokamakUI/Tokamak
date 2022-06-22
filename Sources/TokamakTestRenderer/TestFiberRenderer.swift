@@ -96,17 +96,25 @@ public final class TestFiberElement: FiberElement, CustomStringConvertible {
   }
 
   public var content: Content
+  public var children: [TestFiberElement]
+  public var geometry: ViewGeometry?
 
   public init(from content: Content) {
     self.content = content
+    children = []
   }
 
   public var description: String {
-    "\(content.renderedValue)\(content.closingTag)"
+    """
+    \(content.renderedValue)
+    \(children.map { "  \($0.description)" }.joined(separator: "\n"))
+    \(content.closingTag)
+    """
   }
 
   public init(renderedValue: String, closingTag: String) {
     content = .init(renderedValue: renderedValue, closingTag: closingTag)
+    children = []
   }
 
   public func update(with content: Content) {
@@ -132,7 +140,7 @@ public struct TestFiberRenderer: FiberRenderer {
 
   public let rootElement: ElementType
 
-  public init(_ rootElement: ElementType, size: CGSize, useDynamicLayout: Bool = true) {
+  public init(_ rootElement: ElementType, size: CGSize, useDynamicLayout: Bool = false) {
     self.rootElement = rootElement
     sceneSize = size
     self.useDynamicLayout = useDynamicLayout
@@ -145,8 +153,16 @@ public struct TestFiberRenderer: FiberRenderer {
   public func commit(_ mutations: [Mutation<Self>]) {
     for mutation in mutations {
       switch mutation {
-      case .insert, .remove, .replace, .layout:
-        break
+      case let .insert(element, parent, index):
+        parent.children.insert(element, at: index)
+      case let .remove(element, parent):
+        parent?.children.removeAll(where: { $0 === element })
+      case let .replace(parent, previous, replacement):
+        guard let index = parent.children.firstIndex(where: { $0 === previous })
+        else { continue }
+        parent.children[index] = replacement
+      case let .layout(element, geometry):
+        element.geometry = geometry
       case let .update(previous, newContent, _):
         previous.update(with: newContent)
       }
