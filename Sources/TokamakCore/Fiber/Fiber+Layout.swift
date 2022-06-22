@@ -30,7 +30,14 @@ extension FiberReconciler.Fiber: Layout {
     if case let .view(view, _) = content,
        view is Text
     {
-      return .init(top: 0, leading: 8, bottom: 0, trailing: 8)
+      let spacing = ViewSpacing(
+        viewType: Text.self,
+        top: { $0.viewType == Text.self ? 0 : ViewSpacing.defaultValue },
+        leading: { _ in ViewSpacing.defaultValue },
+        bottom: { $0.viewType == Text.self ? 0 : ViewSpacing.defaultValue },
+        trailing: { _ in ViewSpacing.defaultValue }
+      )
+      return spacing
     } else {
       return layout.spacing(subviews, &cache)
     }

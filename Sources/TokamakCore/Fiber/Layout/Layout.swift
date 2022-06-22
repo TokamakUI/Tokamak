@@ -106,7 +106,17 @@ public extension Layout {
   }
 
   func spacing(subviews: Self.Subviews, cache: inout Self.Cache) -> ViewSpacing {
-    subviews.reduce(into: .zero) { $0.formUnion($1.spacing) }
+    subviews.reduce(
+      into: subviews.first.map {
+        .init(
+          viewType: $0.spacing.viewType,
+          top: { _ in 0 },
+          leading: { _ in 0 },
+          bottom: { _ in 0 },
+          trailing: { _ in 0 }
+        )
+      } ?? .zero
+    ) { $0.formUnion($1.spacing) }
   }
 
   func explicitAlignment(
@@ -205,10 +215,6 @@ public struct LayoutView<L: Layout, Content: View>: View, Layout {
 
 /// A default `Layout` that fits to the first subview and places its children at its origin.
 struct DefaultLayout: Layout {
-  func spacing(subviews: Subviews, cache: inout ()) -> ViewSpacing {
-    subviews.reduce(into: .zero) { $0.formUnion($1.spacing) }
-  }
-
   func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
     let size = subviews.first?.sizeThatFits(proposal) ?? .zero
     return size

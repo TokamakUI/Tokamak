@@ -32,6 +32,10 @@ private struct PaddingLayout: Layout {
   let edges: Edge.Set
   let insets: EdgeInsets?
 
+  func spacing(subviews: Subviews, cache: inout ()) -> ViewSpacing {
+    .init()
+  }
+
   public func sizeThatFits(
     proposal: ProposedViewSize,
     subviews: Subviews,

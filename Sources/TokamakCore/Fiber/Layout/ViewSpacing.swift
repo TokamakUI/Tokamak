@@ -23,28 +23,40 @@ import Foundation
 /// to find the smallest spacing needed to accommodate the preferences
 /// of the `View`s you are aligning.
 public struct ViewSpacing {
-  private var top: CGFloat
-  private var leading: CGFloat
-  private var bottom: CGFloat
-  private var trailing: CGFloat
+  /// The `View` type this `ViewSpacing` is for.
+  /// Some `View`s prefer different spacing based on the `View` they are adjacent to.
+  @_spi(TokamakCore)
+  public var viewType: Any.Type?
+  private var top: (ViewSpacing) -> CGFloat
+  private var leading: (ViewSpacing) -> CGFloat
+  private var bottom: (ViewSpacing) -> CGFloat
+  private var trailing: (ViewSpacing) -> CGFloat
 
-  public static let zero: ViewSpacing = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+  public static let zero: ViewSpacing = .init(
+    viewType: nil,
+    top: { _ in 0 },
+    leading: { _ in 0 },
+    bottom: { _ in 0 },
+    trailing: { _ in 0 }
+  )
 
   /// Create a `ViewSpacing` instance with default values.
   public init() {
-    top = 8
-    leading = 8
-    bottom = 8
-    trailing = 8
+    self.init(viewType: nil)
   }
 
   @_spi(TokamakCore)
+  public static let defaultValue: CGFloat = 8
+
+  @_spi(TokamakCore)
   public init(
-    top: CGFloat,
-    leading: CGFloat,
-    bottom: CGFloat,
-    trailing: CGFloat
+    viewType: Any.Type?,
+    top: @escaping (ViewSpacing) -> CGFloat = { _ in Self.defaultValue },
+    leading: @escaping (ViewSpacing) -> CGFloat = { _ in Self.defaultValue },
+    bottom: @escaping (ViewSpacing) -> CGFloat = { _ in Self.defaultValue },
+    trailing: @escaping (ViewSpacing) -> CGFloat = { _ in Self.defaultValue }
   ) {
+    self.viewType = viewType
     self.top = top
     self.leading = leading
     self.bottom = bottom
@@ -52,17 +64,24 @@ public struct ViewSpacing {
   }
 
   public mutating func formUnion(_ other: ViewSpacing, edges: Edge.Set = .all) {
+    if viewType != other.viewType {
+      viewType = nil
+    }
     if edges.contains(.top) {
-      top = max(top, other.top)
+      let current = top
+      top = { max(current($0), other.top($0)) }
     }
     if edges.contains(.leading) {
-      leading = max(leading, other.leading)
+      let current = leading
+      leading = { max(current($0), other.leading($0)) }
     }
     if edges.contains(.bottom) {
-      bottom = max(bottom, other.bottom)
+      let current = bottom
+      bottom = { max(current($0), other.bottom($0)) }
     }
     if edges.contains(.trailing) {
-      trailing = max(trailing, other.trailing)
+      let current = trailing
+      trailing = { max(current($0), other.trailing($0)) }
     }
   }
 
@@ -77,9 +96,9 @@ public struct ViewSpacing {
     // Assume `next` comes after `self` either horizontally or vertically.
     switch axis {
     case .horizontal:
-      return max(trailing, next.leading)
+      return max(trailing(next), next.leading(self))
     case .vertical:
-      return max(bottom, next.top)
+      return max(bottom(next), next.top(self))
     }
   }
 }
