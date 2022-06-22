@@ -132,6 +132,7 @@ extension FiberReconciler {
           elementIndices: partialResult.elementIndices
         )
         partialResult.nextExisting = existing.sibling
+        partialResult.nextExistingAlternate = partialResult.nextExistingAlternate?.sibling
       } else {
         let elementParent = partialResult.fiber?.element != nil
           ? partialResult.fiber
