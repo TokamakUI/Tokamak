@@ -1,6 +1,16 @@
+// Copyright 2022 Tokamak contributors
 //
-//  File.swift
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Carson Katri on 6/16/22.
 //
@@ -195,9 +205,6 @@ struct ReconcilePass: FiberReconcilerPass {
 
       // Now walk back up the tree until we find a sibling.
       while node.sibling == nil {
-        // Update the layout cache so it's ready for this render.
-        updateCache(for: node, in: reconciler, caches: caches)
-
         var alternateSibling = node.fiber?.alternate?.sibling
         // The alternate had siblings that no longer exist.
         while alternateSibling != nil {
@@ -218,8 +225,6 @@ struct ReconcilePass: FiberReconcilerPass {
         guard parent !== root.fiber?.alternate else { return }
         node = parent
       }
-
-      updateCache(for: node, in: reconciler, caches: caches)
 
       // Walk across to the sibling, and repeat.
       node = node.sibling!
@@ -269,37 +274,6 @@ struct ReconcilePass: FiberReconcilerPass {
     return nil
   }
 
-  /// Update the layout cache for a `Fiber`.
-  func updateCache<R: FiberRenderer>(
-    for node: FiberReconciler<R>.TreeReducer.Result,
-    in reconciler: FiberReconciler<R>,
-    caches: FiberReconciler<R>.Caches
-  ) {
-    guard reconciler.renderer.useDynamicLayout,
-          let fiber = node.fiber
-    else { return }
-    caches.updateLayoutCache(for: fiber) { cache in
-      fiber.updateCache(&cache.cache, subviews: caches.layoutSubviews(for: fiber))
-      var sibling = fiber.child
-      while let fiber = sibling {
-        sibling = fiber.sibling
-        if let childCache = caches.layoutCaches[.init(fiber)],
-           childCache.isDirty
-        {
-          cache.sizeThatFits.removeAll()
-          cache.isDirty = true
-          if let alternate = fiber.alternate {
-            caches.updateLayoutCache(for: alternate) { cache in
-              cache.sizeThatFits.removeAll()
-              cache.isDirty = true
-            }
-          }
-          return
-        }
-      }
-    }
-  }
-
   /// Remove cached size values if something changed.
   func invalidateCache<R: FiberRenderer>(
     for fiber: FiberReconciler<R>.Fiber,
@@ -308,13 +282,11 @@ struct ReconcilePass: FiberReconcilerPass {
   ) {
     guard reconciler.renderer.useDynamicLayout else { return }
     caches.updateLayoutCache(for: fiber) { cache in
-      cache.sizeThatFits.removeAll()
-      cache.isDirty = true
+      cache.markDirty()
     }
     if let alternate = fiber.alternate {
       caches.updateLayoutCache(for: alternate) { cache in
-        cache.sizeThatFits.removeAll()
-        cache.isDirty = true
+        cache.markDirty()
       }
     }
   }

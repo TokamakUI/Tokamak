@@ -101,7 +101,9 @@ public extension Layout {
     .init()
   }
 
-  func updateCache(_ cache: inout Self.Cache, subviews: Self.Subviews) {}
+  func updateCache(_ cache: inout Self.Cache, subviews: Self.Subviews) {
+    cache = makeCache(subviews: subviews)
+  }
 
   func spacing(subviews: Self.Subviews, cache: inout Self.Cache) -> ViewSpacing {
     subviews.reduce(into: .zero) { $0.formUnion($1.spacing) }
@@ -203,6 +205,10 @@ public struct LayoutView<L: Layout, Content: View>: View, Layout {
 
 /// A default `Layout` that fits to the first subview and places its children at its origin.
 struct DefaultLayout: Layout {
+  func spacing(subviews: Subviews, cache: inout ()) -> ViewSpacing {
+    subviews.reduce(into: .zero) { $0.formUnion($1.spacing) }
+  }
+
   func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
     let size = subviews.first?.sizeThatFits(proposal) ?? .zero
     return size

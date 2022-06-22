@@ -1,6 +1,16 @@
+// Copyright 2022 Tokamak contributors
 //
-//  File.swift
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Carson Katri on 6/16/22.
 //
@@ -16,10 +26,23 @@ extension FiberReconciler {
     var mutations = [Mutation<Renderer>]()
 
     struct LayoutCache {
+      /// The erased `Layout.Cache` value.
       var cache: Any
+      /// Cached values for `sizeThatFits` calls.
       var sizeThatFits: [SizeThatFitsRequest: CGSize]
+      /// Cached values for `dimensions(in:)` calls.
       var dimensions: [SizeThatFitsRequest: ViewDimensions]
+      /// Does this cache need to be updated before using?
+      /// Set to `true` whenever the subviews or the container changes.
       var isDirty: Bool
+
+      /// Empty the cached values and flag the cache as dirty.
+      @inlinable
+      mutating func markDirty() {
+        isDirty = true
+        sizeThatFits.removeAll()
+        dimensions.removeAll()
+      }
 
       struct SizeThatFitsRequest: Hashable {
         let proposal: ProposedViewSize
@@ -46,16 +69,22 @@ extension FiberReconciler {
 
     @inlinable
     func updateLayoutCache<R>(for fiber: Fiber, _ action: (inout LayoutCache) -> R) -> R {
+      let subviews = layoutSubviews(for: fiber)
       let key = ObjectIdentifier(fiber)
       var cache = layoutCaches[
         key,
         default: .init(
-          cache: fiber.makeCache(subviews: layoutSubviews(for: fiber)),
+          cache: fiber.makeCache(subviews: subviews),
           sizeThatFits: [:],
           dimensions: [:],
           isDirty: false
         )
       ]
+      // If the cache is dirty, update it before calling `action`.
+      if cache.isDirty {
+        fiber.updateCache(&cache.cache, subviews: subviews)
+        cache.isDirty = false
+      }
       defer { layoutCaches[key] = cache }
       return action(&cache)
     }

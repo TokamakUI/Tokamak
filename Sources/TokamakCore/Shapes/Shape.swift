@@ -73,6 +73,10 @@ public struct _ShapeView<Content, Style>: _PrimitiveView, Layout where Content: 
     self.fillStyle = fillStyle
   }
 
+  public func spacing(subviews: Subviews, cache: inout ()) -> ViewSpacing {
+    .init()
+  }
+
   public func sizeThatFits(
     proposal: ProposedViewSize,
     subviews: Subviews,

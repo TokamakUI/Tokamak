@@ -30,13 +30,14 @@ struct LayoutPass: FiberReconcilerPass {
 
     func layoutLoop() {
       while true {
+        clean(fiber, caches: caches)
+
         // As we walk down the tree, ask each `View` for its ideal size.
         sizeThatFits(
           fiber,
           in: reconciler,
           caches: caches
         )
-        clean(fiber, caches: caches)
 
         if let child = fiber.child {
           // Continue down the tree.
@@ -67,9 +68,7 @@ struct LayoutPass: FiberReconcilerPass {
     // to ensure everything is placed correctly.
     var layoutNode: FiberReconciler<R>.Fiber? = fiber
     while let fiber = layoutNode {
-      caches.updateLayoutCache(for: fiber) { cache in
-        fiber.updateCache(&cache.cache, subviews: caches.layoutSubviews(for: fiber))
-      }
+      clean(fiber, caches: caches)
       sizeThatFits(fiber, in: reconciler, caches: caches)
       placeSubviews(fiber, in: reconciler, caches: caches)
       layoutNode = fiber.parent

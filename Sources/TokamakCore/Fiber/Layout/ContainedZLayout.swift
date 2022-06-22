@@ -40,8 +40,8 @@ public extension ContainedZLayout {
     .init()
   }
 
-  func updateCache(_ cache: inout Cache, subviews: Subviews) {
-    cache.primaryDimensions = nil
+  func spacing(subviews: LayoutSubviews, cache: inout Cache) -> ViewSpacing {
+    subviews[keyPath: Self.primarySubview]?.spacing ?? .init()
   }
 
   func sizeThatFits(
