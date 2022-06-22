@@ -82,17 +82,20 @@ public struct LayoutSubview: Equatable {
   private let sizeThatFits: (ProposedViewSize) -> CGSize
   private let dimensions: (CGSize) -> ViewDimensions
   private let place: (ViewDimensions, CGPoint, UnitPoint) -> ()
+  private let computeSpacing: () -> ViewSpacing
 
   init(
     id: ObjectIdentifier,
     sizeThatFits: @escaping (ProposedViewSize) -> CGSize,
     dimensions: @escaping (CGSize) -> ViewDimensions,
-    place: @escaping (ViewDimensions, CGPoint, UnitPoint) -> ()
+    place: @escaping (ViewDimensions, CGPoint, UnitPoint) -> (),
+    spacing: @escaping () -> ViewSpacing
   ) {
     self.id = id
     self.sizeThatFits = sizeThatFits
     self.dimensions = dimensions
     self.place = place
+    computeSpacing = spacing
   }
 
   public func _trait<K>(key: K.Type) -> K.Value where K: _ViewTraitKey {
@@ -116,7 +119,7 @@ public struct LayoutSubview: Equatable {
   }
 
   public var spacing: ViewSpacing {
-    ViewSpacing()
+    computeSpacing()
   }
 
   public func place(

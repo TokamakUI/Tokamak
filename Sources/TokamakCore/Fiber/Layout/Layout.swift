@@ -104,7 +104,7 @@ public extension Layout {
   func updateCache(_ cache: inout Self.Cache, subviews: Self.Subviews) {}
 
   func spacing(subviews: Self.Subviews, cache: inout Self.Cache) -> ViewSpacing {
-    .init()
+    subviews.reduce(into: .zero) { $0.formUnion($1.spacing) }
   }
 
   func explicitAlignment(

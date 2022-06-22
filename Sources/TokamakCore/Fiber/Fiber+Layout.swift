@@ -27,7 +27,13 @@ extension FiberReconciler.Fiber: Layout {
   }
 
   public func spacing(subviews: Subviews, cache: inout Any) -> ViewSpacing {
-    layout.spacing(subviews, &cache)
+    if case let .view(view, _) = content,
+       view is Text
+    {
+      return .init(top: 0, leading: 8, bottom: 0, trailing: 8)
+    } else {
+      return layout.spacing(subviews, &cache)
+    }
   }
 
   public func sizeThatFits(

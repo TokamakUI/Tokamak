@@ -28,13 +28,27 @@ public struct ViewSpacing {
   private var bottom: CGFloat
   private var trailing: CGFloat
 
-  public static let zero: ViewSpacing = .init()
+  public static let zero: ViewSpacing = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
 
+  /// Create a `ViewSpacing` instance with default values.
   public init() {
     top = 8
     leading = 8
     bottom = 8
     trailing = 8
+  }
+
+  @_spi(TokamakCore)
+  public init(
+    top: CGFloat,
+    leading: CGFloat,
+    bottom: CGFloat,
+    trailing: CGFloat
+  ) {
+    self.top = top
+    self.leading = leading
+    self.bottom = bottom
+    self.trailing = trailing
   }
 
   public mutating func formUnion(_ other: ViewSpacing, edges: Edge.Set = .all) {

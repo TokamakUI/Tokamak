@@ -141,6 +141,16 @@ struct ReconcilePass: FiberReconcilerPass {
               // Update ours and our alternate's geometry
               fiber.geometry = geometry
               fiber.alternate?.geometry = geometry
+            },
+            spacing: { [weak fiber, unowned caches] in
+              guard let fiber = fiber else { return .init() }
+
+              return caches.updateLayoutCache(for: fiber) { cache in
+                fiber.spacing(
+                  subviews: caches.layoutSubviews(for: fiber),
+                  cache: &cache.cache
+                )
+              }
             }
           ))
           caches.layoutSubviews[parentKey] = subviews
