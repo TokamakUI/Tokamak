@@ -37,7 +37,6 @@ extension FiberReconciler {
       var isDirty: Bool
 
       /// Empty the cached values and flag the cache as dirty.
-      @inlinable
       mutating func markDirty() {
         isDirty = true
         sizeThatFits.removeAll()
@@ -59,7 +58,6 @@ extension FiberReconciler {
       }
     }
 
-    @inlinable
     func clear() {
       elementIndices = [:]
       layoutSubviews = [:]
@@ -67,7 +65,6 @@ extension FiberReconciler {
       mutations = []
     }
 
-    @inlinable
     func layoutCache(for fiber: Fiber) -> LayoutCache {
       layoutCaches[
         ObjectIdentifier(fiber),
@@ -80,7 +77,6 @@ extension FiberReconciler {
       ]
     }
 
-    @inlinable
     func updateLayoutCache<R>(for fiber: Fiber, _ action: (inout LayoutCache) -> R) -> R {
       let subviews = layoutSubviews(for: fiber)
       let key = ObjectIdentifier(fiber)
@@ -102,12 +98,10 @@ extension FiberReconciler {
       return action(&cache)
     }
 
-    @inlinable
     func layoutSubviews(for fiber: Fiber) -> LayoutSubviews {
       layoutSubviews[ObjectIdentifier(fiber), default: .init(fiber)]
     }
 
-    @inlinable
     func elementIndex(for fiber: Fiber, increment: Bool = false) -> Int {
       let key = ObjectIdentifier(fiber)
       let result = elementIndices[key, default: 0]
@@ -117,7 +111,6 @@ extension FiberReconciler {
       return result
     }
 
-    @inlinable
     func appendChild(parent: Fiber, child: Fiber) {
       elementChildren[ObjectIdentifier(parent), default: []].append(child)
     }
