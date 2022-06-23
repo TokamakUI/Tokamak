@@ -112,5 +112,41 @@ final class StackTests: XCTestCase {
       }
     }
   }
+
+  func testVStackPriority() async {
+    await compare(size: .init(width: 500, height: 500)) {
+      SwiftUI.VStack {
+        SwiftUI.Rectangle().fill(SwiftUI.Color(white: 0))
+          .frame(minHeight: 50)
+        SwiftUI.Rectangle().fill(SwiftUI.Color(white: 127 / 255))
+          .layoutPriority(1)
+      }
+    } to: {
+      TokamakStaticHTML.VStack {
+        TokamakStaticHTML.Rectangle().fill(TokamakStaticHTML.Color(white: 0))
+          .frame(minHeight: 50)
+        TokamakStaticHTML.Rectangle().fill(TokamakStaticHTML.Color(white: 127 / 255))
+          .layoutPriority(1)
+      }
+    }
+  }
+
+  func testHStackPriority() async {
+    await compare(size: .init(width: 500, height: 500)) {
+      SwiftUI.HStack {
+        SwiftUI.Rectangle().fill(SwiftUI.Color(white: 0))
+          .frame(minHeight: 50)
+        SwiftUI.Rectangle().fill(SwiftUI.Color(white: 127 / 255))
+          .layoutPriority(1)
+      }
+    } to: {
+      TokamakStaticHTML.HStack {
+        TokamakStaticHTML.Rectangle().fill(TokamakStaticHTML.Color(white: 0))
+          .frame(minHeight: 50)
+        TokamakStaticHTML.Rectangle().fill(TokamakStaticHTML.Color(white: 127 / 255))
+          .layoutPriority(1)
+      }
+    }
+  }
 }
 #endif
