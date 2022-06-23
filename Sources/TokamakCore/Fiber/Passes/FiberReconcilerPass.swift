@@ -68,6 +68,19 @@ extension FiberReconciler {
     }
 
     @inlinable
+    func layoutCache(for fiber: Fiber) -> LayoutCache {
+      layoutCaches[
+        ObjectIdentifier(fiber),
+        default: .init(
+          cache: fiber.makeCache(subviews: layoutSubviews(for: fiber)),
+          sizeThatFits: [:],
+          dimensions: [:],
+          isDirty: false
+        )
+      ]
+    }
+
+    @inlinable
     func updateLayoutCache<R>(for fiber: Fiber, _ action: (inout LayoutCache) -> R) -> R {
       let subviews = layoutSubviews(for: fiber)
       let key = ObjectIdentifier(fiber)

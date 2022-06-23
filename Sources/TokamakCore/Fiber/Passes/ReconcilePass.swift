@@ -223,6 +223,10 @@ struct ReconcilePass: FiberReconcilerPass {
 
       // Now walk back up the tree until we find a sibling.
       while node.sibling == nil {
+        if let fiber = node.fiber {
+          propagateCacheInvalidation(for: fiber, in: reconciler, caches: caches)
+        }
+
         var alternateSibling = node.fiber?.alternate?.sibling
         // The alternate had siblings that no longer exist.
         while alternateSibling != nil {
@@ -244,6 +248,10 @@ struct ReconcilePass: FiberReconcilerPass {
         node = parent
       }
 
+      if let fiber = node.fiber {
+        propagateCacheInvalidation(for: fiber, in: reconciler, caches: caches)
+      }
+
       // Walk across to the sibling, and repeat.
       node = node.sibling!
     }
@@ -260,14 +268,14 @@ struct ReconcilePass: FiberReconcilerPass {
        let parent = node.fiber?.elementParent?.element
     {
       if node.fiber?.alternate == nil { // This didn't exist before (no alternate)
-        if let fiber = node.fiber {
+        if let fiber = node.fiber?.parent {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
         }
         return .insert(element: element, parent: parent, index: index)
       } else if node.fiber?.typeInfo?.type != node.fiber?.alternate?.typeInfo?.type,
                 let previous = node.fiber?.alternate?.element
       {
-        if let fiber = node.fiber {
+        if let fiber = node.fiber?.parent {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
         }
         // This is a completely different type of view.
@@ -275,7 +283,7 @@ struct ReconcilePass: FiberReconcilerPass {
       } else if let newContent = node.newContent,
                 newContent != element.content
       {
-        if let fiber = node.fiber {
+        if let fiber = node.fiber?.parent {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
         }
         // This is the same type of view, but its backing data has changed.
@@ -307,6 +315,18 @@ struct ReconcilePass: FiberReconcilerPass {
         cache.markDirty()
       }
     }
+  }
+
+  @inlinable
+  func propagateCacheInvalidation<R: FiberRenderer>(
+    for fiber: FiberReconciler<R>.Fiber,
+    in reconciler: FiberReconciler<R>,
+    caches: FiberReconciler<R>.Caches
+  ) {
+    guard caches.layoutCache(for: fiber).isDirty,
+          let parent = fiber.parent
+    else { return }
+    invalidateCache(for: parent, in: reconciler, caches: caches)
   }
 }
 
