@@ -217,8 +217,14 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     // Essentially, making the work in progress tree the current,
     // and leaving the current available to be the work in progress
     // on our next update.
-    let child = root.child
-    root.child = root.alternate?.child
-    root.alternate?.child = child
+    if root === current {
+      let alternate = alternate
+      self.alternate = current
+      current = alternate
+    } else {
+      let child = root.child
+      root.child = root.alternate?.child
+      root.alternate?.child = child
+    }
   }
 }

@@ -90,6 +90,7 @@ private struct FlexFrameLayout: Layout {
     } else {
       size.height = subviewSizes.height
     }
+
     return size
   }
 
@@ -104,6 +105,9 @@ private struct FlexFrameLayout: Layout {
       size: .init(width: bounds.width, height: bounds.height),
       alignmentGuides: [:]
     )
+
+    print("=== PLACE \(subviews.count) SUBVIEWS (FlexFrameLayout) ===")
+    print(bounds.size)
 
     for (index, subview) in subviews.enumerated() {
       subview.place(

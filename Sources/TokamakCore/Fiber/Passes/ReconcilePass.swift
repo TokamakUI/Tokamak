@@ -152,7 +152,8 @@ struct ReconcilePass: FiberReconcilerPass {
               // TODO: Add `alignmentGuide` modifier and pass into `ViewDimensions`
               ViewDimensions(size: sizeThatFits, alignmentGuides: [:])
             },
-            place: { [weak fiber, weak element, unowned caches] dimensions, position, anchor in
+            place: { [weak fiber, weak element, unowned caches]
+              proposal, dimensions, position, anchor in
               guard let fiber = fiber, let element = element else { return }
               let geometry = ViewGeometry(
                 // Shift to the anchor point in the parent's coordinate space.
@@ -160,7 +161,8 @@ struct ReconcilePass: FiberReconcilerPass {
                   x: position.x - (dimensions.width * anchor.x),
                   y: position.y - (dimensions.height * anchor.y)
                 )),
-                dimensions: dimensions
+                dimensions: dimensions,
+                proposal: proposal
               )
               // Push a layout mutation if needed.
               if geometry != fiber.alternate?.geometry {
@@ -292,7 +294,8 @@ struct ReconcilePass: FiberReconcilerPass {
           newContent: newContent,
           geometry: node.fiber?.geometry ?? .init(
             origin: .init(origin: .zero),
-            dimensions: .init(size: .zero, alignmentGuides: [:])
+            dimensions: .init(size: .zero, alignmentGuides: [:]),
+            proposal: .unspecified
           )
         )
       }
@@ -324,9 +327,9 @@ struct ReconcilePass: FiberReconcilerPass {
     caches: FiberReconciler<R>.Caches
   ) {
     guard caches.layoutCache(for: fiber).isDirty,
-          let parent = fiber.parent
+          let elementParent = fiber.elementParent
     else { return }
-    invalidateCache(for: parent, in: reconciler, caches: caches)
+    invalidateCache(for: elementParent, in: reconciler, caches: caches)
   }
 }
 

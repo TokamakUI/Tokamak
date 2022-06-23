@@ -28,7 +28,9 @@ extension FiberReconciler.Fiber: CustomDebugStringConvertible {
   private func flush(level: Int = 0) -> String {
     let spaces = String(repeating: " ", count: level)
     let geometry = geometry ?? .init(
-      origin: .init(origin: .zero), dimensions: .init(size: .zero, alignmentGuides: [:])
+      origin: .init(origin: .zero),
+      dimensions: .init(size: .zero, alignmentGuides: [:]),
+      proposal: .unspecified
     )
     return """
     \(spaces)\(String(describing: typeInfo?.type ?? Any.self)

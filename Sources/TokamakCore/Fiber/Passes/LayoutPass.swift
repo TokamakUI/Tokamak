@@ -28,114 +28,38 @@ struct LayoutPass: FiberReconcilerPass {
     guard let root = root.fiber else { return }
     var fiber = root
 
-    func layoutLoop() {
-      while true {
-        clean(fiber, caches: caches)
-
-        // As we walk down the tree, ask each `View` for its ideal size.
-        sizeThatFits(
-          fiber,
-          in: reconciler,
-          caches: caches
-        )
-
-        if let child = fiber.child {
-          // Continue down the tree.
-          fiber = child
-          continue
+    while true {
+      // Place subviews for each element fiber as we walk the tree.
+      if fiber.element != nil {
+        caches.updateLayoutCache(for: fiber) { cache in
+          fiber.placeSubviews(
+            in: .init(
+              origin: .zero,
+              size: fiber.geometry?.dimensions.size ?? reconciler.renderer.sceneSize
+            ),
+            proposal: fiber.geometry?.proposal ?? .unspecified,
+            subviews: caches.layoutSubviews(for: fiber),
+            cache: &cache.cache
+          )
         }
-
-        while fiber.sibling == nil {
-          // After collecting all of our subviews, place them in our bounds on the way
-          // back up the tree.
-          placeSubviews(fiber, in: reconciler, caches: caches)
-          // Exit at the top of the `View` tree
-          guard let parent = fiber.parent else { return }
-          guard parent !== root else { return }
-          // Walk up to the next parent.
-          fiber = parent
-        }
-
-        // We also place our subviews when moving across to a new sibling.
-        placeSubviews(fiber, in: reconciler, caches: caches)
-
-        fiber = fiber.sibling!
       }
-    }
-    layoutLoop()
 
-    // Continue past the root element to the top of the View hierarchy
-    // to ensure everything is placed correctly.
-    var layoutNode: FiberReconciler<R>.Fiber? = fiber
-    while let fiber = layoutNode {
-      clean(fiber, caches: caches)
-      sizeThatFits(fiber, in: reconciler, caches: caches)
-      placeSubviews(fiber, in: reconciler, caches: caches)
-      layoutNode = fiber.parent
-    }
-  }
-
-  /// Mark any `View`s that are dirty as clean after laying them out.
-  func clean<R: FiberRenderer>(
-    _ fiber: FiberReconciler<R>.Fiber,
-    caches: FiberReconciler<R>.Caches
-  ) {
-    caches.updateLayoutCache(for: fiber) { cache in
-      cache.isDirty = false
-    }
-    if let alternate = fiber.alternate {
-      caches.updateLayoutCache(for: alternate) { cache in
-        cache.isDirty = false
+      if let child = fiber.child {
+        // Continue down the tree.
+        fiber = child
+        continue
       }
-    }
-  }
 
-  /// Request a size from the fiber's `elementParent`.
-  func sizeThatFits<R: FiberRenderer>(
-    _ fiber: FiberReconciler<R>.Fiber,
-    in reconciler: FiberReconciler<R>,
-    caches: FiberReconciler<R>.Caches
-  ) {
-    guard fiber.element != nil
-    else { return }
+      while fiber.sibling == nil {
+        // Exit at the top of the `View` tree
+        guard let parent = fiber.parent else { return }
+        guard parent !== root else { return }
+        // Walk up to the next parent.
+        fiber = parent
+      }
 
-    // Compute our required size.
-    // This does not have to respect the elementParent's proposed size.
-    let size = caches.updateLayoutCache(for: fiber) { cache -> CGSize in
-      fiber.sizeThatFits(
-        proposal: .init(
-          fiber.elementParent?.geometry?.dimensions.size ?? reconciler.renderer.sceneSize
-        ),
-        subviews: caches.layoutSubviews(for: fiber),
-        cache: &cache.cache
-      )
-    }
-    let dimensions = ViewDimensions(size: size, alignmentGuides: [:])
-
-    // Update our geometry
-    fiber.geometry = .init(
-      origin: fiber.geometry?.origin ?? .init(origin: .zero),
-      dimensions: dimensions
-    )
-  }
-
-  func placeSubviews<R: FiberRenderer>(
-    _ fiber: FiberReconciler<R>.Fiber,
-    in reconciler: FiberReconciler<R>,
-    caches: FiberReconciler<R>.Caches
-  ) {
-    caches.updateLayoutCache(for: fiber) { cache in
-      fiber.placeSubviews(
-        in: .init(
-          origin: .zero,
-          size: fiber.geometry?.dimensions.size ?? reconciler.renderer.sceneSize
-        ),
-        proposal: .init(
-          fiber.elementParent?.geometry?.dimensions.size ?? reconciler.renderer.sceneSize
-        ),
-        subviews: caches.layoutSubviews(for: fiber),
-        cache: &cache.cache
-      )
+      // Walk across to the next sibling.
+      fiber = fiber.sibling!
     }
   }
 }

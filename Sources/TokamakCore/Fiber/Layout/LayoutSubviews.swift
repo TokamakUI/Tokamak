@@ -82,7 +82,7 @@ public struct LayoutSubview: Equatable {
   private let traits: _ViewTraitStore
   private let sizeThatFits: (ProposedViewSize) -> CGSize
   private let dimensions: (CGSize) -> ViewDimensions
-  private let place: (ViewDimensions, CGPoint, UnitPoint) -> ()
+  private let place: (ProposedViewSize, ViewDimensions, CGPoint, UnitPoint) -> ()
   private let computeSpacing: () -> ViewSpacing
 
   init(
@@ -90,7 +90,7 @@ public struct LayoutSubview: Equatable {
     traits: _ViewTraitStore,
     sizeThatFits: @escaping (ProposedViewSize) -> CGSize,
     dimensions: @escaping (CGSize) -> ViewDimensions,
-    place: @escaping (ViewDimensions, CGPoint, UnitPoint) -> (),
+    place: @escaping (ProposedViewSize, ViewDimensions, CGPoint, UnitPoint) -> (),
     spacing: @escaping () -> ViewSpacing
   ) {
     self.id = id
@@ -130,6 +130,6 @@ public struct LayoutSubview: Equatable {
     anchor: UnitPoint = .topLeading,
     proposal: ProposedViewSize
   ) {
-    place(dimensions(in: proposal), position, anchor)
+    place(proposal, dimensions(in: proposal), position, anchor)
   }
 }
