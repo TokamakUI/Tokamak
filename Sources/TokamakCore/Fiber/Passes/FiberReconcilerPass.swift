@@ -39,8 +39,8 @@ extension FiberReconciler {
       /// Empty the cached values and flag the cache as dirty.
       mutating func markDirty() {
         isDirty = true
-        sizeThatFits.removeAll()
-        dimensions.removeAll()
+        sizeThatFits.removeAll(keepingCapacity: true)
+        dimensions.removeAll(keepingCapacity: true)
       }
 
       struct SizeThatFitsRequest: Hashable {

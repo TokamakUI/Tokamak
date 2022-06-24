@@ -123,14 +123,15 @@ struct ReconcilePass: FiberReconcilerPass {
         {
           caches.appendChild(parent: elementParent, child: fiber)
           let parentKey = ObjectIdentifier(elementParent)
-          var subviews = caches.layoutSubviews[parentKey, default: .init(elementParent)]
-          subviews.storage.append(LayoutSubview(
+          let subview = LayoutSubview(
             id: ObjectIdentifier(node),
             traits: node.fiber?.outputs.traits ?? .init(),
             sizeThatFits: { [weak fiber, unowned caches] proposal in
               guard let fiber = fiber else { return .zero }
+              let request = FiberReconciler<R>.Caches.LayoutCache
+                .SizeThatFitsRequest(proposal)
               return caches.updateLayoutCache(for: fiber) { cache in
-                if let size = cache.sizeThatFits[.init(proposal)] {
+                if let size = cache.sizeThatFits[request] {
                   return size
                 } else {
                   let size = fiber.sizeThatFits(
@@ -138,10 +139,10 @@ struct ReconcilePass: FiberReconcilerPass {
                     subviews: caches.layoutSubviews(for: fiber),
                     cache: &cache.cache
                   )
-                  cache.sizeThatFits[.init(proposal)] = size
+                  cache.sizeThatFits[request] = size
                   if let alternate = fiber.alternate {
                     caches.updateLayoutCache(for: alternate) { cache in
-                      cache.sizeThatFits[.init(proposal)] = size
+                      cache.sizeThatFits[request] = size
                     }
                   }
                   return size
@@ -182,8 +183,8 @@ struct ReconcilePass: FiberReconcilerPass {
                 )
               }
             }
-          ))
-          caches.layoutSubviews[parentKey] = subviews
+          )
+          caches.layoutSubviews[parentKey, default: .init(elementParent)].storage.append(subview)
         }
       }
 
