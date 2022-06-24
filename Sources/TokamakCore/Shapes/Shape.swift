@@ -31,10 +31,7 @@ public extension Shape {
 
     // SwiftUI seems to not compute the path at all and just return
     // the following.
-    CGSize(
-      width: proposal.width ?? 10,
-      height: proposal.height ?? 10
-    )
+    proposal.replacingUnspecifiedDimensions()
   }
 }
 

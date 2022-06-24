@@ -134,7 +134,7 @@ struct ReconcilePass: FiberReconcilerPass {
                 if let size = cache.sizeThatFits[request] {
                   return size
                 } else {
-                  let size = fiber.sizeThatFits(
+                  let size = fiber.layout.sizeThatFits(
                     proposal: proposal,
                     subviews: caches.layoutSubviews(for: fiber),
                     cache: &cache.cache
@@ -177,7 +177,7 @@ struct ReconcilePass: FiberReconcilerPass {
               guard let fiber = fiber else { return .init() }
 
               return caches.updateLayoutCache(for: fiber) { cache in
-                fiber.spacing(
+                fiber.layout.spacing(
                   subviews: caches.layoutSubviews(for: fiber),
                   cache: &cache.cache
                 )

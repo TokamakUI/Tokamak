@@ -27,7 +27,7 @@ extension FiberReconciler {
 
     struct LayoutCache {
       /// The erased `Layout.Cache` value.
-      var cache: Any
+      var cache: AnyLayout.Cache
       /// Cached values for `sizeThatFits` calls.
       var sizeThatFits: [SizeThatFitsRequest: CGSize]
       /// Cached values for `dimensions(in:)` calls.
@@ -69,7 +69,7 @@ extension FiberReconciler {
       layoutCaches[
         ObjectIdentifier(fiber),
         default: .init(
-          cache: fiber.makeCache(subviews: layoutSubviews(for: fiber)),
+          cache: fiber.layout.makeCache(subviews: layoutSubviews(for: fiber)),
           sizeThatFits: [:],
           dimensions: [:],
           isDirty: false
@@ -83,7 +83,7 @@ extension FiberReconciler {
       var cache = layoutCaches[
         key,
         default: .init(
-          cache: fiber.makeCache(subviews: subviews),
+          cache: fiber.layout.makeCache(subviews: subviews),
           sizeThatFits: [:],
           dimensions: [:],
           isDirty: false
@@ -91,7 +91,7 @@ extension FiberReconciler {
       ]
       // If the cache is dirty, update it before calling `action`.
       if cache.isDirty {
-        fiber.updateCache(&cache.cache, subviews: subviews)
+        fiber.layout.updateCache(&cache.cache, subviews: subviews)
         cache.isDirty = false
       }
       defer { layoutCaches[key] = cache }

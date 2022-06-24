@@ -18,7 +18,7 @@
 import Foundation
 
 public protocol _AnyLayout {
-  func _makeActions() -> LayoutActions
+  func _erased() -> AnyLayout
 }
 
 /// A type that participates in the layout pass.
@@ -85,7 +85,7 @@ public protocol Layout: Animatable, _AnyLayout {
 }
 
 public extension Layout {
-  func _makeActions() -> LayoutActions {
+  func _erased() -> AnyLayout {
     .init(self)
   }
 }
@@ -232,35 +232,233 @@ struct DefaultLayout: Layout {
   }
 }
 
-// TODO: AnyLayout
-// class AnyLayoutBox {
-//
-// }
-//
-// final class ConcreteLayoutBox<L: Layout>: AnyLayoutBox {
-//
-// }
+@usableFromInline
+protocol AnyLayoutBox {
+  var layoutProperties: LayoutProperties { get }
 
-// @frozen public struct AnyLayout: Layout {
-//  internal var storage: AnyLayoutBox
-//
-//    public init<L>(_ layout: L) where L: Layout {
-//        storage = ConcreteLayoutBox(layout)
-//    }
-//
-//  public struct Cache {
-//  }
-//
-//  public typealias AnimatableData = _AnyAnimatableData
-//  public func makeCache(subviews: AnyLayout.Subviews) -> AnyLayout.Cache
-//  public func updateCache(_ cache: inout AnyLayout.Cache, subviews: AnyLayout.Subviews)
-//  public func spacing(subviews: AnyLayout.Subviews, cache: inout AnyLayout.Cache) -> ViewSpacing
-//  public func sizeThatFits(proposal: ProposedViewSize, subviews: AnyLayout.Subviews, cache: inout AnyLayout.Cache) -> CGSize
-//  public func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: AnyLayout.Subviews, cache: inout AnyLayout.Cache)
-//  public func explicitAlignment(of guide: HorizontalAlignment, in bounds: CGRect, proposal: ProposedViewSize, subviews: AnyLayout.Subviews, cache: inout AnyLayout.Cache) -> CGFloat?
-//  public func explicitAlignment(of guide: VerticalAlignment, in bounds: CGRect, proposal: ProposedViewSize, subviews: AnyLayout.Subviews, cache: inout AnyLayout.Cache) -> CGFloat?
-//  public var animatableData: AnyLayout.AnimatableData {
-//    get
-//    set
-//  }
-// }
+  typealias Subviews = LayoutSubviews
+  typealias Cache = Any
+
+  func makeCache(subviews: Self.Subviews) -> Self.Cache
+
+  func updateCache(_ cache: inout Self.Cache, subviews: Self.Subviews)
+
+  func spacing(subviews: Self.Subviews, cache: inout Self.Cache) -> ViewSpacing
+
+  func sizeThatFits(
+    proposal: ProposedViewSize,
+    subviews: Self.Subviews,
+    cache: inout Self.Cache
+  ) -> CGSize
+
+  func placeSubviews(
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Self.Subviews,
+    cache: inout Self.Cache
+  )
+
+  func explicitAlignment(
+    of guide: HorizontalAlignment,
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Self.Subviews,
+    cache: inout Self.Cache
+  ) -> CGFloat?
+
+  func explicitAlignment(
+    of guide: VerticalAlignment,
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Self.Subviews,
+    cache: inout Self.Cache
+  ) -> CGFloat?
+
+  var animatableData: _AnyAnimatableData { get set }
+}
+
+struct ConcreteLayoutBox<L: Layout>: AnyLayoutBox {
+  var base: L
+
+  var layoutProperties: LayoutProperties { L.layoutProperties }
+
+  func makeCache(subviews: Subviews) -> Cache {
+    base.makeCache(subviews: subviews)
+  }
+
+  private func typedCache<R>(
+    subviews: Subviews,
+    erasedCache: inout Cache,
+    _ action: (inout L.Cache) -> R
+  ) -> R {
+    var typedCache = erasedCache as? L.Cache ?? base.makeCache(subviews: subviews)
+    defer { erasedCache = typedCache }
+    return action(&typedCache)
+  }
+
+  func updateCache(_ cache: inout Cache, subviews: Subviews) {
+    typedCache(subviews: subviews, erasedCache: &cache) {
+      base.updateCache(&$0, subviews: subviews)
+    }
+  }
+
+  func spacing(subviews: Subviews, cache: inout Cache) -> ViewSpacing {
+    typedCache(subviews: subviews, erasedCache: &cache) {
+      base.spacing(subviews: subviews, cache: &$0)
+    }
+  }
+
+  func sizeThatFits(
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout Cache
+  ) -> CGSize {
+    typedCache(subviews: subviews, erasedCache: &cache) {
+      base.sizeThatFits(proposal: proposal, subviews: subviews, cache: &$0)
+    }
+  }
+
+  func placeSubviews(
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout Cache
+  ) {
+    typedCache(subviews: subviews, erasedCache: &cache) {
+      base.placeSubviews(in: bounds, proposal: proposal, subviews: subviews, cache: &$0)
+    }
+  }
+
+  func explicitAlignment(
+    of guide: HorizontalAlignment,
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout Cache
+  ) -> CGFloat? {
+    typedCache(subviews: subviews, erasedCache: &cache) {
+      base.explicitAlignment(
+        of: guide,
+        in: bounds,
+        proposal: proposal,
+        subviews: subviews,
+        cache: &$0
+      )
+    }
+  }
+
+  func explicitAlignment(
+    of guide: VerticalAlignment,
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout Cache
+  ) -> CGFloat? {
+    typedCache(subviews: subviews, erasedCache: &cache) {
+      base.explicitAlignment(
+        of: guide,
+        in: bounds,
+        proposal: proposal,
+        subviews: subviews,
+        cache: &$0
+      )
+    }
+  }
+
+  var animatableData: _AnyAnimatableData {
+    get {
+      .init(base.animatableData)
+    }
+    set {
+      guard let newData = newValue.value as? L.AnimatableData else { return }
+      base.animatableData = newData
+    }
+  }
+}
+
+@frozen
+public struct AnyLayout: Layout {
+  var storage: AnyLayoutBox
+
+  public init<L>(_ layout: L) where L: Layout {
+    storage = ConcreteLayoutBox(base: layout)
+  }
+
+  public struct Cache {
+    var erasedCache: Any
+  }
+
+  public func makeCache(subviews: AnyLayout.Subviews) -> AnyLayout.Cache {
+    .init(erasedCache: storage.makeCache(subviews: subviews))
+  }
+
+  public func updateCache(_ cache: inout AnyLayout.Cache, subviews: AnyLayout.Subviews) {
+    storage.updateCache(&cache.erasedCache, subviews: subviews)
+  }
+
+  public func spacing(subviews: AnyLayout.Subviews, cache: inout AnyLayout.Cache) -> ViewSpacing {
+    storage.spacing(subviews: subviews, cache: &cache.erasedCache)
+  }
+
+  public func sizeThatFits(
+    proposal: ProposedViewSize,
+    subviews: AnyLayout.Subviews,
+    cache: inout AnyLayout.Cache
+  ) -> CGSize {
+    storage.sizeThatFits(proposal: proposal, subviews: subviews, cache: &cache.erasedCache)
+  }
+
+  public func placeSubviews(
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: AnyLayout.Subviews,
+    cache: inout AnyLayout.Cache
+  ) {
+    storage.placeSubviews(
+      in: bounds,
+      proposal: proposal,
+      subviews: subviews,
+      cache: &cache.erasedCache
+    )
+  }
+
+  public func explicitAlignment(
+    of guide: HorizontalAlignment,
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: AnyLayout.Subviews,
+    cache: inout AnyLayout.Cache
+  ) -> CGFloat? {
+    storage.explicitAlignment(
+      of: guide,
+      in: bounds,
+      proposal: proposal,
+      subviews: subviews,
+      cache: &cache.erasedCache
+    )
+  }
+
+  public func explicitAlignment(
+    of guide: VerticalAlignment,
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: AnyLayout.Subviews,
+    cache: inout AnyLayout.Cache
+  ) -> CGFloat? {
+    storage.explicitAlignment(
+      of: guide, in: bounds,
+      proposal: proposal,
+      subviews: subviews,
+      cache: &cache.erasedCache
+    )
+  }
+
+  public var animatableData: _AnyAnimatableData {
+    get {
+      _AnyAnimatableData(storage.animatableData)
+    }
+    set {
+      storage.animatableData = newValue
+    }
+  }
+}

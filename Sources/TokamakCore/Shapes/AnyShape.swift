@@ -14,7 +14,7 @@
 
 import Foundation
 
-internal protocol AnyShapeBox {
+protocol AnyShapeBox {
   var animatableDataBox: _AnyAnimatableData { get set }
 
   func path(in rect: CGRect) -> Path
@@ -49,7 +49,7 @@ private struct ConcreteAnyShapeBox<Base: Shape>: AnyShapeBox {
 }
 
 public struct AnyShape: Shape {
-  internal var box: AnyShapeBox
+  var box: AnyShapeBox
 
   private init(_ box: AnyShapeBox) {
     self.box = box

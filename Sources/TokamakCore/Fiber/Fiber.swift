@@ -54,12 +54,15 @@ public extension FiberReconciler {
     /// all stored properties be set before using.
     /// `outputs` is guaranteed to be set in the initializer.
     var outputs: ViewOutputs!
-    var layout: LayoutActions
+    /// The erased `Layout` to use for this content.
+    ///
+    /// Stored as an IUO because it uses `bindProperties` to create the underlying instance.
+    var layout: AnyLayout!
     /// The identity of this `View`
     var id: Identity?
-    /// The mounted element, if this is a Renderer primitive.
+    /// The mounted element, if this is a `Renderer` primitive.
     var element: Renderer.ElementType?
-    /// The index of this element in its elementParent
+    /// The index of this element in its `elementParent`
     var elementIndex: Int?
     /// The first child node.
     @_spi(TokamakCore)
@@ -112,7 +115,6 @@ public extension FiberReconciler {
 
     init<V: View>(
       _ view: inout V,
-      layoutActions: LayoutActions? = nil,
       element: Renderer.ElementType?,
       parent: Fiber?,
       elementParent: Fiber?,
@@ -125,7 +127,6 @@ public extension FiberReconciler {
       sibling = nil
       self.parent = parent
       self.elementParent = elementParent
-      layout = (view as? _AnyLayout)?._makeActions() ?? .init(DefaultLayout())
       typeInfo = TokamakCore.typeInfo(of: V.self)
 
       let environment = parent?.outputs.environment ?? .init(.init())
@@ -138,6 +139,8 @@ public extension FiberReconciler {
       outputs = V._makeView(viewInputs)
 
       content = content(for: view)
+
+      layout = (view as? _AnyLayout)?._erased() ?? .init(DefaultLayout())
 
       if let element = element {
         self.element = element
@@ -159,7 +162,7 @@ public extension FiberReconciler {
         let alternate = Fiber(
           bound: alternateView,
           state: self.state,
-          layoutActions: self.layout,
+          layout: self.layout,
           alternate: self,
           outputs: self.outputs,
           typeInfo: self.typeInfo,
@@ -189,7 +192,7 @@ public extension FiberReconciler {
     init<V: View>(
       bound view: V,
       state: [PropertyInfo: MutableStorage],
-      layoutActions: LayoutActions,
+      layout: AnyLayout,
       alternate: Fiber,
       outputs: ViewOutputs,
       typeInfo: TypeInfo?,
@@ -208,7 +211,7 @@ public extension FiberReconciler {
       self.typeInfo = typeInfo
       self.outputs = outputs
       self.state = state
-      layout = layoutActions
+      self.layout = layout
       content = content(for: view)
     }
 
@@ -267,6 +270,8 @@ public extension FiberReconciler {
       )
       outputs = V._makeView(inputs)
 
+      layout = (view as? _AnyLayout)?._erased() ?? .init(DefaultLayout())
+
       if Renderer.isPrimitive(view) {
         return .init(from: view, useDynamicLayout: reconciler?.renderer.useDynamicLayout ?? false)
       } else {
@@ -288,13 +293,14 @@ public extension FiberReconciler {
       elementParent = nil
       element = rootElement
       typeInfo = TokamakCore.typeInfo(of: A.self)
-      layout = .init(RootLayout(renderer: reconciler.renderer))
       state = bindProperties(to: &app, typeInfo, rootEnvironment)
       outputs = .init(
         inputs: .init(content: app, environment: .init(rootEnvironment), traits: .init())
       )
 
       content = content(for: app)
+
+      layout = .init(RootLayout(renderer: reconciler.renderer))
 
       let alternateApp = app
       createAndBindAlternate = { [weak self] in
@@ -303,7 +309,7 @@ public extension FiberReconciler {
         let alternate = Fiber(
           bound: alternateApp,
           state: self.state,
-          layoutActions: self.layout,
+          layout: self.layout,
           alternate: self,
           outputs: self.outputs,
           typeInfo: self.typeInfo,
@@ -318,7 +324,7 @@ public extension FiberReconciler {
     init<A: App>(
       bound app: A,
       state: [PropertyInfo: MutableStorage],
-      layoutActions: LayoutActions,
+      layout: AnyLayout,
       alternate: Fiber,
       outputs: SceneOutputs,
       typeInfo: TypeInfo?,
@@ -335,7 +341,7 @@ public extension FiberReconciler {
       self.typeInfo = typeInfo
       self.outputs = outputs
       self.state = state
-      layout = layoutActions
+      self.layout = layout
       content = content(for: app)
     }
 
@@ -353,7 +359,6 @@ public extension FiberReconciler {
       self.parent = parent
       self.elementParent = elementParent
       self.element = element
-      layout = (scene as? _AnyLayout)?._makeActions() ?? .init(DefaultLayout())
       typeInfo = TokamakCore.typeInfo(of: S.self)
 
       let environment = environment ?? parent?.outputs.environment ?? .init(.init())
@@ -367,6 +372,8 @@ public extension FiberReconciler {
       )
 
       content = content(for: scene)
+
+      layout = (scene as? _AnyLayout)?._erased() ?? .init(DefaultLayout())
 
       let alternateScene = scene
       createAndBindAlternate = { [weak self] in
@@ -405,7 +412,7 @@ public extension FiberReconciler {
     init<S: Scene>(
       bound scene: S,
       state: [PropertyInfo: MutableStorage],
-      layout: LayoutActions,
+      layout: AnyLayout,
       alternate: Fiber,
       outputs: SceneOutputs,
       typeInfo: TypeInfo?,
@@ -441,6 +448,8 @@ public extension FiberReconciler {
         environment: environment,
         traits: .init()
       ))
+
+      layout = (scene as? _AnyLayout)?._erased() ?? .init(DefaultLayout())
 
       return nil
     }
