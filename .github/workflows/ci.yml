@@ -14,6 +14,11 @@ jobs:
       - uses: swiftwasm/swiftwasm-action@v5.6
         with:
           shell-action: carton bundle --product TokamakDemo
+      - name: Check binary size
+        shell: bash
+        run: |
+          ls -la Bundle
+          ls -lh Bundle/*.wasm | awk '{printf  "::warning file=Sources/TokamakDemo/main.swift,line=1,col=1::TokamakDemo Wasm is %s.",$5}'
 
   swiftwasm_test_5_6:
     runs-on: ubuntu-20.04
@@ -44,10 +49,9 @@ jobs:
           xcodebuild -version
 
           # Make sure Tokamak can be built on macOS so that Xcode autocomplete works.
-          # Disable macOS builds until Monterey is available on GHA.
-          # xcodebuild -scheme TokamakDemo -destination 'generic/platform=macOS' \
-          #   CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
-          #   xcpretty --color
+          xcodebuild -scheme TokamakDemo -destination 'generic/platform=macOS' \
+            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | \
+            xcpretty --color
 
           cd "NativeDemo"
           xcodebuild -scheme iOS -destination 'generic/platform=iOS' \
