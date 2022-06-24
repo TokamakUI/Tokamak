@@ -66,9 +66,10 @@ benchmark("update wide (FiberReconciler)") { state in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    useDynamicLayout: false
+    useDynamicLayout: true
   ).render(view)
   guard case let .view(view, _) = reconciler.current // RootView
+    .child? // LayoutView
     .child? // ModifiedContent
     .child? // _ViewModifier_Content
     .child? // UpdateLast
@@ -127,9 +128,10 @@ benchmark("update narrow (FiberReconciler)") { state in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    useDynamicLayout: false
+    useDynamicLayout: true
   ).render(view)
   guard case let .view(view, _) = reconciler.current // RootView
+    .child? // LayoutView
     .child? // ModifiedContent
     .child? // _ViewModifier_Content
     .child? // UpdateLast
@@ -199,7 +201,7 @@ benchmark("update deep (FiberReconciler)") { state in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    useDynamicLayout: false
+    useDynamicLayout: true
   ).render(view)
   guard case let .view(view, _) = reconciler.current // RootView
     .child? // ModifiedContent
@@ -242,7 +244,7 @@ struct UpdateShallow: View {
   var body: some View {
     VStack {
       Text(update)
-      RecursiveView(500)
+      RecursiveView(1000)
       Button("Update") {
         update = "B"
       }
@@ -269,7 +271,7 @@ benchmark("update shallow (FiberReconciler)") { _ in
   let reconciler = TestFiberRenderer(
     .root,
     size: .init(width: 500, height: 500),
-    useDynamicLayout: false
+    useDynamicLayout: true
   ).render(view)
   guard case let .view(view, _) = reconciler.current // RootView
     .child? // ModifiedContent
