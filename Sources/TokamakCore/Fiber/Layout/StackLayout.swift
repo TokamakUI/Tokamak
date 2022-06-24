@@ -259,8 +259,30 @@ extension VStack: StackLayout {
   public var _alignment: Alignment { .init(horizontal: alignment, vertical: .center) }
 }
 
+public extension VStack where Content == EmptyView {
+  init(
+    alignment: HorizontalAlignment = .center,
+    spacing: CGFloat? = nil
+  ) {
+    self.alignment = alignment
+    self.spacing = spacing
+    content = EmptyView()
+  }
+}
+
 @_spi(TokamakCore)
 extension HStack: StackLayout {
   public static var orientation: Axis { .horizontal }
   public var _alignment: Alignment { .init(horizontal: .center, vertical: alignment) }
+}
+
+public extension HStack where Content == EmptyView {
+  init(
+    alignment: VerticalAlignment = .center,
+    spacing: CGFloat? = nil
+  ) {
+    self.alignment = alignment
+    self.spacing = spacing
+    content = EmptyView()
+  }
 }
