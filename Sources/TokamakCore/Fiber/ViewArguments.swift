@@ -20,8 +20,10 @@ import Foundation
 /// Data passed to `_makeView` to create the `ViewOutputs` used in reconciling/rendering.
 public struct ViewInputs<V> {
   public let content: V
+
   @_spi(TokamakCore)
   public let environment: EnvironmentBox
+
   public let traits: _ViewTraitStore?
 }
 
@@ -30,7 +32,9 @@ public struct ViewOutputs {
   /// A container for the current `EnvironmentValues`.
   /// This is stored as a reference to avoid copying the environment when unnecessary.
   let environment: EnvironmentBox
+
   let preferences: _PreferenceStore
+
   let traits: _ViewTraitStore?
 }
 
