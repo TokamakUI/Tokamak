@@ -20,11 +20,19 @@ jobs:
           ls -la Bundle
           ls -lh Bundle/*.wasm | awk '{printf  "::warning file=Sources/TokamakDemo/main.swift,line=1,col=1::TokamakDemo Wasm is %s.",$5}'
 
-  swiftwasm_test_5_6:
+  swiftwasm_test:
     runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - { toolchain: wasm-5.6.0-RELEASE }
+          - { toolchain: wasm-5.7-SNAPSHOT-2022-06-01-a }
+          - { toolchain: wasm-DEVELOPMENT-SNAPSHOT-2022-06-23-a }
 
     steps:
       - uses: actions/checkout@v2
+      - run: echo "${{ matrix.toolchain }}" > .swift-version
       - uses: swiftwasm/swiftwasm-action@v5.6
         with:
           shell-action: carton test --environment node
