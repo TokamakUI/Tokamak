@@ -24,7 +24,9 @@ struct MetadataOffset<Pointee> {
   let offset: Int32
 
   func apply(to ptr: UnsafeRawPointer) -> UnsafePointer<Pointee> {
-    #if arch(wasm32)
+    // Data pointers in constant metadata are absolute until SwiftWasm 5.6
+    // Since SwiftWasm 5.7, they are relative as well as other platforms.
+    #if arch(wasm32) && !compiler(>=5.7)
     return UnsafePointer<Pointee>(bitPattern: Int(offset))!
     #else
     return ptr.advanced(by: numericCast(offset)).assumingMemoryBound(to: Pointee.self)
