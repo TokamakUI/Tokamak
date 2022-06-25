@@ -17,6 +17,14 @@
 
 import Foundation
 
+/// A `Layout` container that requests a specific size on one or more axes.
+///
+/// The container proposes the constrained size to its children,
+/// then places them with `alignment` in the constrained bounds.
+///
+/// Children request their own size, so they may overflow this container.
+///
+/// If no fixed size is specified for a an axis, the container will use the size of its children.
 private struct FrameLayout: Layout {
   let width: CGFloat?
   let height: CGFloat?

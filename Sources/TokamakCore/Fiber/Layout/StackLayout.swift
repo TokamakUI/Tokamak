@@ -33,6 +33,7 @@ public struct StackLayoutCache {
   /// The widest/tallest (depending on the `axis`) subview.
   /// Used to place subviews along the `alignment`.
   var maxSubview: ViewDimensions?
+
   /// The ideal size for each subview as computed in `sizeThatFits`.
   var idealSizes = [CGSize]()
 }
@@ -54,8 +55,10 @@ private struct MeasuredSubview {
 public protocol StackLayout: Layout where Cache == StackLayoutCache {
   /// The direction of this stack. `vertical` for `VStack`, `horizontal` for `HStack`.
   static var orientation: Axis { get }
+
   /// The full `Alignment` with an ignored value for the main axis.
   var _alignment: Alignment { get }
+
   var spacing: CGFloat? { get }
 }
 
@@ -169,7 +172,7 @@ public extension StackLayout {
 
     // Calculate ideal sizes for each View based on their min/max sizes and the space available.
     var available = proposal[keyPath: Self.mainAxis] - minSize - totalSpacing
-    /// The final resulting size.
+    // The final resulting size.
     var size = CGSize.zero
     size[keyPath: Self.crossAxis] = cache.maxSubview?.size[keyPath: Self.crossAxis] ?? .zero
     for subview in measuredSubviews.sorted(by: {
@@ -181,9 +184,9 @@ public extension StackLayout {
         return $0.view.priority > $1.view.priority
       }
     }) {
-      /// The amount of space available to `View`s with this priority value.
+      // The amount of space available to `View`s with this priority value.
       let priorityAvailable = available + prioritySize[subview.view.priority, default: 0]
-      /// The number of `View`s with this priority value remaining as a `CGFloat`.
+      // The number of `View`s with this priority value remaining as a `CGFloat`.
       let priorityRemaining = CGFloat(priorityCount[subview.view.priority, default: 1])
       // Propose the full `crossAxis`, but only the remaining `mainAxis`.
       // Divvy up the available space between each remaining `View` with this priority value.
@@ -211,10 +214,10 @@ public extension StackLayout {
     subviews: Subviews,
     cache: inout Cache
   ) {
-    /// The current progress along the `mainAxis`.
+    // The current progress along the `mainAxis`.
     var position = CGFloat.zero
-    /// The offset of the `_alignment` in the `maxSubview`,
-    /// used as the reference point for alignments along this axis.
+    // The offset of the `_alignment` in the `maxSubview`,
+    // used as the reference point for alignments along this axis.
     let alignmentOffset = cache.maxSubview?[alignment: _alignment, in: Self.orientation] ?? .zero
     for (index, view) in subviews.enumerated() {
       // Add a gap for the spacing distance from the previous subview to this one.

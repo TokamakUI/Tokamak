@@ -47,6 +47,7 @@ public extension FiberReconciler {
     /// which requires all stored properties be set before capturing.
     @_spi(TokamakCore)
     public var content: Content!
+
     /// Outputs from evaluating `View._makeView`
     ///
     /// Stored as an IUO because creating `ViewOutputs` depends on
@@ -54,32 +55,42 @@ public extension FiberReconciler {
     /// all stored properties be set before using.
     /// `outputs` is guaranteed to be set in the initializer.
     var outputs: ViewOutputs!
+
     /// The erased `Layout` to use for this content.
     ///
     /// Stored as an IUO because it uses `bindProperties` to create the underlying instance.
     var layout: AnyLayout!
+
     /// The identity of this `View`
     var id: Identity?
+
     /// The mounted element, if this is a `Renderer` primitive.
     var element: Renderer.ElementType?
+
     /// The index of this element in its `elementParent`
     var elementIndex: Int?
+
     /// The first child node.
     @_spi(TokamakCore)
     public var child: Fiber?
+
     /// This node's right sibling.
     @_spi(TokamakCore)
     public var sibling: Fiber?
+
     /// An unowned reference to the parent node.
     ///
     /// Parent references are `unowned` (as opposed to `weak`)
     /// because the parent will always exist if a child does.
     /// If the parent is released, the child is released with it.
     unowned var parent: Fiber?
+
     /// The nearest parent that can be mounted on.
     unowned var elementParent: Fiber?
+
     /// The cached type information for the underlying `View`.
     var typeInfo: TypeInfo?
+
     /// Boxes that store `State` data.
     var state: [PropertyInfo: MutableStorage] = [:]
 

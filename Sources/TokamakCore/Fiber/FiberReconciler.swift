@@ -23,14 +23,17 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
   /// The root node in the `Fiber` tree that represents the `View`s currently rendered on screen.
   @_spi(TokamakCore)
   public var current: Fiber!
+
   /// The alternate of `current`, or the work in progress tree root.
   ///
   /// We must keep a strong reference to both the current and alternate tree roots,
   /// as they only keep weak references to each other.
   private var alternate: Fiber!
+
   /// The `FiberRenderer` used to create and update the `Element`s on screen.
   public let renderer: Renderer
 
+  /// Enabled passes to run on each `reconcile(from:)` call.
   private let passes: [FiberReconcilerPass]
 
   private let caches: Caches
@@ -53,6 +56,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     }
   }
 
+  /// The `Layout` container for the root of a `View` hierarchy.
+  ///
+  /// Simply places each `View` in the center of its bounds.
   struct RootLayout: Layout {
     let renderer: Renderer
 

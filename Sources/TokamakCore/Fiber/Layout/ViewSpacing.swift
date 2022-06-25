@@ -27,6 +27,7 @@ public struct ViewSpacing {
   /// Some `View`s prefer different spacing based on the `View` they are adjacent to.
   @_spi(TokamakCore)
   public var viewType: Any.Type?
+
   private var top: (ViewSpacing) -> CGFloat
   private var leading: (ViewSpacing) -> CGFloat
   private var bottom: (ViewSpacing) -> CGFloat

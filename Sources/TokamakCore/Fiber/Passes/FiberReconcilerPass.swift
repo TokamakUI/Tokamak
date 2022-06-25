@@ -28,10 +28,13 @@ extension FiberReconciler {
     struct LayoutCache {
       /// The erased `Layout.Cache` value.
       var cache: AnyLayout.Cache
+
       /// Cached values for `sizeThatFits` calls.
       var sizeThatFits: [SizeThatFitsRequest: CGSize]
+
       /// Cached values for `dimensions(in:)` calls.
       var dimensions: [SizeThatFitsRequest: ViewDimensions]
+
       /// Does this cache need to be updated before using?
       /// Set to `true` whenever the subviews or the container changes.
       var isDirty: Bool

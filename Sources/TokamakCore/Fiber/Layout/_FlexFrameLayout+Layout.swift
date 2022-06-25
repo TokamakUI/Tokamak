@@ -17,6 +17,12 @@
 
 import Foundation
 
+/// A `Layout` container that creates a frame with constraints.
+///
+/// The children are proposed the full proposal given to this container
+/// clamped to the specified minimum and maximum values.
+///
+/// Then the children are placed with `alignment` in the container.
 private struct FlexFrameLayout: Layout {
   let minWidth: CGFloat?
   let idealWidth: CGFloat?

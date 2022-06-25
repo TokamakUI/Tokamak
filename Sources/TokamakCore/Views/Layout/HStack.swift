@@ -27,8 +27,10 @@ public let defaultStackSpacing: CGFloat = 8
 ///     }
 public struct HStack<Content>: View where Content: View {
   public let alignment: VerticalAlignment
+
   @_spi(TokamakCore)
   public let spacing: CGFloat?
+
   public let content: Content
 
   public init(

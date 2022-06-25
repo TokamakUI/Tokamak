@@ -68,10 +68,10 @@ struct ReconcilePass: FiberReconcilerPass {
   ) where R: FiberRenderer {
     var node = root
 
-    /// Enabled when we reach the `reconcileRoot`.
+    // Enabled when we reach the `reconcileRoot`.
     var shouldReconcile = false
 
-    /// Traits that should be attached to the nearest rendered child.
+    // Traits that should be attached to the nearest rendered child.
     var pendingTraits = _ViewTraitStore()
 
     while true {
@@ -107,7 +107,7 @@ struct ReconcilePass: FiberReconcilerPass {
         pendingTraits = .init()
       }
 
-      // Ensure the TreeReducer can access any necessary state.
+      // Ensure the `TreeReducer` can access any necessary state.
       node.elementIndices = caches.elementIndices
       node.pendingTraits = pendingTraits
 
@@ -193,7 +193,7 @@ struct ReconcilePass: FiberReconcilerPass {
         _ = node.fiber?.createAndBindAlternate?()
       }
 
-      // Walk all down all the way into the deepest child.
+      // Walk down all the way into the deepest child.
       if let child = reducer.result.child {
         node = child
         continue
