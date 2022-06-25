@@ -41,8 +41,14 @@ private struct PaddingLayout: Layout {
     subviews: Subviews,
     cache: inout ()
   ) -> CGSize {
-    let subviewSize = (subviews.first?.sizeThatFits(proposal) ?? .zero)
+    let proposal = proposal.replacingUnspecifiedDimensions()
     let insets = EdgeInsets(applying: edges, to: insets ?? .init(_all: 10))
+    let subviewSize = subviews.first?.sizeThatFits(
+      .init(
+        width: proposal.width - insets.leading - insets.trailing,
+        height: proposal.height - insets.top - insets.bottom
+      )
+    ) ?? .zero
     return .init(
       width: subviewSize.width + insets.leading + insets.trailing,
       height: subviewSize.height + insets.top + insets.bottom
