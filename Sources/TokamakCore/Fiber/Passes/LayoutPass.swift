@@ -32,7 +32,7 @@ struct LayoutPass: FiberReconcilerPass {
       // Place subviews for each element fiber as we walk the tree.
       if fiber.element != nil {
         caches.updateLayoutCache(for: fiber) { cache in
-          fiber.layout.placeSubviews(
+          fiber.layout?.placeSubviews(
             in: .init(
               origin: .zero,
               size: fiber.geometry?.dimensions.size ?? reconciler.renderer.sceneSize

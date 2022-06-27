@@ -218,6 +218,9 @@ public struct LayoutView<L: Layout, Content: View>: View, Layout {
 
 /// A default `Layout` that fits to the first subview and places its children at its origin.
 struct DefaultLayout: Layout {
+  /// An erased `DefaultLayout` that is shared between all views.
+  static let shared: AnyLayout = .init(Self())
+
   func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
     let size = subviews.first?.sizeThatFits(proposal) ?? .zero
     return size
@@ -239,7 +242,7 @@ struct DefaultLayout: Layout {
 ///
 /// Matches the `Layout` protocol with `Cache` erased to `Any`.
 @usableFromInline
-protocol AnyLayoutBox {
+protocol AnyLayoutBox: AnyObject {
   var layoutProperties: LayoutProperties { get }
 
   typealias Subviews = LayoutSubviews
@@ -283,8 +286,12 @@ protocol AnyLayoutBox {
   var animatableData: _AnyAnimatableData { get set }
 }
 
-struct ConcreteLayoutBox<L: Layout>: AnyLayoutBox {
+final class ConcreteLayoutBox<L: Layout>: AnyLayoutBox {
   var base: L
+
+  init(_ base: L) {
+    self.base = base
+  }
 
   var layoutProperties: LayoutProperties { L.layoutProperties }
 
@@ -387,7 +394,7 @@ public struct AnyLayout: Layout {
   var storage: AnyLayoutBox
 
   public init<L>(_ layout: L) where L: Layout {
-    storage = ConcreteLayoutBox(base: layout)
+    storage = ConcreteLayoutBox(layout)
   }
 
   public struct Cache {

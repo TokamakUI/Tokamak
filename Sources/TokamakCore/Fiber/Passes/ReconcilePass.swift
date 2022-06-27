@@ -121,68 +121,13 @@ struct ReconcilePass: FiberReconcilerPass {
         if let element = fiber.element,
            let elementParent = fiber.elementParent
         {
-          caches.appendChild(parent: elementParent, child: fiber)
           let parentKey = ObjectIdentifier(elementParent)
           let subview = LayoutSubview(
-            id: ObjectIdentifier(node),
-            traits: node.fiber?.outputs.traits ?? .init(),
-            sizeThatFits: { [weak fiber, unowned caches] proposal in
-              guard let fiber = fiber else { return .zero }
-              let request = FiberReconciler<R>.Caches.LayoutCache
-                .SizeThatFitsRequest(proposal)
-              return caches.updateLayoutCache(for: fiber) { cache in
-                if let size = cache.sizeThatFits[request] {
-                  return size
-                } else {
-                  let size = fiber.layout.sizeThatFits(
-                    proposal: proposal,
-                    subviews: caches.layoutSubviews(for: fiber),
-                    cache: &cache.cache
-                  )
-                  cache.sizeThatFits[request] = size
-                  if let alternate = fiber.alternate {
-                    caches.updateLayoutCache(for: alternate) { cache in
-                      cache.sizeThatFits[request] = size
-                    }
-                  }
-                  return size
-                }
-              }
-            },
-            dimensions: { sizeThatFits in
-              // TODO: Add `alignmentGuide` modifier and pass into `ViewDimensions`
-              ViewDimensions(size: sizeThatFits, alignmentGuides: [:])
-            },
-            place: { [weak fiber, weak element, unowned caches]
-              proposal, dimensions, position, anchor in
-              guard let fiber = fiber, let element = element else { return }
-              let geometry = ViewGeometry(
-                // Shift to the anchor point in the parent's coordinate space.
-                origin: .init(origin: .init(
-                  x: position.x - (dimensions.width * anchor.x),
-                  y: position.y - (dimensions.height * anchor.y)
-                )),
-                dimensions: dimensions,
-                proposal: proposal
-              )
-              // Push a layout mutation if needed.
-              if geometry != fiber.alternate?.geometry {
-                caches.mutations.append(.layout(element: element, geometry: geometry))
-              }
-              // Update ours and our alternate's geometry
-              fiber.geometry = geometry
-              fiber.alternate?.geometry = geometry
-            },
-            spacing: { [weak fiber, unowned caches] in
-              guard let fiber = fiber else { return .init() }
-
-              return caches.updateLayoutCache(for: fiber) { cache in
-                fiber.layout.spacing(
-                  subviews: caches.layoutSubviews(for: fiber),
-                  cache: &cache.cache
-                )
-              }
-            }
+            id: ObjectIdentifier(fiber),
+            traits: node.fiber?.outputs.traits,
+            fiber: fiber,
+            element: element,
+            caches: caches
           )
           caches.layoutSubviews[parentKey, default: .init(elementParent)].storage.append(subview)
         }
@@ -199,7 +144,7 @@ struct ReconcilePass: FiberReconcilerPass {
         continue
       } else if let alternateChild = node.fiber?.alternate?.child {
         // The alternate has a child that no longer exists.
-        if let parent = node.fiber {
+        if let parent = node.fiber?.element != nil ? node.fiber : node.fiber?.elementParent {
           invalidateCache(for: parent, in: reconciler, caches: caches)
         }
         walk(alternateChild) { node in
@@ -226,14 +171,16 @@ struct ReconcilePass: FiberReconcilerPass {
 
       // Now walk back up the tree until we find a sibling.
       while node.sibling == nil {
-        if let fiber = node.fiber {
+        if let fiber = node.fiber,
+           fiber.element != nil
+        {
           propagateCacheInvalidation(for: fiber, in: reconciler, caches: caches)
         }
 
         var alternateSibling = node.fiber?.alternate?.sibling
         // The alternate had siblings that no longer exist.
         while alternateSibling != nil {
-          if let fiber = alternateSibling?.parent {
+          if let fiber = alternateSibling?.elementParent {
             invalidateCache(for: fiber, in: reconciler, caches: caches)
           }
           if let element = alternateSibling?.element,
@@ -271,14 +218,14 @@ struct ReconcilePass: FiberReconcilerPass {
        let parent = node.fiber?.elementParent?.element
     {
       if node.fiber?.alternate == nil { // This didn't exist before (no alternate)
-        if let fiber = node.fiber?.parent {
+        if let fiber = node.fiber?.elementParent {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
         }
         return .insert(element: element, parent: parent, index: index)
       } else if node.fiber?.typeInfo?.type != node.fiber?.alternate?.typeInfo?.type,
                 let previous = node.fiber?.alternate?.element
       {
-        if let fiber = node.fiber?.parent {
+        if let fiber = node.fiber?.elementParent {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
         }
         // This is a completely different type of view.
@@ -286,7 +233,7 @@ struct ReconcilePass: FiberReconcilerPass {
       } else if let newContent = node.newContent,
                 newContent != element.content
       {
-        if let fiber = node.fiber?.parent {
+        if let fiber = node.fiber?.elementParent {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
         }
         // This is the same type of view, but its backing data has changed.
@@ -327,7 +274,7 @@ struct ReconcilePass: FiberReconcilerPass {
     in reconciler: FiberReconciler<R>,
     caches: FiberReconciler<R>.Caches
   ) {
-    guard caches.layoutCache(for: fiber).isDirty,
+    guard caches.layoutCache(for: fiber)?.isDirty ?? false,
           let elementParent = fiber.elementParent
     else { return }
     invalidateCache(for: elementParent, in: reconciler, caches: caches)

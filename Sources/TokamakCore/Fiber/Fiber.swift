@@ -59,7 +59,7 @@ public extension FiberReconciler {
     /// The erased `Layout` to use for this content.
     ///
     /// Stored as an IUO because it uses `bindProperties` to create the underlying instance.
-    var layout: AnyLayout!
+    var layout: AnyLayout?
 
     /// The identity of this `View`
     var id: Identity?
@@ -151,14 +151,16 @@ public extension FiberReconciler {
 
       content = content(for: view)
 
-      layout = (view as? _AnyLayout)?._erased() ?? .init(DefaultLayout())
-
       if let element = element {
         self.element = element
       } else if Renderer.isPrimitive(view) {
         self.element = .init(
           from: .init(from: view, useDynamicLayout: reconciler?.renderer.useDynamicLayout ?? false)
         )
+      }
+
+      if self.element != nil {
+        layout = (view as? _AnyLayout)?._erased() ?? DefaultLayout.shared
       }
 
       // Only specify an `elementIndex` if we have an element.
@@ -203,7 +205,7 @@ public extension FiberReconciler {
     init<V: View>(
       bound view: V,
       state: [PropertyInfo: MutableStorage],
-      layout: AnyLayout,
+      layout: AnyLayout!,
       alternate: Fiber,
       outputs: ViewOutputs,
       typeInfo: TypeInfo?,
@@ -222,7 +224,9 @@ public extension FiberReconciler {
       self.typeInfo = typeInfo
       self.outputs = outputs
       self.state = state
-      self.layout = layout
+      if element != nil {
+        self.layout = layout
+      }
       content = content(for: view)
     }
 
@@ -281,7 +285,9 @@ public extension FiberReconciler {
       )
       outputs = V._makeView(inputs)
 
-      layout = (view as? _AnyLayout)?._erased() ?? .init(DefaultLayout())
+      if element != nil {
+        layout = (view as? _AnyLayout)?._erased() ?? DefaultLayout.shared
+      }
 
       if Renderer.isPrimitive(view) {
         return .init(from: view, useDynamicLayout: reconciler?.renderer.useDynamicLayout ?? false)
@@ -335,7 +341,7 @@ public extension FiberReconciler {
     init<A: App>(
       bound app: A,
       state: [PropertyInfo: MutableStorage],
-      layout: AnyLayout,
+      layout: AnyLayout?,
       alternate: Fiber,
       outputs: SceneOutputs,
       typeInfo: TypeInfo?,
@@ -384,7 +390,9 @@ public extension FiberReconciler {
 
       content = content(for: scene)
 
-      layout = (scene as? _AnyLayout)?._erased() ?? .init(DefaultLayout())
+      if element != nil {
+        layout = (scene as? _AnyLayout)?._erased() ?? DefaultLayout.shared
+      }
 
       let alternateScene = scene
       createAndBindAlternate = { [weak self] in
@@ -423,7 +431,7 @@ public extension FiberReconciler {
     init<S: Scene>(
       bound scene: S,
       state: [PropertyInfo: MutableStorage],
-      layout: AnyLayout,
+      layout: AnyLayout!,
       alternate: Fiber,
       outputs: SceneOutputs,
       typeInfo: TypeInfo?,
@@ -442,7 +450,9 @@ public extension FiberReconciler {
       self.typeInfo = typeInfo
       self.outputs = outputs
       self.state = state
-      self.layout = layout
+      if element != nil {
+        self.layout = layout
+      }
       content = content(for: scene)
     }
 
@@ -460,7 +470,9 @@ public extension FiberReconciler {
         traits: .init()
       ))
 
-      layout = (scene as? _AnyLayout)?._erased() ?? .init(DefaultLayout())
+      if element != nil {
+        layout = (scene as? _AnyLayout)?._erased() ?? DefaultLayout.shared
+      }
 
       return nil
     }

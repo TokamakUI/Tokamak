@@ -75,34 +75,141 @@ public struct LayoutSubviews: Equatable, RandomAccessCollection {
 /// If `place(at:anchor:proposal:)` is not called, the center will be used as its position.
 public struct LayoutSubview: Equatable {
   private let id: ObjectIdentifier
-  public static func == (lhs: LayoutSubview, rhs: LayoutSubview) -> Bool {
-    lhs.id == rhs.id
+  private let storage: AnyStorage
+
+  /// A protocol used to erase `Storage<R>`.
+  private class AnyStorage {
+    let traits: _ViewTraitStore?
+
+    init(traits: _ViewTraitStore?) {
+      self.traits = traits
+    }
+
+    func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
+      fatalError("Implement \(#function) in subclass")
+    }
+
+    func dimensions(_ sizeThatFits: CGSize) -> ViewDimensions {
+      fatalError("Implement \(#function) in subclass")
+    }
+
+    func place(
+      _ proposal: ProposedViewSize,
+      _ dimensions: ViewDimensions,
+      _ position: CGPoint,
+      _ anchor: UnitPoint
+    ) {
+      fatalError("Implement \(#function) in subclass")
+    }
+
+    func spacing() -> ViewSpacing {
+      fatalError("Implement \(#function) in subclass")
+    }
   }
 
-  private let traits: _ViewTraitStore
-  private let sizeThatFits: (ProposedViewSize) -> CGSize
-  private let dimensions: (CGSize) -> ViewDimensions
-  private let place: (ProposedViewSize, ViewDimensions, CGPoint, UnitPoint) -> ()
-  private let computeSpacing: () -> ViewSpacing
+  /// The backing storage for a `LayoutSubview`. This contains the underlying implementations for
+  /// methods accessing the `fiber`, `element`, and `cache` this subview represents.
+  private final class Storage<R: FiberRenderer>: AnyStorage {
+    weak var fiber: FiberReconciler<R>.Fiber?
+    weak var element: R.ElementType?
+    unowned var caches: FiberReconciler<R>.Caches
 
-  init(
+    init(
+      traits: _ViewTraitStore?,
+      fiber: FiberReconciler<R>.Fiber?,
+      element: R.ElementType?,
+      caches: FiberReconciler<R>.Caches
+    ) {
+      self.fiber = fiber
+      self.element = element
+      self.caches = caches
+      super.init(traits: traits)
+    }
+
+    override func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
+      guard let fiber = fiber else { return .zero }
+      let request = FiberReconciler<R>.Caches.LayoutCache.SizeThatFitsRequest(proposal)
+      return caches.updateLayoutCache(for: fiber) { cache in
+        guard let layout = fiber.layout else { return .zero }
+        if let size = cache.sizeThatFits[request] {
+          return size
+        } else {
+          let size = layout.sizeThatFits(
+            proposal: proposal,
+            subviews: caches.layoutSubviews(for: fiber),
+            cache: &cache.cache
+          )
+          cache.sizeThatFits[request] = size
+          if let alternate = fiber.alternate {
+            caches.updateLayoutCache(for: alternate) { cache in
+              cache.sizeThatFits[request] = size
+            }
+          }
+          return size
+        }
+      } ?? .zero
+    }
+
+    override func dimensions(_ sizeThatFits: CGSize) -> ViewDimensions {
+      // TODO: Add `alignmentGuide` modifier and pass into `ViewDimensions`
+      ViewDimensions(size: sizeThatFits, alignmentGuides: [:])
+    }
+
+    override func place(
+      _ proposal: ProposedViewSize,
+      _ dimensions: ViewDimensions,
+      _ position: CGPoint,
+      _ anchor: UnitPoint
+    ) {
+      guard let fiber = fiber, let element = element else { return }
+      let geometry = ViewGeometry(
+        // Shift to the anchor point in the parent's coordinate space.
+        origin: .init(origin: .init(
+          x: position.x - (dimensions.width * anchor.x),
+          y: position.y - (dimensions.height * anchor.y)
+        )),
+        dimensions: dimensions,
+        proposal: proposal
+      )
+      // Push a layout mutation if needed.
+      if geometry != fiber.alternate?.geometry {
+        caches.mutations.append(.layout(element: element, geometry: geometry))
+      }
+      // Update ours and our alternate's geometry
+      fiber.geometry = geometry
+      fiber.alternate?.geometry = geometry
+    }
+
+    override func spacing() -> ViewSpacing {
+      guard let fiber = fiber else { return .init() }
+
+      return caches.updateLayoutCache(for: fiber) { cache in
+        fiber.layout?.spacing(
+          subviews: caches.layoutSubviews(for: fiber),
+          cache: &cache.cache
+        ) ?? .zero
+      } ?? .zero
+    }
+  }
+
+  init<R: FiberRenderer>(
     id: ObjectIdentifier,
-    traits: _ViewTraitStore,
-    sizeThatFits: @escaping (ProposedViewSize) -> CGSize,
-    dimensions: @escaping (CGSize) -> ViewDimensions,
-    place: @escaping (ProposedViewSize, ViewDimensions, CGPoint, UnitPoint) -> (),
-    spacing: @escaping () -> ViewSpacing
+    traits: _ViewTraitStore?,
+    fiber: FiberReconciler<R>.Fiber,
+    element: R.ElementType,
+    caches: FiberReconciler<R>.Caches
   ) {
     self.id = id
-    self.traits = traits
-    self.sizeThatFits = sizeThatFits
-    self.dimensions = dimensions
-    self.place = place
-    computeSpacing = spacing
+    storage = Storage(
+      traits: traits,
+      fiber: fiber,
+      element: element,
+      caches: caches
+    )
   }
 
   public func _trait<K>(key: K.Type) -> K.Value where K: _ViewTraitKey {
-    traits.value(forKey: key)
+    storage.traits?.value(forKey: key) ?? K.defaultValue
   }
 
   public subscript<K>(key: K.Type) -> K.Value where K: LayoutValueKey {
@@ -114,15 +221,15 @@ public struct LayoutSubview: Equatable {
   }
 
   public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
-    sizeThatFits(proposal)
+    storage.sizeThatFits(proposal)
   }
 
   public func dimensions(in proposal: ProposedViewSize) -> ViewDimensions {
-    dimensions(sizeThatFits(proposal))
+    storage.dimensions(sizeThatFits(proposal))
   }
 
   public var spacing: ViewSpacing {
-    computeSpacing()
+    storage.spacing()
   }
 
   public func place(
@@ -130,6 +237,15 @@ public struct LayoutSubview: Equatable {
     anchor: UnitPoint = .topLeading,
     proposal: ProposedViewSize
   ) {
-    place(proposal, dimensions(in: proposal), position, anchor)
+    storage.place(
+      proposal,
+      dimensions(in: proposal),
+      position,
+      anchor
+    )
+  }
+
+  public static func == (lhs: LayoutSubview, rhs: LayoutSubview) -> Bool {
+    lhs.id == rhs.id
   }
 }

@@ -22,7 +22,6 @@ extension FiberReconciler {
     var elementIndices = [ObjectIdentifier: Int]()
     var layoutCaches = [ObjectIdentifier: LayoutCache]()
     var layoutSubviews = [ObjectIdentifier: LayoutSubviews]()
-    var elementChildren = [ObjectIdentifier: [Fiber]]()
     var mutations = [Mutation<Renderer>]()
 
     struct LayoutCache {
@@ -64,15 +63,15 @@ extension FiberReconciler {
     func clear() {
       elementIndices = [:]
       layoutSubviews = [:]
-      elementChildren = [:]
       mutations = []
     }
 
-    func layoutCache(for fiber: Fiber) -> LayoutCache {
-      layoutCaches[
+    func layoutCache(for fiber: Fiber) -> LayoutCache? {
+      guard let layout = fiber.layout else { return nil }
+      return layoutCaches[
         ObjectIdentifier(fiber),
         default: .init(
-          cache: fiber.layout.makeCache(subviews: layoutSubviews(for: fiber)),
+          cache: layout.makeCache(subviews: layoutSubviews(for: fiber)),
           sizeThatFits: [:],
           dimensions: [:],
           isDirty: false
@@ -80,13 +79,14 @@ extension FiberReconciler {
       ]
     }
 
-    func updateLayoutCache<R>(for fiber: Fiber, _ action: (inout LayoutCache) -> R) -> R {
+    func updateLayoutCache<R>(for fiber: Fiber, _ action: (inout LayoutCache) -> R) -> R? {
+      guard let layout = fiber.layout else { return nil }
       let subviews = layoutSubviews(for: fiber)
       let key = ObjectIdentifier(fiber)
       var cache = layoutCaches[
         key,
         default: .init(
-          cache: fiber.layout.makeCache(subviews: subviews),
+          cache: layout.makeCache(subviews: subviews),
           sizeThatFits: [:],
           dimensions: [:],
           isDirty: false
@@ -94,7 +94,7 @@ extension FiberReconciler {
       ]
       // If the cache is dirty, update it before calling `action`.
       if cache.isDirty {
-        fiber.layout.updateCache(&cache.cache, subviews: subviews)
+        layout.updateCache(&cache.cache, subviews: subviews)
         cache.isDirty = false
       }
       defer { layoutCaches[key] = cache }
@@ -112,10 +112,6 @@ extension FiberReconciler {
         elementIndices[key] = result + 1
       }
       return result
-    }
-
-    func appendChild(parent: Fiber, child: Fiber) {
-      elementChildren[ObjectIdentifier(parent), default: []].append(child)
     }
   }
 }
