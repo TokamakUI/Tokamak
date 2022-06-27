@@ -41,6 +41,14 @@ public struct _TraitWritingModifier<Trait>: ViewModifier, _TraitWritingModifierP
   public func modifyViewTraitStore(_ viewTraitStore: inout _ViewTraitStore) {
     viewTraitStore.insert(value, forKey: Trait.self)
   }
+
+  public static func _makeView(_ inputs: ViewInputs<_TraitWritingModifier<Trait>>)
+    -> ViewOutputs
+  {
+    var store = inputs.traits ?? .init()
+    store.insert(inputs.content.value, forKey: Trait.self)
+    return .init(inputs: inputs, traits: store)
+  }
 }
 
 extension ModifiedContent: _TraitWritingModifierProtocol

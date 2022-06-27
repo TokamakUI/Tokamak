@@ -23,6 +23,8 @@ public struct ViewGeometry: Equatable {
 
   @_spi(TokamakCore)
   public let dimensions: ViewDimensions
+
+  let proposal: ProposedViewSize
 }
 
 /// The position of the `View` relative to its parent.

@@ -11,39 +11,34 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 6/20/22.
+//
 
 import Foundation
 
-public struct ProposedViewSize: Equatable, Sendable {
+@frozen
+public struct ProposedViewSize: Equatable {
   public var width: CGFloat?
   public var height: CGFloat?
-
+  public static let zero: ProposedViewSize = .init(width: 0, height: 0)
+  public static let unspecified: ProposedViewSize = .init(width: nil, height: nil)
+  public static let infinity: ProposedViewSize = .init(width: .infinity, height: .infinity)
   @inlinable
   public init(width: CGFloat?, height: CGFloat?) {
-    self.width = width
-    self.height = height
+    (self.width, self.height) = (width, height)
   }
-}
 
-public extension ProposedViewSize {
   @inlinable
-  init(_ size: CGSize) {
+  public init(_ size: CGSize) {
     self.init(width: size.width, height: size.height)
   }
 
-  static let unspecified = ProposedViewSize(width: nil, height: nil)
-  static let zero = ProposedViewSize(width: 0, height: 0)
-  static let infinity = ProposedViewSize(width: .infinity, height: .infinity)
-}
-
-public extension ProposedViewSize {
   @inlinable
-  func replacingUnspecifiedDimensions(
-    by size: CGSize = CGSize(width: 10, height: 10)
-  ) -> CGSize {
-    CGSize(
-      width: width ?? size.width,
-      height: height ?? size.height
-    )
+  public func replacingUnspecifiedDimensions(by size: CGSize = CGSize(
+    width: 10,
+    height: 10
+  )) -> CGSize {
+    CGSize(width: width ?? size.width, height: height ?? size.height)
   }
 }

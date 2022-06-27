@@ -31,10 +31,7 @@ public extension Shape {
 
     // SwiftUI seems to not compute the path at all and just return
     // the following.
-    CGSize(
-      width: proposal.width ?? 10,
-      height: proposal.height ?? 10
-    )
+    proposal.replacingUnspecifiedDimensions()
   }
 }
 
@@ -69,7 +66,9 @@ public struct FillStyle: Equatable {
   }
 }
 
-public struct _ShapeView<Content, Style>: _PrimitiveView where Content: Shape, Style: ShapeStyle {
+public struct _ShapeView<Content, Style>: _PrimitiveView, Layout where Content: Shape,
+  Style: ShapeStyle
+{
   @Environment(\.self)
   public var environment
 
@@ -86,8 +85,30 @@ public struct _ShapeView<Content, Style>: _PrimitiveView where Content: Shape, S
     self.fillStyle = fillStyle
   }
 
-  public static func _makeView(_ inputs: ViewInputs<_ShapeView<Content, Style>>) -> ViewOutputs {
-    .init(inputs: inputs, layoutComputer: FlexLayoutComputer.init)
+  public func spacing(subviews: Subviews, cache: inout ()) -> ViewSpacing {
+    .init()
+  }
+
+  public func sizeThatFits(
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) -> CGSize {
+    proposal.replacingUnspecifiedDimensions()
+  }
+
+  public func placeSubviews(
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) {
+    for subview in subviews {
+      subview.place(
+        at: bounds.origin,
+        proposal: .init(width: bounds.width, height: bounds.height)
+      )
+    }
   }
 }
 

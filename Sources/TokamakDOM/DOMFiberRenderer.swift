@@ -146,12 +146,16 @@ public struct DOMFiberRenderer: FiberRenderer {
 
   public func measureText(
     _ text: Text,
-    proposedSize: CGSize,
+    proposal: ProposedViewSize,
     in environment: EnvironmentValues
   ) -> CGSize {
     let element = createElement(.init(from: .init(from: text, useDynamicLayout: true)))
-    _ = element.style.setProperty("maxWidth", "\(proposedSize.width)px")
-    _ = element.style.setProperty("maxHeight", "\(proposedSize.height)px")
+    if let width = proposal.width {
+      _ = element.style.setProperty("maxWidth", "\(width)px")
+    }
+    if let height = proposal.height {
+      _ = element.style.setProperty("maxHeight", "\(height)px")
+    }
     _ = document.body.appendChild(element)
     let rect = element.getBoundingClientRect!()
     let size = CGSize(

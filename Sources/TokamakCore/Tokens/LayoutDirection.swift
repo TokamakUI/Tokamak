@@ -12,14 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 5/30/22.
+//  Created by Carson Katri on 6/20/22.
 //
 
-import Foundation
+public enum LayoutDirection: Hashable, CaseIterable {
+  case leftToRight
+  case rightToLeft
+}
 
-public extension Scene {
-  // By default, we simply pass the inputs through without modifications.
-  static func _makeScene(_ inputs: SceneInputs<Self>) -> SceneOutputs {
-    .init(inputs: inputs)
+extension EnvironmentValues {
+  private enum LayoutDirectionKey: EnvironmentKey {
+    static var defaultValue: LayoutDirection = .leftToRight
+  }
+
+  public var layoutDirection: LayoutDirection {
+    get { self[LayoutDirectionKey.self] }
+    set { self[LayoutDirectionKey.self] = newValue }
   }
 }

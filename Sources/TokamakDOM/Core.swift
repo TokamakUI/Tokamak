@@ -117,6 +117,7 @@ public typealias CGAffineTransform = TokamakCore.CGAffineTransform
 #endif
 
 public typealias Angle = TokamakCore.Angle
+public typealias Axis = TokamakCore.Axis
 public typealias UnitPoint = TokamakCore.UnitPoint
 
 public typealias Edge = TokamakCore.Edge
@@ -178,6 +179,9 @@ public typealias ZStack = TokamakCore.ZStack
 public typealias View = TokamakCore.View
 public typealias AnyView = TokamakCore.AnyView
 public typealias EmptyView = TokamakCore.EmptyView
+
+public typealias Layout = TokamakCore.Layout
+public typealias AnyLayout = TokamakCore.AnyLayout
 
 // MARK: Toolbars
 

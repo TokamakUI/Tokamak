@@ -47,6 +47,7 @@ public extension FiberReconciler {
     /// which requires all stored properties be set before capturing.
     @_spi(TokamakCore)
     public var content: Content!
+
     /// Outputs from evaluating `View._makeView`
     ///
     /// Stored as an IUO because creating `ViewOutputs` depends on
@@ -54,28 +55,42 @@ public extension FiberReconciler {
     /// all stored properties be set before using.
     /// `outputs` is guaranteed to be set in the initializer.
     var outputs: ViewOutputs!
+
+    /// The erased `Layout` to use for this content.
+    ///
+    /// Stored as an IUO because it uses `bindProperties` to create the underlying instance.
+    var layout: AnyLayout?
+
     /// The identity of this `View`
     var id: Identity?
-    /// The mounted element, if this is a Renderer primitive.
+
+    /// The mounted element, if this is a `Renderer` primitive.
     var element: Renderer.ElementType?
-    /// The index of this element in its elementParent
+
+    /// The index of this element in its `elementParent`
     var elementIndex: Int?
+
     /// The first child node.
     @_spi(TokamakCore)
     public var child: Fiber?
+
     /// This node's right sibling.
     @_spi(TokamakCore)
     public var sibling: Fiber?
+
     /// An unowned reference to the parent node.
     ///
     /// Parent references are `unowned` (as opposed to `weak`)
     /// because the parent will always exist if a child does.
     /// If the parent is released, the child is released with it.
     unowned var parent: Fiber?
+
     /// The nearest parent that can be mounted on.
     unowned var elementParent: Fiber?
+
     /// The cached type information for the underlying `View`.
     var typeInfo: TypeInfo?
+
     /// Boxes that store `State` data.
     var state: [PropertyInfo: MutableStorage] = [:]
 
@@ -115,6 +130,7 @@ public extension FiberReconciler {
       parent: Fiber?,
       elementParent: Fiber?,
       elementIndex: Int?,
+      traits: _ViewTraitStore?,
       reconciler: FiberReconciler<Renderer>?
     ) {
       self.reconciler = reconciler
@@ -126,12 +142,12 @@ public extension FiberReconciler {
 
       let environment = parent?.outputs.environment ?? .init(.init())
       state = bindProperties(to: &view, typeInfo, environment.environment)
-      outputs = V._makeView(
-        .init(
-          content: view,
-          environment: environment
-        )
+      let viewInputs = ViewInputs(
+        content: view,
+        environment: environment,
+        traits: traits
       )
+      outputs = V._makeView(viewInputs)
 
       content = content(for: view)
 
@@ -141,6 +157,10 @@ public extension FiberReconciler {
         self.element = .init(
           from: .init(from: view, useDynamicLayout: reconciler?.renderer.useDynamicLayout ?? false)
         )
+      }
+
+      if self.element != nil {
+        layout = (view as? _AnyLayout)?._erased() ?? DefaultLayout.shared
       }
 
       // Only specify an `elementIndex` if we have an element.
@@ -154,6 +174,8 @@ public extension FiberReconciler {
         // Create the alternate lazily
         let alternate = Fiber(
           bound: alternateView,
+          state: self.state,
+          layout: self.layout,
           alternate: self,
           outputs: self.outputs,
           typeInfo: self.typeInfo,
@@ -182,6 +204,8 @@ public extension FiberReconciler {
 
     init<V: View>(
       bound view: V,
+      state: [PropertyInfo: MutableStorage],
+      layout: AnyLayout!,
       alternate: Fiber,
       outputs: ViewOutputs,
       typeInfo: TypeInfo?,
@@ -199,6 +223,10 @@ public extension FiberReconciler {
       self.elementParent = elementParent
       self.typeInfo = typeInfo
       self.outputs = outputs
+      self.state = state
+      if element != nil {
+        self.layout = layout
+      }
       content = content(for: view)
     }
 
@@ -213,10 +241,13 @@ public extension FiberReconciler {
       for property in typeInfo.properties where property.type is DynamicProperty.Type {
         var value = property.get(from: content)
         if var storage = value as? WritableValueStorage {
-          let box = MutableStorage(initialValue: storage.anyInitialValue, onSet: { [weak self] in
-            guard let self = self else { return }
-            self.reconciler?.reconcile(from: self)
-          })
+          let box = self.state[property] ?? MutableStorage(
+            initialValue: storage.anyInitialValue,
+            onSet: { [weak self] in
+              guard let self = self else { return }
+              self.reconciler?.reconcile(from: self)
+            }
+          )
           state[property] = box
           storage.getter = { box.value }
           storage.setter = { box.setValue($0, with: $1) }
@@ -237,7 +268,8 @@ public extension FiberReconciler {
 
     func update<V: View>(
       with view: inout V,
-      elementIndex: Int?
+      elementIndex: Int?,
+      traits: _ViewTraitStore?
     ) -> Renderer.ElementType.Content? {
       typeInfo = TokamakCore.typeInfo(of: V.self)
 
@@ -246,10 +278,16 @@ public extension FiberReconciler {
       let environment = parent?.outputs.environment ?? .init(.init())
       state = bindProperties(to: &view, typeInfo, environment.environment)
       content = content(for: view)
-      outputs = V._makeView(.init(
+      let inputs = ViewInputs(
         content: view,
-        environment: environment
-      ))
+        environment: environment,
+        traits: traits
+      )
+      outputs = V._makeView(inputs)
+
+      if element != nil {
+        layout = (view as? _AnyLayout)?._erased() ?? DefaultLayout.shared
+      }
 
       if Renderer.isPrimitive(view) {
         return .init(from: view, useDynamicLayout: reconciler?.renderer.useDynamicLayout ?? false)
@@ -272,14 +310,14 @@ public extension FiberReconciler {
       elementParent = nil
       element = rootElement
       typeInfo = TokamakCore.typeInfo(of: A.self)
-
       state = bindProperties(to: &app, typeInfo, rootEnvironment)
       outputs = .init(
-        inputs: .init(content: app, environment: .init(rootEnvironment)),
-        layoutComputer: RootLayoutComputer.init
+        inputs: .init(content: app, environment: .init(rootEnvironment), traits: .init())
       )
 
       content = content(for: app)
+
+      layout = .init(RootLayout(renderer: reconciler.renderer))
 
       let alternateApp = app
       createAndBindAlternate = { [weak self] in
@@ -287,6 +325,8 @@ public extension FiberReconciler {
         // Create the alternate lazily
         let alternate = Fiber(
           bound: alternateApp,
+          state: self.state,
+          layout: self.layout,
           alternate: self,
           outputs: self.outputs,
           typeInfo: self.typeInfo,
@@ -300,6 +340,8 @@ public extension FiberReconciler {
 
     init<A: App>(
       bound app: A,
+      state: [PropertyInfo: MutableStorage],
+      layout: AnyLayout?,
       alternate: Fiber,
       outputs: SceneOutputs,
       typeInfo: TypeInfo?,
@@ -315,6 +357,8 @@ public extension FiberReconciler {
       elementParent = nil
       self.typeInfo = typeInfo
       self.outputs = outputs
+      self.state = state
+      self.layout = layout
       content = content(for: app)
     }
 
@@ -339,11 +383,16 @@ public extension FiberReconciler {
       outputs = S._makeScene(
         .init(
           content: scene,
-          environment: environment
+          environment: environment,
+          traits: .init()
         )
       )
 
       content = content(for: scene)
+
+      if element != nil {
+        layout = (scene as? _AnyLayout)?._erased() ?? DefaultLayout.shared
+      }
 
       let alternateScene = scene
       createAndBindAlternate = { [weak self] in
@@ -351,6 +400,8 @@ public extension FiberReconciler {
         // Create the alternate lazily
         let alternate = Fiber(
           bound: alternateScene,
+          state: self.state,
+          layout: self.layout,
           alternate: self,
           outputs: self.outputs,
           typeInfo: self.typeInfo,
@@ -379,6 +430,8 @@ public extension FiberReconciler {
 
     init<S: Scene>(
       bound scene: S,
+      state: [PropertyInfo: MutableStorage],
+      layout: AnyLayout!,
       alternate: Fiber,
       outputs: SceneOutputs,
       typeInfo: TypeInfo?,
@@ -396,6 +449,10 @@ public extension FiberReconciler {
       self.elementParent = elementParent
       self.typeInfo = typeInfo
       self.outputs = outputs
+      self.state = state
+      if element != nil {
+        self.layout = layout
+      }
       content = content(for: scene)
     }
 
@@ -409,8 +466,13 @@ public extension FiberReconciler {
       content = content(for: scene)
       outputs = S._makeScene(.init(
         content: scene,
-        environment: environment
+        environment: environment,
+        traits: .init()
       ))
+
+      if element != nil {
+        layout = (scene as? _AnyLayout)?._erased() ?? DefaultLayout.shared
+      }
 
       return nil
     }

@@ -29,12 +29,12 @@ extension FiberReconciler {
       var sibling: Result?
       var newContent: Renderer.ElementType.Content?
       var elementIndices: [ObjectIdentifier: Int]
-      var layoutContexts: [ObjectIdentifier: LayoutContext]
 
       // For reducing
       var lastSibling: Result?
       var nextExisting: Fiber?
       var nextExistingAlternate: Fiber?
+      var pendingTraits: _ViewTraitStore
 
       init(
         fiber: Fiber?,
@@ -44,7 +44,7 @@ extension FiberReconciler {
         alternateChild: Fiber?,
         newContent: Renderer.ElementType.Content? = nil,
         elementIndices: [ObjectIdentifier: Int],
-        layoutContexts: [ObjectIdentifier: LayoutContext]
+        pendingTraits: _ViewTraitStore
       ) {
         self.fiber = fiber
         self.visitChildren = visitChildren
@@ -53,7 +53,7 @@ extension FiberReconciler {
         nextExistingAlternate = alternateChild
         self.newContent = newContent
         self.elementIndices = elementIndices
-        self.layoutContexts = layoutContexts
+        self.pendingTraits = pendingTraits
       }
     }
 
@@ -61,7 +61,7 @@ extension FiberReconciler {
       Self.reduce(
         into: &partialResult,
         nextValue: nextScene,
-        createFiber: { scene, element, parent, elementParent, _, reconciler in
+        createFiber: { scene, element, parent, elementParent, _, _, reconciler in
           Fiber(
             &scene,
             element: element,
@@ -71,7 +71,7 @@ extension FiberReconciler {
             reconciler: reconciler
           )
         },
-        update: { fiber, scene, _ in
+        update: { fiber, scene, _, _ in
           fiber.update(with: &scene)
         },
         visitChildren: { $1._visitChildren }
@@ -82,18 +82,23 @@ extension FiberReconciler {
       Self.reduce(
         into: &partialResult,
         nextValue: nextView,
-        createFiber: { view, element, parent, elementParent, elementIndex, reconciler in
+        createFiber: { view, element, parent, elementParent, elementIndex, traits, reconciler in
           Fiber(
             &view,
             element: element,
             parent: parent,
             elementParent: elementParent,
             elementIndex: elementIndex,
+            traits: traits,
             reconciler: reconciler
           )
         },
-        update: { fiber, view, elementIndex in
-          fiber.update(with: &view, elementIndex: elementIndex)
+        update: { fiber, view, elementIndex, traits in
+          fiber.update(
+            with: &view,
+            elementIndex: elementIndex,
+            traits: fiber.element != nil ? traits : nil
+          )
         },
         visitChildren: { reconciler, view in
           reconciler?.renderer.viewVisitor(for: view) ?? view._visitChildren
@@ -104,9 +109,16 @@ extension FiberReconciler {
     static func reduce<T>(
       into partialResult: inout Result,
       nextValue: T,
-      createFiber: (inout T, Renderer.ElementType?, Fiber?, Fiber?, Int?, FiberReconciler?)
-        -> Fiber,
-      update: (Fiber, inout T, Int?) -> Renderer.ElementType.Content?,
+      createFiber: (
+        inout T,
+        Renderer.ElementType?,
+        Fiber?,
+        Fiber?,
+        Int?,
+        _ViewTraitStore,
+        FiberReconciler?
+      ) -> Fiber,
+      update: (Fiber, inout T, Int?, _ViewTraitStore) -> Renderer.ElementType.Content?,
       visitChildren: (FiberReconciler?, T) -> (TreeReducer.SceneVisitor) -> ()
     ) {
       // Create the node and its element.
@@ -123,7 +135,8 @@ extension FiberReconciler {
         let newContent = update(
           existing,
           &nextValue,
-          key.map { partialResult.elementIndices[$0, default: 0] }
+          key.map { partialResult.elementIndices[$0, default: 0] },
+          partialResult.pendingTraits
         )
         resultChild = Result(
           fiber: existing,
@@ -133,9 +146,10 @@ extension FiberReconciler {
           alternateChild: existing.alternate?.child,
           newContent: newContent,
           elementIndices: partialResult.elementIndices,
-          layoutContexts: partialResult.layoutContexts
+          pendingTraits: existing.element != nil ? .init() : partialResult.pendingTraits
         )
         partialResult.nextExisting = existing.sibling
+        partialResult.nextExistingAlternate = partialResult.nextExistingAlternate?.sibling
       } else {
         let elementParent = partialResult.fiber?.element != nil
           ? partialResult.fiber
@@ -153,6 +167,7 @@ extension FiberReconciler {
           partialResult.fiber,
           elementParent,
           key.map { partialResult.elementIndices[$0, default: 0] },
+          partialResult.pendingTraits,
           partialResult.fiber?.reconciler
         )
         // If a fiber already exists for an alternate, link them.
@@ -167,7 +182,7 @@ extension FiberReconciler {
           child: nil,
           alternateChild: fiber.alternate?.child,
           elementIndices: partialResult.elementIndices,
-          layoutContexts: partialResult.layoutContexts
+          pendingTraits: fiber.element != nil ? .init() : partialResult.pendingTraits
         )
       }
       // Get the last child element we've processed, and add the new child as its sibling.

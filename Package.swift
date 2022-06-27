@@ -196,6 +196,18 @@ let package = Package(
       dependencies: ["TokamakCore"]
     ),
     .testTarget(
+      name: "TokamakLayoutTests",
+      dependencies: [
+        "TokamakCore",
+        "TokamakStaticHTML",
+        .product(
+          name: "SnapshotTesting",
+          package: "swift-snapshot-testing",
+          condition: .when(platforms: [.macOS])
+        ),
+      ]
+    ),
+    .testTarget(
       name: "TokamakReconcilerTests",
       dependencies: [
         "TokamakCore",

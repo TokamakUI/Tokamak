@@ -12,14 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 5/30/22.
+//  Created by Carson Katri on 6/20/22.
 //
 
-import Foundation
+/// A key that stores a value that can be accessed via a `LayoutSubview`.
+public protocol LayoutValueKey {
+  associatedtype Value
+  static var defaultValue: Self.Value { get }
+}
 
-public extension Scene {
-  // By default, we simply pass the inputs through without modifications.
-  static func _makeScene(_ inputs: SceneInputs<Self>) -> SceneOutputs {
-    .init(inputs: inputs)
+public extension View {
+  @inlinable
+  func layoutValue<K>(key: K.Type, value: K.Value) -> some View where K: LayoutValueKey {
+    // LayoutValueKey uses trait keys under the hood.
+    _trait(_LayoutTrait<K>.self, value)
+  }
+}
+
+public struct _LayoutTrait<K>: _ViewTraitKey where K: LayoutValueKey {
+  public static var defaultValue: K.Value {
+    K.defaultValue
   }
 }

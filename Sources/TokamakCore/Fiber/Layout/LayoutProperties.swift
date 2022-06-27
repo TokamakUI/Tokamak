@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 5/30/22.
+//  Created by Carson Katri on 6/20/22.
 //
 
-import Foundation
+/// Metadata about a `Layout`.
+public struct LayoutProperties {
+  public var stackOrientation: Axis?
 
-public extension Scene {
-  // By default, we simply pass the inputs through without modifications.
-  static func _makeScene(_ inputs: SceneInputs<Self>) -> SceneOutputs {
-    .init(inputs: inputs)
+  public init() {
+    stackOrientation = nil
   }
 }

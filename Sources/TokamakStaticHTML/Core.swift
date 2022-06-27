@@ -61,8 +61,15 @@ public typealias AngularGradient = TokamakCore.AngularGradient
 
 // MARK: Primitive values
 
+public typealias Axis = TokamakCore.Axis
+
 public typealias Color = TokamakCore.Color
 public typealias Font = TokamakCore.Font
+
+public typealias Alignment = TokamakCore.Alignment
+public typealias AlignmentID = TokamakCore.AlignmentID
+public typealias HorizontalAlignment = TokamakCore.HorizontalAlignment
+public typealias VerticalAlignment = TokamakCore.VerticalAlignment
 
 #if !canImport(CoreGraphics)
 public typealias CGAffineTransform = TokamakCore.CGAffineTransform
@@ -92,6 +99,9 @@ public typealias Link = TokamakCore.Link
 public typealias View = TokamakCore.View
 public typealias AnyView = TokamakCore.AnyView
 public typealias EmptyView = TokamakCore.EmptyView
+
+public typealias Layout = TokamakCore.Layout
+public typealias AnyLayout = TokamakCore.AnyLayout
 
 // MARK: Toolbars
 

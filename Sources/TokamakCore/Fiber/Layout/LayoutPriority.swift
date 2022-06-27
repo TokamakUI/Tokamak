@@ -12,31 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 5/24/22.
+//  Created by Carson Katri on 6/22/22.
 //
 
 import Foundation
 
-/// A `LayoutComputer` that fills its parent.
-@_spi(TokamakCore)
-public struct FlexLayoutComputer: LayoutComputer {
-  let proposedSize: CGSize
+@usableFromInline
+enum LayoutPriorityTraitKey: _ViewTraitKey {
+  @inlinable
+  static var defaultValue: Double { 0 }
+}
 
-  public init(proposedSize: CGSize) {
-    self.proposedSize = proposedSize
-  }
-
-  public func proposeSize<V>(for child: V, at index: Int, in context: LayoutContext) -> CGSize
-    where V: View
-  {
-    proposedSize
-  }
-
-  public func position(_ child: LayoutContext.Child, in context: LayoutContext) -> CGPoint {
-    .zero
-  }
-
-  public func requestSize(in context: LayoutContext) -> CGSize {
-    proposedSize
+public extension View {
+  @inlinable
+  func layoutPriority(_ value: Double) -> some View {
+    _trait(LayoutPriorityTraitKey.self, value)
   }
 }
