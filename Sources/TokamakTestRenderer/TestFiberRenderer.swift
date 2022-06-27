@@ -137,7 +137,7 @@ public struct TestFiberRenderer: FiberRenderer {
   }
 
   public func measureImage(
-    _ image: _AnyImageProviderBox,
+    _ image: Image,
     proposal: ProposedViewSize,
     in environment: EnvironmentValues
   ) -> CGSize {
