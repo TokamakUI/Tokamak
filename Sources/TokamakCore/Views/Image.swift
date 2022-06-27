@@ -101,10 +101,15 @@ private class ResizableProvider: _AnyImageProviderBox {
 }
 
 public struct Image: _PrimitiveView, Equatable {
-  let provider: _AnyImageProviderBox
+  @_spi(TokamakCore)
+  public let provider: _AnyImageProviderBox
 
   @Environment(\.self)
   var environment
+
+  @_spi(TokamakCore)
+  @State
+  public var intrinsicSize: CGSize?
 
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.provider == rhs.provider
@@ -151,4 +156,25 @@ public struct _ImageProxy {
 
   public var provider: _AnyImageProviderBox { subject.provider }
   public var environment: EnvironmentValues { subject.environment }
+}
+
+extension Image: Layout {
+  public func sizeThatFits(
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) -> CGSize {
+    environment.measureImage(self, proposal, environment)
+  }
+
+  public func placeSubviews(
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) {
+    for subview in subviews {
+      subview.place(at: bounds.origin, proposal: proposal)
+    }
+  }
 }

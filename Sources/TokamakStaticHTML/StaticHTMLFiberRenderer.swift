@@ -226,6 +226,14 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
     .zero
   }
 
+  public func measureImage(
+    _ image: Image,
+    proposal: ProposedViewSize,
+    in environment: EnvironmentValues
+  ) -> CGSize {
+    .zero
+  }
+
   public func render<A: App>(_ app: A) -> String {
     _ = FiberReconciler(self, app)
     return """

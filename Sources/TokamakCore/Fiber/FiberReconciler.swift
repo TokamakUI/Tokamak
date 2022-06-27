@@ -38,18 +38,23 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
 
   private let caches: Caches
 
+  private var isReconciling = false
+  public var afterReconcileActions = [() -> ()]()
+
   struct RootView<Content: View>: View {
     let content: Content
-    let renderer: Renderer
+    let reconciler: FiberReconciler<Renderer>
 
     var environment: EnvironmentValues {
-      var environment = renderer.defaultEnvironment
-      environment.measureText = renderer.measureText
+      var environment = reconciler.renderer.defaultEnvironment
+      environment.measureText = reconciler.renderer.measureText
+      environment.measureImage = reconciler.renderer.measureImage
+      environment.afterReconcile = reconciler.afterReconcile
       return environment
     }
 
     var body: some View {
-      RootLayout(renderer: renderer).callAsFunction {
+      RootLayout(renderer: reconciler.renderer).callAsFunction {
         content
           .environmentValues(environment)
       }
@@ -94,7 +99,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       passes = [.reconcile]
     }
     caches = Caches()
-    var view = RootView(content: view, renderer: renderer)
+    var view = RootView(content: view, reconciler: self)
     current = .init(
       &view,
       element: renderer.rootElement,
@@ -119,6 +124,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     caches = Caches()
     var environment = renderer.defaultEnvironment
     environment.measureText = renderer.measureText
+    environment.measureImage = renderer.measureImage
+    environment.afterReconcile = afterReconcile
     var app = app
     current = .init(
       &app,
@@ -195,7 +202,17 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     }
   }
 
+  func afterReconcile(_ action: @escaping () -> ()) {
+    guard isReconciling == true
+    else {
+      action()
+      return
+    }
+    afterReconcileActions.append(action)
+  }
+
   func reconcile(from updateRoot: Fiber) {
+    isReconciling = true
     let root: Fiber
     if renderer.useDynamicLayout {
       // We need to re-layout from the top down when using dynamic layout.
@@ -232,5 +249,22 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       root.child = root.alternate?.child
       root.alternate?.child = child
     }
+
+    isReconciling = false
+
+    for action in afterReconcileActions {
+      action()
+    }
+  }
+}
+
+public extension EnvironmentValues {
+  private enum AfterReconcileKey: EnvironmentKey {
+    static let defaultValue: (@escaping () -> ()) -> () = { _ in }
+  }
+
+  var afterReconcile: (@escaping () -> ()) -> () {
+    get { self[AfterReconcileKey.self] }
+    set { self[AfterReconcileKey.self] = newValue }
   }
 }

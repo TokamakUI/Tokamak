@@ -15,6 +15,7 @@
 //  Created by Max Desiatov on 11/04/2020.
 //
 
+@_spi(TokamakCore)
 import TokamakCore
 
 public typealias Image = TokamakCore.Image
@@ -48,5 +49,44 @@ struct _HTMLImage: View {
       attributes["alt"] = _TextProxy(label).rawText
     }
     return AnyView(HTML("img", attributes))
+  }
+}
+
+@_spi(TokamakStaticHTML)
+extension Image: HTMLConvertible {
+  public var tag: String { "img" }
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    let proxy = _ImageProxy(self)
+    let resolved = proxy.provider.resolve(in: proxy.environment)
+
+    switch resolved.storage {
+    case let .named(name, bundle):
+      let src = bundle?.path(forResource: name, ofType: nil) ?? name
+      if useDynamicLayout {
+        return [
+          "src": src,
+          "data-loaded": intrinsicSize != nil ? "true" : "false",
+        ]
+      } else {
+        return [
+          "src": src,
+          "style": "max-width: 100%; max-height: 100%;",
+        ]
+      }
+    case let .resizable(.named(name, bundle), _, _):
+      let src = bundle?.path(forResource: name, ofType: nil) ?? name
+      if useDynamicLayout {
+        return [
+          "src": src,
+          "data-loaded": intrinsicSize != nil ? "true" : "false",
+        ]
+      } else {
+        return [
+          "src": src,
+          "style": "width: 100%; height: 100%;",
+        ]
+      }
+    default: return [:]
+    }
   }
 }

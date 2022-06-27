@@ -166,6 +166,68 @@ public struct DOMFiberRenderer: FiberRenderer {
     return size
   }
 
+  final class ImageCache {
+    var values = [String: CGSize]()
+  }
+
+  private var imageCache = ImageCache()
+
+  private func loadImageSize(src: String, _ onload: @escaping (CGSize) -> ()) {
+    if let cached = imageCache.values[src] {
+      return onload(cached)
+    }
+
+    let Image = JSObject.global.Image.function!
+    let jsImage = Image.new()
+    jsImage.src = .string(src)
+    jsImage.onload = JSOneshotClosure { value in
+      let naturalSize = CGSize(
+        width: value[0].target.object!.naturalWidth.number!,
+        height: value[0].target.object!.naturalHeight.number!
+      )
+      imageCache.values[src] = naturalSize
+      onload(naturalSize)
+      return .undefined
+    }.jsValue
+  }
+
+  public func measureImage(
+    _ image: Image,
+    proposal: ProposedViewSize,
+    in environment: EnvironmentValues
+  ) -> CGSize {
+    switch image.provider.resolve(in: environment).storage {
+    case let .named(name, bundle):
+      loadImageSize(
+        src: bundle?
+          .path(forResource: name, ofType: nil) ?? name
+      ) { naturalSize in
+        environment.afterReconcile {
+          image.intrinsicSize = naturalSize
+        }
+      }
+      return .zero
+    case let .resizable(.named(name, bundle: bundle), capInsets, resizingMode):
+      if proposal == .unspecified {
+        if let intrinsicSize = image.intrinsicSize {
+          return intrinsicSize
+        }
+        loadImageSize(
+          src: bundle?
+            .path(forResource: name, ofType: nil) ?? name
+        ) { naturalSize in
+          environment.afterReconcile {
+            image.intrinsicSize = naturalSize
+          }
+        }
+        return .zero
+      }
+      return proposal.replacingUnspecifiedDimensions()
+    default:
+      return .zero
+    }
+  }
+
   private func apply(_ content: DOMElement.Content, to element: JSObject) {
     for (attribute, value) in content.attributes {
       if attribute.isUpdatedAsProperty {
@@ -183,9 +245,11 @@ public struct DOMFiberRenderer: FiberRenderer {
         return .undefined
       })
     }
+    #if DEBUG
     for (key, value) in content.debugData {
       element.dataset.object?[dynamicMember: key] = value.jsValue
     }
+    #endif
   }
 
   private func apply(_ geometry: ViewGeometry, to element: JSObject) {
