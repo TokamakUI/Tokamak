@@ -136,6 +136,14 @@ public struct TestFiberRenderer: FiberRenderer {
     proposal.replacingUnspecifiedDimensions()
   }
 
+  public func measureImage(
+    _ image: Image,
+    proposal: ProposedViewSize,
+    in environment: EnvironmentValues
+  ) -> CGSize {
+    proposal.replacingUnspecifiedDimensions()
+  }
+
   public typealias ElementType = TestFiberElement
 
   public let rootElement: ElementType

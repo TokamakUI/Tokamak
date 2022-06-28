@@ -230,14 +230,14 @@ struct ReconcilePass: FiberReconcilerPass {
        let parent = node.fiber?.elementParent?.element
     {
       if node.fiber?.alternate == nil { // This didn't exist before (no alternate)
-        if let fiber = node.fiber?.elementParent {
+        if let fiber = node.fiber {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
         }
         return .insert(element: element, parent: parent, index: index)
       } else if node.fiber?.typeInfo?.type != node.fiber?.alternate?.typeInfo?.type,
                 let previous = node.fiber?.alternate?.element
       {
-        if let fiber = node.fiber?.elementParent {
+        if let fiber = node.fiber {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
         }
         // This is a completely different type of view.
@@ -245,7 +245,7 @@ struct ReconcilePass: FiberReconcilerPass {
       } else if let newContent = node.newContent,
                 newContent != element.content
       {
-        if let fiber = node.fiber?.elementParent {
+        if let fiber = node.fiber {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
         }
         // This is the same type of view, but its backing data has changed.

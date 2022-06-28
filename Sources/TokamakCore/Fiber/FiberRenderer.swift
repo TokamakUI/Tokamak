@@ -21,24 +21,39 @@ import Foundation
 public protocol FiberRenderer {
   /// The element class this renderer uses.
   associatedtype ElementType: FiberElement
+
   /// Check whether a `View` is a primitive for this renderer.
   static func isPrimitive<V>(_ view: V) -> Bool where V: View
+
   func visitPrimitiveChildren<Primitive, Visitor>(
     _ view: Primitive
   ) -> ViewVisitorF<Visitor>? where Primitive: View, Visitor: ViewVisitor
+
   /// Apply the mutations to the elements.
   func commit(_ mutations: [Mutation<Self>])
+
   /// The root element all top level views should be mounted on.
   var rootElement: ElementType { get }
+
   /// The smallest set of initial `EnvironmentValues` needed for this renderer to function.
   var defaultEnvironment: EnvironmentValues { get }
+
   /// The size of the window we are rendering in.
   var sceneSize: CGSize { get }
+
   /// Whether layout is enabled for this renderer.
   var useDynamicLayout: Bool { get }
+
   /// Calculate the size of `Text` in `environment` for layout.
   func measureText(
     _ text: Text,
+    proposal: ProposedViewSize,
+    in environment: EnvironmentValues
+  ) -> CGSize
+
+  /// Calculate the size of an `Image` in `environment` for layout.
+  func measureImage(
+    _ image: Image,
     proposal: ProposedViewSize,
     in environment: EnvironmentValues
   ) -> CGSize
@@ -84,5 +99,16 @@ extension EnvironmentValues {
   var measureText: (Text, ProposedViewSize, EnvironmentValues) -> CGSize {
     get { self[MeasureTextKey.self] }
     set { self[MeasureTextKey.self] = newValue }
+  }
+
+  private enum MeasureImageKey: EnvironmentKey {
+    static var defaultValue: (Image, ProposedViewSize, EnvironmentValues) -> CGSize {
+      { _, _, _ in .zero }
+    }
+  }
+
+  var measureImage: (Image, ProposedViewSize, EnvironmentValues) -> CGSize {
+    get { self[MeasureImageKey.self] }
+    set { self[MeasureImageKey.self] = newValue }
   }
 }
