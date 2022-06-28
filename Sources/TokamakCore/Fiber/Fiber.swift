@@ -94,6 +94,9 @@ public extension FiberReconciler {
     /// Boxes that store `State` data.
     var state: [PropertyInfo: MutableStorage] = [:]
 
+    /// Storage for `PreferenceKey` values as they are passed up the tree.
+    var preferences: _PreferenceStore = .init()
+
     /// The computed dimensions and origin.
     var geometry: ViewGeometry?
 
@@ -175,6 +178,7 @@ public extension FiberReconciler {
         let alternate = Fiber(
           bound: alternateView,
           state: self.state,
+          preferences: self.preferences,
           layout: self.layout,
           alternate: self,
           outputs: self.outputs,
@@ -205,6 +209,7 @@ public extension FiberReconciler {
     init<V: View>(
       bound view: V,
       state: [PropertyInfo: MutableStorage],
+      preferences: _PreferenceStore,
       layout: AnyLayout!,
       alternate: Fiber,
       outputs: ViewOutputs,
@@ -224,6 +229,7 @@ public extension FiberReconciler {
       self.typeInfo = typeInfo
       self.outputs = outputs
       self.state = state
+      self.preferences = preferences
       if element != nil {
         self.layout = layout
       }
@@ -326,6 +332,7 @@ public extension FiberReconciler {
         let alternate = Fiber(
           bound: alternateApp,
           state: self.state,
+          preferences: self.preferences,
           layout: self.layout,
           alternate: self,
           outputs: self.outputs,
@@ -341,6 +348,7 @@ public extension FiberReconciler {
     init<A: App>(
       bound app: A,
       state: [PropertyInfo: MutableStorage],
+      preferences: _PreferenceStore,
       layout: AnyLayout?,
       alternate: Fiber,
       outputs: SceneOutputs,
@@ -358,6 +366,7 @@ public extension FiberReconciler {
       self.typeInfo = typeInfo
       self.outputs = outputs
       self.state = state
+      self.preferences = preferences
       self.layout = layout
       content = content(for: app)
     }
@@ -401,6 +410,7 @@ public extension FiberReconciler {
         let alternate = Fiber(
           bound: alternateScene,
           state: self.state,
+          preferences: self.preferences,
           layout: self.layout,
           alternate: self,
           outputs: self.outputs,
@@ -431,6 +441,7 @@ public extension FiberReconciler {
     init<S: Scene>(
       bound scene: S,
       state: [PropertyInfo: MutableStorage],
+      preferences: _PreferenceStore,
       layout: AnyLayout!,
       alternate: Fiber,
       outputs: SceneOutputs,
@@ -450,6 +461,7 @@ public extension FiberReconciler {
       self.typeInfo = typeInfo
       self.outputs = outputs
       self.state = state
+      self.preferences = preferences
       if element != nil {
         self.layout = layout
       }

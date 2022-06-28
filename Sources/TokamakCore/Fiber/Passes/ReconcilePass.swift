@@ -74,6 +74,8 @@ struct ReconcilePass: FiberReconcilerPass {
     // Traits that should be attached to the nearest rendered child.
     var pendingTraits = _ViewTraitStore()
 
+    var pendingPreferenceActions = [(_PreferenceStore, (_PreferenceStore) -> ())]()
+
     while true {
       if node.fiber === reconcileRoot || node.fiber?.alternate === reconcileRoot {
         shouldReconcile = true
@@ -175,6 +177,16 @@ struct ReconcilePass: FiberReconcilerPass {
            fiber.element != nil
         {
           propagateCacheInvalidation(for: fiber, in: reconciler, caches: caches)
+        }
+
+        if let preferences = node.fiber?.preferences {
+          node.fiber?.outputs.transformPreferences?(preferences)
+          if let parentPreferences = node.fiber?.parent?.preferences {
+            preferences.merge(into: parentPreferences)
+          }
+          if let action = node.fiber?.outputs.preferenceAction {
+            pendingPreferenceActions.append((preferences, action))
+          }
         }
 
         var alternateSibling = node.fiber?.alternate?.sibling

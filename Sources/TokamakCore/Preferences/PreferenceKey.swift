@@ -25,7 +25,11 @@ public extension PreferenceKey where Self.Value: ExpressibleByNilLiteral {
   static var defaultValue: Value { nil }
 }
 
-public struct _PreferenceValue<Key> where Key: PreferenceKey {
+public protocol _PreferenceValueProtocol {
+  func merge(into other: inout _PreferenceValueProtocol)
+}
+
+public struct _PreferenceValue<Key>: _PreferenceValueProtocol where Key: PreferenceKey {
   /// Every value the `Key` has had.
   var valueList: [Key.Value]
   /// The latest value.
@@ -38,6 +42,12 @@ public struct _PreferenceValue<Key> where Key: PreferenceKey {
       Key.reduce(value: &prev) { next }
     }
   }
+
+  public func merge(into other: inout _PreferenceValueProtocol) {
+    guard var typedOther = other as? Self else { return }
+    typedOther.valueList.append(contentsOf: valueList)
+    other = typedOther
+  }
 }
 
 public extension _PreferenceValue {
@@ -48,13 +58,17 @@ public extension _PreferenceValue {
   }
 }
 
-public final class _PreferenceStore {
+public final class _PreferenceStore: CustomDebugStringConvertible {
   /// The backing values of the `_PreferenceStore`.
-  private var values: [String: Any]
+  private var values: [String: _PreferenceValueProtocol]
 
   weak var parent: _PreferenceStore?
 
-  public init(values: [String: Any] = [:]) {
+  public var debugDescription: String {
+    "PreferenceStore: \(values)"
+  }
+
+  public init(values: [String: _PreferenceValueProtocol] = [:]) {
     self.values = values
   }
 
@@ -68,9 +82,21 @@ public final class _PreferenceStore {
   public func insert<Key>(_ value: Key.Value, forKey key: Key.Type = Key.self)
     where Key: PreferenceKey
   {
-    let previousValues = self.value(forKey: key).valueList
-    values[String(reflecting: key)] = _PreferenceValue<Key>(valueList: previousValues + [value])
+    var previousValues = self.value(forKey: key).valueList
+    previousValues.append(value)
+    values[String(reflecting: key)] = _PreferenceValue<Key>(valueList: previousValues)
     parent?.insert(value, forKey: key)
+  }
+
+  func merge(into other: _PreferenceStore) {
+    for value in values {
+      if var otherValue = other.values[value.key] {
+        value.value.merge(into: &otherValue)
+        other.values[value.key] = otherValue
+      } else {
+        other.values[value.key] = value.value
+      }
+    }
   }
 }
 

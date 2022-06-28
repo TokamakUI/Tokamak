@@ -31,6 +31,19 @@ public struct _PreferenceActionModifier<Key>: _PreferenceWritingModifierProtocol
     }
     return content.view
   }
+
+  public static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
+    .init(
+      inputs: inputs,
+      preferenceAction: {
+        let value = $0.value(forKey: Key.self)
+        let previousValue = value.reduce(value.valueList.dropLast())
+        if previousValue != value.value {
+          inputs.content.action(value.value)
+        }
+      }
+    )
+  }
 }
 
 public extension View {

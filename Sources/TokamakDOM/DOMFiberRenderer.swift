@@ -117,6 +117,10 @@ public struct DOMFiberRenderer: FiberRenderer {
       _ = reference.style.setProperty("width", "100vw")
       _ = reference.style.setProperty("height", "100vh")
       _ = reference.style.setProperty("position", "relative")
+    } else {
+      let style = document.createElement!("style").object!
+      style.innerHTML = .string(TokamakStaticHTML.tokamakStyles)
+      _ = document.head.appendChild(style)
     }
   }
 

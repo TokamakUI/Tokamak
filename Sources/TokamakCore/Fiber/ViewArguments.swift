@@ -33,7 +33,9 @@ public struct ViewOutputs {
   /// This is stored as a reference to avoid copying the environment when unnecessary.
   let environment: EnvironmentBox
 
-  let preferences: _PreferenceStore
+  let transformPreferences: ((_PreferenceStore) -> ())?
+
+  let preferenceAction: ((_PreferenceStore) -> ())?
 
   let traits: _ViewTraitStore?
 }
@@ -51,13 +53,15 @@ public extension ViewOutputs {
   init<V>(
     inputs: ViewInputs<V>,
     environment: EnvironmentValues? = nil,
-    preferences: _PreferenceStore? = nil,
+    transformPreferences: ((_PreferenceStore) -> ())? = nil,
+    preferenceAction: ((_PreferenceStore) -> ())? = nil,
     traits: _ViewTraitStore? = nil
   ) {
     // Only replace the `EnvironmentBox` when we change the environment.
     // Otherwise the same box can be reused.
     self.environment = environment.map(EnvironmentBox.init) ?? inputs.environment
-    self.preferences = preferences ?? .init()
+    self.transformPreferences = transformPreferences
+    self.preferenceAction = preferenceAction
     self.traits = traits ?? inputs.traits
   }
 }
