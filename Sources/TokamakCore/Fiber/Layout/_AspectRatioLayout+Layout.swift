@@ -22,11 +22,10 @@ private struct AspectRatioLayout: Layout {
   let contentMode: ContentMode
 
   func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+    let proposal = proposal.replacingUnspecifiedDimensions()
     let aspectRatio: CGFloat
-    let maxAxis: Axis
     if let ratio = self.aspectRatio {
       aspectRatio = ratio
-      maxAxis = ratio > 1 ? .horizontal : .vertical
     } else {
       let idealSubviewSize = subviews.first?.sizeThatFits(.unspecified) ?? .zero
       if idealSubviewSize.height == 0 {
@@ -34,36 +33,45 @@ private struct AspectRatioLayout: Layout {
       } else {
         aspectRatio = idealSubviewSize.width / idealSubviewSize.height
       }
-      maxAxis = idealSubviewSize.width > idealSubviewSize.height ? .horizontal : .vertical
     }
-    let proposal = proposal.replacingUnspecifiedDimensions()
-    let widthRatio = aspectRatio
-    let heightRatio = 1 / aspectRatio
+    let maxAxis: Axis
     switch contentMode {
     case .fit:
-      if maxAxis == .horizontal {
-        return .init(
-          width: proposal.width,
-          height: heightRatio * proposal.width
-        )
+      if proposal.width == proposal.height {
+        if aspectRatio >= 1 {
+          maxAxis = .vertical
+        } else {
+          maxAxis = .horizontal
+        }
+      } else if proposal.width > proposal.height {
+        maxAxis = .horizontal
       } else {
-        return .init(
-          width: widthRatio * proposal.width,
-          height: proposal.height
-        )
+        maxAxis = .vertical
       }
     case .fill:
-      if maxAxis == .horizontal {
-        return .init(
-          width: widthRatio * proposal.width,
-          height: proposal.width
-        )
+      if proposal.width == proposal.height {
+        if aspectRatio >= 1 {
+          maxAxis = .horizontal
+        } else {
+          maxAxis = .vertical
+        }
+      } else if proposal.width > proposal.height {
+        maxAxis = .vertical
       } else {
-        return .init(
-          width: proposal.width,
-          height: heightRatio * proposal.height
-        )
+        maxAxis = .horizontal
       }
+    }
+    switch maxAxis {
+    case .horizontal:
+      return .init(
+        width: aspectRatio * proposal.height,
+        height: proposal.height
+      )
+    case .vertical:
+      return .init(
+        width: proposal.width,
+        height: (1 / aspectRatio) * proposal.width
+      )
     }
   }
 
