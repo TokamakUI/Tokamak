@@ -109,7 +109,7 @@ public struct Image: _PrimitiveView, Equatable {
 
   @_spi(TokamakCore)
   @State
-  public var intrinsicSize: CGSize?
+  public var _intrinsicSize: CGSize?
 
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.provider == rhs.provider

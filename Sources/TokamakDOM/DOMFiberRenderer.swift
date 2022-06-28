@@ -203,13 +203,13 @@ public struct DOMFiberRenderer: FiberRenderer {
           .path(forResource: name, ofType: nil) ?? name
       ) { naturalSize in
         environment.afterReconcile {
-          image.intrinsicSize = naturalSize
+          image._intrinsicSize = naturalSize
         }
       }
       return .zero
     case let .resizable(.named(name, bundle: bundle), capInsets, resizingMode):
       if proposal == .unspecified {
-        if let intrinsicSize = image.intrinsicSize {
+        if let intrinsicSize = image._intrinsicSize {
           return intrinsicSize
         }
         loadImageSize(
@@ -217,7 +217,7 @@ public struct DOMFiberRenderer: FiberRenderer {
             .path(forResource: name, ofType: nil) ?? name
         ) { naturalSize in
           environment.afterReconcile {
-            image.intrinsicSize = naturalSize
+            image._intrinsicSize = naturalSize
           }
         }
         return .zero

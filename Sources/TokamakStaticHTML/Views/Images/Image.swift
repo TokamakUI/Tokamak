@@ -65,7 +65,7 @@ extension Image: HTMLConvertible {
       if useDynamicLayout {
         return [
           "src": src,
-          "data-loaded": intrinsicSize != nil ? "true" : "false",
+          "data-loaded": _intrinsicSize != nil ? "true" : "false",
         ]
       } else {
         return [
@@ -78,7 +78,7 @@ extension Image: HTMLConvertible {
       if useDynamicLayout {
         return [
           "src": src,
-          "data-loaded": intrinsicSize != nil ? "true" : "false",
+          "data-loaded": _intrinsicSize != nil ? "true" : "false",
         ]
       } else {
         return [
