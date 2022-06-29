@@ -98,7 +98,6 @@ public extension StackLayout {
   }
 
   func updateCache(_ cache: inout Cache, subviews: Subviews) {
-    print("Update cache for \(subviews)")
     cache.maxSubview = nil
     // Ensure we have enough space in `idealSizes` for each subview.
     cache.idealSizes = Array(repeating: .zero, count: subviews.count)
@@ -118,7 +117,6 @@ public extension StackLayout {
 
     /// The aggregate minimum size of each `View` with a given priority.
     var prioritySize = [Double: CGFloat]()
-
     let measuredSubviews = subviews.enumerated().map { index, view -> MeasuredSubview in
       priorityCount[view.priority, default: 0] += 1
 

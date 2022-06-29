@@ -22,7 +22,7 @@ extension FiberReconciler.Fiber: CustomDebugStringConvertible {
     {
       return "Text(\"\(text.storage.rawText)\")"
     }
-    return typeInfo?.name ?? "Unknown"
+    return "\(typeInfo?.name ?? "Unknown") \(ObjectIdentifier(self).debugDescription.split(separator: "(")[1].split(separator: ")")[0])"
   }
 
   private func flush(level: Int = 0) -> String {

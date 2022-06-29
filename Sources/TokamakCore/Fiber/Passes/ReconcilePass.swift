@@ -131,11 +131,10 @@ struct ReconcilePass: FiberReconcilerPass {
         if let element = fiber.element,
            let elementParent = fiber.elementParent
         {
-          print("Add \(fiber) to \(elementParent)")
           let parentKey = ObjectIdentifier(elementParent)
           let subview = LayoutSubview(
             id: ObjectIdentifier(fiber),
-            traits: node.fiber?.outputs.traits,
+            traits: fiber.outputs.traits,
             fiber: fiber,
             element: element,
             caches: caches
