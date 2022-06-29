@@ -255,12 +255,6 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
   }
 
   public func schedule(_ action: @escaping () -> ()) {
-    #if canImport(Dispatch)
-    DispatchQueue.main.async {
-      action()
-    }
-    #else
-    fatalError("`schedule` requires Dispatch.")
-    #endif
+    action()
   }
 }

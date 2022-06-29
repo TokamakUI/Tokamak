@@ -178,8 +178,6 @@ public struct TestFiberRenderer: FiberRenderer {
   }
 
   public func schedule(_ action: @escaping () -> ()) {
-    DispatchQueue.main.async {
-      action()
-    }
+    action()
   }
 }
