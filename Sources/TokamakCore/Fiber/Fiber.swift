@@ -16,6 +16,7 @@
 //
 
 import Foundation
+import OpenCombineShim
 
 // swiftlint:disable type_body_length
 @_spi(TokamakCore)
@@ -97,6 +98,9 @@ public extension FiberReconciler {
 
     /// Boxes that store `State` data.
     var state: [PropertyInfo: MutableStorage] = [:]
+
+    /// Subscribed `Cancellable`s
+    var subscriptions: [PropertyInfo: AnyCancellable] = [:]
 
     /// Storage for `PreferenceKey` values as they are passed up the tree.
     var preferences: _PreferenceStore?
@@ -273,9 +277,23 @@ public extension FiberReconciler {
           storage.getter = { box.value }
           storage.setter = { box.setValue($0, with: $1) }
           value = storage
+        } else if var storage = value as? ValueStorage {
+          let box = self.state[property] ?? MutableStorage(
+            initialValue: storage.anyInitialValue,
+            onSet: {}
+          )
+          state[property] = box
+          storage.getter = { box.value }
+          value = storage
         } else if var environmentReader = value as? EnvironmentReader {
           environmentReader.setContent(from: environment)
           value = environmentReader
+        }
+        if let observed = value as? ObservedProperty {
+          subscriptions[property] = observed.objectWillChange.sink { [weak self] _ in
+            guard let self = self else { return }
+            self.reconciler?.fiberChanged(self)
+          }
         }
         property.set(value: value, on: &content)
       }

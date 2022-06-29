@@ -131,6 +131,7 @@ struct ReconcilePass: FiberReconcilerPass {
         if let element = fiber.element,
            let elementParent = fiber.elementParent
         {
+          print("Add \(fiber) to \(elementParent)")
           let parentKey = ObjectIdentifier(elementParent)
           let subview = LayoutSubview(
             id: ObjectIdentifier(fiber),
@@ -190,15 +191,6 @@ struct ReconcilePass: FiberReconcilerPass {
         if let preferences = node.fiber?.preferences {
           node.fiber?.outputs.transformPreferences?(preferences)
           if let parentPreferences = node.fiber?.preferenceParent?.preferences {
-//              print(
-//                """
-//                === MERGE ===
-//                \(node.fiber!)
-//                    \(preferences)
-//                \(node.fiber!.preferenceParent!)
-//                    \(parentPreferences)
-//                """
-//              )
             parentPreferences.merge(preferences)
           }
           if let action = node.fiber?.outputs.preferenceAction {

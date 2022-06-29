@@ -98,6 +98,7 @@ public extension StackLayout {
   }
 
   func updateCache(_ cache: inout Cache, subviews: Subviews) {
+    print("Update cache for \(subviews)")
     cache.maxSubview = nil
     // Ensure we have enough space in `idealSizes` for each subview.
     cache.idealSizes = Array(repeating: .zero, count: subviews.count)
