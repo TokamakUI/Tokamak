@@ -269,6 +269,7 @@ public extension FiberReconciler {
       content = erased as! T
     }
 
+    /// Collect `DynamicProperty`s and link their state changes to the reconciler.
     private func bindProperties(
       to content: inout Any,
       _ typeInfo: TypeInfo?,
@@ -278,7 +279,9 @@ public extension FiberReconciler {
 
       for property in typeInfo.properties where property.type is DynamicProperty.Type {
         var value = property.get(from: content)
+        // Bind nested properties.
         bindProperties(to: &value, TokamakCore.typeInfo(of: property.type), environment)
+        // Create boxes for `@State` and other mutable properties.
         if var storage = value as? WritableValueStorage {
           let box = self.state[property] ?? MutableStorage(
             initialValue: storage.anyInitialValue,
@@ -291,6 +294,7 @@ public extension FiberReconciler {
           storage.getter = { box.value }
           storage.setter = { box.setValue($0, with: $1) }
           value = storage
+          // Create boxes for `@StateObject` and other immutable properties.
         } else if var storage = value as? ValueStorage {
           let box = self.state[property] ?? MutableStorage(
             initialValue: storage.anyInitialValue,
@@ -299,10 +303,12 @@ public extension FiberReconciler {
           state[property] = box
           storage.getter = { box.value }
           value = storage
+          // Read from the environment.
         } else if var environmentReader = value as? EnvironmentReader {
           environmentReader.setContent(from: environment)
           value = environmentReader
         }
+        // Subscribe to observable properties.
         if let observed = value as? ObservedProperty {
           subscriptions[property] = observed.objectWillChange.sink { [weak self] _ in
             guard let self = self else { return }
@@ -317,6 +323,7 @@ public extension FiberReconciler {
       }
     }
 
+    /// Call `update()` on each `DynamicProperty` in the type.
     private func updateDynamicProperties(
       of content: inout Any,
       _ typeInfo: TypeInfo?
@@ -324,6 +331,7 @@ public extension FiberReconciler {
       guard let typeInfo = typeInfo else { return }
       for property in typeInfo.properties where property.type is DynamicProperty.Type {
         var value = property.get(from: content)
+        // Update nested properties.
         updateDynamicProperties(of: &value, TokamakCore.typeInfo(of: property.type))
         // swiftlint:disable:next force_cast
         var dynamicProperty = value as! DynamicProperty
@@ -332,6 +340,7 @@ public extension FiberReconciler {
       }
     }
 
+    /// Update each `DynamicProperty` in our content.
     func updateDynamicProperties() {
       guard let content = content else { return }
       switch content {
