@@ -57,6 +57,11 @@ public protocol FiberRenderer {
     proposal: ProposedViewSize,
     in environment: EnvironmentValues
   ) -> CGSize
+
+  /// Run `action` on the next runloop.
+  ///
+  /// Called by the `FiberReconciler` to perform all reconciliation at once.
+  func schedule(_ action: @escaping () -> ())
 }
 
 public extension FiberRenderer {

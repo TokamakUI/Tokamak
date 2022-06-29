@@ -61,12 +61,13 @@ extension FiberReconciler {
       Self.reduce(
         into: &partialResult,
         nextValue: nextScene,
-        createFiber: { scene, element, parent, elementParent, _, _, reconciler in
+        createFiber: { scene, element, parent, elementParent, preferenceParent, _, _, reconciler in
           Fiber(
             &scene,
             element: element,
             parent: parent,
             elementParent: elementParent,
+            preferenceParent: preferenceParent,
             environment: nil,
             reconciler: reconciler
           )
@@ -82,12 +83,16 @@ extension FiberReconciler {
       Self.reduce(
         into: &partialResult,
         nextValue: nextView,
-        createFiber: { view, element, parent, elementParent, elementIndex, traits, reconciler in
+        createFiber: {
+          view, element,
+            parent, elementParent, preferenceParent, elementIndex,
+            traits, reconciler in
           Fiber(
             &view,
             element: element,
             parent: parent,
             elementParent: elementParent,
+            preferenceParent: preferenceParent,
             elementIndex: elementIndex,
             traits: traits,
             reconciler: reconciler
@@ -112,6 +117,7 @@ extension FiberReconciler {
       createFiber: (
         inout T,
         Renderer.ElementType?,
+        Fiber?,
         Fiber?,
         Fiber?,
         Int?,
@@ -154,6 +160,9 @@ extension FiberReconciler {
         let elementParent = partialResult.fiber?.element != nil
           ? partialResult.fiber
           : partialResult.fiber?.elementParent
+        let preferenceParent = partialResult.fiber?.preferences != nil
+          ? partialResult.fiber
+          : partialResult.fiber?.preferenceParent
         let key: ObjectIdentifier?
         if let elementParent = elementParent {
           key = ObjectIdentifier(elementParent)
@@ -166,6 +175,7 @@ extension FiberReconciler {
           partialResult.nextExistingAlternate?.element,
           partialResult.fiber,
           elementParent,
+          preferenceParent,
           key.map { partialResult.elementIndices[$0, default: 0] },
           partialResult.pendingTraits,
           partialResult.fiber?.reconciler

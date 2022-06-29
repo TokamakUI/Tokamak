@@ -17,6 +17,7 @@
 
 import Foundation
 
+// swiftlint:disable type_body_length
 @_spi(TokamakCore)
 public extension FiberReconciler {
   /// A manager for a single `View`.
@@ -88,6 +89,9 @@ public extension FiberReconciler {
     /// The nearest parent that can be mounted on.
     unowned var elementParent: Fiber?
 
+    /// The nearest parent that receives preferences.
+    unowned var preferenceParent: Fiber?
+
     /// The cached type information for the underlying `View`.
     var typeInfo: TypeInfo?
 
@@ -95,7 +99,7 @@ public extension FiberReconciler {
     var state: [PropertyInfo: MutableStorage] = [:]
 
     /// Storage for `PreferenceKey` values as they are passed up the tree.
-    var preferences: _PreferenceStore = .init()
+    var preferences: _PreferenceStore?
 
     /// The computed dimensions and origin.
     var geometry: ViewGeometry?
@@ -132,6 +136,7 @@ public extension FiberReconciler {
       element: Renderer.ElementType?,
       parent: Fiber?,
       elementParent: Fiber?,
+      preferenceParent: Fiber?,
       elementIndex: Int?,
       traits: _ViewTraitStore?,
       reconciler: FiberReconciler<Renderer>?
@@ -141,17 +146,24 @@ public extension FiberReconciler {
       sibling = nil
       self.parent = parent
       self.elementParent = elementParent
+      self.preferenceParent = preferenceParent
       typeInfo = TokamakCore.typeInfo(of: V.self)
 
       let environment = parent?.outputs.environment ?? .init(.init())
       state = bindProperties(to: &view, typeInfo, environment.environment)
+      var updateView = view
       let viewInputs = ViewInputs(
         content: view,
+        updateContent: { $0(&updateView) },
         environment: environment,
-        traits: traits
+        traits: traits,
+        preferenceStore: preferences
       )
       outputs = V._makeView(viewInputs)
-
+      if let preferenceStore = outputs.preferenceStore {
+        preferences = preferenceStore
+      }
+      view = updateView
       content = content(for: view)
 
       if let element = element {
@@ -186,6 +198,7 @@ public extension FiberReconciler {
           element: self.element,
           parent: self.parent?.alternate,
           elementParent: self.elementParent?.alternate,
+          preferenceParent: self.preferenceParent?.alternate,
           reconciler: reconciler
         )
         self.alternate = alternate
@@ -209,7 +222,7 @@ public extension FiberReconciler {
     init<V: View>(
       bound view: V,
       state: [PropertyInfo: MutableStorage],
-      preferences: _PreferenceStore,
+      preferences: _PreferenceStore?,
       layout: AnyLayout!,
       alternate: Fiber,
       outputs: ViewOutputs,
@@ -217,6 +230,7 @@ public extension FiberReconciler {
       element: Renderer.ElementType?,
       parent: FiberReconciler<Renderer>.Fiber?,
       elementParent: Fiber?,
+      preferenceParent: Fiber?,
       reconciler: FiberReconciler<Renderer>?
     ) {
       self.alternate = alternate
@@ -226,6 +240,7 @@ public extension FiberReconciler {
       sibling = nil
       self.parent = parent
       self.elementParent = elementParent
+      self.preferenceParent = preferenceParent
       self.typeInfo = typeInfo
       self.outputs = outputs
       self.state = state
@@ -251,7 +266,7 @@ public extension FiberReconciler {
             initialValue: storage.anyInitialValue,
             onSet: { [weak self] in
               guard let self = self else { return }
-              self.reconciler?.reconcile(from: self)
+              self.reconciler?.fiberChanged(self)
             }
           )
           state[property] = box
@@ -283,13 +298,19 @@ public extension FiberReconciler {
 
       let environment = parent?.outputs.environment ?? .init(.init())
       state = bindProperties(to: &view, typeInfo, environment.environment)
-      content = content(for: view)
+      var updateView = view
       let inputs = ViewInputs(
         content: view,
+        updateContent: {
+          $0(&updateView)
+        },
         environment: environment,
-        traits: traits
+        traits: traits,
+        preferenceStore: preferences
       )
       outputs = V._makeView(inputs)
+      view = updateView
+      content = content(for: view)
 
       if element != nil {
         layout = (view as? _AnyLayout)?._erased() ?? DefaultLayout.shared
@@ -314,13 +335,26 @@ public extension FiberReconciler {
       // `App`s are always the root, so they can have no parent.
       parent = nil
       elementParent = nil
+      preferenceParent = nil
       element = rootElement
       typeInfo = TokamakCore.typeInfo(of: A.self)
       state = bindProperties(to: &app, typeInfo, rootEnvironment)
+      var updateApp = app
       outputs = .init(
-        inputs: .init(content: app, environment: .init(rootEnvironment), traits: .init())
+        inputs: .init(
+          content: app,
+          updateContent: {
+            $0(&updateApp)
+          },
+          environment: .init(rootEnvironment),
+          traits: .init(),
+          preferenceStore: preferences
+        )
       )
-
+      if let preferenceStore = outputs.preferenceStore {
+        preferences = preferenceStore
+      }
+      app = updateApp
       content = content(for: app)
 
       layout = .init(RootLayout(renderer: reconciler.renderer))
@@ -348,7 +382,7 @@ public extension FiberReconciler {
     init<A: App>(
       bound app: A,
       state: [PropertyInfo: MutableStorage],
-      preferences: _PreferenceStore,
+      preferences: _PreferenceStore?,
       layout: AnyLayout?,
       alternate: Fiber,
       outputs: SceneOutputs,
@@ -363,6 +397,7 @@ public extension FiberReconciler {
       sibling = nil
       parent = nil
       elementParent = nil
+      preferenceParent = nil
       self.typeInfo = typeInfo
       self.outputs = outputs
       self.state = state
@@ -376,6 +411,7 @@ public extension FiberReconciler {
       element: Renderer.ElementType?,
       parent: Fiber?,
       elementParent: Fiber?,
+      preferenceParent: Fiber?,
       environment: EnvironmentBox?,
       reconciler: FiberReconciler<Renderer>?
     ) {
@@ -385,18 +421,27 @@ public extension FiberReconciler {
       self.parent = parent
       self.elementParent = elementParent
       self.element = element
+      self.preferenceParent = preferenceParent
       typeInfo = TokamakCore.typeInfo(of: S.self)
 
       let environment = environment ?? parent?.outputs.environment ?? .init(.init())
       state = bindProperties(to: &scene, typeInfo, environment.environment)
+      var updateScene = scene
       outputs = S._makeScene(
         .init(
           content: scene,
+          updateContent: {
+            $0(&updateScene)
+          },
           environment: environment,
-          traits: .init()
+          traits: .init(),
+          preferenceStore: preferences
         )
       )
-
+      if let preferenceStore = outputs.preferenceStore {
+        preferences = preferenceStore
+      }
+      scene = updateScene
       content = content(for: scene)
 
       if element != nil {
@@ -418,6 +463,7 @@ public extension FiberReconciler {
           element: self.element,
           parent: self.parent?.alternate,
           elementParent: self.elementParent?.alternate,
+          preferenceParent: self.preferenceParent?.alternate,
           reconciler: reconciler
         )
         self.alternate = alternate
@@ -441,7 +487,7 @@ public extension FiberReconciler {
     init<S: Scene>(
       bound scene: S,
       state: [PropertyInfo: MutableStorage],
-      preferences: _PreferenceStore,
+      preferences: _PreferenceStore?,
       layout: AnyLayout!,
       alternate: Fiber,
       outputs: SceneOutputs,
@@ -449,6 +495,7 @@ public extension FiberReconciler {
       element: Renderer.ElementType?,
       parent: FiberReconciler<Renderer>.Fiber?,
       elementParent: Fiber?,
+      preferenceParent: Fiber?,
       reconciler: FiberReconciler<Renderer>?
     ) {
       self.alternate = alternate
@@ -458,6 +505,7 @@ public extension FiberReconciler {
       sibling = nil
       self.parent = parent
       self.elementParent = elementParent
+      self.preferenceParent = preferenceParent
       self.typeInfo = typeInfo
       self.outputs = outputs
       self.state = state
@@ -475,12 +523,18 @@ public extension FiberReconciler {
 
       let environment = parent?.outputs.environment ?? .init(.init())
       state = bindProperties(to: &scene, typeInfo, environment.environment)
-      content = content(for: scene)
+      var updateScene = scene
       outputs = S._makeScene(.init(
         content: scene,
+        updateContent: {
+          $0(&updateScene)
+        },
         environment: environment,
-        traits: .init()
+        traits: .init(),
+        preferenceStore: preferences
       ))
+      scene = updateScene
+      content = content(for: scene)
 
       if element != nil {
         layout = (scene as? _AnyLayout)?._erased() ?? DefaultLayout.shared

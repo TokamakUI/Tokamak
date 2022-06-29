@@ -17,6 +17,7 @@
 
 import Foundation
 import JavaScriptKit
+import OpenCombineJS
 @_spi(TokamakCore)
 import TokamakCore
 @_spi(TokamakStaticHTML)
@@ -302,6 +303,11 @@ public struct DOMFiberRenderer: FiberRenderer {
         apply(geometry, to: element)
       }
     }
+  }
+
+  private let scheduler = JSScheduler()
+  public func schedule(_ action: @escaping () -> ()) {
+    scheduler.schedule(options: nil, action)
   }
 }
 

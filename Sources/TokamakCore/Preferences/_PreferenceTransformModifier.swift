@@ -38,6 +38,7 @@ public struct _PreferenceTransformModifier<Key>: _PreferenceWritingModifierProto
   public static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
     .init(
       inputs: inputs,
+      preferenceStore: inputs.preferenceStore ?? .init(),
       transformPreferences: {
         var value = $0.value(forKey: Key.self).value
         inputs.content.transform(&value)

@@ -25,28 +25,47 @@ public extension PreferenceKey where Self.Value: ExpressibleByNilLiteral {
   static var defaultValue: Value { nil }
 }
 
-public protocol _PreferenceValueProtocol {
-  func merge(into other: inout _PreferenceValueProtocol)
+final class _PreferenceValueStorage: CustomDebugStringConvertible {
+  /// Every value the `Key` has had.
+  var valueList: [Any]
+
+  var debugDescription: String {
+    valueList.debugDescription
+  }
+
+  init<Key: PreferenceKey>(_ key: Key.Type = Key.self) {
+    valueList = []
+  }
+
+  init(valueList: [Any]) {
+    self.valueList = valueList
+  }
+
+  func merge(_ other: _PreferenceValueStorage) {
+    valueList.append(contentsOf: other.valueList)
+  }
+
+  func reset() {
+    valueList = []
+  }
 }
 
-public struct _PreferenceValue<Key>: _PreferenceValueProtocol where Key: PreferenceKey {
-  /// Every value the `Key` has had.
-  var valueList: [Key.Value]
+public struct _PreferenceValue<Key> where Key: PreferenceKey {
+  var storage: _PreferenceValueStorage
+
+  init(storage: _PreferenceValueStorage) {
+    self.storage = storage
+  }
+
   /// The latest value.
   public var value: Key.Value {
-    reduce(valueList)
+    reduce(storage.valueList.compactMap { $0 as? Key.Value })
   }
 
   func reduce(_ values: [Key.Value]) -> Key.Value {
     values.reduce(into: Key.defaultValue) { prev, next in
       Key.reduce(value: &prev) { next }
     }
-  }
-
-  public func merge(into other: inout _PreferenceValueProtocol) {
-    guard var typedOther = other as? Self else { return }
-    typedOther.valueList.append(contentsOf: valueList)
-    other = typedOther
   }
 }
 
@@ -59,43 +78,66 @@ public extension _PreferenceValue {
 }
 
 public final class _PreferenceStore: CustomDebugStringConvertible {
+  private var previousValues: [String: _PreferenceValueStorage]
   /// The backing values of the `_PreferenceStore`.
-  private var values: [String: _PreferenceValueProtocol]
+  private var values: [String: _PreferenceValueStorage]
 
   weak var parent: _PreferenceStore?
 
   public var debugDescription: String {
-    "PreferenceStore: \(values)"
+    "Preferences (\(ObjectIdentifier(self))): \(values)"
   }
 
-  public init(values: [String: _PreferenceValueProtocol] = [:]) {
+  init(values: [String: _PreferenceValueStorage] = [:]) {
+    previousValues = [:]
     self.values = values
   }
 
   public func value<Key>(forKey key: Key.Type = Key.self) -> _PreferenceValue<Key>
     where Key: PreferenceKey
   {
-    values[String(reflecting: key)] as? _PreferenceValue<Key>
-      ?? _PreferenceValue(valueList: [Key.defaultValue])
+    let storage: _PreferenceValueStorage
+    if let existing = values[String(reflecting: key)] {
+      storage = existing
+    } else {
+      storage = .init(key)
+      values[String(reflecting: key)] = storage
+    }
+    return _PreferenceValue(storage: storage)
+  }
+
+  func previousValue<Key>(forKey key: Key.Type = Key.self) -> _PreferenceValue<Key>
+    where Key: PreferenceKey
+  {
+    _PreferenceValue(storage: previousValues[String(reflecting: key)] ?? .init(key))
   }
 
   public func insert<Key>(_ value: Key.Value, forKey key: Key.Type = Key.self)
     where Key: PreferenceKey
   {
-    var previousValues = self.value(forKey: key).valueList
-    previousValues.append(value)
-    values[String(reflecting: key)] = _PreferenceValue<Key>(valueList: previousValues)
+    if !values.keys.contains(String(reflecting: key)) {
+      values[String(reflecting: key)] = .init(key)
+    }
+    values[String(reflecting: key)]?.valueList.append(value)
     parent?.insert(value, forKey: key)
   }
 
-  func merge(into other: _PreferenceStore) {
-    for value in values {
-      if var otherValue = other.values[value.key] {
-        value.value.merge(into: &otherValue)
-        other.values[value.key] = otherValue
+  func merge(_ other: _PreferenceStore) {
+    for (key, otherStorage) in other.values {
+      if let storage = values[key] {
+        storage.merge(otherStorage)
       } else {
-        other.values[value.key] = value.value
+        values[key] = .init(valueList: otherStorage.valueList)
       }
+    }
+  }
+
+  func reset() {
+    previousValues = values.mapValues {
+      _PreferenceValueStorage(valueList: $0.valueList)
+    }
+    for storage in values.values {
+      storage.reset()
     }
   }
 }

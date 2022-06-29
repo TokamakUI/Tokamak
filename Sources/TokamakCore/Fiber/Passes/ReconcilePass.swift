@@ -63,7 +63,7 @@ struct ReconcilePass: FiberReconcilerPass {
   func run<R>(
     in reconciler: FiberReconciler<R>,
     root: FiberReconciler<R>.TreeReducer.Result,
-    reconcileRoot: FiberReconciler<R>.Fiber,
+    changedFibers: Set<ObjectIdentifier>,
     caches: FiberReconciler<R>.Caches
   ) where R: FiberRenderer {
     var node = root
@@ -74,11 +74,17 @@ struct ReconcilePass: FiberReconcilerPass {
     // Traits that should be attached to the nearest rendered child.
     var pendingTraits = _ViewTraitStore()
 
-    var pendingPreferenceActions = [(_PreferenceStore, (_PreferenceStore) -> ())]()
-
     while true {
-      if node.fiber === reconcileRoot || node.fiber?.alternate === reconcileRoot {
-        shouldReconcile = true
+      if !shouldReconcile {
+        if let fiber = node.fiber,
+           changedFibers.contains(ObjectIdentifier(fiber))
+        {
+          shouldReconcile = true
+        } else if let alternate = node.fiber?.alternate,
+                  changedFibers.contains(ObjectIdentifier(alternate))
+        {
+          shouldReconcile = true
+        }
       }
 
       // If this fiber has an element, set its `elementIndex`
@@ -116,6 +122,8 @@ struct ReconcilePass: FiberReconcilerPass {
       // Compute the children of the node.
       let reducer = FiberReconciler<R>.TreeReducer.SceneVisitor(initialResult: node)
       node.visitChildren(reducer)
+
+      node.fiber?.preferences?.reset()
 
       if reconciler.renderer.useDynamicLayout,
          let fiber = node.fiber
@@ -181,11 +189,20 @@ struct ReconcilePass: FiberReconcilerPass {
 
         if let preferences = node.fiber?.preferences {
           node.fiber?.outputs.transformPreferences?(preferences)
-          if let parentPreferences = node.fiber?.parent?.preferences {
-            preferences.merge(into: parentPreferences)
+          if let parentPreferences = node.fiber?.preferenceParent?.preferences {
+//              print(
+//                """
+//                === MERGE ===
+//                \(node.fiber!)
+//                    \(preferences)
+//                \(node.fiber!.preferenceParent!)
+//                    \(parentPreferences)
+//                """
+//              )
+            parentPreferences.merge(preferences)
           }
           if let action = node.fiber?.outputs.preferenceAction {
-            pendingPreferenceActions.append((preferences, action))
+            action(preferences)
           }
         }
 

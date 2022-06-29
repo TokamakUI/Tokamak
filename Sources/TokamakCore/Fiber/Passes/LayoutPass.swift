@@ -22,7 +22,7 @@ struct LayoutPass: FiberReconcilerPass {
   func run<R>(
     in reconciler: FiberReconciler<R>,
     root: FiberReconciler<R>.TreeReducer.Result,
-    reconcileRoot: FiberReconciler<R>.Fiber,
+    changedFibers: Set<ObjectIdentifier>,
     caches: FiberReconciler<R>.Caches
   ) where R: FiberRenderer {
     guard let root = root.fiber else { return }
