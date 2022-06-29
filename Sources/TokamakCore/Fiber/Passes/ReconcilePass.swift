@@ -119,6 +119,8 @@ struct ReconcilePass: FiberReconcilerPass {
       node.elementIndices = caches.elementIndices
       node.pendingTraits = pendingTraits
 
+      // Update `DynamicProperty`s before accessing the `View`'s body.
+      node.fiber?.updateDynamicProperties()
       // Compute the children of the node.
       let reducer = FiberReconciler<R>.TreeReducer.SceneVisitor(initialResult: node)
       node.visitChildren(reducer)

@@ -19,6 +19,8 @@ import TokamakCore
 
 // MARK: Environment & State
 
+public typealias DynamicProperty = TokamakCore.DynamicProperty
+
 public typealias Environment = TokamakCore.Environment
 public typealias EnvironmentKey = TokamakCore.EnvironmentKey
 public typealias EnvironmentObject = TokamakCore.EnvironmentObject
