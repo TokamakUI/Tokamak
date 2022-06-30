@@ -41,9 +41,7 @@ final class PreferenceTests: XCTestCase {
     }
     let reconciler = TestFiberRenderer(.root, size: .init(width: 500, height: 500))
       .render(TestView())
-    reconciler.turnRunLoop()
     reconciler.fiberChanged(reconciler.current)
-    reconciler.turnRunLoop()
   }
 
   func testOverlay() {
@@ -61,8 +59,6 @@ final class PreferenceTests: XCTestCase {
 
     let reconciler = TestFiberRenderer(.root, size: .init(width: 500, height: 500))
       .render(TestView())
-
-    reconciler.turnRunLoop()
 
     XCTAssertEqual(reconciler.findView(id: "overlay").view, Text("5"))
   }

@@ -20,10 +20,6 @@ import TokamakCore
 
 import TokamakTestRenderer
 
-#if canImport(Dispatch) && !os(WASI)
-import Dispatch
-#endif
-
 @dynamicMemberLookup
 struct TestViewProxy<V: View> {
   let id: AnyHashable
@@ -79,14 +75,5 @@ extension FiberReconciler where Renderer == TestFiberRenderer {
     as type: V.Type = V.self
   ) -> TestViewProxy<V> {
     TestViewProxy<V>(id: id, reconciler: self)
-  }
-
-  /// Wait for the scheduled action to complete.
-  func turnRunLoop() {
-    #if canImport(Dispatch) && !os(WASI)
-    renderer.workItem.workItem?.wait()
-    renderer.workItem.workItem = nil
-    #else
-    #endif
   }
 }

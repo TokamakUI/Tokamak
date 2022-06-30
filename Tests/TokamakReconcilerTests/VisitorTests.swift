@@ -41,7 +41,6 @@ final class VisitorTests: XCTestCase {
               if count < 5 {
                 Button("Increment") {
                   count += 1
-                  print(count)
                 }
                 .identified(by: "increment")
               }
@@ -56,8 +55,6 @@ final class VisitorTests: XCTestCase {
     }
     let reconciler = TestFiberRenderer(.root, size: .zero).render(TestView())
 
-    reconciler.turnRunLoop()
-
     let incrementButton = reconciler.findView(id: "increment", as: Button<Text>.self)
     let countText = reconciler.findView(id: "count", as: Text.self)
     let decrementButton = reconciler.findView(id: "decrement", as: Button<Text>.self)
@@ -68,7 +65,6 @@ final class VisitorTests: XCTestCase {
     for i in 0..<5 {
       XCTAssertEqual(countText.view, Text("\(i)"))
       incrementButton.action?()
-      reconciler.turnRunLoop()
     }
     XCTAssertNil(incrementButton.view, "'Increment' should be hidden when count >= 5")
     XCTAssertNotNil(decrementButton.view, "'Decrement' should be visible when count > 0")
@@ -76,7 +72,6 @@ final class VisitorTests: XCTestCase {
     for i in 0..<5 {
       XCTAssertEqual(countText.view, Text("\(5 - i)"))
       decrementButton.action?()
-      reconciler.turnRunLoop()
     }
     XCTAssertNil(decrementButton.view, "'Decrement' should be hidden when count <= 0")
     XCTAssertNotNil(incrementButton.view, "'Increment' should be visible when count < 5")
@@ -100,13 +95,11 @@ final class VisitorTests: XCTestCase {
     }
 
     let reconciler = TestFiberRenderer(.root, size: .zero).render(TestView())
-    reconciler.turnRunLoop()
 
     let addItemButton = reconciler.findView(id: "addItem", as: Button<Text>.self)
     XCTAssertNotNil(addItemButton)
     for i in 0..<10 {
       addItemButton.action?()
-      reconciler.turnRunLoop()
       XCTAssertEqual(reconciler.findView(id: i).view, Text("Item \(i)"))
     }
   }
@@ -199,13 +192,10 @@ final class VisitorTests: XCTestCase {
 
     let reconciler = TestFiberRenderer(.root, size: .zero).render(TestView())
 
-    reconciler.turnRunLoop()
-
     // State
     let button = reconciler.findView(id: DynamicPropertyTest.state, as: Button<Text>.self)
     XCTAssertEqual(button.label, Text("0"))
     button.action?()
-    reconciler.turnRunLoop()
     XCTAssertEqual(button.label, Text("1"))
 
     // Environment
@@ -221,10 +211,7 @@ final class VisitorTests: XCTestCase {
     )
     XCTAssertEqual(stateObjectButton.label, Text("0"))
     stateObjectButton.action?()
-    #if !canImport(Dispatch) || os(WASI)
     stateObjectButton.action?()
-    #endif
-    reconciler.turnRunLoop()
     XCTAssertEqual(stateObjectButton.label, Text("5"))
 
     XCTAssertEqual(

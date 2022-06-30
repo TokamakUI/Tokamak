@@ -177,24 +177,7 @@ public struct TestFiberRenderer: FiberRenderer {
     }
   }
 
-  #if canImport(Dispatch) && !os(WASI)
-  public final class WorkItemBox {
-    public var workItem: DispatchWorkItem?
-  }
-
-  /// The actively scheduled `DispatchWorkItem`
-  public var workItem: WorkItemBox = .init()
-
-  public func schedule(_ action: @escaping () -> ()) {
-    let workItem = DispatchWorkItem {
-      action()
-    }
-    DispatchQueue.global(qos: .default).async(execute: workItem)
-    self.workItem.workItem = workItem
-  }
-  #else
   public func schedule(_ action: @escaping () -> ()) {
     action()
   }
-  #endif
 }
