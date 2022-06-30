@@ -1,4 +1,4 @@
-// Copyright 2021 Tokamak contributors
+// Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,19 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Carson Katri on 6/29/22.
+//  Created by Carson Katri on 6/30/22.
 //
 
+import Foundation
 @_spi(TokamakCore)
 import TokamakCore
 
-import TokamakTestRenderer
-
+/// A proxy for an identified view in the `TestFiberRenderer`.
+///
+/// The properties are evaluated on access,
+/// so you will never unintentionally access an `alternate` value.
 @dynamicMemberLookup
-struct TestViewProxy<V: View> {
+public struct TestViewProxy<V: View> {
+  /// The id to lookup.
   let id: AnyHashable
+
+  /// The active reconciler instance to search in.
   let reconciler: FiberReconciler<TestFiberRenderer>
-  var fiber: FiberReconciler<TestFiberRenderer>.Fiber? {
+
+  /// Searches for a `Fiber` representing `id`.
+  ///
+  /// - Note: This returns the child of the `identified(by:)` modifier,
+  ///         not the `IdentifiedView` itself.
+  @_spi(TokamakCore)
+  public var fiber: FiberReconciler<TestFiberRenderer>.Fiber? {
     let id = AnyHashable(id)
     let result = TokamakCore.walk(
       reconciler.current
@@ -40,20 +52,24 @@ struct TestViewProxy<V: View> {
     return fiber
   }
 
-  var view: V? {
+  /// The `fiber`'s content casted to `V`.
+  public var view: V? {
     guard case let .view(view, _) = fiber?.content else { return nil }
     return view as? V
   }
 
-  subscript<T>(dynamicMember member: KeyPath<V, T>) -> T? {
+  /// Access properties from the `view` without specifying `.view` manually.
+  public subscript<T>(dynamicMember member: KeyPath<V, T>) -> T? {
     self.view?[keyPath: member]
   }
 }
 
+/// An erased `IdentifiedView`.
 protocol IdentifiedViewProtocol {
   var id: AnyHashable { get }
 }
 
+/// A wrapper that identifies a `View` in a test.
 struct IdentifiedView<Content: View>: View, IdentifiedViewProtocol {
   let id: AnyHashable
   let content: Content
@@ -63,13 +79,20 @@ struct IdentifiedView<Content: View>: View, IdentifiedViewProtocol {
   }
 }
 
-extension View {
+public extension View {
+  /// Identifies a `View` in a test.
+  ///
+  /// You can access this view from the `FiberReconciler` with `findView(id:as:)`.
   func identified<ID: Hashable>(by id: ID) -> some View {
     IdentifiedView(id: id, content: self)
   }
 }
 
-extension FiberReconciler where Renderer == TestFiberRenderer {
+public extension FiberReconciler where Renderer == TestFiberRenderer {
+  /// Find the `View` identified by `ID`.
+  ///
+  /// - Note: This returns a proxy to the child of the `identified(by:)` modifier,
+  ///         not the `IdentifiedView` itself.
   func findView<ID: Hashable, V: View>(
     id: ID,
     as type: V.Type = V.self
