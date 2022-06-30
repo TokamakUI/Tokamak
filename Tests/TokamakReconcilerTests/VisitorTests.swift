@@ -221,6 +221,9 @@ final class VisitorTests: XCTestCase {
     )
     XCTAssertEqual(stateObjectButton.label, Text("0"))
     stateObjectButton.action?()
+    #if !canImport(Dispatch)
+    stateObjectButton.action?()
+    #endif
     reconciler.turnRunLoop()
     XCTAssertEqual(stateObjectButton.label, Text("5"))
 

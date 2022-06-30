@@ -177,6 +177,7 @@ public struct TestFiberRenderer: FiberRenderer {
     }
   }
 
+  #if canImport(Dispatch)
   public final class WorkItemBox {
     public var workItem: DispatchWorkItem?
   }
@@ -191,4 +192,9 @@ public struct TestFiberRenderer: FiberRenderer {
     DispatchQueue.global(qos: .default).async(execute: workItem)
     self.workItem.workItem = workItem
   }
+  #else
+  public func schedule(_ action: @escaping () -> ()) {
+    action()
+  }
+  #endif
 }
