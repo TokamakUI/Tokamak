@@ -81,7 +81,7 @@ extension FiberReconciler where Renderer == TestFiberRenderer {
 
   /// Wait for the scheduled action to complete.
   func turnRunLoop() {
-    TestFiberRenderer.workItem?.wait()
-    TestFiberRenderer.workItem = nil
+    renderer.workItem.workItem?.wait()
+    renderer.workItem.workItem = nil
   }
 }

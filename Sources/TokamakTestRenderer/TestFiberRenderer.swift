@@ -177,13 +177,18 @@ public struct TestFiberRenderer: FiberRenderer {
     }
   }
 
+  public final class WorkItemBox {
+    public var workItem: DispatchWorkItem?
+  }
+
   /// The actively scheduled `DispatchWorkItem`
-  public static var workItem: DispatchWorkItem?
+  public var workItem: WorkItemBox = .init()
+
   public func schedule(_ action: @escaping () -> ()) {
     let workItem = DispatchWorkItem {
       action()
     }
     DispatchQueue.global(qos: .default).async(execute: workItem)
-    Self.workItem = workItem
+    self.workItem.workItem = workItem
   }
 }
