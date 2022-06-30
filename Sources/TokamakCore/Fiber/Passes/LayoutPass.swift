@@ -35,7 +35,7 @@ struct LayoutPass: FiberReconcilerPass {
           fiber.layout?.placeSubviews(
             in: .init(
               origin: .zero,
-              size: fiber.geometry?.dimensions.size ?? reconciler.renderer.sceneSize
+              size: fiber.geometry?.dimensions.size ?? reconciler.renderer.sceneSize.value
             ),
             proposal: fiber.geometry?.proposal ?? .unspecified,
             subviews: caches.layoutSubviews(for: fiber),

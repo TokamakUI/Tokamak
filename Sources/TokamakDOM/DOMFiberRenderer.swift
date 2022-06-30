@@ -17,6 +17,7 @@
 
 import Foundation
 import JavaScriptKit
+import OpenCombineShim
 @_spi(TokamakCore)
 import TokamakCore
 @_spi(TokamakStaticHTML)
@@ -79,9 +80,8 @@ protocol DOMNodeConvertible: HTMLConvertible {
 public struct DOMFiberRenderer: FiberRenderer {
   public let rootElement: DOMElement
 
-  public var sceneSize: CGSize {
-    .init(width: body.clientWidth.number!, height: body.clientHeight.number!)
-  }
+  private let resizeObserver: JSObject?
+  public let sceneSize: CurrentValueSubject<CGSize, Never>
 
   public let useDynamicLayout: Bool
 
@@ -117,6 +117,21 @@ public struct DOMFiberRenderer: FiberRenderer {
       _ = reference.style.setProperty("width", "100vw")
       _ = reference.style.setProperty("height", "100vh")
       _ = reference.style.setProperty("position", "relative")
+
+      let sceneSizePublisher = CurrentValueSubject<CGSize, Never>(
+        .init(width: body.clientWidth.number!, height: body.clientHeight.number!)
+      )
+      sceneSize = sceneSizePublisher
+      resizeObserver = JSObject.global.ResizeObserver.function!.new(JSClosure { _ in
+        sceneSizePublisher.send(
+          .init(width: body.clientWidth.number!, height: body.clientHeight.number!)
+        )
+        return .undefined
+      })
+      _ = resizeObserver?.observe?(body)
+    } else {
+      sceneSize = .init(.zero)
+      resizeObserver = nil
     }
   }
 
@@ -207,7 +222,7 @@ public struct DOMFiberRenderer: FiberRenderer {
         }
       }
       return .zero
-    case let .resizable(.named(name, bundle: bundle), capInsets, resizingMode):
+    case let .resizable(.named(name, bundle: bundle), _, _):
       if proposal == .unspecified {
         if let intrinsicSize = image._intrinsicSize {
           return intrinsicSize

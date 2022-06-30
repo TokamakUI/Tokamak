@@ -16,6 +16,7 @@
 //
 
 import Foundation
+import OpenCombineShim
 
 /// A renderer capable of performing mutations specified by a `FiberReconciler`.
 public protocol FiberRenderer {
@@ -39,7 +40,7 @@ public protocol FiberRenderer {
   var defaultEnvironment: EnvironmentValues { get }
 
   /// The size of the window we are rendering in.
-  var sceneSize: CGSize { get }
+  var sceneSize: CurrentValueSubject<CGSize, Never> { get }
 
   /// Whether layout is enabled for this renderer.
   var useDynamicLayout: Bool { get }

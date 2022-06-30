@@ -16,6 +16,7 @@
 //
 
 import Foundation
+import OpenCombineShim
 @_spi(TokamakCore) import TokamakCore
 
 public protocol TestFiberPrimitive {
@@ -125,7 +126,7 @@ public final class TestFiberElement: FiberElement, CustomStringConvertible {
 }
 
 public struct TestFiberRenderer: FiberRenderer {
-  public let sceneSize: CGSize
+  public let sceneSize: CurrentValueSubject<CGSize, Never>
   public let useDynamicLayout: Bool
 
   public func measureText(
@@ -150,7 +151,7 @@ public struct TestFiberRenderer: FiberRenderer {
 
   public init(_ rootElement: ElementType, size: CGSize, useDynamicLayout: Bool = false) {
     self.rootElement = rootElement
-    sceneSize = size
+    sceneSize = .init(size)
     self.useDynamicLayout = useDynamicLayout
   }
 
