@@ -20,7 +20,7 @@ import TokamakCore
 
 import TokamakTestRenderer
 
-#if canImport(Dispatch)
+#if canImport(Dispatch) && !os(WASI)
 import Dispatch
 #endif
 
