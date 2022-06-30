@@ -20,40 +20,6 @@ import XCTest
 @_spi(TokamakCore) @testable import TokamakCore
 import TokamakTestRenderer
 
-extension FiberReconciler {
-  /// Expect a `Fiber` to represent a particular `View` type.
-  func expect<V>(
-    _ fiber: Fiber?,
-    represents viewType: V.Type,
-    _ message: String? = nil
-  ) where V: View {
-    guard case let .view(view, _) = fiber?.content else {
-      return XCTAssert(false, "Fiber does not exit")
-    }
-    if let message = message {
-      XCTAssert(type(of: view) == viewType, message)
-    } else {
-      XCTAssert(type(of: view) == viewType)
-    }
-  }
-
-  /// Expect a `Fiber` to represent a `View` matching`testView`.
-  func expect<V>(
-    _ fiber: Fiber?,
-    equals testView: V,
-    _ message: String? = nil
-  ) where V: View & Equatable {
-    guard case let .view(fiberView, _) = fiber?.content else {
-      return XCTAssert(false, "Fiber does not exit")
-    }
-    if let message = message {
-      XCTAssertEqual(fiberView as? V, testView, message)
-    } else {
-      XCTAssertEqual(fiberView as? V, testView)
-    }
-  }
-}
-
 final class VisitorTests: XCTestCase {
   func testCounter() {
     struct TestView: View {

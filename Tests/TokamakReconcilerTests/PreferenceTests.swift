@@ -41,7 +41,9 @@ final class PreferenceTests: XCTestCase {
     }
     let reconciler = TestFiberRenderer(.root, size: .init(width: 500, height: 500))
       .render(TestView())
+    reconciler.turnRunLoop()
     reconciler.fiberChanged(reconciler.current)
+    reconciler.turnRunLoop()
   }
 
   func testOverlay() {
@@ -52,25 +54,16 @@ final class PreferenceTests: XCTestCase {
           .preference(key: TestKey.self, value: 3)
           .overlayPreferenceValue(TestKey.self) {
             Text("\($0)")
+              .identified(by: "overlay")
           }
       }
     }
 
     let reconciler = TestFiberRenderer(.root, size: .init(width: 500, height: 500))
       .render(TestView())
-    var overlayValue: FiberReconciler<TestFiberRenderer>.Fiber? {
-      reconciler.current // RootView
-        .child? // LayoutView
-        .child? // ModifiedContent
-        .child? // _ViewModifier_Content
-        .child? // TestView
-        .child? // _DelayedPreferenceView
-        .child? // ModifiedContent
-        .child? // _OverlayLayout
-        .child?.sibling? // _PreferenceReadingView
-        .child
-    }
 
-    reconciler.expect(overlayValue, equals: Text("5"))
+    reconciler.turnRunLoop()
+
+    XCTAssertEqual(reconciler.findView(id: "overlay").view, Text("5"))
   }
 }
