@@ -85,7 +85,8 @@ public extension FiberReconciler {
     /// Parent references are `unowned` (as opposed to `weak`)
     /// because the parent will always exist if a child does.
     /// If the parent is released, the child is released with it.
-    unowned var parent: Fiber?
+    @_spi(TokamakCore)
+    public unowned var parent: Fiber?
 
     /// The nearest parent that can be mounted on.
     unowned var elementParent: Fiber?
@@ -109,7 +110,8 @@ public extension FiberReconciler {
     var geometry: ViewGeometry?
 
     /// The WIP node if this is current, or the current node if this is WIP.
-    weak var alternate: Fiber?
+    @_spi(TokamakCore)
+    public weak var alternate: Fiber?
 
     var createAndBindAlternate: (() -> Fiber?)?
 

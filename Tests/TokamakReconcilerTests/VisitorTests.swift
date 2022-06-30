@@ -64,16 +64,20 @@ final class VisitorTests: XCTestCase {
         var body: some View {
           VStack {
             Text("\(count)")
+              .identified(by: "count")
             HStack {
               if count > 0 {
                 Button("Decrement") {
                   count -= 1
                 }
+                .identified(by: "decrement")
               }
               if count < 5 {
                 Button("Increment") {
                   count += 1
+                  print(count)
                 }
+                .identified(by: "increment")
               }
             }
           }
@@ -84,75 +88,32 @@ final class VisitorTests: XCTestCase {
         Counter()
       }
     }
-    let reconciler = TestFiberRenderer(.root, size: .init(width: 500, height: 500))
-      .render(TestView())
-    var hStack: FiberReconciler<TestFiberRenderer>.Fiber? {
-      reconciler.current // RootView
-        .child? // LayoutView
-        .child? // ModifiedContent
-        .child? // _ViewModifier_Content
-        .child? // TestView
-        .child? // Counter
-        .child? // VStack
-        .child? // TupleView
-        .child?.sibling? // HStack
-        .child // TupleView
-    }
-    var text: FiberReconciler<TestFiberRenderer>.Fiber? {
-      reconciler.current // RootView
-        .child? // LayoutView
-        .child? // ModifiedContent
-        .child? // _ViewModifier_Content
-        .child? // TestView
-        .child? // Counter
-        .child? // VStack
-        .child? // TupleView
-        .child // Text
-    }
-    var decrementButton: FiberReconciler<TestFiberRenderer>.Fiber? {
-      hStack?
-        .child? // Optional
-        .child // Button
-    }
-    var incrementButton: FiberReconciler<TestFiberRenderer>.Fiber? {
-      hStack?
-        .child?.sibling? // Optional
-        .child // Button
-    }
-    func decrement() {
-      guard case let .view(view, _) = decrementButton?.content
-      else { return }
-      (view as? Button<Text>)?.action()
-    }
-    func increment() {
-      guard case let .view(view, _) = incrementButton?.content
-      else { return }
-      (view as? Button<Text>)?.action()
-    }
+    let reconciler = TestFiberRenderer(.root, size: .zero).render(TestView())
+
+    reconciler.turnRunLoop()
+
+    let incrementButton = reconciler.findView(id: "increment", as: Button<Text>.self)
+    let countText = reconciler.findView(id: "count", as: Text.self)
+    let decrementButton = reconciler.findView(id: "decrement", as: Button<Text>.self)
     // The decrement button is removed when count is < 0
-    XCTAssertNil(decrementButton, "'Decrement' should be hidden when count <= 0")
+    XCTAssertNil(decrementButton.view, "'Decrement' should be hidden when count <= 0")
+    XCTAssertNotNil(incrementButton.view, "'Increment' should be visible when count < 5")
     // Count up to 5
     for i in 0..<5 {
-      reconciler.expect(text, equals: Text("\(i)"))
-      increment()
+      XCTAssertEqual(countText.view, Text("\(i)"))
+      incrementButton.action?()
+      reconciler.turnRunLoop()
     }
-    XCTAssertNil(incrementButton, "'Increment' should be hidden when count >= 5")
-    reconciler.expect(
-      decrementButton,
-      represents: Button<Text>.self,
-      "'Decrement' should be visible when count > 0"
-    )
+    XCTAssertNil(incrementButton.view, "'Increment' should be hidden when count >= 5")
+    XCTAssertNotNil(decrementButton.view, "'Decrement' should be visible when count > 0")
     // Count down to 0.
     for i in 0..<5 {
-      reconciler.expect(text, equals: Text("\(5 - i)"))
-      decrement()
+      XCTAssertEqual(countText.view, Text("\(5 - i)"))
+      decrementButton.action?()
+      reconciler.turnRunLoop()
     }
-    XCTAssertNil(decrementButton, "'Decrement' should be hidden when count <= 0")
-    reconciler.expect(
-      incrementButton,
-      represents: Button<Text>.self,
-      "'Increment' should be visible when count < 5"
-    )
+    XCTAssertNil(decrementButton.view, "'Decrement' should be hidden when count <= 0")
+    XCTAssertNotNil(incrementButton.view, "'Increment' should be visible when count < 5")
   }
 
   func testForEach() {
@@ -163,61 +124,148 @@ final class VisitorTests: XCTestCase {
       var body: some View {
         VStack {
           Button("Add Item") { count += 1 }
+            .identified(by: "addItem")
           ForEach(Array(0..<count), id: \.self) { i in
             Text("Item \(i)")
+              .identified(by: i)
           }
         }
       }
     }
 
-    let reconciler = TestFiberRenderer(
-      .root,
-      size: .init(width: 500, height: 500),
-      useDynamicLayout: true
-    )
-    .render(TestView())
-    var addItemFiber: FiberReconciler<TestFiberRenderer>.Fiber? {
-      reconciler.current // RootView
-        .child? // LayoutView
-        .child? // ModifiedContent
-        .child? // _ViewModifier_Content
-        .child? // TestView
-        .child? // VStack
-        .child? // TupleView
-        .child // Button
+    let reconciler = TestFiberRenderer(.root, size: .zero).render(TestView())
+    reconciler.turnRunLoop()
+
+    let addItemButton = reconciler.findView(id: "addItem", as: Button<Text>.self)
+    XCTAssertNotNil(addItemButton)
+    for i in 0..<10 {
+      addItemButton.action?()
+      reconciler.turnRunLoop()
+      XCTAssertEqual(reconciler.findView(id: i).view, Text("Item \(i)"))
     }
-    var forEachFiber: FiberReconciler<TestFiberRenderer>.Fiber? {
-      reconciler.current // RootView
-        .child? // LayoutView
-        .child? // ModifiedContent
-        .child? // _ViewModifier_Content
-        .child? // TestView
-        .child? // VStack
-        .child? // TupleView
-        .child?.sibling // ForEach
+  }
+
+  func testDynamicProperties() {
+    enum DynamicPropertyTest: Hashable {
+      case state
+      case environment
+      case stateObject
+      case observedObject
+      case environmentObject
     }
-    func item(at index: Int) -> FiberReconciler<TestFiberRenderer>.Fiber? {
-      var node = forEachFiber?.child
-      for _ in 0..<index {
-        node = node?.sibling
+    struct TestView: View {
+      var body: some View {
+        TestState()
+        TestEnvironment()
+        TestStateObject()
       }
-      return node
+
+      struct TestState: View {
+        @State
+        private var count = 0
+
+        var body: some View {
+          Button("\(count)") { count += 1 }
+            .identified(by: DynamicPropertyTest.state)
+        }
+      }
+
+      private enum TestKey: EnvironmentKey {
+        static let defaultValue = 5
+      }
+
+      struct TestEnvironment: View {
+        @Environment(\.self)
+        var values
+
+        var body: some View {
+          Text("\(values[TestKey.self])")
+            .identified(by: DynamicPropertyTest.environment)
+        }
+      }
+
+      struct TestStateObject: View {
+        final class Count: ObservableObject {
+          @Published
+          var count = 0
+
+          func increment() {
+            count += 5
+          }
+        }
+
+        @StateObject
+        private var count = Count()
+
+        var body: some View {
+          VStack {
+            Button("\(count.count)") {
+              count.increment()
+            }
+            .identified(by: DynamicPropertyTest.stateObject)
+            TestObservedObject(count: count)
+            TestEnvironmentObject()
+          }
+          .environmentObject(count)
+        }
+
+        struct TestObservedObject: View {
+          @ObservedObject
+          var count: Count
+
+          var body: some View {
+            Text("\(count.count)")
+              .identified(by: DynamicPropertyTest.observedObject)
+          }
+        }
+
+        struct TestEnvironmentObject: View {
+          @EnvironmentObject
+          var count: Count
+
+          var body: some View {
+            Text("\(count.count)")
+              .identified(by: DynamicPropertyTest.environmentObject)
+          }
+        }
+      }
     }
-    func addItem() {
-      guard case let .view(view, _) = addItemFiber?.content
-      else { return }
-      (view as? Button<Text>)?.action()
-    }
-    reconciler.expect(addItemFiber, represents: Button<Text>.self)
-    reconciler.expect(forEachFiber, represents: ForEach<[Int], Int, Text>.self)
-    addItem()
-    reconciler.expect(item(at: 0), equals: Text("Item 0"))
-    XCTAssertEqual(reconciler.renderer.rootElement.children[0].children.count, 2)
-    addItem()
-    reconciler.expect(item(at: 1), equals: Text("Item 1"))
-    XCTAssertEqual(reconciler.renderer.rootElement.children[0].children.count, 3)
-    addItem()
-    reconciler.expect(item(at: 2), equals: Text("Item 2"))
-    XCTAssertEqual(reconciler.renderer.rootElement.children[0].children.count, 4)
+
+    let reconciler = TestFiberRenderer(.root, size: .zero).render(TestView())
+
+    reconciler.turnRunLoop()
+
+    // State
+    let button = reconciler.findView(id: DynamicPropertyTest.state, as: Button<Text>.self)
+    XCTAssertEqual(button.label, Text("0"))
+    button.action?()
+    reconciler.turnRunLoop()
+    XCTAssertEqual(button.label, Text("1"))
+
+    // Environment
+    XCTAssertEqual(
+      reconciler.findView(id: DynamicPropertyTest.environment).view,
+      Text("5")
+    )
+
+    // StateObject
+    let stateObjectButton = reconciler.findView(
+      id: DynamicPropertyTest.stateObject,
+      as: Button<Text>.self
+    )
+    XCTAssertEqual(stateObjectButton.label, Text("0"))
+    stateObjectButton.action?()
+    reconciler.turnRunLoop()
+    XCTAssertEqual(stateObjectButton.label, Text("5"))
+
+    XCTAssertEqual(
+      reconciler.findView(id: DynamicPropertyTest.observedObject).view,
+      Text("5")
+    )
+
+    XCTAssertEqual(
+      reconciler.findView(id: DynamicPropertyTest.environmentObject).view,
+      Text("5")
+    )
   }
 }

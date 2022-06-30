@@ -15,20 +15,23 @@
 //  Created by Carson Katri on 2/11/22.
 //
 
-enum WalkWorkResult<Success> {
+@_spi(TokamakCore)
+public enum WalkWorkResult<Success> {
   case `continue`
   case `break`(with: Success)
   case pause
 }
 
-enum WalkResult<Renderer: FiberRenderer, Success> {
+@_spi(TokamakCore)
+public enum WalkResult<Renderer: FiberRenderer, Success> {
   case success(Success)
   case finished
   case paused(at: FiberReconciler<Renderer>.Fiber)
 }
 
+@_spi(TokamakCore)
 @discardableResult
-func walk<Renderer: FiberRenderer>(
+public func walk<Renderer: FiberRenderer>(
   _ root: FiberReconciler<Renderer>.Fiber,
   _ work: @escaping (FiberReconciler<Renderer>.Fiber) throws -> Bool
 ) rethrows -> WalkResult<Renderer, ()> {
@@ -38,7 +41,8 @@ func walk<Renderer: FiberRenderer>(
 }
 
 /// Parent-first depth-first traversal of a `Fiber` tree.
-func walk<Renderer: FiberRenderer, Success>(
+@_spi(TokamakCore)
+public func walk<Renderer: FiberRenderer, Success>(
   _ root: FiberReconciler<Renderer>.Fiber,
   _ work: @escaping (FiberReconciler<Renderer>.Fiber) throws -> WalkWorkResult<Success>
 ) rethrows -> WalkResult<Renderer, Success> {

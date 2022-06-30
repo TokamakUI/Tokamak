@@ -177,7 +177,13 @@ public struct TestFiberRenderer: FiberRenderer {
     }
   }
 
+  /// The actively scheduled `DispatchWorkItem`
+  public static var workItem: DispatchWorkItem?
   public func schedule(_ action: @escaping () -> ()) {
-    action()
+    let workItem = DispatchWorkItem {
+      action()
+    }
+    DispatchQueue.global(qos: .default).async(execute: workItem)
+    Self.workItem = workItem
   }
 }
