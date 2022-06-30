@@ -83,7 +83,7 @@ extension FiberReconciler where Renderer == TestFiberRenderer {
 
   /// Wait for the scheduled action to complete.
   func turnRunLoop() {
-    #if canImport(Dispatch)
+    #if canImport(Dispatch) && !os(WASI)
     renderer.workItem.workItem?.wait()
     renderer.workItem.workItem = nil
     #else
