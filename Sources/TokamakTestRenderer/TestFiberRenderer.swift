@@ -177,7 +177,7 @@ public struct TestFiberRenderer: FiberRenderer {
     }
   }
 
-  #if canImport(Dispatch)
+  #if canImport(Dispatch) && !os(WASI)
   public final class WorkItemBox {
     public var workItem: DispatchWorkItem?
   }
