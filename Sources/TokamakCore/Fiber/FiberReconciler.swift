@@ -182,7 +182,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         child: alternateRoot?.child,
         alternateChild: root.child,
         elementIndices: [:],
-        pendingTraits: .init()
+        nextTraits: .init()
       )
       reconciler.caches.clear()
       for pass in reconciler.passes {

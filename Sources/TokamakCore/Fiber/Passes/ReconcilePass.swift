@@ -71,9 +71,6 @@ struct ReconcilePass: FiberReconcilerPass {
     // Enabled when we reach the `reconcileRoot`.
     var shouldReconcile = false
 
-    // Traits that should be attached to the nearest rendered child.
-    var pendingTraits = _ViewTraitStore()
-
     while true {
       if !shouldReconcile {
         if let fiber = node.fiber,
@@ -102,22 +99,14 @@ struct ReconcilePass: FiberReconcilerPass {
         caches.mutations.append(mutation)
       }
 
+      // Ensure the `TreeReducer` can access any necessary state.
+      node.elementIndices = caches.elementIndices
       // Pass view traits down to the nearest element fiber.
       if let traits = node.fiber?.outputs.traits,
          !traits.values.isEmpty
       {
-        if node.fiber?.element == nil {
-          pendingTraits = traits
-        }
+        node.nextTraits.values.merge(traits.values, uniquingKeysWith: { $1 })
       }
-      // Clear the pending traits once they have been applied to the target.
-      if node.fiber?.element != nil && !pendingTraits.values.isEmpty {
-        pendingTraits = .init()
-      }
-
-      // Ensure the `TreeReducer` can access any necessary state.
-      node.elementIndices = caches.elementIndices
-      node.pendingTraits = pendingTraits
 
       // Update `DynamicProperty`s before accessing the `View`'s body.
       node.fiber?.updateDynamicProperties()
