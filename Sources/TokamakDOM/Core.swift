@@ -189,6 +189,7 @@ public typealias AnyLayout = TokamakCore.AnyLayout
 public typealias LayoutProperties = TokamakCore.LayoutProperties
 public typealias LayoutSubviews = TokamakCore.LayoutSubviews
 public typealias LayoutSubview = TokamakCore.LayoutSubview
+public typealias LayoutValueKey = TokamakCore.LayoutValueKey
 public typealias ProposedViewSize = TokamakCore.ProposedViewSize
 public typealias ViewSpacing = TokamakCore.ViewSpacing
 
