@@ -89,6 +89,8 @@ public struct DOMFiberRenderer: FiberRenderer {
   public var defaultEnvironment: EnvironmentValues {
     var environment = EnvironmentValues()
     environment[_ColorSchemeKey.self] = .light
+    environment._defaultAppStorage = LocalStorage.standard
+    _DefaultSceneStorageProvider.default = SessionStorage.standard
     return environment
   }
 
