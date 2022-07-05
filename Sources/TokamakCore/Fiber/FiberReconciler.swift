@@ -123,12 +123,10 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     // Start by building the initial tree.
     alternate = current.createAndBindAlternate?()
 
-    sceneSizeCancellable = renderer.sceneSize.sink { [weak self] _ in
+    sceneSizeCancellable = renderer.sceneSize.removeDuplicates().sink { [weak self] _ in
       guard let self = self else { return }
       self.fiberChanged(self.current)
     }
-
-    fiberChanged(current)
   }
 
   public init<A: App>(_ renderer: Renderer, _ app: A) {
@@ -153,12 +151,10 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     // Start by building the initial tree.
     alternate = current.createAndBindAlternate?()
 
-    sceneSizeCancellable = renderer.sceneSize.sink { [weak self] _ in
+    sceneSizeCancellable = renderer.sceneSize.removeDuplicates().sink { [weak self] _ in
       guard let self = self else { return }
       self.fiberChanged(self.current)
     }
-
-    fiberChanged(current)
   }
 
   /// A visitor that performs each pass used by the `FiberReconciler`.
