@@ -253,4 +253,8 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
     </html>
     """
   }
+
+  public func schedule(_ action: @escaping () -> ()) {
+    action()
+  }
 }

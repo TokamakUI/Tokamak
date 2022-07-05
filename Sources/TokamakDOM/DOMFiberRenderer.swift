@@ -17,6 +17,7 @@
 
 import Foundation
 import JavaScriptKit
+import OpenCombineJS
 @_spi(TokamakCore)
 import TokamakCore
 @_spi(TokamakStaticHTML)
@@ -88,6 +89,8 @@ public struct DOMFiberRenderer: FiberRenderer {
   public var defaultEnvironment: EnvironmentValues {
     var environment = EnvironmentValues()
     environment[_ColorSchemeKey.self] = .light
+    environment._defaultAppStorage = LocalStorage.standard
+    _DefaultSceneStorageProvider.default = SessionStorage.standard
     return environment
   }
 
@@ -117,6 +120,10 @@ public struct DOMFiberRenderer: FiberRenderer {
       _ = reference.style.setProperty("width", "100vw")
       _ = reference.style.setProperty("height", "100vh")
       _ = reference.style.setProperty("position", "relative")
+    } else {
+      let style = document.createElement!("style").object!
+      style.innerHTML = .string(TokamakStaticHTML.tokamakStyles)
+      _ = document.head.appendChild(style)
     }
   }
 
@@ -298,6 +305,11 @@ public struct DOMFiberRenderer: FiberRenderer {
         apply(geometry, to: element)
       }
     }
+  }
+
+  private let scheduler = JSScheduler()
+  public func schedule(_ action: @escaping () -> ()) {
+    scheduler.schedule(options: nil, action)
   }
 }
 

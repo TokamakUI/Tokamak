@@ -21,10 +21,17 @@ import Foundation
 public struct ViewInputs<V> {
   public let content: V
 
+  /// Mutate the underlying content with the given inputs.
+  ///
+  /// Used to inject values such as environment values, traits, and preferences into the `View` type.
+  public let updateContent: ((inout V) -> ()) -> ()
+
   @_spi(TokamakCore)
   public let environment: EnvironmentBox
 
   public let traits: _ViewTraitStore?
+
+  public let preferenceStore: _PreferenceStore?
 }
 
 /// Data used to reconcile and render a `View` and its children.
@@ -33,7 +40,12 @@ public struct ViewOutputs {
   /// This is stored as a reference to avoid copying the environment when unnecessary.
   let environment: EnvironmentBox
 
-  let preferences: _PreferenceStore
+  let preferenceStore: _PreferenceStore?
+
+  /// An action to perform after all preferences values have been reduced.
+  ///
+  /// Called when walking back up the tree in the `ReconcilePass`.
+  let preferenceAction: ((_PreferenceStore) -> ())?
 
   let traits: _ViewTraitStore?
 }
@@ -51,13 +63,15 @@ public extension ViewOutputs {
   init<V>(
     inputs: ViewInputs<V>,
     environment: EnvironmentValues? = nil,
-    preferences: _PreferenceStore? = nil,
+    preferenceStore: _PreferenceStore? = nil,
+    preferenceAction: ((_PreferenceStore) -> ())? = nil,
     traits: _ViewTraitStore? = nil
   ) {
     // Only replace the `EnvironmentBox` when we change the environment.
     // Otherwise the same box can be reused.
     self.environment = environment.map(EnvironmentBox.init) ?? inputs.environment
-    self.preferences = preferences ?? .init()
+    self.preferenceStore = preferenceStore
+    self.preferenceAction = preferenceAction
     self.traits = traits ?? inputs.traits
   }
 }
@@ -74,8 +88,10 @@ public extension ModifiedContent where Content: View, Modifier: ViewModifier {
   static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
     Modifier._makeView(.init(
       content: inputs.content.modifier,
+      updateContent: { _ in },
       environment: inputs.environment,
-      traits: inputs.traits
+      traits: inputs.traits,
+      preferenceStore: inputs.preferenceStore
     ))
   }
 

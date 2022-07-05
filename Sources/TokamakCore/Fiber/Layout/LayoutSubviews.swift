@@ -141,8 +141,9 @@ public struct LayoutSubview: Equatable {
           )
           cache.sizeThatFits[request] = size
           if let alternate = fiber.alternate {
-            caches.updateLayoutCache(for: alternate) { cache in
-              cache.sizeThatFits[request] = size
+            caches.updateLayoutCache(for: alternate) { alternateCache in
+              alternateCache.cache = cache.cache
+              alternateCache.sizeThatFits[request] = size
             }
           }
           return size
@@ -246,6 +247,6 @@ public struct LayoutSubview: Equatable {
   }
 
   public static func == (lhs: LayoutSubview, rhs: LayoutSubview) -> Bool {
-    lhs.id == rhs.id
+    lhs.storage === rhs.storage
   }
 }

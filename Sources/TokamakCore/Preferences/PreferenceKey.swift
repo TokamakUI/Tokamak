@@ -25,12 +25,41 @@ public extension PreferenceKey where Self.Value: ExpressibleByNilLiteral {
   static var defaultValue: Value { nil }
 }
 
-public struct _PreferenceValue<Key> where Key: PreferenceKey {
+final class _PreferenceValueStorage: CustomDebugStringConvertible {
   /// Every value the `Key` has had.
-  var valueList: [Key.Value]
+  var valueList: [Any]
+
+  var debugDescription: String {
+    valueList.debugDescription
+  }
+
+  init<Key: PreferenceKey>(_ key: Key.Type = Key.self) {
+    valueList = []
+  }
+
+  init(valueList: [Any]) {
+    self.valueList = valueList
+  }
+
+  func merge(_ other: _PreferenceValueStorage) {
+    valueList.append(contentsOf: other.valueList)
+  }
+
+  func reset() {
+    valueList = []
+  }
+}
+
+public struct _PreferenceValue<Key> where Key: PreferenceKey {
+  var storage: _PreferenceValueStorage
+
+  init(storage: _PreferenceValueStorage) {
+    self.storage = storage
+  }
+
   /// The latest value.
   public var value: Key.Value {
-    reduce(valueList)
+    reduce(storage.valueList.compactMap { $0 as? Key.Value })
   }
 
   func reduce(_ values: [Key.Value]) -> Key.Value {
@@ -48,29 +77,79 @@ public extension _PreferenceValue {
   }
 }
 
-public final class _PreferenceStore {
+public final class _PreferenceStore: CustomDebugStringConvertible {
+  /// The values of the `_PreferenceStore` on the last update.
+  private var previousValues: [ObjectIdentifier: _PreferenceValueStorage]
   /// The backing values of the `_PreferenceStore`.
-  private var values: [String: Any]
+  private var values: [ObjectIdentifier: _PreferenceValueStorage]
 
   weak var parent: _PreferenceStore?
 
-  public init(values: [String: Any] = [:]) {
+  public var debugDescription: String {
+    "Preferences (\(ObjectIdentifier(self))): \(values)"
+  }
+
+  init(values: [ObjectIdentifier: _PreferenceValueStorage] = [:]) {
+    previousValues = [:]
     self.values = values
   }
 
+  /// Retrieve a late-binding token for `key`, or save the default value if it does not yet exist.
   public func value<Key>(forKey key: Key.Type = Key.self) -> _PreferenceValue<Key>
     where Key: PreferenceKey
   {
-    values[String(reflecting: key)] as? _PreferenceValue<Key>
-      ?? _PreferenceValue(valueList: [Key.defaultValue])
+    let keyID = ObjectIdentifier(key)
+    let storage: _PreferenceValueStorage
+    if let existing = values[keyID] {
+      storage = existing
+    } else {
+      storage = .init(key)
+      values[keyID] = storage
+    }
+    return _PreferenceValue(storage: storage)
+  }
+
+  /// Retrieve the value `Key` had on the last update.
+  ///
+  /// Used to check if the value changed during the last update.
+  func previousValue<Key>(forKey key: Key.Type = Key.self) -> _PreferenceValue<Key>
+    where Key: PreferenceKey
+  {
+    _PreferenceValue(storage: previousValues[ObjectIdentifier(key)] ?? .init(key))
   }
 
   public func insert<Key>(_ value: Key.Value, forKey key: Key.Type = Key.self)
     where Key: PreferenceKey
   {
-    let previousValues = self.value(forKey: key).valueList
-    values[String(reflecting: key)] = _PreferenceValue<Key>(valueList: previousValues + [value])
+    let keyID = ObjectIdentifier(key)
+    if !values.keys.contains(keyID) {
+      values[keyID] = .init(key)
+    }
+    values[keyID]?.valueList.append(value)
     parent?.insert(value, forKey: key)
+  }
+
+  func merge(_ other: _PreferenceStore) {
+    for (key, otherStorage) in other.values {
+      if let storage = values[key] {
+        storage.merge(otherStorage)
+      } else {
+        values[key] = .init(valueList: otherStorage.valueList)
+      }
+    }
+  }
+
+  /// Copies `values` to `previousValues`, and clears `values`.
+  ///
+  /// Each reconcile pass the preferences are collected from scratch, so we need to
+  /// clear out the old values.
+  func reset() {
+    previousValues = values.mapValues {
+      _PreferenceValueStorage(valueList: $0.valueList)
+    }
+    for storage in values.values {
+      storage.reset()
+    }
   }
 }
 

@@ -25,11 +25,25 @@ public struct _PreferenceActionModifier<Key>: _PreferenceWritingModifierProtocol
 
   public func body(_ content: Content, with preferenceStore: inout _PreferenceStore) -> AnyView {
     let value = preferenceStore.value(forKey: Key.self)
-    let previousValue = value.reduce(value.valueList.dropLast())
+    let previousValue = value.reduce((value.storage.valueList as? [Key.Value] ?? []).dropLast())
     if previousValue != value.value {
       action(value.value)
     }
     return content.view
+  }
+
+  public static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
+    .init(
+      inputs: inputs,
+      preferenceStore: inputs.preferenceStore ?? .init(),
+      preferenceAction: {
+        let value = $0.value(forKey: Key.self).value
+        let previousValue = $0.previousValue(forKey: Key.self).value
+        if value != previousValue {
+          inputs.content.action(value)
+        }
+      }
+    )
   }
 }
 

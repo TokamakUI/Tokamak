@@ -63,7 +63,7 @@ struct ReconcilePass: FiberReconcilerPass {
   func run<R>(
     in reconciler: FiberReconciler<R>,
     root: FiberReconciler<R>.TreeReducer.Result,
-    reconcileRoot: FiberReconciler<R>.Fiber,
+    changedFibers: Set<ObjectIdentifier>,
     caches: FiberReconciler<R>.Caches
   ) where R: FiberRenderer {
     var node = root
@@ -71,12 +71,17 @@ struct ReconcilePass: FiberReconcilerPass {
     // Enabled when we reach the `reconcileRoot`.
     var shouldReconcile = false
 
-    // Traits that should be attached to the nearest rendered child.
-    var pendingTraits = _ViewTraitStore()
-
     while true {
-      if node.fiber === reconcileRoot || node.fiber?.alternate === reconcileRoot {
-        shouldReconcile = true
+      if !shouldReconcile {
+        if let fiber = node.fiber,
+           changedFibers.contains(ObjectIdentifier(fiber))
+        {
+          shouldReconcile = true
+        } else if let alternate = node.fiber?.alternate,
+                  changedFibers.contains(ObjectIdentifier(alternate))
+        {
+          shouldReconcile = true
+        }
       }
 
       // If this fiber has an element, set its `elementIndex`
@@ -94,26 +99,22 @@ struct ReconcilePass: FiberReconcilerPass {
         caches.mutations.append(mutation)
       }
 
+      // Ensure the `TreeReducer` can access any necessary state.
+      node.elementIndices = caches.elementIndices
       // Pass view traits down to the nearest element fiber.
       if let traits = node.fiber?.outputs.traits,
          !traits.values.isEmpty
       {
-        if node.fiber?.element == nil {
-          pendingTraits = traits
-        }
-      }
-      // Clear the pending traits once they have been applied to the target.
-      if node.fiber?.element != nil && !pendingTraits.values.isEmpty {
-        pendingTraits = .init()
+        node.nextTraits.values.merge(traits.values, uniquingKeysWith: { $1 })
       }
 
-      // Ensure the `TreeReducer` can access any necessary state.
-      node.elementIndices = caches.elementIndices
-      node.pendingTraits = pendingTraits
-
+      // Update `DynamicProperty`s before accessing the `View`'s body.
+      node.fiber?.updateDynamicProperties()
       // Compute the children of the node.
       let reducer = FiberReconciler<R>.TreeReducer.SceneVisitor(initialResult: node)
       node.visitChildren(reducer)
+
+      node.fiber?.preferences?.reset()
 
       if reconciler.renderer.useDynamicLayout,
          let fiber = node.fiber
@@ -124,7 +125,7 @@ struct ReconcilePass: FiberReconcilerPass {
           let parentKey = ObjectIdentifier(elementParent)
           let subview = LayoutSubview(
             id: ObjectIdentifier(fiber),
-            traits: node.fiber?.outputs.traits,
+            traits: fiber.outputs.traits,
             fiber: fiber,
             element: element,
             caches: caches
@@ -175,6 +176,15 @@ struct ReconcilePass: FiberReconcilerPass {
            fiber.element != nil
         {
           propagateCacheInvalidation(for: fiber, in: reconciler, caches: caches)
+        }
+
+        if let preferences = node.fiber?.preferences {
+          if let action = node.fiber?.outputs.preferenceAction {
+            action(preferences)
+          }
+          if let parentPreferences = node.fiber?.preferenceParent?.preferences {
+            parentPreferences.merge(preferences)
+          }
         }
 
         var alternateSibling = node.fiber?.alternate?.sibling

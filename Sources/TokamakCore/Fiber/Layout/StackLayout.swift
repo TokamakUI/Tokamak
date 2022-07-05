@@ -117,7 +117,6 @@ public extension StackLayout {
 
     /// The aggregate minimum size of each `View` with a given priority.
     var prioritySize = [Double: CGFloat]()
-
     let measuredSubviews = subviews.enumerated().map { index, view -> MeasuredSubview in
       priorityCount[view.priority, default: 0] += 1
 
