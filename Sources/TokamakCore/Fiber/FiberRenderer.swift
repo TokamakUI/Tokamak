@@ -58,6 +58,33 @@ public protocol FiberRenderer {
     proposal: ProposedViewSize,
     in environment: EnvironmentValues
   ) -> CGSize
+
+  /// Run `action` on the next run loop.
+  ///
+  /// Called by the `FiberReconciler` to perform reconciliation after all changed Fibers are collected.
+  ///
+  /// For example, take the following sample `View`:
+  ///
+  ///     struct DuelOfTheStates: View {
+  ///       @State private var hits1 = 0
+  ///       @State private var hits2 = 0
+  ///
+  ///       var body: some View {
+  ///         Button("Hit") {
+  ///           hits1 += 1
+  ///           hits2 += 2
+  ///         }
+  ///       }
+  ///     }
+  ///
+  /// When the button is pressed, both `hits1` and `hits2` are updated.
+  /// If reconciliation was done on every state change, we would needlessly run it twice,
+  /// once for `hits1` and again for `hits2`.
+  ///
+  /// Instead, we create a list of changed fibers
+  /// (in this case just `DuelOfTheStates` as both properties were on it),
+  /// and reconcile after all changes have been collected.
+  func schedule(_ action: @escaping () -> ())
 }
 
 public extension FiberRenderer {

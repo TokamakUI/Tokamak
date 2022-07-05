@@ -19,6 +19,8 @@ import TokamakCore
 
 // MARK: Environment & State
 
+public typealias DynamicProperty = TokamakCore.DynamicProperty
+
 public typealias Environment = TokamakCore.Environment
 public typealias EnvironmentKey = TokamakCore.EnvironmentKey
 public typealias EnvironmentObject = TokamakCore.EnvironmentObject
@@ -180,8 +182,16 @@ public typealias View = TokamakCore.View
 public typealias AnyView = TokamakCore.AnyView
 public typealias EmptyView = TokamakCore.EmptyView
 
+// MARK: Layout
+
 public typealias Layout = TokamakCore.Layout
 public typealias AnyLayout = TokamakCore.AnyLayout
+public typealias LayoutProperties = TokamakCore.LayoutProperties
+public typealias LayoutSubviews = TokamakCore.LayoutSubviews
+public typealias LayoutSubview = TokamakCore.LayoutSubview
+public typealias LayoutValueKey = TokamakCore.LayoutValueKey
+public typealias ProposedViewSize = TokamakCore.ProposedViewSize
+public typealias ViewSpacing = TokamakCore.ViewSpacing
 
 // MARK: Toolbars
 

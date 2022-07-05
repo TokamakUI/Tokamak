@@ -17,12 +17,13 @@
 
 extension FiberReconciler.Fiber: CustomDebugStringConvertible {
   public var debugDescription: String {
+    let memoryAddress = String(format: "%010p", unsafeBitCast(self, to: Int.self))
     if case let .view(view, _) = content,
        let text = view as? Text
     {
-      return "Text(\"\(text.storage.rawText)\")"
+      return "Text(\"\(text.storage.rawText)\") (\(memoryAddress))"
     }
-    return typeInfo?.name ?? "Unknown"
+    return "\(typeInfo?.name ?? "Unknown") (\(memoryAddress))"
   }
 
   private func flush(level: Int = 0) -> String {

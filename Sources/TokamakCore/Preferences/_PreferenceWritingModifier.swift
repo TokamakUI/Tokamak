@@ -27,6 +27,14 @@ public struct _PreferenceWritingModifier<Key>: _PreferenceWritingModifierProtoco
     preferenceStore.insert(value, forKey: Key.self)
     return content.view
   }
+
+  public static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
+    .init(
+      inputs: inputs,
+      preferenceStore: inputs.preferenceStore ?? .init(),
+      preferenceAction: { $0.insert(inputs.content.value, forKey: Key.self) }
+    )
+  }
 }
 
 extension _PreferenceWritingModifier: Equatable where Key.Value: Equatable {

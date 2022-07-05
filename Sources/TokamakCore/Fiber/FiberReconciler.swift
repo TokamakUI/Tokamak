@@ -42,6 +42,13 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
   private var sceneSizeCancellable: AnyCancellable?
 
   private var isReconciling = false
+  /// The identifiers for each `Fiber` that changed state during the last run loop.
+  ///
+  /// The reconciler loop starts at the root of the `View` hierarchy
+  /// to ensure all preference values are passed down correctly.
+  /// To help mitigate performance issues related to this, we only perform reconcile
+  /// checks when we reach a changed `Fiber`.
+  private var changedFibers = Set<ObjectIdentifier>()
   public var afterReconcileActions = [() -> ()]()
 
   struct RootView<Content: View>: View {
@@ -108,18 +115,20 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       element: renderer.rootElement,
       parent: nil,
       elementParent: nil,
+      preferenceParent: nil,
       elementIndex: 0,
       traits: nil,
       reconciler: self
     )
     // Start by building the initial tree.
     alternate = current.createAndBindAlternate?()
-    reconcile(from: current)
 
     sceneSizeCancellable = renderer.sceneSize.sink { [weak self] _ in
       guard let self = self else { return }
-      self.reconcile(from: self.current)
+      self.fiberChanged(self.current)
     }
+
+    fiberChanged(current)
   }
 
   public init<A: App>(_ renderer: Renderer, _ app: A) {
@@ -143,23 +152,26 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     )
     // Start by building the initial tree.
     alternate = current.createAndBindAlternate?()
-    reconcile(from: current)
+
     sceneSizeCancellable = renderer.sceneSize.sink { [weak self] _ in
       guard let self = self else { return }
-      self.reconcile(from: self.current)
+      self.fiberChanged(self.current)
     }
+
+    fiberChanged(current)
   }
 
   /// A visitor that performs each pass used by the `FiberReconciler`.
   final class ReconcilerVisitor: AppVisitor, SceneVisitor, ViewVisitor {
     let root: Fiber
-    let reconcileRoot: Fiber
+    /// Any `Fiber`s that changed state during the last run loop.
+    let changedFibers: Set<ObjectIdentifier>
     unowned let reconciler: FiberReconciler
     var mutations = [Mutation<Renderer>]()
 
-    init(root: Fiber, reconcileRoot: Fiber, reconciler: FiberReconciler) {
+    init(root: Fiber, changedFibers: Set<ObjectIdentifier>, reconciler: FiberReconciler) {
       self.root = root
-      self.reconcileRoot = reconcileRoot
+      self.changedFibers = changedFibers
       self.reconciler = reconciler
     }
 
@@ -185,13 +197,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       } else {
         alternateRoot = root.createAndBindAlternate?()
       }
-      let alternateReconcileRoot: Fiber?
-      if let alternate = reconcileRoot.alternate {
-        alternateReconcileRoot = alternate
-      } else {
-        alternateReconcileRoot = reconcileRoot.createAndBindAlternate?()
-      }
-      guard let alternateReconcileRoot = alternateReconcileRoot else { return }
       let rootResult = TreeReducer.Result(
         fiber: alternateRoot, // The alternate is the WIP node.
         visitChildren: visitChildren,
@@ -199,14 +204,14 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
         child: alternateRoot?.child,
         alternateChild: root.child,
         elementIndices: [:],
-        pendingTraits: .init()
+        nextTraits: .init()
       )
       reconciler.caches.clear()
       for pass in reconciler.passes {
         pass.run(
           in: reconciler,
           root: rootResult,
-          reconcileRoot: alternateReconcileRoot,
+          changedFibers: changedFibers,
           caches: reconciler.caches
         )
       }
@@ -223,18 +228,31 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     afterReconcileActions.append(action)
   }
 
-  func reconcile(from updateRoot: Fiber) {
-    isReconciling = true
-    let root: Fiber
-    if renderer.useDynamicLayout {
-      // We need to re-layout from the top down when using dynamic layout.
-      root = current
-    } else {
-      root = updateRoot
+  /// Called by any `Fiber` that experiences a state change.
+  ///
+  /// Reconciliation only runs after every change during the current run loop has been performed.
+  func fiberChanged(_ fiber: Fiber) {
+    guard let alternate = fiber.alternate ?? fiber.createAndBindAlternate?()
+    else { return }
+    let shouldSchedule = changedFibers.isEmpty
+    changedFibers.insert(ObjectIdentifier(alternate))
+    if shouldSchedule {
+      renderer.schedule { [weak self] in
+        self?.reconcile()
+      }
     }
+  }
+
+  /// Perform each `FiberReconcilerPass` given the `changedFibers`.
+  ///
+  /// A `reconcile()` call is queued from `fiberChanged` once per run loop.
+  func reconcile() {
+    isReconciling = true
+    let changedFibers = changedFibers
+    self.changedFibers.removeAll()
     // Create a list of mutations.
-    let visitor = ReconcilerVisitor(root: root, reconcileRoot: updateRoot, reconciler: self)
-    switch root.content {
+    let visitor = ReconcilerVisitor(root: current, changedFibers: changedFibers, reconciler: self)
+    switch current.content {
     case let .view(_, visit):
       visit(visitor)
     case let .scene(_, visit):
@@ -252,15 +270,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     // Essentially, making the work in progress tree the current,
     // and leaving the current available to be the work in progress
     // on our next update.
-    if root === current {
-      let alternate = alternate
-      self.alternate = current
-      current = alternate
-    } else {
-      let child = root.child
-      root.child = root.alternate?.child
-      root.alternate?.child = child
-    }
+    let alternate = alternate
+    self.alternate = current
+    current = alternate
 
     isReconciling = false
 

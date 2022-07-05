@@ -177,4 +177,8 @@ public struct TestFiberRenderer: FiberRenderer {
       }
     }
   }
+
+  public func schedule(_ action: @escaping () -> ()) {
+    action()
+  }
 }

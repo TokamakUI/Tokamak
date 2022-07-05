@@ -21,10 +21,10 @@ public struct _DelayedPreferenceView<Key, Content>: View, _PreferenceReadingView
   where Key: PreferenceKey, Content: View
 {
   @State
-  private var resolvedValue: _PreferenceValue<Key> = _PreferenceValue(
-    valueList: [Key.defaultValue]
-  )
+  private var resolvedValue: _PreferenceValue<Key> = _PreferenceValue(storage: .init(Key.self))
   public let transform: (_PreferenceValue<Key>) -> Content
+
+  private var valueReference: _PreferenceValue<Key>?
 
   public init(transform: @escaping (_PreferenceValue<Key>) -> Content) {
     self.transform = transform
@@ -35,7 +35,18 @@ public struct _DelayedPreferenceView<Key, Content>: View, _PreferenceReadingView
   }
 
   public var body: some View {
-    transform(resolvedValue)
+    transform(valueReference ?? resolvedValue)
+  }
+
+  public static func _makeView(_ inputs: ViewInputs<Self>) -> ViewOutputs {
+    let preferenceStore = inputs.preferenceStore ?? .init()
+    inputs.updateContent {
+      $0.valueReference = preferenceStore.value(forKey: Key.self)
+    }
+    return .init(
+      inputs: inputs,
+      preferenceStore: preferenceStore
+    )
   }
 }
 
@@ -70,7 +81,7 @@ public extension View {
   ) -> some View
     where Key: PreferenceKey, T: View
   {
-    Key._delay { self.overlay(transform($0.value)) }
+    Key._delay { self.overlay($0._force(transform)) }
   }
 
   func backgroundPreferenceValue<Key, T>(
@@ -79,6 +90,6 @@ public extension View {
   ) -> some View
     where Key: PreferenceKey, T: View
   {
-    Key._delay { self.background(transform($0.value)) }
+    Key._delay { self.background($0._force(transform)) }
   }
 }

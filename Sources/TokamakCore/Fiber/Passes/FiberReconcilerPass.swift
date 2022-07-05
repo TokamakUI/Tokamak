@@ -61,9 +61,9 @@ extension FiberReconciler {
     }
 
     func clear() {
-      elementIndices = [:]
-      layoutSubviews = [:]
-      mutations = []
+      elementIndices.removeAll()
+      layoutSubviews.removeAll()
+      mutations.removeAll()
     }
 
     func layoutCache(for fiber: Fiber) -> LayoutCache? {
@@ -123,14 +123,14 @@ protocol FiberReconcilerPass {
   /// - Parameter root: The node to start the pass from.
   ///                   The top of the `View` hierarchy when `useDynamicLayout` is enabled.
   ///                   Otherwise, the same as `reconcileRoot`.
-  /// - Parameter reconcileRoot: The topmost node that needs reconciliation.
+  /// - Parameter reconcileRoot: A list of topmost nodes that need reconciliation.
   ///                            When `useDynamicLayout` is enabled, this can be used to limit
   ///                            the number of operations performed during reconciliation.
   /// - Parameter caches: The shared cache data for this and other passes.
   func run<R: FiberRenderer>(
     in reconciler: FiberReconciler<R>,
     root: FiberReconciler<R>.TreeReducer.Result,
-    reconcileRoot: FiberReconciler<R>.Fiber,
+    changedFibers: Set<ObjectIdentifier>,
     caches: FiberReconciler<R>.Caches
   )
 }
