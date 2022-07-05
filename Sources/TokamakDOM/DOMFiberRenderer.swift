@@ -17,6 +17,7 @@
 
 import Foundation
 import JavaScriptKit
+import OpenCombineJS
 import OpenCombineShim
 
 @_spi(TokamakCore)
@@ -136,7 +137,6 @@ public struct DOMFiberRenderer: FiberRenderer {
     } else {
       sceneSize = .init(.zero)
       resizeObserver = nil
-    } else {
       let style = document.createElement!("style").object!
       style.innerHTML = .string(TokamakStaticHTML.tokamakStyles)
       _ = document.head.appendChild(style)
