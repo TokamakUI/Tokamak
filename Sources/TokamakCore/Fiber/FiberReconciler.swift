@@ -39,6 +39,12 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
   private let caches: Caches
 
   private var isReconciling = false
+  /// The identifiers for each `Fiber` that changed state during the last run loop.
+  ///
+  /// The reconciler loop starts at the root of the `View` hierarchy
+  /// to ensure all preference values are passed down correctly.
+  /// To help mitigate performance issues related to this, we only perform reconcile
+  /// checks when we reach a changed `Fiber`.
   private var changedFibers = Set<ObjectIdentifier>()
   public var afterReconcileActions = [() -> ()]()
 
@@ -143,6 +149,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
   /// A visitor that performs each pass used by the `FiberReconciler`.
   final class ReconcilerVisitor: AppVisitor, SceneVisitor, ViewVisitor {
     let root: Fiber
+    /// Any `Fiber`s that changed state during the last run loop.
     let changedFibers: Set<ObjectIdentifier>
     unowned let reconciler: FiberReconciler
     var mutations = [Mutation<Renderer>]()
@@ -206,6 +213,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     afterReconcileActions.append(action)
   }
 
+  /// Called by any `Fiber` that experiences a state change.
+  ///
+  /// Reconciliation only runs after every change during the current run loop has been performed.
   func fiberChanged(_ fiber: Fiber) {
     guard let alternate = fiber.alternate ?? fiber.createAndBindAlternate?()
     else { return }
@@ -218,6 +228,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     }
   }
 
+  /// Perform each `FiberReconcilerPass` given the `changedFibers`.
+  ///
+  /// A `reconcile()` call is queued from `fiberChanged` once per run loop.
   func reconcile() {
     isReconciling = true
     let changedFibers = changedFibers

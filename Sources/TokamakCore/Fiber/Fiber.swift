@@ -100,7 +100,10 @@ public extension FiberReconciler {
     /// Boxes that store `State` data.
     var state: [PropertyInfo: MutableStorage] = [:]
 
-    /// Subscribed `Cancellable`s
+    /// Subscribed `Cancellable`s keyed with the property contained the observable.
+    ///
+    /// Each time properties are bound, a new subscription could be created.
+    /// When the subscription is overridden, the old cancellable is released.
     var subscriptions: [PropertyInfo: AnyCancellable] = [:]
 
     /// Storage for `PreferenceKey` values as they are passed up the tree.

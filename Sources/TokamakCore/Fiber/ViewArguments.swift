@@ -21,6 +21,9 @@ import Foundation
 public struct ViewInputs<V> {
   public let content: V
 
+  /// Mutate the underlying content with the given inputs.
+  ///
+  /// Used to inject values such as environment values, traits, and preferences into the `View` type.
   public let updateContent: ((inout V) -> ()) -> ()
 
   @_spi(TokamakCore)
@@ -39,8 +42,9 @@ public struct ViewOutputs {
 
   let preferenceStore: _PreferenceStore?
 
-  let transformPreferences: ((_PreferenceStore) -> ())?
-
+  /// An action to perform after all preferences values have been reduced.
+  ///
+  /// Called when walking back up the tree in the `ReconcilePass`.
   let preferenceAction: ((_PreferenceStore) -> ())?
 
   let traits: _ViewTraitStore?
@@ -60,7 +64,6 @@ public extension ViewOutputs {
     inputs: ViewInputs<V>,
     environment: EnvironmentValues? = nil,
     preferenceStore: _PreferenceStore? = nil,
-    transformPreferences: ((_PreferenceStore) -> ())? = nil,
     preferenceAction: ((_PreferenceStore) -> ())? = nil,
     traits: _ViewTraitStore? = nil
   ) {
@@ -68,7 +71,6 @@ public extension ViewOutputs {
     // Otherwise the same box can be reused.
     self.environment = environment.map(EnvironmentBox.init) ?? inputs.environment
     self.preferenceStore = preferenceStore
-    self.transformPreferences = transformPreferences
     self.preferenceAction = preferenceAction
     self.traits = traits ?? inputs.traits
   }

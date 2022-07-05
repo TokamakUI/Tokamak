@@ -78,6 +78,7 @@ public extension _PreferenceValue {
 }
 
 public final class _PreferenceStore: CustomDebugStringConvertible {
+  /// The values of the `_PreferenceStore` on the last update.
   private var previousValues: [String: _PreferenceValueStorage]
   /// The backing values of the `_PreferenceStore`.
   private var values: [String: _PreferenceValueStorage]
@@ -93,6 +94,7 @@ public final class _PreferenceStore: CustomDebugStringConvertible {
     self.values = values
   }
 
+  /// Retrieve a late-binding token for `key`, or save the default value if it does not yet exist.
   public func value<Key>(forKey key: Key.Type = Key.self) -> _PreferenceValue<Key>
     where Key: PreferenceKey
   {
@@ -106,6 +108,9 @@ public final class _PreferenceStore: CustomDebugStringConvertible {
     return _PreferenceValue(storage: storage)
   }
 
+  /// Retrieve the value `Key` had on the last update.
+  ///
+  /// Used to check if the value changed during the last update.
   func previousValue<Key>(forKey key: Key.Type = Key.self) -> _PreferenceValue<Key>
     where Key: PreferenceKey
   {
@@ -132,6 +137,10 @@ public final class _PreferenceStore: CustomDebugStringConvertible {
     }
   }
 
+  /// Copies `values` to `previousValues`, and clears `values`.
+  ///
+  /// Each reconcile pass the preferences are collected from scratch, so we need to
+  /// clear out the old values.
   func reset() {
     previousValues = values.mapValues {
       _PreferenceValueStorage(valueList: $0.valueList)
