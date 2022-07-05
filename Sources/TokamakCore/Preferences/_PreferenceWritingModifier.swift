@@ -32,7 +32,7 @@ public struct _PreferenceWritingModifier<Key>: _PreferenceWritingModifierProtoco
     .init(
       inputs: inputs,
       preferenceStore: inputs.preferenceStore ?? .init(),
-      transformPreferences: { $0.insert(inputs.content.value, forKey: Key.self) }
+      preferenceAction: { $0.insert(inputs.content.value, forKey: Key.self) }
     )
   }
 }

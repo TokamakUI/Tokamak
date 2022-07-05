@@ -79,9 +79,9 @@ public extension _PreferenceValue {
 
 public final class _PreferenceStore: CustomDebugStringConvertible {
   /// The values of the `_PreferenceStore` on the last update.
-  private var previousValues: [String: _PreferenceValueStorage]
+  private var previousValues: [ObjectIdentifier: _PreferenceValueStorage]
   /// The backing values of the `_PreferenceStore`.
-  private var values: [String: _PreferenceValueStorage]
+  private var values: [ObjectIdentifier: _PreferenceValueStorage]
 
   weak var parent: _PreferenceStore?
 
@@ -89,7 +89,7 @@ public final class _PreferenceStore: CustomDebugStringConvertible {
     "Preferences (\(ObjectIdentifier(self))): \(values)"
   }
 
-  init(values: [String: _PreferenceValueStorage] = [:]) {
+  init(values: [ObjectIdentifier: _PreferenceValueStorage] = [:]) {
     previousValues = [:]
     self.values = values
   }
@@ -98,12 +98,13 @@ public final class _PreferenceStore: CustomDebugStringConvertible {
   public func value<Key>(forKey key: Key.Type = Key.self) -> _PreferenceValue<Key>
     where Key: PreferenceKey
   {
+    let keyID = ObjectIdentifier(key)
     let storage: _PreferenceValueStorage
-    if let existing = values[String(reflecting: key)] {
+    if let existing = values[keyID] {
       storage = existing
     } else {
       storage = .init(key)
-      values[String(reflecting: key)] = storage
+      values[keyID] = storage
     }
     return _PreferenceValue(storage: storage)
   }
@@ -114,16 +115,17 @@ public final class _PreferenceStore: CustomDebugStringConvertible {
   func previousValue<Key>(forKey key: Key.Type = Key.self) -> _PreferenceValue<Key>
     where Key: PreferenceKey
   {
-    _PreferenceValue(storage: previousValues[String(reflecting: key)] ?? .init(key))
+    _PreferenceValue(storage: previousValues[ObjectIdentifier(key)] ?? .init(key))
   }
 
   public func insert<Key>(_ value: Key.Value, forKey key: Key.Type = Key.self)
     where Key: PreferenceKey
   {
-    if !values.keys.contains(String(reflecting: key)) {
-      values[String(reflecting: key)] = .init(key)
+    let keyID = ObjectIdentifier(key)
+    if !values.keys.contains(keyID) {
+      values[keyID] = .init(key)
     }
-    values[String(reflecting: key)]?.valueList.append(value)
+    values[keyID]?.valueList.append(value)
     parent?.insert(value, forKey: key)
   }
 

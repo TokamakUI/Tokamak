@@ -179,12 +179,11 @@ struct ReconcilePass: FiberReconcilerPass {
         }
 
         if let preferences = node.fiber?.preferences {
-          node.fiber?.outputs.transformPreferences?(preferences)
-          if let parentPreferences = node.fiber?.preferenceParent?.preferences {
-            parentPreferences.merge(preferences)
-          }
           if let action = node.fiber?.outputs.preferenceAction {
             action(preferences)
+          }
+          if let parentPreferences = node.fiber?.preferenceParent?.preferences {
+            parentPreferences.merge(preferences)
           }
         }
 

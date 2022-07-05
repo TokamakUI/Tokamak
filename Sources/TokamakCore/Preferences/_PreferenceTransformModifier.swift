@@ -39,7 +39,7 @@ public struct _PreferenceTransformModifier<Key>: _PreferenceWritingModifierProto
     .init(
       inputs: inputs,
       preferenceStore: inputs.preferenceStore ?? .init(),
-      transformPreferences: {
+      preferenceAction: {
         var value = $0.value(forKey: Key.self).value
         inputs.content.transform(&value)
         $0.insert(value, forKey: Key.self)
