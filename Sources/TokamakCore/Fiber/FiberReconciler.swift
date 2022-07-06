@@ -16,6 +16,7 @@
 //
 
 import Foundation
+import OpenCombineShim
 
 /// A reconciler modeled after React's
 /// [Fiber reconciler](https://reactjs.org/docs/faq-internals.html#what-is-react-fiber)
@@ -37,6 +38,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
   private let passes: [FiberReconcilerPass]
 
   private let caches: Caches
+
+  private var sceneSizeCancellable: AnyCancellable?
 
   private var isReconciling = false
   /// The identifiers for each `Fiber` that changed state during the last run loop.
@@ -79,7 +82,7 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       subviews: Subviews,
       cache: inout ()
     ) -> CGSize {
-      renderer.sceneSize
+      renderer.sceneSize.value
     }
 
     func placeSubviews(
@@ -119,7 +122,11 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     )
     // Start by building the initial tree.
     alternate = current.createAndBindAlternate?()
-    fiberChanged(current)
+
+    sceneSizeCancellable = renderer.sceneSize.removeDuplicates().sink { [weak self] _ in
+      guard let self = self else { return }
+      self.fiberChanged(self.current)
+    }
   }
 
   public init<A: App>(_ renderer: Renderer, _ app: A) {
@@ -143,7 +150,11 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     )
     // Start by building the initial tree.
     alternate = current.createAndBindAlternate?()
-    fiberChanged(current)
+
+    sceneSizeCancellable = renderer.sceneSize.removeDuplicates().sink { [weak self] _ in
+      guard let self = self else { return }
+      self.fiberChanged(self.current)
+    }
   }
 
   /// A visitor that performs each pass used by the `FiberReconciler`.

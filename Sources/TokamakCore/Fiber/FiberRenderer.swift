@@ -16,6 +16,7 @@
 //
 
 import Foundation
+import OpenCombineShim
 
 /// A renderer capable of performing mutations specified by a `FiberReconciler`.
 public protocol FiberRenderer {
@@ -25,6 +26,7 @@ public protocol FiberRenderer {
   /// Check whether a `View` is a primitive for this renderer.
   static func isPrimitive<V>(_ view: V) -> Bool where V: View
 
+  /// Override the default `_visitChildren` implementation for a primitive `View`.
   func visitPrimitiveChildren<Primitive, Visitor>(
     _ view: Primitive
   ) -> ViewVisitorF<Visitor>? where Primitive: View, Visitor: ViewVisitor
@@ -39,7 +41,9 @@ public protocol FiberRenderer {
   var defaultEnvironment: EnvironmentValues { get }
 
   /// The size of the window we are rendering in.
-  var sceneSize: CGSize { get }
+  ///
+  /// Layout is automatically updated whenever the size changes.
+  var sceneSize: CurrentValueSubject<CGSize, Never> { get }
 
   /// Whether layout is enabled for this renderer.
   var useDynamicLayout: Bool { get }
