@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@_spi(TokamakCore) import TokamakCore
+import Foundation
+@_spi(TokamakCore)
+import TokamakCore
 
 extension _BackgroundStyleModifier: DOMViewModifier {
   public var isOrderDependent: Bool { true }
@@ -95,12 +97,95 @@ extension _BackgroundStyleModifier: HTMLConvertible,
     } else {
       return {
         $0
-          .visit(_BackgroundLayout(
-            content: content,
-            background: Rectangle().fill(style),
-            alignment: .center
-          ))
+          .visit(
+            _BackgroundStyleLayout(
+              style: style,
+              backgroundLayout: _BackgroundLayout(
+                content: content,
+                background: _ShapeView(shape: Rectangle(), style: style),
+                alignment: .center
+              )
+            )
+          )
       }
     }
+  }
+}
+
+struct _BackgroundStyleLayout<
+  Content: View,
+  Style: ShapeStyle
+>: _PrimitiveView, HTMLConvertible, Layout {
+  let style: Style
+  let backgroundLayout: _BackgroundLayout<Content, _ShapeView<Rectangle, Style>>
+
+  @Environment(\.self)
+  var environment
+  @State
+  private var fillsScene = false
+
+  var tag: String { "div" }
+  func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    [:]
+  }
+
+  func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
+    visitor.visit(backgroundLayout.background)
+    visitor.visit(backgroundLayout.content)
+    // If the background reaches the top of the scene, apply a "theme-color".
+    // This matches SwiftUI's behavior where a `_BackgroundStyleModifier` that reaches the top
+    // will extend into the safe area.
+    if fillsScene {
+      var shape = _ShapeStyle_Shape(
+        for: .resolveStyle(levels: 0..<1),
+        in: environment,
+        role: .fill
+      )
+      style._apply(to: &shape)
+      guard let style = shape.result.resolvedStyle(on: shape, in: environment),
+            let color = style.color(at: 0)
+      else { return }
+      visitor.visit(HTMLMeta(
+        name: "theme-color",
+        content: color.cssValue(environment)
+      ))
+    }
+  }
+
+  typealias Cache = _BackgroundLayout<Content, _ShapeView<Rectangle, Style>>.Cache
+
+  func makeCache(subviews: Subviews) -> Cache {
+    backgroundLayout.makeCache(subviews: subviews)
+  }
+
+  func spacing(subviews: LayoutSubviews, cache: inout Cache) -> ViewSpacing {
+    backgroundLayout.spacing(subviews: subviews, cache: &cache)
+  }
+
+  func sizeThatFits(
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout Cache
+  ) -> CGSize {
+    backgroundLayout.sizeThatFits(proposal: proposal, subviews: subviews, cache: &cache)
+  }
+
+  func placeSubviews(
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout Cache
+  ) {
+    // If the minY == 0, we are touching the top of the scene.
+    let fillsScene = bounds.minY == 0
+    if fillsScene != self.fillsScene {
+      self.fillsScene = fillsScene
+    }
+    return backgroundLayout.placeSubviews(
+      in: bounds,
+      proposal: proposal,
+      subviews: subviews,
+      cache: &cache
+    )
   }
 }
