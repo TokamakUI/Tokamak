@@ -118,6 +118,19 @@ public final class _PreferenceStore: CustomDebugStringConvertible {
     _PreferenceValue(storage: previousValues[ObjectIdentifier(key)] ?? .init(key))
   }
 
+  /// Returns the new value for `Key`, or `nil` if the value did not change.
+  public func newValue<Key>(forKey key: Key.Type = Key.self) -> Key.Value?
+    where Key: PreferenceKey, Key.Value: Equatable
+  {
+    let value = value(forKey: key).value
+    let previousValue = previousValue(forKey: key).value
+    if value != previousValue {
+      return value
+    } else {
+      return nil
+    }
+  }
+
   public func insert<Key>(_ value: Key.Value, forKey key: Key.Type = Key.self)
     where Key: PreferenceKey
   {

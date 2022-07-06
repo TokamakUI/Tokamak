@@ -323,6 +323,38 @@ public struct DOMFiberRenderer: FiberRenderer {
     }
   }
 
+  final class Head {
+    let head = document.head.object!
+    var metaTags = [JSObject]()
+    var title: JSObject?
+  }
+
+  private let head = Head()
+  public func preferencesChanged(_ preferenceStore: _PreferenceStore) {
+    if let newMetaTags = preferenceStore.newValue(forKey: HTMLMetaPreferenceKey.self) {
+      for oldTag in head.metaTags {
+        _ = head.head.removeChild!(oldTag)
+      }
+      head.metaTags = newMetaTags.map {
+        let template = document.createElement!("template").object!
+        template.innerHTML = .string($0.outerHTML())
+        let meta = template.content.firstChild.object!
+        _ = head.head.appendChild!(meta)
+        return meta
+      }
+    }
+    if let newTitle = preferenceStore.newValue(forKey: HTMLTitlePreferenceKey.self) {
+      if let title = head.title {
+        title.innerHTML = .string(newTitle)
+      } else {
+        let node = document.createElement!("title").object!
+        _ = head.head.appendChild!(node)
+        node.innerHTML = .string(newTitle)
+        head.title = node
+      }
+    }
+  }
+
   private let scheduler = JSScheduler()
   public func schedule(_ action: @escaping () -> ()) {
     scheduler.schedule(options: nil, action)
