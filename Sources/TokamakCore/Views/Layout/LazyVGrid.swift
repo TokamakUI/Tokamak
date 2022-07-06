@@ -20,7 +20,8 @@ import Foundation
 public struct LazyVGrid<Content>: _PrimitiveView where Content: View {
   let columns: [GridItem]
   let alignment: HorizontalAlignment
-  let spacing: CGFloat
+  @_spi(TokamakCore)
+  public let spacing: CGFloat?
   let pinnedViews: PinnedScrollableViews
   let content: Content
 
@@ -33,7 +34,7 @@ public struct LazyVGrid<Content>: _PrimitiveView where Content: View {
   ) {
     self.columns = columns
     self.alignment = alignment
-    self.spacing = spacing ?? 8
+    self.spacing = spacing
     self.pinnedViews = pinnedViews
     self.content = content()
   }
@@ -46,5 +47,5 @@ public struct _LazyVGridProxy<Content> where Content: View {
 
   public var columns: [GridItem] { subject.columns }
   public var content: Content { subject.content }
-  public var spacing: CGFloat { subject.spacing }
+  public var spacing: CGFloat? { subject.spacing }
 }

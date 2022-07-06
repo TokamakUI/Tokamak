@@ -53,7 +53,7 @@ extension LazyVGrid: _HTMLPrimitive {
       styles += "justify-items: \(lastCol.alignment.horizontal.cssValue);"
       styles += "align-items: \(lastCol.alignment.vertical.cssValue);"
     }
-    styles += "grid-gap: \(_LazyVGridProxy(self).spacing)px;"
+    styles += "grid-gap: \(_LazyVGridProxy(self).spacing ?? 8)px;"
     return styles
   }
 
