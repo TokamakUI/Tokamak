@@ -94,6 +94,9 @@ public typealias VStack = TokamakCore.VStack
 public typealias ZStack = TokamakCore.ZStack
 public typealias Link = TokamakCore.Link
 
+public typealias Grid = TokamakCore.Grid
+public typealias GridRow = TokamakCore.GridRow
+
 // MARK: Special Views
 
 public typealias View = TokamakCore.View
