@@ -46,3 +46,15 @@ extension ScrollView: _HTMLPrimitive, SpacerContainer {
     })
   }
 }
+
+@_spi(TokamakStaticHTML)
+extension ScrollView: HTMLConvertible {
+  public var tag: String { "div" }
+
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    ["style": """
+    \(axes.contains(.horizontal) ? "overflow-x: auto; width: 100%;" : "overflow-x: hidden;")
+    \(axes.contains(.vertical) ? "overflow-y: auto; height: 100%;" : "overflow-y: hidden;")
+    """]
+  }
+}
