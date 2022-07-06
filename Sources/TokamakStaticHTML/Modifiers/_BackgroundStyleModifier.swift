@@ -177,7 +177,7 @@ struct _BackgroundStyleLayout<
     cache: inout Cache
   ) {
     // If the minY == 0, we are touching the top of the scene.
-    let fillsScene = bounds.minY == 0
+    let fillsScene = subviews.globalOrigin.y == 0
     if fillsScene != self.fillsScene {
       self.fillsScene = fillsScene
     }

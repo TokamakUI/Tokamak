@@ -41,7 +41,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
 
   private var sceneSizeCancellable: AnyCancellable?
 
-  private var isReconciling = false
   /// The identifiers for each `Fiber` that changed state during the last run loop.
   ///
   /// The reconciler loop starts at the root of the `View` hierarchy
@@ -49,7 +48,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
   /// To help mitigate performance issues related to this, we only perform reconcile
   /// checks when we reach a changed `Fiber`.
   private var changedFibers = Set<ObjectIdentifier>()
-  public var afterReconcileActions = [() -> ()]()
 
   struct RootView<Content: View>: View {
     let content: Content
@@ -59,7 +57,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       var environment = reconciler.renderer.defaultEnvironment
       environment.measureText = reconciler.renderer.measureText
       environment.measureImage = reconciler.renderer.measureImage
-      environment.afterReconcile = reconciler.afterReconcile
       return environment
     }
 
@@ -144,7 +141,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     var environment = renderer.defaultEnvironment
     environment.measureText = renderer.measureText
     environment.measureImage = renderer.measureImage
-    environment.afterReconcile = afterReconcile
     var app = app
     current = .init(
       &app,
@@ -219,15 +215,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     }
   }
 
-  func afterReconcile(_ action: @escaping () -> ()) {
-    guard isReconciling == true
-    else {
-      action()
-      return
-    }
-    afterReconcileActions.append(action)
-  }
-
   /// Called by any `Fiber` that experiences a state change.
   ///
   /// Reconciliation only runs after every change during the current run loop has been performed.
@@ -247,7 +234,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
   ///
   /// A `reconcile()` call is queued from `fiberChanged` once per run loop.
   func reconcile() {
-    isReconciling = true
     let changedFibers = changedFibers
     self.changedFibers.removeAll()
     // Create a list of mutations.
@@ -274,25 +260,8 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     self.alternate = current
     current = alternate
 
-    isReconciling = false
-
-    for action in afterReconcileActions {
-      action()
-    }
-
     if let preferences = current.preferences {
       renderer.preferencesChanged(preferences)
     }
-  }
-}
-
-public extension EnvironmentValues {
-  private enum AfterReconcileKey: EnvironmentKey {
-    static let defaultValue: (@escaping () -> ()) -> () = { _ in }
-  }
-
-  var afterReconcile: (@escaping () -> ()) -> () {
-    get { self[AfterReconcileKey.self] }
-    set { self[AfterReconcileKey.self] = newValue }
   }
 }

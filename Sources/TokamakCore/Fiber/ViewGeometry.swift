@@ -30,12 +30,19 @@ public struct ViewGeometry: Equatable {
 /// The position of the `View` relative to its parent.
 public struct ViewOrigin: Equatable {
   @_spi(TokamakCore)
+  public let parent: CGPoint
+
+  @_spi(TokamakCore)
   public let origin: CGPoint
 
   @_spi(TokamakCore)
   public var x: CGFloat { origin.x }
   @_spi(TokamakCore)
   public var y: CGFloat { origin.y }
+
+  public var globalOrigin: CGPoint {
+    parent.offset(by: origin)
+  }
 }
 
 public struct ViewDimensions: Equatable {
