@@ -105,7 +105,7 @@ final class FrameTests: XCTestCase {
               maxHeight: .infinity,
               alignment: .init(horizontal: nativeHorizontal, vertical: nativeVertical)
             )
-            .background(Color(white: 127 / 255), in: Rectangle())
+            .background(Rectangle().fill(Color(white: 127 / 255)))
         } to: {
           TokamakStaticHTML.Rectangle()
             .fill(Color(white: 0))
@@ -118,9 +118,8 @@ final class FrameTests: XCTestCase {
                 vertical: tokamakVertical
               )
             )
-            .background(Color(white: 127 / 255), in: Rectangle())
+            .background(Rectangle().fill(Color(white: 127 / 255)))
         }
-        return
       }
     }
   }
