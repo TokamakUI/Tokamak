@@ -309,8 +309,8 @@ public extension FiberReconciler {
           storage.getter = { box.value }
           value = storage
           // Read from the environment.
-        } else if var environmentReader = value as? EnvironmentReader {
-          environmentReader.setContent(from: environment)
+        } else if var environmentReader = value as? _EnvironmentReader {
+          environmentReader._setContent(from: environment)
           value = environmentReader
         }
         // Subscribe to observable properties.
@@ -322,8 +322,8 @@ public extension FiberReconciler {
         }
         property.set(value: value, on: &content)
       }
-      if var environmentReader = content as? EnvironmentReader {
-        environmentReader.setContent(from: environment)
+      if var environmentReader = content as? _EnvironmentReader {
+        environmentReader._setContent(from: environment)
         content = environmentReader
       }
     }

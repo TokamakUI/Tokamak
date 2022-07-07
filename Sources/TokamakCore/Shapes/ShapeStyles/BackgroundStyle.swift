@@ -58,7 +58,7 @@ public extension View {
 
 @frozen
 public struct _BackgroundStyleModifier<Style>: ViewModifier, _EnvironmentModifier,
-  EnvironmentReader
+  _EnvironmentReader
   where Style: ShapeStyle
 {
   public var environment: EnvironmentValues!
@@ -70,7 +70,8 @@ public struct _BackgroundStyleModifier<Style>: ViewModifier, _EnvironmentModifie
   }
 
   public typealias Body = Never
-  public mutating func setContent(from values: EnvironmentValues) {
+
+  public mutating func _setContent(from values: EnvironmentValues) {
     environment = values
   }
 

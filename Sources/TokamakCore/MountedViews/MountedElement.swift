@@ -246,16 +246,16 @@ extension EnvironmentValues {
     for dynamicProp in info.properties.filter({ $0.type is DynamicProperty.Type }) {
       guard let propInfo = typeInfo(of: dynamicProp.type) else { return }
       var propWrapper = dynamicProp.get(from: element) as! DynamicProperty
-      for prop in propInfo.properties.filter({ $0.type is EnvironmentReader.Type }) {
-        var wrapper = prop.get(from: propWrapper) as! EnvironmentReader
-        wrapper.setContent(from: self)
+      for prop in propInfo.properties.filter({ $0.type is _EnvironmentReader.Type }) {
+        var wrapper = prop.get(from: propWrapper) as! _EnvironmentReader
+        wrapper._setContent(from: self)
         prop.set(value: wrapper, on: &propWrapper)
       }
       dynamicProp.set(value: propWrapper, on: &element)
     }
-    for prop in info.properties.filter({ $0.type is EnvironmentReader.Type }) {
-      var wrapper = prop.get(from: element) as! EnvironmentReader
-      wrapper.setContent(from: self)
+    for prop in info.properties.filter({ $0.type is _EnvironmentReader.Type }) {
+      var wrapper = prop.get(from: element) as! _EnvironmentReader
+      wrapper._setContent(from: self)
       prop.set(value: wrapper, on: &element)
     }
     // swiftlint:enable force_cast

@@ -31,12 +31,15 @@ import Foundation
 ///       .bold()
 ///       .italic()
 ///       .underline(true, color: .red)
-public struct Text: _PrimitiveView, Equatable {
+public struct Text: _PrimitiveView, Equatable, _EnvironmentReader {
   let storage: _Storage
   let modifiers: [_Modifier]
 
-  @Environment(\.self)
-  var environment
+  public var environment: EnvironmentValues = .init()
+
+  public mutating func _setContent(from values: EnvironmentValues) {
+    environment = values
+  }
 
   public static func == (lhs: Text, rhs: Text) -> Bool {
     lhs.storage == rhs.storage

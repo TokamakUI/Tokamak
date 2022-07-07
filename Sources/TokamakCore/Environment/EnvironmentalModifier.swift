@@ -22,7 +22,7 @@ public protocol EnvironmentalModifier: ViewModifier {
   static var _requiresMainThread: Bool { get }
 }
 
-private struct EnvironmentalModifierResolver<M>: ViewModifier, EnvironmentReader
+private struct EnvironmentalModifierResolver<M>: ViewModifier, _EnvironmentReader
   where M: EnvironmentalModifier
 {
   let modifier: M
@@ -32,7 +32,7 @@ private struct EnvironmentalModifierResolver<M>: ViewModifier, EnvironmentReader
     content.modifier(resolved)
   }
 
-  mutating func setContent(from values: EnvironmentValues) {
+  mutating func _setContent(from values: EnvironmentValues) {
     resolved = modifier.resolve(in: values)
   }
 }

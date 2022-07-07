@@ -37,9 +37,9 @@ extension ModifiedContent: ModifierContainer {
   var environmentModifier: _EnvironmentModifier? { modifier as? _EnvironmentModifier }
 }
 
-extension ModifiedContent: EnvironmentReader where Modifier: EnvironmentReader {
-  mutating func setContent(from values: EnvironmentValues) {
-    modifier.setContent(from: values)
+extension ModifiedContent: _EnvironmentReader where Modifier: _EnvironmentReader {
+  public mutating func _setContent(from values: EnvironmentValues) {
+    modifier._setContent(from: values)
   }
 }
 

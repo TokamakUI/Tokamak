@@ -17,7 +17,7 @@
 
 import Foundation
 
-public struct ContainerRelativeShape: Shape, EnvironmentReader {
+public struct ContainerRelativeShape: Shape, _EnvironmentReader {
   var containerShape: (CGRect, GeometryProxy) -> Path? = { _, _ in nil }
 
   public func path(in rect: CGRect) -> Path {
@@ -26,7 +26,7 @@ public struct ContainerRelativeShape: Shape, EnvironmentReader {
 
   public init() {}
 
-  public mutating func setContent(from values: EnvironmentValues) {
+  public mutating func _setContent(from values: EnvironmentValues) {
     containerShape = values._containerShape
   }
 }

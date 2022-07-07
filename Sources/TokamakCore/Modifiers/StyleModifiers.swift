@@ -38,7 +38,7 @@ public struct _BackgroundLayout<Content, Background>: _PrimitiveView
   }
 }
 
-public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
+public struct _BackgroundModifier<Background>: ViewModifier, _EnvironmentReader
   where Background: View
 {
   public var environment: EnvironmentValues!
@@ -58,7 +58,7 @@ public struct _BackgroundModifier<Background>: ViewModifier, EnvironmentReader
     )
   }
 
-  mutating func setContent(from values: EnvironmentValues) {
+  public mutating func _setContent(from values: EnvironmentValues) {
     environment = values
   }
 }
@@ -90,7 +90,7 @@ public extension View {
 }
 
 @frozen
-public struct _BackgroundShapeModifier<Style, Bounds>: ViewModifier, EnvironmentReader
+public struct _BackgroundShapeModifier<Style, Bounds>: ViewModifier, _EnvironmentReader
   where Style: ShapeStyle, Bounds: Shape
 {
   public var environment: EnvironmentValues!
@@ -111,7 +111,7 @@ public struct _BackgroundShapeModifier<Style, Bounds>: ViewModifier, Environment
       .background(shape.fill(style, style: fillStyle))
   }
 
-  public mutating func setContent(from values: EnvironmentValues) {
+  public mutating func _setContent(from values: EnvironmentValues) {
     environment = values
   }
 }
@@ -149,7 +149,7 @@ public struct _OverlayLayout<Content, Overlay>: _PrimitiveView
   }
 }
 
-public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
+public struct _OverlayModifier<Overlay>: ViewModifier, _EnvironmentReader
   where Overlay: View
 {
   public var environment: EnvironmentValues!
@@ -169,7 +169,7 @@ public struct _OverlayModifier<Overlay>: ViewModifier, EnvironmentReader
     )
   }
 
-  mutating func setContent(from values: EnvironmentValues) {
+  public mutating func _setContent(from values: EnvironmentValues) {
     environment = values
   }
 }
