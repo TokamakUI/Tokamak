@@ -94,7 +94,7 @@ jobs:
   gtk_ubuntu_18_04_build:
     runs-on: ubuntu-latest
     container:
-      image: swiftlang/swift:nightly-bionic
+      image: swiftlang/swift:nightly-5.7-bionic
 
     steps:
       - uses: actions/checkout@v2
@@ -109,7 +109,7 @@ jobs:
   gtk_ubuntu_20_04_build:
     runs-on: ubuntu-latest
     container:
-      image: swiftlang/swift:nightly-focal
+      image: swiftlang/swift:nightly-5.7-focal
 
     steps:
       - uses: actions/checkout@v2
