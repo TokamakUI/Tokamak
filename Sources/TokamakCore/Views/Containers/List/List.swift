@@ -39,44 +39,46 @@ public struct List<SelectionValue, Content>: View
     self.content = content()
   }
 
-  var listStack: some View {
-    VStack(alignment: .leading, spacing: 0) { () -> AnyView in
-      if let contentContainer = content as? ParentView {
-        var sections = [AnyView]()
-        var currentSection = [AnyView]()
-        for child in contentContainer.children {
-          if child.view is SectionView {
-            if currentSection.count > 0 {
-              sections.append(AnyView(Section {
-                ForEach(Array(currentSection.enumerated()), id: \.offset) { _, view in view }
-              }))
-              currentSection = []
-            }
-            sections.append(child)
+  func stackContent() -> AnyView {
+    if let contentContainer = content as? ParentView {
+      var sections = [AnyView]()
+      var currentSection = [AnyView]()
+      for child in contentContainer.children {
+        if child.view is SectionView {
+          if currentSection.count > 0 {
+            sections.append(AnyView(Section {
+              ForEach(Array(currentSection.enumerated()), id: \.offset) { _, view in view }
+            }))
+            currentSection = []
+          }
+          sections.append(child)
+        } else {
+          if child.children.count > 0 {
+            currentSection.append(contentsOf: child.children)
           } else {
-            if child.children.count > 0 {
-              currentSection.append(contentsOf: child.children)
-            } else {
-              currentSection.append(child)
-            }
+            currentSection.append(child)
           }
         }
-        if currentSection.count > 0 {
-          sections.append(AnyView(Section {
-            ForEach(Array(currentSection.enumerated()), id: \.offset) { _, view in view }
-          }))
-        }
-        return AnyView(_ListRow.buildItems(sections) { view, isLast in
-          if let section = view.view as? SectionView {
-            section.listRow(style)
-          } else {
-            _ListRow.listRow(view, style, isLast: isLast)
-          }
-        })
-      } else {
-        return AnyView(content)
       }
+      if currentSection.count > 0 {
+        sections.append(AnyView(Section {
+          ForEach(Array(currentSection.enumerated()), id: \.offset) { _, view in view }
+        }))
+      }
+      return AnyView(_ListRow.buildItems(sections) { view, isLast in
+        if let section = view.view as? SectionView {
+          section.listRow(style)
+        } else {
+          _ListRow.listRow(view, style, isLast: isLast)
+        }
+      })
+    } else {
+      return AnyView(content)
     }
+  }
+
+  var listStack: some View {
+    VStack(alignment: .leading, spacing: 0, content: stackContent)
   }
 
   @_spi(TokamakCore)

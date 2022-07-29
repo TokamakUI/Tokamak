@@ -8,26 +8,26 @@ on:
 jobs:
   codecov:
     container:
-      image: swiftlang/swift:nightly-focal
+      image: swiftlang/swift:nightly-5.7-focal
     runs-on: ubuntu-latest
     steps:
-    - run: apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y gtk+-3.0 libgtk+-3.0
-    - name: Checkout Branch
-      uses: actions/checkout@v2
-    - name: Build Test Target
-      run: swift build -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
-    - name: Run Tests
-      run: swift test --enable-code-coverage --skip-build
-    - name: Generate Branch Coverage Report
-      uses: mattpolzin/swift-codecov-action@0.7.1
-      id: cov
-      with:
-        MINIMUM_COVERAGE: 15
-    - name: Post Positive Results
-      if: ${{ success() }}
-      run: |
-        echo "::warning file=Package.swift,line=1,col=1::The current code coverage percentage is passing with ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%)."
-    - name: Post Negative Results
-      if: ${{ failure() }}
-      run: |
-        echo "::error file=Package.swift,line=1,col=1::The current code coverage percentage is failing with ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%)."
+      - run: apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y gtk+-3.0 libgtk+-3.0
+      - name: Checkout Branch
+        uses: actions/checkout@v2
+      - name: Build Test Target
+        run: swift build -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate --product TokamakPackageTests
+      - name: Run Tests
+        run: swift test --enable-code-coverage --skip-build
+      - name: Generate Branch Coverage Report
+        uses: mattpolzin/swift-codecov-action@0.7.1
+        id: cov
+        with:
+          MINIMUM_COVERAGE: 15
+      - name: Post Positive Results
+        if: ${{ success() }}
+        run: |
+          echo "::warning file=Package.swift,line=1,col=1::The current code coverage percentage is passing with ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%)."
+      - name: Post Negative Results
+        if: ${{ failure() }}
+        run: |
+          echo "::error file=Package.swift,line=1,col=1::The current code coverage percentage is failing with ${{ steps.cov.outputs.codecov }} (minimum allowed: ${{ steps.cov.outputs.minimum_coverage }}%)."
