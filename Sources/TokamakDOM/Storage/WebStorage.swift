@@ -73,6 +73,6 @@ extension WebStorage {
   }
 
   public func read(key: String) -> String? {
-    getItem(key: key, String.init)
+    getItem(key: key) { $0 }
   }
 }
