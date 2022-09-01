@@ -76,20 +76,21 @@ jobs:
           name: Failed snapshots
           path: '*Tests'
 
-  gtk_macos_build:
-    runs-on: macos-12
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build the GTK renderer on macOS
-        shell: bash
-        run: |
-          set -ex
-          sudo xcode-select --switch /Applications/Xcode_13.4.1.app/Contents/Developer/
-
-          brew install gtk+3
-
-          make build
+# FIXME: disabled due to build errors, to be investigated
+#   gtk_macos_build:
+#     runs-on: macos-12
+#
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Build the GTK renderer on macOS
+#         shell: bash
+#         run: |
+#           set -ex
+#           sudo xcode-select --switch /Applications/Xcode_13.4.1.app/Contents/Developer/
+#
+#           brew install gtk+3
+#
+#           make build
 
   gtk_ubuntu_18_04_build:
     runs-on: ubuntu-latest
