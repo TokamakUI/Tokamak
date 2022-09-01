@@ -2,8 +2,8 @@
 
 ## Why does Tokamak use HTML/CSS for rendering in the browser?
 
-HTML/CSS has a benefit of built-in accessibility support. Other rendering system in the browser (such as Canvas or WebGL/WebGPU)
-that bypasses HTML/CSS would have to reimplement accessibility from scratch, with all the downsides of increased binary
+HTML/CSS has a benefit of built-in accessibility support. Other rendering systems in the browser (such as Canvas or WebGL/WebGPU)
+that bypass HTML/CSS would have to reimplement accessibility from scratch, with all the downsides of increased binary
 size and performance overhead. With HTML/CSS we can rely on what's already included in the browser and has been tested and polished
 by hundreds of engineers over the decades of browser development.
 
