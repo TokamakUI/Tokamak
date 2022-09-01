@@ -241,6 +241,9 @@ carton dev
 You can also clone this repository and run `carton dev --product TokamakDemo` in its root
 directory. This will build the demo app that shows almost all of the currently implemented APIs.
 
+If you have any questions, pleaes check out the [FAQ](docs/FAQ.md) document, and/or join the
+#tokamak channel on [the SwiftWasm Discord server](https://discord.gg/ashJW8T8yp).
+
 ## Security
 
 By default, the DOM renderer will escape HTML control characters in `Text` views. If you wish
