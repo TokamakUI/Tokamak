@@ -147,10 +147,14 @@ extension Path: _HTMLPrimitive {
       """
       width: 100%;
       height: 100%;
+      min-width: 0;
+      min-height: 0;
       """ :
       """
       width: \(max(0, size.width));
       height: \(max(0, size.height));
+      min-width: 0;
+      min-height: 0;
       """
   }
 
