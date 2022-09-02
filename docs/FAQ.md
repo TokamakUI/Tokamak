@@ -10,10 +10,10 @@ by hundreds of engineers over the decades of browser development.
 Additionally, we can rely on optimized CSS layout algorithms where possible. This also unlocks more use-cases for Tokamak, such as
 [static HTML generation](https://github.com/TokamakUI/TokamakPublish) and [server-side rendering](https://github.com/TokamakUI/TokamakVapor).
 
-At the same time, Tomakak has [a new layout system in development](https://github.com/TokamakUI/Tokamak/pull/472) that accesses
+At the same time, Tokamak has [a new layout system in development](https://github.com/TokamakUI/Tokamak/pull/472) that accesses
 DOM directly for layout calculations, bypassing CSS for a lot (or potentially all) of its algorithms.
 
-## Does the word Tokamak mean anything? Why is it called this way?
+## Does the word Tokamak mean anything? Why is it called this?
 
 The project was originally inspired by [React](https://reactjs.org), which utilizes a model of an atom in its logo,
 apparently as a reference to nuclear reactors. [Токамак](https://en.wikipedia.org/wiki/Tokamak) is a nuclear fusion reactor, and 
@@ -21,7 +21,7 @@ the word itself is roughly an abbreviation of "**to**roidal **cha**mber with **m
 
 ##  What's the history behind it?
 
-The first commit to this project was made in September 2018, 9 months before SwiftUI was publicly announced. Original maintainer of
+The first commit to this project was made in September 2018, 9 months before SwiftUI was publicly announced. The original maintainer of
 it had a feeling it would be beneficial to replace UIKit and AppKit with a declarative UI framework. It originally started
 as a port of the [React API](https://reactjs.org/) to Swift. The opinion of the original maintainer was that React was a pretty good
 solution at that time and was adopted widely enough for people to be acquainted with the general idea. The architecture of React
