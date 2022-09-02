@@ -103,7 +103,7 @@ public struct CGAffineTransform: Equatable {
   /// Returns an affine transformation matrix constructed from a rotation value you provide.
   /// - Parameters:
   ///   - angle: The angle, in radians, by which this matrix rotates the coordinate system axes.
-  ///            A positive value specifies clockwise rotation and anegative value specifies
+  ///            A positive value specifies clockwise rotation and a negative value specifies
   ///            counterclockwise rotation.
   public init(rotationAngle angle: CGFloat) {
     self.init(a: cos(angle), b: sin(angle), c: -sin(angle), d: cos(angle), tx: 0, ty: 0)

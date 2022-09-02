@@ -21,7 +21,7 @@ import Foundation
 public protocol _AnimationSolver {
   /// Solve value at a specific point in time.
   func solve(at t: Double) -> Double
-  /// Calculates the duration of the animation to a specific presision.
+  /// Calculates the duration of the animation to a specific precision.
   func restingPoint(precision y: Double) -> Double
 }
 
