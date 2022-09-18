@@ -16,6 +16,7 @@
 //
 
 import Foundation
+import JavaScriptEventLoop
 import JavaScriptKit
 import OpenCombineJS
 import OpenCombineShim
@@ -97,6 +98,10 @@ public struct DOMFiberRenderer: FiberRenderer {
   }
 
   public init(_ rootSelector: String, useDynamicLayout: Bool = true) {
+    if #available(macOS 10.15, *) {
+      JavaScriptEventLoop.installGlobalExecutor()
+    }
+
     guard let reference = document.querySelector!(rootSelector).object else {
       fatalError("""
       The root element with selector '\(rootSelector)' could not be found. \
