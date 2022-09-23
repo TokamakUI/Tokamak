@@ -27,7 +27,7 @@ jobs:
       matrix:
         include:
           - { toolchain: wasm-5.6.0-RELEASE }
-          - { toolchain: wasm-5.7-SNAPSHOT-2022-07-27-a }
+          - { toolchain: wasm-5.7-SNAPSHOT-2022-09-18-a }
           - { toolchain: wasm-DEVELOPMENT-SNAPSHOT-2022-07-23-a }
 
     steps:
