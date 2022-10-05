@@ -72,6 +72,7 @@ struct ReconcilePass: FiberReconcilerPass {
     var shouldReconcile = false
 
     while true {
+      print(node.fiber as Any)
       if !shouldReconcile {
         if let fiber = node.fiber,
            changedFibers.contains(ObjectIdentifier(fiber))
@@ -98,6 +99,12 @@ struct ReconcilePass: FiberReconcilerPass {
       {
         caches.mutations.append(mutation)
       }
+
+
+        ///////------------_!!!!!!!!!!!!!!!!!!!!
+        //////// wheeeere are new fiber elements creted?????
+        ////.how is element formed?
+        ////-------------------
 
       // Ensure the `TreeReducer` can access any necessary state.
       node.elementIndices = caches.elementIndices
@@ -223,10 +230,12 @@ struct ReconcilePass: FiberReconcilerPass {
     in reconciler: FiberReconciler<R>,
     caches: FiberReconciler<R>.Caches
   ) -> Mutation<R>? {
+      print("rec node:", node.fiber?.typeInfo?.type, node.fiber?.alternate?.typeInfo?.type)
     if let element = node.fiber?.element,
        let index = node.fiber?.elementIndex,
        let parent = node.fiber?.elementParent?.element
     {
+        print("actually do it")
       if node.fiber?.alternate == nil { // This didn't exist before (no alternate)
         if let fiber = node.fiber {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
@@ -258,6 +267,7 @@ struct ReconcilePass: FiberReconcilerPass {
         )
       }
     }
+      print("nvm el", node.fiber?.element != nil, "ind", node.fiber?.elementIndex != nil, "par", node.fiber?.elementParent?.element != nil)
     return nil
   }
 
