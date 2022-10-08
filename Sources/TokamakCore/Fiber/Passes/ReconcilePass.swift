@@ -72,7 +72,6 @@ struct ReconcilePass: FiberReconcilerPass {
     var shouldReconcile = false
 
     while true {
-      print(node.fiber as Any)
       if !shouldReconcile {
         if let fiber = node.fiber,
            changedFibers.contains(ObjectIdentifier(fiber))
@@ -84,6 +83,8 @@ struct ReconcilePass: FiberReconcilerPass {
           shouldReconcile = true
         }
       }
+
+        print("run(...) iteration, shouldReconcile: \(shouldReconcile), node:", node.fiber ?? "<nil>")
 
       // If this fiber has an element, set its `elementIndex`
       // and increment the `elementIndices` value for its `elementParent`.
@@ -118,6 +119,7 @@ struct ReconcilePass: FiberReconcilerPass {
       // Update `DynamicProperty`s before accessing the `View`'s body.
       node.fiber?.updateDynamicProperties()
       // Compute the children of the node.
+      print("run(...): reducing tree")
       let reducer = FiberReconciler<R>.TreeReducer.SceneVisitor(initialResult: node)
       node.visitChildren(reducer)
 
@@ -230,16 +232,16 @@ struct ReconcilePass: FiberReconcilerPass {
     in reconciler: FiberReconciler<R>,
     caches: FiberReconciler<R>.Caches
   ) -> Mutation<R>? {
-      print("rec node:", node.fiber?.typeInfo?.type, node.fiber?.alternate?.typeInfo?.type)
+      print("reconcile(...), node:", node.fiber ?? "<nil>", "alternate:", node.fiber?.alternate ?? "<nil>")
     if let element = node.fiber?.element,
        let index = node.fiber?.elementIndex,
        let parent = node.fiber?.elementParent?.element
     {
-        print("actually do it")
-      if node.fiber?.alternate == nil { // This didn't exist before (no alternate)
+      if node.fiber?.alternate?.element == nil { // This didn't exist before (no alternate)
         if let fiber = node.fiber {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
         }
+        print(" -> .insert")
         return .insert(element: element, parent: parent, index: index)
       } else if node.fiber?.typeInfo?.type != node.fiber?.alternate?.typeInfo?.type,
                 let previous = node.fiber?.alternate?.element
@@ -247,6 +249,7 @@ struct ReconcilePass: FiberReconcilerPass {
         if let fiber = node.fiber {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
         }
+          print(" -> .replace")
         // This is a completely different type of view.
         return .replace(parent: parent, previous: previous, replacement: element)
       } else if let newContent = node.newContent,
@@ -255,6 +258,7 @@ struct ReconcilePass: FiberReconcilerPass {
         if let fiber = node.fiber {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
         }
+          print(" -> .update")
         // This is the same type of view, but its backing data has changed.
         return .update(
           previous: element,
@@ -267,7 +271,7 @@ struct ReconcilePass: FiberReconcilerPass {
         )
       }
     }
-      print("nvm el", node.fiber?.element != nil, "ind", node.fiber?.elementIndex != nil, "par", node.fiber?.elementParent?.element != nil)
+      print(" -> nil, element", node.fiber?.element != nil, "elementIndex", node.fiber?.elementIndex != nil, "elementParent", node.fiber?.elementParent?.element != nil)
     return nil
   }
 

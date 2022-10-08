@@ -18,7 +18,7 @@ final class StateManager: ObservableObject {
     private init() { }
     static let shared = StateManager()
 
-    @Published var state = State.a
+    @Published var state = State.a //b(["eins", "2", "III"])
 }
 
 struct ContentView: View {
