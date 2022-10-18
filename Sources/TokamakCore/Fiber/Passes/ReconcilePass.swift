@@ -233,7 +233,7 @@ struct ReconcilePass: FiberReconcilerPass {
     caches: FiberReconciler<R>.Caches
   ) -> Mutation<R>? {
       print("reconcile(...), node:", node.fiber ?? "<nil>", "alternate:", node.fiber?.alternate ?? "<nil>")
-    if let element = node.fiber?.element,
+      if let element = node.fiber?.element ?? node.newContent.map({ .init(from: $0) }),
        let index = node.fiber?.elementIndex,
        let parent = node.fiber?.elementParent?.element
     {
@@ -242,6 +242,7 @@ struct ReconcilePass: FiberReconcilerPass {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
         }
         print(" -> .insert")
+          node.fiber?.element = element
         return .insert(element: element, parent: parent, index: index)
       } else if node.fiber?.typeInfo?.type != node.fiber?.alternate?.typeInfo?.type,
                 let previous = node.fiber?.alternate?.element
@@ -253,7 +254,7 @@ struct ReconcilePass: FiberReconcilerPass {
         // This is a completely different type of view.
         return .replace(parent: parent, previous: previous, replacement: element)
       } else if let newContent = node.newContent,
-                newContent != element.content
+                node.fiber?.element?.content != node.fiber?.alternate?.element?.content
       {
         if let fiber = node.fiber {
           invalidateCache(for: fiber, in: reconciler, caches: caches)
@@ -270,6 +271,7 @@ struct ReconcilePass: FiberReconcilerPass {
           )
         )
       }
+        print(" ! didn't update, content \(element.content), new content \(node.newContent as Any)")
     }
       print(" -> nil, element", node.fiber?.element != nil, "elementIndex", node.fiber?.elementIndex != nil, "elementParent", node.fiber?.elementParent?.element != nil)
     return nil

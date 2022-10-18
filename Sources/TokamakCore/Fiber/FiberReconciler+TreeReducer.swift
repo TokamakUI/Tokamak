@@ -153,10 +153,8 @@ extension FiberReconciler {
           partialResult.nextTraits
         )
 
-          if let n = newContent {
-              existing.element = .init(from: n)
-          }
-        
+//        existing.element = newContent.map { .init(from: $0) }
+
         resultChild = Result(
           fiber: existing,
           visitChildren: visitChildren(partialResult.fiber?.reconciler, nextValue),
@@ -169,6 +167,8 @@ extension FiberReconciler {
         )
         partialResult.nextExisting = existing.sibling
         partialResult.nextExistingAlternate = partialResult.nextExistingAlternate?.sibling
+
+          existing.sibling = nil
       } else {
           print("creating new")
         let elementParent = partialResult.fiber?.element != nil
