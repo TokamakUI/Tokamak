@@ -57,6 +57,9 @@ struct ContentView: View {
             VStack {
                 Text("d \(other)")
                 Text("count \(ints.count)")
+                Button("back") {
+                    sm.state = .a
+                }
             }
         }
     }
