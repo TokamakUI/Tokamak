@@ -130,16 +130,13 @@ extension FiberReconciler {
       // Create the node and its element.
       var nextValue = nextValue
 
-        print("TreeReducer visiting view \(nextValue)")
-
       let resultChild: Result
       if let existing = partialResult.nextExisting {
-          print("updating existing \(existing)")
-          let elementParent = partialResult.fiber?.element != nil
-            ? partialResult.fiber
-            : partialResult.fiber?.elementParent
-          existing.elementParent = elementParent
         // If a fiber already exists, simply update it with the new view.
+        let elementParent = partialResult.fiber?.element != nil
+          ? partialResult.fiber
+          : partialResult.fiber?.elementParent
+        existing.elementParent = elementParent
         let key: ObjectIdentifier?
         if let elementParent = existing.elementParent {
           key = ObjectIdentifier(elementParent)
@@ -152,9 +149,6 @@ extension FiberReconciler {
           key.map { partialResult.elementIndices[$0, default: 0] },
           partialResult.nextTraits
         )
-
-//        existing.element = newContent.map { .init(from: $0) }
-
         resultChild = Result(
           fiber: existing,
           visitChildren: visitChildren(partialResult.fiber?.reconciler, nextValue),
@@ -167,10 +161,8 @@ extension FiberReconciler {
         )
         partialResult.nextExisting = existing.sibling
         partialResult.nextExistingAlternate = partialResult.nextExistingAlternate?.sibling
-
-          existing.sibling = nil
+        existing.sibling = nil
       } else {
-          print("creating new")
         let elementParent = partialResult.fiber?.element != nil
           ? partialResult.fiber
           : partialResult.fiber?.elementParent

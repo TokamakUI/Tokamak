@@ -243,8 +243,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
   ///
   /// A `reconcile()` call is queued from `fiberChanged` once per run loop.
   func reconcile() {
-    print("reconcile(), changedFibers: \(changedFibers)")
-
     isReconciling = true
     let changedFibers = changedFibers
     self.changedFibers.removeAll()
@@ -268,12 +266,9 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     // Essentially, making the work in progress tree the current,
     // and leaving the current available to be the work in progress
     // on our next update.
-
     let alternate = alternate
     self.alternate = current
     current = alternate
-
-    print("============== reconcile done, current is now:\n\(current.recursiveDescription)")
 
     isReconciling = false
 

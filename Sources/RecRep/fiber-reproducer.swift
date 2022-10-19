@@ -55,7 +55,7 @@ struct ContentView: View {
             }
         case .d(_, let ints, let other):
             VStack {
-                Text("\(other)")
+                Text("d \(other)")
                 Text("count \(ints.count)")
             }
         }

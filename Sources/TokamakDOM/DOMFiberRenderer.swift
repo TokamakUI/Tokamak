@@ -57,12 +57,6 @@ public final class DOMElement: FiberElement {
   }
 }
 
-
-extension DOMElement: CustomStringConvertible {
-  public var description: String {
-    "DOMElement(tag: \(content.tag), attributes: \(content.attributes.filter { $0.key != "style" }), innerHTML: \(content.innerHTML ?? "nil"))"
-  }
-}
 public extension DOMElement.Content {
   init<V>(from primitiveView: V, useDynamicLayout: Bool) where V: View {
     guard let primitiveView = primitiveView as? HTMLConvertible else { fatalError() }
@@ -297,7 +291,6 @@ public struct DOMFiberRenderer: FiberRenderer {
 
   public func commit(_ mutations: [Mutation<Self>]) {
     for mutation in mutations {
-      print(mutation)
       switch mutation {
       case let .insert(newElement, parent, index):
         let element = createElement(newElement)
