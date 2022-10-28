@@ -209,6 +209,7 @@ struct ReconcilePass: FiberReconcilerPass {
           }
           alternateSibling = currentAltSibling.sibling
         }
+        node.fiber?.alternate?.sibling = nil
         guard let parent = node.parent else { return }
         // When we walk back to the root, exit
         guard parent !== root.fiber?.alternate else { return }
@@ -241,6 +242,7 @@ struct ReconcilePass: FiberReconcilerPass {
       }
       let el = R.ElementType(from: content)
       node.fiber?.element = el
+      node.fiber?.alternate?.element = el
       return .insert(element: el, parent: parent, index: index)
     }
 
@@ -256,6 +258,7 @@ struct ReconcilePass: FiberReconcilerPass {
       if node.fiber?.typeInfo?.type != node.fiber?.alternate?.typeInfo?.type {
         let el = R.ElementType(from: content)
         node.fiber?.element = el
+        node.fiber?.alternate?.element = el
         return .replace(parent: parent, previous: altElement, replacement: el)
       } else if content != altElement.content {
         node.fiber?.element = altElement
@@ -272,10 +275,12 @@ struct ReconcilePass: FiberReconcilerPass {
     }
 
     if let alt = node.fiber?.alternate?.element,
-       let parent = node.fiber?.elementParent?.element,
+       let parent = node.fiber?.alternate?.elementParent?.element,
        node.newContent == nil
     {
       node.fiber?.element = nil
+      node.fiber?.elementIndex = 0
+      if let p = node.fiber?.elementParent { caches.elementIndices[ObjectIdentifier(p)]? -= 1 }
       return .remove(element: alt, parent: parent)
     }
 

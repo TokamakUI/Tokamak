@@ -106,11 +106,23 @@ public final class TestFiberElement: FiberElement, CustomStringConvertible {
   }
 
   public var description: String {
-    """
-    \(content.renderedValue)
-    \(children.map { "  \($0.description)" }.joined(separator: "\n"))
-    \(content.closingTag)
-    """
+    let memoryAddress = String(format: "%010p", unsafeBitCast(self, to: Int.self))
+    return content.renderedValue + " (\(memoryAddress)) [\(children.count)]"
+  }
+
+  public var recursiveDescription: String {
+    var d = description
+    if !children.isEmpty {
+      d.append("\n")
+      d.append(
+        children
+          .flatMap { $0.recursiveDescription.components(separatedBy:"\n").map { "  \($0)"} }
+          .joined(separator: "\n")
+      )
+      d.append("\n")
+    }
+    d.append(content.closingTag)
+    return d
   }
 
   public init(renderedValue: String, closingTag: String) {
@@ -169,6 +181,8 @@ public struct TestFiberRenderer: FiberRenderer {
       case let .replace(parent, previous, replacement):
         guard let index = parent.children.firstIndex(where: { $0 === previous })
         else { continue }
+        let grandchildren = parent.children[index].children
+        replacement.children = grandchildren
         parent.children[index] = replacement
       case let .layout(element, geometry):
         element.geometry = geometry

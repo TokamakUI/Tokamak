@@ -178,13 +178,6 @@ let package = Package(
           condition: .when(platforms: [.wasi])
         ),
       ]
-      // resources: [.copy("logo-header.png")],
-      // linkerSettings: [
-      //   .unsafeFlags(
-      //     ["-Xlinker", "--stack-first", "-Xlinker", "-z", "-Xlinker", "stack-size=16777216"],
-      //     .when(platforms: [.wasi])
-      //   ),
-      // ]
     ),
     .executableTarget(
       name: "TokamakDemo",

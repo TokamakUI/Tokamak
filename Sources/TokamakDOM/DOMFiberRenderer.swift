@@ -298,7 +298,6 @@ public struct DOMFiberRenderer: FiberRenderer {
 
   public func commit(_ mutations: [Mutation<Self>]) {
     for mutation in mutations {
-        print(mutation)
       switch mutation {
       case let .insert(newElement, parent, index):
         let element = createElement(newElement)
