@@ -17,6 +17,10 @@
 
 import Foundation
 
+#if canImport(CoreGraphics)
+import CoreGraphics
+#endif
+
 public struct StrokeStyle: Equatable {
   public var lineWidth: CGFloat
   public var lineCap: CGLineCap
