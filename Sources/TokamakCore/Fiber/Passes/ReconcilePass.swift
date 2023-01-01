@@ -231,41 +231,41 @@ struct ReconcilePass: FiberReconcilerPass {
     in reconciler: FiberReconciler<R>,
     caches: FiberReconciler<R>.Caches
   ) -> Mutation<R>? {
-    if node.fiber?.element == nil,
-       node.fiber?.alternate?.element == nil,
+    guard let fiber = node.fiber else { return nil }
+
+    if fiber.element == nil,
+       fiber.alternate?.element == nil,
        let content = node.newContent,
-       let index = node.fiber?.elementIndex,
-       let parent = node.fiber?.elementParent?.element
+       let index = fiber.elementIndex,
+       let parent = fiber.elementParent?.element
     {
-      if let fiber = node.fiber {
-        invalidateCache(for: fiber, in: reconciler, caches: caches)
-      }
+      invalidateCache(for: fiber, in: reconciler, caches: caches)
+
       let el = R.ElementType(from: content)
-      node.fiber?.element = el
-      node.fiber?.alternate?.element = el
+      fiber.element = el
+      fiber.alternate?.element = el
+
       return .insert(element: el, parent: parent, index: index)
     }
 
-    if node.fiber?.element == nil,
-       let altElement = node.fiber?.alternate?.element,
+    if fiber.element == nil,
+       let altElement = fiber.alternate?.element,
        let content = node.newContent,
-        let parent = node.fiber?.elementParent?.element
+       let parent = fiber.elementParent?.element
     {
-      if let fiber = node.fiber {
-        invalidateCache(for: fiber, in: reconciler, caches: caches)
-      }
+      invalidateCache(for: fiber, in: reconciler, caches: caches)
 
-      if node.fiber?.typeInfo?.type != node.fiber?.alternate?.typeInfo?.type {
+      if fiber.typeInfo?.type != fiber.alternate?.typeInfo?.type {
         let el = R.ElementType(from: content)
-        node.fiber?.element = el
-        node.fiber?.alternate?.element = el
+        fiber.element = el
+        fiber.alternate?.element = el
         return .replace(parent: parent, previous: altElement, replacement: el)
       } else if content != altElement.content {
-        node.fiber?.element = altElement
+        fiber.element = altElement
         return .update(
           previous: altElement,
           newContent: content,
-          geometry: node.fiber?.geometry ?? .init(
+          geometry: fiber.geometry ?? .init(
             origin: .init(origin: .zero),
             dimensions: .init(size: .zero, alignmentGuides: [:]),
             proposal: .unspecified
@@ -274,44 +274,38 @@ struct ReconcilePass: FiberReconcilerPass {
       }
     }
 
-    if let alt = node.fiber?.alternate?.element,
-       let parent = node.fiber?.alternate?.elementParent?.element,
+    if let alt = fiber.alternate?.element,
+       let parent = fiber.alternate?.elementParent?.element,
        node.newContent == nil
     {
-      node.fiber?.element = nil
-      node.fiber?.elementIndex = 0
-      if let p = node.fiber?.elementParent { caches.elementIndices[ObjectIdentifier(p)]? -= 1 }
+      fiber.element = nil
+      fiber.elementIndex = 0
+      if let p = fiber.elementParent { caches.elementIndices[ObjectIdentifier(p)]? -= 1 }
       return .remove(element: alt, parent: parent)
     }
 
-    if let element = node.fiber?.element,
-       let index = node.fiber?.elementIndex,
-       let parent = node.fiber?.elementParent?.element
+    if let element = fiber.element,
+       let index = fiber.elementIndex,
+       let parent = fiber.elementParent?.element
     {
-      if node.fiber?.alternate == nil { // This didn't exist before (no alternate)
-        if let fiber = node.fiber {
-          invalidateCache(for: fiber, in: reconciler, caches: caches)
-        }
+      if fiber.alternate == nil { // This didn't exist before (no alternate)
+        invalidateCache(for: fiber, in: reconciler, caches: caches)
         return .insert(element: element, parent: parent, index: index)
-      } else if node.fiber?.typeInfo?.type != node.fiber?.alternate?.typeInfo?.type,
-                let previous = node.fiber?.alternate?.element
+      } else if fiber.typeInfo?.type != fiber.alternate?.typeInfo?.type,
+                let previous = fiber.alternate?.element
       {
-        if let fiber = node.fiber {
-          invalidateCache(for: fiber, in: reconciler, caches: caches)
-        }
+        invalidateCache(for: fiber, in: reconciler, caches: caches)
         // This is a completely different type of view.
         return .replace(parent: parent, previous: previous, replacement: element)
       } else if let newContent = node.newContent,
                 newContent != element.content
       {
-        if let fiber = node.fiber {
-          invalidateCache(for: fiber, in: reconciler, caches: caches)
-        }
+        invalidateCache(for: fiber, in: reconciler, caches: caches)
         // This is the same type of view, but its backing data has changed.
         return .update(
           previous: element,
           newContent: newContent,
-          geometry: node.fiber?.geometry ?? .init(
+          geometry: fiber.geometry ?? .init(
             origin: .init(origin: .zero),
             dimensions: .init(size: .zero, alignmentGuides: [:]),
             proposal: .unspecified
