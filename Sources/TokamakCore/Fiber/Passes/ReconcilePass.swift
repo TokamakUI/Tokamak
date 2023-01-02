@@ -281,11 +281,12 @@ struct ReconcilePass: FiberReconcilerPass {
       if let p = fiber.elementParent { caches.elementIndices[ObjectIdentifier(p)]? -= 1 }
       return .remove(element: alt, parent: parent)
 
-    case let (element?, _, _) where fiber.alternate?.element == nil: // todo: does this do the right thing when newContent != nil? can it even be != nil?
+    case let (element?, content, _) where fiber.alternate?.element == nil:
       guard let parent = fiber.elementParent?.element,
             let index = fiber.elementIndex
         else { break }
 
+      if let c = content { element.update(with: c) }
       return .insert(element: element, parent: parent, index: index)
 
     case let (element?, _, previous?) where !canUpdate(fiber):
