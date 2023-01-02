@@ -17,7 +17,7 @@
 
 import Foundation
 
-@_spi(TokamakCore)
+@_spi(TokamakCore) @testable
 import TokamakCore
 
 /// A proxy for an identified view in the `TestFiberRenderer`.
@@ -62,6 +62,11 @@ public struct TestViewProxy<V: View> {
   /// Access properties from the `view` without specifying `.view` manually.
   public subscript<T>(dynamicMember member: KeyPath<V, T>) -> T? {
     self.view?[keyPath: member]
+  }
+
+  public func tap() where V == Button<Text> {
+    self.action?()
+    reconciler.renderer.flush()
   }
 }
 

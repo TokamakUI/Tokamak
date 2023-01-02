@@ -84,8 +84,7 @@ final class VaryingPrimitivenessTests: XCTestCase {
     XCTAssertEqual(root.children.count, 1) // button style
     XCTAssertEqual(root.children[0].children.count, 1) // text
 
-    reconciler.findView(id: "a.1", as: Button<Text>.self).action?()
-    reconciler.findView(id: "a.1", as: Button<Text>.self).action?()
+    reconciler.findView(id: "a.1", as: Button<Text>.self).tap()
 
     XCTAssertEqual(root.children.count, 1)
     XCTAssert(root.children[0].description.contains("VStack"))
@@ -93,8 +92,7 @@ final class VaryingPrimitivenessTests: XCTestCase {
     XCTAssert(root.children[0].children[0].description.contains("Text"))
     XCTAssert(root.children[0].children[1].description.contains("ButtonStyle"))
 
-    reconciler.findView(id: "b.zwei", as: Button<Text>.self).action?()
-    reconciler.findView(id: "b.zwei", as: Button<Text>.self).action?()
+    reconciler.findView(id: "b.zwei", as: Button<Text>.self).tap()
 
     XCTAssertEqual(root.children.count, 1)
     XCTAssert(root.children[0].description.contains("VStack"))
@@ -103,26 +101,32 @@ final class VaryingPrimitivenessTests: XCTestCase {
     XCTAssert(root.children[0].children[1].description.contains("Text"))
     XCTAssert(root.children[0].children[2].description.contains("ButtonStyle"))
 
-    reconciler.findView(id: "c.i = 2", as: Button<Text>.self).action?()
-    reconciler.findView(id: "c.i = 2", as: Button<Text>.self).action?()
+    reconciler.findView(id: "c.i = 2", as: Button<Text>.self).tap()
 
     XCTAssertEqual(root.children[0].children.count, 3) // stack content
 
-    reconciler.findView(id: "d.back", as: Button<Text>.self).action?()
-    reconciler.findView(id: "d.back", as: Button<Text>.self).action?()
+    reconciler.findView(id: "d.back", as: Button<Text>.self).tap()
 
     XCTAssertEqual(root.children.count, 1)
     XCTAssert(root.children[0].description.contains("ButtonStyle"))
     XCTAssertEqual(root.children[0].children.count, 1)
     XCTAssert(root.children[0].children[0].description.contains("Text"))
 
-    reconciler.findView(id: "a.1", as: Button<Text>.self).action?()
-    reconciler.findView(id: "a.1", as: Button<Text>.self).action?()
+    reconciler.findView(id: "a.1", as: Button<Text>.self).tap()
 
     XCTAssertEqual(root.children.count, 1)
     XCTAssert(root.children[0].description.contains("VStack"))
     XCTAssertEqual(root.children[0].children.count, 4) // stack content
     XCTAssert(root.children[0].children[0].description.contains("Text"))
     XCTAssert(root.children[0].children[1].description.contains("ButtonStyle"))
+
+    reconciler.findView(id: "b.zwei", as: Button<Text>.self).tap()
+
+    XCTAssertEqual(root.children.count, 1)
+    XCTAssert(root.children[0].description.contains("VStack"))
+    XCTAssertEqual(root.children[0].children.count, 4) // stack content
+    XCTAssert(root.children[0].children[0].description.contains("Text"))
+    XCTAssert(root.children[0].children[1].description.contains("Text"))
+    XCTAssert(root.children[0].children[2].description.contains("ButtonStyle"))
   }
 }

@@ -137,7 +137,7 @@ public final class TestFiberElement: FiberElement, CustomStringConvertible {
   public static var root: Self { .init(renderedValue: "<root>", closingTag: "</root>") }
 }
 
-public struct TestFiberRenderer: FiberRenderer {
+public final class TestFiberRenderer: FiberRenderer {
   public let sceneSize: CurrentValueSubject<CGSize, Never>
   public let useDynamicLayout: Bool
 
@@ -171,13 +171,15 @@ public struct TestFiberRenderer: FiberRenderer {
     view is TestFiberPrimitive
   }
 
-  public func commit(_ mutations: [Mutation<Self>]) {
+  public func commit(_ mutations: [Mutation<TestFiberRenderer>]) {
     for mutation in mutations {
       switch mutation {
       case let .insert(element, parent, index):
         parent.children.insert(element, at: index)
       case let .remove(element, parent):
-        parent?.children.removeAll(where: { $0 === element })
+        guard let idx = parent?.children.firstIndex(where: { $0 === element })
+          else { fatalError("remove called with element that doesn't belong to its parent") }
+        parent?.children.remove(at: idx)
       case let .replace(parent, previous, replacement):
         guard let index = parent.children.firstIndex(where: { $0 === previous })
         else { continue }
@@ -192,7 +194,21 @@ public struct TestFiberRenderer: FiberRenderer {
     }
   }
 
+  public func render<V: View>(_ view: V) -> FiberReconciler<TestFiberRenderer> {
+    let ret = FiberReconciler(self, view)
+    flush()
+    return ret
+  }
+
+  var scheduledActions: [() -> Void] = []
+
   public func schedule(_ action: @escaping () -> ()) {
-    action()
+    scheduledActions.append(action)
+  }
+
+  public func flush() {
+    let actions = scheduledActions
+    scheduledActions = []
+    for a in actions { a() }
   }
 }
