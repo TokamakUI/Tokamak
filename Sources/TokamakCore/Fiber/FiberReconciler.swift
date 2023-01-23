@@ -270,13 +270,6 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
     self.alternate = current
     current = alternate
 
-    print("""
-      reconcile done
-      mutations were:
-      \(visitor.mutations.map { "  \($0)" }.joined(separator: "\n"))
-      alternate is \(self.alternate.recursiveDescription)
-      current is \(current.recursiveDescription)
-      """)
     // copy over elements to the alternate, so when an element is
     // replaced, the old element can still be accessed to emit
     // removal mutations for its children

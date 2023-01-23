@@ -57,13 +57,6 @@ public final class DOMElement: FiberElement {
   }
 }
 
-extension DOMElement: CustomStringConvertible {
-  public var description: String {
-    "DOMElement(tag: \(content.tag), attributes: \(content.attributes.filter { $0.key != "style" }), innerHTML: \(content.innerHTML ?? "nil"))"
-  }
-}
-
-
 public extension DOMElement.Content {
   init<V>(from primitiveView: V, useDynamicLayout: Bool) where V: View {
     guard let primitiveView = primitiveView as? HTMLConvertible else { fatalError() }

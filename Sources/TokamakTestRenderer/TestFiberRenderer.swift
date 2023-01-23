@@ -106,23 +106,11 @@ public final class TestFiberElement: FiberElement, CustomStringConvertible {
   }
 
   public var description: String {
-    let memoryAddress = String(format: "%010p", unsafeBitCast(self, to: Int.self))
-    return content.renderedValue + " (\(memoryAddress)) [\(children.count)]"
-  }
-
-  public var recursiveDescription: String {
-    var d = description
-    if !children.isEmpty {
-      d.append("\n")
-      d.append(
-        children
-          .flatMap { $0.recursiveDescription.components(separatedBy:"\n").map { "  \($0)"} }
-          .joined(separator: "\n")
-      )
-      d.append("\n")
-    }
-    d.append(content.closingTag)
-    return d
+    """
+    \(content.renderedValue)
+    \(children.map { "  \($0.description)" }.joined(separator: "\n"))
+    \(content.closingTag)
+    """
   }
 
   public init(renderedValue: String, closingTag: String) {
