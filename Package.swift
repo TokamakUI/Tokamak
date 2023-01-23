@@ -15,7 +15,6 @@ let package = Package(
       name: "TokamakDemo",
       targets: ["TokamakDemo"]
     ),
-    .executable(name: "RecRep", targets: ["RecRep"]),
     .library(
       name: "TokamakDOM",
       targets: ["TokamakDOM"]
@@ -166,17 +165,6 @@ let package = Package(
           condition: .when(platforms: [.wasi])
         ),
         "OpenCombineJS",
-      ]
-    ),
-    .executableTarget(
-      name: "RecRep",
-      dependencies: [
-        "TokamakShim",
-        .product(
-          name: "JavaScriptKit",
-          package: "JavaScriptKit",
-          condition: .when(platforms: [.wasi])
-        ),
       ]
     ),
     .executableTarget(
