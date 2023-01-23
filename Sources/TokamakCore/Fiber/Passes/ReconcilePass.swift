@@ -281,7 +281,7 @@ struct ReconcilePass: FiberReconcilerPass {
       if let p = fiber.elementParent { caches.elementIndices[ObjectIdentifier(p)]? -= 1 }
       return .remove(element: alt, parent: parent)
 
-    case let (element?, content, _) where fiber.alternate?.element == nil:
+    case let (element?, content, nil):
       guard let parent = fiber.elementParent?.element,
             let index = fiber.elementIndex
         else { break }
