@@ -277,6 +277,13 @@ public final class FiberReconciler<Renderer: FiberRenderer> {
       alternate is \(self.alternate.recursiveDescription)
       current is \(current.recursiveDescription)
       """)
+    // copy over elements to the alternate, so when an element is
+    // replaced, the old element can still be accessed to emit
+    // removal mutations for its children
+    walk(current) { node in
+      node.alternate?.element = node.element
+      return true
+    }
 
     isReconciling = false
 
