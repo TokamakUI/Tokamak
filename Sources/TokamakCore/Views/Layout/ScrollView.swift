@@ -118,12 +118,12 @@ extension ScrollView: Layout {
         subview.place(
           at: .init(x: bounds.midX, y: bounds.midY),
           anchor: .center,
-          proposal: proposal
+          proposal: contentProposal
         )
       } else {
         subview.place(
           at: bounds.origin,
-          proposal: proposal
+          proposal: contentProposal
         )
       }
     }

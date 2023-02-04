@@ -381,10 +381,9 @@ public extension Grid where Content == EmptyView {
     horizontalSpacing: CGFloat? = nil,
     verticalSpacing: CGFloat? = nil
   ) {
-    self.init(
-      alignment: alignment,
-      horizontalSpacing: horizontalSpacing,
-      verticalSpacing: verticalSpacing
-    ) { EmptyView() }
+    self.alignment = alignment
+    self.horizontalSpacing = horizontalSpacing
+    self.verticalSpacing = verticalSpacing
+    content = EmptyView()
   }
 }
