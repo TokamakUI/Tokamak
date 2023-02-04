@@ -310,7 +310,7 @@ public struct DOMFiberRenderer: FiberRenderer {
           fatalError("The previous element does not exist (trying to replace element).")
         }
         let replacementElement = createElement(replacement)
-        _ = parentElement.replaceChild?(previousElement, replacementElement)
+        _ = parentElement.replaceChild?(replacementElement, previousElement)
       case let .update(previous, newContent, geometry):
         previous.update(with: newContent)
         guard let previousElement = previous.reference
