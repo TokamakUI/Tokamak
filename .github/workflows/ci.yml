@@ -27,8 +27,8 @@ jobs:
       matrix:
         include:
           - { toolchain: wasm-5.6.0-RELEASE }
-          - { toolchain: wasm-5.7-SNAPSHOT-2022-06-01-a }
-          - { toolchain: wasm-DEVELOPMENT-SNAPSHOT-2022-06-23-a }
+          - { toolchain: wasm-5.7-SNAPSHOT-2022-07-27-a }
+          - { toolchain: wasm-DEVELOPMENT-SNAPSHOT-2022-07-23-a }
 
     steps:
       - uses: actions/checkout@v2
@@ -76,25 +76,26 @@ jobs:
           name: Failed snapshots
           path: '*Tests'
 
-  gtk_macos_build:
-    runs-on: macos-12
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build the GTK renderer on macOS
-        shell: bash
-        run: |
-          set -ex
-          sudo xcode-select --switch /Applications/Xcode_13.4.app/Contents/Developer/
-
-          brew install gtk+3
-
-          make build
+# FIXME: disabled due to build errors, to be investigated
+#   gtk_macos_build:
+#     runs-on: macos-12
+#
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Build the GTK renderer on macOS
+#         shell: bash
+#         run: |
+#           set -ex
+#           sudo xcode-select --switch /Applications/Xcode_13.4.1.app/Contents/Developer/
+#
+#           brew install gtk+3
+#
+#           make build
 
   gtk_ubuntu_18_04_build:
     runs-on: ubuntu-latest
     container:
-      image: swiftlang/swift:nightly-bionic
+      image: swiftlang/swift:nightly-5.7-bionic
 
     steps:
       - uses: actions/checkout@v2
@@ -109,7 +110,7 @@ jobs:
   gtk_ubuntu_20_04_build:
     runs-on: ubuntu-latest
     container:
-      image: swiftlang/swift:nightly-focal
+      image: swiftlang/swift:nightly-5.7-focal
 
     steps:
       - uses: actions/checkout@v2

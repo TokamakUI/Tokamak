@@ -162,7 +162,7 @@ extension InsetGroupedListStyle: ListStyleDeferredToRenderer {
   }
 }
 
-// TODO: Make sections collabsible (see Section.swift for more impl. details)
+// TODO: Make sections collapsible (see Section.swift for more impl. details)
 extension SidebarListStyle: ListStyleDeferredToRenderer {
   public func sectionHeader<Header>(_ header: Header) -> AnyView where Header: View {
     AnyView(
