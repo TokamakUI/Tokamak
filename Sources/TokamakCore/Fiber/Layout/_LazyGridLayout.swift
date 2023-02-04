@@ -144,7 +144,7 @@ public extension _LazyGridLayout {
         maxMainAxisSize = size[keyPath: mainAxis]
       }
       if subviews.indices.contains(index + cache.resolvedItems.count) {
-        if let spacing {
+        if let spacing = spacing {
           mainAxisSpacing = spacing
         } else {
           let spacing = subview.spacing.distance(
