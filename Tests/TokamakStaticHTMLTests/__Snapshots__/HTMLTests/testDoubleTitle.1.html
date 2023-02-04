@@ -3,15 +3,15 @@
   <title>Tokamak 2</title>
   <style>
     ._tokamak-stack {
-  display: grid;
+  display: flex;
 }
 ._tokamak-hstack {
-  grid-auto-flow: column;
-  column-gap: var(--tokamak-stack-gap, 8px);
+  flex-direction: row;
+  gap: var(--tokamak-stack-gap, 8px);
 }
 ._tokamak-vstack {
-  grid-auto-flow: row;
-  row-gap: var(--tokamak-stack-gap, 8px);
+  flex-direction: column;
+  gap: var(--tokamak-stack-gap, 8px);
 }
 ._tokamak-scrollview-hideindicators {
   scrollbar-color: transparent;
@@ -246,7 +246,7 @@ width: 100%;
 height: 100%;
 justify-content: center;
 align-items: center;
-overflow: hidden;"><div class="_tokamak-stack _tokamak-vstack" style="justify-items: center;
+overflow: hidden;"><div class="_tokamak-stack _tokamak-vstack" style="align-items: center;
 
 
 "><span style="font-family: system, -apple-system, '.SFNSText-Regular', 'San Francisco', 'Roboto', 'Segoe UI', 'Helvetica Neue', 'Lucida Grande', sans-serif; font-size: 17.0px; font-style: normal; font-variant: normal; font-weight: 400; line-height: normal;
@@ -259,7 +259,7 @@ vertical-align: baseline;
 text-decoration: none;
 text-decoration-color: inherit;
 text-align: left;">Hello, world!</span>
-<div class="_tokamak-stack _tokamak-vstack" style="justify-items: center;
+<div class="_tokamak-stack _tokamak-vstack" style="align-items: center;
 
 
 "></div></div></body>

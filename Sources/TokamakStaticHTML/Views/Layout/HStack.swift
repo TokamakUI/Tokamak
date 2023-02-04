@@ -18,11 +18,11 @@ extension VerticalAlignment {
   var cssValue: String {
     switch self {
     case .top:
-      return "start"
+      return "flex-start"
     case .center:
       return "center"
     case .bottom:
-      return "end"
+      return "flex-end"
     default:
       return "center"
     }
@@ -38,7 +38,7 @@ extension HStack: _HTMLPrimitive, SpacerContainer {
 
     return AnyView(HTML("div", [
       "style": """
-      align-items: \(alignment.cssValue);
+      justify-content: \(alignment.cssValue);
       \(hasSpacer ? "width: 100%;" : "")
       \(fillCrossAxis ? "height: 100%;" : "")
       \(spacing != defaultStackSpacing ? "--tokamak-stack-gap: \(spacing)px;" : "")
