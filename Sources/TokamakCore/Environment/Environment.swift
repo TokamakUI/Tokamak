@@ -19,6 +19,7 @@
 /// 1. `View.makeMountedView`
 /// 2. `MountedHostView.update` when reconciling
 ///
+@_spi(TokamakCore)
 public protocol _EnvironmentReader {
   mutating func _setContent(from values: EnvironmentValues)
 }
@@ -52,4 +53,5 @@ public struct Environment<Value>: DynamicProperty {
   }
 }
 
+@_spi(TokamakCore)
 extension Environment: _EnvironmentReader {}

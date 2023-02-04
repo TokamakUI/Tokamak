@@ -17,7 +17,7 @@
 
 import Foundation
 
-public struct ContainerRelativeShape: Shape, _EnvironmentReader {
+public struct ContainerRelativeShape: Shape {
   var containerShape: (CGRect, GeometryProxy) -> Path? = { _, _ in nil }
 
   public func path(in rect: CGRect) -> Path {
@@ -30,6 +30,9 @@ public struct ContainerRelativeShape: Shape, _EnvironmentReader {
     containerShape = values._containerShape
   }
 }
+
+@_spi(TokamakCore)
+extension ContainerRelativeShape: _EnvironmentReader {}
 
 extension ContainerRelativeShape: InsettableShape {
   @inlinable

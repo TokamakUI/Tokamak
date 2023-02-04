@@ -65,7 +65,10 @@ public struct EnvironmentObject<ObjectType>: DynamicProperty
   public init() {}
 }
 
-extension EnvironmentObject: ObservedProperty, _EnvironmentReader {}
+extension EnvironmentObject: ObservedProperty {}
+
+@_spi(TokamakCore)
+extension EnvironmentObject: _EnvironmentReader {}
 
 extension ObservableObject {
   static var environmentStore: WritableKeyPath<EnvironmentValues, Self?> {

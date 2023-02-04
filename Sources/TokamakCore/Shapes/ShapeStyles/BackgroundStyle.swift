@@ -57,8 +57,7 @@ public extension View {
 }
 
 @frozen
-public struct _BackgroundStyleModifier<Style>: ViewModifier, _EnvironmentModifier,
-  _EnvironmentReader
+public struct _BackgroundStyleModifier<Style>: ViewModifier, _EnvironmentModifier
   where Style: ShapeStyle
 {
   public var environment: EnvironmentValues!
@@ -86,3 +85,6 @@ public struct _BackgroundStyleModifier<Style>: ViewModifier, _EnvironmentModifie
 public extension ShapeStyle where Self == BackgroundStyle {
   static var background: Self { .init() }
 }
+
+@_spi(TokamakCore)
+extension _BackgroundStyleModifier: _EnvironmentReader {}

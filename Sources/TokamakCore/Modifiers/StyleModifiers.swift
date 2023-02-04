@@ -38,7 +38,7 @@ public struct _BackgroundLayout<Content, Background>: _PrimitiveView
   }
 }
 
-public struct _BackgroundModifier<Background>: ViewModifier, _EnvironmentReader
+public struct _BackgroundModifier<Background>: ViewModifier
   where Background: View
 {
   public var environment: EnvironmentValues!
@@ -62,6 +62,9 @@ public struct _BackgroundModifier<Background>: ViewModifier, _EnvironmentReader
     environment = values
   }
 }
+
+@_spi(TokamakCore)
+extension _BackgroundModifier: _EnvironmentReader {}
 
 extension _BackgroundModifier: Equatable where Background: Equatable {
   public static func == (
@@ -90,7 +93,7 @@ public extension View {
 }
 
 @frozen
-public struct _BackgroundShapeModifier<Style, Bounds>: ViewModifier, _EnvironmentReader
+public struct _BackgroundShapeModifier<Style, Bounds>: ViewModifier
   where Style: ShapeStyle, Bounds: Shape
 {
   public var environment: EnvironmentValues!
@@ -115,6 +118,9 @@ public struct _BackgroundShapeModifier<Style, Bounds>: ViewModifier, _Environmen
     environment = values
   }
 }
+
+@_spi(TokamakCore)
+extension _BackgroundShapeModifier: _EnvironmentReader {}
 
 public extension View {
   @inlinable
@@ -149,7 +155,7 @@ public struct _OverlayLayout<Content, Overlay>: _PrimitiveView
   }
 }
 
-public struct _OverlayModifier<Overlay>: ViewModifier, _EnvironmentReader
+public struct _OverlayModifier<Overlay>: ViewModifier
   where Overlay: View
 {
   public var environment: EnvironmentValues!
@@ -173,6 +179,9 @@ public struct _OverlayModifier<Overlay>: ViewModifier, _EnvironmentReader
     environment = values
   }
 }
+
+@_spi(TokamakCore)
+extension _OverlayModifier: _EnvironmentReader {}
 
 extension _OverlayModifier: Equatable where Overlay: Equatable {
   public static func == (lhs: _OverlayModifier<Overlay>, rhs: _OverlayModifier<Overlay>) -> Bool {

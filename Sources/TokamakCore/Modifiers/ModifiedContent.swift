@@ -37,6 +37,7 @@ extension ModifiedContent: ModifierContainer {
   var environmentModifier: _EnvironmentModifier? { modifier as? _EnvironmentModifier }
 }
 
+@_spi(TokamakCore)
 extension ModifiedContent: _EnvironmentReader where Modifier: _EnvironmentReader {
   public mutating func _setContent(from values: EnvironmentValues) {
     modifier._setContent(from: values)
