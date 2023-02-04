@@ -15,7 +15,7 @@
 //  Created by Carson Katri on 2/4/23.
 //
 
-#if os(macOS)
+#if os(macOS) && swift(>=5.7)
 import SwiftUI
 import TokamakStaticHTML
 import XCTest
