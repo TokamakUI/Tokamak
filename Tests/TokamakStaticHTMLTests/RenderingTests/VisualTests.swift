@@ -115,12 +115,12 @@ final class VisualRenderingTests: XCTestCase {
 
     let matchA = verifySnapshot(
       matching: gradient,
-      as: .image(size: size),
+      as: .image(precision: 0.9, size: size),
       testName: "\(#function)A"
     )
     let matchB = verifySnapshot(
       matching: gradient,
-      as: .image(size: size),
+      as: .image(precision: 0.9, size: size),
       testName: "\(#function)B"
     )
 

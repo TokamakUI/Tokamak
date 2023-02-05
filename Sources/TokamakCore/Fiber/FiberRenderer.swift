@@ -127,7 +127,8 @@ extension EnvironmentValues {
     }
   }
 
-  var measureText: (Text, ProposedViewSize, EnvironmentValues) -> CGSize {
+  @_spi(TokamakCore)
+  public var measureText: (Text, ProposedViewSize, EnvironmentValues) -> CGSize {
     get { self[MeasureTextKey.self] }
     set { self[MeasureTextKey.self] = newValue }
   }

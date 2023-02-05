@@ -40,7 +40,7 @@ public struct EnvironmentObject<ObjectType>: DynamicProperty
   var _store: ObjectType?
   var _seed: Int = 0
 
-  mutating func setContent(from values: EnvironmentValues) {
+  public mutating func _setContent(from values: EnvironmentValues) {
     _store = values[ObjectIdentifier(ObjectType.self)]
   }
 
@@ -65,7 +65,10 @@ public struct EnvironmentObject<ObjectType>: DynamicProperty
   public init() {}
 }
 
-extension EnvironmentObject: ObservedProperty, EnvironmentReader {}
+extension EnvironmentObject: ObservedProperty {}
+
+@_spi(TokamakCore)
+extension EnvironmentObject: _EnvironmentReader {}
 
 extension ObservableObject {
   static var environmentStore: WritableKeyPath<EnvironmentValues, Self?> {

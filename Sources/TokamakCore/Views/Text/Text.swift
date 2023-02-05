@@ -36,7 +36,14 @@ public struct Text: _PrimitiveView, Equatable {
   let modifiers: [_Modifier]
 
   @Environment(\.self)
-  var environment
+  var _environment: EnvironmentValues
+
+  @_spi(TokamakCore)
+  public var environmentOverride: EnvironmentValues?
+
+  var environment: EnvironmentValues {
+    environmentOverride ?? _environment
+  }
 
   public static func == (lhs: Text, rhs: Text) -> Bool {
     lhs.storage == rhs.storage

@@ -83,6 +83,7 @@ public struct _TextFieldProxy<Label: View> {
   public var onCommit: () -> () { subject.onCommit }
   public var onEditingChanged: (Bool) -> () { subject.onEditingChanged }
   public var textFieldStyle: _AnyTextFieldStyle { subject.environment.textFieldStyle }
+  public var environment: EnvironmentValues { subject.environment }
   public var foregroundColor: AnyColorBox.ResolvedValue? {
     guard let foregroundColor = subject.environment.foregroundColor else {
       return nil

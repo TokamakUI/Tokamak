@@ -15,7 +15,12 @@
 //  Created by Jed Fox on 06/28/2020.
 //
 
+import Foundation
+
+@_spi(TokamakCore)
 import TokamakCore
+
+@_spi(TokamakStaticHTML)
 import TokamakStaticHTML
 
 extension TextField: DOMPrimitive where Label == Text {
@@ -39,19 +44,18 @@ extension TextField: DOMPrimitive where Label == Text {
     }
   }
 
-  var renderedBody: AnyView {
+  var attributes: [HTMLAttribute: String] {
     let proxy = _TextFieldProxy(self)
-
-    return AnyView(DynamicHTML("input", [
+    return [
       "type": proxy.textFieldStyle is RoundedBorderTextFieldStyle ? "search" : "text",
       .value: proxy.textBinding.wrappedValue,
       "placeholder": _TextProxy(proxy.label).rawText,
-      "style": """
-      \(css(for: proxy.textFieldStyle)) \
-      \(proxy.foregroundColor.map { "color: \($0.cssValue);" } ?? "")
-      """,
-      "class": className(for: proxy.textFieldStyle),
-    ], listeners: [
+    ]
+  }
+
+  var listeners: [String: Listener] {
+    let proxy = _TextFieldProxy(self)
+    return [
       "focus": { _ in proxy.onEditingChanged(true) },
       "blur": { _ in proxy.onEditingChanged(false) },
       "keypress": { event in if event.key == "Enter" { proxy.onCommit() } },
@@ -60,6 +64,75 @@ extension TextField: DOMPrimitive where Label == Text {
           proxy.textBinding.wrappedValue = newValue
         }
       },
-    ]))
+    ]
+  }
+
+  var renderedBody: AnyView {
+    let proxy = _TextFieldProxy(self)
+    return AnyView(DynamicHTML(
+      "input",
+      attributes.merging([
+        "style": """
+        \(css(for: proxy.textFieldStyle)) \
+        \(proxy.foregroundColor.map { "color: \($0.cssValue);" } ?? "")
+        """,
+        "class": className(for: proxy.textFieldStyle),
+      ], uniquingKeysWith: { $1 }),
+      listeners: listeners
+    ))
+  }
+}
+
+@_spi(TokamakStaticHTML)
+extension TextField: HTMLConvertible, DOMNodeConvertible, Layout, _AnyLayout, Animatable
+  where Label == Text
+{
+  public typealias AnimatableData = EmptyAnimatableData
+  public var tag: String { "input" }
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    if useDynamicLayout {
+      return attributes
+        .merging(["style": "padding: 0; border: none;"], uniquingKeysWith: { $0 + $1 })
+    } else {
+      return attributes
+    }
+  }
+
+  public func sizeThatFits(
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) -> CGSize {
+    let proxy = _TextFieldProxy(self)
+    var content = Text(proxy.textBinding.wrappedValue)
+    content.environmentOverride = proxy.environment
+    let contentSize = proxy.environment.measureText(
+      content,
+      proposal,
+      proxy.environment
+    )
+    var label = proxy.label
+    label.environmentOverride = proxy.environment
+    let labelSize = proxy.environment.measureText(
+      label,
+      proposal,
+      proxy.environment
+    )
+    let proposal = proposal.replacingUnspecifiedDimensions()
+    return .init(
+      width: max(proposal.width, max(contentSize.width, labelSize.width)),
+      height: max(contentSize.height, labelSize.height)
+    )
+  }
+
+  public func placeSubviews(
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) {
+    for subview in subviews {
+      subview.place(at: bounds.origin, proposal: proposal)
+    }
   }
 }

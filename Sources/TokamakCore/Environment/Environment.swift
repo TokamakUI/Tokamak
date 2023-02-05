@@ -19,8 +19,9 @@
 /// 1. `View.makeMountedView`
 /// 2. `MountedHostView.update` when reconciling
 ///
-protocol EnvironmentReader {
-  mutating func setContent(from values: EnvironmentValues)
+@_spi(TokamakCore)
+public protocol _EnvironmentReader {
+  mutating func _setContent(from values: EnvironmentValues)
 }
 
 @propertyWrapper
@@ -37,7 +38,7 @@ public struct Environment<Value>: DynamicProperty {
     self.keyPath = keyPath
   }
 
-  mutating func setContent(from values: EnvironmentValues) {
+  public mutating func _setContent(from values: EnvironmentValues) {
     content = .value(values[keyPath: keyPath])
   }
 
@@ -52,4 +53,5 @@ public struct Environment<Value>: DynamicProperty {
   }
 }
 
-extension Environment: EnvironmentReader {}
+@_spi(TokamakCore)
+extension Environment: _EnvironmentReader {}

@@ -25,7 +25,7 @@ public struct GridItem {
   }
 
   public var size: GridItem.Size
-  public var spacing: CGFloat
+  public var spacing: CGFloat?
   public var alignment: Alignment
 
   public init(
@@ -34,7 +34,7 @@ public struct GridItem {
     alignment: Alignment? = nil
   ) {
     self.size = size
-    self.spacing = spacing ?? 4
+    self.spacing = spacing
     self.alignment = alignment ?? .center
   }
 }

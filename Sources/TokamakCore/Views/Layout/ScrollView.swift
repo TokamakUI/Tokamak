@@ -15,6 +15,8 @@
 //  Created by Carson Katri on 06/29/2020.
 //
 
+import Foundation
+
 /// A scrollable view along a given axis.
 ///
 /// By default, your app will overflow without the ability to scroll. Embed it in a `ScrollView`
@@ -49,6 +51,10 @@ public struct ScrollView<Content>: _PrimitiveView where Content: View {
     self.showsIndicators = showsIndicators
     self.content = content()
   }
+
+  public func _visitChildren<V>(_ visitor: V) where V: ViewVisitor {
+    visitor.visit(content)
+  }
 }
 
 extension ScrollView: ParentView {
@@ -66,4 +72,60 @@ public struct PinnedScrollableViews: OptionSet {
 
   public static let sectionHeaders: Self = .init(rawValue: 1 << 0)
   public static let sectionFooters: Self = .init(rawValue: 1 << 1)
+}
+
+extension ScrollView: Layout {
+  public func sizeThatFits(
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) -> CGSize {
+    let proposal = proposal.replacingUnspecifiedDimensions()
+    if axes.isEmpty {
+      return proposal
+    }
+    let contentProposal = ProposedViewSize(
+      width: axes.contains(.horizontal) ? nil : proposal.width,
+      height: axes.contains(.vertical) ? nil : proposal.height
+    )
+    let contentSize = subviews.reduce(into: CGSize.zero) {
+      let size = $1.sizeThatFits(contentProposal)
+      if size.width > $0.width {
+        $0.width = size.width
+      }
+      if size.height > $0.height {
+        $0.height = size.height
+      }
+    }
+    return .init(
+      width: axes.contains(.horizontal) ? proposal.width : contentSize.width,
+      height: axes.contains(.vertical) ? proposal.height : contentSize.height
+    )
+  }
+
+  public func placeSubviews(
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) {
+    let contentProposal = ProposedViewSize(
+      width: axes.contains(.horizontal) ? nil : proposal.width,
+      height: axes.contains(.vertical) ? nil : proposal.height
+    )
+    for subview in subviews {
+      if axes.contains(.horizontal) && axes.contains(.vertical) {
+        subview.place(
+          at: .init(x: bounds.midX, y: bounds.midY),
+          anchor: .center,
+          proposal: contentProposal
+        )
+      } else {
+        subview.place(
+          at: bounds.origin,
+          proposal: contentProposal
+        )
+      }
+    }
+  }
 }
