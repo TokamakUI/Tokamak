@@ -105,14 +105,14 @@ extension TextField: HTMLConvertible, DOMNodeConvertible, Layout, _AnyLayout, An
   ) -> CGSize {
     let proxy = _TextFieldProxy(self)
     var content = Text(proxy.textBinding.wrappedValue)
-    content._setContent(from: proxy.environment)
+    content.environmentOverride = proxy.environment
     let contentSize = proxy.environment.measureText(
       content,
       proposal,
       proxy.environment
     )
     var label = proxy.label
-    label._setContent(from: proxy.environment)
+    label.environmentOverride = proxy.environment
     let labelSize = proxy.environment.measureText(
       label,
       proposal,
