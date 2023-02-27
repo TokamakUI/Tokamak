@@ -230,9 +230,7 @@ public struct DOMFiberRenderer: FiberRenderer {
         src: bundle?
           .path(forResource: name, ofType: nil) ?? name
       ) { naturalSize in
-        environment.afterReconcile {
-          image._intrinsicSize = naturalSize
-        }
+        image._intrinsicSize = naturalSize
       }
       return .zero
     case let .resizable(.named(name, bundle: bundle), _, _):
@@ -244,9 +242,7 @@ public struct DOMFiberRenderer: FiberRenderer {
           src: bundle?
             .path(forResource: name, ofType: nil) ?? name
         ) { naturalSize in
-          environment.afterReconcile {
-            image._intrinsicSize = naturalSize
-          }
+          image._intrinsicSize = naturalSize
         }
         return .zero
       }
@@ -324,6 +320,38 @@ public struct DOMFiberRenderer: FiberRenderer {
           fatalError("The element does not exist (trying to layout).")
         }
         apply(geometry, to: element)
+      }
+    }
+  }
+
+  final class Head {
+    let head = document.head.object!
+    var metaTags = [JSObject]()
+    var title: JSObject?
+  }
+
+  private let head = Head()
+  public func preferencesChanged(_ preferenceStore: _PreferenceStore) {
+    if let newMetaTags = preferenceStore.newValue(forKey: HTMLMetaPreferenceKey.self) {
+      for oldTag in head.metaTags {
+        _ = head.head.removeChild!(oldTag)
+      }
+      head.metaTags = newMetaTags.map {
+        let template = document.createElement!("template").object!
+        template.innerHTML = .string($0.outerHTML())
+        let meta = template.content.firstChild.object!
+        _ = head.head.appendChild!(meta)
+        return meta
+      }
+    }
+    if let newTitle = preferenceStore.newValue(forKey: HTMLTitlePreferenceKey.self) {
+      if let title = head.title {
+        title.innerHTML = .string(newTitle)
+      } else {
+        let node = document.createElement!("title").object!
+        _ = head.head.appendChild!(node)
+        node.innerHTML = .string(newTitle)
+        head.title = node
       }
     }
   }

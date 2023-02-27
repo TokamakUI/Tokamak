@@ -88,6 +88,9 @@ public protocol FiberRenderer {
   /// (in this case just `DuelOfTheStates` as both properties were on it),
   /// and reconcile after all changes have been collected.
   func schedule(_ action: @escaping () -> ())
+
+  /// Called by the reconciler when the preferences of the topmost `Fiber` changed.
+  func preferencesChanged(_ preferenceStore: _PreferenceStore)
 }
 
 public extension FiberRenderer {
@@ -106,6 +109,8 @@ public extension FiberRenderer {
       return view._visitChildren
     }
   }
+
+  func preferencesChanged(_ preferenceStore: _PreferenceStore) {}
 
   @discardableResult
   @_disfavoredOverload

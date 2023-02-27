@@ -237,22 +237,38 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
 
   public func render<A: App>(_ app: A) -> String {
     _ = FiberReconciler(self, app)
-    return """
+    return renderedHTML()
+  }
+
+  public func render<V: View>(_ view: V) -> String {
+    _ = FiberReconciler(self, view)
+    return renderedHTML()
+  }
+
+  private func renderedHTML() -> String {
+    """
     <!doctype html>
+    <head>
+    \(head.title != nil ? "<title>\(head.title!)</title>" : "")
+    \(head.metaTags.joined(separator: "\n"))
+    </head>
     <html>
     \(rootElement.description)
     </html>
     """
   }
 
-  public func render<V: View>(_ view: V) -> String {
-    _ = FiberReconciler(self, view)
-    return """
-    <!doctype html>
-    <html>
-    \(rootElement.description)
-    </html>
-    """
+  private final class Head {
+    var metaTags = [String]()
+    var title: String?
+  }
+
+  private let head = Head()
+  public func preferencesChanged(_ preferenceStore: _PreferenceStore) {
+    head.metaTags = preferenceStore.value(forKey: HTMLMetaPreferenceKey.self).value.map {
+      $0.outerHTML()
+    }
+    head.title = preferenceStore.value(forKey: HTMLTitlePreferenceKey.self).value
   }
 
   public func schedule(_ action: @escaping () -> ()) {

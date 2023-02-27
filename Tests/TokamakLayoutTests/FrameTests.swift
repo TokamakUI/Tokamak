@@ -98,17 +98,17 @@ final class FrameTests: XCTestCase {
       for (nativeVertical, tokamakVertical) in SwiftUI.VerticalAlignment.allCases {
         await compare(size: .init(width: 500, height: 500)) {
           SwiftUI.Rectangle()
-            .fill(SwiftUI.Color(white: 0))
+            .fill(Color(white: 0))
             .frame(width: 100, height: 100)
             .frame(
               maxWidth: .infinity,
               maxHeight: .infinity,
               alignment: .init(horizontal: nativeHorizontal, vertical: nativeVertical)
             )
-            .background(Color(white: 127 / 255))
+            .background(Rectangle().fill(Color(white: 127 / 255)))
         } to: {
           TokamakStaticHTML.Rectangle()
-            .fill(TokamakStaticHTML.Color(white: 0))
+            .fill(Color(white: 0))
             .frame(width: 100, height: 100)
             .frame(
               maxWidth: .infinity,
@@ -118,7 +118,7 @@ final class FrameTests: XCTestCase {
                 vertical: tokamakVertical
               )
             )
-            .background(Color(white: 127 / 255))
+            .background(Rectangle().fill(Color(white: 127 / 255)))
         }
       }
     }

@@ -15,10 +15,26 @@
 //  Created by Carson Katri on 7/19/20.
 //
 
-import TokamakCore
+@_spi(TokamakCore) import TokamakCore
 
 extension WindowGroup: SceneDeferredToRenderer {
   public var deferredBody: AnyView {
     AnyView(content)
+  }
+}
+
+extension _WindowGroupTitle: HTMLConvertible {
+  public var tag: String { "div" }
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    guard !useDynamicLayout else { return [:] }
+    return ["style": "position: absolute; width: 0; height: 0; top: 0; left: 0;"]
+  }
+
+  public func primitiveVisitor<V>(useDynamicLayout: Bool) -> ((V) -> ())? where V: ViewVisitor {
+    {
+      if let title = self.title {
+        $0.visit(HTMLTitle(_TextProxy(title).rawText))
+      }
+    }
   }
 }
