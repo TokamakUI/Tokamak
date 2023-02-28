@@ -149,8 +149,8 @@ extension Path: _HTMLPrimitive {
       height: 100%;
       """ :
       """
-      width: \(max(0, size.width));
-      height: \(max(0, size.height));
+      width: \(max(0, size.width))px;
+      height: \(max(0, size.height))px;
       """
   }
 
