@@ -15,6 +15,9 @@
 import TokamakCore
 
 public let tokamakStyles = """
+html {
+  height: 100%;
+}
 ._tokamak-stack {
   display: grid;
 }
