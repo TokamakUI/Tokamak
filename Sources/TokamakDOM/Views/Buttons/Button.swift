@@ -22,9 +22,13 @@ extension _Button: DOMPrimitive {
   @_spi(TokamakCore)
   public var renderedBody: AnyView {
     let listeners: [String: Listener] = [
-      "pointerdown": { _ in isPressed = true },
+      // Only fires on down *inside*. Set both to true.
+      "pointerdown": { _ in isPressed = (true, true) },
+      "pointerenter": { _ in isPressed.inside = true },
+      // "pointerup" does not fire when the pointer left. Set both to false.
+      "pointerleave": { _ in isPressed = (false, false) },
       "pointerup": { _ in
-        isPressed = false
+        isPressed.down = false
         action()
       },
     ]
