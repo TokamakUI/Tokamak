@@ -103,7 +103,7 @@ public struct _Button<Label>: View where Label: View {
   public let action: () -> ()
 
   @State
-  public var isPressed = false
+  public var isPressed: (down: Bool, inside: Bool) = (false, false)
 
   let anyStyle: AnyButtonStyle
   public var style: Any.Type { anyStyle.type }
@@ -112,7 +112,7 @@ public struct _Button<Label>: View where Label: View {
       configuration: .init(
         role: role,
         label: .init(body: AnyView(label)),
-        isPressed: isPressed
+        isPressed: isPressed.down && isPressed.inside
       )
     )
   }
