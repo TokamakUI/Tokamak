@@ -24,11 +24,11 @@ extension _Button: DOMPrimitive {
   public var renderedBody: AnyView {
     let listeners: [String: Listener] = [
       // Only fires on down *inside*. Set both to true.
-      "pointerdown": { _ in isPressed = (true, true) },
+      "pointerdown": { _ in isPressed = (down: true, inside: true) },
       "pointerenter": {
         // See https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons#value
         let buttons: UInt32? = $0.buttons.fromJSValue()
-        isPressed = (buttons != 0, true)
+        isPressed = (down: buttons != 0, inside: true)
       },
       "pointerleave": { _ in isPressed.inside = false },
       "pointerup": { _ in
