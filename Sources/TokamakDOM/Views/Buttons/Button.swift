@@ -17,6 +17,7 @@
 
 import TokamakCore
 import TokamakStaticHTML
+import JavaScriptKit
 
 extension _Button: DOMPrimitive {
   @_spi(TokamakCore)
@@ -24,9 +25,12 @@ extension _Button: DOMPrimitive {
     let listeners: [String: Listener] = [
       // Only fires on down *inside*. Set both to true.
       "pointerdown": { _ in isPressed = (true, true) },
-      "pointerenter": { _ in isPressed.inside = true },
-      // "pointerup" does not fire when the pointer left. Set both to false.
-      "pointerleave": { _ in isPressed = (false, false) },
+      "pointerenter": {
+        // See https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons#value
+        let buttons: UInt32? = $0.buttons.fromJSValue()
+        isPressed = (buttons != 0, true)
+      },
+      "pointerleave": { _ in isPressed.inside = false },
       "pointerup": { _ in
         isPressed.down = false
         action()
