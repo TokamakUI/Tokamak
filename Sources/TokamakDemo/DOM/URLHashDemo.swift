@@ -16,18 +16,18 @@
 import JavaScriptKit
 import TokamakDOM
 
-private let location = JSObject.global.location.object!
+private let startLocation = JSObject.global.startLocation.object!
 private let window = JSObject.global.window.object!
 
 private final class HashState: ObservableObject {
   var onHashChange: JSClosure!
 
   @Published
-  var currentHash = location["hash"].string!
+  var currentHash = startLocation["hash"].string!
 
   init() {
     let onHashChange = JSClosure { [weak self] _ in
-      self?.currentHash = location["hash"].string!
+      self?.currentHash = startLocation["hash"].string!
       return .undefined
     }
 
@@ -50,7 +50,7 @@ struct URLHashDemo: View {
   var body: some View {
     VStack {
       Button("Assign random location.hash") {
-        location["hash"] = .string("\(Int.random(in: 0...1000))")
+        startLocation["hash"] = .string("\(Int.random(in: 0...1000))")
       }
       Text("Current location.hash is \(hashState.currentHash)")
     }
