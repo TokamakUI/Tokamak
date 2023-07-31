@@ -20,7 +20,7 @@ public struct GestureView<Content: View, G: Gesture>: _PrimitiveView {
     @Environment(\.isEnabled) var isEnabled
     // TODO: Allow for array of gestures with priority
     // TODO: Add AnyGesture, for type erease
-    // TODO: Add GestureReader? 
+    // TODO: Add GestureReader?
     @State public var gesture: G
     public let content: Content
 
