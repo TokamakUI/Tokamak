@@ -1,11 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Szymon on 17/7/2023.
-//
-
-import Foundation
 // Copyright 2020 Tokamak contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
