@@ -18,6 +18,10 @@
 import CGTK
 import TokamakCore
 
+#if canImport(CoreGraphics)
+import CoreGraphics
+#endif
+
 // MARK: Environment & State
 
 public typealias Environment = TokamakCore.Environment

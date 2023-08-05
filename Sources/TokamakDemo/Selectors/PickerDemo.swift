@@ -27,7 +27,7 @@ struct PickerDemo: View {
         .font(.system(textStyles[selection]))
     ) {
       Text("Pick a text style...")
-      ForEach(0..<textStyles.count) {
+      ForEach(0..<textStyles.count, id: \.self) {
         Text(String(describing: textStyles[$0]))
       }
     }

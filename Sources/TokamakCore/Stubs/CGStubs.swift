@@ -18,6 +18,10 @@
 import CoreFoundation
 import Foundation
 
+#if canImport(CoreGraphics)
+import CoreGraphics
+#endif
+
 extension CGPoint {
   func rotate(_ angle: Angle, around origin: Self) -> Self {
     let cosAngle = CGFloat(cos(angle.radians))

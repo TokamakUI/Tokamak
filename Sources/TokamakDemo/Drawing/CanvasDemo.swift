@@ -18,14 +18,14 @@
 import Foundation
 import TokamakShim
 
-@available(macOS 12.0, iOS 15.0, *)
+@available(iOS 15.0, macOS 12.0, *)
 public struct CanvasDemo: View {
   public var body: some View {
     Confetti()
   }
 }
 
-@available(macOS 12.0, iOS 15.0, *)
+@available(iOS 15.0, macOS 12.0, *)
 struct Confetti: View {
   static let colors: [Color] = [
     Color.red,
@@ -62,36 +62,37 @@ struct Confetti: View {
   static let shape = Rectangle()
 
   var body: some View {
-    TimelineView(AnimationTimelineSchedule.animation) { timeline in
-      Canvas { context, size in
-        let elapsed = CGFloat(
-          timeline.date.timeIntervalSince1970 - startDate
-            .timeIntervalSince1970
-        ).truncatingRemainder(dividingBy: 4) * 10
-        let sqElapsed = elapsed * elapsed
+    EmptyView()
+    //   TimelineView(AnimationTimelineSchedule.animation) { timeline in
+    //     Canvas { context, size in
+    //       let elapsed = CGFloat(
+    //         timeline.date.timeIntervalSince1970 - startDate
+    //           .timeIntervalSince1970
+    //       ).truncatingRemainder(dividingBy: 4) * 10
+    //       let sqElapsed = elapsed * elapsed
 
-        for piece in pieces {
-          context.drawLayer { context in
-            context.translateBy(
-              x: (piece.point.x * size.width) + (piece.initialVelocity.width * sqElapsed),
-              y: -((1 + piece.point.y) * (size.height / 2)) + (1 + piece.initialVelocity.height) *
-                sqElapsed
-            )
-            context.rotate(by: Angle.degrees(25 * piece.angularVelocity * Double(elapsed)))
-            context.fill(
-              Self.shape
-                .path(in: CGRect(
-                  origin: .zero,
-                  size: CGSize(
-                    width: 5 + (20 * piece.size.width),
-                    height: 5 + (20 * piece.size.height)
-                  )
-                )),
-              with: .color(piece.color)
-            )
-          }
-        }
-      }
-    }
+    //       for piece in pieces {
+    //         context.drawLayer { context in
+    //           context.translateBy(
+    //             x: (piece.point.x * size.width) + (piece.initialVelocity.width * sqElapsed),
+    //             y: -((1 + piece.point.y) * (size.height / 2)) + (1 + piece.initialVelocity.height) *
+    //               sqElapsed
+    //           )
+    //           context.rotate(by: Angle.degrees(25 * piece.angularVelocity * Double(elapsed)))
+    //           context.fill(
+    //             Self.shape
+    //               .path(in: CGRect(
+    //                 origin: .zero,
+    //                 size: CGSize(
+    //                   width: 5 + (20 * piece.size.width),
+    //                   height: 5 + (20 * piece.size.height)
+    //                 )
+    //               )),
+    //             with: .color(piece.color)
+    //           )
+    //         }
+    //       }
+    //     }
+    //   }
   }
 }

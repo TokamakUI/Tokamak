@@ -17,6 +17,10 @@
 
 import TokamakCore
 
+#if canImport(CoreGraphics)
+import CoreGraphics
+#endif
+
 // MARK: Environment & State
 
 public typealias DynamicProperty = TokamakCore.DynamicProperty

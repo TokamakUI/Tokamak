@@ -17,6 +17,10 @@
 
 import Foundation
 
+#if canImport(CoreGraphics)
+import CoreGraphics
+#endif
+
 /// Erase a `Layout` conformance to an `AnyLayout`.
 ///
 /// This could potentially be removed in Swift 5.7 in favor of `any Layout`.

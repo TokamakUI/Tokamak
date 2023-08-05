@@ -23,7 +23,7 @@ extension EnvironmentValues {
   /// Returns default settings for the GTK environment
   static var defaultEnvironment: Self {
     var environment = EnvironmentValues()
-    environment[_ColorSchemeKey] = .light
+    environment[_ColorSchemeKey.self] = .light
     // environment._defaultAppStorage = LocalStorage.standard
     // _DefaultSceneStorageProvider.default = SessionStorage.standard
 
@@ -40,7 +40,7 @@ final class GTKRenderer: Renderer {
     _ app: A,
     _ rootEnvironment: EnvironmentValues? = nil
   ) {
-    gtkAppRef = gtk_application_new(nil, G_APPLICATION_FLAGS_NONE)
+    gtkAppRef = gtk_application_new(nil, G_APPLICATION_DEFAULT_FLAGS)
 
     gtkAppRef.withMemoryRebound(to: GApplication.self, capacity: 1) { gApp in
       gApp.connect(signal: "activate") {

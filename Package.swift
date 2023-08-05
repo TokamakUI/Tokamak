@@ -1,4 +1,4 @@
-// swift-tools-version:5.6
+// swift-tools-version: 5.6
 
 import PackageDescription
 
@@ -47,11 +47,11 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/swiftwasm/JavaScriptKit.git",
-      from: "0.15.0"
+      from: "0.18.0"
     ),
     .package(
       url: "https://github.com/OpenCombine/OpenCombine.git",
-      from: "0.12.0"
+      from: "0.14.0"
     ),
     .package(
       url: "https://github.com/swiftwasm/OpenCombineJS.git",
@@ -63,7 +63,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
-      from: "1.9.0"
+      from: "1.11.1"
     ),
   ],
   targets: [
