@@ -74,6 +74,7 @@ public struct LongPressGesture: Gesture {
         case .changed:
             break
         case .cancelled, .ended:
+            onChangedAction?(false)
             startLocation = nil
         }
     }
