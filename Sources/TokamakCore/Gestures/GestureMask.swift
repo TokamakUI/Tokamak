@@ -18,13 +18,13 @@
 import Foundation
 
 /// Options that control how adding a gesture to a view affects other gestures recognized by the view and its subviews.
-@frozen public struct GestureMask: Equatable, ExpressibleByArrayLiteral, OptionSet, RawRepresentable, Sendable, SetAlgebra {
-    public typealias RawValue = Int
-    public var rawValue: Int
+@frozen public struct GestureMask: Equatable, ExpressibleByArrayLiteral, OptionSet, Sendable {
+    public typealias RawValue = Int8
+    public var rawValue: Int8
 
     // MARK: - OptionSet
 
-    public init(rawValue: Int) {
+    public init(rawValue: Int8) {
         self.rawValue = rawValue
     }
 
@@ -64,16 +64,16 @@ import Foundation
     // MARK: - Gesture Options
 
     /// Enable both the added gesture as well as all other gestures on the view and its subviews.
-    public static let all: GestureMask = .gesture | .subviews
+    public static let all: Self = .gesture | .subviews
 
     /// Enable the added gesture but disable all gestures in the subview hierarchy.
-    public static let gesture: GestureMask = GestureMask(rawValue: 1 << 0)
+    public static let gesture: Self = GestureMask(rawValue: 1 << 0)
 
     /// Enable all gestures in the subview hierarchy but disable the added gesture.
-    public static let subviews: GestureMask = GestureMask(rawValue: 1 << 1)
+    public static let subviews: Self = GestureMask(rawValue: 1 << 1)
 
     /// Disable all gestures in the subview hierarchy, including the added gesture.
-    public static let none: GestureMask = []
+    public static let none: Self = []
 
     // MARK: - Helper Methods
 

@@ -19,44 +19,43 @@ import Foundation
 
 public struct TapGesture: Gesture {
     public typealias Value = ()
-    
     /// The required number of taps to complete the tap gesture.
     private var count: Int
     /// The maximum duration between the taps
     private var delay: Double = 0.3
     private var touchEndTime = Date()
     private var numberOfTapsSinceGestureBegan: Int = 0
+    private var phase: _GesturePhase = .cancelled
     private var onEndedAction: ((Value) -> Void)? = nil
     
-    public var phase: GesturePhase = .cancelled {
-        didSet {
-            switch phase {
-            case .cancelled:
-                numberOfTapsSinceGestureBegan = 0
-            case .ended:
-                if case .began = oldValue {
-                    let touch = Date()
-                    let delayInSeconds = touch.timeIntervalSince(touchEndTime)
-                    touchEndTime = touch
-                    
-                    // If we have multi count tap gesture, handle it if the taps are with in desired delays
-                    if numberOfTapsSinceGestureBegan > 0, delayInSeconds > delay {
-                        numberOfTapsSinceGestureBegan = 0
-                    } else {
-                        numberOfTapsSinceGestureBegan += 1
-                    }
-                }
+    public mutating func _onPhaseChange(_ phase: _GesturePhase) {
+        switch phase {
+        case .cancelled:
+            numberOfTapsSinceGestureBegan = 0
+        case .ended:
+            if case .began = self.phase {
+                let touch = Date()
+                let delayInSeconds = touch.timeIntervalSince(touchEndTime)
+                touchEndTime = touch
                 
-                // If we ended touch and have desired count we complete gesture
-                if count == numberOfTapsSinceGestureBegan {
-                    onEndedAction?(())
+                // If we have multi count tap gesture, handle it if the taps are with in desired delays
+                if numberOfTapsSinceGestureBegan > 0, delayInSeconds > delay {
                     numberOfTapsSinceGestureBegan = 0
+                } else {
+                    numberOfTapsSinceGestureBegan += 1
                 }
-            default:
-                // TapGesture in SwiftUI have no change update nor events
-                break
             }
+            
+            // If we ended touch and have desired count we complete gesture
+            if count == numberOfTapsSinceGestureBegan {
+                onEndedAction?(())
+                numberOfTapsSinceGestureBegan = 0
+            }
+        default:
+            // TapGesture in SwiftUI have no change update nor events
+            break
         }
+        self.phase = phase
     }
     
     public var body: TapGesture {

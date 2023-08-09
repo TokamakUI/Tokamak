@@ -23,70 +23,7 @@ public struct DragGesture: Gesture {
     private var velocity: CGSize = .zero
     private var onEndedAction: ((Value) -> Void)? = nil
     private var onChangedAction: ((Value) -> Void)? = nil
-    private var didMeetMininumDistanceRequirement: Bool = false
-    
     public var minimumDistance: Double
-    public var phase: GesturePhase = .cancelled {
-        didSet {
-            switch phase {
-            case .began(let location):
-                startLocation = location
-                didMeetMininumDistanceRequirement = false
-                previousTimestamp = nil
-                velocity = .zero
-            case .changed(let location) where startLocation != nil:
-                guard let startLocation else { return }
-                let translation = calculateTranslation(from: startLocation, to: location)
-                let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
-                
-                if minimumDistance < distance {
-                    didMeetMininumDistanceRequirement = true
-                }
-                
-                // Do nothing if gesture has not met the criteria
-                guard didMeetMininumDistanceRequirement else { return }
-                let currentTimestamp = Date()
-                let timeElapsed = Double(currentTimestamp.timeIntervalSince(previousTimestamp ?? currentTimestamp))
-                let velocity = calculateVelocity(from: translation, timeElapsed: timeElapsed)
-                self.velocity = velocity
-                
-                // Predict end location based on velocity
-                let predictedEndLocation = calculatePredictedEndLocation(from: location, velocity: velocity)
-                
-                // Predict end translation based on velocity
-                let predictedEndTranslation = calculatePredictedEndTranslation(from: translation, velocity: velocity)
-                
-                onChangedAction?(
-                    Value(
-                        startLocation: startLocation,
-                        location: location,
-                        predictedEndLocation: predictedEndLocation,
-                        translation: translation,
-                        predictedEndTranslation: predictedEndTranslation
-                    )
-                )
-            case .changed:
-                break
-            case .ended(let location):
-                if let startLocation {
-                    let translation = calculateTranslation(from: startLocation, to: location)
-                    let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
-                    onEndedAction?(
-                        Value(
-                            startLocation: startLocation,
-                            location: location,
-                            predictedEndLocation: location,
-                            translation: translation,
-                            predictedEndTranslation: translation
-                        )
-                    )
-                }
-                startLocation = nil
-            case .cancelled:
-                startLocation = nil
-            }
-        }
-    }
     public var body: DragGesture {
         self
     }
@@ -98,6 +35,61 @@ public struct DragGesture: Gesture {
     ///   - coordinateSpace: The coordinate space in which to receive location values.
     public init(minimumDistance: Double = 10) {
         self.minimumDistance = minimumDistance
+    }
+
+    public mutating func _onPhaseChange(_ phase: _GesturePhase) {
+        switch phase {
+        case .began(let location):
+            startLocation = location
+            previousTimestamp = nil
+            velocity = .zero
+        case .changed(let location) where startLocation != nil:
+            guard let startLocation else { return }
+            let translation = calculateTranslation(from: startLocation, to: location)
+            let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
+            
+            // Do nothing if gesture has not met the criteria
+            guard minimumDistance < distance else { return }
+            let currentTimestamp = Date()
+            let timeElapsed = Double(currentTimestamp.timeIntervalSince(previousTimestamp ?? currentTimestamp))
+            let velocity = calculateVelocity(from: translation, timeElapsed: timeElapsed)
+            self.velocity = velocity
+            
+            // Predict end location based on velocity
+            let predictedEndLocation = calculatePredictedEndLocation(from: location, velocity: velocity)
+            
+            // Predict end translation based on velocity
+            let predictedEndTranslation = calculatePredictedEndTranslation(from: translation, velocity: velocity)
+            
+            onChangedAction?(
+                Value(
+                    startLocation: startLocation,
+                    location: location,
+                    predictedEndLocation: predictedEndLocation,
+                    translation: translation,
+                    predictedEndTranslation: predictedEndTranslation
+                )
+            )
+        case .changed:
+            break
+        case .ended(let location):
+            if let startLocation {
+                let translation = calculateTranslation(from: startLocation, to: location)
+                let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
+                onEndedAction?(
+                    Value(
+                        startLocation: startLocation,
+                        location: location,
+                        predictedEndLocation: location,
+                        translation: translation,
+                        predictedEndTranslation: translation
+                    )
+                )
+            }
+            startLocation = nil
+        case .cancelled:
+            startLocation = nil
+        }
     }
     
     public func _onEnded(perform action: @escaping (Value) -> Void) -> Self {

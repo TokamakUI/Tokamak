@@ -22,15 +22,6 @@ public struct _EndedGesture<Base: Gesture>: Gesture {
     private var onEnded: (Value) -> Void
     private var onChanged: ((Value) -> Void)?
     
-    public var phase: GesturePhase {
-        get {
-            gesture.phase
-        }
-        set {
-            gesture.phase = newValue
-        }
-    }
-    
     public var body: Base.Body {
         var gesture = gesture._onEnded(perform: onEnded)
         if let onChanged {
@@ -43,6 +34,8 @@ public struct _EndedGesture<Base: Gesture>: Gesture {
         self.gesture = gesture
         self.onEnded = onEnded
     }
+
+    public mutating func _onPhaseChange(_ phase: _GesturePhase) {}
     
     public func _onEnded(perform action: @escaping (Value) -> Void) -> Self {
         var gesture = self

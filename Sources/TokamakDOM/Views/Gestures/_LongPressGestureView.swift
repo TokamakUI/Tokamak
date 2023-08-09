@@ -49,14 +49,14 @@ struct _LongPressGestureView<Content: View, G: TokamakCore.Gesture>: View {
                   let y = event.y.jsValue.number
                 else { return }
                 let location = CGPoint(x: x, y: y)
-                gesture.phase = .began(location: location)
+                gesture._onPhaseChange(.began(location: location))
             },
             "pointerup": { _ in
-                gesture.phase = .ended(location: .zero)
+                gesture._onPhaseChange(.ended(location: .zero))
                 isPressing = false
             },
             "pointercancel": { _ in
-                gesture.phase = .cancelled
+                gesture._onPhaseChange(.cancelled)
                 isPressing = false
             },
             "pointermove": { event in
@@ -66,7 +66,7 @@ struct _LongPressGestureView<Content: View, G: TokamakCore.Gesture>: View {
                 else { return }
                 let point = CGPoint(x: x, y: y)
                 location = point
-                gesture.phase = .changed(location: point)
+                gesture._onPhaseChange(.changed(location: point))
               },
         ]) {
             content
@@ -79,7 +79,7 @@ struct _LongPressGestureView<Content: View, G: TokamakCore.Gesture>: View {
                 try await Task.sleep(for: .seconds(minimumDuration))
                 if isPressing {
                     await MainActor.run {
-                        gesture.phase = .changed(location: location)
+                        gesture._onPhaseChange(.changed(location: location))
                     }
                 }
             } catch {

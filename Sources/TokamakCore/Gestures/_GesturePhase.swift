@@ -17,7 +17,7 @@
 
 import Foundation
 
-public enum GesturePhase {
+public enum _GesturePhase {
     case began(location: CGPoint)
     case changed(location: CGPoint)
     case ended(location: CGPoint)

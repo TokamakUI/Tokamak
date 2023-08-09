@@ -24,15 +24,6 @@ public struct GestureStateGesture<Base: Gesture, State>: Gesture {
     private let updatingBody: (Base.Value, inout State, inout Transaction) -> Void
     private var onEnded: ((Value) -> Void)?
     
-    public var phase: GesturePhase {
-        get {
-            gesture.phase
-        }
-        set {
-            gesture.phase = newValue
-        }
-    }
-    
     public var body: Base.Body {
         var gesture = gesture._onChanged(perform: { value in
             // TODO: Is this transaction working?
@@ -50,6 +41,8 @@ public struct GestureStateGesture<Base: Gesture, State>: Gesture {
         self._gestureState = state
         self.updatingBody = updatingBody
     }
+
+    public mutating func _onPhaseChange(_ phase: _GesturePhase) {}
     
     public func _onEnded(perform action: @escaping (Value) -> Void) -> Self {
         var gesture = self

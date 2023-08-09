@@ -29,8 +29,7 @@ public protocol Gesture {
     /// The content and behavior of the gesture.
     var body: Self.Body { get }
     
-    // MARK: Internal
-    var phase: GesturePhase { get set }
+    mutating func _onPhaseChange(_ phase: _GesturePhase)
     func _onEnded(perform action: @escaping (Value) -> Void) -> Self
     func _onChanged(perform action: @escaping (Value) -> Void) -> Self
 }

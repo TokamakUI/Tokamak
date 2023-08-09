@@ -20,48 +20,11 @@ import Foundation
 public struct LongPressGesture: Gesture {
     public typealias Value = Bool
     private var startLocation: CGPoint? = nil
-    private var touchStartTime = Date()
-    public private(set) var minimumDuration: Double
+    private var touchStartTime = Date(timeIntervalSince1970: 0)
     private var maximumDistance: Double = 0
     private var onEndedAction: ((Value) -> Void)? = nil
     private var onChangedAction: ((Value) -> Void)? = nil
-
-    public var phase: GesturePhase = .cancelled {
-        didSet {
-            switch phase {
-            case .began(let location):
-                startLocation = location
-                touchStartTime = Date()
-                onChangedAction?(startLocation != nil)
-            case .changed(let location) where startLocation != nil:
-                guard let startLocation else { return }
-                let translation = calculateTranslation(from: startLocation, to: location)
-                let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
-                
-                guard maximumDistance >= distance  else {
-                    // Fail longpress if distance is to big.
-                    self.startLocation = nil
-                    return
-                }
-                
-                let touch = Date()
-                let delayInSeconds = touch.timeIntervalSince(touchStartTime)
-                
-                if delayInSeconds >= minimumDuration {
-                    // Reset state, so behaviour matches SwiftUI Altough, SwiftUI doesn not triggers it, but we have to.
-                    onChangedAction?(false)
-                    // The LongPress gesture ends when the required duration is met.
-                    onEndedAction?(true)
-                    self.startLocation = nil
-                }
-            case .changed:
-                break
-            case .cancelled, .ended:
-                startLocation = nil
-            }
-        }
-    }
-    
+    public private(set) var minimumDuration: Double
     public var body: LongPressGesture {
         self
     }
@@ -81,6 +44,40 @@ public struct LongPressGesture: Gesture {
         self.maximumDistance = maximumDistance
     }
     
+    public mutating func _onPhaseChange(_ phase: _GesturePhase) {
+        switch phase {
+        case .began(let location):
+            startLocation = location
+            touchStartTime = Date()
+            onChangedAction?(startLocation != nil)
+        case .changed(let location) where startLocation != nil:
+            guard let startLocation else { return }
+            let translation = calculateTranslation(from: startLocation, to: location)
+            let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
+            
+            guard maximumDistance >= distance  else {
+                // Fail longpress if distance is to big.
+                self.startLocation = nil
+                return
+            }
+            
+            let touch = Date()
+            let delayInSeconds = touch.timeIntervalSince(touchStartTime)
+            
+            if delayInSeconds >= minimumDuration {
+                // Reset state, so behaviour matches SwiftUI. Although, SwiftUI doesn't trigger it, but we have to.
+                onChangedAction?(false)
+                // The LongPress gesture ends when the required duration is met.
+                onEndedAction?(true)
+                self.startLocation = nil
+            }
+        case .changed:
+            break
+        case .cancelled, .ended:
+            startLocation = nil
+        }
+    }
+
     public func _onEnded(perform action: @escaping (Value) -> Void) -> Self {
         var gesture = self
         gesture.onEndedAction = action
@@ -128,11 +125,12 @@ extension View {
         perform action: @escaping () -> Void
     ) -> some View {
         self.modifier(
-            LongPressGestureModifier(minimumDuration: minimumDuration,
-                                     maximumDistance: maximumDistance,
-                                     onPressingChanged: pressing,
-                                     action: action
-                                    )
+            LongPressGestureModifier(
+                minimumDuration: minimumDuration,
+                maximumDistance: maximumDistance,
+                onPressingChanged: pressing,
+                action: action
+            )
         )
     }
 }
