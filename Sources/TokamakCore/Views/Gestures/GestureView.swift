@@ -34,14 +34,14 @@ extension View {
     /// - Parameter gesture: The gesture to attach.
     /// - Returns: A modified version of the view with the gesture attached.
     public func gesture<T>(_ gesture: T, including mask: GestureMask = .all) -> some View where T: Gesture {
-        GestureView(gesture: gesture, content: self)
+        GestureView(gesture: gesture.body, content: self)
     }
     
     /// Attaches a gesture to the view to process simultaneously with gestures defined by the view.
     /// - Parameter gesture: The gesture to attach.
     /// - Returns: A modified version of the view with the gesture attached.
     public func simultaneousGesture<T>(_ gesture: T, including mask: GestureMask = .all) -> some View where T : Gesture {
-        GestureView(gesture: gesture, content: self)
+        GestureView(gesture: gesture.body, content: self)
     }
     
     /// Attaches a gesture to the view with a higher precedence than gestures defined by the view.
@@ -50,6 +50,6 @@ extension View {
     ///   - mask: A value that controls how adding this gesture to the view affects other gestures recognized by the view and its subviews. Defaults to all.
     /// - Returns: A modified version of the view with the gesture attached.
     func highPriorityGesture<T>(_ gesture: T, including mask: GestureMask = .all) -> some View where T : Gesture {
-        GestureView(gesture: gesture, content: self)
+        GestureView(gesture: gesture.body, content: self)
     }
 }
