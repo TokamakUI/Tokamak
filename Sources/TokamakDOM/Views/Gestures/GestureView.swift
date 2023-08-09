@@ -30,12 +30,7 @@ extension TokamakCore.GestureView: DOMPrimitive {
         case is DragGesture.Type:
             return AnyView(_DragGestureView(gesture: $gesture, content: content))
         default:
-            return AnyView(
-                content.onAppear {
-                    print("🛑", G.Body.self)
-                    print("🟡", gesture.self)
-                }
-            )
+            return AnyView(content)
         }
     }
 }
