@@ -31,9 +31,9 @@ struct _TapGestureView<Content: View, G: TokamakCore.Gesture>: View {
 
     var body: some View {
         DynamicHTML("div", [:], listeners: [
-            "pointerdown": { _ in gesture.phase = .began(location: .zero) },
-            "pointerup": { _ in gesture.phase = .ended(location: .zero) },
-            "pointercancel": { _ in gesture.phase = .cancelled },
+            "pointerdown": { _ in gesture._onPhaseChange(.began(location: .zero)) },
+            "pointerup": { _ in gesture._onPhaseChange(.ended(location: .zero)) },
+            "pointercancel": { _ in gesture._onPhaseChange(.cancelled) },
         ]) {
             content
         }

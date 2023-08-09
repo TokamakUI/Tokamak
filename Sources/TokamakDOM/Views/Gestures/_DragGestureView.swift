@@ -38,7 +38,7 @@ struct _DragGestureView<Content: View, G: TokamakCore.Gesture>: View {
                   let y = event.y.jsValue.number
                 else { return }
                 let location = CGPoint(x: x, y: y)
-                gesture.phase = .began(location: location)
+                gesture._onPhaseChange(.began(location: location))
             },
             "pointerup": { event in
                 guard
@@ -46,10 +46,10 @@ struct _DragGestureView<Content: View, G: TokamakCore.Gesture>: View {
                   let y = event.y.jsValue.number
                 else { return }
                 let location = CGPoint(x: x, y: y)
-                gesture.phase = .ended(location: location)
+                gesture._onPhaseChange(.ended(location: location))
             },
             "pointercancel": { _ in
-                gesture.phase = .cancelled
+                gesture._onPhaseChange(.cancelled)
             },
             "pointermove": { event in
                 guard
@@ -57,7 +57,7 @@ struct _DragGestureView<Content: View, G: TokamakCore.Gesture>: View {
                   let y = event.y.jsValue.number
                 else { return }
                 let point = CGPoint(x: x, y: y)
-                gesture.phase = .changed(location: point)
+                gesture._onPhaseChange(.changed(location: point))
               },
         ]) {
             content
