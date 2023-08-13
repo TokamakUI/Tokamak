@@ -28,7 +28,7 @@ public struct TapGesture: Gesture {
     private var phase: _GesturePhase = .cancelled
     private var onEndedAction: ((Value) -> Void)? = nil
     
-    public mutating func _onPhaseChange(_ phase: _GesturePhase) {
+    mutating public func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
         switch phase {
         case .cancelled:
             numberOfTapsSinceGestureBegan = 0
@@ -50,12 +50,15 @@ public struct TapGesture: Gesture {
             if count == numberOfTapsSinceGestureBegan {
                 onEndedAction?(())
                 numberOfTapsSinceGestureBegan = 0
+                return true
             }
         default:
             // TapGesture in SwiftUI have no change update nor events
             break
         }
         self.phase = phase
+        // Tap gesture is recognized on touch up
+        return false
     }
     
     public var body: TapGesture {

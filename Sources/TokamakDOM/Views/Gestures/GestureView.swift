@@ -20,17 +20,31 @@ import TokamakCore
 import TokamakStaticHTML
 import Foundation
 
-extension TokamakCore.GestureView: DOMPrimitive {
+extension TokamakCore._GestureView: DOMPrimitive {
     var renderedBody: AnyView {
-        switch G.Body.self {
-        case is TapGesture.Type:
-            return AnyView(_TapGestureView(gesture: $gesture, content: content))
-        case is LongPressGesture.Type:
-            return AnyView(_LongPressGestureView(gesture: $gesture, content: content))
-        case is DragGesture.Type:
-            return AnyView(_DragGestureView(gesture: $gesture, content: content))
-        default:
-            return AnyView(content)
-        }
+        AnyView(
+            DynamicHTML("div", ["id": gestureId], listeners: [
+                "pointerdown": { event in
+                    guard let target = event.target.object,
+                          let x = event.x.jsValue.number,
+                            let y = event.y.jsValue.number else { return }
+                    onPhaseChange(.began(location: CGPoint(x: x, y: y)), eventId: String(describing: target.hashValue))
+                },
+                "pointermove": { event in
+                    guard let x = event.x.jsValue.number, let y = event.y.jsValue.number else { return }
+                    let point = CGPoint(x: x, y: y)
+                    onPhaseChange(.changed(location: point))
+                  },
+                "pointerup": { event in
+                    guard let x = event.x.jsValue.number, let y = event.y.jsValue.number else { return }
+                    onPhaseChange(.ended(location: CGPoint(x: x, y: y)))
+                },
+                "pointercancel": { event in
+                    onPhaseChange(.cancelled)
+                }
+            ]) {
+                content
+            }
+        )
     }
 }
