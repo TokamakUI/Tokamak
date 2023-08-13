@@ -19,9 +19,10 @@ import Foundation
 
 public struct LongPressGesture: Gesture {
     public typealias Value = Bool
+    
     private var startLocation: CGPoint? = nil
     private var touchStartTime = Date(timeIntervalSince1970: 0)
-    private var maximumDistance: Double = 0
+    private var maximumDistance: Double
     private var onEndedAction: ((Value) -> Void)? = nil
     private var onChangedAction: ((Value) -> Void)? = nil
     public private(set) var minimumDuration: Double
@@ -29,36 +30,31 @@ public struct LongPressGesture: Gesture {
         self
     }
     
-    /// Creates a long-press gesture with a minimum duration
-    /// - Parameter minimumDuration: The minimum duration of the long press that must elapse before the gesture succeeds.
-    public init(minimumDuration: Double = 0.5) {
-        self.minimumDuration = minimumDuration
-    }
-    
     /// Creates a long-press gesture with a minimum duration and a maximum distance that the interaction can move before the gesture fails.
     /// - Parameters:
     ///   - minimumDuration: The minimum duration of the long press that must elapse before the gesture succeeds.
     ///   - maximumDistance: The maximum distance that the long press can move before the gesture fails.
-    public init(minimumDuration: Double, maximumDistance: Double) {
+    public init(minimumDuration: Double = 0.5, maximumDistance: Double = 10) {
         self.minimumDuration = minimumDuration
         self.maximumDistance = maximumDistance
     }
     
-    public mutating func _onPhaseChange(_ phase: _GesturePhase) {
+    mutating public func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
         switch phase {
         case .began(let location):
             startLocation = location
             touchStartTime = Date()
             onChangedAction?(startLocation != nil)
         case .changed(let location) where startLocation != nil:
-            guard let startLocation else { return }
-            let translation = calculateTranslation(from: startLocation, to: location)
+            guard let startLocation else { return false }
+            let translation = calculateTranslation(from: startLocation, to: location ?? startLocation)
             let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
             
             guard maximumDistance >= distance  else {
+                print("Failed", distance, maximumDistance, startLocation, location ?? startLocation)
                 // Fail longpress if distance is to big.
                 self.startLocation = nil
-                return
+                return false
             }
             
             let touch = Date()
@@ -70,6 +66,7 @@ public struct LongPressGesture: Gesture {
                 // The LongPress gesture ends when the required duration is met.
                 onEndedAction?(true)
                 self.startLocation = nil
+                return true
             }
         case .changed:
             break
@@ -77,6 +74,8 @@ public struct LongPressGesture: Gesture {
             onChangedAction?(false)
             startLocation = nil
         }
+        // The long press gesture is recognized only when both the maximum distance and minimum time conditions are met.
+        return false
     }
 
     public func _onEnded(perform action: @escaping (Value) -> Void) -> Self {

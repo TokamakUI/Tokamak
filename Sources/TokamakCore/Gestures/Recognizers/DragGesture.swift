@@ -37,19 +37,19 @@ public struct DragGesture: Gesture {
         self.minimumDistance = minimumDistance
     }
 
-    public mutating func _onPhaseChange(_ phase: _GesturePhase) {
+    mutating public func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
         switch phase {
         case .began(let location):
             startLocation = location
             previousTimestamp = nil
             velocity = .zero
         case .changed(let location) where startLocation != nil:
-            guard let startLocation else { return }
+            guard let startLocation, let location else { return false }
             let translation = calculateTranslation(from: startLocation, to: location)
             let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
             
             // Do nothing if gesture has not met the criteria
-            guard minimumDistance < distance else { return }
+            guard minimumDistance < distance else { return false }
             let currentTimestamp = Date()
             let timeElapsed = Double(currentTimestamp.timeIntervalSince(previousTimestamp ?? currentTimestamp))
             let velocity = calculateVelocity(from: translation, timeElapsed: timeElapsed)
@@ -70,12 +70,12 @@ public struct DragGesture: Gesture {
                     predictedEndTranslation: predictedEndTranslation
                 )
             )
+            return true
         case .changed:
             break
         case .ended(let location):
             if let startLocation {
                 let translation = calculateTranslation(from: startLocation, to: location)
-                let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
                 onEndedAction?(
                     Value(
                         startLocation: startLocation,
@@ -87,9 +87,11 @@ public struct DragGesture: Gesture {
                 )
             }
             startLocation = nil
+            return true
         case .cancelled:
             startLocation = nil
         }
+        return false
     }
     
     public func _onEnded(perform action: @escaping (Value) -> Void) -> Self {

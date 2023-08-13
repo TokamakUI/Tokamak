@@ -42,7 +42,9 @@ public struct GestureStateGesture<Base: Gesture, State>: Gesture {
         self.updatingBody = updatingBody
     }
 
-    public mutating func _onPhaseChange(_ phase: _GesturePhase) {}
+    mutating public func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
+        fatalError("\(String(reflecting: Self.self)) is a proxy `Gesture`, onPhaseChange should never be called.")
+    }
     
     public func _onEnded(perform action: @escaping (Value) -> Void) -> Self {
         var gesture = self

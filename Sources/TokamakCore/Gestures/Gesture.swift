@@ -29,9 +29,14 @@ public protocol Gesture {
     /// The content and behavior of the gesture.
     var body: Self.Body { get }
     
-    mutating func _onPhaseChange(_ phase: _GesturePhase)
-    func _onEnded(perform action: @escaping (Value) -> Void) -> Self
+    /// Adds an action to perform when the gesture’s phase changes.
+    /// - Parameter phase: Gesture new phase
+    /// - Returns: Returns `true` if the  gesture is recognized, false otherwise.
+    mutating func _onPhaseChange(_ phase: _GesturePhase) -> Bool
+    /// Adds an action to perform when the gesture’s value changes.
     func _onChanged(perform action: @escaping (Value) -> Void) -> Self
+    /// Adds an action to perform when the gesture ends.
+    func _onEnded(perform action: @escaping (Value) -> Void) -> Self
 }
 
 // MARK: Performing the gesture
