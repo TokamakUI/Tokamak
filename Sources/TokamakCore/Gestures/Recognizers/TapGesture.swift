@@ -28,12 +28,21 @@ public struct TapGesture: Gesture {
     private var phase: _GesturePhase = .cancelled
     private var onEndedAction: ((Value) -> Void)? = nil
     
+    private var isActive: Bool {
+        switch phase {
+        case .began, .changed:
+            return true
+        default:
+            return false
+        }
+    }
+    
     mutating public func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
         switch phase {
         case .cancelled:
             numberOfTapsSinceGestureBegan = 0
         case .ended:
-            if case .began = self.phase {
+            if isActive {
                 let touch = Date()
                 let delayInSeconds = touch.timeIntervalSince(touchEndTime)
                 touchEndTime = touch
@@ -47,7 +56,7 @@ public struct TapGesture: Gesture {
             }
             
             // If we ended touch and have desired count we complete gesture
-            if count == numberOfTapsSinceGestureBegan {
+            if numberOfTapsSinceGestureBegan >= count {
                 onEndedAction?(())
                 numberOfTapsSinceGestureBegan = 0
                 return true
