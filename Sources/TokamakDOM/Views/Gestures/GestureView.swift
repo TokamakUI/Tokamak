@@ -30,21 +30,38 @@ extension TokamakCore._GestureView: DOMPrimitive {
                             let y = event.y.jsValue.number else { return }
                     onPhaseChange(.began(location: CGPoint(x: x, y: y)), eventId: String(describing: target.hashValue))
                 },
-                "pointermove": { event in
-                    guard let x = event.x.jsValue.number, let y = event.y.jsValue.number else { return }
-                    let point = CGPoint(x: x, y: y)
-                    onPhaseChange(.changed(location: point))
-                  },
-                "pointerup": { event in
-                    guard let x = event.x.jsValue.number, let y = event.y.jsValue.number else { return }
-                    onPhaseChange(.ended(location: CGPoint(x: x, y: y)))
-                },
                 "pointercancel": { event in
                     onPhaseChange(.cancelled)
                 }
             ]) {
-                content
+                content.onAppear {
+                    setupPointerListener()
+                }
             }
         )
+    }
+    
+    private func setupPointerListener() {
+        /// Global listeners to track continuous pointer movement, providing real-time position updates even outside the initial target bounds.
+        let pointermoveClosure = JSClosure { args -> JSValue in
+            if let event = args[0].object,
+               let x = event.x.jsValue.number,
+               let y = event.y.jsValue.number {
+                onPhaseChange(.changed(location: CGPoint(x: x, y: y)))
+            }
+            return .undefined
+        }
+        _ = JSObject.global.window.object?.addEventListener?("pointermove", pointermoveClosure)
+        
+        /// Global listeners to track continuous pointer up, providing real-time updates even outside the initial target bounds.
+        let pointerupClosure = JSClosure { args -> JSValue in
+            if let event = args[0].object,
+               let x = event.x.jsValue.number,
+               let y = event.y.jsValue.number {
+                onPhaseChange(.ended(location: CGPoint(x: x, y: y)))
+            }
+            return .undefined
+        }
+        _ = JSObject.global.window.object?.addEventListener?("pointerup", pointerupClosure)
     }
 }
