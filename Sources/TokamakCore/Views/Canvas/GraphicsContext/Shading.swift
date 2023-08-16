@@ -17,6 +17,10 @@
 
 import Foundation
 
+#if canImport(CoreGraphics)
+import CoreGraphics
+#endif
+
 public extension GraphicsContext {
   enum _GradientGeometry {
     case axial(CGPoint, CGPoint)

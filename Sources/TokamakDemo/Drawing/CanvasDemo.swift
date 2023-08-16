@@ -18,14 +18,14 @@
 import Foundation
 import TokamakShim
 
-@available(macOS 12.0, iOS 15.0, *)
+@available(iOS 15.0, macOS 12.0, *)
 public struct CanvasDemo: View {
   public var body: some View {
     Confetti()
   }
 }
 
-@available(macOS 12.0, iOS 15.0, *)
+@available(iOS 15.0, macOS 12.0, *)
 struct Confetti: View {
   static let colors: [Color] = [
     Color.red,
@@ -62,6 +62,7 @@ struct Confetti: View {
   static let shape = Rectangle()
 
   var body: some View {
+    #if swift(<5.9)
     TimelineView(AnimationTimelineSchedule.animation) { timeline in
       Canvas { context, size in
         let elapsed = CGFloat(
@@ -93,5 +94,6 @@ struct Confetti: View {
         }
       }
     }
+    #endif /* swift(<5.9) */
   }
 }

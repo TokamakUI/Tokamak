@@ -20,6 +20,10 @@ import CGTK
 import Foundation
 import TokamakCore
 
+#if canImport(CoreGraphics)
+import CoreGraphics
+#endif
+
 func createPath(from elements: [Path.Element], in cr: OpaquePointer) {
   var current: CGPoint = .zero
   var start: CGPoint = .zero
@@ -143,6 +147,8 @@ extension CGLineJoin {
       return cairo_line_join_t(rawValue: 1) /* CAIRO_LINE_JOIN_ROUND */
     case .bevel:
       return cairo_line_join_t(rawValue: 2) /* CAIRO_LINE_JOIN_BEVEL */
+    @unknown default:
+      return cairo_line_join_t(rawValue: 1)
     }
   }
 }
@@ -156,6 +162,8 @@ extension CGLineCap {
       return cairo_line_cap_t(rawValue: 1) /* CAIRO_LINE_CAP_ROUND */
     case .square:
       return cairo_line_cap_t(rawValue: 2) /* CAIRO_LINE_CAP_SQUARE */
+    @unknown default:
+      return cairo_line_cap_t(rawValue: 1)
     }
   }
 }

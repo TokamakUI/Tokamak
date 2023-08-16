@@ -11,25 +11,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Szymon on 13/8/2023.
+//
 
-import TokamakShim
-
-struct PickerDemo: View {
-  var textStyles = Font.TextStyle.allCases
-
-  @State
-  private var selection = 0
-
-  var body: some View {
-    Picker(
-      selection: $selection,
-      label: Text("Text style")
-        .font(.system(textStyles[selection]))
-    ) {
-      Text("Pick a text style...")
-      ForEach(0..<textStyles.count, id: \.self) {
-        Text(String(describing: textStyles[$0]))
-      }
-    }
-  }
+public enum _GesturePriority {
+    case standard
+    case simultaneous
+    case highPriority
 }

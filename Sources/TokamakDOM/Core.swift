@@ -17,6 +17,10 @@
 
 import TokamakCore
 
+#if canImport(CoreGraphics)
+import CoreGraphics
+#endif
+
 // MARK: Environment & State
 
 public typealias DynamicProperty = TokamakCore.DynamicProperty
@@ -175,6 +179,14 @@ public typealias TimelineView = TokamakCore.TimelineView
 public typealias Toggle = TokamakCore.Toggle
 public typealias VStack = TokamakCore.VStack
 public typealias ZStack = TokamakCore.ZStack
+
+// MARK: Gestures
+
+public typealias GestureMask = TokamakCore.GestureMask
+public typealias GestureState = TokamakCore.GestureState
+public typealias TapGesture = TokamakCore.TapGesture
+public typealias DragGesture = TokamakCore.DragGesture
+public typealias LongPressGesture = TokamakCore.LongPressGesture
 
 // MARK: Special Views
 
