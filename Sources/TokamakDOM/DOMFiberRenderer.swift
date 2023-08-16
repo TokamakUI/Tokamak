@@ -303,14 +303,6 @@ public struct DOMFiberRenderer: FiberRenderer {
         }
       case let .remove(element, _):
         _ = element.reference?.remove?()
-      case let .replace(parent, previous, replacement):
-        guard let parentElement = parent.reference ?? rootElement.reference
-        else { fatalError("The root element was not bound (trying to replace element).") }
-        guard let previousElement = previous.reference else {
-          fatalError("The previous element does not exist (trying to replace element).")
-        }
-        let replacementElement = createElement(replacement)
-        _ = parentElement.replaceChild?(replacementElement, previousElement)
       case let .update(previous, newContent, geometry):
         previous.update(with: newContent)
         guard let previousElement = previous.reference

@@ -24,11 +24,6 @@ public enum Mutation<Renderer: FiberRenderer> {
     index: Int
   )
   case remove(element: Renderer.ElementType, parent: Renderer.ElementType?)
-  case replace(
-    parent: Renderer.ElementType,
-    previous: Renderer.ElementType,
-    replacement: Renderer.ElementType
-  )
   case update(
     previous: Renderer.ElementType,
     newContent: Renderer.ElementType.Content,

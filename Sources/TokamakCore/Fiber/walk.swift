@@ -17,28 +17,18 @@
 
 @_spi(TokamakCore)
 public enum WalkWorkResult<Success> {
-  case `continue`
+  /// continue by recursing into children, if any
+  case stepIn
+  /// continue over to next sibling
+  case stepOver
+  /// stop iterating by returning result
   case `break`(with: Success)
-  case pause
 }
 
 @_spi(TokamakCore)
 public enum WalkResult<Renderer: FiberRenderer, Success> {
   case success(Success)
   case finished
-  case paused(at: FiberReconciler<Renderer>.Fiber)
-}
-
-/// Walk a fiber tree from `root` until the `work` predicate returns `false`.
-@_spi(TokamakCore)
-@discardableResult
-public func walk<Renderer: FiberRenderer>(
-  _ root: FiberReconciler<Renderer>.Fiber,
-  _ work: @escaping (FiberReconciler<Renderer>.Fiber) throws -> Bool
-) rethrows -> WalkResult<Renderer, ()> {
-  try walk(root) {
-    try work($0) ? .continue : .pause
-  }
 }
 
 /// Parent-first depth-first traversal of a `Fiber` tree.
@@ -60,27 +50,28 @@ public func walk<Renderer: FiberRenderer, Success>(
   while true {
     // Perform work on the node
     switch try work(current) {
-    case .continue: break
     case let .break(success): return .success(success)
-    case .pause: return .paused(at: current)
-    }
-    // Walk into the child
-    if let child = current.child {
-      current = child
-      continue
-    }
-    // When we walk back to the root, exit
-    if current === root {
-      return .finished
-    }
-    // Walk back up until we find a sibling
-    while current.sibling == nil {
+    case .stepIn:
+      // Walk into the child
+      if let child = current.child {
+        current = child
+        continue
+      }
+      fallthrough
+    case .stepOver:
       // When we walk back to the root, exit
-      guard let parent = current.parent,
-            parent !== root else { return .finished }
-      current = parent
+      if current === root {
+        return .finished
+      }
+      // Walk back up until we find a sibling
+      while current.sibling == nil {
+        // When we walk back to the root, exit
+        guard let parent = current.parent,
+              parent !== root else { return .finished }
+        current = parent
+      }
+      // Walk the sibling
+      current = current.sibling!
     }
-    // Walk the sibling
-    current = current.sibling!
   }
 }

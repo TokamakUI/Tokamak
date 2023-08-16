@@ -28,6 +28,7 @@ final class VisitorTests: XCTestCase {
         private var count = 0
 
         var body: some View {
+          let _ = print("in counter body, count is \(count)")
           VStack {
             Text("\(count)")
               .identified(by: "count")
@@ -64,14 +65,14 @@ final class VisitorTests: XCTestCase {
     // Count up to 5
     for i in 0..<5 {
       XCTAssertEqual(countText.view, Text("\(i)"))
-      incrementButton.action?()
+      incrementButton.tap()
     }
     XCTAssertNil(incrementButton.view, "'Increment' should be hidden when count >= 5")
     XCTAssertNotNil(decrementButton.view, "'Decrement' should be visible when count > 0")
     // Count down to 0.
     for i in 0..<5 {
       XCTAssertEqual(countText.view, Text("\(5 - i)"))
-      decrementButton.action?()
+      decrementButton.tap()
     }
     XCTAssertNil(decrementButton.view, "'Decrement' should be hidden when count <= 0")
     XCTAssertNotNil(incrementButton.view, "'Increment' should be visible when count < 5")
@@ -99,7 +100,7 @@ final class VisitorTests: XCTestCase {
     let addItemButton = reconciler.findView(id: "addItem", as: Button<Text>.self)
     XCTAssertNotNil(addItemButton)
     for i in 0..<10 {
-      addItemButton.action?()
+      addItemButton.tap()
       XCTAssertEqual(reconciler.findView(id: i).view, Text("Item \(i)"))
     }
   }
@@ -195,7 +196,7 @@ final class VisitorTests: XCTestCase {
     // State
     let button = reconciler.findView(id: DynamicPropertyTest.state, as: Button<Text>.self)
     XCTAssertEqual(button.label, Text("0"))
-    button.action?()
+    button.tap()
     XCTAssertEqual(button.label, Text("1"))
 
     // Environment
@@ -210,8 +211,7 @@ final class VisitorTests: XCTestCase {
       as: Button<Text>.self
     )
     XCTAssertEqual(stateObjectButton.label, Text("0"))
-    stateObjectButton.action?()
-    stateObjectButton.action?()
+    stateObjectButton.tap()
     XCTAssertEqual(stateObjectButton.label, Text("5"))
 
     XCTAssertEqual(
