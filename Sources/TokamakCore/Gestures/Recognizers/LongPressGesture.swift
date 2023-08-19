@@ -45,7 +45,7 @@ public struct LongPressGesture: Gesture {
             startLocation = location
             touchStartTime = Date()
             onChangedAction?(startLocation != nil)
-        case .changed(let location) where startLocation != nil:
+        case .changed(_, let location) where startLocation != nil:
             guard let startLocation else { return false }
             let translation = calculateTranslation(from: startLocation, to: location ?? startLocation)
             let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)

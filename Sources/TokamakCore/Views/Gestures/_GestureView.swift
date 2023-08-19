@@ -80,7 +80,7 @@ public struct _GestureView<Content: View, G: Gesture>: _PrimitiveView {
                 try await Task.sleep(for: .seconds(minimumDuration))
                 if let eventId {
                     await MainActor.run {
-                        onPhaseChange(.changed(location: nil), eventId: eventId)
+                        onPhaseChange(.changed(boundsOrigin: nil, location: nil), eventId: eventId)
                     }
                 }
             } catch {}

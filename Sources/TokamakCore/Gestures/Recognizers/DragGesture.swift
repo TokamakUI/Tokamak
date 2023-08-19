@@ -52,7 +52,7 @@ public struct DragGesture: Gesture {
             startLocation = location
             previousTimestamp = nil
             velocity = .zero
-        case .changed(let location) where startLocation != nil:
+        case .changed(let origin, let location) where startLocation != nil:
             guard let startLocation, let location else { return false }
             let translation = calculateTranslation(from: startLocation, to: location)
             let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
@@ -63,6 +63,7 @@ public struct DragGesture: Gesture {
             let timeElapsed = Double(currentTimestamp.timeIntervalSince(previousTimestamp ?? currentTimestamp))
             let velocity = calculateVelocity(from: translation, timeElapsed: timeElapsed)
             self.velocity = velocity
+            self.globalOrigin = origin ?? globalOrigin
             
             // Predict end location based on velocity
             let predictedEndLocation = calculatePredictedEndLocation(from: location, velocity: velocity)
@@ -82,9 +83,10 @@ public struct DragGesture: Gesture {
             return true
         case .changed:
             break
-        case .ended(let location):
+        case .ended(let origin, let location):
             if let startLocation {
                 let translation = calculateTranslation(from: startLocation, to: location)
+                self.globalOrigin = origin ?? globalOrigin
                 onEndedAction?(
                     Value(
                         startLocation: converLocation(startLocation),
@@ -125,8 +127,8 @@ public struct DragGesture: Gesture {
             }
             return location
         case .named(let name):
-            if let rect = coordinates.activeCoordinateSpace[CoordinateSpace.named(name)] {
-                return CoordinateSpace.convert(location, toNamedOrigin: rect.origin)
+            if let origin = coordinates.activeCoordinateSpace[CoordinateSpace.named(name)] {
+                return CoordinateSpace.convert(location, toNamedOrigin: origin)
             }
             return location
         }

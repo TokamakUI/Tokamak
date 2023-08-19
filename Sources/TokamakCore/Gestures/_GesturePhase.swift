@@ -18,8 +18,27 @@
 import Foundation
 
 public enum _GesturePhase {
+    /// The gesture phase when it begins.
+    ///
+    /// - Parameters:
+    ///   - boundsOrigin: The origin point of the target element in global coordinates.
+    ///   - location: The current location of the gesture in global coordinates.
     case began(boundsOrigin: CGPoint, location: CGPoint)
-    case changed(location: CGPoint?)
-    case ended(location: CGPoint)
+    
+    /// The gesture phase when it changes.
+    ///
+    /// - Parameters:
+    ///   - boundsOrigin: The optional origin point of the target element in global coordinates.
+    ///   - location: The optional current location of the gesture in global coordinates.
+    case changed(boundsOrigin: CGPoint?, location: CGPoint?)
+    
+    /// The gesture phase when it ends.
+    ///
+    /// - Parameters:
+    ///   - boundsOrigin: The optional origin point of the target element in global coordinates.
+    ///   - location: The current location of the gesture in global coordinates.
+    case ended(boundsOrigin: CGPoint?, location: CGPoint)
+    
+    /// The gesture phase when it is cancelled.
     case cancelled
 }

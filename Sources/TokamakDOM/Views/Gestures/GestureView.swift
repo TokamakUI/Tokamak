@@ -58,7 +58,21 @@ extension TokamakCore._GestureView: DOMPrimitive {
             if let event = args[0].object,
                let x = event.x.jsValue.number,
                let y = event.y.jsValue.number {
-                onPhaseChange(.changed(location: CGPoint(x: x, y: y)))
+                var origin: CGPoint? = nil
+                
+                if let target = args[0].object?[dynamicMember: "0"].object?.target.object,
+                   let rect = target.getBoundingClientRect?(),
+                   let originX = rect.x.number,
+                   let originY = rect.y.number {
+                    origin = CGPoint(x: originX, y: originY)
+                }
+                
+                onPhaseChange(
+                    .changed(
+                        boundsOrigin: origin,
+                        location: CGPoint(x: x, y: y)
+                    )
+                )
             }
             return .undefined
         }
@@ -69,7 +83,21 @@ extension TokamakCore._GestureView: DOMPrimitive {
             if let event = args[0].object,
                let x = event.x.jsValue.number,
                let y = event.y.jsValue.number {
-                onPhaseChange(.ended(location: CGPoint(x: x, y: y)))
+                var origin: CGPoint? = nil
+                
+                if let target = args[0].object?[dynamicMember: "0"].object?.target.object,
+                   let rect = target.getBoundingClientRect?(),
+                   let originX = rect.x.number,
+                   let originY = rect.y.number {
+                    origin = CGPoint(x: originX, y: originY)
+                }
+                
+                onPhaseChange(
+                    .ended(
+                        boundsOrigin: origin,
+                        location: CGPoint(x: x, y: y)
+                    )
+                )
             }
             return .undefined
         }
