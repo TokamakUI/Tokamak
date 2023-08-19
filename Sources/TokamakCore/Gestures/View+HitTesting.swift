@@ -12,14 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Szymon on 23/7/2023.
+//  Created by Szymon on 18/8/2023.
 //
 
 import Foundation
 
-public enum _GesturePhase {
-    case began(boundsOrigin: CGPoint, location: CGPoint)
-    case changed(location: CGPoint?)
-    case ended(location: CGPoint)
-    case cancelled
+extension View {
+    /// Defines the content shape for hit testing.
+    /// - Parameters:
+    ///   - shape: The hit testing shape for the view.
+    ///   - eoFill: A Boolean that indicates whether the shape is interpreted with the even-odd winding number rule.
+    /// - Returns: A view that uses the given shape for hit testing.
+    @inlinable public func contentShape<S: Shape>(
+        _ shape: S,
+        eoFill: Bool = false
+    ) -> some View {
+        // TODO: Add content shape modifier. Verify gesture start against the shape fill area.
+        self
+    }
 }

@@ -12,14 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Szymon on 23/7/2023.
+//  Created by Szymon on 19/8/2023.
 //
 
 import Foundation
 
-public enum _GesturePhase {
-    case began(boundsOrigin: CGPoint, location: CGPoint)
-    case changed(location: CGPoint?)
-    case ended(location: CGPoint)
-    case cancelled
-}

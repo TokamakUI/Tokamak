@@ -27,6 +27,7 @@ public typealias EnvironmentObject = TokamakCore.EnvironmentObject
 public typealias EnvironmentValues = TokamakCore.EnvironmentValues
 
 public typealias PreferenceKey = TokamakCore.PreferenceKey
+public typealias CoordinateSpace = TokamakCore.CoordinateSpace
 
 public typealias Binding = TokamakCore.Binding
 public typealias ObservableObject = TokamakCore.ObservableObject
@@ -178,6 +179,7 @@ public typealias ZStack = TokamakCore.ZStack
 
 // MARK: Gestures
 
+public typealias Gesture = TokamakCore.Gesture
 public typealias GestureMask = TokamakCore.GestureMask
 public typealias GestureState = TokamakCore.GestureState
 public typealias TapGesture = TokamakCore.TapGesture

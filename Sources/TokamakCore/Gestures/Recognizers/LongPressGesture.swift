@@ -41,7 +41,7 @@ public struct LongPressGesture: Gesture {
     
     mutating public func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
         switch phase {
-        case .began(let location):
+        case .began(_, let location):
             startLocation = location
             touchStartTime = Date()
             onChangedAction?(startLocation != nil)

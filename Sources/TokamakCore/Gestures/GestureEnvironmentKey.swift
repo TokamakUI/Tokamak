@@ -20,7 +20,7 @@ private struct GestureEnvironmentKey: EnvironmentKey {
 }
 
 extension EnvironmentValues {
-    var gestureListener: GestureEnvironmentValue {
+    var _gestureListener: GestureEnvironmentValue {
         get { self[GestureEnvironmentKey.self] }
         set { self[GestureEnvironmentKey.self] = newValue }
     }

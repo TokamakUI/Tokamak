@@ -23,12 +23,23 @@ import Foundation
 extension TokamakCore._GestureView: DOMPrimitive {
     var renderedBody: AnyView {
         AnyView(
-            DynamicHTML("div", ["id": gestureId], listeners: [
+            DynamicHTML("div", [
+                "id": gestureId,
+            ], listeners: [
                 "pointerdown": { event in
                     guard let target = event.target.object,
                           let x = event.x.jsValue.number,
-                            let y = event.y.jsValue.number else { return }
-                    onPhaseChange(.began(location: CGPoint(x: x, y: y)), eventId: String(describing: target.hashValue))
+                          let y = event.y.jsValue.number,
+                          let rect = target.getBoundingClientRect?(),
+                          let originX = rect.x.number,
+                          let originY = rect.y.number else { return }
+                    onPhaseChange(
+                        .began(
+                            boundsOrigin: CGPoint(x: originX, y: originY),
+                            location: CGPoint(x: x, y: y)
+                        ),
+                        eventId: String(describing: target.hashValue)
+                    )
                 },
                 "pointercancel": { event in
                     onPhaseChange(.cancelled)

@@ -19,7 +19,7 @@ import Foundation
 
 public struct _GestureView<Content: View, G: Gesture>: _PrimitiveView {
     @Environment(\.isEnabled) var isEnabled
-    @Environment(\.gestureListener) var gestureListener
+    @Environment(\._gestureListener) var gestureListener
     @State public var gestureId: String = UUID().uuidString
     @State public var gesture: G
     @State var eventId: String? = nil
@@ -98,24 +98,30 @@ extension View {
     ///
     /// - Parameter gesture: The gesture to attach.
     /// - Returns: A modified version of the view with the gesture attached.
-    public func gesture<T>(_ gesture: T, including mask: GestureMask = .all) -> some View where T: Gesture {
-        _GestureView(
-            gesture: gesture.body,
-            mask: mask,
-            content: self
-        )
+    @ViewBuilder
+    public func gesture<T>(_ gesture: T?, including mask: GestureMask = .all) -> some View where T: Gesture {
+        if let gesture {
+            _GestureView(gesture: gesture.body, mask: mask, content: self)
+        } else {
+            self
+        }
     }
     
     /// Attaches a gesture to the view to process simultaneously with gestures defined by the view.
     /// - Parameter gesture: The gesture to attach.
     /// - Returns: A modified version of the view with the gesture attached.
-    public func simultaneousGesture<T>(_ gesture: T, including mask: GestureMask = .all) -> some View where T : Gesture {
-        _GestureView(
-            gesture: gesture.body,
-            mask: mask,
-            priority: .simultaneous,
-            content: self
-        )
+    @ViewBuilder
+    public func simultaneousGesture<T>(_ gesture: T?, including mask: GestureMask = .all) -> some View where T : Gesture {
+        if let gesture {
+            _GestureView(
+                gesture: gesture.body,
+                mask: mask,
+                priority: .simultaneous,
+                content: self
+            )
+        } else {
+            self
+        }
     }
     
     /// Attaches a gesture to the view with a higher precedence than gestures defined by the view.
@@ -123,12 +129,17 @@ extension View {
     ///   - gesture: A gesture to attach to the view.
     ///   - mask: A value that controls how adding this gesture to the view affects other gestures recognized by the view and its subviews. Defaults to all.
     /// - Returns: A modified version of the view with the gesture attached.
-    public func highPriorityGesture<T>(_ gesture: T, including mask: GestureMask = .all) -> some View where T : Gesture {
-        _GestureView(
-            gesture: gesture.body,
-            mask: mask,
-            priority: .highPriority,
-            content: self
-        )
+    @ViewBuilder
+    public func highPriorityGesture<T>(_ gesture: T?, including mask: GestureMask = .all) -> some View where T : Gesture {
+        if let gesture {
+            _GestureView(
+                gesture: gesture.body,
+                mask: mask,
+                priority: .highPriority,
+                content: self
+            )
+        } else {
+            self
+        }
     }
 }

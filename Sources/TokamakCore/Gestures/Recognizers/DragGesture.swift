@@ -18,12 +18,16 @@
 import Foundation
 
 public struct DragGesture: Gesture {
+    @Environment(\._coordinateSpace) private var coordinates
+    private var globalOrigin: CGPoint? = nil
     private var startLocation: CGPoint? = nil
     private var previousTimestamp: Date?
     private var velocity: CGSize = .zero
     private var onEndedAction: ((Value) -> Void)? = nil
     private var onChangedAction: ((Value) -> Void)? = nil
-    public var minimumDistance: Double
+    private var minimumDistance: Double
+    private var coordinateSpace: CoordinateSpace
+    
     public var body: DragGesture {
         self
     }
@@ -33,13 +37,18 @@ public struct DragGesture: Gesture {
     /// - Parameters:
     ///   - minimumDistance: The minimum dragging distance before the gesture succeeds.
     ///   - coordinateSpace: The coordinate space in which to receive location values.
-    public init(minimumDistance: Double = 10) {
+    public init(
+        minimumDistance: CGFloat = 10,
+        coordinateSpace: CoordinateSpace = .local
+    ) {
         self.minimumDistance = minimumDistance
+        self.coordinateSpace = coordinateSpace
     }
 
     mutating public func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
         switch phase {
-        case .began(let location):
+        case .began(let origin, let location):
+            globalOrigin = origin
             startLocation = location
             previousTimestamp = nil
             velocity = .zero
@@ -63,9 +72,9 @@ public struct DragGesture: Gesture {
             
             onChangedAction?(
                 Value(
-                    startLocation: startLocation,
-                    location: location,
-                    predictedEndLocation: predictedEndLocation,
+                    startLocation: converLocation(startLocation),
+                    location: converLocation(location),
+                    predictedEndLocation: converLocation(predictedEndLocation),
                     translation: translation,
                     predictedEndTranslation: predictedEndTranslation
                 )
@@ -78,9 +87,9 @@ public struct DragGesture: Gesture {
                 let translation = calculateTranslation(from: startLocation, to: location)
                 onEndedAction?(
                     Value(
-                        startLocation: startLocation,
-                        location: location,
-                        predictedEndLocation: location,
+                        startLocation: converLocation(startLocation),
+                        location: converLocation(location),
+                        predictedEndLocation: converLocation(location),
                         translation: translation,
                         predictedEndTranslation: translation
                     )
@@ -104,6 +113,23 @@ public struct DragGesture: Gesture {
         var gesture = self
         gesture.onChangedAction = action
         return gesture
+    }
+    
+    private func converLocation(_ location: CGPoint) -> CGPoint {
+        switch coordinateSpace {
+        case .global:
+            return location
+        case .local:
+            if let origin = globalOrigin {
+                return CoordinateSpace.convert(location, toNamedOrigin: origin)
+            }
+            return location
+        case .named(let name):
+            if let rect = coordinates.activeCoordinateSpace[CoordinateSpace.named(name)] {
+                return CoordinateSpace.convert(location, toNamedOrigin: rect.origin)
+            }
+            return location
+        }
     }
     
     // MARK: Types
