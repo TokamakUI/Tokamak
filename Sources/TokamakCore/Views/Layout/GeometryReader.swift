@@ -33,10 +33,10 @@ public struct GeometryProxy {
         case .local:
             return CGRect(origin: .zero, size: size)
         case .named(let name):
-            if let rect = coordinates.activeCoordinateSpace[CoordinateSpace.named(name)] {
+            if let origin = coordinates.activeCoordinateSpace[CoordinateSpace.named(name)] {
                 return CoordinateSpace.convertGlobalSpaceCoordinates(
                     rect: globalRect,
-                    toNamedOrigin: rect.origin
+                    toNamedOrigin: origin
                 )
             }
             // Return local if no space with given name

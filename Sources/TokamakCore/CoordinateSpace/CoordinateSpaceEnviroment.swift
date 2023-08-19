@@ -17,3 +17,56 @@
 
 import Foundation
 
+private struct CoordinateSpaceEnvironmentKey: EnvironmentKey {
+    static let defaultValue: CoordinateSpaceContext = CoordinateSpaceContext()
+}
+
+extension EnvironmentValues {
+    var _coordinateSpace: CoordinateSpaceContext {
+        get { self[CoordinateSpaceEnvironmentKey.self] }
+        set { self[CoordinateSpaceEnvironmentKey.self] = newValue }
+    }
+}
+
+class CoordinateSpaceContext {
+    /// Stores currently active CoordinateSpace against it's origin point in global coordinates
+    var activeCoordinateSpace: [CoordinateSpace: CGPoint] = [:]
+}
+
+extension View {
+    /// Assigns a name to the view’s coordinate space, so other code can operate on dimensions like points and sizes relative to the named space.
+    /// - Parameter name: A name used to identify this coordinate space.
+    public func coordinateSpace<T>(name: T) -> some View where T : Hashable {
+        self.modifier(_CoordinateSpaceModifier(name: name))
+    }
+}
+
+struct _CoordinateSpaceModifier<T : Hashable>: ViewModifier {
+    @Environment(\._coordinateSpace) var coordinateSpace
+    let name: T
+    
+    public func body(content: Content) -> some View {
+        content.background {
+            GeometryReader { proxy in
+                Color.clear
+                    .onChange(of: proxy.size, initial: true) {
+                        coordinateSpace.activeCoordinateSpace[.named(name)] = proxy.frame(in: .global).origin
+                    }
+                    .onDisappear {
+                        coordinateSpace.activeCoordinateSpace.removeValue(forKey: .named(name))
+                    }
+            }
+        }
+    }
+}
+
+extension CoordinateSpace {
+    static func convertGlobalSpaceCoordinates(rect: CGRect, toNamedOrigin namedOrigin: CGPoint) -> CGRect {
+        let translatedOrigin = convert(rect.origin, toNamedOrigin: namedOrigin)
+        return CGRect(origin: translatedOrigin, size: rect.size)
+    }
+    
+    static func convert(_ point: CGPoint, toNamedOrigin namedOrigin: CGPoint) -> CGPoint {
+        return CGPoint(x: point.x - namedOrigin.x, y: point.y - namedOrigin.y)
+    }
+}
