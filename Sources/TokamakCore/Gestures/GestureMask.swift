@@ -74,21 +74,5 @@ import Foundation
 
     /// Disable all gestures in the subview hierarchy, including the added gesture.
     public static let none: Self = []
-
-    // MARK: - Helper Methods
-
-    /// Enables a specific gesture option in the mask.
-    ///
-    /// - Parameter option: The `GestureMask` representing the gesture option to enable.
-    mutating func enableGesture(_ option: GestureMask) {
-        self.insert(option)
-    }
-
-    /// Disables a specific gesture option in the mask.
-    ///
-    /// - Parameter option: The `GestureMask` representing the gesture option to disable.
-    mutating func disableGesture(_ option: GestureMask) {
-        self.remove(option)
-    }
 }
 

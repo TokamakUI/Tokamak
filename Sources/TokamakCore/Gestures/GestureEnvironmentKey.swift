@@ -16,19 +16,28 @@
 //
 
 private struct GestureEnvironmentKey: EnvironmentKey {
-    static let defaultValue: GestureEnvironmentValue = GestureEnvironmentValue()
+    static let defaultValue: GestureContext = GestureContext()
 }
 
 extension EnvironmentValues {
-    var gestureListener: GestureEnvironmentValue {
+    /// An environment value that provides a central hub for managing gesture recognition and priority handling.
+    var _gestureListener: GestureContext {
         get { self[GestureEnvironmentKey.self] }
         set { self[GestureEnvironmentKey.self] = newValue }
     }
 }
 
-class GestureEnvironmentValue {
+final class GestureContext {
+    // MARK: Gesture Management
+    
+    /// A dictionary that tracks active gestures for different events, organized by event name.
     var activeGestures: [String: Set<GestureValue>] = [:]
-
+    
+    /// Registers the start of a gesture for a specific event, respecting priority levels.
+    ///
+    /// - Parameters:
+    ///   - gesture: The gesture to be registered.
+    ///   - event: The name of the event associated with the gesture.
     func registerStart(_ gesture: GestureValue, for event: String) {
         if activeGestures[event] == nil {
             activeGestures[event] = [gesture]
@@ -39,6 +48,11 @@ class GestureEnvironmentValue {
         }
     }
     
+    /// Recognizes a gesture for a specific event, considering its priority and adjusting active gestures accordingly.
+    ///
+    /// - Parameters:
+    ///   - gesture: The gesture to be recognized.
+    ///   - event: The name of the event associated with the gesture.
     func recognizeGesture(_ gesture: GestureValue, for event: String) {
         guard activeGestures[event]?.contains(gesture) == true else {
             return
@@ -48,6 +62,12 @@ class GestureEnvironmentValue {
         activeGestures[event] = gestures
     }
     
+    /// Checks if a gesture can be processed for a specific event, considering its recognition status and priority.
+    ///
+    /// - Parameters:
+    ///   - gesture: The gesture to be checked.
+    ///   - event: The name of the event associated with the gesture.
+    /// - Returns: `true` if the gesture can be processed, `false` otherwise.
     func canProcessGesture(_ gesture: GestureValue, for event: String) -> Bool {
         guard activeGestures[event]?.contains(gesture) == true else {
             return false
@@ -57,8 +77,15 @@ class GestureEnvironmentValue {
 }
 
 struct GestureValue: Hashable {
+    // MARK: Gesture Metadata
+    
+    /// A unique identifier for the gesture.
     let gestureId: String
+    
+    /// A mask that defines the type of gesture.
     let mask: GestureMask
+    
+    /// The priority level of the gesture.
     let priority: _GesturePriority
     
     func hash(into hasher: inout Hasher) {
@@ -68,7 +95,11 @@ struct GestureValue: Hashable {
 
 // MARK: Helpers
 
-extension Set where Element == GestureValue {
+private extension Set where Element == GestureValue {
+    /// Removes gestures with lower priorities than the given priority.
+    ///
+    /// - Parameter priority: The priority to compare against.
+    /// - Returns: A filtered set containing only gestures with equal or higher priorities.
     func removeLowerPriorities(than priority: _GesturePriority) -> Self {
         return self.filter {
             switch priority {

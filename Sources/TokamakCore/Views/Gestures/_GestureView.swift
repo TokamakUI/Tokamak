@@ -19,7 +19,7 @@ import Foundation
 
 public struct _GestureView<Content: View, G: Gesture>: _PrimitiveView {
     @Environment(\.isEnabled) var isEnabled
-    @Environment(\.gestureListener) var gestureListener
+    @Environment(\._gestureListener) var gestureListener
     @State public var gestureId: String = UUID().uuidString
     @State public var gesture: G
     @State var eventId: String? = nil
@@ -83,10 +83,7 @@ public struct _GestureView<Content: View, G: Gesture>: _PrimitiveView {
                         onPhaseChange(.changed(location: nil), eventId: eventId)
                     }
                 }
-            } catch {
-                //TODO: What do we do with this error?
-                print(error)
-            }
+            } catch {}
         }
     }
 }
