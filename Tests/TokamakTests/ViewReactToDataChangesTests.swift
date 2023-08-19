@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@testable import TokamakCore
 import XCTest
+import TokamakTestRenderer
 import OpenCombineShim
+
+@_spi(TokamakCore) @testable import TokamakCore
 
 class ViewModifierTests: XCTestCase {
     func testOnReceive() {
@@ -32,7 +34,7 @@ class ViewModifierTests: XCTestCase {
         publisher.send("Testing onReceive")
 
         // Re-evaluate the view
-        _ = contentView.body
+        let reconciler = TestFiberRenderer(.root, size: .zero).render(contentView)
 
         XCTAssertEqual(receivedValue, "Testing onReceive")
     }
@@ -54,7 +56,7 @@ class ViewModifierTests: XCTestCase {
         count = 5
 
         // Re-evaluate the view
-        _ = contentView.body
+        let reconciler = TestFiberRenderer(.root, size: .zero).render(contentView)
 
         XCTAssertEqual(count, 5)
         XCTAssertEqual(oldCount, 0)
@@ -72,7 +74,7 @@ class ViewModifierTests: XCTestCase {
         XCTAssertFalse(actionFired)
 
         // Re-evaluate the view
-        _ = contentView.body
+        let reconciler = TestFiberRenderer(.root, size: .zero).render(contentView)
 
         XCTAssertTrue(actionFired)
     }
@@ -99,7 +101,7 @@ class ViewModifierTests: XCTestCase {
         count = 5
 
         // Re-evaluate the view
-        _ = contentView.body
+        let reconciler = TestFiberRenderer(.root, size: .zero).render(contentView)
 
         XCTAssertEqual(count, 5)
         XCTAssertEqual(receivedValue, 10)

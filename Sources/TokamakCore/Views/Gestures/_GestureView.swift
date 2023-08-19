@@ -83,10 +83,7 @@ public struct _GestureView<Content: View, G: Gesture>: _PrimitiveView {
                         onPhaseChange(.changed(location: nil), eventId: eventId)
                     }
                 }
-            } catch {
-                //TODO: What do we do with this error?
-                print(error)
-            }
+            } catch {}
         }
     }
 }
