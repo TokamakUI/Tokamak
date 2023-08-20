@@ -33,13 +33,11 @@ extension TokamakCore._GestureView: DOMPrimitive {
                           let rect = target.getBoundingClientRect?(),
                           let originX = rect.x.number,
                           let originY = rect.y.number else { return }
-                    onPhaseChange(
-                        .began(
-                            boundsOrigin: CGPoint(x: originX, y: originY),
-                            location: CGPoint(x: x, y: y)
-                        ),
-                        eventId: String(describing: target.hashValue)
+                    let phase = _GesturePhaseContext(
+                        boundsOrigin: CGPoint(x: originX, y: originY),
+                        location: CGPoint(x: x, y: y)
                     )
+                    onPhaseChange(.began(phase), eventId: String(describing: target.hashValue))
                 },
                 "pointercancel": { event in
                     onPhaseChange(.cancelled)
@@ -66,13 +64,11 @@ extension TokamakCore._GestureView: DOMPrimitive {
                    let originY = rect.y.number {
                     origin = CGPoint(x: originX, y: originY)
                 }
-                
-                onPhaseChange(
-                    .changed(
-                        boundsOrigin: origin,
-                        location: CGPoint(x: x, y: y)
-                    )
+                let phase = _GesturePhaseContext(
+                    boundsOrigin: origin,
+                    location: CGPoint(x: x, y: y)
                 )
+                onPhaseChange(.changed(phase))
             }
             return .undefined
         }
@@ -91,13 +87,11 @@ extension TokamakCore._GestureView: DOMPrimitive {
                    let originY = rect.y.number {
                     origin = CGPoint(x: originX, y: originY)
                 }
-                
-                onPhaseChange(
-                    .ended(
-                        boundsOrigin: origin,
-                        location: CGPoint(x: x, y: y)
-                    )
+                let phase = _GesturePhaseContext(
+                    boundsOrigin: origin,
+                    location: CGPoint(x: x, y: y)
                 )
+                onPhaseChange(.ended(phase))
             }
             return .undefined
         }

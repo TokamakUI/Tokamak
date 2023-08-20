@@ -19,26 +19,26 @@ import Foundation
 
 public enum _GesturePhase {
     /// The gesture phase when it begins.
-    ///
-    /// - Parameters:
-    ///   - boundsOrigin: The origin point of the target element in global coordinates.
-    ///   - location: The current location of the gesture in global coordinates.
-    case began(boundsOrigin: CGPoint, location: CGPoint)
+    case began(_GesturePhaseContext)
     
     /// The gesture phase when it changes.
-    ///
-    /// - Parameters:
-    ///   - boundsOrigin: The optional origin point of the target element in global coordinates.
-    ///   - location: The optional current location of the gesture in global coordinates.
-    case changed(boundsOrigin: CGPoint?, location: CGPoint?)
+    case changed(_GesturePhaseContext)
     
     /// The gesture phase when it ends.
-    ///
-    /// - Parameters:
-    ///   - boundsOrigin: The optional origin point of the target element in global coordinates.
-    ///   - location: The current location of the gesture in global coordinates.
-    case ended(boundsOrigin: CGPoint?, location: CGPoint)
+    case ended(_GesturePhaseContext)
     
     /// The gesture phase when it is cancelled.
     case cancelled
+}
+
+public struct _GesturePhaseContext {
+    /// The  origin point of the target element in global coordinates.
+    let boundsOrigin: CGPoint?
+    /// The current location of the gesture in global coordinates.
+    let location: CGPoint?
+    
+    public init(boundsOrigin: CGPoint? = nil, location: CGPoint? = nil) {
+        self.boundsOrigin = boundsOrigin
+        self.location = location
+    }
 }
