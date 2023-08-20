@@ -48,11 +48,12 @@ public struct DragGesture: Gesture {
     mutating public func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
         switch phase {
         case .began(let context):
-            globalOrigin = context.boundsOrigin
+            setGlobalOrigin(context.boundsOrigin)
             startLocation = context.location
             previousTimestamp = nil
             velocity = .zero
         case .changed(let context) where startLocation != nil:
+            setGlobalOrigin(context.boundsOrigin)
             guard let startLocation, let location = context.location else { return false }
             let translation = calculateTranslation(from: startLocation, to: location)
             let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
@@ -63,7 +64,6 @@ public struct DragGesture: Gesture {
             let timeElapsed = Double(currentTimestamp.timeIntervalSince(previousTimestamp ?? currentTimestamp))
             let velocity = calculateVelocity(from: translation, timeElapsed: timeElapsed)
             self.velocity = velocity
-            self.globalOrigin = context.boundsOrigin ?? globalOrigin
             
             // Predict end location based on velocity
             let predictedEndLocation = calculatePredictedEndLocation(from: location, velocity: velocity)
@@ -81,8 +81,8 @@ public struct DragGesture: Gesture {
                 )
             )
             return true
-        case .changed:
-            break
+        case .changed(let context):
+            setGlobalOrigin(context.boundsOrigin)
         case .ended(let context):
             if let startLocation, let location = context.location {
                 let translation = calculateTranslation(from: startLocation, to: location)
@@ -115,6 +115,13 @@ public struct DragGesture: Gesture {
         var gesture = self
         gesture.onChangedAction = action
         return gesture
+    }
+    
+    private mutating func setGlobalOrigin(_ origin: CGPoint?) {
+        let newOrigin = origin ?? globalOrigin
+        if newOrigin != self.globalOrigin {
+            self.globalOrigin = newOrigin
+        }
     }
     
     private func converLocation(_ location: CGPoint) -> CGPoint {

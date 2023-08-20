@@ -17,7 +17,9 @@ import JavaScriptKit
 @_spi(TokamakCore) import TokamakCore
 import TokamakStaticHTML
 
-private let ResizeObserver = JSObject.global.ResizeObserver.function!
+/// https://toruskit.com/blog/how-to-get-element-bounds-without-reflow/
+/// IntersectionObserver compared to getBoundingClientRect() it’s faster and doesn’t produce any reflows.
+private let IntersectionObserver = JSObject.global.IntersectionObserver.function!
 
 extension GeometryReader: DOMPrimitive {
     var renderedBody: AnyView {
@@ -62,8 +64,7 @@ struct _GeometryReader<Content: View>: View {
                 // FIXME: `JSArrayRef` is not a `RandomAccessCollection` for some reason, which forces
                 // us to use a string subscript
                 guard
-                    let target = args[0].object?[dynamicMember: "0"].object?.target.object,
-                    let rect = target.getBoundingClientRect?(),
+                    let rect = args[0].object?[dynamicMember: "0"].object?.boundingClientRect.object,
                     let x = rect.x.number,
                     let y = rect.y.number,
                     let width = rect.width.number,
@@ -74,12 +75,11 @@ struct _GeometryReader<Content: View>: View {
                     origin: CGPoint(x: x, y: y),
                     size: CGSize(width: width, height: height)
                 )
-                
                 return .undefined
             }
             state.closure = closure
             
-            let observerRef = ResizeObserver.new(closure)
+            let observerRef = IntersectionObserver.new(closure)
             
             _ = observerRef.observe!(state.observedNodeRef!)
             

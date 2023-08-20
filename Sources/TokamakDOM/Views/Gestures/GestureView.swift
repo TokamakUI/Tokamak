@@ -25,27 +25,32 @@ extension TokamakCore._GestureView: DOMPrimitive {
         AnyView(
             DynamicHTML("div", [
                 "id": gestureId,
+                "style": "user-select: none;"
             ], listeners: [
                 "pointerdown": { event in
                     guard let target = event.target.object,
                           let x = event.x.jsValue.number,
-                          let y = event.y.jsValue.number,
-                          let rect = target.getBoundingClientRect?(),
-                          let originX = rect.x.number,
-                          let originY = rect.y.number else { return }
-                    let phase = _GesturePhaseContext(
-                        boundsOrigin: CGPoint(x: originX, y: originY),
-                        location: CGPoint(x: x, y: y)
-                    )
+                          let y = event.y.jsValue.number else { return }
+                    let phase = _GesturePhaseContext(location: CGPoint(x: x, y: y))
                     onPhaseChange(.began(phase), eventId: String(describing: target.hashValue))
                 },
                 "pointercancel": { event in
                     onPhaseChange(.cancelled)
                 }
             ]) {
-                content.onAppear {
-                    setupPointerListener()
-                }
+                content
+                    .background {
+                        GeometryReader { proxy in
+                            EmptyView()
+                                .onChange(of: proxy.size, initial: true) {
+                                    let phase = _GesturePhaseContext(boundsOrigin: proxy.frame(in: .global).origin)
+                                    onPhaseChange(.changed(phase))
+                                }
+                        }
+                    }
+                    .onAppear {
+                        setupPointerListener()
+                    }
             }
         )
     }
@@ -56,18 +61,7 @@ extension TokamakCore._GestureView: DOMPrimitive {
             if let event = args[0].object,
                let x = event.x.jsValue.number,
                let y = event.y.jsValue.number {
-                var origin: CGPoint? = nil
-                
-                if let target = args[0].object?[dynamicMember: "0"].object?.target.object,
-                   let rect = target.getBoundingClientRect?(),
-                   let originX = rect.x.number,
-                   let originY = rect.y.number {
-                    origin = CGPoint(x: originX, y: originY)
-                }
-                let phase = _GesturePhaseContext(
-                    boundsOrigin: origin,
-                    location: CGPoint(x: x, y: y)
-                )
+                let phase = _GesturePhaseContext(location: CGPoint(x: x, y: y))
                 onPhaseChange(.changed(phase))
             }
             return .undefined
@@ -79,18 +73,7 @@ extension TokamakCore._GestureView: DOMPrimitive {
             if let event = args[0].object,
                let x = event.x.jsValue.number,
                let y = event.y.jsValue.number {
-                var origin: CGPoint? = nil
-                
-                if let target = args[0].object?[dynamicMember: "0"].object?.target.object,
-                   let rect = target.getBoundingClientRect?(),
-                   let originX = rect.x.number,
-                   let originY = rect.y.number {
-                    origin = CGPoint(x: originX, y: originY)
-                }
-                let phase = _GesturePhaseContext(
-                    boundsOrigin: origin,
-                    location: CGPoint(x: x, y: y)
-                )
+                let phase = _GesturePhaseContext(location: CGPoint(x: x, y: y))
                 onPhaseChange(.ended(phase))
             }
             return .undefined
