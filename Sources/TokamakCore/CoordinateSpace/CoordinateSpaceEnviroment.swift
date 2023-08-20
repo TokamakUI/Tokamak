@@ -33,33 +33,6 @@ class CoordinateSpaceContext {
     var activeCoordinateSpace: [CoordinateSpace: CGPoint] = [:]
 }
 
-extension View {
-    /// Assigns a name to the view’s coordinate space, so other code can operate on dimensions like points and sizes relative to the named space.
-    /// - Parameter name: A name used to identify this coordinate space.
-    public func coordinateSpace<T>(name: T) -> some View where T : Hashable {
-        self.modifier(_CoordinateSpaceModifier(name: name))
-    }
-}
-
-struct _CoordinateSpaceModifier<T : Hashable>: ViewModifier {
-    @Environment(\._coordinateSpace) var coordinateSpace
-    let name: T
-    
-    public func body(content: Content) -> some View {
-        content.background {
-            GeometryReader { proxy in
-                Color.clear
-                    .onChange(of: proxy.size, initial: true) {
-                        coordinateSpace.activeCoordinateSpace[.named(name)] = proxy.frame(in: .global).origin
-                    }
-                    .onDisappear {
-                        coordinateSpace.activeCoordinateSpace.removeValue(forKey: .named(name))
-                    }
-            }
-        }
-    }
-}
-
 extension CoordinateSpace {
     static func convertGlobalSpaceCoordinates(rect: CGRect, toNamedOrigin namedOrigin: CGPoint) -> CGRect {
         let translatedOrigin = convert(rect.origin, toNamedOrigin: namedOrigin)
