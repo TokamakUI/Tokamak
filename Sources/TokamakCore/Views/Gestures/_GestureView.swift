@@ -17,19 +17,31 @@
 
 import Foundation
 
+
 public struct _GestureView<Content: View, G: Gesture>: _PrimitiveView {
+    final class Coordinator<G: Gesture>: ObservableObject {
+        var gesture: G
+        var gestureId: String = UUID().uuidString
+        var eventId: String? = nil
+        
+        init(_ gesture: G) {
+            self.gesture = gesture
+        }
+    }
+    
     @Environment(\.isEnabled) var isEnabled
     @Environment(\._gestureListener) var gestureListener
-    @State public var gestureId: String = UUID().uuidString
-    @State public var gesture: G
-    @State var eventId: String? = nil
+    @StateObject private var coordinator: Coordinator<G>
     
     let mask: GestureMask
     let priority: _GesturePriority
     public let content: Content
+    public var gestureId: String {
+        coordinator.gestureId
+    }
     
     var minimumDuration: Double? {
-        guard let longPressGesture = gesture as? LongPressGesture else {
+        guard let longPressGesture = coordinator.gesture as? LongPressGesture else {
             return nil
         }
         return longPressGesture.minimumDuration
@@ -41,24 +53,28 @@ public struct _GestureView<Content: View, G: Gesture>: _PrimitiveView {
         priority: _GesturePriority = .standard,
         content: Content
     ) {
-        self._gesture = State(wrappedValue: gesture)
+        self._coordinator = StateObject(wrappedValue: Coordinator(gesture))
         self.mask = mask
         self.priority = priority
         self.content = content
     }
     
     public func onPhaseChange(_ phase: _GesturePhase, eventId id: String? = nil) {
-        guard isEnabled, let currentEventId = eventId ?? id else { return }
+        guard isEnabled, let currentEventId = coordinator.eventId ?? id else { return }
         
-        let value = GestureValue(gestureId: gestureId, mask: mask, priority: priority)
+        let value = GestureValue(
+            gestureId: gestureId,
+            mask: mask,
+            priority: priority
+        )
 
         switch phase {
         case .began:
             startDelay()
-            eventId = id
+            coordinator.eventId = id
             gestureListener.registerStart(value, for: currentEventId)
         case .cancelled, .ended:
-            eventId = nil
+            coordinator.eventId = nil
         default:
             break
         }
@@ -67,8 +83,8 @@ public struct _GestureView<Content: View, G: Gesture>: _PrimitiveView {
             // Event being processed by another gestures
             return
         }
-        
-        if gesture._onPhaseChange(phase) {
+
+        if coordinator.gesture._onPhaseChange(phase) {
             gestureListener.recognizeGesture(value, for: currentEventId)
         }
     }
@@ -78,7 +94,7 @@ public struct _GestureView<Content: View, G: Gesture>: _PrimitiveView {
         Task {
             do {
                 try await Task.sleep(for: .seconds(minimumDuration))
-                if let eventId {
+                if let eventId = coordinator.eventId {
                     await MainActor.run {
                         onPhaseChange(.changed(_GesturePhaseContext()), eventId: eventId)
                     }

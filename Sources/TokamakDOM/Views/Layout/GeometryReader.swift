@@ -17,9 +17,7 @@ import JavaScriptKit
 @_spi(TokamakCore) import TokamakCore
 import TokamakStaticHTML
 
-/// https://toruskit.com/blog/how-to-get-element-bounds-without-reflow/
-/// IntersectionObserver compared to getBoundingClientRect() it’s faster and doesn’t produce any reflows.
-private let IntersectionObserver = JSObject.global.IntersectionObserver.function!
+private let ResizeObserver = JSObject.global.ResizeObserver.function!
 
 extension GeometryReader: DOMPrimitive {
     var renderedBody: AnyView {
@@ -40,7 +38,7 @@ struct _GeometryReader<Content: View>: View {
         /// A reference to a `ResizeObserver` instance.
         var observerRef: JSObject?
         
-        /// The last known size of the `observedNodeRef` DOM node.
+        /// The last known rect of the `observedNodeRef` DOM node.
         @Published
         var rect: CGRect?
     }
@@ -63,24 +61,26 @@ struct _GeometryReader<Content: View>: View {
             let closure = JSClosure { [weak state] args -> JSValue in
                 // FIXME: `JSArrayRef` is not a `RandomAccessCollection` for some reason, which forces
                 // us to use a string subscript
-                guard
-                    let rect = args[0].object?[dynamicMember: "0"].object?.boundingClientRect.object,
-                    let x = rect.x.number,
-                    let y = rect.y.number,
-                    let width = rect.width.number,
-                    let height = rect.height.number
-                else { return .undefined }
                 
+                guard let target = args[0].object?[dynamicMember: "0"].object?.target.object,
+                      let rect = target.getBoundingClientRect?(),
+                      let x = rect.x.number,
+                      let y = rect.y.number,
+                      let width = rect.width.number,
+                      let height = rect.height.number else {
+                    return .undefined
+                }
+
                 state?.rect = CGRect(
                     origin: CGPoint(x: x, y: y),
                     size: CGSize(width: width, height: height)
                 )
+                
                 return .undefined
             }
             state.closure = closure
-            
-            let observerRef = IntersectionObserver.new(closure)
-            
+
+            let observerRef = ResizeObserver.new(closure)
             _ = observerRef.observe!(state.observedNodeRef!)
             
             state.observerRef = observerRef

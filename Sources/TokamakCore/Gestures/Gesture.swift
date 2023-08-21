@@ -107,6 +107,7 @@ extension Gesture {
     }
     
     func calculateVelocity(from translation: CGSize, timeElapsed: Double) -> CGSize {
+        guard timeElapsed > .zero else { return .zero }
         let velocityX = translation.width / timeElapsed
         let velocityY = translation.height / timeElapsed
         

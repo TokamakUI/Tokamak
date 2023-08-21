@@ -25,13 +25,19 @@ extension TokamakCore._GestureView: DOMPrimitive {
         AnyView(
             DynamicHTML("div", [
                 "id": gestureId,
-                "style": "user-select: none;"
+                "style": "touch-action: none; user-select: none;"
             ], listeners: [
                 "pointerdown": { event in
                     guard let target = event.target.object,
                           let x = event.x.jsValue.number,
-                          let y = event.y.jsValue.number else { return }
-                    let phase = _GesturePhaseContext(location: CGPoint(x: x, y: y))
+                          let y = event.y.jsValue.number,
+                          let rect = target.getBoundingClientRect?(),
+                          let originX = rect.x.number,
+                          let originY = rect.y.number else { return }
+                    let phase = _GesturePhaseContext(
+                        boundsOrigin: CGPoint(x: originX, y: originY),
+                        location: CGPoint(x: x, y: y)
+                    )
                     onPhaseChange(.began(phase), eventId: String(describing: target.hashValue))
                 },
                 "pointercancel": { event in
@@ -39,18 +45,8 @@ extension TokamakCore._GestureView: DOMPrimitive {
                 }
             ]) {
                 content
-                    .background {
-                        GeometryReader { proxy in
-                            EmptyView()
-                                .onChange(of: proxy.size, initial: true) {
-                                    let phase = _GesturePhaseContext(boundsOrigin: proxy.frame(in: .global).origin)
-                                    onPhaseChange(.changed(phase))
-                                }
-                        }
-                    }
-                    .onAppear {
-                        setupPointerListener()
-                    }
+            }.task {
+                setupPointerListener()
             }
         )
     }

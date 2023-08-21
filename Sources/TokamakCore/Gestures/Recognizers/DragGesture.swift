@@ -16,6 +16,7 @@
 //
 
 import Foundation
+import OpenCombine
 
 public struct DragGesture: Gesture {
     @Environment(\._coordinateSpace) private var coordinates
@@ -44,33 +45,31 @@ public struct DragGesture: Gesture {
         self.minimumDistance = minimumDistance
         self.coordinateSpace = coordinateSpace
     }
-
+    
     mutating public func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
         switch phase {
         case .began(let context):
-            setGlobalOrigin(context.boundsOrigin)
+            globalOrigin = context.boundsOrigin
             startLocation = context.location
             previousTimestamp = nil
             velocity = .zero
         case .changed(let context) where startLocation != nil:
-            setGlobalOrigin(context.boundsOrigin)
             guard let startLocation, let location = context.location else { return false }
             let translation = calculateTranslation(from: startLocation, to: location)
             let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
-            
+
             // Do nothing if gesture has not met the criteria
             guard minimumDistance < distance else { return false }
             let currentTimestamp = Date()
             let timeElapsed = Double(currentTimestamp.timeIntervalSince(previousTimestamp ?? currentTimestamp))
             let velocity = calculateVelocity(from: translation, timeElapsed: timeElapsed)
-            self.velocity = velocity
-            
+            let newOrigin = context.boundsOrigin ?? globalOrigin
+
             // Predict end location based on velocity
             let predictedEndLocation = calculatePredictedEndLocation(from: location, velocity: velocity)
-            
+
             // Predict end translation based on velocity
             let predictedEndTranslation = calculatePredictedEndTranslation(from: translation, velocity: velocity)
-            
             onChangedAction?(
                 Value(
                     startLocation: converLocation(startLocation),
@@ -80,9 +79,14 @@ public struct DragGesture: Gesture {
                     predictedEndTranslation: predictedEndTranslation
                 )
             )
+
+            self.velocity = velocity
+            self.globalOrigin = newOrigin
+            self.previousTimestamp = currentTimestamp
+            
             return true
-        case .changed(let context):
-            setGlobalOrigin(context.boundsOrigin)
+        case .changed:
+            break
         case .ended(let context):
             if let startLocation, let location = context.location {
                 let translation = calculateTranslation(from: startLocation, to: location)
@@ -115,13 +119,6 @@ public struct DragGesture: Gesture {
         var gesture = self
         gesture.onChangedAction = action
         return gesture
-    }
-    
-    private mutating func setGlobalOrigin(_ origin: CGPoint?) {
-        let newOrigin = origin ?? globalOrigin
-        if newOrigin != self.globalOrigin {
-            self.globalOrigin = newOrigin
-        }
     }
     
     private func converLocation(_ location: CGPoint) -> CGPoint {
