@@ -54,7 +54,6 @@ public struct TapGesture: Gesture {
                     numberOfTapsSinceGestureBegan += 1
                 }
             }
-            
             // If we ended touch and have desired count we complete gesture
             if numberOfTapsSinceGestureBegan >= count {
                 onEndedAction?(())

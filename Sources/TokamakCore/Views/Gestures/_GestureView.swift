@@ -17,7 +17,6 @@
 
 import Foundation
 
-
 public struct _GestureView<Content: View, G: Gesture>: _PrimitiveView {
     final class Coordinator<G: Gesture>: ObservableObject {
         var gesture: G
@@ -59,8 +58,11 @@ public struct _GestureView<Content: View, G: Gesture>: _PrimitiveView {
         self.content = content
     }
     
-    public func onPhaseChange(_ phase: _GesturePhase, eventId id: String? = nil) {
-        guard isEnabled, let currentEventId = coordinator.eventId ?? id else { return }
+    public func onPhaseChange(_ phase: _GesturePhase) {
+        guard isEnabled else {
+            // View needs to be enabled in order for the gestures to work
+            return
+        }
         
         let value = GestureValue(
             gestureId: gestureId,
@@ -68,22 +70,31 @@ public struct _GestureView<Content: View, G: Gesture>: _PrimitiveView {
             priority: priority
         )
 
+        var eventId = coordinator.eventId
+        
         switch phase {
-        case .began:
+        case let .began(context) where context.eventId != nil:
             startDelay()
-            coordinator.eventId = id
-            gestureListener.registerStart(value, for: currentEventId)
+            coordinator.eventId = context.eventId
+            gestureListener.registerStart(value, for: context.eventId!)
+            eventId = context.eventId
         case .cancelled, .ended:
             coordinator.eventId = nil
         default:
             break
         }
         
+        guard let currentEventId = eventId else {
+            // Gesture has not started
+            return
+        }
         guard gestureListener.canProcessGesture(value, for: currentEventId) else {
             // Event being processed by another gestures
             return
         }
 
+        print("🟡", eventId, phase, coordinator.gesture)
+        
         if coordinator.gesture._onPhaseChange(phase) {
             gestureListener.recognizeGesture(value, for: currentEventId)
         }
@@ -96,7 +107,7 @@ public struct _GestureView<Content: View, G: Gesture>: _PrimitiveView {
                 try await Task.sleep(for: .seconds(minimumDuration))
                 if let eventId = coordinator.eventId {
                     await MainActor.run {
-                        onPhaseChange(.changed(_GesturePhaseContext()), eventId: eventId)
+                        onPhaseChange(.changed(_GesturePhaseContext()))
                     }
                 }
             } catch {}

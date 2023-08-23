@@ -88,7 +88,8 @@ public struct DragGesture: Gesture {
         case .changed:
             break
         case .ended(let context):
-            if let startLocation, let location = context.location {
+            let didRecognize = previousTimestamp != nil
+            if didRecognize, let startLocation, let location = context.location {
                 let translation = calculateTranslation(from: startLocation, to: location)
                 self.globalOrigin = context.boundsOrigin ?? globalOrigin
                 onEndedAction?(
@@ -102,7 +103,7 @@ public struct DragGesture: Gesture {
                 )
             }
             startLocation = nil
-            return true
+            return didRecognize
         case .cancelled:
             startLocation = nil
         }
