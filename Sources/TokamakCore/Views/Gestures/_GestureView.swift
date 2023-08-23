@@ -92,8 +92,6 @@ public struct _GestureView<Content: View, G: Gesture>: _PrimitiveView {
             // Event being processed by another gestures
             return
         }
-
-        print("🟡", eventId, phase, coordinator.gesture)
         
         if coordinator.gesture._onPhaseChange(phase) {
             gestureListener.recognizeGesture(value, for: currentEventId)
