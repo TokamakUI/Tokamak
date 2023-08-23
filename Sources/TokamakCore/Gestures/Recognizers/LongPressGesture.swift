@@ -41,17 +41,17 @@ public struct LongPressGesture: Gesture {
     
     mutating public func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
         switch phase {
-        case .began(let location):
-            startLocation = location
+        case .began(let context):
+            startLocation = context.location
             touchStartTime = Date()
             onChangedAction?(startLocation != nil)
-        case .changed(let location) where startLocation != nil:
+        case .changed(let context) where startLocation != nil:
             guard let startLocation else { return false }
-            let translation = calculateTranslation(from: startLocation, to: location ?? startLocation)
+            let translation = calculateTranslation(from: startLocation, to: context.location ?? startLocation)
             let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
             
             guard maximumDistance >= distance  else {
-                print("Failed", distance, maximumDistance, startLocation, location ?? startLocation)
+                print("Failed", distance, maximumDistance, startLocation, context.location ?? startLocation)
                 // Fail longpress if distance is to big.
                 self.startLocation = nil
                 return false

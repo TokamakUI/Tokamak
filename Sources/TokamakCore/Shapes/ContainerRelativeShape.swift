@@ -21,7 +21,7 @@ public struct ContainerRelativeShape: Shape, EnvironmentReader {
   var containerShape: (CGRect, GeometryProxy) -> Path? = { _, _ in nil }
 
   public func path(in rect: CGRect) -> Path {
-    containerShape(rect, GeometryProxy(size: rect.size)) ?? Rectangle().path(in: rect)
+    containerShape(rect, GeometryProxy(globalRect: rect)) ?? Rectangle().path(in: rect)
   }
 
   public init() {}

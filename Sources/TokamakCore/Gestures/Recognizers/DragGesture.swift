@@ -16,14 +16,19 @@
 //
 
 import Foundation
+import OpenCombine
 
 public struct DragGesture: Gesture {
+    @Environment(\._coordinateSpace) private var coordinates
+    private var globalOrigin: CGPoint? = nil
     private var startLocation: CGPoint? = nil
     private var previousTimestamp: Date?
     private var velocity: CGSize = .zero
     private var onEndedAction: ((Value) -> Void)? = nil
     private var onChangedAction: ((Value) -> Void)? = nil
-    public var minimumDistance: Double
+    private var minimumDistance: Double
+    private var coordinateSpace: CoordinateSpace
+    
     public var body: DragGesture {
         self
     }
@@ -33,61 +38,72 @@ public struct DragGesture: Gesture {
     /// - Parameters:
     ///   - minimumDistance: The minimum dragging distance before the gesture succeeds.
     ///   - coordinateSpace: The coordinate space in which to receive location values.
-    public init(minimumDistance: Double = 10) {
+    public init(
+        minimumDistance: CGFloat = 10,
+        coordinateSpace: CoordinateSpace = .local
+    ) {
         self.minimumDistance = minimumDistance
+        self.coordinateSpace = coordinateSpace
     }
-
+    
     mutating public func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
         switch phase {
-        case .began(let location):
-            startLocation = location
+        case .began(let context):
+            globalOrigin = context.boundsOrigin
+            startLocation = context.location
             previousTimestamp = nil
             velocity = .zero
-        case .changed(let location) where startLocation != nil:
-            guard let startLocation, let location else { return false }
+        case .changed(let context) where startLocation != nil:
+            guard let startLocation, let location = context.location else { return false }
             let translation = calculateTranslation(from: startLocation, to: location)
             let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
-            
+
             // Do nothing if gesture has not met the criteria
             guard minimumDistance < distance else { return false }
             let currentTimestamp = Date()
             let timeElapsed = Double(currentTimestamp.timeIntervalSince(previousTimestamp ?? currentTimestamp))
             let velocity = calculateVelocity(from: translation, timeElapsed: timeElapsed)
-            self.velocity = velocity
-            
+            let newOrigin = context.boundsOrigin ?? globalOrigin
+
             // Predict end location based on velocity
             let predictedEndLocation = calculatePredictedEndLocation(from: location, velocity: velocity)
-            
+
             // Predict end translation based on velocity
             let predictedEndTranslation = calculatePredictedEndTranslation(from: translation, velocity: velocity)
-            
             onChangedAction?(
                 Value(
-                    startLocation: startLocation,
-                    location: location,
-                    predictedEndLocation: predictedEndLocation,
+                    startLocation: converLocation(startLocation),
+                    location: converLocation(location),
+                    predictedEndLocation: converLocation(predictedEndLocation),
                     translation: translation,
                     predictedEndTranslation: predictedEndTranslation
                 )
             )
+
+            self.velocity = velocity
+            self.globalOrigin = newOrigin
+            self.previousTimestamp = currentTimestamp
+            
             return true
         case .changed:
             break
-        case .ended(let location):
-            if let startLocation {
+        case .ended(let context):
+            let didRecognize = previousTimestamp != nil
+            if didRecognize, let startLocation, let location = context.location {
                 let translation = calculateTranslation(from: startLocation, to: location)
+                self.globalOrigin = context.boundsOrigin ?? globalOrigin
                 onEndedAction?(
                     Value(
-                        startLocation: startLocation,
-                        location: location,
-                        predictedEndLocation: location,
+                        startLocation: converLocation(startLocation),
+                        location: converLocation(location),
+                        predictedEndLocation: converLocation(location),
                         translation: translation,
                         predictedEndTranslation: translation
                     )
                 )
             }
             startLocation = nil
-            return true
+            return didRecognize
         case .cancelled:
             startLocation = nil
         }
@@ -104,6 +120,23 @@ public struct DragGesture: Gesture {
         var gesture = self
         gesture.onChangedAction = action
         return gesture
+    }
+    
+    private func converLocation(_ location: CGPoint) -> CGPoint {
+        switch coordinateSpace {
+        case .global:
+            return location
+        case .local:
+            if let origin = globalOrigin {
+                return CoordinateSpace.convert(location, toNamedOrigin: origin)
+            }
+            return location
+        case .named(let name):
+            if let origin = coordinates.activeCoordinateSpace[CoordinateSpace.named(name)] {
+                return CoordinateSpace.convert(location, toNamedOrigin: origin)
+            }
+            return location
+        }
     }
     
     // MARK: Types

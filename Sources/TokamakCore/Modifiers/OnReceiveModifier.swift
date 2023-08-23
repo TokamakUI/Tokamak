@@ -19,20 +19,16 @@ import Foundation
 import OpenCombineShim
 
 struct OnReceiveModifier<P: Publisher>: ViewModifier where P.Failure == Never {
-    @State var cancellable: AnyCancellable? = nil
+    @State var cancellable: AnyCancellable
     
-    let publisher: P
-    let action: (P.Output) -> Void
+    init(publisher: P, action: @escaping (P.Output) -> Void) {
+        self._cancellable = State(initialValue: publisher.sink(receiveValue: action))
+    }
     
     func body(content: Content) -> some View {
-        content
-            .onAppear {
-                cancellable = publisher.sink(receiveValue: action)
-            }
-            .onDisappear {
-                cancellable?.cancel()
-                cancellable = nil
-            }
+        content._onUnmount {
+            cancellable.cancel()
+        }
     }
 }
 
