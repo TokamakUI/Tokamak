@@ -29,7 +29,7 @@ enum GestureEventsObserver {
     private static var pointerup: JSClosure?
     private static var pointercancel: JSClosure?
     
-    static func observe() {
+    static func observe(_ rootElement: JSObject) {
         let pointerdown = JSClosure { args -> JSValue in
             if let event = args[0].object,
                let target = event.target.object,
@@ -75,10 +75,10 @@ enum GestureEventsObserver {
             return .undefined
         }
         
-        _ = document.addEventListener?("pointerdown", pointerdown)
-        _ = document.addEventListener?("pointermove", pointermove)
-        _ = document.addEventListener?("pointerup", pointerup)
-        _ = document.addEventListener?("pointercancel", pointercancel)
+        _ = rootElement.addEventListener?("pointerdown", pointerdown)
+        _ = rootElement.addEventListener?("pointermove", pointermove)
+        _ = rootElement.addEventListener?("pointerup", pointerup)
+        _ = rootElement.addEventListener?("pointercancel", pointercancel)
         
         Self.pointerdown = pointerdown
         Self.pointermove = pointermove

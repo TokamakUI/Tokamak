@@ -17,8 +17,11 @@
 
 import TokamakCore
 
+@_spi(TokamakStaticHTML)
+import TokamakStaticHTML
+
 extension TokamakCore._GestureView: DOMPrimitive {
-    var renderedBody: AnyView {
+    public var renderedBody: AnyView {
         AnyView(
             content
                 .onReceive(GestureEventsObserver.publisher) { phase in
@@ -26,5 +29,27 @@ extension TokamakCore._GestureView: DOMPrimitive {
                     onPhaseChange(phase)
                 }
         )
+    }
+}
+
+@_spi(TokamakStaticHTML)
+extension TokamakCore._GestureView: HTMLConvertible {
+    public var tag: String { "div" }
+    public var listeners: [String : Listener] { [:] }
+    
+    public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+        [:]
+    }
+    
+    public func primitiveVisitor<V>(useDynamicLayout: Bool) -> ((V) -> ())? where V : ViewVisitor {
+        {
+            $0.visit(
+                content
+                    .onReceive(GestureEventsObserver.publisher) { phase in
+                        guard let phase else { return }
+                        onPhaseChange(phase)
+                    }
+            )
+        }
     }
 }
