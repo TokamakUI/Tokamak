@@ -147,7 +147,7 @@ public struct DOMFiberRenderer: FiberRenderer {
       _ = document.head.appendChild(style)
     }
       
-    GestureEventsObserver.observe(body)
+    GestureEventsObserver.observe(reference)
   }
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {
