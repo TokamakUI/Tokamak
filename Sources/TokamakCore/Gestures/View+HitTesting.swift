@@ -28,6 +28,7 @@ extension View {
         eoFill: Bool = false
     ) -> some View {
         // TODO: Add content shape modifier. Verify gesture start against the shape fill area.
+        // https://github.com/TokamakUI/Tokamak/issues/548
         self
     }
 }

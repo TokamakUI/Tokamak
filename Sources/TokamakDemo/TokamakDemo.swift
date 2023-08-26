@@ -148,6 +148,10 @@ struct TokamakDemoView: View {
             NavItem("TextField", destination: TextFieldDemo())
             NavItem("TextEditor", destination: TextEditorDemo())
           }
+          Section(header: Text("Text")) {
+            NavItem("Gestures", destination: GesturesDemo())
+            NavItem("Gesture & CoordinateSpace", destination: GestureCoordinateSpaceDemo())
+          }
           Section(header: Text("Misc")) {
             NavItem("Animation", destination: AnimationDemo())
             NavItem("Transitions", destination: TransitionDemo())
