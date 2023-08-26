@@ -51,7 +51,6 @@ public struct LongPressGesture: Gesture {
             let distance = calculateDistance(xOffset: translation.width, yOffset: translation.height)
             
             guard maximumDistance >= distance  else {
-                print("Failed", distance, maximumDistance, startLocation, context.location ?? startLocation)
                 // Fail longpress if distance is to big.
                 self.startLocation = nil
                 return false

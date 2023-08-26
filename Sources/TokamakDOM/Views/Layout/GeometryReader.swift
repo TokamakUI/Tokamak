@@ -14,7 +14,9 @@
 
 import Foundation
 import JavaScriptKit
-@_spi(TokamakCore) import TokamakCore
+@_spi(TokamakCore)
+import TokamakCore
+@_spi(TokamakStaticHTML)
 import TokamakStaticHTML
 
 private let ResizeObserver = JSObject.global.ResizeObserver.function!
@@ -22,6 +24,19 @@ private let ResizeObserver = JSObject.global.ResizeObserver.function!
 extension GeometryReader: DOMPrimitive {
     var renderedBody: AnyView {
         AnyView(_GeometryReader(content: content))
+    }
+}
+
+@_spi(TokamakStaticHTML)
+extension GeometryReader: HTMLConvertible {
+    public var tag: String { "div" }
+
+    public func attributes(useDynamicLayout: Bool) -> [TokamakStaticHTML.HTMLAttribute : String] {
+        [:]
+    }
+
+    public func primitiveVisitor<V>(useDynamicLayout: Bool) -> ((V) -> ())? where V : ViewVisitor {
+        return { $0.visit(_GeometryReader(content: content)) }
     }
 }
 

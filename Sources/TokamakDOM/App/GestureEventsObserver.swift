@@ -38,7 +38,6 @@ enum GestureEventsObserver {
                let rect = target.getBoundingClientRect?(),
                let originX = rect.x.number,
                let originY = rect.y.number {
-                
                 let phase = _GesturePhaseContext(
                     eventId: String(describing: target.hashValue),
                     boundsOrigin: CGPoint(x: originX, y: originY),

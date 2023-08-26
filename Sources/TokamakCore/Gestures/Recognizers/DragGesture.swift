@@ -135,6 +135,7 @@ public struct DragGesture: Gesture {
             if let origin = coordinates.activeCoordinateSpace[CoordinateSpace.named(name)] {
                 return CoordinateSpace.convert(location, toNamedOrigin: origin)
             }
+            print("Coordinate Space not found in active coordinates. Falling back to global.", coordinateSpace)
             return location
         }
     }

@@ -22,17 +22,18 @@ struct _CoordinateSpaceModifier<T : Hashable>: ViewModifier {
     let name: T
     
     public func body(content: Content) -> some View {
-        content.background {
-            GeometryReader { proxy in
-                EmptyView()
-                    .onChange(of: proxy.size, initial: true) {
-                        coordinateSpace.activeCoordinateSpace[.named(name)] = proxy.frame(in: .global).origin
-                    }
-                    .onDisappear {
-                        coordinateSpace.activeCoordinateSpace.removeValue(forKey: .named(name))
-                    }
+        content
+            .background {
+                GeometryReader { proxy in
+                    EmptyView()
+                        .onChange(of: proxy.size, initial: true) {
+                            coordinateSpace.activeCoordinateSpace[.named(name)] = proxy.frame(in: .global).origin
+                        }
+                        .onDisappear {
+                            coordinateSpace.activeCoordinateSpace.removeValue(forKey: .named(name))
+                        }
+                }
             }
-        }
     }
 }
 

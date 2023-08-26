@@ -21,7 +21,7 @@ import TokamakCore
 import TokamakStaticHTML
 
 extension TokamakCore._GestureView: DOMPrimitive {
-    public var renderedBody: AnyView {
+    var renderedBody: AnyView {
         AnyView(
             content
                 .onReceive(GestureEventsObserver.publisher) { phase in
