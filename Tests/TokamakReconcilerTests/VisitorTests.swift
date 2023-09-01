@@ -28,7 +28,6 @@ final class VisitorTests: XCTestCase {
         private var count = 0
 
         var body: some View {
-          let _ = print("in counter body, count is \(count)")
           VStack {
             Text("\(count)")
               .identified(by: "count")
