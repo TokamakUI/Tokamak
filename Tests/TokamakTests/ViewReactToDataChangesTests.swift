@@ -62,12 +62,12 @@ class ViewModifierTests: XCTestCase {
         XCTAssertEqual(oldCount, 0)
     }
 
-    func testOnChangeWithoutValue() {
+    func testOnChangeWithInitialValue() {
         var count = 0
         var actionFired = false
 
         let contentView = Text("Hello, world!")
-            .onChange(of: count) {
+            .onChange(of: count, initial: true) {
                 actionFired = true
             }
 
