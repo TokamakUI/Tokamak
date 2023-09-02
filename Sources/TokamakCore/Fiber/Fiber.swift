@@ -132,11 +132,6 @@ public extension FiberReconciler {
       }
     }
 
-    enum Identity: Hashable {
-      case explicit(AnyHashable)
-      case structural(index: Int)
-    }
-
     /// The explicit identity of this `View`, if provided
     var explicitId: AnyHashable? {
       guard case let .view(v as _AnyIDView, _) = content else { return nil }
