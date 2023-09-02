@@ -32,7 +32,7 @@ extension FiberReconciler {
       // For reducing
       var lastSibling: Result?
       var processedChildCount: Int
-      var unclaimedCurrentChildren: [Fiber.Identity: Fiber]
+      var unclaimedCurrentChildren: [Int: Fiber]
 
       // Side-effects
       var didInsert: Bool
@@ -40,7 +40,7 @@ extension FiberReconciler {
 
       init(
         fiber: Fiber?,
-        currentChildren: [Fiber.Identity: Fiber],
+        currentChildren: [Int: Fiber],
         visitChildren: @escaping (TreeReducer.SceneVisitor) -> (),
         parent: Result?,
         newContent: Renderer.ElementType.Content? = nil,
@@ -132,18 +132,16 @@ extension FiberReconciler {
       // Create the node and its element.
       var nextValue = nextValue
 
-      let nextValueSlot: Fiber.Identity
-      if let ident = nextValue as? _AnyIDView {
-        nextValueSlot = .explicit(ident.anyId)
-      } else {
-        nextValueSlot = .structural(index: partialResult.processedChildCount)
-      }
+      let explicitId = (nextValue as? _AnyIDView)?.anyId
+      let childIndex = partialResult.processedChildCount
 
       let resultChild: Result
-      if let existing = partialResult.unclaimedCurrentChildren[nextValueSlot],
-         existing.typeInfo?.type == typeInfo(of: T.self)?.type
+      if let existing = partialResult.unclaimedCurrentChildren[childIndex],
+         existing.typeInfo?.type == typeInfo(of: T.self)?.type,
+         existing.explicitId == explicitId
       {
-        partialResult.unclaimedCurrentChildren.removeValue(forKey: nextValueSlot)
+        partialResult.unclaimedCurrentChildren.removeValue(forKey: childIndex)
+        existing.sibling = nil
         let traits = ((nextValue as? any View).map { Renderer.isPrimitive($0) } ?? false) ? .init() : partialResult.nextTraits
         let c = update(existing, &nextValue, nil, traits)
         resultChild = Result(

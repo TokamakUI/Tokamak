@@ -138,24 +138,20 @@ public extension FiberReconciler {
     }
 
     /// The explicit identity of this `View`, if provided
-    private var explicitId: AnyHashable? {
+    var explicitId: AnyHashable? {
       guard case let .view(v as _AnyIDView, _) = content else { return nil }
       return v.anyId
     }
 
     /// Direct children of this fiber, keyed by their explicit or structural identity
-    var mappedChildren: [Identity: Fiber] {
-      var map = [Identity: Fiber]()
+    var mappedChildren: [Int: Fiber] {
+      var map = [Int: Fiber]()
 
       var currentIndex = 0
       var currentChild = child
 
       while let aChild = currentChild {
-        if let id = aChild.explicitId {
-          map[.explicit(id)] = aChild
-        } else {
-          map[.structural(index: currentIndex)] = aChild
-        }
+        map[currentIndex] = aChild
         currentIndex += 1
         currentChild = aChild.sibling
       }
@@ -413,8 +409,9 @@ public extension FiberReconciler {
         layout = (view as? _AnyLayout)?._erased() ?? DefaultLayout.shared
       }
 
-      if Renderer.isPrimitive(view) && alternate?.element != nil && alternate?.typeInfo?.type == typeInfo?.type {
-        return .init(from: view, useDynamicLayout: reconciler?.renderer.useDynamicLayout ?? false)
+      if Renderer.isPrimitive(view), let element {
+        let newContent = Renderer.ElementType.Content(from: view, useDynamicLayout: reconciler?.renderer.useDynamicLayout ?? false)
+        return (element.content != newContent) ? newContent : nil
       } else {
         return nil
       }
