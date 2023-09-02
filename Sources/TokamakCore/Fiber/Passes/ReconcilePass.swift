@@ -87,9 +87,6 @@ struct ReconcilePass: FiberReconcilerPass {
   ) where R: FiberRenderer {
     var node = root
 
-    // Enabled when we reach the `reconcileRoot`.
-    var shouldReconcile = false
-
     func mutationsForRemoving(_ fiber: FiberReconciler<R>.Fiber) -> [Mutation<R>] {
       var elementChildren: [FiberReconciler<R>.Fiber] = []
       _ = walk(fiber) { child -> WalkWorkResult<()> in
@@ -108,18 +105,6 @@ struct ReconcilePass: FiberReconcilerPass {
     }
 
     while true {
-      if !shouldReconcile {
-        if let fiber = node.fiber,
-           changedFibers.contains(ObjectIdentifier(fiber))
-        {
-          shouldReconcile = true
-        } else if let alternate = node.fiber?.alternate,
-                  changedFibers.contains(ObjectIdentifier(alternate))
-        {
-          shouldReconcile = true
-        }
-      }
-
       // If this fiber has an element, set its `elementIndex`
       // and increment the `elementIndices` value for its `elementParent`.
       if node.fiber?.element != nil,
@@ -128,7 +113,7 @@ struct ReconcilePass: FiberReconcilerPass {
         node.fiber?.elementIndex = caches.elementIndex(for: elementParent, increment: true)
       }
 
-      if let fiber = node.fiber, shouldReconcile || true {
+      if let fiber = node.fiber {
         invalidateCache(for: fiber, in: reconciler, caches: caches)
 
         if node.didInsert {
