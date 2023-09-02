@@ -138,7 +138,7 @@ public extension FiberReconciler {
       return v.anyId
     }
 
-    /// Direct children of this fiber, keyed by their explicit or structural identity
+    /// Direct children of this fiber, keyed by their index
     var mappedChildren: [Int: Fiber] {
       var map = [Int: Fiber]()
 
