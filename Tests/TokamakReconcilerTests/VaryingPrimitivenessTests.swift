@@ -131,31 +131,12 @@ final class VaryingPrimitivenessTests: XCTestCase {
   }
 
   func testCorrectParent() {
-    final class Router<R>: ObservableObject where R: RawRepresentable, R.RawValue == String {
-      private static func currentRoute() -> R {
-        return R(rawValue: "")!
-      }
-
-      @Published var route: R = Router.currentRoute()
+    final class Router<R>: ObservableObject {
+      init(initial r: R) { route = r }
+      @Published var route: R
     }
 
-    enum Routes: RawRepresentable {
-      init?(rawValue: String) {
-        if rawValue == "" { self = .list; return }
-        let comps = rawValue.components(separatedBy: "/")
-        if comps.count == 1 { self = .package(comps[0]); return }
-        if comps.count == 2 { self = .project(comps[0], comps[1]); return }
-        return nil
-      }
-
-      var rawValue: String {
-        switch self {
-        case .list: return ""
-        case .package(let id): return id
-        case .project(let package, let proj): return "\(package)/\(proj)"
-        }
-      }
-
+    enum Routes {
       case list
       case package(String)
       case project(String, String)
@@ -207,7 +188,7 @@ final class VaryingPrimitivenessTests: XCTestCase {
     }
 
     struct ContentView: View {
-      @ObservedObject var r = Router<Routes>()
+      @ObservedObject var r = Router<Routes>(initial: .list)
 
       var body: some View {
         switch r.route {
