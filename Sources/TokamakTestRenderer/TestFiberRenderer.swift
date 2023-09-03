@@ -182,7 +182,7 @@ public final class TestFiberRenderer: FiberRenderer {
         assertReachable(parent)
         parent.children.insert(element, at: index)
       case let .remove(element, parent):
-        guard let parent else {
+        guard let parent = parent else {
           fatalError("remove called without parent")
         }
         assertReachable(parent)
