@@ -77,7 +77,8 @@ extension FiberReconciler {
         update: { fiber, scene, _, _ in
           fiber.update(with: &scene)
         },
-        visitChildren: { $1._visitChildren }
+        visitChildren: { $1._visitChildren },
+        isPrimitive: { _ in false }
       )
     }
 
@@ -109,6 +110,9 @@ extension FiberReconciler {
         },
         visitChildren: { reconciler, view in
           reconciler?.renderer.viewVisitor(for: view) ?? view._visitChildren
+        },
+        isPrimitive: { view in
+          Renderer.isPrimitive(view)
         }
       )
     }
@@ -127,7 +131,8 @@ extension FiberReconciler {
         FiberReconciler?
       ) -> Fiber,
       update: (Fiber, inout T, Int?, _ViewTraitStore) -> Renderer.ElementType.Content?,
-      visitChildren: (FiberReconciler?, T) -> (TreeReducer.SceneVisitor) -> ()
+      visitChildren: (FiberReconciler?, T) -> (TreeReducer.SceneVisitor) -> (),
+      isPrimitive: (T) -> Bool
     ) {
       // Create the node and its element.
       var nextValue = nextValue
@@ -142,7 +147,7 @@ extension FiberReconciler {
       {
         partialResult.unclaimedCurrentChildren.removeValue(forKey: childIndex)
         existing.sibling = nil
-        let traits = ((nextValue as? any View).map { Renderer.isPrimitive($0) } ?? false) ? .init() : partialResult.nextTraits
+        let traits = isPrimitive(nextValue) ? .init() : partialResult.nextTraits
         let c = update(existing, &nextValue, nil, traits)
         resultChild = Result(
           fiber: existing,
@@ -170,7 +175,7 @@ extension FiberReconciler {
           partialResult.fiber?.reconciler
         )
         let traits: _ViewTraitStore
-        if let view = nextValue as? any View, Renderer.isPrimitive(view) {
+        if isPrimitive(nextValue) {
           traits = .init()
         } else {
           traits = partialResult.nextTraits

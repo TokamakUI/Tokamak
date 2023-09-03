@@ -404,7 +404,7 @@ public extension FiberReconciler {
         layout = (view as? _AnyLayout)?._erased() ?? DefaultLayout.shared
       }
 
-      if Renderer.isPrimitive(view), let element {
+      if Renderer.isPrimitive(view), let element = element {
         let newContent = Renderer.ElementType.Content(from: view, useDynamicLayout: reconciler?.renderer.useDynamicLayout ?? false)
         return (element.content != newContent) ? newContent : nil
       } else {
