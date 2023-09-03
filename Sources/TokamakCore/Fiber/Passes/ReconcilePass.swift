@@ -185,18 +185,8 @@ struct ReconcilePass: FiberReconcilerPass {
       if let child = reducer.result.child {
         node = child
         continue
-      } else if let alternateChild = node.fiber?.alternate?.child {
-        // The alternate has a child that no longer exists.
-        if let parent = node.fiber?.element != nil ? node.fiber : node.fiber?.elementParent {
-          invalidateCache(for: parent, in: reconciler, caches: caches)
-        }
-        var nextChildOrSibling: FiberReconciler.Fiber? = alternateChild
-        while let child = nextChildOrSibling {
-          child.callOnDisappearRecursive()
-          caches.mutations.insert(contentsOf: mutationsForRemoving(child), at: 0)
-          nextChildOrSibling = child.sibling
-        }
       }
+
       if reducer.result.child == nil {
         // Make sure we clear the child if there was none
         node.fiber?.child = nil
@@ -224,16 +214,6 @@ struct ReconcilePass: FiberReconcilerPass {
           }
         }
 
-        var alternateSibling = node.fiber?.alternate?.sibling
-        // The alternate had siblings that no longer exist.
-        while let currentAltSibling = alternateSibling {
-          if let fiber = currentAltSibling.elementParent {
-            invalidateCache(for: fiber, in: reconciler, caches: caches)
-          }
-          currentAltSibling.callOnDisappearRecursive()
-          caches.mutations.insert(contentsOf: mutationsForRemoving(currentAltSibling), at: 0)
-          alternateSibling = currentAltSibling.sibling
-        }
         guard let parent = node.parent else { return }
         // When we walk back to the root, exit
         guard parent !== root.fiber?.alternate else { return }
