@@ -18,53 +18,54 @@
 import TokamakShim
 
 struct GestureCoordinateSpaceDemo: View {
-    let rows = 16
-    let columns = 16
-    
-    struct Rect: Hashable {
-        let row: Int
-        let column: Int
-    }
-    
-    @State private var selectedRects: Set<Rect> = []
-    
-    var body: some View {
-        VStack(spacing: 0) {
-            ForEach(0..<rows, id: \.self) { row in
-                HStack(spacing: 0) {
-                    ForEach(0..<columns, id: \.self) { column in
-                        Rectangle()
-                            .fill(isSelected(row: row, column: column) ? Color.blue : Color.gray)
-                            .frame(width: 50, height: 50)
-                            .overlay(
-                                Text("\(row):\(column)")
-                                    .foregroundColor(.white)
-                            )
-                    }
-                }
-            }
+  let rows = 16
+  let columns = 16
+
+  struct Rect: Hashable {
+    let row: Int
+    let column: Int
+  }
+
+  @State
+  private var selectedRects: Set<Rect> = []
+
+  var body: some View {
+    VStack(spacing: 0) {
+      ForEach(0..<rows, id: \.self) { row in
+        HStack(spacing: 0) {
+          ForEach(0..<columns, id: \.self) { column in
+            Rectangle()
+              .fill(isSelected(row: row, column: column) ? Color.blue : Color.gray)
+              .frame(width: 50, height: 50)
+              .overlay(
+                Text("\(row):\(column)")
+                  .foregroundColor(.white)
+              )
+          }
         }
-        .coordinateSpace(name: "MyView")
-        .gesture(
-            TapGesture()
-                .onEnded {
-                    selectedRects.removeAll()
-                }
-        )
-        .gesture(
-            DragGesture(coordinateSpace: .named("MyView"))
-                .onChanged { value in
-                    let location = value.location
-                    let row = Int(location.y / 50)
-                    let column = Int(location.x / 50)
-                    if !isSelected(row: row, column: column) {
-                        selectedRects.insert(Rect(row: row, column: column))
-                    }
-                }
-        )
+      }
     }
-    
-    func isSelected(row: Int, column: Int) -> Bool {
-        selectedRects.contains(Rect(row: row, column: column))
-    }
+    .coordinateSpace(name: "MyView")
+    .gesture(
+      TapGesture()
+        .onEnded {
+          selectedRects.removeAll()
+        }
+    )
+    .gesture(
+      DragGesture(coordinateSpace: .named("MyView"))
+        .onChanged { value in
+          let location = value.location
+          let row = Int(location.y / 50)
+          let column = Int(location.x / 50)
+          if !isSelected(row: row, column: column) {
+            selectedRects.insert(Rect(row: row, column: column))
+          }
+        }
+    )
+  }
+
+  func isSelected(row: Int, column: Int) -> Bool {
+    selectedRects.contains(Rect(row: row, column: column))
+  }
 }

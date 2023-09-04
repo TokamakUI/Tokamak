@@ -18,57 +18,59 @@
 import Foundation
 
 struct OnChangeModifier<V: Equatable>: ViewModifier {
-    @State var oldValue: V? = nil
-    
-    let value: V
-    let initial: Bool
-    let action: (V, V) -> Void
-    
-    func body(content: Content) -> some View {
-        content
-            .task {
-                if self.initial {
-                    action(value, value)
-                }
-                oldValue = value
-            }
-            ._onUpdate {
-                if value != oldValue {
-                    action(oldValue ?? value, value)
-                }
-                oldValue = value
-            }
-    }
+  @State
+  var oldValue: V? = nil
+
+  let value: V
+  let initial: Bool
+  let action: (V, V) -> ()
+
+  func body(content: Content) -> some View {
+    content
+      .task {
+        if initial {
+          action(value, value)
+        }
+        oldValue = value
+      }
+      ._onUpdate {
+        if value != oldValue {
+          action(oldValue ?? value, value)
+        }
+        oldValue = value
+      }
+  }
 }
 
-extension View {
-    /// Adds a modifier for this view that fires an action when a specific value changes.
-    /// - Parameters:
-    ///   - value: The value to check against when determining whether to run the closure.
-    ///   - initial: Whether the action should be run when this view initially appears.
-    ///   - action: A closure to run when the value changes.
-    ///   - oldValue: The old value that failed the comparison check (or the initial value when requested).
-    ///   - newValue: The new value that failed the comparison check.
-    /// - Returns: A view that fires an action when the specified value changes.
-    public func onChange<V>(
-        of value: V,
-        initial: Bool = false,
-        _ action: @escaping (V, V) -> Void
-    ) -> some View where V : Equatable {
-        return self.modifier(OnChangeModifier(value: value, initial: initial, action: action))
-    }
-    
-    /// Adds a modifier for this view that fires an action when a specific value changes.
-    /// - Parameters:
-    ///   - value: The value to check against when determining whether to run the closure.
-    ///   - initial: Whether the action should be run when this view initially appears.
-    ///   - action: A closure to run when the value changes.
-    /// - Returns: A view that fires an action when the specified value changes.
-    public func onChange<V>(
-        of value: V,
-        initial: Bool = false,
-        _ action: @escaping () -> Void
-    ) -> some View where V : Equatable {
-        return self.modifier(OnChangeModifier(value: value, initial: initial) { _, _ in action() })
-    }
+public extension View {
+  /// Adds a modifier for this view that fires an action when a specific value changes.
+  /// - Parameters:
+  ///   - value: The value to check against when determining whether to run the closure.
+  ///   - initial: Whether the action should be run when this view initially appears.
+  ///   - action: A closure to run when the value changes.
+  ///   - oldValue: The old value that failed the comparison check (or the initial value when
+  /// requested).
+  ///   - newValue: The new value that failed the comparison check.
+  /// - Returns: A view that fires an action when the specified value changes.
+  func onChange<V>(
+    of value: V,
+    initial: Bool = false,
+    _ action: @escaping (V, V) -> ()
+  ) -> some View where V: Equatable {
+    modifier(OnChangeModifier(value: value, initial: initial, action: action))
+  }
+
+  /// Adds a modifier for this view that fires an action when a specific value changes.
+  /// - Parameters:
+  ///   - value: The value to check against when determining whether to run the closure.
+  ///   - initial: Whether the action should be run when this view initially appears.
+  ///   - action: A closure to run when the value changes.
+  /// - Returns: A view that fires an action when the specified value changes.
+  func onChange<V>(
+    of value: V,
+    initial: Bool = false,
+    _ action: @escaping () -> ()
+  ) -> some View where V: Equatable {
+    modifier(OnChangeModifier(value: value, initial: initial) { _, _ in action() })
+  }
 }

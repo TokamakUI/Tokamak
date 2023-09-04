@@ -112,7 +112,8 @@ public enum Sanitizers {
           Parsers.string1.matches(input)
             ? Parsers.string1Content.filter(input)
             : Parsers.string2Content.filter(input)
-            .replacingOccurrences(of: "\"", with: "&quot;"))'
+            .replacingOccurrences(of: "\"", with: "&quot;")
+        )'
         """
       }
     }

@@ -16,38 +16,40 @@
 //
 
 public struct _ChangedGesture<Base: Gesture>: Gesture {
-    public typealias Value = Base.Value
-    
-    private var gesture: Base
-    private var onChanged: (Base.Value) -> Void
-    private var onEnded: ((Value) -> Void)?
-    
-    public var body: Base.Body {
-        var gesture = gesture._onChanged(perform: onChanged)
-        if let onEnded {
-            gesture = gesture._onEnded(perform: onEnded)
-        }
-        return gesture.body
-    }
-    
-    init(_ gesture: Base, onChanged: @escaping (Base.Value) -> Void) {
-        self.gesture = gesture
-        self.onChanged = onChanged
-    }
+  public typealias Value = Base.Value
 
-    mutating public func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
-        fatalError("\(String(reflecting: Self.self)) is a proxy `Gesture`, onPhaseChange should never be called.")
-    }
-    
-    public func _onEnded(perform action: @escaping (Value) -> Void) -> Self {
-        var gesture = self
-        gesture.onEnded = action
-        return gesture
-    }
+  private var gesture: Base
+  private var onChanged: (Base.Value) -> ()
+  private var onEnded: ((Value) -> ())?
 
-    public func _onChanged(perform action: @escaping (Value) -> Void) -> Self {
-        var gesture = self
-        gesture.onChanged = action
-        return gesture
+  public var body: Base.Body {
+    var gesture = gesture._onChanged(perform: onChanged)
+    if let onEnded {
+      gesture = gesture._onEnded(perform: onEnded)
     }
+    return gesture.body
+  }
+
+  init(_ gesture: Base, onChanged: @escaping (Base.Value) -> ()) {
+    self.gesture = gesture
+    self.onChanged = onChanged
+  }
+
+  public mutating func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
+    fatalError(
+      "\(String(reflecting: Self.self)) is a proxy `Gesture`, onPhaseChange should never be called."
+    )
+  }
+
+  public func _onEnded(perform action: @escaping (Value) -> ()) -> Self {
+    var gesture = self
+    gesture.onEnded = action
+    return gesture
+  }
+
+  public func _onChanged(perform action: @escaping (Value) -> ()) -> Self {
+    var gesture = self
+    gesture.onChanged = action
+    return gesture
+  }
 }

@@ -50,7 +50,7 @@ struct URLHashDemo: View {
   var body: some View {
     VStack {
       Button("Assign random location.hash") {
-          location["hash"] = .string("\(Int.random(in: 0...1000))")
+        location["hash"] = .string("\(Int.random(in: 0...1000))")
       }
       Text("Current location.hash is \(hashState.currentHash)")
     }

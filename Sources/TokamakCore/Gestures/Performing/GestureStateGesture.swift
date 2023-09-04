@@ -16,43 +16,50 @@
 //
 
 public struct GestureStateGesture<Base: Gesture, State>: Gesture {
-    public typealias Value = Base.Value
-    
-    @GestureState private var gestureState: State
-    private var gesture: Base
+  public typealias Value = Base.Value
 
-    private let updatingBody: (Base.Value, inout State, inout Transaction) -> Void
-    private var onEnded: ((Value) -> Void)?
-    
-    public var body: Base.Body {
-        var gesture = gesture._onChanged(perform: { value in
-            // TODO: Is this transaction working?
-            var transaction = Transaction._active ?? .init(animation: nil)
-            updatingBody(value, &gestureState, &transaction)
-        })
-        if let onEnded {
-            gesture = gesture._onEnded(perform: onEnded)
-        }
-        return gesture.body
-    }
-    
-    init(base: Base, state: GestureState<State>, updatingBody: @escaping (Base.Value, inout State, inout Transaction) -> Void) {
-        self.gesture = base
-        self._gestureState = state
-        self.updatingBody = updatingBody
-    }
+  @GestureState
+  private var gestureState: State
+  private var gesture: Base
 
-    mutating public func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
-        fatalError("\(String(reflecting: Self.self)) is a proxy `Gesture`, onPhaseChange should never be called.")
-    }
-    
-    public func _onEnded(perform action: @escaping (Value) -> Void) -> Self {
-        var gesture = self
-        gesture.onEnded = action
-        return gesture
-    }
+  private let updatingBody: (Base.Value, inout State, inout Transaction) -> ()
+  private var onEnded: ((Value) -> ())?
 
-    public func _onChanged(perform action: @escaping (Value) -> Void) -> Self {
-        self
+  public var body: Base.Body {
+    var gesture = gesture._onChanged(perform: { value in
+      // TODO: Is this transaction working?
+      var transaction = Transaction._active ?? .init(animation: nil)
+      updatingBody(value, &gestureState, &transaction)
+    })
+    if let onEnded {
+      gesture = gesture._onEnded(perform: onEnded)
     }
+    return gesture.body
+  }
+
+  init(
+    base: Base,
+    state: GestureState<State>,
+    updatingBody: @escaping (Base.Value, inout State, inout Transaction) -> ()
+  ) {
+    gesture = base
+    _gestureState = state
+    self.updatingBody = updatingBody
+  }
+
+  public mutating func _onPhaseChange(_ phase: _GesturePhase) -> Bool {
+    fatalError(
+      "\(String(reflecting: Self.self)) is a proxy `Gesture`, onPhaseChange should never be called."
+    )
+  }
+
+  public func _onEnded(perform action: @escaping (Value) -> ()) -> Self {
+    var gesture = self
+    gesture.onEnded = action
+    return gesture
+  }
+
+  public func _onChanged(perform action: @escaping (Value) -> ()) -> Self {
+    self
+  }
 }

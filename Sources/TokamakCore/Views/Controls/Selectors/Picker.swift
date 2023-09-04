@@ -71,7 +71,7 @@ public struct Picker<Label: View, SelectionValue: Hashable, Content: View>: View
 
   @_spi(TokamakCore)
   public var body: some View {
-    let children = self.children
+    let children = children
 
     return _PickerContainer(selection: selection, label: label, elements: elements) {
       // Need to implement a special behavior here. If one of the children is `ForEach`

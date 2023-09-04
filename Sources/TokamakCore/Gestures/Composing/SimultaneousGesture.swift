@@ -16,22 +16,23 @@
 //
 
 @frozen
-public struct SimultaneousGesture<First, Second> where First : Gesture, Second : Gesture {
-    public typealias Value = SimultaneousGesture.SimultaneousValue
-    
-    public struct SimultaneousValue {
-        public let first: First.Value?
-        public let second: First.Value?
-    }
-    
-    /// The first of two gestures that can happen simultaneously.
-    public let first: First
-    /// The second of two gestures that can happen simultaneously.
-    public let second: Second
-    
-    /// Creates a gesture with two gestures that can receive updates or succeed independently of each other.
-    init(first: First, second: Second) {
-        self.first = first
-        self.second = second
-    }
+public struct SimultaneousGesture<First, Second> where First: Gesture, Second: Gesture {
+  public typealias Value = SimultaneousGesture.SimultaneousValue
+
+  public struct SimultaneousValue {
+    public let first: First.Value?
+    public let second: First.Value?
+  }
+
+  /// The first of two gestures that can happen simultaneously.
+  public let first: First
+  /// The second of two gestures that can happen simultaneously.
+  public let second: Second
+
+  /// Creates a gesture with two gestures that can receive updates or succeed independently of each
+  /// other.
+  init(first: First, second: Second) {
+    self.first = first
+    self.second = second
+  }
 }

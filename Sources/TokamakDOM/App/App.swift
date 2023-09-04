@@ -21,57 +21,57 @@ import TokamakCore
 import TokamakStaticHTML
 
 public extension App {
-    static func _launch(_ app: Self, with configuration: _AppConfiguration) {
-        switch configuration.reconciler {
-        case .stack:
-            _launch(app, configuration.rootEnvironment, TokamakDOM.body)
-        case let .fiber(useDynamicLayout):
-            DOMFiberRenderer("body", useDynamicLayout: useDynamicLayout).render(app)
-        }
+  static func _launch(_ app: Self, with configuration: _AppConfiguration) {
+    switch configuration.reconciler {
+    case .stack:
+      _launch(app, configuration.rootEnvironment, TokamakDOM.body)
+    case let .fiber(useDynamicLayout):
+      DOMFiberRenderer("body", useDynamicLayout: useDynamicLayout).render(app)
     }
-    
-    /// The default implementation of `launch` for a `TokamakDOM` app.
-    ///
-    /// Creates a host `div` node and appends it to the body.
-    ///
-    /// The body is styled with `margin: 0;` to match the `SwiftUI` layout
-    /// system as closely as possible
-    ///
-    static func _launch(
-        _ app: Self,
-        _ rootEnvironment: EnvironmentValues,
-        _ body: JSObject
-    ) {
-        if body.style.object!.all == "" {
-            body.style = "margin: 0;"
-        }
-        let rootStyle = document.createElement!("style").object!
-        rootStyle.id = "_tokamak-app-style"
-        rootStyle.innerHTML = .string(tokamakStyles)
-        _ = head.appendChild!(rootStyle)
-        
-        let div = document.createElement!("div").object!
-        _ = Unmanaged.passRetained(DOMRenderer(app, div, rootEnvironment))
-        
-        _ = body.appendChild!(div)
-        
-        ScenePhaseObserver.observe()
-        GestureEventsObserver.observe(div)
-        ColorSchemeObserver.observe(div)
+  }
+
+  /// The default implementation of `launch` for a `TokamakDOM` app.
+  ///
+  /// Creates a host `div` node and appends it to the body.
+  ///
+  /// The body is styled with `margin: 0;` to match the `SwiftUI` layout
+  /// system as closely as possible
+  ///
+  static func _launch(
+    _ app: Self,
+    _ rootEnvironment: EnvironmentValues,
+    _ body: JSObject
+  ) {
+    if body.style.object!.all == "" {
+      body.style = "margin: 0;"
     }
-    
-    static func _setTitle(_ title: String) {
-        let titleTag = document.createElement!("title").object!
-        titleTag.id = "_tokamak-app-title"
-        titleTag.innerHTML = .string(title)
-        _ = head.appendChild!(titleTag)
-    }
-    
-    var _phasePublisher: AnyPublisher<ScenePhase, Never> {
-        ScenePhaseObserver.publisher.eraseToAnyPublisher()
-    }
-    
-    var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
-        ColorSchemeObserver.publisher.eraseToAnyPublisher()
-    }
+    let rootStyle = document.createElement!("style").object!
+    rootStyle.id = "_tokamak-app-style"
+    rootStyle.innerHTML = .string(tokamakStyles)
+    _ = head.appendChild!(rootStyle)
+
+    let div = document.createElement!("div").object!
+    _ = Unmanaged.passRetained(DOMRenderer(app, div, rootEnvironment))
+
+    _ = body.appendChild!(div)
+
+    ScenePhaseObserver.observe()
+    GestureEventsObserver.observe(div)
+    ColorSchemeObserver.observe(div)
+  }
+
+  static func _setTitle(_ title: String) {
+    let titleTag = document.createElement!("title").object!
+    titleTag.id = "_tokamak-app-title"
+    titleTag.innerHTML = .string(title)
+    _ = head.appendChild!(titleTag)
+  }
+
+  var _phasePublisher: AnyPublisher<ScenePhase, Never> {
+    ScenePhaseObserver.publisher.eraseToAnyPublisher()
+  }
+
+  var _colorSchemePublisher: AnyPublisher<ColorScheme, Never> {
+    ColorSchemeObserver.publisher.eraseToAnyPublisher()
+  }
 }

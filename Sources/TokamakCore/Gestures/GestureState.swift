@@ -15,33 +15,32 @@
 //  Created by Szymon on 16/7/2023.
 //
 
-
 @propertyWrapper
 public struct GestureState<Value>: DynamicProperty {
-    private let initialValue: Value
-    
-    var anyInitialValue: Any { initialValue }
-    
-    var getter: (() -> Any)?
-    var setter: ((Any, Transaction) -> ())?
-    
-    public init(wrappedValue value: Value) {
-        initialValue = value
-    }
-    
-    public var wrappedValue: Value {
-        get { getter?() as? Value ?? initialValue }
-        nonmutating set { setter?(newValue, Transaction._active ?? .init(animation: nil)) }
-    }
-    
-    public var projectedValue: GestureState<Value> {
-        self
-    }
+  private let initialValue: Value
+
+  var anyInitialValue: Any { initialValue }
+
+  var getter: (() -> Any)?
+  var setter: ((Any, Transaction) -> ())?
+
+  public init(wrappedValue value: Value) {
+    initialValue = value
+  }
+
+  public var wrappedValue: Value {
+    get { getter?() as? Value ?? initialValue }
+    nonmutating set { setter?(newValue, Transaction._active ?? .init(animation: nil)) }
+  }
+
+  public var projectedValue: GestureState<Value> {
+    self
+  }
 }
 
 extension GestureState: WritableValueStorage {}
 
 public extension GestureState where Value: ExpressibleByNilLiteral {
-    @inlinable
-    init() { self.init(wrappedValue: nil) }
+  @inlinable
+  init() { self.init(wrappedValue: nil) }
 }

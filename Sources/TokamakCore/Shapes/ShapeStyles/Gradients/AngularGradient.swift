@@ -19,10 +19,10 @@ import Foundation
 
 @frozen
 public struct AngularGradient: ShapeStyle, View {
-  internal var gradient: Gradient
-  internal var center: UnitPoint
-  internal var startAngle: Angle
-  internal var endAngle: Angle
+  var gradient: Gradient
+  var center: UnitPoint
+  var startAngle: Angle
+  var endAngle: Angle
 
   public init(
     gradient: Gradient,

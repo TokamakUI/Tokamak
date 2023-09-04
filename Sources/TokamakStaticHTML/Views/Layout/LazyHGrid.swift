@@ -40,10 +40,12 @@ extension LazyHGrid: _HTMLPrimitive {
   public var renderedBody: AnyView {
     var styles = """
     display: grid;
-    grid-template-rows: \(_LazyHGridProxy(self)
-      .rows
-      .map(\.description)
-      .joined(separator: " "));
+    grid-template-rows: \(
+      _LazyHGridProxy(self)
+        .rows
+        .map(\.description)
+        .joined(separator: " ")
+    );
     grid-auto-flow: column;
     """
     if fillCrossAxis {

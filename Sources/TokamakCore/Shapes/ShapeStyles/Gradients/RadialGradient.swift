@@ -19,10 +19,10 @@ import Foundation
 
 @frozen
 public struct RadialGradient: ShapeStyle, View {
-  internal var gradient: Gradient
-  internal var center: UnitPoint
-  internal var startRadius: CGFloat
-  internal var endRadius: CGFloat
+  var gradient: Gradient
+  var center: UnitPoint
+  var startRadius: CGFloat
+  var endRadius: CGFloat
 
   public init(gradient: Gradient, center: UnitPoint, startRadius: CGFloat, endRadius: CGFloat) {
     self.gradient = gradient

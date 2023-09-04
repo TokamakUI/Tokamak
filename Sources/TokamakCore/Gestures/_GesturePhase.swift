@@ -18,30 +18,30 @@
 import Foundation
 
 public enum _GesturePhase {
-    /// The gesture phase when it begins.
-    case began(_GesturePhaseContext)
-    
-    /// The gesture phase when it changes.
-    case changed(_GesturePhaseContext)
-    
-    /// The gesture phase when it ends.
-    case ended(_GesturePhaseContext)
-    
-    /// The gesture phase when it is cancelled.
-    case cancelled
+  /// The gesture phase when it begins.
+  case began(_GesturePhaseContext)
+
+  /// The gesture phase when it changes.
+  case changed(_GesturePhaseContext)
+
+  /// The gesture phase when it ends.
+  case ended(_GesturePhaseContext)
+
+  /// The gesture phase when it is cancelled.
+  case cancelled
 }
 
 public struct _GesturePhaseContext {
-    /// The  event id in which phase has originated form.
-    let eventId: String?
-    /// The  origin point of the target element in global coordinates.
-    let boundsOrigin: CGPoint?
-    /// The current location of the gesture in global coordinates.
-    let location: CGPoint?
-    
-    public init(eventId: String? = nil, boundsOrigin: CGPoint? = nil, location: CGPoint? = nil) {
-        self.eventId = eventId
-        self.boundsOrigin = boundsOrigin
-        self.location = location
-    }
+  /// The  event id in which phase has originated form.
+  let eventId: String?
+  /// The  origin point of the target element in global coordinates.
+  let boundsOrigin: CGPoint?
+  /// The current location of the gesture in global coordinates.
+  let location: CGPoint?
+
+  public init(eventId: String? = nil, boundsOrigin: CGPoint? = nil, location: CGPoint? = nil) {
+    self.eventId = eventId
+    self.boundsOrigin = boundsOrigin
+    self.location = location
+  }
 }

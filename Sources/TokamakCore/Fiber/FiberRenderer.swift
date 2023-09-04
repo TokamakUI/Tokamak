@@ -64,7 +64,8 @@ public protocol FiberRenderer {
 
   /// Run `action` on the next run loop.
   ///
-  /// Called by the `FiberReconciler` to perform reconciliation after all changed Fibers are collected.
+  /// Called by the `FiberReconciler` to perform reconciliation after all changed Fibers are
+  /// collected.
   ///
   /// For example, take the following sample `View`:
   ///

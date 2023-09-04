@@ -19,29 +19,31 @@ import Foundation
 import OpenCombineShim
 
 struct OnReceiveModifier<P: Publisher>: ViewModifier where P.Failure == Never {
-    @State var cancellable: AnyCancellable
-    
-    init(publisher: P, action: @escaping (P.Output) -> Void) {
-        self._cancellable = State(initialValue: publisher.sink(receiveValue: action))
+  @State
+  var cancellable: AnyCancellable
+
+  init(publisher: P, action: @escaping (P.Output) -> ()) {
+    _cancellable = State(initialValue: publisher.sink(receiveValue: action))
+  }
+
+  func body(content: Content) -> some View {
+    content._onUnmount {
+      cancellable.cancel()
     }
-    
-    func body(content: Content) -> some View {
-        content._onUnmount {
-            cancellable.cancel()
-        }
-    }
+  }
 }
 
-extension View {
-    /// Adds an action to perform when this view detects data emitted by the given publisher.
-    /// - Parameters:
-    ///   - publisher: The publisher to subscribe to.
-    ///   - action: The action to perform when an event is emitted by publisher. The event emitted by publisher is passed as a parameter to action.
-    /// - Returns: A view that triggers action when publisher emits an event.
-    public func onReceive<P>(
-        _ publisher: P,
-        perform action: @escaping (P.Output) -> Void
-    ) -> some View where P : Publisher, P.Failure == Never {
-        return self.modifier(OnReceiveModifier(publisher: publisher, action: action))
-    }
+public extension View {
+  /// Adds an action to perform when this view detects data emitted by the given publisher.
+  /// - Parameters:
+  ///   - publisher: The publisher to subscribe to.
+  ///   - action: The action to perform when an event is emitted by publisher. The event emitted by
+  /// publisher is passed as a parameter to action.
+  /// - Returns: A view that triggers action when publisher emits an event.
+  func onReceive<P>(
+    _ publisher: P,
+    perform action: @escaping (P.Output) -> ()
+  ) -> some View where P: Publisher, P.Failure == Never {
+    modifier(OnReceiveModifier(publisher: publisher, action: action))
+  }
 }

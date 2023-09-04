@@ -18,28 +18,31 @@
 import Foundation
 
 private struct CoordinateSpaceEnvironmentKey: EnvironmentKey {
-    static let defaultValue: CoordinateSpaceContext = CoordinateSpaceContext()
+  static let defaultValue: CoordinateSpaceContext = .init()
 }
 
 extension EnvironmentValues {
-    var _coordinateSpace: CoordinateSpaceContext {
-        get { self[CoordinateSpaceEnvironmentKey.self] }
-        set { self[CoordinateSpaceEnvironmentKey.self] = newValue }
-    }
+  var _coordinateSpace: CoordinateSpaceContext {
+    get { self[CoordinateSpaceEnvironmentKey.self] }
+    set { self[CoordinateSpaceEnvironmentKey.self] = newValue }
+  }
 }
 
 class CoordinateSpaceContext {
-    /// Stores currently active CoordinateSpace against it's origin point in global coordinates
-    var activeCoordinateSpace: [CoordinateSpace: CGPoint] = [:]
+  /// Stores currently active CoordinateSpace against it's origin point in global coordinates
+  var activeCoordinateSpace: [CoordinateSpace: CGPoint] = [:]
 }
 
 extension CoordinateSpace {
-    static func convertGlobalSpaceCoordinates(rect: CGRect, toNamedOrigin namedOrigin: CGPoint) -> CGRect {
-        let translatedOrigin = convert(rect.origin, toNamedOrigin: namedOrigin)
-        return CGRect(origin: translatedOrigin, size: rect.size)
-    }
-    
-    static func convert(_ point: CGPoint, toNamedOrigin namedOrigin: CGPoint) -> CGPoint {
-        return CGPoint(x: point.x - namedOrigin.x, y: point.y - namedOrigin.y)
-    }
+  static func convertGlobalSpaceCoordinates(
+    rect: CGRect,
+    toNamedOrigin namedOrigin: CGPoint
+  ) -> CGRect {
+    let translatedOrigin = convert(rect.origin, toNamedOrigin: namedOrigin)
+    return CGRect(origin: translatedOrigin, size: rect.size)
+  }
+
+  static func convert(_ point: CGPoint, toNamedOrigin namedOrigin: CGPoint) -> CGPoint {
+    CGPoint(x: point.x - namedOrigin.x, y: point.y - namedOrigin.y)
+  }
 }

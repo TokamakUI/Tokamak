@@ -16,98 +16,102 @@
 //
 
 private struct GestureEnvironmentKey: EnvironmentKey {
-    static let defaultValue: GestureContext = GestureContext()
+  static let defaultValue: GestureContext = .init()
 }
 
 extension EnvironmentValues {
-    /// An environment value that provides a central hub for managing gesture recognition and priority handling.
-    var _gestureListener: GestureContext {
-        get { self[GestureEnvironmentKey.self] }
-        set { self[GestureEnvironmentKey.self] = newValue }
-    }
+  /// An environment value that provides a central hub for managing gesture recognition and priority
+  /// handling.
+  var _gestureListener: GestureContext {
+    get { self[GestureEnvironmentKey.self] }
+    set { self[GestureEnvironmentKey.self] = newValue }
+  }
 }
 
 final class GestureContext {
-    // MARK: Gesture Management
-    
-    /// A dictionary that tracks active gestures for different events, organized by event name.
-    var activeGestures: [String: Set<GestureValue>] = [:]
-    
-    /// Registers the start of a gesture for a specific event, respecting priority levels.
-    ///
-    /// - Parameters:
-    ///   - gesture: The gesture to be registered.
-    ///   - event: The name of the event associated with the gesture.
-    func registerStart(_ gesture: GestureValue, for event: String) {
-        if activeGestures[event] == nil {
-            activeGestures[event] = [gesture]
-        } else if case .highPriority = gesture.priority {
-            activeGestures[event] = [gesture]
-        } else {
-            activeGestures[event]?.insert(gesture)
-        }
+  // MARK: Gesture Management
+
+  /// A dictionary that tracks active gestures for different events, organized by event name.
+  var activeGestures: [String: Set<GestureValue>] = [:]
+
+  /// Registers the start of a gesture for a specific event, respecting priority levels.
+  ///
+  /// - Parameters:
+  ///   - gesture: The gesture to be registered.
+  ///   - event: The name of the event associated with the gesture.
+  func registerStart(_ gesture: GestureValue, for event: String) {
+    if activeGestures[event] == nil {
+      activeGestures[event] = [gesture]
+    } else if case .highPriority = gesture.priority {
+      activeGestures[event] = [gesture]
+    } else {
+      activeGestures[event]?.insert(gesture)
     }
-    
-    /// Recognizes a gesture for a specific event, considering its priority and adjusting active gestures accordingly.
-    ///
-    /// - Parameters:
-    ///   - gesture: The gesture to be recognized.
-    ///   - event: The name of the event associated with the gesture.
-    func recognizeGesture(_ gesture: GestureValue, for event: String) {
-        guard activeGestures[event]?.contains(gesture) == true else {
-            return
-        }
-        var gestures: Set<GestureValue> = activeGestures[event]?.removeLowerPriorities(than: gesture.priority) ?? []
-        gestures.insert(gesture)
-        activeGestures[event] = gestures
+  }
+
+  /// Recognizes a gesture for a specific event, considering its priority and adjusting active
+  /// gestures accordingly.
+  ///
+  /// - Parameters:
+  ///   - gesture: The gesture to be recognized.
+  ///   - event: The name of the event associated with the gesture.
+  func recognizeGesture(_ gesture: GestureValue, for event: String) {
+    guard activeGestures[event]?.contains(gesture) == true else {
+      return
     }
-    
-    /// Checks if a gesture can be processed for a specific event, considering its recognition status and priority.
-    ///
-    /// - Parameters:
-    ///   - gesture: The gesture to be checked.
-    ///   - event: The name of the event associated with the gesture.
-    /// - Returns: `true` if the gesture can be processed, `false` otherwise.
-    func canProcessGesture(_ gesture: GestureValue, for event: String) -> Bool {
-        guard activeGestures[event]?.contains(gesture) == true else {
-            return false
-        }
-        return true
+    var gestures: Set<GestureValue> = activeGestures[event]?
+      .removeLowerPriorities(than: gesture.priority) ?? []
+    gestures.insert(gesture)
+    activeGestures[event] = gestures
+  }
+
+  /// Checks if a gesture can be processed for a specific event, considering its recognition status
+  /// and priority.
+  ///
+  /// - Parameters:
+  ///   - gesture: The gesture to be checked.
+  ///   - event: The name of the event associated with the gesture.
+  /// - Returns: `true` if the gesture can be processed, `false` otherwise.
+  func canProcessGesture(_ gesture: GestureValue, for event: String) -> Bool {
+    guard activeGestures[event]?.contains(gesture) == true else {
+      return false
     }
+    return true
+  }
 }
 
 struct GestureValue: Hashable {
-    // MARK: Gesture Metadata
-    
-    /// A unique identifier for the gesture.
-    let gestureId: String
-    
-    /// A mask that defines the type of gesture.
-    let mask: GestureMask
-    
-    /// The priority level of the gesture.
-    let priority: _GesturePriority
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(gestureId)
-    }
+  // MARK: Gesture Metadata
+
+  /// A unique identifier for the gesture.
+  let gestureId: String
+
+  /// A mask that defines the type of gesture.
+  let mask: GestureMask
+
+  /// The priority level of the gesture.
+  let priority: _GesturePriority
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(gestureId)
+  }
 }
 
 // MARK: Helpers
 
 private extension Set where Element == GestureValue {
-    /// Removes gestures with lower priorities than the given priority.
-    ///
-    /// - Parameter priority: The priority to compare against.
-    /// - Returns: A filtered set containing only gestures with equal or higher priorities.
-    func removeLowerPriorities(than priority: _GesturePriority) -> Self {
-        return self.filter {
-            switch priority {
-            case .standard, .simultaneous:
-                return $0.priority != .standard
-            case .highPriority:
-                return $0.priority == .highPriority
-            }
-        }
+  /// Removes gestures with lower priorities than the given priority.
+  ///
+  /// - Parameter priority: The priority to compare against.
+  /// - Returns: A filtered set containing only gestures with equal or higher priorities.
+  func removeLowerPriorities(than priority: _GesturePriority) -> Self {
+    filter {
+      switch priority {
+      case .standard, .simultaneous:
+        return $0.priority != .standard
+      case .highPriority:
+        return $0.priority == .highPriority
+      }
     }
+  }
 }

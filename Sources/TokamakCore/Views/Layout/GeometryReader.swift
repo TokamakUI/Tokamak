@@ -15,34 +15,35 @@
 import Foundation
 
 public struct GeometryProxy {
-    @Environment(\._coordinateSpace) var coordinates
-    let globalRect: CGRect
-    
-    public var size: CGSize {
-        globalRect.size
+  @Environment(\._coordinateSpace)
+  var coordinates
+  let globalRect: CGRect
+
+  public var size: CGSize {
+    globalRect.size
+  }
+
+  public init(globalRect: CGRect) {
+    self.globalRect = globalRect
+  }
+
+  public func frame(in coordinateSpace: CoordinateSpace) -> CGRect {
+    switch coordinateSpace {
+    case .global:
+      return globalRect
+    case .local:
+      return CGRect(origin: .zero, size: size)
+    case let .named(name):
+      if let origin = coordinates.activeCoordinateSpace[CoordinateSpace.named(name)] {
+        return CoordinateSpace.convertGlobalSpaceCoordinates(
+          rect: globalRect,
+          toNamedOrigin: origin
+        )
+      }
+      // Return local if no space with given name
+      return CGRect(origin: .zero, size: size)
     }
-    
-    public init(globalRect: CGRect) {
-        self.globalRect = globalRect
-    }
-    
-    public func frame(in coordinateSpace: CoordinateSpace) -> CGRect {
-        switch coordinateSpace {
-        case .global:
-            return globalRect
-        case .local:
-            return CGRect(origin: .zero, size: size)
-        case .named(let name):
-            if let origin = coordinates.activeCoordinateSpace[CoordinateSpace.named(name)] {
-                return CoordinateSpace.convertGlobalSpaceCoordinates(
-                    rect: globalRect,
-                    toNamedOrigin: origin
-                )
-            }
-            // Return local if no space with given name
-            return CGRect(origin: .zero, size: size)
-        }
-    }
+  }
 }
 
 public func makeProxy(from rect: CGRect) -> GeometryProxy {

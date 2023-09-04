@@ -17,30 +17,33 @@
 
 import Foundation
 
-struct _CoordinateSpaceModifier<T : Hashable>: ViewModifier {
-    @Environment(\._coordinateSpace) var coordinateSpace
-    let name: T
-    
-    public func body(content: Content) -> some View {
-        content
-            .background {
-                GeometryReader { proxy in
-                    EmptyView()
-                        .onChange(of: proxy.size, initial: true) {
-                            coordinateSpace.activeCoordinateSpace[.named(name)] = proxy.frame(in: .global).origin
-                        }
-                        .onDisappear {
-                            coordinateSpace.activeCoordinateSpace.removeValue(forKey: .named(name))
-                        }
-                }
+struct _CoordinateSpaceModifier<T: Hashable>: ViewModifier {
+  @Environment(\._coordinateSpace)
+  var coordinateSpace
+  let name: T
+
+  public func body(content: Content) -> some View {
+    content
+      .background {
+        GeometryReader { proxy in
+          EmptyView()
+            .onChange(of: proxy.size, initial: true) {
+              coordinateSpace.activeCoordinateSpace[.named(name)] = proxy
+                .frame(in: .global).origin
             }
-    }
+            .onDisappear {
+              coordinateSpace.activeCoordinateSpace.removeValue(forKey: .named(name))
+            }
+        }
+      }
+  }
 }
 
-extension View {
-    /// Assigns a name to the view’s coordinate space, so other code can operate on dimensions like points and sizes relative to the named space.
-    /// - Parameter name: A name used to identify this coordinate space.
-    public func coordinateSpace<T>(name: T) -> some View where T : Hashable {
-        self.modifier(_CoordinateSpaceModifier(name: name))
-    }
+public extension View {
+  /// Assigns a name to the view’s coordinate space, so other code can operate on dimensions like
+  /// points and sizes relative to the named space.
+  /// - Parameter name: A name used to identify this coordinate space.
+  func coordinateSpace<T>(name: T) -> some View where T: Hashable {
+    modifier(_CoordinateSpaceModifier(name: name))
+  }
 }

@@ -16,7 +16,7 @@
 //
 
 public enum _GesturePriority {
-    case standard
-    case simultaneous
-    case highPriority
+  case standard
+  case simultaneous
+  case highPriority
 }

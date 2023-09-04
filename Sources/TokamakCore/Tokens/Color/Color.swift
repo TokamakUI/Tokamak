@@ -26,7 +26,7 @@ public struct Color: Hashable, Equatable {
 
   let provider: AnyColorBox
 
-  internal init(_ provider: AnyColorBox) {
+  init(_ provider: AnyColorBox) {
     self.provider = provider
   }
 

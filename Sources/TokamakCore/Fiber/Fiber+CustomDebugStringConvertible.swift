@@ -34,8 +34,10 @@ extension FiberReconciler.Fiber: CustomDebugStringConvertible {
       proposal: .unspecified
     )
     return """
-    \(spaces)\(String(describing: typeInfo?.type ?? Any.self)
-      .split(separator: "<")[0])\(element != nil ? "(\(element!))" : "") {\(element != nil ?
+    \(spaces)\(
+      String(describing: typeInfo?.type ?? Any.self)
+        .split(separator: "<")[0]
+    )\(element != nil ? "(\(element!))" : "") {\(element != nil ?
       "\n\(spaces)geometry: \(geometry)" :
       "")
     \(child?.flush(level: level + 2) ?? "")

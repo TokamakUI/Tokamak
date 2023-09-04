@@ -233,11 +233,15 @@ extension Text {
 
     return [
       "style": """
-      \(fontPathEnv._fontPath.first?.styles(in: fontPathEnv)
-        .filter { weight != nil ? $0.key != "font-weight" : true }
-        .inlineStyles(shouldSortDeclarations: true) ?? "")
-      \(fontPathEnv._fontPath
-        .isEmpty ? "font-family: \(Font.Design.default.families.joined(separator: ", "));" : "")
+      \(
+        fontPathEnv._fontPath.first?.styles(in: fontPathEnv)
+          .filter { weight != nil ? $0.key != "font-weight" : true }
+          .inlineStyles(shouldSortDeclarations: true) ?? ""
+      )
+      \(
+        fontPathEnv._fontPath
+          .isEmpty ? "font-family: \(Font.Design.default.families.joined(separator: ", "));" : ""
+      )
       color: \((color ?? .primary).cssValue(environment));
       font-style: \(italic ? "italic" : "normal");
       font-weight: \(weight?.value ?? resolvedFont?._weight.value ?? 400);

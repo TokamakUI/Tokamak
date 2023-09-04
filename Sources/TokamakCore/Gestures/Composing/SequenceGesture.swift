@@ -16,23 +16,24 @@
 //
 
 @frozen
-public struct SequenceGesture<First, Second> where First : Gesture, Second : Gesture {
-    /// The value of a sequence gesture that helps to detect whether the first gesture succeeded, so the second gesture can start.
-    public typealias Value = SequenceGesture.SequenceValue
-    
-    public struct SequenceValue {
-        public var first: First.Value
-        public var second: First.Value
-    }
-    
-    /// The first gesture in a sequence of two gestures.
-    public var first: First
-    /// The second gesture in a sequence of two gestures.
-    public var second: Second
-    
-    /// Creates a sequence gesture with two gestures.
-    init(first: First, second: Second) {
-        self.first = first
-        self.second = second
-    }
+public struct SequenceGesture<First, Second> where First: Gesture, Second: Gesture {
+  /// The value of a sequence gesture that helps to detect whether the first gesture succeeded, so
+  /// the second gesture can start.
+  public typealias Value = SequenceGesture.SequenceValue
+
+  public struct SequenceValue {
+    public var first: First.Value
+    public var second: First.Value
+  }
+
+  /// The first gesture in a sequence of two gestures.
+  public var first: First
+  /// The second gesture in a sequence of two gestures.
+  public var second: Second
+
+  /// Creates a sequence gesture with two gestures.
+  init(first: First, second: Second) {
+    self.first = first
+    self.second = second
+  }
 }

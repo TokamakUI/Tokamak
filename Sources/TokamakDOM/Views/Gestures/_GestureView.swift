@@ -21,35 +21,35 @@ import TokamakCore
 import TokamakStaticHTML
 
 extension TokamakCore._GestureView: DOMPrimitive {
-    var renderedBody: AnyView {
-        AnyView(
-            content
-                .onReceive(GestureEventsObserver.publisher) { phase in
-                    guard let phase else { return }
-                    onPhaseChange(phase)
-                }
-        )
-    }
+  var renderedBody: AnyView {
+    AnyView(
+      content
+        .onReceive(GestureEventsObserver.publisher) { phase in
+          guard let phase else { return }
+          onPhaseChange(phase)
+        }
+    )
+  }
 }
 
 @_spi(TokamakStaticHTML)
 extension TokamakCore._GestureView: HTMLConvertible {
-    public var tag: String { "div" }
-    public var listeners: [String : Listener] { [:] }
-    
-    public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
-        [:]
+  public var tag: String { "div" }
+  public var listeners: [String: Listener] { [:] }
+
+  public func attributes(useDynamicLayout: Bool) -> [HTMLAttribute: String] {
+    [:]
+  }
+
+  public func primitiveVisitor<V>(useDynamicLayout: Bool) -> ((V) -> ())? where V: ViewVisitor {
+    {
+      $0.visit(
+        content
+          .onReceive(GestureEventsObserver.publisher) { phase in
+            guard let phase else { return }
+            onPhaseChange(phase)
+          }
+      )
     }
-    
-    public func primitiveVisitor<V>(useDynamicLayout: Bool) -> ((V) -> ())? where V : ViewVisitor {
-        {
-            $0.visit(
-                content
-                    .onReceive(GestureEventsObserver.publisher) { phase in
-                        guard let phase else { return }
-                        onPhaseChange(phase)
-                    }
-            )
-        }
-    }
+  }
 }

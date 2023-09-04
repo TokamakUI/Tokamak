@@ -17,23 +17,23 @@
 
 @frozen
 /// The ExclusiveGesture gives precedence to its first gesture.
-public struct ExclusiveGesture<First, Second> where First : Gesture, Second : Gesture {
-    /// The value of an exclusive gesture that indicates which of two gestures succeeded.
-    public typealias Value = ExclusiveGesture.ExclusiveValue
-    
-    public struct ExclusiveValue {
-        public var first: First.Value
-        public var second: First.Value
-    }
-    
-    /// The first of two gestures.
-    public var first: First
-    /// The second of two gestures.
-    public var second: Second
-    
-    /// Creates a gesture from two gestures where only one of them succeeds.
-    init(first: First, second: Second) {
-        self.first = first
-        self.second = second
-    }
+public struct ExclusiveGesture<First, Second> where First: Gesture, Second: Gesture {
+  /// The value of an exclusive gesture that indicates which of two gestures succeeded.
+  public typealias Value = ExclusiveGesture.ExclusiveValue
+
+  public struct ExclusiveValue {
+    public var first: First.Value
+    public var second: First.Value
+  }
+
+  /// The first of two gestures.
+  public var first: First
+  /// The second of two gestures.
+  public var second: Second
+
+  /// Creates a gesture from two gestures where only one of them succeeds.
+  init(first: First, second: Second) {
+    self.first = first
+    self.second = second
+  }
 }

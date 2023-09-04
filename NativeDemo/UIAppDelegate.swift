@@ -21,7 +21,7 @@ import UIKit
 // so we only need one Info.plist
 public class NSApplication: UIApplication {}
 
-@UIApplicationMain
+@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   func application(
