@@ -106,11 +106,23 @@ public final class TestFiberElement: FiberElement, CustomStringConvertible {
   }
 
   public var description: String {
-    """
-    \(content.renderedValue)
-    \(children.map { "  \($0.description)" }.joined(separator: "\n"))
-    \(content.closingTag)
-    """
+    let memoryAddress = String(format: "%010p", unsafeBitCast(self, to: Int.self))
+    return content.renderedValue + " (\(memoryAddress)) [\(children.count)]"
+  }
+
+  public var recursiveDescription: String {
+    var d = description
+    if !children.isEmpty {
+      d.append("\n")
+      d.append(
+        children
+          .flatMap { $0.recursiveDescription.components(separatedBy:"\n").map { "  \($0)"} }
+          .joined(separator: "\n")
+      )
+      d.append("\n")
+    }
+    d.append(content.closingTag)
+    return d
   }
 
   public init(renderedValue: String, closingTag: String) {
@@ -125,7 +137,7 @@ public final class TestFiberElement: FiberElement, CustomStringConvertible {
   public static var root: Self { .init(renderedValue: "<root>", closingTag: "</root>") }
 }
 
-public struct TestFiberRenderer: FiberRenderer {
+public final class TestFiberRenderer: FiberRenderer {
   public let sceneSize: CurrentValueSubject<CGSize, Never>
   public let useDynamicLayout: Bool
 
@@ -156,29 +168,51 @@ public struct TestFiberRenderer: FiberRenderer {
   }
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {
-    view is TestFiberPrimitive
+    !(view is AnyOptional) && view is TestFiberPrimitive
   }
 
-  public func commit(_ mutations: [Mutation<Self>]) {
+  public func commit(_ mutations: [Mutation<TestFiberRenderer>]) {
+    func isReachable(_ el: TestFiberElement, from parent: TestFiberElement = rootElement) -> Bool {
+      el === parent || parent.children.contains(where: { isReachable(el, from: $0) })
+    }
+    func assertReachable(_ el: TestFiberElement) { if !isReachable(el) { fatalError("element not reachable from root") }}
     for mutation in mutations {
       switch mutation {
       case let .insert(element, parent, index):
+        assertReachable(parent)
         parent.children.insert(element, at: index)
       case let .remove(element, parent):
-        parent?.children.removeAll(where: { $0 === element })
-      case let .replace(parent, previous, replacement):
-        guard let index = parent.children.firstIndex(where: { $0 === previous })
-        else { continue }
-        parent.children[index] = replacement
+        guard let parent = parent else {
+          fatalError("remove called without parent")
+        }
+        assertReachable(parent)
+        guard let idx = parent.children.firstIndex(where: { $0 === element })
+          else { fatalError("remove called with element that doesn't belong to its parent") }
+        parent.children.remove(at: idx)
       case let .layout(element, geometry):
         element.geometry = geometry
       case let .update(previous, newContent, _):
+        assertReachable(previous)
         previous.update(with: newContent)
       }
     }
   }
 
+  public func render<V: View>(_ view: V) -> FiberReconciler<TestFiberRenderer> {
+    let ret = FiberReconciler(self, view)
+    flush()
+    return ret
+  }
+
+  var scheduledActions: [() -> Void] = []
+
   public func schedule(_ action: @escaping () -> ()) {
-    action()
+    scheduledActions.append(action)
+  }
+
+  public func flush() {
+    let actions = scheduledActions
+    scheduledActions = []
+    for a in actions { a() }
   }
 }

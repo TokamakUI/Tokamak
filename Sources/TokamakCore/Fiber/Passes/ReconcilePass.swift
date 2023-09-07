@@ -17,6 +17,25 @@
 
 import Foundation
 
+private extension FiberReconciler.Fiber {
+  /// calls `onAppear` handler if present on self
+  func callOnAppear() {
+    if case let .view(action as AppearanceActionType, _) = content {
+      action.appear?()
+    }
+  }
+
+  /// calls any `onDisappear` handlers on self or children
+  func callOnDisappearRecursive() {
+    _ = walk(self) { fiber -> WalkWorkResult<Void> in
+      if case let .view(action as AppearanceActionType, _) = fiber.content {
+        action.disappear?()
+      }
+      return .stepIn
+    }
+  }
+}
+
 /// Walk the current tree, recomputing at each step to check for discrepancies.
 ///
 /// Parent-first depth-first traversal.
@@ -68,22 +87,24 @@ struct ReconcilePass: FiberReconcilerPass {
   ) where R: FiberRenderer {
     var node = root
 
-    // Enabled when we reach the `reconcileRoot`.
-    var shouldReconcile = false
-
-    while true {
-      if !shouldReconcile {
-        if let fiber = node.fiber,
-           changedFibers.contains(ObjectIdentifier(fiber))
-        {
-          shouldReconcile = true
-        } else if let alternate = node.fiber?.alternate,
-                  changedFibers.contains(ObjectIdentifier(alternate))
-        {
-          shouldReconcile = true
+    func mutationsForRemoving(_ fiber: FiberReconciler<R>.Fiber) -> [Mutation<R>] {
+      var elementChildren: [FiberReconciler<R>.Fiber] = []
+      _ = walk(fiber) { child -> WalkWorkResult<()> in
+        if child.element != nil {
+          elementChildren.append(child)
+          // we removed this element, so any children are removed with it
+          // and we don't need to go deeper
+          return .stepOver
+        } else {
+          return .stepIn
         }
       }
+      return elementChildren.map {
+        Mutation<R>.remove(element: $0.element!, parent: $0.elementParent!.element!)
+      }
+    }
 
+    while true {
       // If this fiber has an element, set its `elementIndex`
       // and increment the `elementIndices` value for its `elementParent`.
       if node.fiber?.element != nil,
@@ -92,15 +113,36 @@ struct ReconcilePass: FiberReconcilerPass {
         node.fiber?.elementIndex = caches.elementIndex(for: elementParent, increment: true)
       }
 
-      // Perform work on the node.
-      if shouldReconcile,
-         let mutation = reconcile(node, in: reconciler, caches: caches)
-      {
-        caches.mutations.append(mutation)
+      if let fiber = node.fiber {
+        invalidateCache(for: fiber, in: reconciler, caches: caches)
+
+        if node.didInsert {
+          fiber.callOnAppear()
+        }
+
+        if let element = fiber.element,
+           let parent = fiber.elementParent?.element,
+           let index = fiber.elementIndex,
+           node.didInsert
+        {
+          caches.mutations.append(.insert(element: element, parent: parent, index: index))
+        }
+
+        if let element = fiber.element, let c = node.newContent {
+          caches.mutations.append(
+            .update(
+              previous: element,
+              newContent: c,
+              geometry: fiber.geometry ?? .init(
+                origin: .init(origin: .zero),
+                dimensions: .init(size: .zero, alignmentGuides: [:]),
+                proposal: .unspecified
+              )
+            )
+          )
+        }
       }
 
-      // Ensure the `TreeReducer` can access any necessary state.
-      node.elementIndices = caches.elementIndices
       // Pass view traits down to the nearest element fiber.
       if let traits = node.fiber?.outputs.traits,
          !traits.values.isEmpty
@@ -113,6 +155,11 @@ struct ReconcilePass: FiberReconcilerPass {
       // Compute the children of the node.
       let reducer = FiberReconciler<R>.TreeReducer.SceneVisitor(initialResult: node)
       node.visitChildren(reducer)
+
+      for orphan in reducer.result.unclaimedCurrentChildren.values {
+        orphan.callOnDisappearRecursive()
+        caches.mutations.insert(contentsOf: mutationsForRemoving(orphan), at: 0)
+      }
 
       node.fiber?.preferences?.reset()
 
@@ -134,35 +181,15 @@ struct ReconcilePass: FiberReconcilerPass {
         }
       }
 
-      // Setup the alternate if it doesn't exist yet.
-      if node.fiber?.alternate == nil {
-        _ = node.fiber?.createAndBindAlternate?()
-      }
-
       // Walk down all the way into the deepest child.
       if let child = reducer.result.child {
         node = child
         continue
-      } else if let alternateChild = node.fiber?.alternate?.child {
-        // The alternate has a child that no longer exists.
-        if let parent = node.fiber?.element != nil ? node.fiber : node.fiber?.elementParent {
-          invalidateCache(for: parent, in: reconciler, caches: caches)
-        }
-        walk(alternateChild) { node in
-          if let element = node.element,
-             let parent = node.elementParent?.element
-          {
-            // Removals must happen in reverse order, so a child element
-            // is removed before its parent.
-            caches.mutations.insert(.remove(element: element, parent: parent), at: 0)
-          }
-          return true
-        }
       }
+
       if reducer.result.child == nil {
         // Make sure we clear the child if there was none
         node.fiber?.child = nil
-        node.fiber?.alternate?.child = nil
       }
 
       // If we've made it back to the root, then exit.
@@ -187,21 +214,6 @@ struct ReconcilePass: FiberReconcilerPass {
           }
         }
 
-        var alternateSibling = node.fiber?.alternate?.sibling
-        // The alternate had siblings that no longer exist.
-        while alternateSibling != nil {
-          if let fiber = alternateSibling?.elementParent {
-            invalidateCache(for: fiber, in: reconciler, caches: caches)
-          }
-          if let element = alternateSibling?.element,
-             let parent = alternateSibling?.elementParent?.element
-          {
-            // Removals happen in reverse order, so a child element is removed before
-            // its parent.
-            caches.mutations.insert(.remove(element: element, parent: parent), at: 0)
-          }
-          alternateSibling = alternateSibling?.sibling
-        }
         guard let parent = node.parent else { return }
         // When we walk back to the root, exit
         guard parent !== root.fiber?.alternate else { return }
@@ -215,50 +227,6 @@ struct ReconcilePass: FiberReconcilerPass {
       // Walk across to the sibling, and repeat.
       node = node.sibling!
     }
-  }
-
-  /// Compare `node` with its alternate, and add any mutations to the list.
-  func reconcile<R: FiberRenderer>(
-    _ node: FiberReconciler<R>.TreeReducer.Result,
-    in reconciler: FiberReconciler<R>,
-    caches: FiberReconciler<R>.Caches
-  ) -> Mutation<R>? {
-    if let element = node.fiber?.element,
-       let index = node.fiber?.elementIndex,
-       let parent = node.fiber?.elementParent?.element
-    {
-      if node.fiber?.alternate == nil { // This didn't exist before (no alternate)
-        if let fiber = node.fiber {
-          invalidateCache(for: fiber, in: reconciler, caches: caches)
-        }
-        return .insert(element: element, parent: parent, index: index)
-      } else if node.fiber?.typeInfo?.type != node.fiber?.alternate?.typeInfo?.type,
-                let previous = node.fiber?.alternate?.element
-      {
-        if let fiber = node.fiber {
-          invalidateCache(for: fiber, in: reconciler, caches: caches)
-        }
-        // This is a completely different type of view.
-        return .replace(parent: parent, previous: previous, replacement: element)
-      } else if let newContent = node.newContent,
-                newContent != element.content
-      {
-        if let fiber = node.fiber {
-          invalidateCache(for: fiber, in: reconciler, caches: caches)
-        }
-        // This is the same type of view, but its backing data has changed.
-        return .update(
-          previous: element,
-          newContent: newContent,
-          geometry: node.fiber?.geometry ?? .init(
-            origin: .init(origin: .zero),
-            dimensions: .init(size: .zero, alignmentGuides: [:]),
-            proposal: .unspecified
-          )
-        )
-      }
-    }
-    return nil
   }
 
   /// Remove cached size values if something changed.

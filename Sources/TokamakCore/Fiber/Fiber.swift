@@ -63,9 +63,6 @@ public extension FiberReconciler {
     /// Stored as an IUO because it uses `bindProperties` to create the underlying instance.
     var layout: AnyLayout?
 
-    /// The identity of this `View`
-    var id: Identity?
-
     /// The mounted element, if this is a `Renderer` primitive.
     var element: Renderer.ElementType?
 
@@ -135,9 +132,26 @@ public extension FiberReconciler {
       }
     }
 
-    public enum Identity: Hashable {
-      case explicit(AnyHashable)
-      case structural(index: Int)
+    /// The explicit identity of this `View`, if provided
+    var explicitId: AnyHashable? {
+      guard case let .view(v as _AnyIDView, _) = content else { return nil }
+      return v.anyId
+    }
+
+    /// Direct children of this fiber, keyed by their index
+    var mappedChildren: [Int: Fiber] {
+      var map = [Int: Fiber]()
+
+      var currentIndex = 0
+      var currentChild = child
+
+      while let aChild = currentChild {
+        map[currentIndex] = aChild
+        currentIndex += 1
+        currentChild = aChild.sibling
+      }
+
+      return map
     }
 
     init<V: View>(
@@ -390,8 +404,9 @@ public extension FiberReconciler {
         layout = (view as? _AnyLayout)?._erased() ?? DefaultLayout.shared
       }
 
-      if Renderer.isPrimitive(view) {
-        return .init(from: view, useDynamicLayout: reconciler?.renderer.useDynamicLayout ?? false)
+      if Renderer.isPrimitive(view), let element = element {
+        let newContent = Renderer.ElementType.Content(from: view, useDynamicLayout: reconciler?.renderer.useDynamicLayout ?? false)
+        return (element.content != newContent) ? newContent : nil
       } else {
         return nil
       }

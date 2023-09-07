@@ -201,10 +201,6 @@ public struct StaticHTMLFiberRenderer: FiberRenderer {
         parent.content.children.insert(element, at: index)
       case let .remove(element, parent):
         parent?.content.children.removeAll(where: { $0 === element })
-      case let .replace(parent, previous, replacement):
-        guard let index = parent.content.children.firstIndex(where: { $0 === previous })
-        else { continue }
-        parent.content.children[index] = replacement
       case let .update(previous, newContent, _):
         previous.update(with: newContent)
       case let .layout(element, data):
