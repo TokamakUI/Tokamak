@@ -25,6 +25,17 @@ struct OnChangeModifier<V: Equatable>: ViewModifier {
   let initial: Bool
   let action: (V, V) -> ()
 
+  init(value: V, initial: Bool, action: @escaping (V, V) -> ()) {
+    self.value = value
+    self.initial = initial
+    self.action = action
+
+    if value != oldValue {
+      action(oldValue ?? value, value)
+      oldValue = value
+    }
+  }
+
   func body(content: Content) -> some View {
     content
       .task {

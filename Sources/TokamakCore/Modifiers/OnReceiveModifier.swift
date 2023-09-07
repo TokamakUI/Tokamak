@@ -27,7 +27,7 @@ struct OnReceiveModifier<P: Publisher>: ViewModifier where P.Failure == Never {
   }
 
   func body(content: Content) -> some View {
-    content._onUnmount {
+    content.onDisappear {
       cancellable.cancel()
     }
   }
