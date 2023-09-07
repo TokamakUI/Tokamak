@@ -260,8 +260,6 @@ final class VaryingPrimitivenessTests: XCTestCase {
     let reconciler = TestFiberRenderer(.root, size: .zero).render(V())
     let root = reconciler.renderer.rootElement
 
-
-    print(root.recursiveDescription)
     XCTAssert(root.children.count == 1)
     XCTAssert(root.children[0].children.count == 0)
   }
