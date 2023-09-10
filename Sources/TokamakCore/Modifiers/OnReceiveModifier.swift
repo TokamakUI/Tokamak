@@ -18,17 +18,29 @@
 import Foundation
 import OpenCombineShim
 
-struct OnReceiveModifier<P: Publisher>: ViewModifier where P.Failure == Never {
-  @State
-  var cancellable: AnyCancellable
+private struct OnReceiveModifier<P: Publisher>: ViewModifier where P.Failure == Never {
+  @ObservedObject
+  var cancellableHolder = CancellableHolder()
 
   init(publisher: P, action: @escaping (P.Output) -> ()) {
-    _cancellable = State(initialValue: publisher.sink(receiveValue: action))
+    cancellableHolder.cancellable = publisher.sink(receiveValue: action)
   }
 
   func body(content: Content) -> some View {
-    content.onDisappear {
-      cancellable.cancel()
+    content
+  }
+
+  // MARK: Types
+
+  final class CancellableHolder: ObservableObject {
+    var cancellable: AnyCancellable? {
+      didSet {
+        oldValue?.cancel()
+      }
+    }
+
+    deinit {
+      cancellable?.cancel()
     }
   }
 }

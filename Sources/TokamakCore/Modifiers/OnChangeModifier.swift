@@ -16,39 +16,30 @@
 //
 
 import Foundation
+import OpenCombineShim
 
 struct OnChangeModifier<V: Equatable>: ViewModifier {
   @State
-  var oldValue: V? = nil
+  private var oldValue: V?
 
   let value: V
   let initial: Bool
   let action: (V, V) -> ()
 
-  init(value: V, initial: Bool, action: @escaping (V, V) -> ()) {
-    self.value = value
-    self.initial = initial
-    self.action = action
-
-    if value != oldValue {
-      action(oldValue ?? value, value)
-      oldValue = value
-    }
-  }
-
   func body(content: Content) -> some View {
     content
-      .task {
-        if initial {
-          action(value, value)
+      .onReceive(Just(value)) { newValue in
+        // TODO: Fix, when @State if working with in a ViewModifier
+        // ignore first call when oldValue == nil. For now old value is always nil
+        if newValue != oldValue {
+          action(oldValue ?? value, newValue)
         }
         oldValue = value
       }
-      ._onUpdate {
-        if value != oldValue {
-          action(oldValue ?? value, value)
+      .onAppear {
+        if initial {
+          action(value, value)
         }
-        oldValue = value
       }
   }
 }

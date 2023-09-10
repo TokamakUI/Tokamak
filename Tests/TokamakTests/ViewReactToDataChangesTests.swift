@@ -32,11 +32,11 @@ class ViewModifierTests: XCTestCase {
 
     // Simulate publisher emitting a value
     publisher.send("Testing onReceive")
-
-    // Re-evaluate the view
-    let reconciler = TestFiberRenderer(.root, size: .zero).render(contentView)
-
     XCTAssertEqual(receivedValue, "Testing onReceive")
+
+    // Simulate publisher emitting a value
+    publisher.send("Second onReceive")
+    XCTAssertEqual(receivedValue, "Second onReceive")
   }
 
   func testOnChangeWithValue() {
