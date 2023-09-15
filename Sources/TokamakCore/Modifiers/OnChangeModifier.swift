@@ -28,18 +28,16 @@ struct OnChangeModifier<V: Equatable>: ViewModifier {
 
   func body(content: Content) -> some View {
     content
-      .onReceive(Just(value)) { newValue in
-        // TODO: Fix, when @State if working with in a ViewModifier
-        // ignore first call when oldValue == nil. For now old value is always nil
-        if newValue != oldValue {
-          action(oldValue ?? value, newValue)
-        }
-        oldValue = value
-      }
       .onAppear {
         if initial {
           action(value, value)
         }
+      }
+      .onReceive(Just(value)) { newValue in
+        if let oldValue, newValue != oldValue {
+          action(oldValue, newValue)
+        }
+        oldValue = value
       }
   }
 }

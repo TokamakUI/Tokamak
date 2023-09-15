@@ -23,20 +23,31 @@ class ViewModifierTests: XCTestCase {
     let publisher = PassthroughSubject<String, Never>()
     var receivedValue = ""
 
+    let firstExpectation = XCTestExpectation(description: "First value received from publisher")
+    let secondExpectation = XCTestExpectation(description: "Second value received from publisher")
+
     let contentView = Text("Hello, world!")
       .onReceive(publisher) { value in
         receivedValue = value
+        if receivedValue == "Simulate publisher emitting a first value" {
+          firstExpectation.fulfill()
+        } else if receivedValue == "Simulate publisher emitting a next value" {
+          secondExpectation.fulfill()
+        }
       }
 
     XCTAssertEqual(receivedValue, "")
+    _ = TestFiberRenderer(.root, size: .zero).render(contentView)
 
-    // Simulate publisher emitting a value
-    publisher.send("Testing onReceive")
-    XCTAssertEqual(receivedValue, "Testing onReceive")
+    let fisrPush = "Simulate publisher emitting a first value"
+    publisher.send(fisrPush)
+    wait(for: [firstExpectation], timeout: 1.0)
+    XCTAssertEqual(receivedValue, fisrPush)
 
-    // Simulate publisher emitting a value
-    publisher.send("Second onReceive")
-    XCTAssertEqual(receivedValue, "Second onReceive")
+    let secondPush = "Simulate publisher emitting a next value"
+    publisher.send(secondPush)
+    wait(for: [secondExpectation], timeout: 1.0)
+    XCTAssertEqual(receivedValue, secondPush)
   }
 
   func testOnChangeWithValue() {
@@ -56,14 +67,14 @@ class ViewModifierTests: XCTestCase {
     count = 5
 
     // Re-evaluate the view
-    let reconciler = TestFiberRenderer(.root, size: .zero).render(contentView)
+    _ = TestFiberRenderer(.root, size: .zero).render(contentView)
 
     XCTAssertEqual(count, 5)
     XCTAssertEqual(oldCount, 0)
   }
 
   func testOnChangeWithInitialValue() {
-    var count = 0
+    let count = 0
     var actionFired = false
 
     let contentView = Text("Hello, world!")
@@ -74,12 +85,13 @@ class ViewModifierTests: XCTestCase {
     XCTAssertFalse(actionFired)
 
     // Re-evaluate the view
-    let reconciler = TestFiberRenderer(.root, size: .zero).render(contentView)
+    _ = TestFiberRenderer(.root, size: .zero).render(contentView)
 
     XCTAssertTrue(actionFired)
   }
 
   func testModifierComposition() {
+    let expectation = XCTestExpectation(description: "")
     let publisher = PassthroughSubject<Int, Never>()
     var receivedValue = 0
     var count = 0
@@ -90,19 +102,19 @@ class ViewModifierTests: XCTestCase {
       }
       .onReceive(publisher) { value in
         receivedValue = value
+        expectation.fulfill()
       }
 
     XCTAssertEqual(count, 0)
     XCTAssertEqual(receivedValue, 0)
+    _ = TestFiberRenderer(.root, size: .zero).render(contentView)
 
     // Simulate publisher emitting a value
     publisher.send(10)
     // Simulate a change in value
     count = 5
 
-    // Re-evaluate the view
-    let reconciler = TestFiberRenderer(.root, size: .zero).render(contentView)
-
+    wait(for: [expectation], timeout: 1.0)
     XCTAssertEqual(count, 5)
     XCTAssertEqual(receivedValue, 10)
   }
