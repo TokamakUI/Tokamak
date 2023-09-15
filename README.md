@@ -215,7 +215,7 @@ If you had `carton` installed before this, make sure you have version 0.15.0 or 
 or run [carton-install.sh](https://github.com/swiftwasm/carton) for Linux
 
 ```
-curl -sSL https://github.com/swiftwasm/carton/blob/main/carton-install.sh | bash
+curl -sSL https://raw.githubusercontent.com/swiftwasm/carton/blob/main/carton-install.sh | bash
 ```
 
 ```
