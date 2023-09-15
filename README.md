@@ -199,8 +199,8 @@ Not all of these versions are tested on regular basis though, compatibility repo
 ## Getting started
 
 Tokamak relies on [`carton`](https://carton.dev) as a primary build tool. As a part of these steps
-you'll install `carton` via [Homebrew](https://brew.sh/) on macOS (unfortunately you'll have to build
-it manually on Linux). Assuming you already have Homebrew installed, you can create a new Tokamak
+you'll install `carton` via [Homebrew](https://brew.sh/) on macOS.
+Assuming you already have Homebrew installed, you can create a new Tokamak
 app by following these steps:
 
 1. Install `carton`:
@@ -210,6 +210,13 @@ brew install swiftwasm/tap/carton
 ```
 
 If you had `carton` installed before this, make sure you have version 0.15.0 or greater:
+
+
+or run [carton-install.sh](https://github.com/swiftwasm/carton) for Linux
+
+```
+curl -sSL https://github.com/swiftwasm/carton/blob/main/carton-install.sh | bash
+```
 
 ```
 carton --version
