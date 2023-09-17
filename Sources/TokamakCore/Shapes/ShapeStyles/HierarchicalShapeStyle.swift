@@ -19,10 +19,10 @@
 @frozen
 public struct HierarchicalShapeStyle: ShapeStyle {
   @usableFromInline
-  internal var id: UInt32
+  var id: UInt32
 
   @inlinable
-  internal init(id: UInt32) {
+  init(id: UInt32) {
     self.id = id
   }
 

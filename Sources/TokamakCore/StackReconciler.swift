@@ -132,7 +132,7 @@ public final class StackReconciler<R: Renderer> {
     queueUpdate(for: mountedElement, transaction: transaction)
   }
 
-  internal func queueUpdate(
+  func queueUpdate(
     for mountedElement: MountedCompositeElement<R>,
     transaction: Transaction
   ) {

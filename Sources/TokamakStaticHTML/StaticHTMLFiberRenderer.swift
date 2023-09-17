@@ -80,8 +80,10 @@ public final class HTMLElement: FiberElement, CustomStringConvertible {
 
   public var description: String {
     """
-    <\(content.tag)\(content.attributes.map { " \($0.key.value)=\"\($0.value)\"" }
-      .joined(separator: ""))>\(content.innerHTML != nil ? "\(content.innerHTML!)" : "")\(!content
+    <\(content.tag)\(
+      content.attributes.map { " \($0.key.value)=\"\($0.value)\"" }
+        .joined(separator: "")
+    )>\(content.innerHTML != nil ? "\(content.innerHTML!)" : "")\(!content
       .children
       .isEmpty ? "\n" : "")\(content.children.map(\.description).joined(separator: "\n"))\(!content
       .children

@@ -32,7 +32,19 @@ public struct State<Value>: DynamicProperty {
   var getter: (() -> Any)?
   var setter: ((Any, Transaction) -> ())?
 
+  /// Creates a state property that stores an initial value.
+  /// - Parameter value: An initial value to store in the state property.
+  /// - Discussion: You don’t call this initializer directly. Instead, Tokamak calls it for you when
+  /// you declare a property with the @State attribute and provide an initial value:
   public init(wrappedValue value: Value) {
+    initialValue = value
+  }
+
+  /// Creates a state property that stores an initial value.
+  /// - Parameter value: An initial value to store in the state property.
+  /// - Discussion: This initializer has the same behavior as the init(wrappedValue:) initializer.
+  /// See that initializer for more information.
+  public init(initialValue value: Value) {
     initialValue = value
   }
 

@@ -146,6 +146,8 @@ public struct DOMFiberRenderer: FiberRenderer {
       style.innerHTML = .string(TokamakStaticHTML.tokamakStyles)
       _ = document.head.appendChild(style)
     }
+
+    GestureEventsObserver.observe(reference)
   }
 
   public static func isPrimitive<V>(_ view: V) -> Bool where V: View {

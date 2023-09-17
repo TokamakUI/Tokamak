@@ -1,12 +1,12 @@
-// swift-tools-version:5.6
+// swift-tools-version:5.7
 
 import PackageDescription
 
 let package = Package(
   name: "Tokamak",
   platforms: [
-    .macOS(.v11),
-    .iOS(.v13),
+    .macOS(.v13),
+    .iOS(.v16),
   ],
   products: [
     // Products define the executables and libraries produced by a package,

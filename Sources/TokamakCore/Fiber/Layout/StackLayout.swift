@@ -75,7 +75,7 @@ public extension StackLayout {
   /// A `vertical` axis will return `height`.
   /// A `horizontal` axis will return `width`.
   static var mainAxis: WritableKeyPath<CGSize, CGFloat> {
-    switch Self.orientation {
+    switch orientation {
     case .vertical: return \.height
     case .horizontal: return \.width
     }
@@ -86,7 +86,7 @@ public extension StackLayout {
   /// A `vertical` axis will return `width`.
   /// A `horizontal` axis will return `height`.
   static var crossAxis: WritableKeyPath<CGSize, CGFloat> {
-    switch Self.orientation {
+    switch orientation {
     case .vertical: return \.width
     case .horizontal: return \.height
     }

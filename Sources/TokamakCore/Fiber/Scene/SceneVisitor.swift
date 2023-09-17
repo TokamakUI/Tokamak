@@ -35,7 +35,7 @@ protocol SceneReducer: ViewReducer {
 
 extension SceneReducer {
   static func reduce<S: Scene>(into partialResult: inout Result, nextScene: S) {
-    partialResult = Self.reduce(partialResult: partialResult, nextScene: nextScene)
+    partialResult = reduce(partialResult: partialResult, nextScene: nextScene)
   }
 
   static func reduce<S: Scene>(partialResult: Result, nextScene: S) -> Result {

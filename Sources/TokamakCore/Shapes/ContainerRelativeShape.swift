@@ -21,7 +21,7 @@ public struct ContainerRelativeShape: Shape, EnvironmentReader {
   var containerShape: (CGRect, GeometryProxy) -> Path? = { _, _ in nil }
 
   public func path(in rect: CGRect) -> Path {
-    containerShape(rect, GeometryProxy(size: rect.size)) ?? Rectangle().path(in: rect)
+    containerShape(rect, GeometryProxy(globalRect: rect)) ?? Rectangle().path(in: rect)
   }
 
   public init() {}
@@ -39,22 +39,22 @@ extension ContainerRelativeShape: InsettableShape {
 
   @usableFromInline
   @frozen
-  internal struct _Inset: InsettableShape, DynamicProperty {
+  struct _Inset: InsettableShape, DynamicProperty {
     @usableFromInline
-    internal var amount: CGFloat
+    var amount: CGFloat
     @inlinable
-    internal init(amount: CGFloat) {
+    init(amount: CGFloat) {
       self.amount = amount
     }
 
     @usableFromInline
-    internal func path(in rect: CGRect) -> Path {
+    func path(in rect: CGRect) -> Path {
       // FIXME: Inset the container shape.
       Rectangle().path(in: rect)
     }
 
     @inlinable
-    internal func inset(by amount: CGFloat) -> ContainerRelativeShape._Inset {
+    func inset(by amount: CGFloat) -> ContainerRelativeShape._Inset {
       var copy = self
       copy.amount += amount
       return copy

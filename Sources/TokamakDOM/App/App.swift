@@ -56,6 +56,7 @@ public extension App {
     _ = body.appendChild!(div)
 
     ScenePhaseObserver.observe()
+    GestureEventsObserver.observe(div)
     ColorSchemeObserver.observe(div)
   }
 

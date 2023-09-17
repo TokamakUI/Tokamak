@@ -19,10 +19,10 @@ import Foundation
 
 @frozen
 public struct EllipticalGradient: ShapeStyle, View {
-  internal var gradient: Gradient
-  internal var center: UnitPoint
-  internal var startRadiusFraction: CGFloat
-  internal var endRadiusFraction: CGFloat
+  var gradient: Gradient
+  var center: UnitPoint
+  var startRadiusFraction: CGFloat
+  var endRadiusFraction: CGFloat
 
   public init(
     gradient: Gradient,

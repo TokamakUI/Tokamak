@@ -23,7 +23,8 @@ public struct ViewInputs<V> {
 
   /// Mutate the underlying content with the given inputs.
   ///
-  /// Used to inject values such as environment values, traits, and preferences into the `View` type.
+  /// Used to inject values such as environment values, traits, and preferences into the `View`
+  /// type.
   public let updateContent: ((inout V) -> ()) -> ()
 
   @_spi(TokamakCore)
