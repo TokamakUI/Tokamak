@@ -16,19 +16,18 @@
 //
 
 import Foundation
-import OpenCombine
 
 public struct DragGesture: Gesture {
   @Environment(\._coordinateSpace)
   private var coordinates
-  private var globalOrigin: CGPoint? = nil
-  private var startLocation: CGPoint? = nil
-  private var previousTimestamp: Date?
-  private var velocity: CGSize = .zero
+  private(set) var globalOrigin: CGPoint? = nil
+  private(set) var startLocation: CGPoint? = nil
+  private(set) var previousTimestamp: Date?
+  private(set) var velocity: CGSize = .zero
   private var onEndedAction: ((Value) -> ())? = nil
   private var onChangedAction: ((Value) -> ())? = nil
-  private var minimumDistance: Double
-  private var coordinateSpace: CoordinateSpace
+  private(set) var minimumDistance: Double
+  private(set) var coordinateSpace: CoordinateSpace
 
   public var body: DragGesture {
     self

@@ -20,7 +20,7 @@ import Foundation
 public struct LongPressGesture: Gesture {
   public typealias Value = Bool
 
-  private var startLocation: CGPoint? = nil
+  private(set) var startLocation: CGPoint? = nil
   private var touchStartTime = Date(timeIntervalSince1970: 0)
   private var maximumDistance: Double
   private var onEndedAction: ((Value) -> ())? = nil
