@@ -53,6 +53,15 @@
         "revision" : "f8a9c997c3c1dab4e216a8ec9014e23144cbab37",
         "version" : "1.9.0"
       }
+    },
+    {
+      "identity" : "swiftsdl2",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ctreffs/SwiftSDL2.git",
+      "state" : {
+        "revision" : "30a2886bd68e43fc19ba29b63ffe230ac0e4db7a",
+        "version" : "1.4.1"
+      }
     }
   ],
   "version" : 2

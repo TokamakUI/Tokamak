@@ -17,5 +17,9 @@
 #elseif os(WASI)
 @_exported import TokamakDOM
 #elseif os(Linux)
-@_exported import TokamakGTK
+@_exported import TokamakSDL2
+#elseif os(Windows)
+@_exported import TokamakSDL2
+#elseif os(Android)
+@_exported import TokamakSDL2
 #endif
