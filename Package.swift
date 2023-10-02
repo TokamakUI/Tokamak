@@ -137,9 +137,9 @@ let package = Package(
           package: "OpenCombine"
         ),
         .product(
-          name: "SDL", 
+          name: "SDL",
           package: "SwiftSDL2"
-        )
+        ),
       ]
     ),
     .executableTarget(
