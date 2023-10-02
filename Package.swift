@@ -28,6 +28,10 @@ let package = Package(
       targets: ["TokamakStaticHTMLDemo"]
     ),
     .library(
+      name: "TokamakSDL2",
+      targets: ["TokamakSDL2"]
+    ),
+    .library(
       name: "TokamakGTK",
       targets: ["TokamakGTK"]
     ),
@@ -65,6 +69,10 @@ let package = Package(
       url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
       from: "1.9.0"
     ),
+    .package(
+      url: "https://github.com/ctreffs/SwiftSDL2.git",
+      from: "1.4.1"
+    ),
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define
@@ -85,6 +93,7 @@ let package = Package(
       dependencies: [
         .target(name: "TokamakDOM", condition: .when(platforms: [.wasi])),
         .target(name: "TokamakGTK", condition: .when(platforms: [.linux])),
+        .target(name: "TokamakSDL2", condition: .when(platforms: [.linux, .windows, .android])),
       ]
     ),
     .systemLibrary(
@@ -116,6 +125,20 @@ let package = Package(
         .product(
           name: "OpenCombineShim",
           package: "OpenCombine"
+        ),
+      ]
+    ),
+    .target(
+      name: "TokamakSDL2",
+      dependencies: [
+        "TokamakCore",
+        .product(
+          name: "OpenCombineShim",
+          package: "OpenCombine"
+        ),
+        .product(
+          name: "SDL",
+          package: "SwiftSDL2"
         ),
       ]
     ),
