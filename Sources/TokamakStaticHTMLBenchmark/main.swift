@@ -48,7 +48,7 @@ benchmark("render Text (StackReconciler)") {
 }
 
 benchmark("render Text (FiberReconciler)") {
-  StaticHTMLFiberRenderer().render(Text("Hello, world!"))
+  _ = StaticHTMLFiberRenderer().render(Text("Hello, world!"))
 }
 
 benchmark("render ForEach(100) (StackReconciler)") {
@@ -56,7 +56,7 @@ benchmark("render ForEach(100) (StackReconciler)") {
 }
 
 benchmark("render ForEach(100) (FiberReconciler)") {
-  StaticHTMLFiberRenderer().render(ForEach(1..<100) { Text("\($0)") })
+  _ = StaticHTMLFiberRenderer().render(ForEach(1..<100) { Text("\($0)") })
 }
 
 benchmark("render ForEach(1000) (StackReconciler)") {
@@ -64,7 +64,7 @@ benchmark("render ForEach(1000) (StackReconciler)") {
 }
 
 benchmark("render ForEach(1000) (FiberReconciler)") {
-  StaticHTMLFiberRenderer().render(ForEach(1..<1000) { Text("\($0)") })
+  _ = StaticHTMLFiberRenderer().render(ForEach(1..<1000) { Text("\($0)") })
 }
 
 struct RecursiveView: View {
@@ -88,7 +88,7 @@ benchmark("render RecursiveView(1000) (StackReconciler)") {
 }
 
 benchmark("render RecursiveView(1000) (FiberReconciler)") {
-  StaticHTMLFiberRenderer().render(RecursiveView(1000))
+  _ = StaticHTMLFiberRenderer().render(RecursiveView(1000))
 }
 
 Benchmark.main()
